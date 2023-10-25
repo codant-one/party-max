@@ -15,6 +15,12 @@ module.exports = {
   },
   darkMode: 'class', // or 'media' or 'class'
   theme: {
+    colors: {
+      primary: '#FF0090',
+      secondary: '#6FDDEF',
+      terciary: '#0A1B33',
+      white: '#FFFFFF'
+    },
     screens: {
       'xs': '320px',
       'sm':	'640px',
@@ -25,7 +31,8 @@ module.exports = {
     },
     fontFamily: {
       sans: ['Helvetica', 'Arial', 'sans-serif'],
-      serif: ['ui-serif', 'Georgia', 'Cambria', 'Times New Roman', 'Times', 'serif']
+      serif: ['ui-serif', 'Georgia', 'Cambria', 'Times New Roman', 'Times', 'serif'],
+      switzer_regular: ['Switzer Regular']
     },
   },
   plugins: [],

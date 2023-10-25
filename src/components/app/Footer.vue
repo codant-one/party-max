@@ -4,7 +4,7 @@
 </script>
 
 <template>
-  <v-footer class="text-center d-flex flex-column bg">
+  <VFooter class="text-center d-flex flex-column bg">
     FOOTER
-  </v-footer>
+  </VFooter>
 </template>

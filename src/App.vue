@@ -6,11 +6,13 @@ import Footer from '@/components/app/Footer.vue'
 </script>
 
 <template>
-  <v-app> 
-    <Header />
-    <v-main>
-      <router-view/>
-    </v-main>
-    <Footer />
-  </v-app>
+  <VApp> 
+    <VLayout >
+      <Header />
+      <VMain>
+        <router-view/>
+      </VMain>
+      <Footer />
+    </VLayout>
+  </VApp>
 </template>
