@@ -2,17 +2,23 @@
 
 import Header from '@/components/app/Header.vue'
 import Footer from '@/components/app/Footer.vue'
+import home from '@/assets/images/home.jpg';
 
+const backgroundStyle = {
+  backgroundImage: `url(${home})`,
+  backgroundSize: 'cover',
+  backgroundRepeat: 'repeat'
+}
 </script>
 
 <template>
   <VApp> 
     <VLayout >
       <Header />
-      <VMain>
+      <VMain :style="backgroundStyle">
         <router-view/>
       </VMain>
-      <Footer />
     </VLayout>
+    <Footer />
   </VApp>
 </template>
