@@ -14,7 +14,7 @@
       <VContainer class="tw-bg-white">
         <VRow no-gutters>
           <VCol cols="10" class="d-flex">
-            <router-link to="/" class="tw-no-underline tw-text-white">
+            <router-link to="/" class="tw-no-underline tw-text-white ms-2">
               <img :src="logo" width="255" cover/>
             </router-link>
             <VLayout>
@@ -39,10 +39,10 @@
             </VLayout>
           </VCol>
           <VCol cols="2" class="d-flex align-center align-items-stretch flex-shrink-0 ms-n70">
-            <VBtn class="p-0 index"><img :src="heart"/></VBtn>
-            <VBtn class="p-0"><img :src="shoppinp_cart"/></VBtn>
-            <VBtn class="p-0"><img :src="user"/></VBtn>
-            <span class="d-flex align-center tw-text-terciary font-size-16">
+            <VBtn variant="plain" icon class="pb-2 me-4 index"><img :src="heart" width="35"/></VBtn>
+            <VBtn variant="plain" icon class="pb-2 me-4"><img :src="shoppinp_cart" width="35"/></VBtn>
+            <VBtn variant="plain" icon class="pb-2"><img :src="user" width="33"/></VBtn>
+            <span class="d-flex align-center tw-text-terciary font-size-16 pb-2">
               Ingresar o Registrarme
             </span>
           </VCol>
@@ -52,11 +52,11 @@
     <VAppBar flat class="second-header tw-bg-primary">
       <VContainer class="p-0 tw-text-white d-flex align-center">
         
-          <VAppBarNavIcon />
-          <span>Productos</span>
+          <VAppBarNavIcon variant="text"/>
+          <span class="font-size-16 me-7">Productos</span>
         
-          <VAppBarNavIcon />
-          <span>Servicios</span>
+          <VAppBarNavIcon variant="text"/>
+          <span class="font-size-16">Servicios</span>
       
           <span class="ms-5">Mayoristas</span>
           <VBtn class="p-0 index"><img :src="arrow_right"/></VBtn>
@@ -67,7 +67,7 @@
           <VDivider class="hr" vertical/>
           <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white">Blogs</router-link>
           <VDivider class="hr" vertical/>
-          <router-link to="/help" class="ms-5 tw-no-underline tw-text-white">Ayuda</router-link>
+          <router-link to="/help" class="ms-5 tw-no-underline tw-text-white me-3">Ayuda</router-link>
 
       </VContainer>
     </VAppBar>
@@ -75,6 +75,11 @@
 </template>
 
 <style scoped>
+
+.v-toolbar::v-deep(.mdi-menu) { 
+ 
+    font-size: 30px !important;
+  }
 
   .hr {
     width: 2px;
@@ -91,7 +96,7 @@
     z-index: 9999;
   }
   .ms-n70 {
-    margin-inline-start: -70px !important;
+    margin-inline-start: -55px !important;
   }
   .w-15 {
     width: 15%;
@@ -113,7 +118,7 @@
   }
  
   .me-24 {
-    margin-inline-end: 90px !important;
+    margin-inline-end: 82px !important;
   }
 
   .v-text-field::v-deep(.v-field) { 
