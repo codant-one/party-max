@@ -131,7 +131,7 @@
   } 
 
   .v-text-field::v-deep(::placeholder) { 
-    color: #FF0090;
+    color: #FF0090 !important;
     opacity: inherit;
   }
 
