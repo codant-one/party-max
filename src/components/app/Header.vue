@@ -136,7 +136,7 @@
   }
 
   .v-text-field::v-deep(input) { 
-    padding-top: 0 ;
+    padding-top: 0 !important;
     padding-bottom: 18px;
   }
 
