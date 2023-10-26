@@ -85,7 +85,7 @@ const products = ref([
                 class="list py-0  tw-text-terciary"
               >
                 <template v-slot:prepend>
-                  <VImg :src="item.icon" class="me-3 ms-4"/>
+                  <img :src="item.icon" class="me-3 ms-4"/>
                 </template>
                 <VListItemTitle v-text="item.text" class="tw-text-terciary"></VListItemTitle>
               </VListItem>
