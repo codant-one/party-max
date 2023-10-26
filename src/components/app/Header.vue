@@ -126,7 +126,7 @@
     border-bottom-right-radius: 100px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-    border: 1.5px solid #FF0090;
+    border: 1.5px solid #FF0090 !important;
     height: 43px;
   } 
 
