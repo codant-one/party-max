@@ -6,6 +6,8 @@
   import user from '@/assets/icons/user.svg';
   import arrow_right from '@/assets/icons/arrow_right.svg';
 
+  const color = ref('#FF0090')
+  
 </script>
 
 <template>
@@ -28,7 +30,7 @@
               <VTextField
                 class="me-24 pt-4 w-100"
                 placeholder="Quiero..."
-                color="#FF0090"
+                :color="color"
                 flat
                 variant="solo">
                 <template v-slot:append-inner>
