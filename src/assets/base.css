@@ -28,6 +28,14 @@ html {
   padding-inline-end: 0 !important;
 }
 
+.no-shadown {
+  box-shadow: none !important;
+}
+
+.justify-content-between {
+  justify-content: space-between!important;
+}
+
 .header .v-container {
   padding: 13px 0 !important;
 }

@@ -6,7 +6,7 @@ import home from '@/assets/images/home.jpg';
 
 const backgroundStyle = {
   backgroundImage: `url(${home})`,
-  backgroundSize: 'cover',
+  backgroundSize: 'contain',
   backgroundRepeat: 'repeat'
 }
 </script>
