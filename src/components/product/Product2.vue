@@ -39,7 +39,10 @@ watchEffect(() => {
         <VCard class="no-shadown card-information p-0 mb-5">
             <div class="d-flex">
                 <VCardText>
-                    <VImg :src="baseURL + image" :width="75" class="border-img"/>
+                    <VImg 
+                        :src="baseURL + image" 
+                        :width="61" 
+                        class="border-img"/>
                 </VCardText>
                 
                 <VCardText>

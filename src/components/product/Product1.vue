@@ -38,7 +38,11 @@ watchEffect(() => {
     <router-link to="/products" class="tw-no-underline">
         <VCard class="no-shadown card-information p-0">
             <VCardText>
-                <VImg :src="baseURL + image" cover class="border-img"/>
+                <VImg 
+                    :width="172"
+                    :src="baseURL + image" 
+                    cover 
+                    class="border-img" />
             </VCardText>
             <VCardText class="mt-2">
                 <div class="d-flex py-2">
