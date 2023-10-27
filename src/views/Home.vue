@@ -177,31 +177,31 @@ const tab = ref('0')
               </VCol>
               <VCol cols="12" md="6">
                 <router-link to="/categories">
-                  <VImg :src="Plaza_2" class="border-top-right"/>
+                  <VImg :src="Plaza_2" class="border-top-right img-galery"/>
                 </router-link>
               </VCol>
               <VCol cols="12">
                 <router-link to="/categories">
-                  <VImg :src="Plaza_3"/>
+                  <VImg :src="Plaza_3" class="img-galery"/>
                 </router-link>
               </VCol>
             </VRow>
           </VCol>
           <VCol cols="12" md="7">
             <router-link to="/categories">
-              <VImg :src="Banner" height="197" cover/>
+              <VImg :src="Banner" class="img-galery"  height="197" cover />
             </router-link>
           </VCol>
           <VCol cols="12" md="5">
             <VRow no-gutters class="transparent">
               <VCol cols="12" md="6">
                 <router-link to="/categories">
-                  <VImg :src="Plaza_4"/>
+                  <VImg :src="Plaza_4" class="img-galery"/>
                 </router-link>
               </VCol>
               <VCol cols="12" md="6">
                 <router-link to="/categories">
-                  <VImg :src="Plaza_5" class="border-bottom-right"/>
+                  <VImg :src="Plaza_5" class="border-bottom-right img-galery"/>
                 </router-link>
               </VCol>
             </VRow>
