@@ -4,7 +4,7 @@
   import heart from '@/assets/icons/heart.svg';
   import shoppinp_cart from '@/assets/icons/shoppinp_cart.svg';
   import user from '@/assets/icons/user.svg';
-  import arrow_right from '@/assets/icons/arrow_right.svg';
+  import arrow_right from '@/assets/icons/arrow_right.svg?inline';
 
   const color = ref('#FF0090')
   
@@ -43,11 +43,12 @@
           <VCol cols="2" class="d-flex align-center align-items-stretch flex-shrink-0 ms-n70">
             <VBtn variant="plain" icon class="pb-2 me-4 index"><img :src="heart" width="35"/></VBtn>
             <VBtn variant="plain" icon class="pb-2 me-4"><img :src="shoppinp_cart" width="35"/></VBtn>
-            <VBtn variant="plain" icon class="pb-2"><img :src="user" width="33"/></VBtn>
-            <span class="d-flex align-center tw-text-tertiary font-size-16 pb-2">
-              Ingresar o Registrarme
-            </span>
-            
+            <div class="d-flex user-text">
+              <VBtn variant="plain" icon class="pb-2"><img :src="user" width="33"/></VBtn>
+              <span class="d-flex align-center tw-text-tertiary font-size-16 pb-2">
+                Ingresar o Registrarme
+              </span>
+            </div>
           </VCol>
         </VRow>
       </VContainer>
@@ -63,9 +64,9 @@
             <VAppBarNavIcon variant="text"/>
             <span class="font-size-16">Servicios</span>
           </div>
-          <router-link to="/suppliers" class="tw-no-underline tw-text-white hover:tw-text-yellow">
-            <span class="ms-5">Mayoristas</span>
-            <VBtn class="p-0 index"><img :src="arrow_right"/></VBtn>
+          <router-link to="/suppliers" class="tw-no-underline tw-text-white hover:tw-text-yellow d-flex align-center text-center hover-icon-arrow-right">
+            <span class="ms-8">Mayoristas</span>
+            <arrow_right class="ms-2 p-0 index"/>
           </router-link>  
           <VSpacer />
 
@@ -82,8 +83,7 @@
 
 <style scoped>
 
-.v-toolbar::v-deep(.mdi-menu) { 
- 
+  .v-toolbar::v-deep(.mdi-menu) { 
     font-size: 30px !important;
   }
 
@@ -101,12 +101,15 @@
   .index {
     z-index: 9999;
   }
+
   .ms-n70 {
     margin-inline-start: -55px !important;
   }
+
   .w-15 {
     width: 15%;
   }
+
   .w-30 {
     width: 30%;
   }
@@ -121,6 +124,7 @@
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     font-size: 11.5px;
+    padding-top: 2px;
   }
  
   .me-24 {
@@ -143,7 +147,6 @@
 
   .v-text-field::v-deep(input) { 
     padding-top: 0 !important;
-    padding-bottom: 18px;
   }
 
   .v-select::v-deep(.v-field__input) {
@@ -155,8 +158,6 @@
     padding-top: 30% !important;
     padding-right: 10% !important;
    }
-   
-
   .v-select::v-deep(.v-field) { 
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -166,14 +167,17 @@
     padding: 0 !important;
   }
 
-  .button-hover:hover
-  {
+  .button-hover:hover {
     background-color: #FF27B3 !important;
     box-shadow: 0px 0px 24px 0px #FF27B3;
   }
 
-  .icon-hover svg:hover {
-    fill: #FF0090;
+  .hover-icon-arrow-right:hover::v-deep(path) {
+    fill: #FFC549;
+  }
+
+  .user-text:hover span  {
+    color: #FF0090 !important;
   }
   
 

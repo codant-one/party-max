@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import Product1 from '@/components/product/Product1.vue'
 import Product2 from '@/components/product/Product2.vue'
 
-import arrow_right from '@/assets/icons/arrow_right_dark.svg';
+import arrow_right from '@/assets/icons/arrow_right_dark.svg?inline';
 
 import Plaza_1 from '@/assets/images/Plaza_1.jpg';
 import Plaza_2 from '@/assets/images/Plaza_2.jpg';
@@ -334,9 +334,9 @@ const tab = ref('0')
               </div>
             </VCardText>
             <VCardText class="p-0 more">
-              <router-link to="/categories" class="tw-no-underline hover:tw-text-yellow">
+              <router-link to="/categories" class="d-flex tw-no-underline hover:tw-text-yellow  hover-icon-arrow-right justify-content-end">
                 <span class="ms-5">Ver más</span>
-                <VBtn class="p-0" variant="text"><img :src="arrow_right"/></VBtn>
+                <arrow_right class="ms-2" />
               </router-link>
             </VCardText>
           </VCol>
@@ -534,5 +534,10 @@ const tab = ref('0')
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
   }
+
+  .hover-icon-arrow-right:hover::v-deep(path) {
+    fill: #FFC549;
+  }
+
 
 </style>

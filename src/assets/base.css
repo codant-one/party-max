@@ -36,6 +36,10 @@ html {
   justify-content: space-between!important;
 }
 
+.justify-content-end {
+  justify-content: end;
+}
+
 .header .v-container {
   padding: 13px 0 !important;
 }
