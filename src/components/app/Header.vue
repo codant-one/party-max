@@ -47,6 +47,7 @@
             <span class="d-flex align-center tw-text-tertiary font-size-16 pb-2">
               Ingresar o Registrarme
             </span>
+            
           </VCol>
         </VRow>
       </VContainer>
@@ -175,6 +176,7 @@
   {
     fill: #FF0090;
   }
+  
 
  
 </style>

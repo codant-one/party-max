@@ -233,10 +233,10 @@ const products = ref([
       <VCardTitle class="px-7 py-3 d-flex align-center">
         <span>Lo más vendido</span>
         <VSpacer />
-        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3">Globos</router-link>
-        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3">Piñatas</router-link>
-        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3">Sorpresas</router-link>
-        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3">Decoración</router-link>
+        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-terciary font-size-16 me-3 hover:tw-text-primary">Globos</router-link>
+        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-terciary font-size-16 me-3 hover:tw-text-primary">Piñatas</router-link>
+        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-terciary font-size-16 me-3 hover:tw-text-primary">Sorpresas</router-link>
+        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-terciary font-size-16 me-3 hover:tw-text-primary">Decoración</router-link>
       </VCardTitle>
       <VDivider />
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
@@ -263,7 +263,7 @@ const products = ref([
       <VCardTitle class="px-7 py-3 d-flex align-center">
         <span>Top proveedores mayoristas</span>
         <VSpacer />
-        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3">Ver todos</router-link>
+        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-terciary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
       </VCardTitle>
       <VDivider />
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
@@ -280,7 +280,7 @@ const products = ref([
       <VCardTitle class="px-7 py-3 d-flex align-center">
         <span>Fiestas temáticas</span>
         <VSpacer />
-        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3">Ver todos</router-link>
+        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-terciary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
       </VCardTitle>
       <VDivider class="hr-primary"/>
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
@@ -416,4 +416,9 @@ const products = ref([
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
   }
+  .v-carousel__controls
+  {
+    background:none!important;
+  }
+
 </style>
