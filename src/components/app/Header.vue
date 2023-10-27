@@ -40,9 +40,7 @@
                 placeholder="Todos"
                 variant="plain"
                 menu-icon="mdi-chevron-down"
-                :items="categories"
-                item-value="id"
-                item-title="name"
+                :items="['Fiesta Infantiles', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
               />
               <VTextField
                 class="me-24 pt-4 w-100"
