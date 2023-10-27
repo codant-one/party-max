@@ -14,7 +14,7 @@ const props = defineProps({
 const image = ref(null)
 const price_1 = ref(null)
 const price_2 = ref(null)
-const description = ref(null)
+const name = ref(null)
 const store = ref(null)
 const rating = ref(null)
 
@@ -24,7 +24,7 @@ watchEffect(() => {
         image.value = props.product.image
         price_1.value = props.product.price_1
         price_2.value = props.product.price_2
-        description.value = props.product.description
+        name.value = props.product.name
         store.value = props.product.store
         rating.value = props.product.rating
     }
@@ -35,7 +35,7 @@ watchEffect(() => {
 <template>
      <VCard class="no-shadown card-information p-0">
         <VCardText>
-            <VImg :src="image" cover clas="border-img"/>
+            <VImg :src="image" cover class="border-img"/>
         </VCardText>
         <VCardText class="mt-2">
             <div class="d-flex py-2">
@@ -44,7 +44,7 @@ watchEffect(() => {
             </div>
         </VCardText>
         <VCardText>
-            <span class="d-block text_2 py-2 tw-text-terciary">{{ description }}</span>
+            <span class="d-block text_2 py-2 tw-text-terciary">{{ name }}</span>
         </VCardText>
         <VCardText>
             <span class="d-block text_2">Store: <strong>{{ store }}</strong></span>

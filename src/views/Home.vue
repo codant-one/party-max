@@ -9,7 +9,10 @@ import Plaza_3 from '@/assets/images/Plaza_3.jpg';
 import Plaza_4 from '@/assets/images/Plaza_4.jpg';
 import Plaza_5 from '@/assets/images/Plaza_5.jpg';
 import Banner from '@/assets/images/Banner.jpg';
-import Slider from '@/assets/images/Slider.jpg';
+
+import Slider1 from '@/assets/images/Slider_1.jpg';
+import Slider2 from '@/assets/images/Slider_2.jpg';
+import Slider3 from '@/assets/images/Slider_3.jpg';
 
 import icon1 from '@/assets/icons/fiestas_infantiles.svg';
 import icon2 from '@/assets/icons/fiestas_tematicas.svg';
@@ -27,9 +30,9 @@ import location from '@/assets/icons/location.svg';
 import sold from '@/assets/icons/sold.svg';
 import tracking from '@/assets/icons/tracking.svg';
 
-import banner_2 from '@/assets/images/banner_2.png';
-import banner_3 from '@/assets/images/banner_3.png';
-import banner_4 from '@/assets/images/banner_4.png';
+import banner_2 from '@/assets/images/banner_2.jpg';
+import banner_3 from '@/assets/images/banner_3.jpg';
+import banner_4 from '@/assets/images/banner_4.jpg';
 
 import product_1 from '@/assets/images/product_1.png';
 import product_2 from '@/assets/images/product_2.png';
@@ -48,19 +51,17 @@ const items = ref([
 ])
 
 const sliders = ref( [
-  { src: Slider },
-  { src: Slider },
-  { src: Slider },
-  { src: Slider },
-  { src: Slider }
+  { src: Slider1 },
+  { src: Slider2 },
+  { src: Slider3 }
 ])
 
 const products = ref([
-  { image: product_1, price_1: '0.000', price_2: '0.000', description: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 1 },
-  { image: product_2, price_1: '0.000', price_2: '0.000', description: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 2 },
-  { image: product_1, price_1: '0.000', price_2: '0.000', description: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 3 },
-  { image: product_2, price_1: '0.000', price_2: '0.000', description: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 4 },
-  { image: product_1, price_1: '0.000', price_2: '0.000', description: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 5 }
+  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 1 },
+  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 2 },
+  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 3 },
+  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 4 },
+  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 5 }
 ])
 
 </script>
@@ -187,7 +188,7 @@ const products = ref([
     <VCard class="mt-7 no-shadown card-information p-0">
       <VCardTitle class="px-7 py-3"> Recomendaciones según tus búsquedas</VCardTitle>
       <VDivider />
-      <VCardText class="px-7 d-flex align-items-stretch justify-content-between">
+      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
         <Product1 
           v-for="(product, i) in products"
           :key="i"
@@ -204,10 +205,19 @@ const products = ref([
     </VCard>
     
     <!-- the most sold -->
-    <VCard class="mt-7 no-shadown card-information">
-      <VCardItem class="p-0">
-       LO MAS VENDIDO
-      </VCardItem>  
+    <VCard class="mt-7 no-shadown card-information p-0">
+      <VCardTitle class="px-7 py-3 d-flex align-center">
+        <span>Lo más vendido</span>
+        <VSpacer />
+        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-terciary font-size-16 me-3">Globos</router-link>
+        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-terciary font-size-16 me-3">Piñatas</router-link>
+        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-terciary font-size-16 me-3">Sorpresas</router-link>
+        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-terciary font-size-16 me-3">Decoración</router-link>
+      </VCardTitle>
+      <VDivider />
+      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
+        
+      </VCardText>  
     </VCard>
 
     <!-- banner 2 , banner 3-->
@@ -225,17 +235,29 @@ const products = ref([
     </VCard>
 
     <!-- providers -->
-    <VCard class="mt-7 no-shadown card-information">
-      <VCardItem class="p-0">
-       PROVEEDORES
-      </VCardItem>  
+    <VCard class="mt-7 no-shadown card-information p-0">
+      <VCardTitle class="px-7 py-3 d-flex align-center">
+        <span>Top proveedores mayoristas</span>
+        <VSpacer />
+        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-terciary font-size-16 me-3">Ver todos</router-link>
+      </VCardTitle>
+      <VDivider />
+      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
+        
+      </VCardText>  
     </VCard>
 
     <!-- theme parties -->
-    <VCard class="mt-7 no-shadown card-information transparent">
-      <VCardItem class="p-0">
-       FIESTAS TEMATICAS
-      </VCardItem>  
+    <VCard class="mt-7 no-shadown card-information transparent p-0">
+      <VCardTitle class="px-7 py-3 d-flex align-center">
+        <span>Fiestas temáticas</span>
+        <VSpacer />
+        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-terciary font-size-16 me-3">Ver todos</router-link>
+      </VCardTitle>
+      <VDivider />
+      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
+        
+      </VCardText>   
     </VCard>
   </VContainer>
 </template>
