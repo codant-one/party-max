@@ -34,7 +34,7 @@
                 flat
                 variant="solo">
                 <template v-slot:append-inner>
-                  <VBtn class="tw-bg-primary tw-text-white h-100 search-button">Buscar</VBtn>
+                  <VBtn class="tw-bg-primary tw-text-white h-100 search-button button-hover">Buscar</VBtn>
                 </template>
               </VTextField>
               <VSpacer />
@@ -54,22 +54,25 @@
     <VAppBar flat class="second-header tw-bg-primary">
       <VContainer class="p-0 tw-text-white d-flex align-center">
         
-          <VAppBarNavIcon variant="text"/>
-          <span class="font-size-16 me-7">Productos</span>
-        
-          <VAppBarNavIcon variant="text"/>
-          <span class="font-size-16">Servicios</span>
-      
-          <span class="ms-5">Mayoristas</span>
-          <VBtn class="p-0 index"><img :src="arrow_right"/></VBtn>
-
+          <div class="hover:tw-text-yellow">
+            <VAppBarNavIcon variant="text"/>
+            <span class="font-size-16 me-7">Productos</span>
+          </div>
+          <div class="hover:tw-text-yellow">
+            <VAppBarNavIcon variant="text"/>
+            <span class="font-size-16">Servicios</span>
+          </div>
+          <div class="hover:tw-text-yellow">
+            <span class="ms-5">Mayoristas</span>
+            <VBtn class="p-0 index"><img :src="arrow_right"/></VBtn>
+          </div>  
           <VSpacer />
 
-          <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-white">Quiénes somos</router-link>
+          <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Quiénes somos</router-link>
           <VDivider class="hr" vertical/>
-          <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white">Blogs</router-link>
+          <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Blogs</router-link>
           <VDivider class="hr" vertical/>
-          <router-link to="/help" class="ms-5 tw-no-underline tw-text-white me-3">Ayuda</router-link>
+          <router-link to="/help" class="ms-5 tw-no-underline tw-text-white me-3 hover:tw-text-yellow">Ayuda</router-link>
 
       </VContainer>
     </VAppBar>
@@ -161,5 +164,17 @@
     border: 1.5px solid #FF0090 !important;
     padding: 0 !important;
   }
-  
+
+  .button-hover:hover
+  {
+    background-color: #FF27B3;
+    box-shadow: 0px 0px 24px 0px #FF27B3;
+  }
+
+  .icon-hover svg:hover
+  {
+    fill: #FF0090;
+  }
+
+ 
 </style>

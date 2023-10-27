@@ -83,7 +83,7 @@ const products = ref([
               <VListItem
                 color="primary"
                 variant="plain"
-                class="list py-0  tw-text-terciary"
+                class="list py-0  tw-text-terciary hover:tw-bg-yellow"
               >
                 <template v-slot:prepend>
                   <img :src="item.icon" class="me-3 ms-4"/>
