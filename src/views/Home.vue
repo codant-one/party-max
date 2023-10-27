@@ -33,10 +33,10 @@ import location from '@/assets/icons/location.svg';
 import sold from '@/assets/icons/sold.svg';
 import tracking from '@/assets/icons/tracking.svg';
 
-import banner_2 from '@/assets/images/banner_2.jpg';
-import banner_3 from '@/assets/images/banner_3.jpg';
-import banner_4 from '@/assets/images/banner_4.jpg';
-import banner_5 from '@/assets/images/banner_5.jpg';
+import banner_2 from '@/assets/images/Banner_2.jpg';
+import banner_3 from '@/assets/images/Banner_3.jpg';
+import banner_4 from '@/assets/images/Banner_4.jpg';
+import banner_5 from '@/assets/images/Banner_5.jpg';
 
 import product_1 from '@/assets/images/product_1.png';
 import product_2 from '@/assets/images/product_2.png';
