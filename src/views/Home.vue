@@ -105,7 +105,7 @@ const tab = ref('0')
 </script>
 
 <template>
-  <VContainer class="mt-10" v-if="data">
+  <VContainer class="mt-10">
     <!-- slider -->
     <VRow no-gutters class="transparent">
       <VCol cols="12" md="3">
@@ -231,7 +231,7 @@ const tab = ref('0')
     <VCard class="mt-7 no-shadown card-information p-0">
       <VCardTitle class="px-7 py-3"> Recomendaciones según tus búsquedas</VCardTitle>
       <VDivider />
-      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
+      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data">
         <Product1 
           v-for="(product, i) in data.recommendations"
           :key="i"
@@ -258,7 +258,7 @@ const tab = ref('0')
         <router-link to="/categories" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Decoración</router-link>
       </VCardTitle>
       <VDivider />
-      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
+      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data">
         <VRow no-gutters class="transparent">
           <VCol cols="12" md="9">
             <VImg :src="banner_5" class="border-img"/>
@@ -403,7 +403,7 @@ const tab = ref('0')
     </VCard>
   </VContainer>
 
-  <div :style="backgroundStyle"  v-if="data">
+  <div :style="backgroundStyle">
     <VContainer>
       <!-- birthday -->
       <VCard class="mt-7 no-shadown card-information transparent p-0 tw-text-white">
