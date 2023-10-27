@@ -40,9 +40,6 @@ import banner_3 from '@/assets/images/Banner_3.jpg';
 import banner_4 from '@/assets/images/Banner_4.jpg';
 import banner_5 from '@/assets/images/Banner_5.jpg';
 
-import product_1 from '@/assets/images/product_1.png';
-import product_2 from '@/assets/images/product_2.png';
-
 import p_1 from '@/assets/images/p_1.jpg';
 import p_2 from '@/assets/images/p_2.jpg';
 import p_3 from '@/assets/images/p_3.jpg';

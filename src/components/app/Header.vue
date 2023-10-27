@@ -1,5 +1,7 @@
 <script setup>
   
+  import { useHomeStores } from '@/stores/home'
+
   import logo from '@/assets/images/logo.svg';
   import heart from '@/assets/icons/heart.svg';
   import shoppinp_cart from '@/assets/icons/shoppinp_cart.svg';
@@ -8,6 +10,19 @@
 
   const color = ref('#FF0090')
   
+  const homeStores = useHomeStores()
+
+  const categories = ref(null)
+
+  watchEffect(fetchData)
+
+  async function fetchData() {
+
+    await homeStores.fetchData()
+    categories.value = homeStores.getData.parentCategories
+  
+  }
+
 </script>
 
 <template>
@@ -25,7 +40,9 @@
                 placeholder="Todos"
                 variant="plain"
                 menu-icon="mdi-chevron-down"
-                :items="['Fiesta Infantiles', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                :items="categories"
+                item-value="id"
+                item-title="name"
               />
               <VTextField
                 class="me-24 pt-4 w-100"
