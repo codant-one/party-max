@@ -1,6 +1,6 @@
 <script setup>
 
-  import icophone from '@/assets/icons/ic_phone.svg';
+  import icophone from '@/assets/icons/ic_phone.svg?inline';
   import icopayment1 from '@/assets/icons/payment-1.svg';
   import icopayment2 from '@/assets/icons/payment-2.svg';
   import icopayment3 from '@/assets/icons/payment-3.svg';
@@ -15,12 +15,20 @@
   <VFooter class="text-center d-flex flex-column bg p-0">
     <VContainer class="my-10">
         <VRow no-gutters  class="tw-text-tertiary">
-          <VCol cols="12" md="4" class="d-flex text-start">
+          <VCol cols="12" md="5" class="d-flex text-start">
             <p class="line-p"><span class="text-footer">Conoce todas nuestras ofertas</span> <br>
             <span class="subtext-footer">Regístrate ahora a nuestro newsletter.</span></p>
           </VCol> 
-          <VCol cols="12" md="8" class="d-flex align-center">
-            <span>Buscador</span>
+          <VCol cols="12" md="7" class="d-flex align-center">
+            <VTextField
+              class="me-24"
+              placeholder="Email"
+              flat
+              variant="solo">
+              <template v-slot:append-inner>
+                <VBtn class="tw-bg-primary tw-text-white h-100 search-button button-hover">Suscríbete</VBtn>
+              </template>
+            </VTextField>
           </VCol>  
         </VRow>  
 
@@ -28,82 +36,85 @@
 
     <VDivider class="hr" />
 
-    <VContainer class="my-12">
+    <VContainer class="mt-16">
       <VRow no-gutters class="tw-text-tertiary">
         <VCol cols="12" md="3" class="d-block align-center text-left">
           <span class="contact-text">Contactanos</span>
-          <div class="d-flex text-left cont-phone">
-            <VBtn variant="plain" icon class="pb-2"><img :src="icophone" width="33"/></VBtn>
+          <div class="d-flex text-left mt-12 mb-5">
+            <icophone class="mt-1 me-2"/>
               <span class="d-flex align-center tw-text-tertiary font-size-16 pb-2 phone-text">
                 +57 310 4870 310           
               </span>
           </div>
           
-            <span class="item-footer-text">Calle 13 # 69 - 06 , Bogotá</span> <br>
-            <span class="item-footer-text">fiesta@partymax.co</span>
-         
+          <span class="item-footer-text">Calle 13 # 69 - 06 , Bogotá</span> <br>
+          <span class="item-footer-text">fiesta@partymax.co</span>
         </VCol>
 
         <VCol cols="12" md="2" class="d-flex align-center"></VCol>
 
-        <VCol cols="12" md="2" class="d-block align-center text-left">
-          <span class="item-footer-text">Quiénes somos</span> <br>
-          <span class="item-footer-text">Fiestas infantiles</span> <br>
-          <span class="item-footer-text">Fiestas temáticas</span> <br>
-          <span class="item-footer-text">Mayoristas</span> <br>
-          <span class="item-footer-text">Blog</span> <br>
-          <span class="item-footer-text">Ayuda</span> 
+        <VCol cols="12" md="2" class="d-flex flex-column align-start text-left tw-gap-3">
+          <router-link to="/about-us" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+            Quiénes somos
+          </router-link>
+          <router-link to="/categories" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+            Fiestas infantiles
+          </router-link>
+          <router-link to="/categories" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+            Fiestas temáticas
+          </router-link>
+          <router-link to="/suppliers" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+            Mayoristas
+          </router-link>
+          <router-link to="/blogs" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+            Blog
+          </router-link>
+          <router-link to="/help" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+            Ayuda
+          </router-link>
         </VCol>
 
-        <VCol cols="12" md="2" class="d-block align-center text-left">
-          <span class="item-footer-text">Desechables</span> <br>
-          <span class="item-footer-text">Decoración</span> <br>
-          <span class="item-footer-text">Sorpresas</span> <br>
-          <span class="item-footer-text">Mobiliario</span> <br>
-          <span class="item-footer-text">Animación y entrenimiento</span> <br>
-          <span class="item-footer-text">Hora loca</span> 
+        <VCol cols="12" md="2" class="d-flex flex-column align-start text-left tw-gap-3">
+          <router-link to="/categories" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+            Desechables
+          </router-link>
+           <router-link to="/categories" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+            Decoración
+          </router-link>
+          <router-link to="/categories" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+            Sorpresas
+          </router-link>
+          <router-link to="/categories" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+            Mobiliario
+          </router-link>
+          <router-link to="/categories" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+            Animación y entrenimiento
+          </router-link>
+          <router-link to="/categories" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+            Hora loca
+          </router-link>
         </VCol>
-        
-
         <VCol cols="12" md="3" class="align-center text-right">
           <img :src="festinfooter" class="border-theme"/>
         </VCol>
-        
-
       </VRow>
+      <VDivider class="hr mt-10" />
     </VContainer>
 
-    <VContainer class="mt-10">
+    <VContainer class="mt-2">
       <VRow no-gutters class="tw-text-tertiary">
         <VCol cols="12" md="6" class="d-block align-center text-left">
           <span class="copyright">© 2023 PartyMax. All Rights Reserved</span>
         </VCol>
         <VCol cols="12" md="6" class="d-flex align-center text-right">
-          <VRow no-gutters class="tw-text-tertiary">
-            <VCol cols="12" md="6" class="d-block align-center text-center">
-              <span class="copyright">Pagos seguros con</span>
-            </VCol>
-            <VCol cols="12" md="1" class="d-block align-center text-left">
-              <img :src="icopayment1" width="45"/>
-            </VCol>
-            <VCol cols="12" md="1" class="d-block align-center text-left">
-              <img :src="icopayment2" width="44"/>
-            </VCol>
-            <VCol cols="12" md="1" class="d-block align-center text-left">
-              <img :src="icopayment3" width="44"/>
-            </VCol>
-            <VCol cols="12" md="1" class="d-block align-center text-left">
-              <img :src="icopayment4" width="46"/>
-            </VCol>
-            <VCol cols="12" md="1" class="d-block align-center text-left">
-              <img :src="icopayment5" width="45"/>
-            </VCol>
-            <VCol cols="12" md="1" class="d-block align-center text-left">
-              <img :src="icopayment6" width="46"/>
-            </VCol>
-           
-          </VRow>
-          
+          <VSpacer />
+          <span class="copyright">Pagos seguros con</span>
+          <img :src="icopayment1" width="45" class="me-3 ms-8"/>
+          <img :src="icopayment2" width="44" class="me-3"/>
+          <img :src="icopayment3" width="44" class="me-3"/>
+          <img :src="icopayment4" width="46" class="me-3"/>
+          <img :src="icopayment5" width="45" class="me-3"/>
+          <img :src="icopayment6" width="46"/>
         </VCol>
       </VRow>
 
@@ -112,58 +123,88 @@
   </VFooter>
 </template>
 <style scoped>
- .hr {
+
+  .search-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    font-size: 11.5px;
+    padding-top: 2px;
+  }
+
+  .v-text-field::v-deep(.v-input__details) { 
+    padding: 0;
+    height: 0;
+    min-height: 0;
+  }
+
+
+  .v-text-field::v-deep(.v-field) { 
+    border-radius: 100px;
+    border: 1px solid #0A1B33 !important;
+    height: 43px;
+  } 
+
+  .v-text-field::v-deep(::placeholder) { 
+    color: #0A1B33 !important;
+    opacity: inherit;
+  }
+
+  .v-text-field::v-deep(input) { 
+    padding-top: 0 !important;
+  }
+
+  .button-hover:hover {
+    background-color: #FF27B3 !important;
+    box-shadow: 0px 0px 24px 0px #FF27B3;
+  }
+
+ 
+  .hr {
     width: 100%;
     color: #D9EEF2;
     opacity: 1 !important;
   }
-.text-footer
-{
-  font-size: 24px;
-  font-weight: 600;
-}
+  .text-footer {
+    font-size: 24px;
+    font-weight: 600;
+  }
 
-.subtext-footer
-{
-  font-size: 12px;
-}
-.line-p
-{
-  line-height: 20px;
-}
+  .subtext-footer {
+    font-size: 12px;
+  }
+  .line-p {
+    line-height: 20px;
+  }
 
-.contact-text
-{
-  font-size: 16px;
-  font-weight: 600;
-}
+  .contact-text {
+    font-size: 16px;
+    font-weight: 600;
+  }
 
-.phone-text
-{
-  color:  #FF0090!important;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 28.8px; 
-}
+  .phone-text {
+    color:  #FF0090!important;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28.8px; 
+  }
 
-.cont-phone
-{
-  margin: 30px 0;
-}
-
-.item-footer-text
-{
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 22.4px;
-}
-.copyright
-{
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 22.4px;
-}
+  .item-footer-text {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22.4px;
+  }
+  .copyright {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22.4px;
+  }
 </style>
