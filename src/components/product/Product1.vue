@@ -36,10 +36,10 @@ watchEffect(() => {
 
 <template>
     <router-link to="/products" class="tw-no-underline">
-        <VCard class="no-shadown card-information p-0">
+        <VCard class="no-shadown card-information p-0" :width="230">
             <VCardText>
                 <VImg 
-                    :width="172"
+                    :width="230"
                     :src="baseURL + image" 
                     cover 
                     class="border-img" />

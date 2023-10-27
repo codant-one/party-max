@@ -64,7 +64,7 @@ watchEffect(() => {
     }
 
     .border-img {
-        border-radius: 16px !important;
+        border-radius: 8px !important;
         border: 1px solid #D9EEF2;
     }
 
