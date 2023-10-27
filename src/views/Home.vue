@@ -271,10 +271,10 @@ const tab = ref('0')
       <VCardTitle class="px-7 py-3 d-flex align-center">
         <span>Lo más vendido</span>
         <VSpacer />
-        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Globos</router-link>
-        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Piñatas</router-link>
-        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Sorpresas</router-link>
-        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Decoración</router-link>
+        <router-link to="/categories" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Globos</router-link>
+        <router-link to="/categories" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Piñatas</router-link>
+        <router-link to="/categories" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Sorpresas</router-link>
+        <router-link to="/categories" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Decoración</router-link>
       </VCardTitle>
       <VDivider />
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
@@ -334,10 +334,10 @@ const tab = ref('0')
               </div>
             </VCardText>
             <VCardText class="p-0 more">
-              <div class="hover:tw-text-yellow">
+              <router-link to="/categories" class="tw-no-underline hover:tw-text-yellow">
                 <span class="ms-5">Ver más</span>
                 <VBtn class="p-0" variant="text"><img :src="arrow_right"/></VBtn>
-              </div>
+              </router-link>
             </VCardText>
           </VCol>
         </VRow>
@@ -347,14 +347,18 @@ const tab = ref('0')
     <!-- banner 2 , banner 3-->
     <VCard class="mt-7 no-shadown card-information p-0 d-flex transparent">
         <VCard class="no-shadown card-information p-0 w-50">
-          <VCardItem class="p-0">
-            <VImg :src="banner_3" cover/>
-          </VCardItem>  
+          <router-link to="/categories" class="tw-no-underline">
+            <VCardItem class="p-0">
+              <VImg :src="banner_3" cover/>
+            </VCardItem>  
+          </router-link>
         </VCard>
         <VCard class="no-shadown card-information p-0 w-50 ms-5">
-          <VCardItem class="p-0">
-            <VImg :src="banner_4" cover/>
-          </VCardItem>  
+          <router-link to="/categories" class="tw-no-underline">
+            <VCardItem class="p-0">
+              <VImg :src="banner_4" cover/>
+            </VCardItem>  
+          </router-link>
         </VCard>
     </VCard>
 
@@ -363,15 +367,25 @@ const tab = ref('0')
       <VCardTitle class="px-7 py-3 d-flex align-center">
         <span>Top proveedores mayoristas</span>
         <VSpacer />
-        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
+        <router-link to="/suppliers" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
       </VCardTitle>
       <VDivider />
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
-        <img :src="p_1" class="border-img"/>
-        <img :src="p_2" class="border-img"/>
-        <img :src="p_3" class="border-img"/>
-        <img :src="p_4" class="border-img"/>
-        <img :src="p_5" class="border-img"/>
+        <router-link to="/suppliers" class="tw-no-underline">
+          <img :src="p_1" class="border-img"/>
+        </router-link>
+        <router-link to="/suppliers" class="tw-no-underline">
+          <img :src="p_2" class="border-img"/>
+        </router-link>
+        <router-link to="/suppliers" class="tw-no-underline">
+          <img :src="p_3" class="border-img"/>
+        </router-link>
+        <router-link to="/suppliers" class="tw-no-underline">
+          <img :src="p_4" class="border-img"/>
+        </router-link>
+        <router-link to="/suppliers" class="tw-no-underline">
+          <img :src="p_5" class="border-img"/>
+        </router-link>
       </VCardText>  
     </VCard>
 
@@ -380,30 +394,30 @@ const tab = ref('0')
       <VCardTitle class="px-7 py-3 d-flex align-center">
         <span>Fiestas temáticas</span>
         <VSpacer />
-        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
+        <router-link to="/categories" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
       </VCardTitle>
       <VDivider class="hr-primary"/>
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
-        <div class="d-block text-center">
+        <router-link to="/categories" class="tw-no-underline d-block text-center">
           <img :src="t_1" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
-        </div>
-        <div class="d-block text-center">
+        </router-link>
+        <router-link to="/categories" class="tw-no-underline d-block text-center">
           <img :src="t_2" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Hawaiana</span>
-        </div>
-        <div class="d-block text-center">
+        </router-link>
+        <router-link to="/categories" class="tw-no-underline d-block text-center">
           <img :src="t_3" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Vallenata</span>
-        </div>
-        <div class="d-block text-center">
+        </router-link>
+        <router-link to="/categories" class="tw-no-underline d-block text-center">
           <img :src="t_4" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Metalizada</span>
-        </div>
-        <div class="d-block text-center">
+        </router-link>
+        <router-link to="/categories" class="tw-no-underline d-block text-center">
           <img :src="t_5" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Neón</span>
-        </div>
+        </router-link>
       </VCardText>   
     </VCard>
   </VContainer>
@@ -415,26 +429,26 @@ const tab = ref('0')
         <VCardTitle class="px-7 py-3 d-flex align-center">
           <span>Cumpleaños</span>
           <VSpacer />
-          <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-white hover:tw-text-yellow">Ver todos</router-link>
+          <router-link to="/categories" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-white hover:tw-text-yellow">Ver todos</router-link>
         </VCardTitle>
         <VDivider class="hr-secondary"/>
         <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
-          <div class="d-block text-center">
+          <router-link to="/categories" class="tw-no-underline d-block text-center">
             <img :src="f_1" class="border-theme d-block"/>
             <span class="d-block size-theme tw-text-white mt-5 hover:tw-text-yellow">Niños</span>
-          </div>
-          <div class="d-block text-center">
+          </router-link>
+          <router-link to="/categories" class="tw-no-underline d-block text-center">
             <img :src="f_2" class="border-theme d-block"/>
             <span class="d-block size-theme tw-text-white mt-5 hover:tw-text-yellow">Niñas</span>
-          </div>
-          <div class="d-block text-center">
+          </router-link>
+          <router-link to="/categories" class="tw-no-underline d-block text-center">
             <img :src="f_3" class="border-theme d-block"/>
             <span class="d-block size-theme tw-text-white mt-5 hover:tw-text-yellow">Bebes</span>
-          </div>
-          <div class="d-block text-center">
+          </router-link>
+          <router-link to="/categories" class="tw-no-underline d-block text-center">
             <img :src="f_4" class="border-theme d-white"/>
             <span class="d-block size-theme tw-text-white mt-5 hover:tw-text-yellow">Adultos</span>
-          </div>
+          </router-link>
         </VCardText>   
       </VCard>
     </VContainer>

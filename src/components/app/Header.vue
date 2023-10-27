@@ -168,12 +168,11 @@
 
   .button-hover:hover
   {
-    background-color: #FF27B3;
+    background-color: #FF27B3 !important;
     box-shadow: 0px 0px 24px 0px #FF27B3;
   }
 
-  .icon-hover svg:hover
-  {
+  .icon-hover svg:hover {
     fill: #FF0090;
   }
   
