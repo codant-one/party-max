@@ -415,25 +415,25 @@ const tab = ref('0')
         <VCardTitle class="px-7 py-3 d-flex align-center">
           <span>Cumpleaños</span>
           <VSpacer />
-          <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-white">Ver todos</router-link>
+          <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-white hover:tw-text-yellow">Ver todos</router-link>
         </VCardTitle>
         <VDivider class="hr-secondary"/>
         <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
           <div class="d-block text-center">
             <img :src="f_1" class="border-theme d-block"/>
-            <span class="d-block size-theme tw-text-white mt-5">Niños</span>
+            <span class="d-block size-theme tw-text-white mt-5 hover:tw-text-yellow">Niños</span>
           </div>
           <div class="d-block text-center">
             <img :src="f_2" class="border-theme d-block"/>
-            <span class="d-block size-theme tw-text-white mt-5">Niñas</span>
+            <span class="d-block size-theme tw-text-white mt-5 hover:tw-text-yellow">Niñas</span>
           </div>
           <div class="d-block text-center">
             <img :src="f_3" class="border-theme d-block"/>
-            <span class="d-block size-theme tw-text-white mt-5">Bebes</span>
+            <span class="d-block size-theme tw-text-white mt-5 hover:tw-text-yellow">Bebes</span>
           </div>
           <div class="d-block text-center">
             <img :src="f_4" class="border-theme d-white"/>
-            <span class="d-block size-theme tw-text-white mt-5">Adultos</span>
+            <span class="d-block size-theme tw-text-white mt-5 hover:tw-text-yellow">Adultos</span>
           </div>
         </VCardText>   
       </VCard>
