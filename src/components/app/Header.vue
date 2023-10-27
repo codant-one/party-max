@@ -44,7 +44,7 @@
             <VBtn variant="plain" icon class="pb-2 me-4 index"><img :src="heart" width="35"/></VBtn>
             <VBtn variant="plain" icon class="pb-2 me-4"><img :src="shoppinp_cart" width="35"/></VBtn>
             <VBtn variant="plain" icon class="pb-2"><img :src="user" width="33"/></VBtn>
-            <span class="d-flex align-center tw-text-terciary font-size-16 pb-2">
+            <span class="d-flex align-center tw-text-tertiary font-size-16 pb-2">
               Ingresar o Registrarme
             </span>
           </VCol>

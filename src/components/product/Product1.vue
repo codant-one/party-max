@@ -44,7 +44,7 @@ watchEffect(() => {
             </div>
         </VCardText>
         <VCardText>
-            <span class="d-block text_2 py-2 tw-text-terciary">{{ name }}</span>
+            <span class="d-block text_2 py-2 tw-text-tertiary">{{ name }}</span>
         </VCardText>
         <VCardText>
             <span class="d-block text_2">Store: <strong>{{ store }}</strong></span>

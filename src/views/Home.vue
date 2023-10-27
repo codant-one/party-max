@@ -37,6 +37,30 @@ import banner_4 from '@/assets/images/banner_4.jpg';
 import product_1 from '@/assets/images/product_1.png';
 import product_2 from '@/assets/images/product_2.png';
 
+import p_1 from '@/assets/images/p_1.jpg';
+import p_2 from '@/assets/images/p_2.jpg';
+import p_3 from '@/assets/images/p_3.jpg';
+import p_4 from '@/assets/images/p_4.jpg';
+import p_5 from '@/assets/images/p_5.jpg';
+
+import t_1 from '@/assets/images/t_1.jpg';
+import t_2 from '@/assets/images/t_2.jpg';
+import t_3 from '@/assets/images/t_3.jpg';
+import t_4 from '@/assets/images/t_4.jpg';
+import t_5 from '@/assets/images/t_5.jpg';
+
+import f_1 from '@/assets/images/f_1.jpg';
+import f_2 from '@/assets/images/f_2.jpg';
+import f_3 from '@/assets/images/f_3.jpg';
+import f_4 from '@/assets/images/f_4.jpg';
+
+import frame_pink from '@/assets/images/frame_pink.jpeg';
+
+const backgroundStyle = {
+  backgroundImage: `url(${frame_pink})`,
+  backgroundSize: 'cover'
+}
+
 const items = ref([
   { text: 'Fiestas infantiles', icon: icon1 },
   { text: 'Fiestas temáticas', icon: icon2 },
@@ -78,17 +102,17 @@ const products = ref([
               :key="i"
               :value="item"
               :to="'/help'"
-              class="tw-no-underline tw-text-terciary"
+              class="tw-no-underline tw-text-tertiary"
             >
               <VListItem
                 color="primary"
                 variant="plain"
-                class="list py-0  tw-text-terciary hover:tw-bg-yellow"
+                class="list py-0  tw-text-tertiary hover:tw-bg-yellow"
               >
                 <template v-slot:prepend>
                   <img :src="item.icon" class="me-3 ms-4"/>
                 </template>
-                <VListItemTitle v-text="item.text" class="tw-text-terciary"></VListItemTitle>
+                <VListItemTitle v-text="item.text" class="tw-text-tertiary"></VListItemTitle>
               </VListItem>
             </router-link>
           </VList>
@@ -151,7 +175,7 @@ const products = ref([
     <!-- card -->
     <VCard class="mt-7 no-shadown card-information">
       <VCardItem class="p-0">
-        <VRow no-gutters  class="tw-text-terciary">
+        <VRow no-gutters  class="tw-text-tertiary">
           <VCol cols="12" md="3" class="d-flex align-center hr">
             <img :src="motorcycle" width="60" class="ms-10"/>
             <div class="d-block ms-5">
@@ -209,10 +233,10 @@ const products = ref([
       <VCardTitle class="px-7 py-3 d-flex align-center">
         <span>Lo más vendido</span>
         <VSpacer />
-        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-terciary font-size-16 me-3">Globos</router-link>
-        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-terciary font-size-16 me-3">Piñatas</router-link>
-        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-terciary font-size-16 me-3">Sorpresas</router-link>
-        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-terciary font-size-16 me-3">Decoración</router-link>
+        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3">Globos</router-link>
+        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3">Piñatas</router-link>
+        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3">Sorpresas</router-link>
+        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3">Decoración</router-link>
       </VCardTitle>
       <VDivider />
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
@@ -239,11 +263,15 @@ const products = ref([
       <VCardTitle class="px-7 py-3 d-flex align-center">
         <span>Top proveedores mayoristas</span>
         <VSpacer />
-        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-terciary font-size-16 me-3">Ver todos</router-link>
+        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3">Ver todos</router-link>
       </VCardTitle>
       <VDivider />
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
-        
+        <img :src="p_1" class="border-img"/>
+        <img :src="p_2" class="border-img"/>
+        <img :src="p_3" class="border-img"/>
+        <img :src="p_4" class="border-img"/>
+        <img :src="p_5" class="border-img"/>
       </VCardText>  
     </VCard>
 
@@ -252,18 +280,92 @@ const products = ref([
       <VCardTitle class="px-7 py-3 d-flex align-center">
         <span>Fiestas temáticas</span>
         <VSpacer />
-        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-terciary font-size-16 me-3">Ver todos</router-link>
+        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3">Ver todos</router-link>
       </VCardTitle>
-      <VDivider />
+      <VDivider class="hr-primary"/>
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
-        
+        <div class="d-block text-center">
+          <img :src="t_1" class="border-theme d-block"/>
+          <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
+        </div>
+        <div class="d-block text-center">
+          <img :src="t_2" class="border-theme d-block"/>
+          <span class="d-block size-theme tw-text-tertiary mt-5">Hawaiana</span>
+        </div>
+        <div class="d-block text-center">
+          <img :src="t_3" class="border-theme d-block"/>
+          <span class="d-block size-theme tw-text-tertiary mt-5">Vallenata</span>
+        </div>
+        <div class="d-block text-center">
+          <img :src="t_4" class="border-theme d-block"/>
+          <span class="d-block size-theme tw-text-tertiary mt-5">Metalizada</span>
+        </div>
+        <div class="d-block text-center">
+          <img :src="t_5" class="border-theme d-block"/>
+          <span class="d-block size-theme tw-text-tertiary mt-5">Neón</span>
+        </div>
       </VCardText>   
     </VCard>
   </VContainer>
+
+  <div :style="backgroundStyle">
+    <VContainer>
+      <!-- birthday -->
+      <VCard class="mt-7 no-shadown card-information transparent p-0 tw-text-white">
+        <VCardTitle class="px-7 py-3 d-flex align-center">
+          <span>Cumpleaños</span>
+          <VSpacer />
+          <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-white">Ver todos</router-link>
+        </VCardTitle>
+        <VDivider class="hr-secondary"/>
+        <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
+          <div class="d-block text-center">
+            <img :src="f_1" class="border-theme d-block"/>
+            <span class="d-block size-theme tw-text-white mt-5">Niños</span>
+          </div>
+          <div class="d-block text-center">
+            <img :src="f_2" class="border-theme d-block"/>
+            <span class="d-block size-theme tw-text-white mt-5">Niñas</span>
+          </div>
+          <div class="d-block text-center">
+            <img :src="f_3" class="border-theme d-block"/>
+            <span class="d-block size-theme tw-text-white mt-5">Bebes</span>
+          </div>
+          <div class="d-block text-center">
+            <img :src="f_4" class="border-theme d-white"/>
+            <span class="d-block size-theme tw-text-white mt-5">Adultos</span>
+          </div>
+        </VCardText>   
+      </VCard>
+    </VContainer>
+  </div>
 </template>
 
 <style scoped>
 
+  .hr-primary {
+    border-bottom: 1px solid #0A1B33;
+    opacity: 1;
+  }
+
+  .hr-secondary {
+    border-bottom: 1px solid #FFFFFF;
+    opacity: 1;
+  }
+  .size-theme {
+    font-size: 20px;
+    line-height: 22.4px;
+  }
+
+  .border-theme {
+    border-radius: 192px;
+    border: 1px solid var(--Maastricht-Blue, #0A1B33);
+    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
+  }
+
+  .border-img {
+    border-radius: 16px !important;
+  }
   .hr {
     border-right: 1px solid #D9EEF2;
     height: 60px;

@@ -18,14 +18,14 @@ module.exports = {
     colors: {
       primary: '#FF0090',
       secondary: '#6FDDEF',
-      terciary: '#0A1B33',
+      tertiary: '#0A1B33',
       white: '#FFFFFF',
       yellow: '#FFC549',
     },
     fill: {
       primary: '#FF0090',
       secondary: '#6FDDEF',
-      terciary: '#0A1B33',
+      tertiary: '#0A1B33',
       white: '#FFFFFF',
       yellow: '#FFC549',
     },
