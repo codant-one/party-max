@@ -172,7 +172,7 @@ const tab = ref('0')
             <VRow no-gutters class="transparent">
               <VCol cols="12" md="6">
                 <router-link to="/categories">
-                  <VImg :src="Plaza_1"/>
+                  <VImg :src="Plaza_1" class="img-galery"/>
                 </router-link>
               </VCol>
               <VCol cols="12" md="6">
@@ -398,23 +398,23 @@ const tab = ref('0')
       </VCardTitle>
       <VDivider class="hr-primary"/>
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
-        <router-link to="/categories" class="tw-no-underline d-block text-center">
+        <router-link to="/categories" class="tw-no-underline d-block text-center img-party">
           <img :src="t_1" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
         </router-link>
-        <router-link to="/categories" class="tw-no-underline d-block text-center">
+        <router-link to="/categories" class="tw-no-underline d-block text-center img-party">
           <img :src="t_2" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Hawaiana</span>
         </router-link>
-        <router-link to="/categories" class="tw-no-underline d-block text-center">
+        <router-link to="/categories" class="tw-no-underline d-block text-center img-party">
           <img :src="t_3" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Vallenata</span>
         </router-link>
-        <router-link to="/categories" class="tw-no-underline d-block text-center">
+        <router-link to="/categories" class="tw-no-underline d-block text-center img-party">
           <img :src="t_4" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Metalizada</span>
         </router-link>
-        <router-link to="/categories" class="tw-no-underline d-block text-center">
+        <router-link to="/categories" class="tw-no-underline d-block text-center img-party">
           <img :src="t_5" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Neón</span>
         </router-link>
@@ -433,21 +433,21 @@ const tab = ref('0')
         </VCardTitle>
         <VDivider class="hr-secondary"/>
         <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
-          <router-link to="/categories" class="tw-no-underline d-block text-center">
+          <router-link to="/categories" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_1" class="border-theme d-block"/>
-            <span class="d-block size-theme tw-text-white mt-5 hover:tw-text-yellow">Niños</span>
+            <span class="d-block size-theme tw-text-white mt-5">Niños</span>
           </router-link>
-          <router-link to="/categories" class="tw-no-underline d-block text-center">
+          <router-link to="/categories" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_2" class="border-theme d-block"/>
-            <span class="d-block size-theme tw-text-white mt-5 hover:tw-text-yellow">Niñas</span>
+            <span class="d-block size-theme tw-text-white mt-5">Niñas</span>
           </router-link>
-          <router-link to="/categories" class="tw-no-underline d-block text-center">
+          <router-link to="/categories" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_3" class="border-theme d-block"/>
-            <span class="d-block size-theme tw-text-white mt-5 hover:tw-text-yellow">Bebes</span>
+            <span class="d-block size-theme tw-text-white mt-5">Bebes</span>
           </router-link>
-          <router-link to="/categories" class="tw-no-underline d-block text-center">
+          <router-link to="/categories" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_4" class="border-theme d-white"/>
-            <span class="d-block size-theme tw-text-white mt-5 hover:tw-text-yellow">Adultos</span>
+            <span class="d-block size-theme tw-text-white mt-5">Adultos</span>
           </router-link>
         </VCardText>   
       </VCard>
@@ -538,6 +538,38 @@ const tab = ref('0')
   .hover-icon-arrow-right:hover::v-deep(path) {
     fill: #FFC549;
   }
+
+  .img-zoom {
+    transition: transform ease-in-out 0.3s;
+}
+
+.img-zoom:hover{ 
+    transform: scale(1.1);
+}
+
+.img-zoom:hover span{ 
+    color: #FFC549!important;
+}
+
+.img-party
+{
+  transition: transform ease-in-out 0.3s;
+}
+
+.img-party:hover
+{
+  transform: scale(1.1);
+}
+
+.img-party:hover span{
+  color: #FF0090!important;
+}
+
+.img-galery:hover{
+  filter: saturate(180%)!important;
+}
+
+
 
 
 </style>
