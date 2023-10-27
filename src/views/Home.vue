@@ -1,6 +1,8 @@
-<script setup lang="ts">
+<script setup>
 
 import { ref } from 'vue'
+import { useHomeStores } from '@/stores/home'
+    
 import Product1 from '@/components/product/Product1.vue'
 import Product2 from '@/components/product/Product2.vue'
 
@@ -84,47 +86,26 @@ const sliders = ref( [
   { src: Slider3 }
 ])
 
-const products = ref([
-  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 1 },
-  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 2 },
-  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 3 },
-  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 4 },
-  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 5 }
-])
 
-const products2 = ref([
-  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 1 },
-  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 2 },
-  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 3 },
-  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 4 },
-  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 1 },
-  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 2 },
-  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 3 },
-  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 4 },
-  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 5 },
-  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 4 }
-])
+const homeStores = useHomeStores()
 
-const products3 = ref([
-  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 2 },
-  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 3 },
-  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 4 },
-  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 1 },
-  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 2 },
-  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 3 },
-  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 4 },
-  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 5 },
-  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 4 },
-  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 1 },
-])
+const data = ref(null)
 
+watchEffect(fetchData)
+
+async function fetchData() {
+
+  await homeStores.fetchData()
+  data.value = homeStores.getData
+ 
+}
 
 const tab = ref('0')
 
 </script>
 
 <template>
-  <VContainer class="mt-10">
+  <VContainer class="mt-10" v-if="data">
     <!-- slider -->
     <VRow no-gutters class="transparent">
       <VCol cols="12" md="3">
@@ -252,7 +233,7 @@ const tab = ref('0')
       <VDivider />
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
         <Product1 
-          v-for="(product, i) in products"
+          v-for="(product, i) in data.recommendations"
           :key="i"
           :product="product"
           :readonly="true"/>
@@ -292,7 +273,7 @@ const tab = ref('0')
                   <v-window-item value="0">
                     <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between">
                       <Product1 
-                        v-for="(product, index) in products2"
+                        v-for="(product, index) in data.mostSold.latestProducts"
                         v-show="index < 4"
                         :key="index"
                         :product="product"
@@ -303,7 +284,7 @@ const tab = ref('0')
                   <v-window-item value="1">
                     <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between">
                       <Product1 
-                        v-for="(product, index) in products3"
+                        v-for="(product, index) in data.mostSold.bestSellers"
                         v-show="index < 4"
                         :key="index"
                         :product="product"
@@ -318,7 +299,7 @@ const tab = ref('0')
             <VCardText class="p-0 ms-3">
               <div v-if="tab === '0'">
                 <Product2 
-                  v-for="(product, index) in products2"
+                  v-for="(product, index) in data.mostSold.latestProducts"
                   v-show="index >= 4"
                   :key="index"
                   :product="product"
@@ -326,7 +307,7 @@ const tab = ref('0')
               </div>
               <div v-else>
                 <Product2 
-                  v-for="(product, index) in products3"
+                  v-for="(product, index) in data.mostSold.bestSellers"
                   v-show="index >= 4"
                   :key="index"
                   :product="product"
@@ -422,7 +403,7 @@ const tab = ref('0')
     </VCard>
   </VContainer>
 
-  <div :style="backgroundStyle">
+  <div :style="backgroundStyle"  v-if="data">
     <VContainer>
       <!-- birthday -->
       <VCard class="mt-7 no-shadown card-information transparent p-0 tw-text-white">

@@ -12,18 +12,20 @@ const props = defineProps({
 })
 
 const image = ref(null)
-const price_1 = ref(null)
-const price_2 = ref(null)
+const price = ref(null)
+const price_for_sale = ref(null)
 const name = ref(null)
 const store = ref(null)
 const rating = ref(null)
+
+const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
 watchEffect(() => {
 
     if (!(Object.entries(props.product).length === 0) && props.product.constructor === Object) {
         image.value = props.product.image
-        price_1.value = props.product.price_1
-        price_2.value = props.product.price_2
+        price.value = props.product.price
+        price_for_sale.value = props.product.price_for_sale
         name.value = props.product.name
         store.value = props.product.store
         rating.value = props.product.rating
@@ -37,14 +39,14 @@ watchEffect(() => {
         <VCard class="no-shadown card-information p-0 mb-5">
             <div class="d-flex">
                 <VCardText>
-                    <VImg :src="image" :width="75" class="border-img"/>
+                    <VImg :src="baseURL + image" :width="75" class="border-img"/>
                 </VCardText>
                 
                 <VCardText>
                     <span class="d-block text_2 tw-text-tertiary">{{ name }}</span>
                     <div class="d-flex mt-1">
-                        <span class="text_1">${{ price_1 }}</span>
-                        <span class="text_2 ms-2">${{ price_2 }}</span>
+                        <span class="text_1">${{ price }}</span>
+                        <span class="text_2 ms-2">${{ price_for_sale }}</span>
                     </div>
                 </VCardText>
             </div>
