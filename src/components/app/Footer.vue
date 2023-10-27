@@ -8,6 +8,11 @@
   import icopayment5 from '@/assets/icons/payment-5.svg';
   import icopayment6 from '@/assets/icons/payment-6.svg';
 
+  import instagram from '@/assets/icons/instagram.svg?inline';
+  import facebook from '@/assets/icons/facebook.svg?inline';
+  import subtract from '@/assets/icons/subtract.svg?inline';
+  import threads from '@/assets/icons/threads.svg?inline';
+
   import festinfooter from '@/assets/images/festin-footer.png';
 </script>
 
@@ -49,6 +54,13 @@
           
           <span class="item-footer-text">Calle 13 # 69 - 06 , Bogotá</span> <br>
           <span class="item-footer-text">fiesta@partymax.co</span>
+
+          <div class="d-flex align-center text-right mt-10">
+            <instagram class="mt-1 me-2"/>
+            <threads class="mt-1 me-2"/>
+            <subtract class="mt-1 me-2"/>
+            <facebook class="mt-1 me-2"/>
+          </div>
         </VCol>
 
         <VCol cols="12" md="2" class="d-flex align-center"></VCol>
