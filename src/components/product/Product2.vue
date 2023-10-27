@@ -33,39 +33,21 @@ watchEffect(() => {
 </script>
 
 <template>
-    <router-link to="/products" class="tw-no-underline">
-        <VCard class="no-shadown card-information p-0">
+    <VCard class="no-shadown card-information p-0 mb-5">
+        <div class="d-flex">
             <VCardText>
-                <VImg :src="image" cover class="border-img"/>
+                <VImg :src="image" :width="75" class="border-img"/>
             </VCardText>
-            <VCardText class="mt-2">
-                <div class="d-flex py-2">
-                <span class="text_1">${{ price_1 }}</span>
-                <span class="text_2 ms-2">${{ price_2 }}</span>
+            
+            <VCardText>
+                <span class="d-block text_2 tw-text-tertiary">{{ name }}</span>
+                <div class="d-flex mt-1">
+                    <span class="text_1">${{ price_1 }}</span>
+                    <span class="text_2 ms-2">${{ price_2 }}</span>
                 </div>
             </VCardText>
-            <VCardText>
-                <span class="d-block text_2 py-2 tw-text-tertiary">{{ name }}</span>
-            </VCardText>
-            <VCardText>
-                <span class="d-block text_2">Store: <strong>{{ store }}</strong></span>
-            </VCardText>
-            <VCardText class="px-1 mt-2">
-                <div class="d-flex">
-                    <VRating
-                        half-increments
-                        :length="5"
-                        :size="25"
-                        :model-value="rating"
-                        :readonly="readonly"
-                        color="yellow-darken-2"
-                        active-color="yellow-darken-2"
-                        />
-                    <span class="text_2 ms-2 mt-1">02</span>
-                </div>
-            </VCardText>
-        </VCard>
-    </router-link>
+        </div>
+    </VCard>
 </template>
 
 <style scoped>

@@ -2,6 +2,9 @@
 
 import { ref } from 'vue'
 import Product1 from '@/components/product/Product1.vue'
+import Product2 from '@/components/product/Product2.vue'
+
+import arrow_right from '@/assets/icons/arrow_right_dark.svg';
 
 import Plaza_1 from '@/assets/images/Plaza_1.jpg';
 import Plaza_2 from '@/assets/images/Plaza_2.jpg';
@@ -33,6 +36,7 @@ import tracking from '@/assets/icons/tracking.svg';
 import banner_2 from '@/assets/images/banner_2.jpg';
 import banner_3 from '@/assets/images/banner_3.jpg';
 import banner_4 from '@/assets/images/banner_4.jpg';
+import banner_5 from '@/assets/images/banner_5.jpg';
 
 import product_1 from '@/assets/images/product_1.png';
 import product_2 from '@/assets/images/product_2.png';
@@ -88,6 +92,35 @@ const products = ref([
   { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 5 }
 ])
 
+const products2 = ref([
+  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 1 },
+  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 2 },
+  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 3 },
+  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 4 },
+  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 1 },
+  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 2 },
+  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 3 },
+  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 4 },
+  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 5 },
+  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 4 }
+])
+
+const products3 = ref([
+  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 2 },
+  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 3 },
+  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 4 },
+  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 1 },
+  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 2 },
+  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 3 },
+  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 4 },
+  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 5 },
+  { image: product_2, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 4 },
+  { image: product_1, price_1: '0.000', price_2: '0.000', name: 'Grand Slam Indoor Of Show Jumping Novel', store: 'Roberts Store', rating: 1 },
+])
+
+
+const tab = ref('0')
+
 </script>
 
 <template>
@@ -101,7 +134,7 @@ const products = ref([
               v-for="(item, i) in items"
               :key="i"
               :value="item"
-              :to="'/help'"
+              :to="'/categories'"
               class="tw-no-underline tw-text-tertiary"
             >
               <VListItem
@@ -121,7 +154,12 @@ const products = ref([
       <VCol cols="12" md="9">
         <VRow no-gutters class="transparent">
           <VCol cols="12" md="7">        
-            <VCarousel :show-arrows="false" height="393px">
+            <VCarousel 
+              cycle
+              color="white"
+              :show-arrows="false" 
+              hide-delimiter-background
+              height="393px">
               <VCarouselItem
                 v-for="(item,i) in sliders"
                 :key="i"
@@ -133,36 +171,36 @@ const products = ref([
           <VCol cols="12" md="5">
             <VRow no-gutters class="transparent">
               <VCol cols="12" md="6">
-                <router-link to="/help">
+                <router-link to="/categories">
                   <VImg :src="Plaza_1"/>
                 </router-link>
               </VCol>
               <VCol cols="12" md="6">
-                <router-link to="/help">
+                <router-link to="/categories">
                   <VImg :src="Plaza_2" class="border-top-right"/>
                 </router-link>
               </VCol>
               <VCol cols="12">
-                <router-link to="/help">
+                <router-link to="/categories">
                   <VImg :src="Plaza_3"/>
                 </router-link>
               </VCol>
             </VRow>
           </VCol>
           <VCol cols="12" md="7">
-            <router-link to="/help">
+            <router-link to="/categories">
               <VImg :src="Banner" height="197" cover/>
             </router-link>
           </VCol>
           <VCol cols="12" md="5">
             <VRow no-gutters class="transparent">
               <VCol cols="12" md="6">
-                <router-link to="/help">
+                <router-link to="/categories">
                   <VImg :src="Plaza_4"/>
                 </router-link>
               </VCol>
               <VCol cols="12" md="6">
-                <router-link to="/help">
+                <router-link to="/categories">
                   <VImg :src="Plaza_5" class="border-bottom-right"/>
                 </router-link>
               </VCol>
@@ -240,7 +278,69 @@ const products = ref([
       </VCardTitle>
       <VDivider />
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
-        
+        <VRow no-gutters class="transparent">
+          <VCol cols="12" md="9">
+            <VImg :src="banner_5" class="border-img"/>
+            <VCard class="no-shadown">
+              <VTabs v-model="tab" class="mt-7">
+                <VTab value="0">Agregados recientemente</VTab>
+                <VTab value="1">Lo  mejor de lo mejor</VTab>
+              </VTabs>
+
+              <VCardText class="p-0">
+                <v-window v-model="tab">
+                  <v-window-item value="0">
+                    <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between">
+                      <Product1 
+                        v-for="(product, index) in products2"
+                        v-show="index < 4"
+                        :key="index"
+                        :product="product"
+                        :readonly="true"/>
+                    </VCardText>
+                  </v-window-item>
+
+                  <v-window-item value="1">
+                    <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between">
+                      <Product1 
+                        v-for="(product, index) in products3"
+                        v-show="index < 4"
+                        :key="index"
+                        :product="product"
+                        :readonly="true"/>
+                    </VCardText>
+                  </v-window-item>
+                </v-window>
+              </VCardText>
+            </VCard>
+          </VCol>
+          <VCol cols="12" md="3" class="d-flex flex-column">
+            <VCardText class="p-0 ms-3">
+              <div v-if="tab === '0'">
+                <Product2 
+                  v-for="(product, index) in products2"
+                  v-show="index >= 4"
+                  :key="index"
+                  :product="product"
+                  :readonly="true"/>
+              </div>
+              <div v-else>
+                <Product2 
+                  v-for="(product, index) in products3"
+                  v-show="index >= 4"
+                  :key="index"
+                  :product="product"
+                  :readonly="true"/>
+              </div>
+            </VCardText>
+            <VCardText class="p-0 more">
+              <div class="hover:tw-text-yellow">
+                <span class="ms-5">Ver más</span>
+                <VBtn class="p-0" variant="text"><img :src="arrow_right"/></VBtn>
+              </div>
+            </VCardText>
+          </VCol>
+        </VRow>
       </VCardText>  
     </VCard>
 
@@ -258,7 +358,7 @@ const products = ref([
         </VCard>
     </VCard>
 
-    <!-- providers -->
+    <!-- suppliers -->
     <VCard class="mt-7 no-shadown card-information p-0">
       <VCardTitle class="px-7 py-3 d-flex align-center">
         <span>Top proveedores mayoristas</span>
@@ -343,6 +443,10 @@ const products = ref([
 
 <style scoped>
 
+  .more {
+    text-align: end;
+    display: contents;
+  }
   .hr-primary {
     border-bottom: 1px solid #0A1B33;
     opacity: 1;
@@ -415,10 +519,6 @@ const products = ref([
     border-bottom-right-radius: 16px !important;
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
-  }
-  .v-carousel__controls
-  {
-    background:none!important;
   }
 
 </style>

@@ -4,6 +4,10 @@ import Testing from '@/views/Testing.vue'
 import Blogs from '@/views/blogs/index.vue'
 import About from '@/views/About.vue'
 import Help from '@/views/Help.vue'
+import Categories from '@/views/Categories.vue'
+import Products from '@/views/Products.vue'
+import Suppliers from '@/views/Suppliers.vue'
+import Services from '@/views/Services.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +36,26 @@ const router = createRouter({
       path: '/help',
       name: 'help',
       component: Help
+    },
+    {
+      path: '/categories',
+      name: 'categories',
+      component: Categories
+    },
+    {
+      path: '/products',
+      name: 'products',
+      component: Products
+    },
+    {
+      path: '/suppliers',
+      name: 'suppliers',
+      component: Suppliers
+    },
+    {
+      path: '/services',
+      name: 'services',
+      component: Services
     }
   ]
 })

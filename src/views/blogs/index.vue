@@ -6,8 +6,8 @@
 <template>
  
 
-  <div class="content py-13">
+  <VContainer class="content py-13 text-center w-100" style="height: 400px">
    BLOGS
     
-  </div>
+  </VContainer>
 </template>

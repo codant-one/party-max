@@ -63,10 +63,10 @@
             <VAppBarNavIcon variant="text"/>
             <span class="font-size-16">Servicios</span>
           </div>
-          <div class="hover:tw-text-yellow">
+          <router-link to="/suppliers" class="tw-no-underline tw-text-white hover:tw-text-yellow">
             <span class="ms-5">Mayoristas</span>
             <VBtn class="p-0 index"><img :src="arrow_right"/></VBtn>
-          </div>  
+          </router-link>  
           <VSpacer />
 
           <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Quiénes somos</router-link>
