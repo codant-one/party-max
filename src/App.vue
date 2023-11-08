@@ -2,7 +2,7 @@
 
 import Header from '@/components/app/Header.vue'
 import Footer from '@/components/app/Footer.vue'
-import home from '@/assets/images/home.jpg';
+import home from '@assets/images/home.jpg';
 
 const backgroundStyle = {
   backgroundImage: `url(${home})`,

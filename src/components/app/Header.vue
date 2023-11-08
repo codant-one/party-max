@@ -2,11 +2,11 @@
   
   import { useHomeStores } from '@/stores/home'
 
-  import logo from '@/assets/images/logo.svg';
-  import heart from '@/assets/icons/heart.svg';
-  import shoppinp_cart from '@/assets/icons/shoppinp_cart.svg';
-  import user from '@/assets/icons/user.svg';
-  import arrow_right from '@/assets/icons/arrow_right.svg?inline';
+  import logo from '@assets/images/logo.svg';
+  import heart from '@assets/icons/heart.svg';
+  import shoppinp_cart from '@assets/icons/shoppinp_cart.svg';
+  import user from '@assets/icons/user.svg';
+  import arrow_right from '@assets/icons/arrow_right.svg?inline';
 
   const color = ref('#FF0090')
   

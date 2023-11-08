@@ -1,19 +1,19 @@
 <script setup>
 
-  import icophone from '@/assets/icons/ic_phone.svg?inline';
-  import icopayment1 from '@/assets/icons/payment-1.svg';
-  import icopayment2 from '@/assets/icons/payment-2.svg';
-  import icopayment3 from '@/assets/icons/payment-3.svg';
-  import icopayment4 from '@/assets/icons/payment-4.svg';
-  import icopayment5 from '@/assets/icons/payment-5.svg';
-  import icopayment6 from '@/assets/icons/payment-6.svg';
+  import icophone from '@assets/icons/ic_phone.svg?inline';
+  import icopayment1 from '@assets/icons/payment-1.svg';
+  import icopayment2 from '@assets/icons/payment-2.svg';
+  import icopayment3 from '@assets/icons/payment-3.svg';
+  import icopayment4 from '@assets/icons/payment-4.svg';
+  import icopayment5 from '@assets/icons/payment-5.svg';
+  import icopayment6 from '@assets/icons/payment-6.svg';
 
-  import instagram from '@/assets/icons/instagram.svg?inline';
-  import facebook from '@/assets/icons/facebook.svg?inline';
-  import subtract from '@/assets/icons/subtract.svg?inline';
-  import threads from '@/assets/icons/threads.svg?inline';
+  import instagram from '@assets/icons/instagram.svg?inline';
+  import facebook from '@assets/icons/facebook.svg?inline';
+  import subtract from '@assets/icons/subtract.svg?inline';
+  import threads from '@assets/icons/threads.svg?inline';
 
-  import festinfooter from '@/assets/images/festin-footer.png';
+  import festinfooter from '@assets/images/festin-footer.png';
 </script>
 
 <template>
@@ -69,10 +69,24 @@
           <router-link to="/about-us" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Quiénes somos
           </router-link>
-          <router-link to="/categories" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          <router-link 
+            :to="{
+              name: 'categories',
+              params: {
+                slug: 'fiestas-infantiles'
+              }
+            }" 
+            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Fiestas infantiles
           </router-link>
-          <router-link to="/categories" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          <router-link 
+            :to="{
+              name: 'categories',
+              params: {
+                slug: 'fiestas-tematicas'
+              }
+            }" 
+            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Fiestas temáticas
           </router-link>
           <router-link to="/suppliers" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
@@ -87,22 +101,64 @@
         </VCol>
 
         <VCol cols="12" md="2" class="d-flex flex-column align-start text-left tw-gap-3">
-          <router-link to="/categories" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          <router-link 
+            :to="{
+              name: 'categories',
+              params: {
+                slug: 'desechables'
+              }
+            }" 
+            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Desechables
           </router-link>
-           <router-link to="/categories" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          <router-link 
+            :to="{
+              name: 'categories',
+              params: {
+                slug: 'decoracion'
+              }
+            }" 
+            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Decoración
           </router-link>
-          <router-link to="/categories" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          <router-link 
+            :to="{
+              name: 'categories',
+              params: {
+                slug: 'sorpresas'
+              }
+            }" 
+            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Sorpresas
           </router-link>
-          <router-link to="/categories" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          <router-link 
+            :to="{
+              name: 'categories',
+              params: {
+                slug: 'mobiliario'
+              }
+            }" 
+            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Mobiliario
           </router-link>
-          <router-link to="/categories" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          <router-link 
+            :to="{
+              name: 'categories',
+              params: {
+                slug: 'animacion-y-entretenimiento'
+              }
+            }" 
+            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Animación y entrenimiento
           </router-link>
-          <router-link to="/categories" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          <router-link 
+            :to="{
+              name: 'categories',
+              params: {
+                slug: 'hora-loca'
+              }
+            }" 
+            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Hora loca
           </router-link>
         </VCol>

@@ -6,58 +6,58 @@ import { useHomeStores } from '@/stores/home'
 import Product1 from '@/components/product/Product1.vue'
 import Product2 from '@/components/product/Product2.vue'
 
-import arrow_right from '@/assets/icons/arrow_right_dark.svg?inline';
+import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
 
-import Plaza_1 from '@/assets/images/Plaza_1.jpg';
-import Plaza_2 from '@/assets/images/Plaza_2.jpg';
-import Plaza_3 from '@/assets/images/Plaza_3.jpg';
-import Plaza_4 from '@/assets/images/Plaza_4.jpg';
-import Plaza_5 from '@/assets/images/Plaza_5.jpg';
-import Banner from '@/assets/images/Banner.jpg';
+import Plaza_1 from '@assets/images/Plaza_1.jpg';
+import Plaza_2 from '@assets/images/Plaza_2.jpg';
+import Plaza_3 from '@assets/images/Plaza_3.jpg';
+import Plaza_4 from '@assets/images/Plaza_4.jpg';
+import Plaza_5 from '@assets/images/Plaza_5.jpg';
+import Banner from '@assets/images/Banner.jpg';
 
-import Slider1 from '@/assets/images/Slider_1.jpg';
-import Slider2 from '@/assets/images/Slider_2.jpg';
-import Slider3 from '@/assets/images/Slider_3.jpg';
+import Slider1 from '@assets/images/Slider_1.jpg';
+import Slider2 from '@assets/images/Slider_2.jpg';
+import Slider3 from '@assets/images/Slider_3.jpg';
 
-import icon1 from '@/assets/icons/fiestas_infantiles.svg';
-import icon2 from '@/assets/icons/fiestas_tematicas.svg';
-import icon3 from '@/assets/icons/fechas_especiales.svg';
-import icon4 from '@/assets/icons/hora_loca.svg';
-import icon5 from '@/assets/icons/desechables.svg';
-import icon6 from '@/assets/icons/decoración.svg';
-import icon7 from '@/assets/icons/sorpresas.svg';
-import icon8 from '@/assets/icons/mobiliario.svg';
-import icon9 from '@/assets/icons/dulces.svg';
-import icon10 from '@/assets/icons/animación.svg';
+import icon1 from '@assets/icons/fiestas_infantiles.svg';
+import icon2 from '@assets/icons/fiestas_tematicas.svg';
+import icon3 from '@assets/icons/fechas_especiales.svg';
+import icon4 from '@assets/icons/hora_loca.svg';
+import icon5 from '@assets/icons/desechables.svg';
+import icon6 from '@assets/icons/decoración.svg';
+import icon7 from '@assets/icons/sorpresas.svg';
+import icon8 from '@assets/icons/mobiliario.svg';
+import icon9 from '@assets/icons/dulces.svg';
+import icon10 from '@assets/icons/animación.svg';
 
-import motorcycle from '@/assets/icons/motorcycle.svg';
-import location from '@/assets/icons/location.svg';
-import sold from '@/assets/icons/sold.svg';
-import tracking from '@/assets/icons/tracking.svg';
+import motorcycle from '@assets/icons/motorcycle.svg';
+import location from '@assets/icons/location.svg';
+import sold from '@assets/icons/sold.svg';
+import tracking from '@assets/icons/tracking.svg';
 
-import banner_2 from '@/assets/images/Banner_2.jpg';
-import banner_3 from '@/assets/images/Banner_3.jpg';
-import banner_4 from '@/assets/images/Banner_4.jpg';
-import banner_5 from '@/assets/images/Banner_5.jpg';
+import banner_2 from '@assets/images/Banner_2.jpg';
+import banner_3 from '@assets/images/Banner_3.jpg';
+import banner_4 from '@assets/images/Banner_4.jpg';
+import banner_5 from '@assets/images/Banner_5.jpg';
 
-import p_1 from '@/assets/images/p_1.jpg';
-import p_2 from '@/assets/images/p_2.jpg';
-import p_3 from '@/assets/images/p_3.jpg';
-import p_4 from '@/assets/images/p_4.jpg';
-import p_5 from '@/assets/images/p_5.jpg';
+import p_1 from '@assets/images/p_1.jpg';
+import p_2 from '@assets/images/p_2.jpg';
+import p_3 from '@assets/images/p_3.jpg';
+import p_4 from '@assets/images/p_4.jpg';
+import p_5 from '@assets/images/p_5.jpg';
 
-import t_1 from '@/assets/images/t_1.jpg';
-import t_2 from '@/assets/images/t_2.jpg';
-import t_3 from '@/assets/images/t_3.jpg';
-import t_4 from '@/assets/images/t_4.jpg';
-import t_5 from '@/assets/images/t_5.jpg';
+import t_1 from '@assets/images/t_1.jpg';
+import t_2 from '@assets/images/t_2.jpg';
+import t_3 from '@assets/images/t_3.jpg';
+import t_4 from '@assets/images/t_4.jpg';
+import t_5 from '@assets/images/t_5.jpg';
 
-import f_1 from '@/assets/images/f_1.jpg';
-import f_2 from '@/assets/images/f_2.jpg';
-import f_3 from '@/assets/images/f_3.jpg';
-import f_4 from '@/assets/images/f_4.jpg';
+import f_1 from '@assets/images/f_1.jpg';
+import f_2 from '@assets/images/f_2.jpg';
+import f_3 from '@assets/images/f_3.jpg';
+import f_4 from '@assets/images/f_4.jpg';
 
-import frame_pink from '@/assets/images/frame_pink.jpeg';
+import frame_pink from '@assets/images/frame_pink.jpeg';
 
 const backgroundStyle = {
   backgroundImage: `url(${frame_pink})`,
@@ -65,16 +65,16 @@ const backgroundStyle = {
 }
 
 const items = ref([
-  { text: 'Fiestas infantiles', icon: icon1 },
-  { text: 'Fiestas temáticas', icon: icon2 },
-  { text: 'Fechas especiales', icon: icon3 },
-  { text: 'Hora loca', icon: icon4 },
-  { text: 'Desechables', icon: icon5 },
-  { text: 'Decoración', icon: icon6 },
-  { text: 'Sorpresas', icon: icon7 },
-  { text: 'Mobiliario', icon: icon8 },
-  { text: 'Dulces', icon: icon9 },
-  { text: 'Animación y entretenimiento', icon: icon10 },
+  { text: 'Fiestas infantiles', icon: icon1, slug: 'fiestas-infantiles' },
+  { text: 'Fiestas temáticas', icon: icon2, slug: 'fiestas-tematicas' },
+  { text: 'Fechas especiales', icon: icon3, slug: 'fiestas-especiales' },
+  { text: 'Hora loca', icon: icon4, slug: 'hora-loca' },
+  { text: 'Desechables', icon: icon5, slug: 'desechables' },
+  { text: 'Decoración', icon: icon6, slug: 'decoracion' },
+  { text: 'Sorpresas', icon: icon7, slug: 'sorpresas' },
+  { text: 'Mobiliario', icon: icon8, slug: 'mobiliario' },
+  { text: 'Dulces', icon: icon9, slug: 'dulces' },
+  { text: 'Animación y entretenimiento', icon: icon10, slug: 'animacion-y-entretenimiento' }
 ])
 
 const sliders = ref( [
@@ -112,7 +112,12 @@ const tab = ref('0')
               v-for="(item, i) in items"
               :key="i"
               :value="item"
-              :to="'/categories'"
+              :to="{
+                name: 'categories',
+                params: {
+                  slug: item.slug
+                }
+              }"
               class="tw-no-underline tw-text-tertiary"
             >
               <VListItem
@@ -149,36 +154,57 @@ const tab = ref('0')
           <VCol cols="12" md="5">
             <VRow no-gutters class="transparent">
               <VCol cols="12" md="6">
-                <router-link to="/categories">
+                <router-link 
+                  :to="{
+                    name: 'categories',
+                    params: {
+                      slug: 'hora-loca'
+                    }
+                  }"
+                >
                   <VImg :src="Plaza_1" class="img-galery"/>
                 </router-link>
               </VCol>
               <VCol cols="12" md="6">
-                <router-link to="/categories">
+                <router-link
+                  :to="{
+                    name: 'categories',
+                    params: {
+                      slug: 'ponques'
+                    }
+                  }"
+                >
                   <VImg :src="Plaza_2" class="border-top-right img-galery"/>
                 </router-link>
               </VCol>
               <VCol cols="12">
-                <router-link to="/categories">
+                <router-link
+                  :to="{
+                    name: 'categories',
+                    params: {
+                      slug: 'globos'
+                    }
+                  }"
+                >
                   <VImg :src="Plaza_3" class="img-galery"/>
                 </router-link>
               </VCol>
             </VRow>
           </VCol>
           <VCol cols="12" md="7">
-            <router-link to="/categories">
+            <router-link to="/services">
               <VImg :src="Banner" class="img-galery"  height="197" cover />
             </router-link>
           </VCol>
           <VCol cols="12" md="5">
             <VRow no-gutters class="transparent">
               <VCol cols="12" md="6">
-                <router-link to="/categories">
+                <router-link to="/services">
                   <VImg :src="Plaza_4" class="img-galery"/>
                 </router-link>
               </VCol>
               <VCol cols="12" md="6">
-                <router-link to="/categories">
+                <router-link to="/services">
                   <VImg :src="Plaza_5" class="border-bottom-right img-galery"/>
                 </router-link>
               </VCol>
@@ -249,10 +275,46 @@ const tab = ref('0')
       <VCardTitle class="px-7 py-3 d-flex align-center">
         <span>Lo más vendido</span>
         <VSpacer />
-        <router-link to="/categories" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Globos</router-link>
-        <router-link to="/categories" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Piñatas</router-link>
-        <router-link to="/categories" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Sorpresas</router-link>
-        <router-link to="/categories" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Decoración</router-link>
+        <router-link 
+          :to="{
+            name: 'categories',
+            params: {
+              slug: 'globos'
+            }
+          }"
+          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          Globos
+        </router-link>
+        <router-link 
+          :to="{
+            name: 'categories',
+            params: {
+              slug: 'hora-loca'
+            }
+          }"
+          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          Piñatas
+        </router-link>
+        <router-link 
+          :to="{
+            name: 'categories',
+            params: {
+              slug: 'sorpresas'
+            }
+          }"
+          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          Sorpresas
+        </router-link>
+        <router-link 
+          :to="{
+            name: 'categories',
+            params: {
+              slug: 'decoracion'
+            }
+          }"
+          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          Decoración
+        </router-link>
       </VCardTitle>
       <VDivider />
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data">
@@ -312,7 +374,7 @@ const tab = ref('0')
               </div>
             </VCardText>
             <VCardText class="p-0 more">
-              <router-link to="/categories" class="d-flex tw-no-underline hover:tw-text-yellow  hover-icon-arrow-right justify-content-end">
+              <router-link to="/products" class="d-flex tw-no-underline hover:tw-text-yellow  hover-icon-arrow-right justify-content-end">
                 <span class="ms-5">Ver más</span>
                 <arrow_right class="ms-2" />
               </router-link>
@@ -325,14 +387,14 @@ const tab = ref('0')
     <!-- banner 2 , banner 3-->
     <VCard class="mt-7 no-shadown card-information p-0 d-flex transparent">
         <VCard class="no-shadown card-information p-0 w-50">
-          <router-link to="/categories" class="tw-no-underline">
+          <router-link to="/products" class="tw-no-underline">
             <VCardItem class="p-0">
               <VImg :src="banner_3" cover/>
             </VCardItem>  
           </router-link>
         </VCard>
         <VCard class="no-shadown card-information p-0 w-50 ms-5">
-          <router-link to="/categories" class="tw-no-underline">
+          <router-link to="/products" class="tw-no-underline">
             <VCardItem class="p-0">
               <VImg :src="banner_4" cover/>
             </VCardItem>  
@@ -372,27 +434,27 @@ const tab = ref('0')
       <VCardTitle class="px-7 py-3 d-flex align-center">
         <span>Fiestas temáticas</span>
         <VSpacer />
-        <router-link to="/categories" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
+        <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
       </VCardTitle>
       <VDivider class="hr-primary"/>
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
-        <router-link to="/categories" class="tw-no-underline d-block text-center img-party">
+        <router-link to="/products" class="tw-no-underline d-block text-center img-party">
           <img :src="t_1" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
         </router-link>
-        <router-link to="/categories" class="tw-no-underline d-block text-center img-party">
+        <router-link to="/products" class="tw-no-underline d-block text-center img-party">
           <img :src="t_2" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Hawaiana</span>
         </router-link>
-        <router-link to="/categories" class="tw-no-underline d-block text-center img-party">
+        <router-link to="/products" class="tw-no-underline d-block text-center img-party">
           <img :src="t_3" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Vallenata</span>
         </router-link>
-        <router-link to="/categories" class="tw-no-underline d-block text-center img-party">
+        <router-link to="/products" class="tw-no-underline d-block text-center img-party">
           <img :src="t_4" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Metalizada</span>
         </router-link>
-        <router-link to="/categories" class="tw-no-underline d-block text-center img-party">
+        <router-link to="/products" class="tw-no-underline d-block text-center img-party">
           <img :src="t_5" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Neón</span>
         </router-link>
@@ -407,23 +469,23 @@ const tab = ref('0')
         <VCardTitle class="px-7 py-3 d-flex align-center">
           <span>Cumpleaños</span>
           <VSpacer />
-          <router-link to="/categories" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-white hover:tw-text-yellow">Ver todos</router-link>
+          <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-white hover:tw-text-yellow">Ver todos</router-link>
         </VCardTitle>
         <VDivider class="hr-secondary"/>
         <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
-          <router-link to="/categories" class="tw-no-underline d-block text-center img-zoom">
+          <router-link to="/products" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_1" class="border-theme d-block"/>
             <span class="d-block size-theme tw-text-white mt-5">Niños</span>
           </router-link>
-          <router-link to="/categories" class="tw-no-underline d-block text-center img-zoom">
+          <router-link to="/products" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_2" class="border-theme d-block"/>
             <span class="d-block size-theme tw-text-white mt-5">Niñas</span>
           </router-link>
-          <router-link to="/categories" class="tw-no-underline d-block text-center img-zoom">
+          <router-link to="/products" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_3" class="border-theme d-block"/>
             <span class="d-block size-theme tw-text-white mt-5">Bebes</span>
           </router-link>
-          <router-link to="/categories" class="tw-no-underline d-block text-center img-zoom">
+          <router-link to="/products" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_4" class="border-theme d-white"/>
             <span class="d-block size-theme tw-text-white mt-5">Adultos</span>
           </router-link>

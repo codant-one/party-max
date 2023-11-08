@@ -1,12 +1,9 @@
-<script setup lang="ts">
+<script setup>
 
-import banner_principal from '@/assets/images/banner1_category.png';
-import banner2_category from '@/assets/images/banner2_category.png';
-import banner3_category from '@/assets/images/banner3_category.png';
-import banner4_category from '@/assets/images/banner4_category.png';
-
-
-
+import banner_principal from '@assets/images/banner1_category.png';
+import banner2_category from '@assets/images/banner2_category.png';
+import banner3_category from '@assets/images/banner3_category.png';
+import banner4_category from '@assets/images/banner4_category.png';
 
 </script>
 
@@ -37,14 +34,14 @@ import banner4_category from '@/assets/images/banner4_category.png';
     <!-- banner 2 , banner 3-->
     <VCard class="mt-7 no-shadown card-information p-0 d-flex transparent">
         <VCard class="no-shadown card-information p-0 w-50">
-          <router-link to="/categories" class="tw-no-underline">
+          <router-link to="/products" class="tw-no-underline">
             <VCardItem class="p-0">
               <VImg :src="banner2_category" cover/>
             </VCardItem>  
           </router-link>
         </VCard>
         <VCard class="no-shadown card-information p-0 w-50 ms-5">
-          <router-link to="/categories" class="tw-no-underline">
+          <router-link to="/products" class="tw-no-underline">
             <VCardItem class="p-0">
               <VImg :src="banner3_category" cover/>
             </VCardItem>  

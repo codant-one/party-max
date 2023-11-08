@@ -24,6 +24,7 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '@axios': fileURLToPath(new URL('./src/plugins/axios', import.meta.url)),
+      '@assets': fileURLToPath(new URL('./src/assets/', import.meta.url)),
     }
   }
 })
