@@ -32,10 +32,10 @@ const items_check = ref([
 
   <VContainer class="content py-13 text-center w-100">
     
-    <VRow no-gutters class="transparent">
+    <VRow no-gutters>
 
       <VCol cols="12" md="3">
-        <VCard class="mt-7 no-shadown card-information sidebar-container">
+        <VCard class="mt-7 card-information sidebar-container">
             <VCardItem class="p-0 text-left mb-5">
               CATEGORÍAS
             </VCardItem> 
@@ -44,7 +44,7 @@ const items_check = ref([
 
         </VCard>
 
-        <VCard class="mt-7 no-shadown card-information sidebar-container">
+        <VCard class="mt-7 card-information sidebar-container">
 
             <VCardItem class="p-0 text-left mb-5">
               PROVEEDORES
@@ -118,7 +118,7 @@ const items_check = ref([
       
       <VCol cols="12" md="9" class="pl-5">
         
-        <VCard class="mt-7 no-shadown card-information menu-prod">
+        <VCard class="mt-7 card-information menu-prod">
 
           <v-row align="start" no-gutters>
 

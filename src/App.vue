@@ -16,8 +16,10 @@ async function fetchData() {
 
   if(route.name === 'home')
     bg = home
-  else
+  else if(route.name === 'categories')
     bg = categories
+  else 
+    bg = ''
 
   backgroundStyle.value = {
     backgroundImage: `url(${bg})`,
