@@ -4,7 +4,7 @@ import Testing from '@/views/Testing.vue'
 import Blogs from '@/views/blogs/index.vue'
 import About from '@/views/About.vue'
 import Help from '@/views/Help.vue'
-import Categories from '@/views/Categories.vue'
+import Categories from '@/views/categories/index.vue'
 import Products from '@/views/Products.vue'
 import Suppliers from '@/views/Suppliers.vue'
 import Services from '@/views/Services.vue'
@@ -38,7 +38,7 @@ const router = createRouter({
       component: Help
     },
     {
-      path: '/categories',
+      path: '/categories/:slug',
       name: 'categories',
       component: Categories
     },
