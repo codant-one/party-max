@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+
+import icon1 from '@/assets/icons/icon-menu-product.svg'
+import icon2 from '@/assets/icons/icon-menu-product2.svg'
+
 const items = ref([
   { title: 'Item 01',value: 1, },
   { title: 'Item 02',value: 2, },
@@ -15,7 +19,7 @@ const items_check = ref([
   { name: 'item 3 (4)', selected: false },
 ])
 
- const priceRange = [0, 1000] // Valores iniciales del rango de precios
+ const priceRange = '[0, 1000]' // Valores iniciales del rango de precios
  const minPrice = 0 // Valor mínimo del rango
  const maxPrice = 1000 // Valor máximo del rango
 
@@ -94,13 +98,54 @@ const items_check = ref([
               </v-col>
             </v-row>
 
+            <VCardItem class="p-0 text-left mt-5">
+              REVIEW
+            </VCardItem>
+            <VCardItem class="p-0 text-left mt-5">
 
-        </VCard>  
+              <v-rating
+              hover
+              :length="5"
+              :size="32"
+              :model-value="3"
+              active-color="primary"
+              /> 
+
+            </VCardItem>
+            
+          </VCard>  
       </VCol> 
       
-      <VCol cols="12" md="9">
-        mosaico de productos
+      <VCol cols="12" md="9" class="pl-5">
+        
+        <VCard class="mt-7 no-shadown card-information menu-prod">
+
+          <v-row align="start" no-gutters>
+
+            <v-col cols="6" class="text-left">
+              <span>8 Productos</span>
+            </v-col>
+
+            <v-col cols="4" class="text-left">
+              <v-select
+                clearable
+                label="Select"
+                :items="['producto 1', 'producto 2', 'producto 3', 'producto 3', 'producto 4', 'producto 5']"
+                variant="outlined"
+              ></v-select>
+            </v-col> 
+
+            <v-col cols="2" class="text-left flex pl-4 pr-2">
+              <span>Vista</span>
+              <img :src="icon1" class="ml-3"/>
+              <img :src="icon2" class="ml-3"/>
+
+            </v-col>  
+          </v-row>
+
+        </VCard>  
       </VCol>
+
 
     </VRow>  
 
@@ -116,7 +161,10 @@ const items_check = ref([
   padding: 25px 20px;
 }
 
-
+.menu-prod
+{
+  padding: 8px 16px;
+}
 
 
 </style>
