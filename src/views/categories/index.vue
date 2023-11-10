@@ -42,7 +42,9 @@ async function fetchData() {
    
     <VCard class="no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
-        <VImg :src="image1" cover class="img-style"/>
+        <router-link :to="{name:'products',}">
+          <VImg :src="image1" cover class="img-style"/>
+        </router-link>
       </VCardItem>  
     </VCard>
 
@@ -68,14 +70,18 @@ async function fetchData() {
         <VCard class="no-shadown card-information p-0 w-50">
           <router-link to="/products" class="tw-no-underline">
             <VCardItem class="p-0">
-              <VImg :src="image2" cover class="img-style"/>
+              <router-link :to="{name:'products',}">
+                <VImg :src="image2" cover class="img-style"/>
+              </router-link>
             </VCardItem>  
           </router-link>
         </VCard>
         <VCard class="no-shadown card-information p-0 w-50 ms-5">
           <router-link to="/products" class="tw-no-underline">
             <VCardItem class="p-0">
-              <VImg :src="image3" cover class="img-style"/>
+              <router-link :to="{name:'products',}">
+                <VImg :src="image3" cover class="img-style"/>
+              </router-link>
             </VCardItem>  
           </router-link>
         </VCard>
@@ -84,11 +90,14 @@ async function fetchData() {
       <!--Banner 4-->
     <VCard class="mt-7 no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
-        <VImg :src="image4" cover class="img-style"/>
+        <router-link :to="{name:'products',}">
+          <VImg :src="image4" cover class="img-style"/>
+        </router-link>
       </VCardItem>  
     </VCard>
-    
-    <VBtn class="mt-7 mb-5 tw-bg-primary tw-text-white button-product" rounded="xl" block>Ver todos los productos</VBtn>
+    <router-link class="link-button" :to="{name:'products',}">
+      <VBtn class="mt-7 mb-5 tw-bg-primary tw-text-white button-product" rounded="xl" block>Ver todos los productos</VBtn>
+    </router-link>
     
   </VContainer>
 </template>
@@ -119,5 +128,10 @@ async function fetchData() {
     .card-information {
         padding: 32px;
         border-radius: 16px;
+    }
+
+    .link-button
+    {
+      text-decoration: none;
     }
 </style>

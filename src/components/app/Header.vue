@@ -60,9 +60,11 @@
             <VBtn variant="plain" icon class="pb-2 me-4"><img :src="shoppinp_cart" width="35"/></VBtn>
             <div class="d-flex user-text">
               <VBtn variant="plain" icon class="pb-2"><img :src="user" width="33"/></VBtn>
-              <span class="d-flex align-center tw-text-tertiary font-size-16 pb-2">
-                Ingresar o Registrarme
-              </span>
+              <router-link class="link-header" :to="{name:'register',}">
+                <span class="d-flex align-center tw-text-tertiary font-size-16 pb-2">
+                  Ingresar o Registrarme
+                </span>
+              </router-link>
             </div>
           </VCol>
         </VRow>
@@ -195,6 +197,10 @@
     color: #FF0090 !important;
   }
   
+  .link-header
+  {
+    text-decoration: none;
+  }
 
  
 </style>
