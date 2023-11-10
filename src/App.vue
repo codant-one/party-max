@@ -5,7 +5,7 @@ import Header from '@/components/app/Header.vue'
 import Footer from '@/components/app/Footer.vue'
 import home from '@assets/images/home.jpg';
 import categories from '@assets/images/categories.jpg';
-
+import register from '@assets/images/register.jpg';
 const route = useRoute()
 const backgroundStyle = ref({})
 
@@ -18,6 +18,8 @@ async function fetchData() {
     bg = home
   else if(route.name === 'categories')
     bg = categories
+  else if(route.name === 'register'|| route.name === 'typeclient'|| route.name === 'formclient'|| route.name === 'formproveedor')
+    bg = register
   else 
     bg = ''
 

@@ -8,7 +8,10 @@ import Categories from '@/views/categories/index.vue'
 import Products from '@/views/Products.vue'
 import Suppliers from '@/views/Suppliers.vue'
 import Services from '@/views/Services.vue'
-
+import Register from '@/views/clients/register.vue'
+import Typeclient from '@/views/clients/typeclient.vue'
+import Formclient from '@/views/clients/formclient.vue'
+import Formproveedor from '@/views/clients/formproveedor.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -52,11 +55,33 @@ const router = createRouter({
       name: 'suppliers',
       component: Suppliers
     },
+    
     {
       path: '/services',
       name: 'services',
       component: Services
-    }
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register
+    },
+
+    {
+      path: '/typeclient',
+      name: 'typeclient',
+      component: Typeclient
+    },
+    {
+      path: '/formclient',
+      name: 'formclient',
+      component: Formclient
+    },
+    {
+      path: '/formproveedor',
+      name: 'formproveedor',
+      component: Formproveedor
+    },
   ]
 })
 

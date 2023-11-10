@@ -1,5 +1,5 @@
 <script setup>
-
+import { ref } from 'vue'
   import icophone from '@assets/icons/ic_phone.svg?inline';
   import icopayment1 from '@assets/icons/payment-1.svg';
   import icopayment2 from '@assets/icons/payment-2.svg';
@@ -14,31 +14,52 @@
   import threads from '@assets/icons/threads.svg?inline';
 
   import festinfooter from '@assets/images/festin-footer.png';
+
+  const route = useRoute()
+  const isProduct = ref(false)
+
+
+  watchEffect(fetchData)
+
+  async function fetchData() {
+
+    if(route.name === 'products')
+    isProduct.value = true
+    else 
+    isProduct.value =false
+
+    console.log(isProduct.value)
+
+  }
+
 </script>
 
 <template>
   <VFooter class="text-center d-flex flex-column bg p-0">
-    <VContainer class="my-10">
-        <VRow no-gutters  class="tw-text-tertiary">
-          <VCol cols="12" md="5" class="d-flex text-start">
-            <p class="line-p"><span class="text-footer">Conoce todas nuestras ofertas</span> <br>
-            <span class="subtext-footer">Regístrate ahora a nuestro newsletter.</span></p>
-          </VCol> 
-          <VCol cols="12" md="7" class="d-flex align-center">
-            <VTextField
-              class="me-24"
-              placeholder="Email"
-              flat
-              variant="solo">
-              <template v-slot:append-inner>
-                <VBtn class="tw-bg-primary tw-text-white h-100 search-button button-hover">Suscríbete</VBtn>
-              </template>
-            </VTextField>
-          </VCol>  
-        </VRow>  
+    <div class="container-footer" :class="isProduct ? 'tw-bg-primary text-colorfooter' : ''">
+        <VContainer class="my-10">
+            <VRow no-gutters  class="tw-text-tertiary">
+              <VCol cols="12" md="5" class="d-flex text-start">
+                <p class="line-p"><span class="text-footer">Conoce todas nuestras ofertas</span> <br>
+                <span class="subtext-footer">Regístrate ahora a nuestro newsletter.</span></p>
+              </VCol> 
+              <VCol cols="12" md="7" class="d-flex align-center">
+                <VTextField
+                  class="me-24"
+                  placeholder="Email"
+                  flat
+                  variant="solo">
+                  <template v-slot:append-inner>
+                    <VBtn class="tw-bg-primary tw-text-white h-100 search-button button-hover">Suscríbete</VBtn>
+                  </template>
+                </VTextField>
+              </VCol>  
+            </VRow>  
 
-    </VContainer>
+        </VContainer>
 
+      </div>
+    
     <VDivider class="hr" />
 
     <VContainer class="mt-16">
@@ -274,5 +295,13 @@
     font-style: normal;
     font-weight: 400;
     line-height: 22.4px;
+  }
+
+  .container-footer
+  {
+    width: 100%;
+  }
+  .text-colorfooter span{
+    color: #FFFFFF!important;
   }
 </style>
