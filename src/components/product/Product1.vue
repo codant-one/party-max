@@ -37,12 +37,12 @@ watchEffect(() => {
 <template>
     <router-link to="/products" class="tw-no-underline">
         <VCard class="no-shadown card-information p-0" :width="230">
-            <VCardText>
+            <VCardText class="border-img">
                 <VImg 
                     :width="230"
                     :src="baseURL + image" 
                     cover 
-                    class="border-img" />
+                    class="zoom"/>
             </VCardText>
             <VCardText class="mt-2">
                 <div class="d-flex py-2">
@@ -81,8 +81,19 @@ watchEffect(() => {
     }
 
     .border-img {
+        width: 200px;
+        height: 200px;
         border-radius: 16px !important;
         border: 1px solid #D9EEF2;
+        padding: 10px !important;
+    }
+
+    .zoom  {
+        transition: transform ease-in-out 0.3s;
+    }
+
+    .zoom:hover {
+        transform: scale(1.1);
     }
 
     .text_1 {

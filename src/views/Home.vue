@@ -438,23 +438,23 @@ const tab = ref('0')
       </VCardTitle>
       <VDivider class="hr-primary"/>
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
-        <router-link to="/products" class="tw-no-underline d-block text-center img-party">
+        <router-link to="/products" class="tw-no-underline d-block text-center zoom">
           <img :src="t_1" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
         </router-link>
-        <router-link to="/products" class="tw-no-underline d-block text-center img-party">
+        <router-link to="/products" class="tw-no-underline d-block text-center zoom">
           <img :src="t_2" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Hawaiana</span>
         </router-link>
-        <router-link to="/products" class="tw-no-underline d-block text-center img-party">
+        <router-link to="/products" class="tw-no-underline d-block text-center zoom">
           <img :src="t_3" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Vallenata</span>
         </router-link>
-        <router-link to="/products" class="tw-no-underline d-block text-center img-party">
+        <router-link to="/products" class="tw-no-underline d-block text-center zoom">
           <img :src="t_4" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Metalizada</span>
         </router-link>
-        <router-link to="/products" class="tw-no-underline d-block text-center img-party">
+        <router-link to="/products" class="tw-no-underline d-block text-center zoom">
           <img :src="t_5" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Neón</span>
         </router-link>
@@ -591,17 +591,15 @@ const tab = ref('0')
     color: #FFC549!important;
 }
 
-.img-party
-{
+.zoom {
   transition: transform ease-in-out 0.3s;
 }
 
-.img-party:hover
-{
+.zoom:hover {
   transform: scale(1.1);
 }
 
-.img-party:hover span{
+.zoom:hover span{
   color: #FF0090!important;
 }
 
