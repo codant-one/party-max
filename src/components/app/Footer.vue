@@ -24,11 +24,9 @@ import { ref } from 'vue'
   async function fetchData() {
 
     if(route.name === 'products')
-    isProduct.value = true
+      isProduct.value = true
     else 
-    isProduct.value =false
-
-    console.log(isProduct.value)
+      isProduct.value =false
 
   }
 
