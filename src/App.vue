@@ -14,20 +14,24 @@ watchEffect(fetchData)
 
 async function fetchData() {
   var bg = ''
+  var repeat = 'repeat'
+  var size = 'contain'
 
   if(route.name === 'home')
     bg = home
   else if(route.name === 'categories')
     bg = categories
-  else if(route.name === 'register'|| route.name === 'typeclient'|| route.name === 'formclient'|| route.name === 'formproveedor')
+  else if(route.name === 'register'|| route.name === 'typeclient'|| route.name === 'formclient'|| route.name === 'formproveedor') {
     bg = register
-  else 
+    repeat = 'no-repeat'
+    size = 'cover'
+  } else 
     bg = ''
 
   backgroundStyle.value = {
     backgroundImage: `url(${bg})`,
-    backgroundSize: 'contain',
-    backgroundRepeat: 'repeat'
+    backgroundSize: size,
+    backgroundRepeat: repeat
   }
 
 }

@@ -13,7 +13,7 @@ const props = defineProps({
 const fullPage = ref(true);
 const color = ref('#FF0090')
 const loader = ref('Bars')
-console.log('lalala')
+
 </script>
 
 <template>

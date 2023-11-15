@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from 'vue'
+  
+  import { ref } from 'vue'
   import icophone from '@assets/icons/ic_phone.svg?inline';
   import icopayment1 from '@assets/icons/payment-1.svg';
   import icopayment2 from '@assets/icons/payment-2.svg';

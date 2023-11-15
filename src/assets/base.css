@@ -40,6 +40,10 @@ html {
   justify-content: end;
 }
 
+.justify-content-center {
+  justify-content: center;
+}
+
 .header .v-container {
   padding: 13px 0 !important;
 }
