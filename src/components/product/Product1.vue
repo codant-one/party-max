@@ -35,14 +35,13 @@ watchEffect(() => {
 </script>
 
 <template>
-    <router-link to="/products" class="tw-no-underline">
+    <router-link to="/products" class="tw-no-underline zoom-product">
         <VCard class="no-shadown card-information p-0" :width="230">
             <VCardText class="border-img">
                 <VImg 
                     :width="230"
                     :src="baseURL + image" 
-                    cover 
-                    class="zoom"/>
+                    cover />
             </VCardText>
             <VCardText class="mt-2">
                 <div class="d-flex py-2">
@@ -51,7 +50,7 @@ watchEffect(() => {
                 </div>
             </VCardText>
             <VCardText>
-                <span class="d-block text_2 py-2 tw-text-tertiary">{{ name }}</span>
+                <span class="d-block text_2 py-2 tw-text-tertiary title-product">{{ name }}</span>
             </VCardText>
             <VCardText>
                 <span class="d-block text_2">Store: <strong>{{ store }}</strong></span>
@@ -88,12 +87,16 @@ watchEffect(() => {
         padding: 10px !important;
     }
 
-    .zoom  {
+    .zoom-product  {
         transition: transform ease-in-out 0.3s;
     }
 
-    .zoom:hover {
-        transform: scale(1.1);
+    .zoom-product:hover .v-img {
+        transform: scale(1.1) !important;
+    }
+
+    .zoom-product:hover .title-product{
+        color: #FF0090 !important;
     }
 
     .text_1 {
