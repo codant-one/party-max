@@ -3,6 +3,7 @@
 import { useMiscellaneousStores } from '@/stores/miscellaneous'
 
 import Product1 from '@/components/product/Product1.vue'
+import Loader from '@/components/common/Loader.vue'
 import banner1 from '@assets/images/banner1.png';
 import banner2 from '@assets/images/banner2.png';
 import banner3 from '@assets/images/banner3.png';
@@ -13,6 +14,7 @@ const miscellaneousStores = useMiscellaneousStores()
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 const data = ref(null)
+const isLoading = ref(true)
 
 const image1 = ref(null)
 const image2 = ref(null)
@@ -23,6 +25,8 @@ watchEffect(fetchData)
 
 async function fetchData() {
 
+  isLoading.value = true
+
   await miscellaneousStores.getCategory(route.params.slug)
   data.value = miscellaneousStores.getData
 
@@ -31,15 +35,12 @@ async function fetchData() {
   image3.value = (data.value.category.banner_3 === null) ? banner3 : baseURL.value + data.value.category.banner_3
   image4.value = (data.value.category.banner_4 === null) ? banner4 : baseURL.value + data.value.category.banner_4
 
- 
+  isLoading.value = false
 }
 </script>
 
 <template>
- 
-  <!--Banner Principal-->
   <VContainer class="mt-10" v-if="data">
-   
     <VCard class="no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
         <router-link :to="{name:'products',}">
@@ -100,6 +101,8 @@ async function fetchData() {
     </router-link>
     
   </VContainer>
+
+  <Loader :isLoading="isLoading" v-else/>
 </template>
 
 <style scoped>

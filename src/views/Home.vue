@@ -5,6 +5,7 @@ import { useHomeStores } from '@/stores/home'
     
 import Product1 from '@/components/product/Product1.vue'
 import Product2 from '@/components/product/Product2.vue'
+import Loader from '@/components/common/Loader.vue'
 
 import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
 
@@ -87,14 +88,18 @@ const sliders = ref( [
 const homeStores = useHomeStores()
 
 const data = ref(null)
+const isLoading = ref(true)
 
 watchEffect(fetchData)
 
 async function fetchData() {
 
+  isLoading.value = true
+  
   await homeStores.fetchData()
   data.value = homeStores.getData
  
+  isLoading.value = false
 }
 
 const tab = ref('0')
@@ -103,6 +108,7 @@ const tab = ref('0')
 
 <template>
   <VContainer class="mt-10">
+    <Loader :isLoading="isLoading"/>
     <!-- slider -->
     <VRow no-gutters class="transparent">
       <VCol cols="12" md="3">
