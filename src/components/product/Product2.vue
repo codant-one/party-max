@@ -38,11 +38,11 @@ watchEffect(() => {
     <router-link to="/products" class="tw-no-underline">
         <VCard class="no-shadown card-information p-0 mb-5">
             <div class="d-flex">
-                <VCardText class="w-25">
+                <VCardText class="border-img">
                     <VImg 
                         :src="baseURL + image" 
                         :width="61" 
-                        class="border-img"/>
+                        class="zoom"/>
                 </VCardText>
                 
                 <VCardText class="w-75">
@@ -64,8 +64,22 @@ watchEffect(() => {
     }
 
     .border-img {
+        width: 60px;
+        height: 60px;
         border-radius: 8px !important;
         border: 1px solid #D9EEF2;
+        padding: 2px !important;
+        text-align: center;
+        align-items: center;
+        display: flex;
+    }
+
+    .zoom  {
+        transition: transform ease-in-out 0.3s;
+    }
+
+    .zoom:hover {
+        transform: scale(1.1);
     }
 
     .text_1 {
