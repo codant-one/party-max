@@ -1,10 +1,11 @@
 <script setup lang="ts">
 // import { ref } from 'vue'
-// import FaqsCategories from '@/components/faqs/FaqsCategories.vue'
+import FaqsCategories from '@/components/faqs/FaqsCategories.vue'
 import { useCategoriesStores } from '@/stores/useFaqCategories' 
 
 
 const categoriesStores = useCategoriesStores()
+const thisDocument = document;
 
 const categories = ref([])
 const activeTab = ref(0) 
@@ -26,12 +27,16 @@ const fetchData = async () => {
 watch(activeTab, () => activeQuestion.value = 0)
 fetchData()
 
+const setFocus = async(category) => {
+  window.location.hash = "#"+category;
+}
+
 </script>
 
 <template>
  
 
-  <VContainer class="content py-13 text-center w-100" style="height: 400px">
+  <VContainer class="content py-13 text-center w-100" >
     <!-- 👉 Banner  -->
     <VCard
         flat
@@ -49,6 +54,7 @@ fetchData()
         </VCardText>
     </VCard>
    
+    
 
     <!-- 👉 Faq sections and questions -->
     <VRow style="margin-top: 10px">
@@ -57,84 +63,60 @@ fetchData()
         cols="12"
         sm="12"
         lg="12"
-        class="position-relative mt-3"
+        align-self="center"
+        id="faqsCategoriesDiv"
       >
-
-        <!-- 👉 Tabs -->
-        <VTabs
-          v-model="activeTab"
-          direction="horizontal"
-          class="v-tabs-pill"
-          grow
-          stacked
-        >
-          <VTab
+          <VBtn
             v-for="category in categories"
-            :key="category.name"
-            :value="category.name"
-            class="text-high-emphasis tabs ms-1 me-1 rounded-lg"
+            min-width="20%"
+            width="20%"
+            class="selected-class"
+            selected-class="selected-class"
+            rounded="lg"
+            elevation="0"
+            @click="setFocus(category.name)"
+            v-show="category.faqs.length"
           >
-            <VIcon
-              :icon="category.icon"
-              :size="20"
-              class="icons"
-              start
-            />
-            {{ category.name }}
-          </VTab>
-        </VTabs> 
+            <VRow>
+              <VCol
+                cols="12"
+                sm="12"
+                lg="12"
+              >
+                <VIcon
+                  :icon="category.icon"
+                  size="42"
+                  class="icons"
+                >
+                </VIcon>
+              </VCol>
+              <VCol
+                cols="12"
+                sm="12"
+                lg="12"
+                class="icons-text"
+              >
+                {{ category.name }}
+              </VCol>
+            </VRow>
+          </VBtn>
       </VCol>
 
       <VCol
+        v-show="categories.length"
         cols="12"
-        sm="8"
-        lg="9"
+        sm="12"
+        lg="12"
+        class="position-relative mt-3"
       >
-        <!-- 👉 Windows -->
-        <VWindow
-          v-model="activeTab"
-          class="faq-v-window disable-tab-transition"
+
+        <FaqsCategories 
+          v-for="category in categories"
+          :name="category.name"
+          :items="category.faqs "
         >
-          <VWindowItem
-            v-for="category in categories"
-            :key="category.name"
-            :value="category.name"
-          >
-            <div class="d-flex align-center mb-6">
-              <VAvatar
-                rounded
-                :color="category.color ?? 'primary'"
-                variant="tonal"
-                class="me-3"
-                size="large"
-              >
-                <VIcon
-                  :size="32"
-                  :icon="category.icon"
-                />
-              </VAvatar>
+        </FaqsCategories>
 
-              <div>
-                <h6 class="text-h6">
-                  {{ category.name }}
-                </h6>
-                <span class="text-sm">{{ category.description }}</span>
-              </div>
-            </div>
-
-            <VExpansionPanels
-              v-model="activeQuestion"
-              multiple
-            >
-              <VExpansionPanel
-                v-for="item in category.faqs"
-                :key="item.title"
-                :title="item.title"
-                :text="item.description"
-              />
-            </VExpansionPanels>
-          </VWindowItem>
-        </VWindow>
       </VCol>
 
       <VCol
@@ -175,11 +157,23 @@ fetchData()
 
     .icons{
       color:  #FF0090!important;
+      font-size: 35px!important;
     }
 
-    .tabs{
-      padding: 31px;
-      background-color: var(--Light-Cyan-1, #E2F8FC);
+    .icons-text{
+      color:  #FF0090!important;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+    }
 
+    .selected-class{
+      background-color: var(--Light-Cyan-1, #E2F8FC);
+      margin: 0.25rem !important;
+      padding: 0.25rem 0 !important;
+    }
+
+    .v-btn.v-btn--density-default{
+      height: 100px !important;
     }
 </style>
