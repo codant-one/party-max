@@ -26,6 +26,19 @@ export const useMiscellaneousStores = defineStore('miscellaneous', {
                     this.setLoading(false)
                 })
             
+        },
+        allFaqs() {
+            this.setLoading(true)
+            
+            return Miscellaneous.faqs()
+                .then((response) => {
+                    return Promise.resolve(response.data.data)
+                })
+                .catch(error => Promise.reject(error))
+                .finally(() => {
+                    this.setLoading(false)
+                })
+            
         }
     }
 })

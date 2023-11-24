@@ -1,10 +1,10 @@
 <script setup lang="ts">
 // import { ref } from 'vue'
 import FaqsCategories from '@/components/faqs/FaqsCategories.vue'
-import { useCategoriesStores } from '@/stores/useFaqCategories' 
+import { useMiscellaneousStores } from '@/stores/miscellaneous' 
 
 
-const categoriesStores = useCategoriesStores()
+const categoriesStores = useMiscellaneousStores()
 const thisDocument = document;
 
 const categories = ref([])
