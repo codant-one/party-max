@@ -5,26 +5,14 @@ import { useMiscellaneousStores } from '@/stores/miscellaneous'
 
 
 const categoriesStores = useMiscellaneousStores()
-const thisDocument = document;
 
 const categories = ref([])
-const activeTab = ref(0) 
-const activeQuestion = ref(0)
-const isRequestOngoing = ref(true)
 
 const fetchData = async () => {
-
-    isRequestOngoing.value = true
-
     let response = await categoriesStores.allFaqs()
-
     categories.value = response.categories
-    activeTab.value = response.categories[0].name
-
-    isRequestOngoing.value = false
 }
 
-watch(activeTab, () => activeQuestion.value = 0)
 fetchData()
 
 const setFocus = async(category) => {

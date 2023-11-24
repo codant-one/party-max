@@ -9,6 +9,10 @@ class Miscellaneous {
     faqs(){
         return axios.get('/miscellaneous/faqs/all')
     }
+
+    blogs(){
+        return axios.get('/miscellaneous/blogs/populars')
+    }
 }
 
 const miscellaneous = new Miscellaneous();
