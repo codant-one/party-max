@@ -1,4 +1,6 @@
 <script setup>
+import { useDate } from 'vuetify'
+
 const props = defineProps({
         id: {
             type: Number,
@@ -24,29 +26,39 @@ const props = defineProps({
             type: String,
             required: true
         }
-    }) 
+    });
+
+const date = useDate();
+
 </script>
 
 <template>
     <VCard
         flat
-        class="text-center card-header"
+        class="text-justify card-header mb-6 pb-2"
+        rounded="lg"
         >
 
-        <VCardItem>
+        <VCardItem
+            class="py-4"
+        >
             <VImg
-                :src="props.image">
+                class="rounded-lg"
+                :src="props.image"
+            >
             </VImg>
         </VCardItem>
 
         <VCardSubtitle 
-            class="text-justify subtitle-text pt-8">
-            {{ props.user }} {{ props.date }}
+            class="text-justify subtitle-text pt-2">
+            <VIcon size="20px" icon="mdi-account-outline" class="subtitle-text"></VIcon> by {{ props.user }} 
+            <VIcon size="20px" :end=true icon="mdi-clock-outline" class="subtitle-text"></VIcon> 
+            {{ date.format(props.date, 'fullDateWithWeekday') }}
         </VCardSubtitle>
 
         <VCardTitle 
             :id="props.name"
-            class="text-justify description-text title-text pt-8">
+            class="text-justify title-text pt-2">
             {{ props.title }}
         </VCardTitle>
 
@@ -55,6 +67,14 @@ const props = defineProps({
         >
             {{ props.description }}
         </VCardText>
+        <VBtn
+            variant="plain"
+            append-icon="mdi-arrow-right"
+            color="#0A1B33"
+            text="Leer más"
+            class="text-none text-justify description-text"
+        >
+        </VBtn>
     </VCard>
 </template>
 
@@ -66,6 +86,8 @@ const props = defineProps({
         font-style: normal;
         font-weight: 600;
         line-height: 43.488px;
+        word-wrap: break-word;
+        white-space: inherit;
     }
 
     .description-text{

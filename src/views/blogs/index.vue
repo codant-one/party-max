@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // import { ref } from 'vue'
 import blogsCard from '@/components/blogs/blogCard.vue'
+import blogSearchCard from '@/components/blogs/blogSearchCard.vue'
 import { useMiscellaneousStores } from '@/stores/miscellaneous' 
 import bg from '@assets/images/blogs.jpg';
 
@@ -9,10 +10,12 @@ const backgroundStyle = ref({})
 const blogsStores = useMiscellaneousStores()
 
 const blogs = ref([])
+const categories = ref([])
 
 const fetchData = async () => {
     let response = await blogsStores.blogs()
     blogs.value = response.blogs
+    categories.value = response.categories
 }
 
 fetchData()
@@ -28,13 +31,13 @@ backgroundStyle.value = {
  
 
   <VContainer 
-    class="content py-13 text-center w-100" 
+    :fluid=true
+    class="content py-0 my-0 text-center w-100" 
     :style="backgroundStyle"
-    fluid=true
   >
    
     <VRow
-      class="d-flex justify-center"
+      class="d-flex justify-center py-16 px-16"
     >
       <VCol
         cols="7"
@@ -52,9 +55,13 @@ backgroundStyle.value = {
       </VCol>
 
       <VCol
-        cols="3"
+        cols="5"
       >
-        TAL
+        <blogSearchCard
+          :blogs="blogs.slice(0, 4)"
+          :categories="categories"
+         >
+         </blogSearchCard>
       </VCol>
     </VRow>
     
