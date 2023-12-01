@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import blogsCard from '@/components/blogs/blogCard.vue'
 import blogSearchCard from '@/components/blogs/blogSearchCard.vue'
 import { useMiscellaneousStores } from '@/stores/miscellaneous' 
-import bg from '@assets/images/blogs.jpg';
+//import bg from '@assets/images/blogs.jpg';
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 const backgroundStyle = ref({})
@@ -21,10 +21,10 @@ const fetchData = async () => {
 
 fetchData()
 
-backgroundStyle.value = {
+/*backgroundStyle.value = {
     backgroundImage: `url(${bg})`,
     backgroundRepeat: 'repeat'
-  }
+  }*/
 
 </script>
 
@@ -34,7 +34,7 @@ backgroundStyle.value = {
   <VContainer 
     :fluid=true
     class="content py-0 my-0 text-center w-100" 
-    :style="backgroundStyle"
+    
   >
    
     <VRow
