@@ -6,12 +6,20 @@ class Miscellaneous {
         return axios.get(`miscellaneous/categories/${slug}`)
     }
 
+    categoriesAll() {
+        return axios.get(`miscellaneous/categories`)
+    }
+
     faqs(){
         return axios.get('/miscellaneous/faqs/all')
     }
 
     blogs(){
         return axios.get('/miscellaneous/blogs/populars')
+    }
+
+    products() {
+        return axios.get(`miscellaneous/products`)
     }
 }
 

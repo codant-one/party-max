@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 
 import festin_image from '@assets/images/festin-register.jpg';
 import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
