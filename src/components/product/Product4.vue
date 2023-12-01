@@ -71,7 +71,7 @@ watchEffect(() => {
                     </VCardText>
                     
                     <VCardText>
-                        <span class="d-block text_2 mt-5">{{ single_description }}</span>
+                        <span class="d-block text_2 mt-5" v-html="single_description"></span>
                     </VCardText>
 
                 </VCol>
