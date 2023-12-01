@@ -1,5 +1,6 @@
 <script setup lang="ts">
-// import { ref } from 'vue'
+
+import { ref } from 'vue'
 import blogsCard from '@/components/blogs/blogCard.vue'
 import blogSearchCard from '@/components/blogs/blogSearchCard.vue'
 import { useMiscellaneousStores } from '@/stores/miscellaneous' 
@@ -43,13 +44,13 @@ fetchData()
         cols="7"
       >
          <blogsCard
-          v-for="blog in blogs.slice(0, 3)"
-          :id="blog.id"
-          :title="blog.title"
-          :description="blog.description"
-          :image="baseURL + blog.image"
-          :user="blog.user.name"
-          :date="blog.date"
+            v-for="blog in blogs.slice(0, 3)"
+            :id="blog.id"
+            :title="blog.title"
+            :description="blog.description"
+            :image="baseURL + blog.image"
+            :user="blog.user.name"
+            :date="blog.date"
          >
          </blogsCard>
       </VCol>

@@ -5,13 +5,14 @@ import Blogs from '@/views/blogs/index.vue'
 import About from '@/views/About.vue'
 import Help from '@/views/Help.vue'
 import Categories from '@/views/categories/index.vue'
-import Products from '@/views/Products.vue'
+import Products from '@/views/products/index.vue'
 import Suppliers from '@/views/Suppliers.vue'
 import Services from '@/views/Services.vue'
 import Register from '@/views/clients/register.vue'
 import Typeclient from '@/views/clients/typeclient.vue'
 import Formclient from '@/views/clients/formclient.vue'
 import Formproveedor from '@/views/clients/formproveedor.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
