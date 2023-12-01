@@ -6,6 +6,7 @@ import Footer from '@/components/app/Footer.vue'
 import home from '@assets/images/home.jpg';
 import categories from '@assets/images/categories.jpg';
 import register from '@assets/images/register.jpg';
+import blogs from '@assets/images/blogs.jpg';
 
 const route = useRoute()
 const backgroundStyle = ref({})
@@ -25,7 +26,12 @@ async function fetchData() {
     bg = register
     repeat = 'no-repeat'
     size = 'cover'
-  } else 
+  } 
+  else if(route.name==='blogs')
+  {
+    bg = blogs
+    size = 'contain'
+  }else 
     bg = ''
 
   backgroundStyle.value = {

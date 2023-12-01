@@ -24,7 +24,7 @@
 
   async function fetchData() {
 
-    if(route.name === 'products')
+    if(route.name === 'products'||route.name==='about')
       isProduct.value = true
     else 
       isProduct.value =false
