@@ -1,16 +1,16 @@
-<script setup lang="ts">
-// import { ref } from 'vue'
-import FaqsCategories from '@/components/faqs/FaqsCategories.vue'
-import { useMiscellaneousStores } from '@/stores/miscellaneous' 
+<script setup>
 
+import { ref } from 'vue'
+import { useMiscellaneousStores } from '@/stores/miscellaneous' 
+import FaqsCategories from '@/components/faqs/FaqsCategories.vue'
 
 const categoriesStores = useMiscellaneousStores()
 
 const categories = ref([])
 
 const fetchData = async () => {
-    let response = await categoriesStores.allFaqs()
-    categories.value = response.categories
+  let response = await categoriesStores.allFaqs()
+  categories.value = response.categories
 }
 
 fetchData()
@@ -22,9 +22,7 @@ const setFocus = async(category) => {
 </script>
 
 <template>
- 
-
-  <VContainer class="content py-13 text-center w-100" >
+  <VContainer class="mt-10 text-center">
     <!-- 👉 Banner  -->
     <VCard
         flat

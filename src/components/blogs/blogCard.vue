@@ -14,6 +14,7 @@ const title = ref(null)
 const description = ref(null)
 const image = ref(null)
 const user = ref(null)
+const slug = ref(null)
 const dateBlog = ref(null)
 
 const date = useDate();
@@ -28,7 +29,7 @@ watchEffect(() => {
         description.value = props.blog.description
         image.value = props.blog.image
         user.value = props.blog.user
-        dateBlog.value = props.blog.dateBlog
+        dateBlog.value = props.blog.date
     }
 })
 
@@ -43,15 +44,13 @@ watchEffect(() => {
             />
         </VCardItem>
 
-        <VCardSubtitle class="text-justify subtitle-text pt-2 px-0">
+        <VCardSubtitle class="text-justify subtitle-text my-6 px-0">
             <VIcon size="20px" icon="mdi-account-outline" class="subtitle-text"></VIcon> by {{ props.user }} 
             <VIcon size="20px" :end=true icon="mdi-clock-outline" class="subtitle-text"></VIcon> 
-            {{ date.format(date, 'fullDateWithWeekday') }}
+            {{ date.format(dateBlog, 'fullDateWithWeekday') }}
         </VCardSubtitle>
 
-        <VCardTitle 
-            :id="name"
-            class="text-justify title-text pt-2 px-0">
+        <VCardTitle class="text-justify title-text px-0 pt-0">
             {{ title }}
         </VCardTitle>
 
