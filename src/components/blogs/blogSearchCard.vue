@@ -15,85 +15,49 @@ const props = defineProps({
 </script>
 
 <template>
-    <VCard
-        flat
-        class="text-justify card-header pt-4 pb-4 ps-2 pe-2"
-        rounded="lg"
-        >
-
-        <VCardTitle 
-            class="text-justify title-text pt-2 mb-2">
+    <VCard class="text-justify card-header px-0 card-information no-shadown">
+        <VCardTitle class="text-justify title-text px-41 py-7">
             Buscar
         </VCardTitle>
 
-        <VDivider
-            class="mt-4 mb-4"
-        >
-        </VDivider>
-
-        <VCardText
-            class="d-flex justify-items-center"
-        >
+        <VCardText class="d-block justify-items-center px-41"> 
+            <VDivider class="mb-2"/>
             <VTextField
                 class="input-search ps-4"
                 variant="plain"
                 :hide-details=true
                 :center-affix=true
                 density="compact"
-                rounded="s-lg"
-
-            >
-            </VTextField>
+            />
             <VBtn
                 variant="flat"
                 color="#0A1B33"
                 text="Buscar"
                 class="button-search"
-                rounded="e-lg"
                 min-height="100%"
-            >
-            </VBtn>
+            />
         </VCardText>
 
-        <VDivider
-            class="mt-4 mb-4"
-        >
-        </VDivider>
+        <VDivider class="mt-4 mb-4" />
 
-        <VCardTitle 
-            class="text-justify title-text pt-2 mt-10 mb-2">
+        <VCardTitle class="text-justify title-text pt-2 mt-10 mb-2 px-41">
             Post Recientes
         </VCardTitle>
-
-        <VDivider
-            class="mt-4 mb-4"
-        >
-        </VDivider>
 
         <VList
             :items="blogs"
             item-value="id"
             base-color="#999999"
-        >
-        </VList>
+            class="px-41"
+        />
 
-        <VDivider
-            class="mt-4 mb-4"
-        >
-        </VDivider>
+        <VDivider class="mt-4 mb-4" />
 
-        <VCardTitle 
-            class="text-justify title-text pt-2 mt-10 mb-2">
+        <VCardTitle class="text-justify title-text pt-2 mt-10 mb-2 px-41">
             Categorías
         </VCardTitle>
-
-        <VDivider
-            class="mt-4 mb-4"
-        >
-        </VDivider>
-
-        <VList
-        >
+        
+        <VList class="px-41 mb-2">
             <VListItem
                 v-for="category in categories"
                 :key="category.id"
@@ -104,21 +68,15 @@ const props = defineProps({
                     <VIcon
                         :icon="category.icon"
                         class="icons"
-                    >
-                    </VIcon>
-              </template>
-
+                    />
+                </template>
                 <template #append>
-                    <VCardText
-                        
-                        class="d-flex justify-items-center subtitle-text py-0"
-                    >
+                    <VCardText class="d-flex justify-items-center subtitle-text py-0">
                         {{ category.blogs.length }}
                     </VCardText>
               </template>
           </VListItem>
         </VList>
-
     </VCard>
 </template>
 
@@ -150,6 +108,7 @@ const props = defineProps({
 
     .input-search{
         background: var(--Light-Cyan-1, #E2F8FC);
+        border-radius: 8px 0px 0px 8px; 
     }
 
     .button-search{
@@ -160,4 +119,16 @@ const props = defineProps({
       color:  #FF0090!important;
     }
 
+    .card-information {
+        border-radius: 16px;
+    }
+
+    .p-41 {
+        padding: 41px;
+    }
+
+    .px-41 {
+        padding-left: 41px;
+        padding-right: 41px;
+    }
 </style>

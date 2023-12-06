@@ -2,77 +2,69 @@
 import { useDate } from 'vuetify'
 
 const props = defineProps({
-        id: {
-            type: Number,
-            required: true
-        },
-        title: {
-            type: String,
-            required: true
-        },
-        description: {
-            type: String,
-            required: true
-        },
-        image: {
-            type: String,
-            required: true
-        },
-        user: {
-            type: String,
-            required: true
-        },
-        date: {
-            type: String,
-            required: true
-        }
-    });
+    blog: {
+        type: Object,
+        required: true
+    }
+});
+
+const id = ref(null)
+const name = ref(null)
+const title = ref(null)
+const description = ref(null)
+const image = ref(null)
+const user = ref(null)
+const dateBlog = ref(null)
 
 const date = useDate();
+const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
+
+watchEffect(() => {
+
+    if (!(Object.entries(props.blog).length === 0) && props.blog.constructor === Object) {
+        id.value = props.blog.id
+        name.value = props.blog.name
+        title.value = props.blog.title
+        description.value = props.blog.description
+        image.value = props.blog.image
+        user.value = props.blog.user
+        dateBlog.value = props.blog.dateBlog
+    }
+})
 
 </script>
 
 <template>
-    <VCard
-        flat
-        class="text-justify card-header mb-6 pb-2"
-        rounded="lg"
-        >
-
-        <VCardItem
-            class="py-4"
-        >
+    <VCard class="text-justify card-header mb-6 pb-2 card-information no-shadown">
+        <VCardItem class="p-0">
             <VImg
-                class="rounded-lg"
-                :src="props.image"
-            >
-            </VImg>
+                class="img-style"
+                :src="baseURL + image"
+            />
         </VCardItem>
 
-        <VCardSubtitle 
-            class="text-justify subtitle-text pt-2">
+        <VCardSubtitle class="text-justify subtitle-text pt-2 px-0">
             <VIcon size="20px" icon="mdi-account-outline" class="subtitle-text"></VIcon> by {{ props.user }} 
             <VIcon size="20px" :end=true icon="mdi-clock-outline" class="subtitle-text"></VIcon> 
-            {{ date.format(props.date, 'fullDateWithWeekday') }}
+            {{ date.format(date, 'fullDateWithWeekday') }}
         </VCardSubtitle>
 
         <VCardTitle 
-            :id="props.name"
-            class="text-justify title-text pt-2">
-            {{ props.title }}
+            :id="name"
+            class="text-justify title-text pt-2 px-0">
+            {{ title }}
         </VCardTitle>
 
-        <VCardText
-            class="text-justify description-text"
-        >
-            {{ props.description }}
+        <VCardText class="text-justify description-text px-0">
+            {{ description }}
         </VCardText>
+
         <VBtn
             variant="plain"
             append-icon="mdi-arrow-right"
             color="#0A1B33"
             text="Leer más"
-            class="text-none text-justify description-text"
+            class="text-none text-justify description-text px-0 mb-2"
         >
         </VBtn>
     </VCard>
@@ -104,5 +96,14 @@ const date = useDate();
         font-style: normal;
         font-weight: 400;
         line-height: 26px;
+    }
+
+    .card-information {
+        padding: 24px;
+        border-radius: 16px;
+    }
+
+    .img-style {
+        border-radius: 16px;
     }
 </style>
