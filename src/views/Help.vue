@@ -3,14 +3,20 @@
 import { ref } from 'vue'
 import { useMiscellaneousStores } from '@/stores/miscellaneous' 
 import FaqsCategories from '@/components/faqs/FaqsCategories.vue'
+import Loader from '@/components/common/Loader.vue'
 
 const categoriesStores = useMiscellaneousStores()
 
 const categories = ref([])
+const isLoading = ref(true)
 
 const fetchData = async () => {
+  isLoading.value = true
+
   let response = await categoriesStores.allFaqs()
   categories.value = response.categories
+
+  isLoading.value = false
 }
 
 fetchData()
@@ -23,26 +29,17 @@ const setFocus = async(category) => {
 
 <template>
   <VContainer class="mt-10 text-center">
-    <!-- 👉 Banner  -->
-    <VCard
-        flat
-        class="text-center card-header"
-    >
-        <VCardText>
-
-            <VCardTitle class="font-weight-semibold title-text">
-                Hola, ¿cómo podemos ayudar?
-            </VCardTitle>
-
-            <p class="subtitle-text mb-0 mt-3">
-                Elija una categoría para encontrar rápidamente la ayuda que necesita
-            </p>
-        </VCardText>
+    <Loader :isLoading="isLoading"/>
+    <VCard flat class="text-center card-header">
+      <VCardText>
+        <VCardTitle class="font-weight-semibold title-text">
+          Hola, ¿cómo podemos ayudar?
+        </VCardTitle>
+        <p class="subtitle-text mb-0 mt-3">
+          Elija una categoría para encontrar rápidamente la ayuda que necesita
+        </p>
+      </VCardText>
     </VCard>
-   
-    
-
-    <!-- 👉 Faq sections and questions -->
     <VRow style="margin-top: 10px">
       <VCol
         v-show="categories.length"
@@ -52,42 +49,38 @@ const setFocus = async(category) => {
         align-self="center"
         id="faqsCategoriesDiv"
       >
-          <VBtn
-            v-for="category in categories"
-            min-width="20%"
-            width="20%"
-            class="selected-class"
-            selected-class="selected-class"
-            rounded="lg"
-            elevation="0"
-            @click="setFocus(category.name)"
-            v-show="category.faqs.length"
+        <VBtn
+          v-for="category in categories"
+          min-width="20%"
+          width="20%"
+          class="selected-class"
+          selected-class="selected-class"
+          rounded="lg"
+          elevation="0"
+          @click="setFocus(category.name)"
+          v-show="category.faqs.length"
           >
-            <VRow>
-              <VCol
-                cols="12"
-                sm="12"
-                lg="12"
-              >
-                <VIcon
-                  :icon="category.icon"
-                  size="42"
-                  class="icons"
-                >
-                </VIcon>
-              </VCol>
-              <VCol
-                cols="12"
-                sm="12"
-                lg="12"
-                class="icons-text"
-              >
-                {{ category.name }}
-              </VCol>
-            </VRow>
-          </VBtn>
+          <VRow>
+            <VCol
+              cols="12"
+              sm="12"
+              lg="12">
+              <VIcon
+                :icon="category.icon"
+                size="42"
+                class="icons"
+              />
+            </VCol>
+            <VCol
+              cols="12"
+              sm="12"
+              lg="12"
+              class="icons-text">
+              {{ category.name }}
+            </VCol>
+          </VRow>
+        </VBtn>
       </VCol>
-
       <VCol
         v-show="categories.length"
         cols="12"
@@ -95,16 +88,12 @@ const setFocus = async(category) => {
         lg="12"
         class="position-relative mt-3"
       >
-
         <FaqsCategories 
           v-for="category in categories"
           :name="category.name"
           :items="category.faqs "
-        >
-        </FaqsCategories>
-
+        />
       </VCol>
-
       <VCol
         v-show="!categories.length"
         cols="12"
@@ -116,11 +105,10 @@ const setFocus = async(category) => {
           size="20"
         />
         <span class="text-base font-weight-medium">
-            Datos no disponibles
+          Datos no disponibles
         </span>
       </VCol>
     </VRow>
-    
   </VContainer>
 </template>
 

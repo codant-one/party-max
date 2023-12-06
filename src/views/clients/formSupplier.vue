@@ -1,10 +1,9 @@
+
 <script setup>
-
-import icon1 from '@assets/icons/Mail.svg';
-import icon2 from '@assets/icons/input-user.svg';
-import icon3 from '@assets/icons/Phone.svg';
-import icon4 from '@assets/icons/icon-password.svg';
-
+    import icon1 from '@assets/icons/Mail.svg';
+    import icon2 from '@assets/icons/input-user.svg';
+    import icon3 from '@assets/icons/Phone.svg';
+    import icon4 from '@assets/icons/nit-icon.svg';
 </script>
 
 <template>
@@ -13,13 +12,45 @@ import icon4 from '@assets/icons/icon-password.svg';
             :width="536" 
             class="no-shadown card-register d-block text-center mx-auto">
             <VCardItem class="subtitle-register">
-                Completa los datos para <br>crear tu cuenta
+                Completa los datos para solicitar tu <br> cuenta como proveedor
             </VCardItem>
             <VCardItem class="client-card">
                 <VRow no-gutters class="text-left align-center">
                     <VCol cols="12" class="d-flex text-left mb-2">
+                        <img :src="icon2" class="me-3"/>
+                       <div cols="10" class="d-block">
+                        <span class="text-client text-left">Nombre de tu empresa</span> <br>
+                        <span class="p-client text-left">Cuéntanos cómo quieres que te llamemos.</span>
+                       </div>
+                    </VCol>
+                    <VCol cols="12" class="mb-5">
+                        <v-text-field
+                            label="Name"
+                            placeholder=""
+                            variant="outlined"
+                        />
+                    </VCol>
+                </VRow>
+                <VRow no-gutters class="text-left align-center">
+                    <VCol cols="12" class="d-flex text-left mb-2">
+                        <img :src="icon4" class="me-3"/> 
+                        <div cols="10" class="d-block">
+                            <span class="text-client text-left">Agrega tu NIT</span> <br>
+                            <span class="p-client text-left">Nos ayudará a identificar tu negocio.</span>
+                        </div>
+                    </VCol>
+                    <VCol cols="12" class="mb-5">
+                        <v-text-field
+                            label="NIT"
+                            placeholder=""
+                            variant="outlined"
+                        />
+                    </VCol>
+                </VRow>
+                <VRow no-gutters class="text-left align-center">
+                    <VCol cols="12" class="d-flex text-left mb-2">
                         <img :src="icon1" class="me-3"/>
-                        <div class="d-block">
+                        <div cols="10" class="d-block">
                             <span class="text-client text-left">Agrega tu e-mail</span> <br>
                             <span class="p-client text-left">Recibirás información de tu cuenta.</span>
                         </div>
@@ -34,23 +65,7 @@ import icon4 from '@assets/icons/icon-password.svg';
                 </VRow>
                 <VRow no-gutters class="text-left align-center">
                     <VCol cols="12" class="d-flex text-left mb-2">
-                        <img :src="icon2" class="me-3"/>
-                        <div class="d-block">
-                            <span class="text-client text-left">Elige tu nombre</span> <br>
-                            <span class="p-client text-left">Cuéntanos cómo quieres que te llamemos.</span>
-                        </div>
-                    </VCol>
-                    <VCol cols="12" class="mb-5">
-                        <v-text-field
-                            label="Name"
-                            placeholder=""
-                            variant="outlined"
-                        />
-                    </VCol>
-                </VRow>
-                <VRow no-gutters class="text-left align-center">
-                    <VCol cols="12" class="d-flex text-left mb-2">
-                        <img :src="icon3" class="me-3"/>
+                        <img :src="icon3" class="me-3"/> 
                         <div cols="10" class="d-block">
                             <span class="text-client text-left">Valida tu teléfono</span> <br>
                             <span class="p-client text-left">Podrás usarlo para ingresar a tu cuenta.</span>
@@ -63,30 +78,13 @@ import icon4 from '@assets/icons/icon-password.svg';
                             variant="outlined"
                         />
                     </VCol>
-                </VRow>
-                <VRow no-gutters class="text-left align-center">
-                    <VCol cols="12" class="d-flex text-left mb-2">
-                        <img :src="icon4" class="me-3"/>
-                        <div cols="10" class="d-block">
-                            <span class="text-client text-left">Crea tu contraseña</span> <br>
-                            <span class="p-client text-left">Mantendrás tu cuenta protegida.</span>
-                        </div>
-                    </VCol>
-                    <VCol cols="12" class="mb-5">
-                        <v-text-field
-                            label="Password"
-                            type="password"
-                            placeholder=""
-                            variant="outlined"
-                        />
-                    </VCol>
                     <VCol cols="12">
                         <v-checkbox 
                             label="Acepto los Términos y condiciones y autorizo el uso de mis datos de acuerdo a la Declaración de Privacidad." 
                         />
                     </VCol>
                 </VRow>
-            </VCardItem>
+            </VCardItem>   
             <VCardText class="d-block align-center text-center justify-content-center pb-2">
                 <VBtn
                     variant="flat"
@@ -97,17 +95,13 @@ import icon4 from '@assets/icons/icon-password.svg';
                 >
                     Continuar
                 </VBtn>
-            </VCardText>                  
-        </VCard>
+            </VCardText>  
+        </VCard>    
     </VContainer>
 </template>
 
 <style scoped>
 
-    .button-hover:hover {
-        background-color: #FF27B3 !important;
-        box-shadow: 0px 0px 24px 0px #FF27B3;
-    }
     .card-register {
         padding: 48px;
         border-radius: 32px;
@@ -119,7 +113,7 @@ import icon4 from '@assets/icons/icon-password.svg';
         font-size: 23px;
         font-style: normal;
         font-weight: 600;
-        line-height: 30px; 
+        line-height: 30px;   
     }
 
     .text-register {
@@ -130,7 +124,8 @@ import icon4 from '@assets/icons/icon-password.svg';
         font-weight: 400;
         line-height: 20px; /* 133.333% */
     }
-    .v-checkbox::v-deep(.v-label){
+
+    .v-checkbox::v-deep(.v-label) {
         color:#0A1B33;
         font-size: 13px;
         font-style: normal;
@@ -156,9 +151,14 @@ import icon4 from '@assets/icons/icon-password.svg';
     .client-card {
         align-items: center;
         border-radius: 16px;
-        padding: 16px 16px 0 16px;
-        margin: auto;
+        padding: 16px;
     }
+
+    .button-hover:hover {
+        background-color: #FF27B3 !important;
+        box-shadow: 0px 0px 24px 0px #FF27B3;
+    }
+
     .btn-register {
         font-size: 16px;
         font-style: normal;

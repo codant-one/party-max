@@ -11,8 +11,8 @@ import Suppliers from '@/views/Suppliers.vue'
 import Services from '@/views/Services.vue'
 import Register from '@/views/clients/register.vue'
 import Typeclient from '@/views/clients/typeclient.vue'
-import Formclient from '@/views/clients/formclient.vue'
-import Formproveedor from '@/views/clients/formproveedor.vue'
+import FormClient from '@/views/clients/formClient.vue'
+import FormSupplier from '@/views/clients/formSupplier.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -80,14 +80,14 @@ const router = createRouter({
       component: Typeclient
     },
     {
-      path: '/formclient',
-      name: 'formclient',
-      component: Formclient
+      path: '/register/form_client',
+      name: 'form_client',
+      component: FormClient
     },
     {
-      path: '/formproveedor',
-      name: 'formproveedor',
-      component: Formproveedor
+      path: '/register/form_supplier',
+      name: 'form_supplier',
+      component: FormSupplier
     },
   ]
 })

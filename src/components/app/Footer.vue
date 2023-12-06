@@ -24,10 +24,10 @@
 
   async function fetchData() {
 
-    if(route.name === 'products'||route.name==='about')
+    if(route.name === 'products' || route.name === 'about' || route.name === 'help')
       isProduct.value = true
     else 
-      isProduct.value =false
+      isProduct.value = false
 
   }
 

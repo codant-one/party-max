@@ -22,7 +22,7 @@ async function fetchData() {
     bg = home
   else if(route.name === 'categories')
     bg = categories
-  else if(route.name === 'register'|| route.name === 'typeclient'|| route.name === 'formclient'|| route.name === 'formproveedor') {
+  else if(route.name === 'register'|| route.name === 'typeclient'|| route.name === 'form_client'|| route.name === 'form_supplier') {
     bg = register
     repeat = 'no-repeat'
     size = 'cover'

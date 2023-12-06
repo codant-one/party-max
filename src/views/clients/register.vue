@@ -31,7 +31,7 @@ const redirect = (name) => {
                         :width="288"
                         :height="48"
                         class="btn-register tw-text-white tw-bg-primary button-hover"
-                        @click="redirect('formclient')">
+                        @click="redirect('form_client')">
                         Crear cuenta personal
                     </VBtn>
                     <VBtn
@@ -39,7 +39,7 @@ const redirect = (name) => {
                         :width="288"
                         :height="48"
                         class="btn-register tw-text-white tw-bg-primary button-hover mt-2"
-                        @click="redirect('formproveedor')">
+                        @click="redirect('form_supplier')">
                         Crear cuenta empresa
                     </VBtn>
             </VCardText>    
