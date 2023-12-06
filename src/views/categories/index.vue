@@ -44,7 +44,7 @@ async function fetchData() {
     <VCard class="no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
         <router-link :to="{name:'products',}">
-          <VImg :src="image1" class="img-style"/>
+          <img :src="image1" class="img-style"/>
         </router-link>
       </VCardItem>  
     </VCard>
@@ -72,7 +72,7 @@ async function fetchData() {
           <router-link to="/products" class="tw-no-underline">
             <VCardItem class="p-0">
               <router-link :to="{name:'products',}">
-                <VImg :src="image2" class="img-style"/>
+                <img :src="image2" class="img-style"/>
               </router-link>
             </VCardItem>  
           </router-link>
@@ -81,7 +81,7 @@ async function fetchData() {
           <router-link to="/products" class="tw-no-underline">
             <VCardItem class="p-0">
               <router-link :to="{name:'products',}">
-                <VImg :src="image3" class="img-style"/>
+                <img :src="image3" class="img-style"/>
               </router-link>
             </VCardItem>  
           </router-link>
@@ -92,7 +92,7 @@ async function fetchData() {
     <VCard class="mt-7 no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
         <router-link :to="{name:'products',}">
-          <VImg :src="image4" class="img-style"/>
+          <img :src="image4" class="img-style"/>
         </router-link>
       </VCardItem>  
     </VCard>
