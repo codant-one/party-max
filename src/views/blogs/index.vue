@@ -1,21 +1,26 @@
 <script setup lang="ts">
 
 import { ref } from 'vue'
+import { useMiscellaneousStores } from '@/stores/miscellaneous' 
 import blogsCard from '@/components/blogs/blogCard.vue'
 import blogSearchCard from '@/components/blogs/blogSearchCard.vue'
-import { useMiscellaneousStores } from '@/stores/miscellaneous' 
+import Loader from '@/components/common/Loader.vue'
 
-const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 const blogsStores = useMiscellaneousStores()
 
 const blogs = ref([])
 const categories = ref([])
+const isLoading = ref(true)
 
 const fetchData = async () => {
+  isLoading.value = true
+  
   let response = await blogsStores.blogs()
     
   blogs.value = response.blogs
   categories.value = response.categories
+  
+  isLoading.value = false  
 }
 
 fetchData()
@@ -24,6 +29,8 @@ fetchData()
 
 <template>
   <VContainer class="mt-10">
+    <Loader :isLoading="isLoading"/>
+    <!-- slider -->
     <VRow class="d-flex justify-center">
       <VCol cols="7" >
          <blogsCard
