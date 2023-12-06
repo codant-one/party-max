@@ -29,9 +29,14 @@ watchEffect(() => {
         description.value = props.blog.description
         image.value = props.blog.image
         user.value = props.blog.user
+        slug.value = props.blog.slug
         dateBlog.value = props.blog.date
     }
 })
+
+const detail = () => {
+    router.push({ name : 'dashboard-products-products-edit-id', params: { slug: slug } })
+}
 
 </script>
 
@@ -58,14 +63,23 @@ watchEffect(() => {
             {{ description }}
         </VCardText>
 
-        <VBtn
-            variant="plain"
-            append-icon="mdi-arrow-right"
-            color="#0A1B33"
-            text="Leer más"
-            class="text-none text-justify description-text px-0 mb-2"
+        <router-link 
+            :to="{
+                name: 'blogDetail',
+                params: {
+                    slug: slug
+                }
+            }"
         >
-        </VBtn>
+            <VBtn
+                variant="plain"
+                append-icon="mdi-arrow-right"
+                color="#0A1B33"
+                text="Leer más"
+                class="text-none text-justify description-text px-0 mb-2"
+            
+            />
+        </router-link>
     </VCard>
 </template>
 

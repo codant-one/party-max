@@ -26,12 +26,10 @@ async function fetchData() {
     bg = register
     repeat = 'no-repeat'
     size = 'cover'
-  } 
-  else if(route.name==='blogs')
-  {
+  } else if(route.name === 'blogs' || route.name === 'blogDetail') {
     bg = blogs
     size = 'contain'
-  }else 
+  } else 
     bg = ''
 
   backgroundStyle.value = {
