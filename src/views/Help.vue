@@ -86,7 +86,7 @@ const setFocus = async(category) => {
         cols="12"
         sm="12"
         lg="12"
-        class="position-relative mt-3"
+        class="position-relative mt-3 mb-15"
       >
         <FaqsCategories 
           v-for="category in categories"
