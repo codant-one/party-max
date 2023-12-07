@@ -72,7 +72,7 @@ import icon4 from '@assets/icons/icon-password.svg';
                             <span class="p-client text-left">Mantendrás tu cuenta protegida.</span>
                         </div>
                     </VCol>
-                    <VCol cols="12" class="mb-5">
+                    <VCol cols="12" class="mb-1">
                         <v-text-field
                             label="Password"
                             type="password"
@@ -80,10 +80,24 @@ import icon4 from '@assets/icons/icon-password.svg';
                             variant="outlined"
                         />
                     </VCol>
-                    <VCol cols="12">
-                        <v-checkbox 
-                            label="Acepto los Términos y condiciones y autorizo el uso de mis datos de acuerdo a la Declaración de Privacidad." 
-                        />
+                    <VCol cols="12" class="d-flex text-start p-0 mt-8">
+                        <VCheckbox />
+                        <div class="text1 ms-5 mt-2">
+                            Acepto los 
+                            <router-link
+                                :to="{ name: 'home' }"
+                                class="text2"
+                            >
+                                Términos y condiciones
+                            </router-link>
+                            y autorizo el uso de mis datos de acuerdo a la 
+                            <router-link
+                                :to="{ name: 'home' }"
+                                class="text2"
+                            >
+                                Declaración de Privacidad.
+                            </router-link>
+                        </div>
                     </VCol>
                 </VRow>
             </VCardItem>
@@ -103,6 +117,23 @@ import icon4 from '@assets/icons/icon-password.svg';
 </template>
 
 <style scoped>
+
+    .text1 {
+        color: #0A1B33 !important;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 18px;
+    }
+
+    .text2 {
+        color: #999;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 18px;
+        text-decoration: none; 
+    }
 
     .button-hover:hover {
         background-color: #FF27B3 !important;

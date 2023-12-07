@@ -20,10 +20,24 @@ const redirect = (name) => {
                 Para crear tu cuenta te pediremos <br> algunos datos
             </VCardText>
             <VCardText class="text-register p-0 mt-4">Solo te tomará unos minutos.</VCardText>
-            <VCardText class="text-start p-0 mt-8">
-                <VCheckbox
-                    class="px-10" 
-                    label="Acepto los Términos y condiciones y autorizo el uso de mis datos de acuerdo a la Declaración de Privacidad."></VCheckbox>
+            <VCardText class="d-flex text-start p-0 mt-8">
+                <VCheckbox class="px-6" />
+                <div class="pr-10 text1">
+                    Acepto los 
+                    <router-link
+                        :to="{ name: 'home' }"
+                        class="text2"
+                    >
+                        Términos y condiciones
+                    </router-link>
+                    y autorizo el uso de mis datos de acuerdo a la 
+                    <router-link
+                        :to="{ name: 'home' }"
+                        class="text2"
+                    >
+                        Declaración de Privacidad.
+                    </router-link>
+                </div>
             </VCardText>
             <VCardText class="d-block align-center text-center justify-content-center py-2">
                     <VBtn
@@ -55,6 +69,22 @@ const redirect = (name) => {
 
 <style scoped>
 
+    .text1 {
+        color: #0A1B33 !important;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 18px;
+    }
+
+    .text2 {
+        color: #999;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 18px;
+        text-decoration: none; 
+    }
     .more {
         text-align: end;
         display: contents;
