@@ -45,7 +45,12 @@ watchEffect(() => {
                 </VCardText>
                 
                 <VCardText class="w-75">
-                    <span class="d-block text_2 tw-text-tertiary title-product">{{ name }}</span>
+                    <span v-if="name.length > 40" class="d-block text_2 tw-text-tertiary title-product">
+                        {{ name.slice(0, 30) + '...'}}
+                    </span>
+                    <span v-else class="d-block text_2 tw-text-tertiary title-product">
+                        {{ name }}
+                    </span>
                     <div class="d-flex mt-1">
                         <span class="text_1">${{ price }}</span>
                         <span class="text_2 ms-2">${{ price_for_sale }}</span>
@@ -63,8 +68,8 @@ watchEffect(() => {
     }
 
     .border-img {
-        width: 60px;
-        height: 60px;
+        width: 70px;
+        height: 70px;
         border-radius: 8px !important;
         border: 1px solid #D9EEF2;
         padding: 2px !important;

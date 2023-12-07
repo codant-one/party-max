@@ -37,7 +37,7 @@ watchEffect(() => {
 <template>
     <router-link to="/products" class="tw-no-underline zoom-product">
         <VCard class="no-shadown card-information p-0" :width="230">
-            <VCardText class="border-img">
+            <VCardText class="border-img ms-1">
                 <VImg 
                     :width="230"
                     :src="baseURL + image" 
@@ -80,7 +80,7 @@ watchEffect(() => {
     }
 
     .border-img {
-        width: 200px;
+        width: 210px;
         height: 200px;
         border-radius: 16px !important;
         border: 1px solid #D9EEF2;
