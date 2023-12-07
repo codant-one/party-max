@@ -175,7 +175,7 @@ async function fetchData() {
             <v-window v-model="tab">
                 <v-window-item value="0">
                     <VRow no-gutters>
-                        <VCol cols="12" md="3" v-for="(product, i) in products">
+                        <VCol cols="12" md="3" v-for="(product, i) in products" class="mb-7">
                             <Product3
                                 :key="i"
                                 :product="product"
