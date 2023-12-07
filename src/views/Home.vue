@@ -328,7 +328,7 @@ const tab = ref('0')
           <VCol cols="12" md="9">
             <VImg :src="banner_5" class="border-img"/>
             <VCard class="no-shadown">
-              <VTabs v-model="tab" class="mt-7">
+              <VTabs v-model="tab" class="mt-7"  color="pink-accent-3">
                 <VTab value="0">Agregados recientemente</VTab>
                 <VTab value="1">Lo  mejor de lo mejor</VTab>
               </VTabs>
@@ -630,4 +630,9 @@ const tab = ref('0')
   .img-galery:hover{
     filter: saturate(180%)!important;
   }
+
+  .v-tab:hover::v-deep(button) {
+    background-color: teal !important;
+  }
+
 </style>
