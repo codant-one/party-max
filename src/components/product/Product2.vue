@@ -68,8 +68,8 @@ watchEffect(() => {
     }
 
     .border-img {
-        width: 60px;
-        height: 60px;
+        width: 70px;
+        height: 70px;
         border-radius: 8px !important;
         border: 1px solid #D9EEF2;
         padding: 2px !important;
