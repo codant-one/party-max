@@ -10,10 +10,11 @@ import Products from '@/views/products/index.vue'
 import Suppliers from '@/views/Suppliers.vue'
 import Services from '@/views/Services.vue'
 import Register from '@/views/clients/register.vue'
-import Typeclient from '@/views/clients/typeclient.vue'
+import TypeClient from '@/views/clients/type_client.vue'
 import FormClient from '@/views/clients/form_client.vue'
 import FormSupplier from '@/views/clients/form_supplier.vue'
 import LoginClient from '@/views/clients/login_client.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -75,9 +76,9 @@ const router = createRouter({
     },
 
     {
-      path: '/typeclient',
-      name: 'typeclient',
-      component: Typeclient
+      path: '/type_client',
+      name: 'type_client',
+      component: TypeClient
     },
     {
       path: '/register/form_client',

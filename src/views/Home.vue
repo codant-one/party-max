@@ -380,7 +380,7 @@ const tab = ref('0')
               </div>
             </VCardText>
             <VCardText class="p-0 more">
-              <router-link to="/products" class="d-flex tw-no-underline hover:tw-text-yellow  hover-icon-arrow-right justify-content-end">
+              <router-link to="/products" class="d-flex tw-no-underline hover:tw-text-yellow hover-icon-arrow-right justify-content-end">
                 <span class="ms-5">Ver más</span>
                 <arrow_right class="ms-2" />
               </router-link>

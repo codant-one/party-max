@@ -58,7 +58,7 @@ const redirect = (name) => {
                     </VBtn>
             </VCardText>    
             <VCardText class="px-0 more">
-              <router-link to="/typeclient" class="d-flex my-6 tw-no-underline hover:tw-text-primary hover-icon-arrow-right justify-content-center">
+              <router-link to="/type_client" class="d-flex my-6 tw-no-underline hover:tw-text-primary hover-icon-arrow-right justify-content-center">
                 <span class="ms-5">Ya tengo una cuenta</span>
                 <arrow_right class="ms-2" />
               </router-link>
