@@ -46,7 +46,7 @@ watchEffect(() => {
                 
                 <VCardText class="w-75">
                     <span v-if="name.length > 40" class="d-block text_2 tw-text-tertiary title-product">
-                        {{ name.slice(0, 40) + '...'}}
+                        {{ name.slice(0, 30) + '...'}}
                     </span>
                     <span v-else class="d-block text_2 tw-text-tertiary title-product">
                         {{ name }}
