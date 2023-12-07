@@ -42,7 +42,18 @@
                 <p class="line-p"><span class="text-footer">Conoce todas nuestras ofertas</span> <br>
                 <span class="subtext-footer">Regístrate ahora a nuestro newsletter.</span></p>
               </VCol> 
-              <VCol cols="12" md="7" class="d-flex align-center">
+              <VCol cols="12" md="7" class="d-flex align-center dark" v-if="isProduct">  
+                <VTextField
+                  class="me-24"
+                  placeholder="Email"
+                  flat
+                  variant="solo">
+                  <template v-slot:append-inner>
+                    <VBtn class="tw-bg-white tw-text-primary h-100 search-button button-hover">Suscríbete</VBtn>
+                  </template>
+                </VTextField>
+              </VCol> 
+              <VCol cols="12" md="7" class="d-flex align-center" v-else>
                 <VTextField
                   class="me-24"
                   placeholder="Email"
@@ -231,6 +242,13 @@
     min-height: 0;
   }
 
+  .dark .v-text-field::v-deep(.v-field) { 
+    border-radius: 100px;
+    border: 1px solid #0A1B33 !important;
+    height: 43px;
+    background-color: #FF0090;
+    border: 1.5px solid #FFFFFF !important;
+  }
 
   .v-text-field::v-deep(.v-field) { 
     border-radius: 100px;
@@ -238,13 +256,28 @@
     height: 43px;
   } 
 
+  .dark .v-text-field::v-deep(::placeholder) { 
+    color: #FFFFFF !important;
+    opacity: inherit;
+  }
+
   .v-text-field::v-deep(::placeholder) { 
     color: #0A1B33 !important;
     opacity: inherit;
   }
 
+  .dark .v-text-field::v-deep(input) { 
+    padding-top: 0 !important;
+    color: #FFFFFF !important;
+  }
+
   .v-text-field::v-deep(input) { 
     padding-top: 0 !important;
+  }
+  
+  .dark .button-hover:hover {
+    background-color: #E2F8FC !important;
+    box-shadow: 0px 0px 24px 0px #F3FCFE;
   }
 
   .button-hover:hover {

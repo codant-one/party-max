@@ -164,6 +164,7 @@
 
   .v-text-field::v-deep(input) { 
     padding-top: 0 !important;
+    color: #FF0090 !important;
   }
 
   .v-select::v-deep(.v-field__input) {
