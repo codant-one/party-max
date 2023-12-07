@@ -37,7 +37,7 @@
   <VFooter class="text-center d-flex flex-column bg p-0">
     <div class="container-footer" :class="isProduct ? 'tw-bg-primary text-colorfooter' : ''">
         <VContainer class="my-10">
-            <VRow no-gutters  class="tw-text-tertiary">
+            <VRow no-gutters class="tw-text-tertiary">
               <VCol cols="12" md="5" class="d-flex text-start">
                 <p class="line-p"><span class="text-footer">Conoce todas nuestras ofertas</span> <br>
                 <span class="subtext-footer">Regístrate ahora a nuestro newsletter.</span></p>

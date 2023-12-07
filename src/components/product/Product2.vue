@@ -45,7 +45,12 @@ watchEffect(() => {
                 </VCardText>
                 
                 <VCardText class="w-75">
-                    <span class="d-block text_2 tw-text-tertiary title-product">{{ name }}</span>
+                    <span v-if="name.length > 40" class="d-block text_2 tw-text-tertiary title-product">
+                        {{ name.slice(0, 40) + '...'}}
+                    </span>
+                    <span v-else class="d-block text_2 tw-text-tertiary title-product">
+                        {{ name }}
+                    </span>
                     <div class="d-flex mt-1">
                         <span class="text_1">${{ price }}</span>
                         <span class="text_2 ms-2">${{ price_for_sale }}</span>

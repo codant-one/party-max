@@ -13,6 +13,7 @@
   const homeStores = useHomeStores()
 
   const categories = ref(null)
+  const categoriesSearch = ref('Todos')
 
   watchEffect(fetchData)
 
@@ -36,14 +37,14 @@
             </router-link>
             <VLayout>
               <VSelect
+                v-model="categoriesSearch"
                 class="ms-8 pt-4 tw-text-primary w-15"
-                placeholder="Todos"
                 variant="plain"
                 menu-icon="mdi-chevron-down"
-                :items="['Fiesta Infantiles', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                :items="['Todos', 'Fiesta Infantiles', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
               />
               <VTextField
-                class="me-24 pt-4 w-100"
+                class="me-24 pt-4 w-100x"
                 placeholder="Quiero..."
                 :color="color"
                 flat
@@ -100,6 +101,9 @@
 
 <style scoped>
 
+  .w-100x {
+    width: 500px;
+  }
   .v-toolbar::v-deep(.mdi-menu) { 
     font-size: 30px !important;
   }
@@ -124,7 +128,7 @@
   }
 
   .w-15 {
-    width: 15%;
+    width: auto;
   }
 
   .w-30 {
@@ -168,8 +172,8 @@
   }
 
   .v-select::v-deep(.v-field__input) {
-    padding-top: 10%;
-    padding-left: 25%;
+    padding-top: 0;
+    padding-left: 20%;
    }
 
    .v-select::v-deep(.v-field__append-inner) {
