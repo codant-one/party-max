@@ -140,15 +140,15 @@ const tab = ref('0')
           </VList>
         </VSheet>
       </VCol>
-      <VCol cols="12" md="9">
-        <VRow no-gutters class="transparent">
-          <VCol cols="12" md="7">        
+      <VCol cols="12" md="9" class="tw-bg-white border-categories">
+        <VRow no-gutters>
+          <VCol cols="12" md="7" class="pslider">        
             <VCarousel 
               cycle
               color="white"
               :show-arrows="false" 
               hide-delimiter-background
-              height="393px">
+              height="389px">
               <VCarouselItem
                 v-for="(item,i) in sliders"
                 :key="i"
@@ -157,9 +157,9 @@ const tab = ref('0')
               />
             </VCarousel>
           </VCol>
-          <VCol cols="12" md="5">
+          <VCol cols="12" md="5" class="pslider">
             <VRow no-gutters class="transparent">
-              <VCol cols="12" md="6">
+              <VCol cols="12" md="6" class="pslider2">
                 <router-link 
                   :to="{
                     name: 'categories',
@@ -171,7 +171,7 @@ const tab = ref('0')
                   <VImg :src="Plaza_1" class="img-galery"/>
                 </router-link>
               </VCol>
-              <VCol cols="12" md="6">
+              <VCol cols="12" md="6" class="pslider2">
                 <router-link
                   :to="{
                     name: 'categories',
@@ -183,7 +183,7 @@ const tab = ref('0')
                   <VImg :src="Plaza_2" class="border-top-right img-galery"/>
                 </router-link>
               </VCol>
-              <VCol cols="12">
+              <VCol cols="12" class="pslider3">
                 <router-link
                   :to="{
                     name: 'categories',
@@ -197,19 +197,19 @@ const tab = ref('0')
               </VCol>
             </VRow>
           </VCol>
-          <VCol cols="12" md="7">
+          <VCol cols="12" md="7" class="pslider4">
             <router-link to="/services">
-              <VImg :src="Banner" class="img-galery"  height="197" cover />
+              <VImg :src="Banner" class="img-galery"  height="192" cover />
             </router-link>
           </VCol>
-          <VCol cols="12" md="5">
+          <VCol cols="12" md="5" class="pslider4">
             <VRow no-gutters class="transparent">
-              <VCol cols="12" md="6">
+              <VCol cols="12" md="6" class="pslider2">
                 <router-link to="/services">
                   <VImg :src="Plaza_4" class="img-galery"/>
                 </router-link>
               </VCol>
-              <VCol cols="12" md="6">
+              <VCol cols="12" md="6" class="pslider2">
                 <router-link to="/services">
                   <VImg :src="Plaza_5" class="border-bottom-right img-galery"/>
                 </router-link>
@@ -502,7 +502,25 @@ const tab = ref('0')
 </template>
 
 <style scoped>
+  .pslider {
+    padding: 3px 1px !important;
+  }
 
+  .pslider2 {
+    padding: 0 2px 4px 2px !important;
+  }
+
+  .pslider3 {
+    padding: 0 2px !important;
+  }
+  .pslider4 {
+    padding: 1px 1px 0 1px!important;
+  }
+
+  .border-categories {
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+  }
   .more {
     text-align: end;
     display: contents;
@@ -554,7 +572,7 @@ const tab = ref('0')
   }
 
   .list {
-    min-height: 59px;
+    min-height: 59.2px;
   }
   .transparent {
     background: transparent !important;
@@ -587,33 +605,29 @@ const tab = ref('0')
 
   .img-zoom {
     transition: transform ease-in-out 0.3s;
-}
+  }
 
-.img-zoom:hover{ 
+  .img-zoom:hover{ 
+      transform: scale(1.1);
+  }
+
+  .img-zoom:hover span{ 
+      color: #FFC549!important;
+  }
+
+  .zoom {
+    transition: transform ease-in-out 0.3s;
+  }
+
+  .zoom:hover {
     transform: scale(1.1);
-}
+  }
 
-.img-zoom:hover span{ 
-    color: #FFC549!important;
-}
+  .zoom:hover span{
+    color: #FF0090!important;
+  }
 
-.zoom {
-  transition: transform ease-in-out 0.3s;
-}
-
-.zoom:hover {
-  transform: scale(1.1);
-}
-
-.zoom:hover span{
-  color: #FF0090!important;
-}
-
-.img-galery:hover{
-  filter: saturate(180%)!important;
-}
-
-
-
-
+  .img-galery:hover{
+    filter: saturate(180%)!important;
+  }
 </style>
