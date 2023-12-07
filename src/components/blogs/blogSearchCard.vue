@@ -18,23 +18,25 @@ const props = defineProps({
     <VCard class="text-justify card-header px-0 card-information no-shadown">
         <VCardTitle class="text-justify title-text px-41 py-7">
             Buscar
+            <VDivider class="mb-2 mt-4" />
         </VCardTitle>
 
-        <VCardText class="d-block justify-items-center px-41"> 
-            <VDivider class="mb-2"/>
+        <VCardText class="d-flex justify-items-center px-41"> 
+            
             <VTextField
                 class="input-search ps-4"
                 variant="plain"
                 :hide-details=true
                 :center-affix=true
                 density="compact"
+                style="height:55px"
             />
             <VBtn
                 variant="flat"
                 color="#0A1B33"
                 text="Buscar"
                 class="button-search"
-                min-height="100%"
+                min-height="55px"
             />
         </VCardText>
 
@@ -49,6 +51,7 @@ const props = defineProps({
             item-value="id"
             base-color="#999999"
             class="px-41"
+            style="padding:30px"
         />
 
         <VDivider class="mt-4 mb-4" />

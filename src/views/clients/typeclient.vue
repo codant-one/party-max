@@ -22,33 +22,35 @@ import arrow_right from '@assets/icons/arrow-right.svg';
                 </VCardItem>
 
                 <VCardItem class="d-flex client-card mt-4">
-                    <VRow class="text-center d-flex align-center">
-                       <VCol cols="4">
-                        <img :src="icon1" class="me-3 ms-4"/>
-                       </VCol> 
-                       <VCol cols="5">
-                        <span class="text-client">Cliente</span>
-                       </VCol>
-                       <VCol cols="3">
-                        <img :src="arrow_right" class="me-3 ms-4"/>    
-                       </VCol>  
-                    </VRow>
-                    
+                    <router-link to="/login/client" class="tw-no-underline hover:tw-text-primary link-typeclient">
+                        <VRow class="text-center d-flex align-center">
+                        <VCol cols="4">
+                            <img :src="icon1" class="me-3 ms-4"/>
+                        </VCol> 
+                        <VCol cols="5">
+                            <span class="text-client">Cliente</span>
+                        </VCol>
+                        <VCol cols="3">
+                            <img :src="arrow_right" class="me-3 ms-4"/>    
+                        </VCol>  
+                        </VRow>
+                    </router-link>
                 </VCardItem> 
                 
                 <VCardItem class="d-flex client-card mt-4">
-                    <VRow class="text-center d-flex align-center">
-                       <VCol cols="4">
-                        <img :src="icon1" class="me-3 ms-4"/>
-                       </VCol> 
-                       <VCol cols="5">
-                        <span class="text-client">Proveedor</span>
-                       </VCol>
-                       <VCol cols="3">
-                        <img :src="arrow_right" class="me-3 ms-4"/>    
-                       </VCol>  
-                    </VRow>
-                    
+                    <router-link to="/typeclient" class="tw-no-underline hover:tw-text-primary link-typeclient">
+                        <VRow class="text-center d-flex align-center row-typeclient">
+                        <VCol cols="4">
+                            <img :src="icon2" class="me-3 ms-4"/>
+                        </VCol> 
+                        <VCol cols="5">
+                            <span class="text-client">Proveedor</span>
+                        </VCol>
+                        <VCol cols="3">
+                            <img :src="arrow_right" class="me-3 ms-4"/>    
+                        </VCol>  
+                        </VRow>
+                    </router-link>
                 </VCardItem>  
                 
             </VCard>
@@ -124,4 +126,8 @@ import arrow_right from '@assets/icons/arrow-right.svg';
 {
     margin: auto;
 }
+
+
+
+
 </style>

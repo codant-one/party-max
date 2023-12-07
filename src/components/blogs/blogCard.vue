@@ -76,7 +76,7 @@ const detail = () => {
                 append-icon="mdi-arrow-right"
                 color="#0A1B33"
                 text="Leer más"
-                class="text-none text-justify description-text px-0 mb-2"
+                class="text-none text-justify description-text px-0 mb-2 tw-text-tertiary"
             
             />
         </router-link>

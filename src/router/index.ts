@@ -13,7 +13,7 @@ import Register from '@/views/clients/register.vue'
 import Typeclient from '@/views/clients/typeclient.vue'
 import FormClient from '@/views/clients/form_client.vue'
 import FormSupplier from '@/views/clients/form_supplier.vue'
-
+import LoginClient from '@/views/clients/login_client.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -88,6 +88,12 @@ const router = createRouter({
       path: '/register/form_supplier',
       name: 'form_supplier',
       component: FormSupplier
+    },
+
+    {
+      path: '/login/client',
+      name: 'login_client',
+      component: LoginClient
     },
   ]
 })
