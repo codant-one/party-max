@@ -8,6 +8,11 @@ const props = defineProps({
     readonly: {
         type: Boolean,
         required: true
+    },
+    bg: {
+        type: String,
+        default: 'tw-bg-white',
+        required: false
     }
 })
 
@@ -45,7 +50,7 @@ watchEffect(() => {
             }
         }"
         class="tw-no-underline zoom-product">
-        <VCard class="no-shadown card-information p-0" :width="230">
+        <VCard class="no-shadown card-information p-0" :width="230" :class="props.bg">
             <VCardText class="border-img ms-1">
                 <VImg 
                     :width="230"
@@ -99,6 +104,7 @@ watchEffect(() => {
         border-radius: 16px !important;
         border: 1px solid #D9EEF2;
         padding: 10px !important;
+        background-color: white;
     }
 
     .zoom-product  {

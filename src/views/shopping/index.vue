@@ -1,11 +1,14 @@
 <script setup>
+
 import { ref } from 'vue'
 import { useHomeStores } from '@/stores/home'
 import Loader from '@/components/common/Loader.vue'
 import Product1 from '@/components/product/Product1.vue'
+import router from '@/router'
 
 const homeStores = useHomeStores()
 const data = ref(null)
+const bg = ref('tw-bg-cyan')
 
 const isLoading = ref(true)
 
@@ -20,6 +23,11 @@ async function fetchData() {
  
   isLoading.value = false
 }
+
+const redirect = (name) => {
+    router.push({ name : name})
+}
+
 </script>
 
 
@@ -78,11 +86,10 @@ async function fetchData() {
                             <VBtn
                             variant="flat"
                             width="100%"
-                            :height="auto"
                             style="border-radius:32px;"
                             class="btn-register tw-text-white tw-bg-primary button-hover mt-2"
-                            @click="redirect('form_supplier')">
-                            Continuar compra
+                            @click="redirect('shopping_delivery')">
+                                Continuar compra
                             </VBtn>
                         </VCol>
 
@@ -108,12 +115,13 @@ async function fetchData() {
            
            <VCol cols="12">
                 <VCard class="mt-1 no-shadown card-information p-0" style="background:none;">
-                    <VCardText class="px-7 mt-3 mb-3 d-flex align-items-stretch justify-content-between" v-if="data">
+                    <VCardText class="px-0 mt-3 mb-3 d-flex align-items-stretch justify-content-between" v-if="data">
                         <Product1 
-                        v-for="(product, i) in data.recommendations"
-                        :key="i"
-                        :product="product"
-                        :readonly="true"/>
+                            v-for="(product, i) in data.recommendations"
+                            :key="i"
+                            :product="product"
+                            :readonly="true"
+                            :bg="bg"/>
                     </VCardText> 
                 </VCard> 
            </VCol>
@@ -123,114 +131,115 @@ async function fetchData() {
 </template>
 
 <style scoped>
-.card-products
-{
-    background-color:#FFFFFF;
-    padding:16px 32px;
-    border-radius: 24px;
-}
 
-.card-buy
-{
-    background-color:#FFFFFF;
-    padding:24px 32px;
-    border-radius: 24px;
-}
+    .button-hover:hover {
+        background-color: #FF27B3 !important;
+        box-shadow: 0px 0px 24px 0px #FF27B3;
+    }
 
-.title-card{
-    color: #0A1B33;
-    font-size: 32px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-}
+    .card-products {
+        background-color:#FFFFFF;
+        padding:16px 32px;
+        border-radius: 24px;
+    }
 
-.subtitle-card{
-    color: #0A1B33;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-}
-.row-cardp
-{
-    border-bottom: 1px solid #D9EEF2;
-    border-top: 1px solid #D9EEF2;
-    margin-top:16px;
-    height:100px;
-    padding: 32px;
-}
-.row-cardp2
-{
-    border-bottom: 1px solid #D9EEF2;
-    height:100px;
-    padding: 32px;
+    .card-buy {
+        background-color:#FFFFFF;
+        padding:24px 32px;
+        border-radius: 24px;
+    }
 
-}
-.row-cardp3
-{
-    padding: 16px 32px;
-}
+    .title-card {
+        color: #0A1B33;
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+    }
 
-.row-cardp3 span
-{
-    color: #FF0090;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-}
+    .subtitle-card {
+        color: #0A1B33;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+    }
 
-.row-cardp3 h4
-{
-    color:#0A1B33;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-}
-.row-buy
-{
-    margin-top:24px;
-    border-top: 1px solid #D9EEF2;
-}
+    .row-cardp {
+        border-bottom: 1px solid #D9EEF2;
+        border-top: 1px solid #D9EEF2;
+        margin-top:16px;
+        height:100px;
+        padding: 32px;
+    }
 
-.row-buy span
-{
-    color: #0A1B33;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 16px;
-}
+    .row-cardp2 {
+        border-bottom: 1px solid #D9EEF2;
+        height:100px;
+        padding: 32px;
 
-.row-buy h4
-{
-    color:#0A1B33;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-}
+    }
 
-.row-recomendados
-{
-    padding: 16px 48px;
-    margin-top:16px;
-}
-.row-recomendados h3{
-    color:#0A1B33;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 28.8px;
-}
+    .row-cardp3 {
+        padding: 16px 32px;
+    }
 
-.row-recomendados span{
-    color:#0A1B33;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 14px;
-}
+    .row-cardp3 span {
+        color: #FF0090;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+
+    .row-cardp3 h4 {
+        color:#0A1B33;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+    }
+
+    .row-buy {
+        margin-top:24px;
+        border-top: 1px solid #D9EEF2;
+    }
+
+    .row-buy span {
+        color: #0A1B33;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+    }
+
+    .row-buy h4 {
+        color:#0A1B33;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+    }
+
+    .row-recomendados {
+        padding: 16px;
+        margin-top:16px;
+    }
+
+    .row-recomendados h3 {
+        color:#0A1B33;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 28.8px;
+    }
+
+    .row-recomendados span {
+        color:#0A1B33;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 14px;
+    }
+
 </style>

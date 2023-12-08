@@ -109,14 +109,13 @@ import { ref } from 'vue'
 
                 <VCol cols="12" class="text-right">
                     <VBtn
-                            variant="flat"
-                            width="25%"
-                            :height="auto"
-                            style="border-radius:32px;"
-                            class="btn-register tw-text-white tw-bg-primary button-hover mt-2"
-                            @click="redirect('shopping_delivery')">
-                            Continuar
-                            </VBtn>
+                        variant="flat"
+                        width="25%"
+                        style="border-radius:32px;"
+                        class="btn-register tw-text-white tw-bg-primary button-hover mt-2"
+                        @click="redirect('shopping_delivery')">
+                        Continuar
+                    </VBtn>
                 </VCol>
 
             </VCol>

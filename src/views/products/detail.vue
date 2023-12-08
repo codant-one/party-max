@@ -68,7 +68,15 @@ async function fetchData() {
                 IMAGEN
             </VCol>
             <VCol cols="12" md="7">
-              INFO
+              <router-link 
+                :to="{
+                  name:'shopping_cart'
+                }"
+                class="link-button px-10">
+                <VBtn class="mt-7 mb-5 tw-bg-primary tw-text-white button-product" rounded="xl">
+                  Agregar al carrito
+                </VBtn>
+              </router-link>
             </VCol>
           </VRow>
         </VCardText>  
@@ -78,6 +86,16 @@ async function fetchData() {
 </template>
 
 <style scoped>
+  .button-product {
+    font-size: 16px!important;
+    font-weight: 700;
+    padding: 24px!important;
+  }
+
+  .button-product:hover {
+    background-color: #FF27B3 !important;
+    box-shadow: 0px 0px 24px 0px #FF27B3;
+  }
   .breadcumb {
     height: 55px !important;
   }
