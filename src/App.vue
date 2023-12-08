@@ -20,7 +20,7 @@ async function fetchData() {
 
   if(route.name === 'home')
     bg = home
-  else if(route.name === 'categories')
+  else if(route.name === 'categories'||route.name==='shopping_cart')
     bg = categories
   else if(route.name === 'register'|| route.name === 'typeclient'|| route.name === 'form_client'|| route.name === 'form_supplier'||route.name==='login_client') {
     bg = register
@@ -29,7 +29,7 @@ async function fetchData() {
   } else if(route.name === 'blogs' || route.name === 'blogDetail') {
     bg = blogs
     size = 'contain'
-  } else 
+  }else 
     bg = ''
 
   backgroundStyle.value = {

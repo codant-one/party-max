@@ -14,6 +14,8 @@ import Typeclient from '@/views/clients/typeclient.vue'
 import FormClient from '@/views/clients/form_client.vue'
 import FormSupplier from '@/views/clients/form_supplier.vue'
 import LoginClient from '@/views/clients/login_client.vue'
+import Shopping from '@/views/shopping/index.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -94,6 +96,12 @@ const router = createRouter({
       path: '/login/client',
       name: 'login_client',
       component: LoginClient
+    },
+
+    {
+      path: '/shopping/cart',
+      name: 'shopping_cart',
+      component: Shopping
     },
   ]
 })

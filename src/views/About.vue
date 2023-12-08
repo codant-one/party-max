@@ -2,6 +2,8 @@
 
 import { ref } from 'vue'
 import default_image from '@/assets/images/default_about.png'
+import festinabout from '@/assets/images/festin-aboutus.jpg'
+import aboutimage from '@/assets/images/aboutus1.jpg'
 import bg_clients from '@/assets/images/register.jpg'
 import client_about from '@/assets/images/client-about.png'
 const backgroundStyle = ref({})
@@ -24,19 +26,19 @@ backgroundStyle.value = {
     
     <VRow align="center" no-gutters>
       <VCol cols="12" md="6" class="align-left">
-        <h1  class="tw-text-primary title-about">Venenatis eu risus fermentum quam.</h1>
+        <h1  class="tw-text-primary title-about">Donde la magia de las celebraciones crea momentos inolvidables</h1>
 
         <p class="text-about">
-          Venenatis eu risus fermentum quam. Lacus leo arcu molestie volutpat. Facilisis vel enim tincidunt malesuada id elit 
-          leo viverra egestas. Purus sed tincidunt a dui amet urna sodales aliquam vitae. Mattis ut tristique arcu non arcu. 
-          Turpis risus sed enim sed id adipiscing integer consectetur suspendisse. Tortor scelerisque varius commodo felis nibh.
+          En el corazón de PartyMax reside el sueño compartido de tres mujeres emprendedoras que anhelaban llevar 
+          la magia festiva a cada rincón de Colombia. Lo que comenzó como una modesta tienda de productos evolucionó a una
+           plataforma en línea, surgiendo de la necesidad de ofrecer una variedad completa de servicios para celebraciones.
         </p>
       </VCol>
       <VCol cols="12" md="6" class="align-right">
         <v-img
         class="bg-white align-imager"
         width="auto"
-        :src="default_image"
+        :src="aboutimage"
         ></v-img>
       </VCol>
     </VRow>  
@@ -47,18 +49,18 @@ backgroundStyle.value = {
         <v-img
         class="bg-white align-imagel"
         width="auto"
-        :src="default_image"
+        :src="festinabout"
         ></v-img>
       </VCol>
 
       <VCol cols="12" md="6" class="align-left">
         <p class="text-about">
-          Lorem ipsum dolor sit amet consectetur. Imperdiet maecenas sit vitae eu nulla lectus mollis magna quis. 
-          Nam aliquet lorem nunc molestie scelerisque quisque eu. Rhoncus enim lobortis dolor porttitor. Justo platea platea 
-          ac quisque. Sed nisl id convallis cras aliquam lacus. At posuere vitae hendrerit in sed cursus magna quis.
+          A través de desafíos que se convirtieron en lecciones valiosas, PartyMax se ha transformado en un referente en la 
+          industria de eventos, comprometido en brindar experiencias excepcionales y productos de calidad que reflejen la alegría 
+          de cada celebración. Con nuestra nueva plataforma, estamos emocionados de llevar la experiencia de PartyMax a nuevos 
+          horizontes, conectando con nuestros clientes de una manera aún más cercana y memorable.
           <br><br>  
-          Venenatis eu risus fermentum quam. Lacus leo arcu molestie volutpat. Facilisis vel enim tincidunt malesuada id elit 
-          leo viverra egestas. Purus sed tincidunt a dui amet urna sodales aliquam vitae. Mattis ut tristique arcu non arcu.
+          <b>Únete a nosotros en este emocionante viaje, donde celebramos juntos cada momento especial.</b>
         </p>
       </VCol>
       
