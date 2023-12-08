@@ -1,8 +1,28 @@
 
+import type { NONAME } from 'dns';
+
 <script setup>
 import { ref } from 'vue'
+import { useHomeStores } from '@/stores/home'
+import Loader from '@/components/common/Loader.vue'
 import Product1 from '@/components/product/Product1.vue'
+
+const homeStores = useHomeStores()
 const data = ref(null)
+
+const isLoading = ref(true)
+
+watchEffect(fetchData)
+
+async function fetchData() {
+
+  isLoading.value = true
+  
+  await homeStores.fetchData()
+  data.value = homeStores.getData
+ 
+  isLoading.value = false
+}
 </script>
 
 
@@ -90,13 +110,15 @@ const data = ref(null)
            </VCol>
            
            <VCol cols="12">
-            <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data">
-                <Product1 
-                v-for="(product, i) in data.recommendations"
-                :key="i"
-                :product="product"
-                :readonly="true"/>
-            </VCardText>  
+                <VCard class="mt-1 no-shadown card-information p-0" style="background:none;">
+                    <VCardText class="px-7 mt-3 mb-3 d-flex align-items-stretch justify-content-between" v-if="data">
+                        <Product1 
+                        v-for="(product, i) in data.recommendations"
+                        :key="i"
+                        :product="product"
+                        :readonly="true"/>
+                    </VCardText> 
+                </VCard> 
            </VCol>
         </VRow>
 
