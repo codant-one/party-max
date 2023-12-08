@@ -17,6 +17,7 @@ const price_for_sale = ref(null)
 const name = ref(null)
 const store = ref(null)
 const rating = ref(null)
+const slug = ref(null)
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
@@ -27,15 +28,23 @@ watchEffect(() => {
         price.value = props.product.price
         price_for_sale.value = props.product.price_for_sale
         name.value = props.product.name
-        store.value = props.product.user.name + ' ' + props.product.user.last_name
+        store.value = props.product.user.name + ' ' + (props.product.user.last_name ?? '')
         rating.value = props.product.rating
+        slug.value = props.product.slug
     }
 })
 
 </script>
 
 <template>
-    <router-link to="/products" class="tw-no-underline zoom-product">
+    <router-link
+        :to="{
+            name: 'productDetail',
+            params: {
+                slug: slug
+            }
+        }"
+        class="tw-no-underline zoom-product">
         <VCard class="no-shadown card-information p-0" :width="230">
             <VCardText class="border-img ms-1">
                 <VImg 
@@ -44,12 +53,17 @@ watchEffect(() => {
                     cover />
             </VCardText>
             <VCardText>
-                <span class="d-block text_2 py-2 tw-text-tertiary title-product">{{ name }}</span>
+                <span v-if="name.length > 40" class="d-block text_2 py-2 tw-text-tertiary title-product">
+                    {{ name.slice(0, 30) + '...'}}
+                </span>
+                <span v-else class="d-block text_2 py-2 tw-text-tertiary title-product">
+                    {{ name }}
+                </span>
             </VCardText>
             <VCardText>
                 <span class="d-block text_2">Store: <strong>{{ store }}</strong></span>
             </VCardText>
-            <VCardText class="px-1 mt-2">
+            <VCardText class="px-1 mt-1">
                 <div class="d-flex">
                     <VRating
                         half-increments
@@ -63,7 +77,7 @@ watchEffect(() => {
                     <span class="text_2 ms-2 mt-1">02</span>
                 </div>
             </VCardText>
-            <VCardText class="mt-2">
+            <VCardText class="mt-1">
                 <div class="d-flex py-2">
                 <span class="text_1">${{ price }}</span>
                 <span class="text_2 ms-2">${{ price_for_sale }}</span>
@@ -75,6 +89,9 @@ watchEffect(() => {
 
 <style scoped>
 
+    .title-product {
+        min-height: 55px;
+    }
     .v-card-text {
         padding: 0 10px;
     }

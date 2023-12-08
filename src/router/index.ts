@@ -7,10 +7,11 @@ import About from '@/views/About.vue'
 import Help from '@/views/Help.vue'
 import Categories from '@/views/categories/index.vue'
 import Products from '@/views/products/index.vue'
+import ProductDetail from '@/views/products/detail.vue'
 import Suppliers from '@/views/Suppliers.vue'
 import Services from '@/views/Services.vue'
 import Register from '@/views/clients/register.vue'
-import Typeclient from '@/views/clients/typeclient.vue'
+import TypeClient from '@/views/clients/type_client.vue'
 import FormClient from '@/views/clients/form_client.vue'
 import FormSupplier from '@/views/clients/form_supplier.vue'
 import LoginClient from '@/views/clients/login_client.vue'
@@ -60,6 +61,11 @@ const router = createRouter({
       component: Products
     },
     {
+      path: '/products/:slug',
+      name: 'productDetail',
+      component: ProductDetail
+    },
+    {
       path: '/suppliers',
       name: 'suppliers',
       component: Suppliers
@@ -77,9 +83,9 @@ const router = createRouter({
     },
 
     {
-      path: '/typeclient',
-      name: 'typeclient',
-      component: Typeclient
+      path: '/type_client',
+      name: 'type_client',
+      component: TypeClient
     },
     {
       path: '/register/form_client',
