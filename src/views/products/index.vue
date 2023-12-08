@@ -60,14 +60,6 @@ watchEffect(fetchData)
 
 async function fetchData() {
 
-  isLoading.value = true
-
-  await homeStores.fetchData()
-    
-  data.value = homeStores.getData
-    
-  products.value = await miscellaneousStores.products()
-
   if(route.query.category) {
     const category = {
       title: formatTitle(route.query.category),
@@ -85,7 +77,15 @@ async function fetchData() {
   }
 
   bread.value.push(product_)
-  
+
+  isLoading.value = true
+
+  await homeStores.fetchData()
+    
+  data.value = homeStores.getData
+    
+  products.value = await miscellaneousStores.products()
+
   isLoading.value = false
 }
 
@@ -100,7 +100,7 @@ const  valores= [20, 40]
         <v-breadcrumbs :items="bread" />
       </VContainer>
     </VAppBar>
-    <VContainer class="mt-10">
+    <VContainer class="pt-0">
       <Loader :isLoading="isLoading"/>
       <VRow no-gutters>
         <VCol cols="12" md="3">
@@ -108,26 +108,21 @@ const  valores= [20, 40]
               <VCardItem class="p-0 text-left mb-5">
                 CATEGORÍAS
               </VCardItem> 
-              
               <v-list :items="items" class="text-left sidebar-container"></v-list>
-
           </VCard>
-
           <VCard class="mt-7 sidebar-container">
-
               <VCardItem class="p-0 text-left mb-5">
                 PROVEEDORES
               </VCardItem>
-
               <v-card-text class="text-left align-left p-0">
-                  <v-text-field
+                <v-text-field
                   density="compact"
                   variant="solo"
                   label=""
                   append-inner-icon="mdi-magnify"
                   single-line
                   hide-details
-                ></v-text-field>
+                />
               </v-card-text>
 
               <v-checkbox class="custom-check"
@@ -135,7 +130,7 @@ const  valores= [20, 40]
                 :key="index"
                 v-model="item.selected"
                 :label="item.name"
-              ></v-checkbox>
+              />
 
               <VCardItem class="p-0 text-left mt-5">
                 PRICE
@@ -157,31 +152,26 @@ const  valores= [20, 40]
               <VCardItem class="p-0 text-left mt-9">
                 REVIEW
               </VCardItem>
+
               <VCardItem class="p-0 text-left mt-5">
-
                 <v-rating
-                hover
-                :length="5"
-                :size="32"
-                :model-value="3"
-                active-color="primary"
+                  hover
+                  :length="5"
+                  :size="32"
+                  :model-value="3"
+                  active-color="primary"
                 /> 
-
               </VCardItem>
               
             </VCard>  
         </VCol> 
         
-        <VCol cols="12" md="9" class="pl-5">
-          
+        <VCol cols="12" md="9" class="pl-5"> 
           <VCard class="mt-7 menu-prod">
-
-            <VRow align="center" no-gutters>
-
+            <VRow no-gutters class="align-center">
               <VCol cols="6" class="text-left">
                 <span>8 Productos</span>
               </VCol>
-
               <VCol cols="4" class="text-left">
                 <v-select class="my-custom-select"
                   clearable
@@ -190,7 +180,6 @@ const  valores= [20, 40]
                   variant="outlined"
                 ></v-select>
               </VCol> 
-
               <VCol cols="2"  class="pl-7 d-flex align-center justify-content-between">
                 <span>Vista</span>
                 <VTabs v-model="tab" >
@@ -201,12 +190,9 @@ const  valores= [20, 40]
                       <img :src="icon2" />
                   </VTab>
               </VTabs>
-
               </VCol>  
             </VRow>
-
           </VCard> 
-          
           <VRow class="align-center row-products">
               <v-window v-model="tab">
                   <v-window-item value="0">
@@ -230,19 +216,12 @@ const  valores= [20, 40]
                       </VRow>
                   </v-window-item>
               </v-window>
-          </VRow>
-          
+          </VRow>      
         </VCol>
-
-
-      </VRow>  
-
-      
+      </VRow>      
     </VContainer>
   </section>
 </template>
-
-
 
 <style scoped>
   .breadcumb {
