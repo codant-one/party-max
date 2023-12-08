@@ -7,6 +7,7 @@ import About from '@/views/About.vue'
 import Help from '@/views/Help.vue'
 import Categories from '@/views/categories/index.vue'
 import Products from '@/views/products/index.vue'
+import ProductDetail from '@/views/products/detail.vue'
 import Suppliers from '@/views/Suppliers.vue'
 import Services from '@/views/Services.vue'
 import Register from '@/views/clients/register.vue'
@@ -57,6 +58,11 @@ const router = createRouter({
       path: '/products',
       name: 'products',
       component: Products
+    },
+    {
+      path: '/products/:slug',
+      name: 'productDetail',
+      component: ProductDetail
     },
     {
       path: '/suppliers',

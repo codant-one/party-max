@@ -17,6 +17,7 @@ const price_for_sale = ref(null)
 const name = ref(null)
 const store = ref(null)
 const rating = ref(null)
+const slug = ref(null)
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
@@ -29,13 +30,21 @@ watchEffect(() => {
         name.value = props.product.name
         store.value = props.product.user.name + ' ' + (props.product.user.last_name ?? '')
         rating.value = props.product.rating
+        slug.value = props.product.slug
     }
 })
 
 </script>
 
 <template>
-    <router-link to="/products" class="tw-no-underline zoom-product">
+    <router-link
+        :to="{
+            name: 'productDetail',
+            params: {
+                slug: slug
+            }
+        }"
+        class="tw-no-underline zoom-product">
         <VCard class="no-shadown card-information p-0" :width="230">
             <VCardText class="border-img ms-1">
                 <VImg 

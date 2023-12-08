@@ -2,7 +2,6 @@
 
 import festin_image2 from '@assets/images/festin-register.jpg';
 import icon2 from '@assets/icons/input-user.svg';
-import icon3 from '@assets/icons/Phone.svg';
 import icon4 from '@assets/icons/icon-password.svg';
 
 import router from '@/router'
@@ -10,14 +9,14 @@ import router from '@/router'
 const redirect = (name) => {
     router.push({ name : name})
 }
+
 </script>
 
 <template>
-    <VContainer class="mt-10">
-    
+    <VContainer class="mt-10">    
         <VRow no-gutters>
             <VCard
-                :width="456" 
+                :width="500" 
                 class="no-shadown card-register d-block text-center mx-auto">
                 <VImg :src="festin_image2" class="img-festin mx-auto"/>
                 <VCardText class="subtitle-register p-0">
@@ -55,21 +54,26 @@ const redirect = (name) => {
                     </VCol>
                     </VRow>
                 </VCardItem>
-                <VCardText class=" d-flex text-start p-0 mt-4 mb-4">
-                    <!--<VCheckbox
-                        label="Recordar mi cuenta"></VCheckbox>-->
-                        <span>¿Olvidaste tu contraseña?</span>
+                <VCardText class="d-flex align-center flex-wrap justify-space-between">
+                    <VCheckbox label="Recordar mi cuenta" />
+                    <router-link
+                        class="letter"
+                        :to="{ name: 'home' }"
+                    >
+                        ¿Olvidaste su contraseña?
+                    </router-link>
                 </VCardText>
-                <VCardItem>
+                <VCardText class="d-block align-center text-center justify-content-center pb-2">
                     <VBtn
-                            variant="flat"
-                            width="100%"
-                            :height="auto"
-                            class="btn-register tw-text-white tw-bg-primary button-hover mt-2"
-                            @click="redirect('form_supplier')">
-                            Iniciar sesión
+                        variant="flat"
+                        :width="288"
+                        :height="48"
+                        block
+                        class="btn-register tw-text-white tw-bg-primary button-hover"
+                    >
+                    Iniciar sesión
                     </VBtn>
-                </VCardItem>
+                </VCardText>
                   
             </VCard>
         </VRow>
@@ -79,6 +83,15 @@ const redirect = (name) => {
 
 <style scoped>
 
+    .v-checkbox::v-deep(.v-input__details) { 
+        min-height: 0 !important;
+        padding: 0 !important;
+        height: 0 !important;
+    }
+
+    .letter {
+        text-decoration: none;
+    }
     .more {
         text-align: end;
         display: contents;
