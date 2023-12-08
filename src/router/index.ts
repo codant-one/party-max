@@ -16,6 +16,7 @@ import FormClient from '@/views/clients/form_client.vue'
 import FormSupplier from '@/views/clients/form_supplier.vue'
 import LoginClient from '@/views/clients/login_client.vue'
 import Shopping from '@/views/shopping/index.vue'
+import Delivery from '@/views/shopping/form_delivery.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -108,6 +109,12 @@ const router = createRouter({
       path: '/shopping/cart',
       name: 'shopping_cart',
       component: Shopping
+    },
+
+    {
+      path: '/shopping/delivery',
+      name: 'shopping_delivery',
+      component: Delivery
     },
   ]
 })

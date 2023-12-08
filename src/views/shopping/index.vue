@@ -1,6 +1,3 @@
-
-import type { NONAME } from 'dns';
-
 <script setup>
 import { ref } from 'vue'
 import { useHomeStores } from '@/stores/home'
