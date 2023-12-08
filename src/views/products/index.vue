@@ -48,23 +48,13 @@ const formatTitle = (slug) => {
   return title;
 }
 
-const bread = ref( [
-        {
-          title: 'Home',
-          disabled: false,
-          href: '/',
-        },
-        {
-          title: formatTitle(route.query.category),
-          disabled: false,
-          href: 'categories/' + route.query.category,
-        },
-        {
-          title: 'Productos',
-          disabled: true,
-          href: '',
-        },
-      ])
+const bread = ref([
+  {
+    title: 'Home',
+    disabled: false,
+    href: '/',
+  }
+])
 
 watchEffect(fetchData)
 
@@ -78,6 +68,24 @@ async function fetchData() {
     
   products.value = await miscellaneousStores.products()
 
+  if(route.query.category) {
+    const category = {
+      title: formatTitle(route.query.category),
+      disabled: false,
+      href: 'categories/' + route.query.category,
+    }
+
+    bread.value.push(category)
+  }
+
+  const product_ = {
+    title: 'Productos',
+    disabled: true,
+    href: '',
+  }
+
+  bread.value.push(product_)
+  
   isLoading.value = false
 }
 
