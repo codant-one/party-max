@@ -25,7 +25,7 @@
   async function fetchData() {
 
     if(route.name === 'products' || route.name === 'about' || route.name === 'help' ||
-      route.name==='shopping_cart' || route.name === 'productDetail'|| route.name==='shopping_delivery')
+      route.name==='shopping_cart' || route.name === 'productDetail'|| route.name==='shopping_delivery'|| route.name==='shopping_summary')
       isProduct.value = true
     else 
       isProduct.value = false

@@ -20,7 +20,7 @@ async function fetchData() {
 
   if(route.name === 'home')
     bg = home
-  else if(route.name === 'categories'||route.name==='shopping_cart'||route.name==='shopping_delivery')
+  else if(route.name === 'categories'||route.name==='shopping_cart'||route.name==='shopping_delivery'||route.name==='shopping_summary')
     bg = categories
   else if(route.name === 'register'|| route.name === 'type_client'|| route.name === 'form_client'|| 
           route.name === 'form_supplier' || route.name === 'login_client') {
