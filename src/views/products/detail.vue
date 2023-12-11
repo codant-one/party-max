@@ -2,19 +2,29 @@
 
 import { ref } from 'vue'
 import { useMiscellaneousStores } from '@/stores/miscellaneous'
+import { useHomeStores } from '@/stores/home'
+import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/vue';
 import Loader from '@/components/common/Loader.vue'
-
+import Product1 from '@/components/product/Product1.vue'
 import whatsapp from '@assets/icons/whatsapp.svg?inline';
 import facebook from '@assets/icons/facebook2.svg?inline';
 import instagram from '@assets/icons/instagram2.svg?inline';
 import threads from '@assets/icons/threads2.svg?inline';
 import iconmayorista from '@assets/icons/Union.svg';
 import default_image from '@assets/images/default-description.png';
-const tab = ref('0')
+
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/free-mode';
+import 'swiper/css/thumbs';
+
 const route = useRoute()
 const miscellaneousStores = useMiscellaneousStores()
+const homeStores = useHomeStores()
 
 const isLoading = ref(true)
+const tab = ref('0')
 
 const bread = ref([
   {
@@ -24,8 +34,14 @@ const bread = ref([
   }
 ])
 
+const productImages = ref([])
+const currentSlide = ref(0)
+const modules = ref([FreeMode, Navigation, Thumbs])
+const thumbsSwiper = ref(null);
+
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 const data = ref(null)
+const data_ = ref(null)
 
 const title = ref(null)
 const brand = ref(null)
@@ -37,6 +53,7 @@ const store = ref(null)
 const in_stock = ref(null)
 const color = ref(null)
 const single_description = ref(null)
+const description = ref(null)
 const categories = ref([])
 const tags = ref([])
 
@@ -64,10 +81,15 @@ async function fetchData() {
 
   isLoading.value = true
 
+  await homeStores.fetchData()
+  data_.value = homeStores.getData
+
   await miscellaneousStores.getProduct(route.params.slug)
   data.value = miscellaneousStores.getData
 
   console.log('product', data.value.product)
+
+  productImages.value = data.value.product.colors[0]?.images
 
   title.value = data.value.product.name
   brand.value = data.value.product.brand.name
@@ -79,6 +101,7 @@ async function fetchData() {
   in_stock.value = data.value.product.in_stock
   color.value = data.value.product.colors[0].color.name
   single_description.value = data.value.product.single_description
+  description.value = data.value.product.description
 
   data.value.product.colors[0].categories.forEach(element => { 
     categories.value.push(element.category.name)
@@ -89,6 +112,10 @@ async function fetchData() {
   });
  
   isLoading.value = false
+}
+
+const setThumbsSwiper = (swiper) => {
+    thumbsSwiper.value = swiper;
 }
 
 </script>
@@ -142,8 +169,38 @@ async function fetchData() {
         <!-- BODY -->
         <VCardText class="px-0 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
           <VRow no-gutters>
-            <VCol cols="12" md="5">
-                IMAGEN
+            <VCol cols="12" md="1">
+              <swiper
+                :direction="'vertical'"
+                :pagination="{ clickable: true}"
+                :spaceBetween="5"
+                :slidesPerView="6"
+                :freeMode="true"
+                :watchSlidesProgress="true"
+                @swiper="setThumbsSwiper"
+                class="mySwiper"
+              >
+                <swiper-slide v-for="(picture, index) in productImages" :key="index">
+                  <img :src="baseURL + picture.image" />
+                </swiper-slide>
+              </swiper>
+            </VCol>
+            <VCol cols="12" md="4">
+              <swiper
+                :style="{
+                  '--swiper-navigation-color': '#fff',
+                  '--swiper-pagination-color': '#fff',
+                }"
+                :spaceBetween="10"
+                :navigation="true"
+                :thumbs="{ swiper: thumbsSwiper }"
+                :modules="modules"
+                class="mySwiper2"
+                >
+                <swiper-slide v-for="(picture, index) in productImages" :key="index">
+                  <img :src="baseURL + picture.image" />
+                </swiper-slide>
+              </swiper>
             </VCol>
             <VCol cols="12" md="7">
               <VCardText class="p-0">
@@ -211,7 +268,7 @@ async function fetchData() {
 
               <VCardText class="p-0 d-flex border-title mt-2">
                 <v-container>
-                  <v-btn class="b-mayorista" @click="onClick">
+                  <v-btn class="b-mayorista">
                     <img :src="iconmayorista" alt="Icono Mayorista" style="width: 24px; height: 24px; margin-right: 8px;">
                       Precio al mayor
                   </v-btn>
@@ -238,33 +295,7 @@ async function fetchData() {
             <VCol cols="12" class="d-block description">
               <v-window v-model="tab">
                 <v-window-item value="0">
-                  <h3>
-                    Embodying the Raw, Wayward Spirit of Rock 'N' Roll
-                  </h3> <br><br>
-                  <p>
-                    Embodying the raw, wayward spirit of rock n roll, the Kilburn portable active stereo speaker takes the unmistakable look and sound of Marshall, unplugs the chords, and
-                    takes the show on the road. <br> <br>
-                    Weighing in under 7 pounds, the Kilburn is a lightweight piece of vintage styled engineering. Setting the bar as one of the loudest speakers in its class, the Kilburn is a
-                    compact, stout-hearted hero with a well-balanced audio which boasts a clear midrange and extended highs for a sound that is both articulate and pronounced. The
-                    analogue knobs allow you to fine tune the controls to your personal preferences while the guitar-influenced leather strap enables easy and stylish travel. <br><br>
-                  </p>
-
-                  <VImg :src="default_image"/>
-
-                  <br><br>
-
-                  <h3>
-                    What do you get
-                  </h3> <br><br>
-                  <p>
-                    Sound of Marshall, unplugs the chords, and takes the show on the road.
-                    Weighing in under 7 pounds, the Kilburn is a lightweight piece of vintage styled engineering. Setting the bar as one of the loudest speakers in its class, the Kilburn is a
-                    compact, stout-hearted hero with a well-balanced audio which boasts a clear midrange and extended highs for a sound that is both articulate and pronounced. The
-                    analogue knobs allow you to fine tune the controls to your personal preferences while the guitar-influenced leather strap enables easy and stylish travel. <br> <br>
-
-                    The FM radio is perhaps gone for good, the assumption apparently being that the jury has ruled in favor of streaming over the internet. The IR blaster is another feature
-                    due for retirement - the S6 had it, then the Note5 didnt, and now with the S7 the trend is clear. <br><br>
-                  </p>
+                  <span v-html="description"></span>
                 </v-window-item>
                 <v-window-item value="1">
                   hello
@@ -290,7 +321,7 @@ async function fetchData() {
             <VCol cols="12">
               <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data">
                 <Product1 
-                  v-for="(product, i) in data.recommendations"
+                  v-for="(product, i) in data_.recommendations"
                   :key="i"
                   :product="product"
                   :readonly="true"/>
@@ -449,4 +480,72 @@ async function fetchData() {
     font-size:14px;
   }
  
+</style>
+
+<style scoped>
+
+    .carousel__item img {
+        width: 60%;
+    }
+
+    .swiper-vertical > .swiper-pagination-bullets .swiper-pagination-bullet, .swiper-pagination-vertical.swiper-pagination-bullets .swiper-pagination-bullet {
+        display: none !important;
+    }
+    .swiper {
+        width: 100%;
+        height: 100%;
+    }
+
+    .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+
+        /* Center slide text vertically */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .swiper {
+        width: 100%;
+        height: 350px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .swiper-slide {
+        background-size: cover;
+        background-position: center;
+    }
+
+    .mySwiper2 {
+        height: 350px;
+        width: 100%;
+    }
+
+    .mySwiper {
+        box-sizing: border-box;
+        padding: 10px 5px;
+    }
+
+    .mySwiper .swiper-slide {
+        opacity: 0.4;
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 8px;
+    }
+
+    .mySwiper .swiper-slide-thumb-active {
+        opacity: 1;
+    }
+
+    .swiper-slide img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 8px;
+    }
+
 </style>
