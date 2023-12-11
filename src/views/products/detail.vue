@@ -174,10 +174,19 @@ async function fetchData() {
                       name:'shopping_cart'
                     }"
                     class="link-button px-10">
-                    <VBtn class="mt-7 mb-5 tw-bg-primary tw-text-white button-product" rounded="xl">
+                    <VBtn 
+                      variant="flat"
+                      :width="288"
+                      :height="48"
+                      class="btn-register tw-text-white tw-bg-primary button-hover" 
+                      >
                       Agregar al carrito
                     </VBtn>
                   </router-link>
+              </VCardText>
+
+              <VCardText class="p-0 d-flex border-title mt-2">
+                OTRA COSA
               </VCardText>
             </VCol>
           </VRow>
@@ -214,13 +223,15 @@ async function fetchData() {
     border-bottom: 1px solid #D9EEF2;
   }
 
-  .button-product {
-    font-size: 16px!important;
+  .btn-register {
+    font-size: 16px;
+    font-style: normal;
     font-weight: 700;
-    padding: 24px!important;
+    line-height: 14px;
+    border-radius: 32px;
   }
 
-  .button-product:hover {
+  .button-hover:hover {
     background-color: #FF27B3 !important;
     box-shadow: 0px 0px 24px 0px #FF27B3;
   }
