@@ -21,7 +21,8 @@ module.exports = {
       tertiary: '#0A1B33',
       white: '#FFFFFF',
       yellow: '#FFC549',
-      cyan: '#F3FCFE'
+      cyan: '#F3FCFE',
+      gray: '#999999'
     },
     fill: {
       primary: '#FF0090',

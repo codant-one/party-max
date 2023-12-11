@@ -30,8 +30,6 @@ async function fetchData() {
   await miscellaneousStores.getCategory(route.params.slug)
   data.value = miscellaneousStores.getData
 
-  console.log('data', data.value)
-
   image1.value = (data.value.category.banner === null) ? banner1 : baseURL.value + data.value.category.banner
   image2.value = (data.value.category.banner_2 === null) ? banner2 : baseURL.value + data.value.category.banner_2
   image3.value = (data.value.category.banner_3 === null) ? banner3 : baseURL.value + data.value.category.banner_3

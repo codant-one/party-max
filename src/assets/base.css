@@ -15,6 +15,10 @@ html {
   scroll-behavior: smooth !important;
 }
 
+.align-right {
+  text-align: right;
+}
+
 .p-0 {
   padding: 0 !important;
 }

@@ -36,7 +36,7 @@ backgroundStyle.value = {
       </VCol>
       <VCol cols="12" md="6" class="align-right">
         <v-img
-        class="bg-white align-imager"
+        class="bg-white align-imagen"
         width="auto"
         :src="aboutimage"
         ></v-img>
@@ -136,7 +136,7 @@ font-weight: 700;
 line-height: 63px;
 text-align: left;
 }
-.align-imager {
+.align-imagen {
   float: right; /* Alineación a la derecha usando float */
 }
 .text-about

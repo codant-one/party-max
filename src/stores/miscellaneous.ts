@@ -78,7 +78,19 @@ export const useMiscellaneousStores = defineStore('miscellaneous', {
                     this.setLoading(false)
                 })
             
-        }
+        },
+        getProduct(slug: string) {
+           
+            return Miscellaneous.product(slug)
+                .then((response) => {
+                    this.data = response.data.data
+                })
+                .catch(error => console.log(error))
+                .finally(() => {
+                    this.setLoading(false)
+                })
+            
+        },
     }
 })
 

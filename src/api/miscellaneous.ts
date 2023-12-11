@@ -21,6 +21,10 @@ class Miscellaneous {
     products() {
         return axios.get(`miscellaneous/products`)
     }
+
+    product(slug: string) {
+        return axios.get(`miscellaneous/products/${slug}`)
+    }
 }
 
 const miscellaneous = new Miscellaneous();
