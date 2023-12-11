@@ -10,6 +10,7 @@ import blogs from '@assets/images/blogs.jpg';
 
 const route = useRoute()
 const backgroundStyle = ref({})
+const background = ref('tw-bg-white')
 
 watchEffect(fetchData)
 
@@ -18,11 +19,17 @@ async function fetchData() {
   var repeat = 'repeat'
   var size = 'contain'
 
+  if(route.name === 'shopping_cart' || route.name === 'shopping_delivery' || route.name === 'shopping_summary') {
+    background.value = 'tw-bg-cyan'
+  } else {
+    background.value = 'tw-bg-white'
+  }
+
   if(route.name === 'home')
     bg = home
-  else if(route.name === 'categories'||route.name==='shopping_cart'||route.name==='shopping_delivery'||route.name==='shopping_summary')
+  else if(route.name === 'categories')
     bg = categories
-  else if(route.name === 'register'|| route.name === 'type_client'|| route.name === 'form_client'|| 
+  else if(route.name === 'register'|| route.name === 'type_client'|| route.name === 'form_client' || 
           route.name === 'form_supplier' || route.name === 'login_client') {
     bg = register
     repeat = 'no-repeat'
@@ -30,7 +37,7 @@ async function fetchData() {
   } else if(route.name === 'blogs' || route.name === 'blogDetail') {
     bg = blogs
     size = 'contain'
-  }else 
+  } else 
     bg = ''
 
   backgroundStyle.value = {
@@ -46,7 +53,7 @@ async function fetchData() {
   <VApp> 
     <VLayout >
       <Header />
-      <VMain :style="backgroundStyle">
+      <VMain :style="backgroundStyle" :class="background">
         <router-view/>
       </VMain>
     </VLayout>
