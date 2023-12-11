@@ -207,10 +207,13 @@ async function fetchData() {
                   </v-btn>
                 </v-container>
               </VCardText>
-
-              <VCardText class="p-0 d-block border-title mt-2">
-                <span class="d-block tw-text-tertiary ms-5 mb-2 tw-leading-5">Categories: Furniture, Garden & Kitchen</span> 
-                <span class="d-block tw-text-tertiary ms-5 mb-2 tw-leading-5">Tag: sofa</span>
+              <VCardText class="p-0 d-block mt-2">
+                <span class="d-block tw-text-tertiary">Categorías: 
+                  <span class="ms-1">{{ store }}</span>
+                </span>
+                <span class="d-block tw-text-tertiary">Tags: 
+                  <span class="ms-1">{{ store }}</span>
+                </span>
               </VCardText>
             </VCol>
 
