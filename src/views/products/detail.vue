@@ -185,8 +185,13 @@ async function fetchData() {
                   </router-link>
               </VCardText>
 
-              <VCardText class="p-0 d-flex border-title mt-2">
-                OTRA COSA
+              <VCardText class="p-0 d-block mt-2">
+                <span class="d-block tw-text-tertiary">Categorías: 
+                  <span class="ms-1">{{ store }}</span>
+                </span>
+                <span class="d-block tw-text-tertiary">Tags: 
+                  <span class="ms-1">{{ store }}</span>
+                </span>
               </VCardText>
             </VCol>
           </VRow>
