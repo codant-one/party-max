@@ -35,6 +35,8 @@ const store = ref(null)
 const in_stock = ref(null)
 const color = ref(null)
 const single_description = ref(null)
+const categories = ref([])
+const tags = ref([])
 
 watchEffect(fetchData)
 
@@ -76,6 +78,14 @@ async function fetchData() {
   color.value = data.value.product.colors[0].color.name
   single_description.value = data.value.product.single_description
 
+  data.value.product.colors[0].categories.forEach(element => { 
+    categories.value.push(element.category.name)
+  });
+
+  data.value.product.tags.forEach(element => { 
+    tags.value.push(element.tag.name)
+  });
+ 
   isLoading.value = false
 }
 
@@ -187,10 +197,10 @@ async function fetchData() {
 
               <VCardText class="p-0 d-block mt-2">
                 <span class="d-block tw-text-tertiary">Categorías: 
-                  <span class="ms-1">{{ store }}</span>
+                  <span class="ms-1">{{ categories.join(", ") }}</span>
                 </span>
                 <span class="d-block tw-text-tertiary">Tags: 
-                  <span class="ms-1">{{ store }}</span>
+                  <span class="ms-1">{{ tags.join(", ") }}</span>
                 </span>
               </VCardText>
             </VCol>
