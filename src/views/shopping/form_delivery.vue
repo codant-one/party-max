@@ -1,6 +1,10 @@
 <script setup>
 
 import { ref } from 'vue'
+import router from '@/router'
+const redirect = (name) => {
+    router.push({ name : name})
+}
 
 </script>
 
@@ -113,7 +117,7 @@ import { ref } from 'vue'
                         width="25%"
                         style="border-radius:32px;"
                         class="btn-register tw-text-white tw-bg-primary button-hover mt-2"
-                        @click="redirect('shopping_delivery')">
+                        @click="redirect('shopping_summary')">
                         Continuar
                     </VBtn>
                 </VCol>
