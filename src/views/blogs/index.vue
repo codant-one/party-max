@@ -36,6 +36,7 @@ fetchData()
          <blogsCard
             v-for="blog in blogs.slice(0, 3)"
             :blog="blog"
+            :type="1"
          />
       </VCol>
 

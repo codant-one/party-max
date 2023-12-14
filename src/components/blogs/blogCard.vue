@@ -5,6 +5,10 @@ const props = defineProps({
     blog: {
         type: Object,
         required: true
+    }, 
+    type: {
+        type: Number,
+        required: true
     }
 });
 
@@ -16,6 +20,7 @@ const image = ref(null)
 const user = ref(null)
 const slug = ref(null)
 const dateBlog = ref(null)
+const paragraphs = ref(null)
 
 const date = useDate();
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
@@ -31,12 +36,45 @@ watchEffect(() => {
         user.value = props.blog.user
         slug.value = props.blog.slug
         dateBlog.value = props.blog.date
+
+        var blogContent = description.value; 
+
+        if (props.type == 1 && typeof blogContent == 'string' )
+        {
+            if ( blogContent.includes("<p>") ){
+                blogContent = blogContent.replace(/<p>/g, "");
+                blogContent = blogContent.split("</p>");
+            } else if( blogContent.includes('\n') ) {
+                blogContent = blogContent.split('\n');
+            } else {
+                blogContent = blogContent.split(".");
+            }
+            paragraphs.value = blogContent[0];
+        } else {
+            paragraphs.value = description.value;
+        }
     }
 })
 
 const detail = () => {
     router.push({ name : 'dashboard-products-products-edit-id', params: { slug: slug } })
 }
+
+// const firstParagraph = async() => {
+//   const blogContent = description.value;
+//   if (typeof blogContent == 'string' )
+//   {
+//     if ( blogContent.includes("<p>") ){
+//         blogContent = blogContent.replace(/<p>/g, "");
+//         blogContent.value = blogContent.split("</p>");
+//     } else if( blogContent.includes("\n") ) {
+//         blogContent.value = blogContent.split("\n");
+//     } else {
+//         blogContent.value = blogContent.split(".");
+//     }
+//     paragraphs.value = blogContent.value[0];
+//   }
+// }
 
 </script>
 
@@ -60,7 +98,7 @@ const detail = () => {
         </VCardTitle>
 
         <VCardText class="text-justify description-text px-0">
-            {{ description }}
+            {{ paragraphs }}
         </VCardText>
 
         <router-link 
