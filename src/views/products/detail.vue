@@ -97,7 +97,7 @@ async function fetchData() {
   sku.value = data.value.product.colors[0].sku
   price.value = data.value.product.price
   price_for_sale.value = data.value.product.price_for_sale
-  store.value = data.value.product.user.name + ' ' + data.value.product.user.last_name
+  store.value = data.value.product.user.name + ' ' + (data.value.product.user.last_name ?? '')
   in_stock.value = data.value.product.in_stock
   color.value = data.value.product.colors[0].color.name
   single_description.value = data.value.product.single_description

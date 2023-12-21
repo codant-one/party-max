@@ -8,6 +8,10 @@ const props = defineProps({
     readonly: {
         type: Boolean,
         required: true
+    },
+    isLastItem: {
+        type: Boolean,
+        required: true
     }
 })
 
@@ -29,7 +33,7 @@ watchEffect(() => {
         price.value = props.product.price
         price_for_sale.value = props.product.price_for_sale
         name.value = props.product.name
-        store.value = props.product.user.name + ' ' + props.product.user.last_name
+        store.value = props.product.user.name + ' ' + (props.product.user.last_name ?? '')
         rating.value = props.product.rating
         single_description.value = props.product.single_description
         slug.value = props.product.slug
@@ -47,17 +51,19 @@ watchEffect(() => {
             }
         }"
         class="tw-no-underline zoom-product">
-        <VCard class="no-shadown card-information p-0 pb-5 w-100" >
+        <VCard 
+            class="no-shadown p-0 pb-5 w-100 mb-5" 
+            :class="props.isLastItem ? '' : 'card-information'">
             <VRow>
                 <VCol cols="12" md="3">
-                    <VCardText class="border-img">
+                    <VCardText class="border-img ms-5">
                         <VImg 
                             :width="230"
                             :src="baseURL + image" 
                             cover />
                     </VCardText>
                 </VCol>
-                <VCol cols="12" md="5">
+                <VCol cols="12" md="6">
                     <VCardText>
                         <span class="d-block text_2 py-1 tw-text-tertiary title-product">{{ name }}</span>
                     </VCardText>
@@ -84,7 +90,7 @@ watchEffect(() => {
                     </VCardText>
 
                 </VCol>
-                <VCol cols="12" md="4" class="align-center text-center">
+                <VCol cols="12" md="3" class="align-center text-center">
                     <VCardText>
                         <div class="d-flex text-center align-center justify-content-center">
                             <span class="text_1 tw-text-tertiary">${{ price }}</span>
@@ -112,7 +118,6 @@ watchEffect(() => {
                     </VCardText>
                 </VCol>
             </VRow>
-          
         </VCard>
     </router-link>
 </template>
@@ -121,10 +126,11 @@ watchEffect(() => {
 
     .card-information {
         border-bottom: 1px solid var(--Grey-2, #E1E1E1);
+        border-radius: 0;
     }
 
     .btn-register {
-        font-size: 16px;
+        font-size: 14px;
         font-style: normal;
         font-weight: 700;
         line-height: 14px;
@@ -133,7 +139,7 @@ watchEffect(() => {
 
     .button-hover:hover {
         background-color: #FF27B3 !important;
-        box-shadow: 0px 0px 24px 0px #FF27B3;
+        box-shadow: 0px 0px 8px 0px #FF27B3;
     }
     .v-card-text {
         padding: 0 10px;

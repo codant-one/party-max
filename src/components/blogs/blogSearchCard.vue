@@ -47,12 +47,18 @@ const props = defineProps({
         </VCardTitle>
 
         <VList
-            :items="blogs"
-            item-value="id"
             base-color="#999999"
             class="px-41"
             style="padding:30px"
-        />
+        >
+            <VListItem
+                v-for="blog in blogs"
+                :key="blog.id"
+                :title="blog.title"
+                base-color="#999999"
+                class="hover:tw-bg-yellow"
+            />
+        </VList>
 
         <VDivider class="mt-4 mb-4" />
 

@@ -66,12 +66,12 @@ export const useMiscellaneousStores = defineStore('miscellaneous', {
                 })
             
         },
-        products() {
+        products(params: Object) {
             this.setLoading(true)
             
-            return Miscellaneous.products()
+            return Miscellaneous.products(params)
                 .then((response) => {
-                    return Promise.resolve(response.data.data.products)
+                    return Promise.resolve(response.data.data)
                 })
                 .catch(error => Promise.reject(error))
                 .finally(() => {

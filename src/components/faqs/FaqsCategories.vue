@@ -46,7 +46,7 @@ const props = defineProps({
                         class="pt-4 pb-4"
                     >
                         <VExpansionPanelTitle
-                            class="font-weight-medium title-text pt-4 pb-4"
+                            class="font-weight-medium title-text pt-4 pb-4 hover:tw-bg-yellow"
                         >
                             {{ item.title }}
                             <template v-slot:actions="{ expanded }">
@@ -74,6 +74,10 @@ const props = defineProps({
 
 
 <style scoped>
+
+    .v-expansion-panel::v-deep(.v-expansion-panel-title__overlay) { 
+        background-color: #FFC549 !important;
+    }
     .name-text {
         color:  #FF0090!important;
         text-align: center;

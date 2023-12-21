@@ -18,8 +18,8 @@ class Miscellaneous {
         return axios.get('/miscellaneous/blogs/populars')
     }
 
-    products() {
-        return axios.get(`miscellaneous/products`)
+    products(params: Object) {
+        return axios.get(`miscellaneous/products`, {params})
     }
 
     product(slug: string) {
