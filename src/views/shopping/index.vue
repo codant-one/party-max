@@ -5,6 +5,11 @@ import { useHomeStores } from '@/stores/home'
 import Loader from '@/components/common/Loader.vue'
 import Product1 from '@/components/product/Product1.vue'
 import router from '@/router'
+import festin_icon from '@assets/icons/festin-carrito.svg' 
+import separador_icon from '@assets/icons/separador-linetime.svg'
+import address_icon from '@assets/icons/address-icon.svg'
+import pago_icon from '@assets/icons/pago-icon.svg'
+import confirmacion_icon from '@assets/icons/confirmacion-icon.svg'
 
 const homeStores = useHomeStores()
 const data = ref(null)
@@ -34,6 +39,50 @@ const redirect = (name) => {
 <template>
     <VContainer class="mt-10">
         <Loader :isLoading="isLoading"/>
+
+        <!--TimeLine-->
+        <VCol cols="12">
+            <VCard class="card-timeline"> 
+                <VRow align="center">
+                    <VCol cols="3"></VCol>
+                    <VCol cols="6">
+                        <VRow align="center">
+                          <VCol cols="2">
+                            <VImg :src="festin_icon" class="festin-icon"/>
+                          </VCol>
+                          <VCol cols="1">
+                            <VImg :src="separador_icon" class="serparador-icon"></VImg>
+                          </VCol>  
+
+                          <VCol cols="2">
+                            <VImg :src="address_icon" class="address-icon"/>
+                          </VCol>
+
+                          <VCol cols="1">
+                            <VImg :src="separador_icon" class="serparador-icon"></VImg>
+                          </VCol>
+
+                          <VCol cols="2">
+                            <VImg :src="pago_icon" class="pago-icon"/>
+                          </VCol>
+
+                          <VCol cols="1">
+                            <VImg :src="separador_icon" class="serparador-icon"></VImg>
+                          </VCol>
+
+                          <VCol cols="3">
+                            <VImg :src="confirmacion_icon" class="confirmacion-icon"/>
+                          </VCol>
+                        </VRow>
+                        
+                        
+                    </VCol>
+                    <VCol cols="3"></VCol>
+                </VRow>
+            </VCard>
+        </VCol>
+        <!--End TimeLine-->
+
         <VRow>
             <VCol cols="12" md="8">
                 <VCard class="card-products">
@@ -240,6 +289,44 @@ const redirect = (name) => {
         font-style: normal;
         font-weight: 400;
         line-height: 14px;
+    }
+
+    .festin-icon
+    {
+        width: 67.741px;
+        height: 131px;
+    }
+
+    .card-timeline
+    {
+        padding: 16px 0px;
+        border-radius: 24px;
+    }
+
+    .serparador-icon
+    {
+        width: 39.1px;
+        height: 2px;
+        background: #999;
+        margin: auto;
+    }
+
+    .address-icon
+    {
+        width: 73px;
+        height: 91px;
+    }
+
+    .pago-icon
+    {
+        width: 64px;
+        height: 91.55px;
+    }
+
+    .confirmacion-icon
+    {
+        width: 103px;
+        height: 91.73px;
     }
 
 </style>
