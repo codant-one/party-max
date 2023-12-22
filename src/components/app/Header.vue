@@ -77,7 +77,10 @@
               <shoppinp_cart />
             </VBtn>
             <div class="d-flex user-text">
-              <v-menu>
+              <VBtn v-if="name === null" variant="plain" icon class="pb-2 user" v-bind="props">
+                <user />
+              </VBtn>
+              <v-menu v-else>
                 <template v-slot:activator="{ props }">
                   <VBtn variant="plain" icon class="pb-2 user" v-bind="props">
                     <user />
