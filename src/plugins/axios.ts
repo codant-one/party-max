@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from '@/router'
 
 const axiosIns = axios.create({
   baseURL: import.meta.env.VITE_APP_DOMAIN_API_URL + '/api/',
@@ -20,7 +21,10 @@ axiosIns.interceptors.response.use(response => {
   const { config, response: { status }, response: { data } } = error
   
   if (status === 401) {
-    //setting
+    localStorage.removeItem('user_data')
+    localStorage.removeItem('userAbilities')
+    localStorage.removeItem('accessToken')
+    router.push({ name: 'login' } )
   }
   
   return Promise.reject(error)

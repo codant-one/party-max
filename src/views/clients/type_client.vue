@@ -18,7 +18,7 @@ import arrow_right from '@assets/icons/arrow-right.svg?inline';
             </VCardItem>
 
             <VCardItem class="d-flex client-card mt-4">
-                <router-link to="/login/client" class="tw-no-underline hover:tw-text-primary link-type-client">
+                <router-link to="/login" class="tw-no-underline hover:tw-text-primary link-type-client">
                     <VRow class="text-center d-flex align-center">
                         <VCol cols="4" class="hover-client">
                             <clients class="me-3 ms-4"/>
