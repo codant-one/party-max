@@ -14,6 +14,7 @@
 
   const categories = ref(null)
   const categoriesSearch = ref('Todos')
+  const name = ref(null)
 
   watchEffect(fetchData)
 
@@ -21,9 +22,19 @@
 
     await homeStores.fetchData()
     categories.value = homeStores.getData.parentCategories
-  
+    me()
   }
 
+  const me = async () => {
+
+    if(localStorage.getItem('user_data')){
+      const userData = localStorage.getItem('user_data')
+      const userDataJ = JSON.parse(userData)
+
+      name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
+
+    }
+  }
 </script>
 
 <template>
@@ -56,7 +67,9 @@
               <VSpacer />
             </VLayout>
           </VCol>
-          <VCol cols="2" class="d-flex align-center align-items-stretch flex-shrink-0 ms-n70">
+          <VCol cols="2" 
+            class="d-flex align-center align-items-stretch flex-shrink-0"
+            :class="(name === null) ? 'ms-n70': ''">
             <VBtn variant="plain" icon class="pb-2 me-4 index heart">
               <heart />
             </VBtn>
@@ -68,7 +81,7 @@
                 <user />
               </VBtn>
               <router-link class="link-header" :to="{name:'register',}">
-                <span class="d-flex align-center tw-text-tertiary font-size-14 pb-2">
+                <span class="d-flex align-center tw-text-tertiary font-size-14 pb-2" v-if="name === null">
                   Ingresar o Registrarme
                 </span>
               </router-link>

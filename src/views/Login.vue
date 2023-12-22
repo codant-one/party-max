@@ -70,9 +70,7 @@ const login = () => {
         localStorage.setItem('password', ''); 
       }
 
-      // Redirect to `to` query if exist or redirect to index route
-    //   router.push({ name : 'home'})
-    //   router.replace(route.query.to ? String(route.query.to) : (response.message === 'login_success' ? '/dashboard': '/'))
+      router.push({ name : 'dashboard'})
     }).catch(err => {
 
       load.value = false
@@ -87,11 +85,8 @@ const login = () => {
 }
 
 const onSubmit = () => {
-    console.log('entro')
     refVForm.value?.validate().then(({ valid: isValid }) => {
-        console.log('valido')
         if (isValid) {
-            console.log('isValid')
             login()
         }
     })

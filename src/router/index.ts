@@ -18,7 +18,7 @@ import Login from '@/views/Login.vue'
 import Shopping from '@/views/shopping/index.vue'
 import Delivery from '@/views/shopping/form_delivery.vue'
 import Summary from '@/views/shopping/summary.vue'
-import dashboard from '@/views/dashboard/index.vue'
+import Dashboard from '@/views/dashboard/index.vue'
 // import Sidebar from '@/views/dashboard/layouts/sidebar.vue'
 
 const router = createRouter({
@@ -127,9 +127,9 @@ const router = createRouter({
     },
 
     {
-      path: '/client/dashboard',
-      name: 'dashboar_client',
-      component: dashboard
+      path: '/dashboard',
+      name: 'dashboard',
+      component: Dashboard
     },
 
     // {
@@ -139,5 +139,19 @@ const router = createRouter({
     // },
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  const privatePages = ['/dashboard'];
+  const authRequired = privatePages.includes(to.path);
+  const loggedIn = localStorage.getItem('user_data');
+
+  // trying to access a restricted page + not logged in
+  // redirect to login page
+  if (authRequired && !loggedIn) {
+    next('/login');
+  } else {
+    next();
+  }
+});
 
 export default router

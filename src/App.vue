@@ -1,6 +1,7 @@
 <script setup>
 
 import { ref } from 'vue'
+import { useAuthStores } from '@/stores/auth'
 import Header from '@/components/app/Header.vue'
 import Footer from '@/components/app/Footer.vue'
 import home from '@assets/images/home.jpg';
@@ -8,6 +9,7 @@ import categories from '@assets/images/categories.jpg';
 import register from '@assets/images/register.jpg';
 import blogs from '@assets/images/blogs.jpg';
 
+const authStores = useAuthStores()
 const route = useRoute()
 const backgroundStyle = ref({})
 const background = ref('tw-bg-white')
@@ -19,7 +21,7 @@ async function fetchData() {
   var repeat = 'repeat'
   var size = 'contain'
 
-  if(route.name === 'shopping_cart' || route.name === 'shopping_delivery' || route.name === 'shopping_summary'|| route.name==='dashboar_client') {
+  if(route.name === 'shopping_cart' || route.name === 'shopping_delivery' || route.name === 'shopping_summary' || route.name === 'dashboard') {
     background.value = 'tw-bg-cyan'
   } else {
     background.value = 'tw-bg-white'
@@ -47,6 +49,22 @@ async function fetchData() {
   }
 
 }
+
+const me = async () => {
+
+  if(localStorage.getItem('user_data')){
+    const userData = localStorage.getItem('user_data')
+    const userDataJ = JSON.parse(userData)
+
+    const { user_data, userAbilities } = await authStores.me(userDataJ.hash)
+
+    localStorage.setItem('userAbilities', JSON.stringify(userAbilities))
+    localStorage.setItem('user_data', JSON.stringify(user_data))
+
+  }
+}
+
+me()
 </script>
 
 <template>
