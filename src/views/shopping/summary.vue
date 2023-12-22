@@ -2,12 +2,61 @@
 
 import { ref } from 'vue'
 import Payu_logo from '@/assets/images/logo-Payu.png'
+import festin_icon from '@assets/icons/festin-pago.svg' 
+import carrito_icon from '@assets/icons/carrito-icon.svg'
+import separador_icon from '@assets/icons/separador-linetime.svg'
+import address_icon from '@assets/icons/address-active.svg'
+import confirmacion_icon from '@assets/icons/confirmacion-icon.svg'
 </script>
 
 <template>
     <VContainer class="mt-8">
-            <h1 class="title-summary">Resumen de compra</h1>
+
+            <!--TimeLine-->
+            
+                    <VCard class="card-timeline mx-auto"> 
+                        <VRow align="center">
+                            <VCol cols="3"></VCol>
+                            <VCol cols="6">
+                                <VRow align="center">
+                                <VCol cols="2">
+                                    <VImg :src="carrito_icon" class="carrito-icon"/>
+                                </VCol>
+                                <VCol cols="1">
+                                    <VImg :src="separador_icon" class="serparador-icon"></VImg>
+                                </VCol>  
+
+                                <VCol cols="2">
+                                    <VImg :src="address_icon" class="address-icon"/>
+                                </VCol>
+
+                                <VCol cols="1">
+                                    <VImg :src="separador_icon" class="serparador-icon"></VImg>
+                                </VCol>
+
+                                <VCol cols="2">
+                                    <VImg :src="festin_icon" class="festin-icon"/>
+                                </VCol>
+
+                                <VCol cols="1">
+                                    <VImg :src="separador_icon" class="serparador-icon"></VImg>
+                                </VCol>
+
+                                <VCol cols="3">
+                                    <VImg :src="confirmacion_icon" class="confirmacion-icon"/>
+                                </VCol>
+                                </VRow>
+                                
+                                
+                            </VCol>
+                            <VCol cols="3"></VCol>
+                        </VRow>
+                    </VCard>
+                
+            <!--End TimeLine-->
+            
             <VCard class="card-products mx-auto">
+                <h1 class="title-summary">Resumen de compra</h1>
                     <h2 class="title-card">Productos</h2>
                     <VRow class="row-cardp">
                         detalle producto
@@ -110,13 +159,15 @@ import Payu_logo from '@/assets/images/logo-Payu.png'
     border-radius: 24px;
     width:80%;
     margin-top:16px;
+    box-shadow: none;
 }
 .title-card{
     color: #0A1B33;
-    font-size: 32px;
+    font-size: 24px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+    margin-top: 24px;
 }
 .row-cardp
 {
@@ -185,6 +236,7 @@ import Payu_logo from '@/assets/images/logo-Payu.png'
     width:80%;
     margin-top:16px;
     border-radius: 16px;
+    box-shadow: none;
 }
 
 .button-bono
@@ -289,4 +341,44 @@ import Payu_logo from '@/assets/images/logo-Payu.png'
     line-height: 14px;
 
 }
+
+.festin-icon
+    {
+        width: 67.741px;
+        height: 131px;
+    }
+
+    .card-timeline
+    {
+        padding: 16px 0px;
+        border-radius: 24px;
+        box-shadow: none;
+    }
+
+    .serparador-icon
+    {
+        width: 39.1px;
+        height: 2px;
+        background: #999;
+        margin: auto;
+    }
+
+    .address-icon
+    {
+        width: 73px;
+        height: 91px;
+    }
+
+
+    .confirmacion-icon
+    {
+        width: 103px;
+        height: 91.73px;
+    }
+
+    .carrito-icon
+    {
+        width: 64px;
+        height: 91px;
+    }
 </style>

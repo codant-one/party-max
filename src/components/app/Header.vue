@@ -8,6 +8,7 @@
   import shoppinp_cart from '@assets/icons/shoppinp_cart.svg?inline';
   import user from '@assets/icons/user.svg?inline';
   import arrow_right from '@assets/icons/arrow_right.svg?inline';
+  import icon_right from '@assets/icons/right-icon.svg';
 
   const color = ref('#FF0090')
   
@@ -140,8 +141,109 @@
       <VContainer class="p-0 tw-text-white d-flex align-center">
         
           <div class="hover:tw-text-yellow">
-            <VAppBarNavIcon variant="text"/>
-            <span class="font-size-16 me-7">Productos</span>
+            <v-menu>
+              <template  v-slot:activator="{ props }">
+                
+                  <VAppBarNavIcon variant="text" v-bind="props"/>
+                  <span class="font-size-16 me-7">Productos</span>
+                
+              </template>
+              <v-list class="style-menu">
+                <v-list-item>
+                  <v-list-item-title><span class="title-menu">PRODUCTOS</span></v-list-item-title>
+                </v-list-item>
+                <v-list-item>
+                    <VRow align="center">  
+                          <VCol cols="10">
+                            <span class="subtitle-menu" v-bind="props">Fiestas infantiles</span>                        
+                          </VCol>
+                          <VCol cols="2">
+                            <VImg :src="icon_right" class="icon-right" v-bind="props"></VImg>  
+                          </VCol>                     
+                    </VRow>
+                </v-list-item>
+                <v-list-item>
+                    <VRow align="center">
+                      <VCol cols="10">
+                        <span class="subtitle-menu">Fiestas temáticas</span>                        
+                      </VCol>
+                      <VCol cols="2">
+                        <VImg :src="icon_right" class="icon-right"></VImg>  
+                      </VCol>
+                    </VRow>
+                </v-list-item>
+                <v-list-item>
+                    <VRow align="center">
+                      <VCol cols="10">
+                        <span class="subtitle-menu">Fiestas especiales</span>                        
+                      </VCol>
+                      <VCol cols="2">
+                        <VImg :src="icon_right" class="icon-right"></VImg>  
+                      </VCol>
+                    </VRow>
+                </v-list-item>
+                <v-list-item>
+                    <VRow align="center">
+                      <VCol cols="10">
+                        <span class="subtitle-menu">Globos</span>                        
+                      </VCol>
+                      <VCol cols="2">
+                        <VImg :src="icon_right" class="icon-right"></VImg>  
+                      </VCol>
+                    </VRow>
+                </v-list-item>
+                <v-list-item>
+                    <VRow align="center">
+                      <VCol cols="10">
+                        <span class="subtitle-menu">Decoración</span>                        
+                      </VCol>
+                      <VCol cols="2">
+                        <VImg :src="icon_right" class="icon-right"></VImg>  
+                      </VCol>
+                    </VRow>
+                </v-list-item>
+                <v-list-item>
+                    <VRow align="center">
+                      <VCol cols="10">
+                        <span class="subtitle-menu">Hora loca</span>                        
+                      </VCol>
+                      <VCol cols="2">
+                        <VImg :src="icon_right" class="icon-right"></VImg>  
+                      </VCol>
+                    </VRow>
+                </v-list-item>
+                <v-list-item>
+                    <VRow align="center">
+                      <VCol cols="10">
+                        <span class="subtitle-menu">Desechables</span>                        
+                      </VCol>
+                      <VCol cols="2">
+                        <VImg :src="icon_right" class="icon-right"></VImg>  
+                      </VCol>
+                    </VRow>
+                </v-list-item>
+                <v-list-item>
+                    <VRow align="center">
+                      <VCol cols="10">
+                        <span class="subtitle-menu">Accesorias para sorpresas</span>                        
+                      </VCol>
+                      <VCol cols="2">
+                        <VImg :src="icon_right" class="icon-right"></VImg>  
+                      </VCol>
+                    </VRow>
+                </v-list-item>
+                <v-list-item>
+                    <VRow align="center">
+                      <VCol cols="10">
+                        <span class="subtitle-menu">Ponqués</span>                        
+                      </VCol>
+                      <VCol cols="2">
+                        <VImg :src="icon_right" class="icon-right"></VImg>  
+                      </VCol>
+                    </VRow>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </div>
           <div class="hover:tw-text-yellow">
             <VAppBarNavIcon variant="text"/>
@@ -280,5 +382,36 @@
     text-decoration: none;
   }
 
+  .title-menu
+  {
+    color: #0A1B33;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 16px; /* 80% */
+  }
+  .subtitle-menu
+  {
+    color:#0A1B33;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+  }
+  .subtitle-menu:hover
+  {
+    color: #FF0090;
+  }
+  .icon-right
+  {
+    width: 20px;
+  }
+
+  .style-menu
+  {
+    padding:32px;
+    min-width: 314px;
+    border-radius: 0px 0px 0px 24px!important;
+  }
  
 </style>

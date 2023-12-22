@@ -2,6 +2,12 @@
 
 import { ref } from 'vue'
 import router from '@/router'
+
+import festin_icon from '@assets/icons/festin-address.svg' 
+import carrito_icon from '@assets/icons/carrito-icon.svg'
+import separador_icon from '@assets/icons/separador-linetime.svg'
+import pago_icon from '@assets/icons/pago-icon.svg'
+import confirmacion_icon from '@assets/icons/confirmacion-icon.svg'
 const redirect = (name) => {
     router.push({ name : name})
 }
@@ -12,11 +18,55 @@ const redirect = (name) => {
 
     <VContainer class="mt-10">
 
+        <!--TimeLine-->
+        <VCol cols="12">
+            <VCard class="card-timeline"> 
+                <VRow align="center">
+                    <VCol cols="3"></VCol>
+                    <VCol cols="6">
+                        <VRow align="center">
+                          <VCol cols="2">
+                            <VImg :src="carrito_icon" class="carrito-icon"/>
+                          </VCol>
+                          <VCol cols="1">
+                            <VImg :src="separador_icon" class="serparador-icon"></VImg>
+                          </VCol>  
+
+                          <VCol cols="2">
+                            <VImg :src="festin_icon" class="festin-icon"/>
+                          </VCol>
+
+                          <VCol cols="1">
+                            <VImg :src="separador_icon" class="serparador-icon"></VImg>
+                          </VCol>
+
+                          <VCol cols="2">
+                            <VImg :src="pago_icon" class="pago-icon"/>
+                          </VCol>
+
+                          <VCol cols="1">
+                            <VImg :src="separador_icon" class="serparador-icon"></VImg>
+                          </VCol>
+
+                          <VCol cols="3">
+                            <VImg :src="confirmacion_icon" class="confirmacion-icon"/>
+                          </VCol>
+                        </VRow>
+                        
+                        
+                    </VCol>
+                    <VCol cols="3"></VCol>
+                </VRow>
+            </VCard>
+        </VCol>
+        <!--End TimeLine-->
+
         <VRow>
             <VCol cols="12" md="8">
-                <h1 class="title-delivery">Elige la forma de entrega</h1>
+                
 
                 <VCard class="card-delivery">
+                    <h1 class="title-delivery">Elige la forma de entrega</h1>
                     <h2 class="title-card">Enviar a domicilio</h2>
                     <!--item 1-->
                     <VRow class="row-card">
@@ -173,12 +223,15 @@ const redirect = (name) => {
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+    margin-top: 24px;
 }
 .card-summary
 {
     background-color:#F3FCFE;
     padding:24px 32px;
     border-radius: 24px;
+    margin-top: 12px;
+    box-shadow: none;
     
 }
 
@@ -220,6 +273,7 @@ const redirect = (name) => {
     padding:16px 32px;
     border-radius: 24px;
     margin-top:16px;
+    box-shadow: none;
 }
 
 .row-card
@@ -245,4 +299,49 @@ const redirect = (name) => {
     font-weight: 400;
     line-height: 16px;
 }
+
+.festin-icon
+    {
+        width: 67.741px;
+        height: 131px;
+    }
+
+    .card-timeline
+    {
+        padding: 16px 0px;
+        border-radius: 24px;
+        box-shadow: none;
+    }
+
+    .serparador-icon
+    {
+        width: 39.1px;
+        height: 2px;
+        background: #999;
+        margin: auto;
+    }
+
+    .address-icon
+    {
+        width: 73px;
+        height: 91px;
+    }
+
+    .pago-icon
+    {
+        width: 64px;
+        height: 91.55px;
+    }
+
+    .confirmacion-icon
+    {
+        width: 103px;
+        height: 91.73px;
+    }
+
+    .carrito-icon
+    {
+        width: 64px;
+        height: 91px;
+    }
 </style>
