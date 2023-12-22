@@ -75,5 +75,14 @@ export const useAuthStores = defineStore('auth', {
                     return Promise.reject(error)
                 })            
         },
+        register(data: object) {
+            
+            return Auth.register(data)
+                .then((response) => {
+                    return Promise.resolve(response.data)
+                }).catch(error => {
+                    return Promise.reject(error)
+                })
+        }
     }
 })

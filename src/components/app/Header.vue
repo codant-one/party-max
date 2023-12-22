@@ -1,7 +1,8 @@
 <script setup>
   
   import { useHomeStores } from '@/stores/home'
-
+  import { useAuthStores } from '@/stores/auth'
+  import router from '@/router'
   import logo from '@assets/images/logo.svg';
   import heart from '@assets/icons/heart.svg?inline';
   import shoppinp_cart from '@assets/icons/shoppinp_cart.svg?inline';
@@ -11,6 +12,7 @@
   const color = ref('#FF0090')
   
   const homeStores = useHomeStores()
+  const authStores = useAuthStores()
 
   const categories = ref(null)
   const categoriesSearch = ref('Todos')
@@ -34,6 +36,28 @@
       name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
 
     }
+  }
+
+  const logout = () => {
+
+    authStores.logout()
+      .then(response => {
+        // Remove "user_data" from localStorage
+        localStorage.removeItem('user_data')
+
+        // Remove "accessToken" from localStorage
+        localStorage.removeItem('accessToken')
+        
+        // Remove "userAbilities" from localStorage
+        localStorage.removeItem('userAbilities')
+
+        // Reset ability to initial ability
+        router.push({ name: 'login' }).catch(() => {}).finally(() => {
+            location.reload(true);
+        });
+
+    })
+
   }
 </script>
 
@@ -77,27 +101,31 @@
               <shoppinp_cart />
             </VBtn>
             <div class="d-flex user-text">
-              <VBtn v-if="name === null" variant="plain" icon class="pb-2 user" v-bind="props">
+              <VBtn v-if="name === null" variant="plain" icon class="pb-2 user">
                 <user />
               </VBtn>
-              <v-menu v-else>
+              <VMenu v-else>
                 <template v-slot:activator="{ props }">
                   <VBtn variant="plain" icon class="pb-2 user" v-bind="props">
                     <user />
                   </VBtn>
                 </template>
-                <v-list>
-                  <v-list-item>
-                    <v-list-item-title><b>Hola</b></v-list-item-title>
-                    <v-list-item-title>{{name}}</v-list-item-title> <br>
-                    <v-list-item-title><router-link class="link-header" :to="{name:'dashboard',}">Dashboard</router-link></v-list-item-title>
-                    <v-list-item-title>Configuración cuenta</v-list-item-title>
-                    <v-list-item-title>Historial</v-list-item-title> <br><br>
-                    <v-list-item-title>Cerrar Sesión</v-list-item-title>
-
-                  </v-list-item>
-                </v-list>
-              </v-menu>
+                <VList>
+                  <VListItem class="px-0">
+                    <VListItemTitle class="px-5"><b>Hola</b></VListItemTitle>
+                    <VListItemTitle class="px-5 mb-5">{{name}}</VListItemTitle>
+                    <VListItemTitle class="px-5">
+                      <router-link class="link-header" :to=" { name : 'dashboard' }">
+                        Dashboard
+                      </router-link>
+                    </VListItemTitle>
+                    <VListItemTitle class="px-5">Configuración</VListItemTitle>
+                    <VListItemTitle class="px-5 mb-2">Historial</VListItemTitle> 
+                    <VDivider />
+                    <VListItemTitle class="px-5 mt-2 tw-cursor-pointer" @click="logout">Cerrar Sesión</VListItemTitle>
+                  </VListItem>
+                </VList>
+              </VMenu>
               <router-link class="link-header" :to="{name:'register',}">
                 <span class="d-flex align-center tw-text-tertiary font-size-14 pb-2" v-if="name === null">
                   Ingresar o Registrarme

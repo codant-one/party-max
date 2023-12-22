@@ -134,13 +134,13 @@ const router = createRouter({
     },
 
     {
-      path: '/client/success_person',
+      path: '/register/success_person',
       name: 'success_person',
       component: success_registerp
     },
 
     {
-      path: '/client/success_company',
+      path: '/register/success_company',
       name: 'success_company',
       component: success_registerc
     }

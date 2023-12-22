@@ -44,7 +44,7 @@ const redirect = (name) => {
                 </div>
             </VCardText> -->  
             <VCardText class="px-0 more">
-              <router-link to="/type_client" class="d-flex tw-text-tertiary my-12 tw-no-underline hover:tw-text-primary hover-icon-arrow-right justify-content-center">
+              <router-link to="/login" class="d-flex tw-text-tertiary my-12 tw-no-underline hover:tw-text-primary hover-icon-arrow-right justify-content-center">
                 <span class="ms-5">Ingresar a mi cuenta</span>
                 <arrow_right class="ms-2" />
               </router-link>

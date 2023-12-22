@@ -316,13 +316,6 @@ const onSubmit = () => {
         border-radius: 32px;
     }
 
-    /* .v-text-field::v-deep(.v-input__details) { 
-        padding: 0;
-        height: 0;
-        min-height: 0;
-    } */
-
-
     .v-text-field::v-deep(.v-field) { 
         border-radius: 24px;
         height: 35px;

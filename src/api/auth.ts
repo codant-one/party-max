@@ -33,6 +33,10 @@ class Auth {
     generateQR() {
         return axios.get('auth/generateQR')
     }
+
+    register(data: object) {
+        return axios.post('auth/register', data)
+    }
 }
 
 const auth = new Auth();

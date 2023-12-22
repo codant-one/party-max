@@ -22,7 +22,7 @@ async function fetchData() {
   var size = 'contain'
 
   if(route.name === 'shopping_cart' || route.name === 'shopping_delivery' || route.name === 'shopping_summary' || route.name === 'dashboard') {
-    background.value = 'tw-bg-cyan'
+    background.value = 'tw-bg-green'
   } else {
     background.value = 'tw-bg-white'
   }
@@ -32,7 +32,8 @@ async function fetchData() {
   else if(route.name === 'categories')
     bg = categories
   else if(route.name === 'register'|| route.name === 'type_client'|| route.name === 'form_client' || 
-          route.name === 'form_supplier' || route.name === 'login' || route.name==='success_person' || route.name==='success_company') {
+          route.name === 'form_supplier' || route.name === 'login' || route.name === 'success_person' || 
+          route.name === 'success_company') {
     bg = register
     repeat = 'no-repeat'
     size = 'cover'

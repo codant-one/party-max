@@ -115,8 +115,8 @@ const props = defineProps({
     }
 
 
-    .input-search{
-        background: var(--Light-Cyan-1, #E2F8FC);
+    .input-search {
+        background: #E2F8FC;
         border-radius: 8px 0px 0px 8px; 
     }
 

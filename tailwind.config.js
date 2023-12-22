@@ -22,7 +22,8 @@ module.exports = {
       white: '#FFFFFF',
       yellow: '#FFC549',
       cyan: '#F3FCFE',
-      gray: '#999999'
+      gray: '#999999',
+      green: '#E2F8FC'
     },
     fill: {
       primary: '#FF0090',
