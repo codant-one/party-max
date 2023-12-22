@@ -14,12 +14,13 @@ import Register from '@/views/clients/register.vue'
 import TypeClient from '@/views/clients/type_client.vue'
 import FormClient from '@/views/clients/form_client.vue'
 import FormSupplier from '@/views/clients/form_supplier.vue'
-import LoginClient from '@/views/clients/login_client.vue'
+import Login from '@/views/Login.vue'
 import Shopping from '@/views/shopping/index.vue'
 import Delivery from '@/views/shopping/form_delivery.vue'
 import Summary from '@/views/shopping/summary.vue'
 import dashboard from '@/views/dashboard/index.vue'
-import Sidebar from '@/views/dashboard/layouts/sidebar.vue'
+// import Sidebar from '@/views/dashboard/layouts/sidebar.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -102,9 +103,9 @@ const router = createRouter({
     },
 
     {
-      path: '/login/client',
-      name: 'login_client',
-      component: LoginClient
+      path: '/login',
+      name: 'login',
+      component: Login
     },
 
     {
@@ -131,11 +132,11 @@ const router = createRouter({
       component: dashboard
     },
 
-    {
-      path: '/client/sidebar',
-      name: 'sidebar_client',
-      component: Sidebar
-    },
+    // {
+    //   path: '/client/sidebar',
+    //   name: 'sidebar_client',
+    //   component: Sidebar
+    // },
   ]
 })
 

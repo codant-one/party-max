@@ -94,8 +94,6 @@ async function fetchData() {
   await miscellaneousStores.getProduct(route.params.slug)
   data.value = miscellaneousStores.getData
 
-  console.log('product', data.value.product)
-
   imageAux.value = [{ image : data.value.product.image }]
 
   categories.value = data.value.product.colors[0]?.categories.map(item => item.category.name)
@@ -165,7 +163,7 @@ const setThumbsSwiper = (swiper) => {
     <VContainer class="pt-0">
       <Loader :isLoading="isLoading"/>
       <!-- HEADER -->
-      <VCard class="mt-7 no-shadown card-information p-0">
+      <VCard class="mt-7 no-shadown card-information p-0" v-if="!isLoading">
         <VCardTitle class="p-0 d-flex align-end">
           {{ title }}
           <VSpacer />
@@ -394,7 +392,7 @@ const setThumbsSwiper = (swiper) => {
                   <p class="text-lef">Recomendaciones que te pueden interesar</p>
                 </VCol>
                 <VCol cols="6" class="text-right">
-                  <span class="text-right">Ver todos</span>
+                  <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
                 </VCol>
                 
               </VRow>
@@ -433,9 +431,10 @@ const setThumbsSwiper = (swiper) => {
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
     border: 1.5px solid #E1E1E1 !important;
-    height: 50px;
+    height: 45px;
     width: 88px;
     margin-top: 10px;
+    box-shadow: none;
   } 
 
   .v-text-field::v-deep(::placeholder) { 

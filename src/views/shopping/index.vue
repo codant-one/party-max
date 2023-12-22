@@ -33,7 +33,7 @@ const redirect = (name) => {
 
 <template>
     <VContainer class="mt-10">
-
+        <Loader :isLoading="isLoading"/>
         <VRow>
             <VCol cols="12" md="8">
                 <VCard class="card-products">
