@@ -18,7 +18,8 @@ import Login from '@/views/Login.vue'
 import Shopping from '@/views/shopping/index.vue'
 import Delivery from '@/views/shopping/form_delivery.vue'
 import Summary from '@/views/shopping/summary.vue'
-
+import dashboard from '@/views/dashboard/index.vue'
+import Sidebar from '@/views/dashboard/layouts/sidebar.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -122,6 +123,18 @@ const router = createRouter({
       path: '/shopping/summary',
       name: 'shopping_summary',
       component: Summary
+    },
+
+    {
+      path: '/client/dashboard',
+      name: 'dashboar_client',
+      component: dashboard
+    },
+
+    {
+      path: '/client/sidebar',
+      name: 'sidebar_client',
+      component: Sidebar
     },
   ]
 })

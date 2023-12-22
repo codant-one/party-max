@@ -19,7 +19,7 @@ async function fetchData() {
   var repeat = 'repeat'
   var size = 'contain'
 
-  if(route.name === 'shopping_cart' || route.name === 'shopping_delivery' || route.name === 'shopping_summary') {
+  if(route.name === 'shopping_cart' || route.name === 'shopping_delivery' || route.name === 'shopping_summary'|| route.name==='dashboar_client') {
     background.value = 'tw-bg-cyan'
   } else {
     background.value = 'tw-bg-white'
