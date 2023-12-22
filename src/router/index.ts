@@ -19,6 +19,8 @@ import Shopping from '@/views/shopping/index.vue'
 import Delivery from '@/views/shopping/form_delivery.vue'
 import Summary from '@/views/shopping/summary.vue'
 import dashboard from '@/views/dashboard/index.vue'
+import success_registerp from '@/views/clients/success_registerper.vue'
+import success_registerc from '@/views/clients/success_registercom.vue'
 // import Sidebar from '@/views/dashboard/layouts/sidebar.vue'
 
 const router = createRouter({
@@ -130,6 +132,18 @@ const router = createRouter({
       path: '/client/dashboard',
       name: 'dashboar_client',
       component: dashboard
+    },
+
+    {
+      path: '/client/success_person',
+      name: 'success_person',
+      component: success_registerp
+    },
+
+    {
+      path: '/client/success_company',
+      name: 'success_company',
+      component: success_registerc
     },
 
     // {
