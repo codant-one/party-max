@@ -14,6 +14,7 @@ import instagram from '@assets/icons/instagram2.svg?inline';
 import threads from '@assets/icons/threads2.svg?inline';
 import iconmayorista from '@assets/icons/Union.svg';
 import default_image from '@assets/images/default-description.png';
+import default_review from '@assets/images/image-review.png';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -349,10 +350,40 @@ const setThumbsSwiper = (swiper) => {
                   <span v-html="description" class="content"></span>
                 </v-window-item>
                 <v-window-item value="1">
-                  hello
+                  <VRow align="center">
+                    <VCol cols="3" md="2" class="col-item"><span>Alto</span></VCol>
+                    <VCol cols="9" md="10" class="col-value"><span>20 cm</span></VCol>
+                    <VCol cols="3" md="2" class="col-item"><span>Ancho</span></VCol>
+                    <VCol cols="9" md="10" class="col-value"><span>20 cm</span></VCol>
+                    <VCol cols="3" md="2" class="col-item"><span>Peso</span></VCol>
+                    <VCol cols="9" md="10" class="col-value"><span>200 g</span></VCol>
+                    <VCol cols="3" md="2" class="col-item"><span>Profundo</span></VCol>
+                    <VCol cols="9" md="10" class="col-value"><span>40 cm</span></VCol>
+                    <VCol cols="3" md="2" class="col-item"><span>Material</span></VCol>
+                    <VCol cols="9" md="10" class="col-value"><span>Titanio</span></VCol>
+                    <VCol cols="3" md="2" class="col-item"><span>Color</span></VCol>
+                    <VCol cols="9" md="10" class="col-value"><span>Verde</span></VCol>
+                  </VRow>
                 </v-window-item>
                 <v-window-item value="2">
-                  hola
+                  <VRow align="center" class="row-reviews">
+                    <VCol cols="1">
+                      <VImg :src="default_review" class="image-review"/>
+                    </VCol>
+                    <VCol cols="11">
+                      <v-rating
+                        hover
+                        :length="5"
+                        :size="32"
+                        :model-value="3"
+                        style="margin-left:-10px;"
+                        active-color="#FFC549"
+                      />
+
+                      <p>De <span>Diego Bolivar</span> | 26 de Octubre, 2023</p> <br>
+                      <p>Lorem ipsum dolor sit amet consectetur. Lorem nunc scelerisque consequat quis adipiscing. Dui vulputate lacus tellus consectetur auctor.</p> 
+                    </VCol>
+                  </VRow>
                 </v-window-item>
               </v-window>
             </VCol>
@@ -627,6 +658,67 @@ const setThumbsSwiper = (swiper) => {
         height: 100%;
         object-fit: contain;
         border-radius: 8px;
+    }
+
+    .col-item
+    {
+      padding: 16px 32px;
+      border: 1px solid  #E1E1E1;
+      background-color: #E2F8FC;
+    }
+
+    .col-value
+    {
+      padding: 16px 32px;
+      border: 1px solid #E1E1E1;
+      background-color: #FFF;
+    }
+
+    .col-item span
+    {
+      color: #0A1B33;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 16px; /* 100% */
+    }
+    .col-value span
+    {
+      color: #999;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 16px; /* 100% */
+    }
+
+    .row-reviews
+    {
+      padding: 32px;
+    }
+
+    .image-review
+    {
+      width: 70px;
+      border-radius: 70px;
+      border: 1px solid var(--Grey-2, #E1E1E1);
+    }
+
+    .row-reviews p
+    {
+      color: #999;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 16px; /* 114.286% */
+    }
+
+    .row-reviews span
+    {
+      color: #FF0090;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 16px; /* 114.286% */
     }
 
 </style>
