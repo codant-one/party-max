@@ -572,7 +572,7 @@ const tab = ref('0')
   }
 
   .list {
-    min-height: 59.2px;
+    min-height: 59.2px !important;
   }
   .transparent {
     background: transparent !important;
