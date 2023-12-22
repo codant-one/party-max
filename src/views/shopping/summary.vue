@@ -159,6 +159,7 @@ import confirmacion_icon from '@assets/icons/confirmacion-icon.svg'
     border-radius: 24px;
     width:80%;
     margin-top:16px;
+    box-shadow: none;
 }
 .title-card{
     color: #0A1B33;
@@ -235,6 +236,7 @@ import confirmacion_icon from '@assets/icons/confirmacion-icon.svg'
     width:80%;
     margin-top:16px;
     border-radius: 16px;
+    box-shadow: none;
 }
 
 .button-bono
@@ -350,6 +352,7 @@ import confirmacion_icon from '@assets/icons/confirmacion-icon.svg'
     {
         padding: 16px 0px;
         border-radius: 24px;
+        box-shadow: none;
     }
 
     .serparador-icon

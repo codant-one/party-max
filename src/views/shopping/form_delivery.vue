@@ -231,6 +231,7 @@ const redirect = (name) => {
     padding:24px 32px;
     border-radius: 24px;
     margin-top: 12px;
+    box-shadow: none;
     
 }
 
@@ -272,6 +273,7 @@ const redirect = (name) => {
     padding:16px 32px;
     border-radius: 24px;
     margin-top:16px;
+    box-shadow: none;
 }
 
 .row-card
@@ -308,6 +310,7 @@ const redirect = (name) => {
     {
         padding: 16px 0px;
         border-radius: 24px;
+        box-shadow: none;
     }
 
     .serparador-icon

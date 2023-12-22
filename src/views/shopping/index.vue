@@ -190,12 +190,14 @@ const redirect = (name) => {
         background-color:#FFFFFF;
         padding:16px 32px;
         border-radius: 24px;
+        box-shadow: none;
     }
 
     .card-buy {
         background-color:#FFFFFF;
         padding:24px 32px;
         border-radius: 24px;
+        box-shadow: none;
     }
 
     .title-card {
@@ -301,6 +303,7 @@ const redirect = (name) => {
     {
         padding: 16px 0px;
         border-radius: 24px;
+        box-shadow: none;
     }
 
     .serparador-icon
