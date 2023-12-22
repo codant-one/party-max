@@ -21,7 +21,6 @@ import Summary from '@/views/shopping/summary.vue'
 import Dashboard from '@/views/dashboard/index.vue'
 import success_registerp from '@/views/clients/success_registerper.vue'
 import success_registerc from '@/views/clients/success_registercom.vue'
-// import Sidebar from '@/views/dashboard/layouts/sidebar.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -144,13 +143,7 @@ const router = createRouter({
       path: '/client/success_company',
       name: 'success_company',
       component: success_registerc
-    },
-
-    // {
-    //   path: '/client/sidebar',
-    //   name: 'sidebar_client',
-    //   component: Sidebar
-    // },
+    }
   ]
 })
 

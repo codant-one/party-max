@@ -48,29 +48,31 @@ const login = () => {
 
   authStores.login(data)
     .then(response => {
-      load.value = false
+        load.value = false
 
-      const { qr, token, accessToken, user_data, userAbilities } = response.data     
-      const two_factor = { generate_qr: (response.message === '2fa-generate') ? true : false }       
+        const { qr, token, accessToken, user_data, userAbilities } = response.data     
+        const two_factor = { generate_qr: (response.message === '2fa-generate') ? true : false }       
 
-      localStorage.setItem('userAbilities', JSON.stringify(userAbilities))      
-      localStorage.setItem('user_data', JSON.stringify(user_data))
-      localStorage.setItem('accessToken', accessToken)     
-      localStorage.setItem('qr', qr)
-      localStorage.setItem('token', token)
-      localStorage.setItem('two_factor', JSON.stringify(two_factor)) 
+        localStorage.setItem('userAbilities', JSON.stringify(userAbilities))      
+        localStorage.setItem('user_data', JSON.stringify(user_data))
+        localStorage.setItem('accessToken', accessToken)     
+        localStorage.setItem('qr', qr)
+        localStorage.setItem('token', token)
+        localStorage.setItem('two_factor', JSON.stringify(two_factor)) 
 
-      localStorage.setItem('remember_me', remember_me.value);
+        localStorage.setItem('remember_me', remember_me.value);
 
-      if(remember_me.value){
-        localStorage.setItem('email', email.value);
-        localStorage.setItem('password', password.value);
-      } else {
-        localStorage.setItem('email', '');
-        localStorage.setItem('password', ''); 
-      }
+        if(remember_me.value){
+            localStorage.setItem('email', email.value);
+            localStorage.setItem('password', password.value);
+        } else {
+            localStorage.setItem('email', '');
+            localStorage.setItem('password', ''); 
+        }
 
-      router.push({ name : 'dashboard'})
+        router.push({ name: 'dashboard' }).catch(() => {}).finally(() => {
+            location.reload(true);
+        });
     }).catch(err => {
 
       load.value = false
