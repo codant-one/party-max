@@ -78,7 +78,7 @@
                             variant="outlined"
                         />
                     </VCol>
-                    <VCol cols="12" class="d-flex text-start p-0 mt-8">
+                    <VCol cols="12" class="d-flex text-start p-0 mt-5">
                         <VCheckbox />
                         <div class="text1 ms-5 mt-2">
                             Acepto los 
@@ -132,7 +132,7 @@
         text-decoration: none; 
     }
     .card-register {
-        padding: 48px;
+        padding: 28px 48px;
         border-radius: 32px;
     }
 

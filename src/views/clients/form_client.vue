@@ -80,7 +80,7 @@ import icon4 from '@assets/icons/icon-password.svg';
                             variant="outlined"
                         />
                     </VCol>
-                    <VCol cols="12" class="d-flex text-start p-0 mt-8">
+                    <VCol cols="12" class="d-flex text-start p-0 mt-5">
                         <VCheckbox />
                         <div class="text1 ms-5 mt-2">
                             Acepto los 
@@ -140,7 +140,7 @@ import icon4 from '@assets/icons/icon-password.svg';
         box-shadow: 0px 0px 24px 0px #FF27B3;
     }
     .card-register {
-        padding: 48px;
+        padding: 28px 48px;
         border-radius: 32px;
     }
 

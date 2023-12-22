@@ -41,6 +41,11 @@ const categories = ref([])
 const products = ref([])
 const tab = ref('0')
 
+const rowPerPage = ref(12)
+const currentPage = ref(1)
+const totalPages = ref(1)
+const totalProducts = ref(0)
+
 const formatTitle = (slug) => {
   const words = slug.split('-');
   const title = words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
@@ -55,6 +60,20 @@ const bread = ref([
     href: '/',
   }
 ])
+
+// 👉 Computing pagination data
+const paginationData = computed(() => {
+  const firstIndex = products.value.length ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
+  const lastIndex = products.value.length + (currentPage.value - 1) * rowPerPage.value
+
+  return `Mostrando ${ firstIndex } hasta ${ lastIndex } de ${ totalProducts.value } registros`
+})
+
+// 👉 watching current page
+watchEffect(() => {
+  if (currentPage.value > totalPages.value)
+    currentPage.value = totalPages.value
+})
 
 watchEffect(fetchData)
 
@@ -83,12 +102,30 @@ async function fetchData() {
   await homeStores.fetchData()
     
   data.value = homeStores.getData
-    
-  products.value = await miscellaneousStores.products()
+  
+  let info = {
+    orderByField: 'id',
+    orderBy: 'desc',
+    limit: rowPerPage.value,
+    page: currentPage.value
+  }
+
+  var aux = await miscellaneousStores.products(info)
+  products.value = aux.products.data
+  
+  totalPages.value = aux.products.last_page
+  totalProducts.value = aux.productsTotalCount
 
   isLoading.value = false
 }
 
+const chancePagination = () => {
+  fetchData()
+}
+
+const isLastItem = (index) => {
+  return index === products.value.length - 1;
+}
 const  valores= [20, 40]
 
 </script>
@@ -170,7 +207,9 @@ const  valores= [20, 40]
           <VCard class="mt-7 menu-prod">
             <VRow no-gutters class="align-center">
               <VCol cols="6" class="text-left">
-                <span>8 Productos</span>
+                <span>{{ products.length }} </span>
+                <span v-if="products.length === 1">  Producto </span>
+                <span v-else>  Productos </span>
               </VCol>
               <VCol cols="4" class="text-left">
                 <v-select class="my-custom-select"
@@ -193,10 +232,11 @@ const  valores= [20, 40]
               </VCol>  
             </VRow>
           </VCard> 
-          <VRow class="align-center row-products">
+          <VRow class="align-center row-products" no-gutters>
+            <VCol cols="12">
               <v-window v-model="tab">
                   <v-window-item value="0">
-                      <VRow no-gutters>
+                      <VRow no-gutters class="ms-3">
                           <VCol cols="12" md="3" v-for="(product, i) in products" class="mb-7">
                               <Product3
                                   :key="i"
@@ -206,16 +246,30 @@ const  valores= [20, 40]
                       </VRow>
                   </v-window-item>
                   <v-window-item value="1">
-                      <VRow >
+                      <VRow no-gutters class="ms-3">
                           <VCol cols="12" v-for="(product, i) in products">
                               <Product4
                                   :key="i"
                                   :product="product"
-                                  :readonly="true"/>
+                                  :readonly="true"
+                                  :isLastItem="isLastItem(i)"/>
                           </VCol>
                       </VRow>
                   </v-window-item>
               </v-window>
+            </VCol>
+            <VCol cols="12">
+              <VCardText class="d-flex align-center justify-content-center py-3 px-5">
+                <VPagination
+                  v-model="currentPage"
+                  size="small"
+                  :total-visible="5"
+                  :length="totalPages"
+                  rounded="circle"
+                  @update:modelValue="chancePagination"
+                />
+              </VCardText>
+            </VCol>
           </VRow>      
         </VCol>
       </VRow>      
@@ -267,7 +321,7 @@ const  valores= [20, 40]
     background-color:#FFFFFF;
   }
   .row-products {
-    padding: 50px 30px;
+    padding: 50px 0;
   }
   .custom-check {
     max-height: 50px!important;

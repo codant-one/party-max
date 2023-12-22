@@ -1,5 +1,7 @@
 <script setup>
-import { useDate } from 'vuetify'
+
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 const props = defineProps({
     blog: {
@@ -22,7 +24,6 @@ const slug = ref(null)
 const dateBlog = ref(null)
 const paragraphs = ref(null)
 
-const date = useDate();
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
 watchEffect(() => {
@@ -33,7 +34,7 @@ watchEffect(() => {
         title.value = props.blog.title
         description.value = props.blog.description
         image.value = props.blog.image
-        user.value = props.blog.user
+        user.value = props.blog.user.name + ' ' + (props.blog.user.last_name ?? '')
         slug.value = props.blog.slug
         dateBlog.value = props.blog.date
 
@@ -55,10 +56,6 @@ watchEffect(() => {
         }
     }
 })
-
-const detail = () => {
-    router.push({ name : 'dashboard-products-products-edit-id', params: { slug: slug } })
-}
 
 // const firstParagraph = async() => {
 //   const blogContent = description.value;
@@ -88,9 +85,9 @@ const detail = () => {
         </VCardItem>
 
         <VCardSubtitle class="text-justify subtitle-text my-6 px-0">
-            <VIcon size="20px" icon="mdi-account-outline" class="subtitle-text"></VIcon> by {{ props.user }} 
-            <VIcon size="20px" :end=true icon="mdi-clock-outline" class="subtitle-text"></VIcon> 
-            {{ date.format(dateBlog, 'fullDateWithWeekday') }}
+            <VIcon size="20px" icon="mdi-account-outline" class="subtitle-text"></VIcon> by {{ user }} 
+            <VIcon size="20px" :end=true icon="mdi-clock-outline" class="subtitle-text"></VIcon>
+            {{  format(dateBlog, 'MMMM d, yyyy', { locale: es }).replace(/(^|\s)\S/g, (char) => char.toUpperCase()) }}
         </VCardSubtitle>
 
         <VCardTitle class="text-justify title-text px-0 pt-0">
@@ -114,7 +111,7 @@ const detail = () => {
                 append-icon="mdi-arrow-right"
                 color="#0A1B33"
                 text="Leer más"
-                class="text-none text-justify description-text px-0 mb-2 tw-text-tertiary"
+                class="text-none text-justify description-text px-0 mb-2 tw-text-tertiary hover:tw-text-primary"
             
             />
         </router-link>

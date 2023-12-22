@@ -57,6 +57,11 @@ html {
   line-height: 20px;
 }
 
+.font-size-14 {
+  font-size: 16px;
+  line-height: 18px;
+}
+
 @media (min-width: 1280px) {
   .v-container {
       max-width: 1312px !important;

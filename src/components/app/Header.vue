@@ -3,9 +3,9 @@
   import { useHomeStores } from '@/stores/home'
 
   import logo from '@assets/images/logo.svg';
-  import heart from '@assets/icons/heart.svg';
-  import shoppinp_cart from '@assets/icons/shoppinp_cart.svg';
-  import user from '@assets/icons/user.svg';
+  import heart from '@assets/icons/heart.svg?inline';
+  import shoppinp_cart from '@assets/icons/shoppinp_cart.svg?inline';
+  import user from '@assets/icons/user.svg?inline';
   import arrow_right from '@assets/icons/arrow_right.svg?inline';
 
   const color = ref('#FF0090')
@@ -57,12 +57,18 @@
             </VLayout>
           </VCol>
           <VCol cols="2" class="d-flex align-center align-items-stretch flex-shrink-0 ms-n70">
-            <VBtn variant="plain" icon class="pb-2 me-4 index"><img :src="heart" width="35"/></VBtn>
-            <VBtn variant="plain" icon class="pb-2 me-4"><img :src="shoppinp_cart" width="35"/></VBtn>
+            <VBtn variant="plain" icon class="pb-2 me-4 index heart">
+              <heart />
+            </VBtn>
+            <VBtn variant="plain" icon class="pb-2 me-4 shoppinp_cart">
+              <shoppinp_cart />
+            </VBtn>
             <div class="d-flex user-text">
-              <VBtn variant="plain" icon class="pb-2"><img :src="user" width="33"/></VBtn>
+              <VBtn variant="plain" icon class="pb-2 user">
+                <user />
+              </VBtn>
               <router-link class="link-header" :to="{name:'register',}">
-                <span class="d-flex align-center tw-text-tertiary font-size-16 pb-2">
+                <span class="d-flex align-center tw-text-tertiary font-size-14 pb-2">
                   Ingresar o Registrarme
                 </span>
               </router-link>
@@ -198,8 +204,16 @@
     fill: #FFC549;
   }
 
+  .heart:hover::v-deep(path), .shoppinp_cart:hover::v-deep(path) {
+    fill: #FF0090;
+  }
+
   .user-text:hover span  {
     color: #FF0090 !important;
+  }
+
+  .user-text:hover .user::v-deep(path) {
+    fill: #FF0090;
   }
   
   .link-header

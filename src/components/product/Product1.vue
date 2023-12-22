@@ -33,7 +33,7 @@ watchEffect(() => {
         price.value = props.product.price
         price_for_sale.value = props.product.price_for_sale
         name.value = props.product.name
-        store.value = props.product.user.name + ' ' + props.product.user.last_name
+        store.value = props.product.user.name + ' ' + (props.product.user.last_name ?? '')
         rating.value = props.product.rating
         slug.value = props.product.slug
     }
