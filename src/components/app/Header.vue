@@ -77,9 +77,24 @@
               <shoppinp_cart />
             </VBtn>
             <div class="d-flex user-text">
-              <VBtn variant="plain" icon class="pb-2 user">
-                <user />
-              </VBtn>
+              <v-menu>
+                <template v-slot:activator="{ props }">
+                  <VBtn variant="plain" icon class="pb-2 user" v-bind="props">
+                    <user />
+                  </VBtn>
+                </template>
+                <v-list>
+                  <v-list-item>
+                    <v-list-item-title><b>Hola</b></v-list-item-title>
+                    <v-list-item-title>{{name}}</v-list-item-title> <br>
+                    <v-list-item-title><router-link class="link-header" :to="{name:'dashboard',}">Dashboard</router-link></v-list-item-title>
+                    <v-list-item-title>Configuración cuenta</v-list-item-title>
+                    <v-list-item-title>Historial</v-list-item-title> <br><br>
+                    <v-list-item-title>Cerrar Sesión</v-list-item-title>
+
+                  </v-list-item>
+                </v-list>
+              </v-menu>
               <router-link class="link-header" :to="{name:'register',}">
                 <span class="d-flex align-center tw-text-tertiary font-size-14 pb-2" v-if="name === null">
                   Ingresar o Registrarme
