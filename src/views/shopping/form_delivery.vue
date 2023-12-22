@@ -1,6 +1,5 @@
 <script setup>
 
-import { ref } from 'vue'
 import router from '@/router'
 
 import festin_icon from '@assets/icons/festin-address.svg' 
@@ -8,6 +7,7 @@ import carrito_icon from '@assets/icons/carrito-icon.svg'
 import separador_icon from '@assets/icons/separador-linetime.svg'
 import pago_icon from '@assets/icons/pago-icon.svg'
 import confirmacion_icon from '@assets/icons/confirmacion-icon.svg'
+
 const redirect = (name) => {
     router.push({ name : name})
 }
@@ -19,46 +19,48 @@ const redirect = (name) => {
     <VContainer class="mt-10">
 
         <!--TimeLine-->
-        <VCol cols="12">
-            <VCard class="card-timeline"> 
-                <VRow align="center">
-                    <VCol cols="3"></VCol>
-                    <VCol cols="6">
-                        <VRow align="center">
-                          <VCol cols="2">
-                            <VImg :src="carrito_icon" class="carrito-icon"/>
-                          </VCol>
-                          <VCol cols="1">
-                            <VImg :src="separador_icon" class="serparador-icon"></VImg>
-                          </VCol>  
+        <VRow>
+            <VCol cols="12">
+                <VCard class="card-timeline"> 
+                    <VRow align="center">
+                        <VCol cols="3"></VCol>
+                        <VCol cols="6">
+                            <VRow align="center">
+                            <VCol cols="2">
+                                <VImg :src="carrito_icon" class="carrito-icon"/>
+                            </VCol>
+                            <VCol cols="1">
+                                <VImg :src="separador_icon" class="serparador-icon"></VImg>
+                            </VCol>  
 
-                          <VCol cols="2">
-                            <VImg :src="festin_icon" class="festin-icon"/>
-                          </VCol>
+                            <VCol cols="2">
+                                <VImg :src="festin_icon" class="festin-icon"/>
+                            </VCol>
 
-                          <VCol cols="1">
-                            <VImg :src="separador_icon" class="serparador-icon"></VImg>
-                          </VCol>
+                            <VCol cols="1">
+                                <VImg :src="separador_icon" class="serparador-icon"></VImg>
+                            </VCol>
 
-                          <VCol cols="2">
-                            <VImg :src="pago_icon" class="pago-icon"/>
-                          </VCol>
+                            <VCol cols="2">
+                                <VImg :src="pago_icon" class="pago-icon"/>
+                            </VCol>
 
-                          <VCol cols="1">
-                            <VImg :src="separador_icon" class="serparador-icon"></VImg>
-                          </VCol>
+                            <VCol cols="1">
+                                <VImg :src="separador_icon" class="serparador-icon"></VImg>
+                            </VCol>
 
-                          <VCol cols="3">
-                            <VImg :src="confirmacion_icon" class="confirmacion-icon"/>
-                          </VCol>
-                        </VRow>
-                        
-                        
-                    </VCol>
-                    <VCol cols="3"></VCol>
-                </VRow>
-            </VCard>
-        </VCol>
+                            <VCol cols="3">
+                                <VImg :src="confirmacion_icon" class="confirmacion-icon"/>
+                            </VCol>
+                            </VRow>
+                            
+                            
+                        </VCol>
+                        <VCol cols="3"></VCol>
+                    </VRow>
+                </VCard>
+            </VCol>
+        </VRow>
         <!--End TimeLine-->
 
         <VRow>

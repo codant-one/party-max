@@ -9,7 +9,6 @@ import icon2 from '@/assets/icons/icon-menu-product2.svg'
 
 import Product3 from '@/components/product/Product3.vue'
 import Product4 from '@/components/product/Product4.vue'
-import sold from '@assets/icons/sold.svg';
 
 const route = useRoute()
 
@@ -28,18 +27,14 @@ const items_check = ref([
   { name: 'item 3 (4)', selected: false },
 ])
 
-const priceRange = '[0, 1000]' // Valores iniciales del rango de precios
-const minPrice = 0 // Valor mínimo del rango
-const maxPrice = 1000 // Valor máximo del rango
-
 const homeStores = useHomeStores()
 const miscellaneousStores = useMiscellaneousStores()
 
 const isLoading = ref(true)
 const data = ref(null)
-const categories = ref([])
 const products = ref([])
 const tab = ref('0')
+const category = ref(null)
 
 const rowPerPage = ref(12)
 const currentPage = ref(1)
@@ -61,14 +56,6 @@ const bread = ref([
   }
 ])
 
-// 👉 Computing pagination data
-const paginationData = computed(() => {
-  const firstIndex = products.value.length ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
-  const lastIndex = products.value.length + (currentPage.value - 1) * rowPerPage.value
-
-  return `Mostrando ${ firstIndex } hasta ${ lastIndex } de ${ totalProducts.value } registros`
-})
-
 // 👉 watching current page
 watchEffect(() => {
   if (currentPage.value > totalPages.value)
@@ -79,23 +66,25 @@ watchEffect(fetchData)
 
 async function fetchData() {
 
-  if(route.query.category) {
-    const category = {
+  if(route.query.category && category.value === null) {
+    category.value = {
       title: formatTitle(route.query.category),
       disabled: false,
       href: 'categories/' + route.query.category,
     }
 
-    bread.value.push(category)
-  }
+    bread.value.push(category.value)
 
-  const product_ = {
-    title: 'Productos',
-    disabled: true,
-    href: '',
-  }
+    const product_ = {
+      title: 'Productos',
+      disabled: true,
+      href: '',
+    }
 
-  bread.value.push(product_)
+    bread.value.push(product_)
+  } 
+
+  
 
   isLoading.value = true
 

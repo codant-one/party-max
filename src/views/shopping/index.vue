@@ -2,6 +2,7 @@
 
 import { ref } from 'vue'
 import { useHomeStores } from '@/stores/home'
+import { useMiscellaneousStores } from '@/stores/miscellaneous' 
 import Loader from '@/components/common/Loader.vue'
 import Product1 from '@/components/product/Product1.vue'
 import router from '@/router'
@@ -10,10 +11,13 @@ import separador_icon from '@assets/icons/separador-linetime.svg'
 import address_icon from '@assets/icons/address-icon.svg'
 import pago_icon from '@assets/icons/pago-icon.svg'
 import confirmacion_icon from '@assets/icons/confirmacion-icon.svg'
+import Product5 from '@/components/product/Product5.vue'
 
 const homeStores = useHomeStores()
+const miscellaneousStores = useMiscellaneousStores()
 const data = ref(null)
-const bg = ref('tw-bg-cyan')
+const bg = ref('tw-bg-green')
+const products = ref([])
 
 const isLoading = ref(true)
 
@@ -25,12 +29,26 @@ async function fetchData() {
   
   await homeStores.fetchData()
   data.value = homeStores.getData
- 
+
+  let info = {
+    orderByField: 'id',
+    orderBy: 'desc',
+    limit: 2,
+    page: 1
+  }
+
+  var aux = await miscellaneousStores.products(info)
+  products.value = aux.products.data
+
   isLoading.value = false
 }
 
 const redirect = (name) => {
     router.push({ name : name})
+}
+
+const isLastItem = (index) => {
+  return index === products.value.length - 1;
 }
 
 </script>
@@ -41,57 +59,62 @@ const redirect = (name) => {
         <Loader :isLoading="isLoading"/>
 
         <!--TimeLine-->
-        <VCol cols="12">
-            <VCard class="card-timeline"> 
-                <VRow align="center">
-                    <VCol cols="3"></VCol>
-                    <VCol cols="6">
-                        <VRow align="center">
-                          <VCol cols="2">
-                            <VImg :src="festin_icon" class="festin-icon"/>
-                          </VCol>
-                          <VCol cols="1">
-                            <VImg :src="separador_icon" class="serparador-icon"></VImg>
-                          </VCol>  
+        <VRow>
+            <VCol cols="12">
+                <VCard class="card-timeline px-0"> 
+                    <VRow align="center">
+                        <VCol cols="3"></VCol>
+                        <VCol cols="6">
+                            <VRow align="center">
+                            <VCol cols="2">
+                                <VImg :src="festin_icon" class="festin-icon"/>
+                            </VCol>
+                            <VCol cols="1">
+                                <VImg :src="separador_icon" class="serparador-icon"></VImg>
+                            </VCol>  
 
-                          <VCol cols="2">
-                            <VImg :src="address_icon" class="address-icon"/>
-                          </VCol>
+                            <VCol cols="2">
+                                <VImg :src="address_icon" class="address-icon"/>
+                            </VCol>
 
-                          <VCol cols="1">
-                            <VImg :src="separador_icon" class="serparador-icon"></VImg>
-                          </VCol>
+                            <VCol cols="1">
+                                <VImg :src="separador_icon" class="serparador-icon"></VImg>
+                            </VCol>
 
-                          <VCol cols="2">
-                            <VImg :src="pago_icon" class="pago-icon"/>
-                          </VCol>
+                            <VCol cols="2">
+                                <VImg :src="pago_icon" class="pago-icon"/>
+                            </VCol>
 
-                          <VCol cols="1">
-                            <VImg :src="separador_icon" class="serparador-icon"></VImg>
-                          </VCol>
+                            <VCol cols="1">
+                                <VImg :src="separador_icon" class="serparador-icon"></VImg>
+                            </VCol>
 
-                          <VCol cols="3">
-                            <VImg :src="confirmacion_icon" class="confirmacion-icon"/>
-                          </VCol>
-                        </VRow>
-                        
-                        
-                    </VCol>
-                    <VCol cols="3"></VCol>
-                </VRow>
-            </VCard>
-        </VCol>
+                            <VCol cols="3">
+                                <VImg :src="confirmacion_icon" class="confirmacion-icon"/>
+                            </VCol>
+                            </VRow>
+                            
+                            
+                        </VCol>
+                        <VCol cols="3"></VCol>
+                    </VRow>
+                </VCard>
+            </VCol>
+        </VRow>
         <!--End TimeLine-->
 
         <VRow>
             <VCol cols="12" md="8">
                 <VCard class="card-products">
                     <h2 class="title-card">Productos</h2>
-                    <VRow class="row-cardp">
-                        detalle producto
-                    </VRow>
-                    <VRow class="row-cardp2">
-                        detalle producto 2
+                    <VRow no-gutters class="row-cardp">
+                        <VCol cols="12" v-for="(product, i) in products">
+                            <Product5
+                                :key="i"
+                                :product="product"
+                                :readonly="true"
+                                :isLastItem="isLastItem(i)"/>
+                        </VCol>
                     </VRow>
                     <VRow class="row-cardp3">
                         <VCol cols="12" md="6" class="text-left">
@@ -157,7 +180,7 @@ const redirect = (name) => {
                     <h3>Recomendaciones que te pueden interesar</h3>
                 </VCol>
                 <VCol cols="12" md="6" class="text-right">
-                    <span>Ver todos</span>
+                    <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
                 </VCol>
             </VRow>
            </VCol>
@@ -219,8 +242,7 @@ const redirect = (name) => {
     .row-cardp {
         border-bottom: 1px solid #D9EEF2;
         border-top: 1px solid #D9EEF2;
-        margin-top:16px;
-        height:100px;
+        margin-top:11px;
         padding: 32px;
     }
 
