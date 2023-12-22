@@ -38,7 +38,6 @@ const bread = ref([
 ])
 
 const productImages = ref([])
-const currentSlide = ref(0)
 const modules = ref([FreeMode, Navigation, Thumbs, Scrollbar])
 const thumbsSwiper = ref(null);
 
@@ -58,6 +57,11 @@ const single_description = ref(null)
 const description = ref(null)
 const categories = ref([])
 const tags = ref([])
+const width = ref('')
+const height = ref('')
+const deep = ref('')
+const weigth = ref('')
+const material = ref('')
 
 const radioContent = ref([])
 const selectedColor = ref(null)
@@ -122,6 +126,12 @@ async function fetchData() {
   color.value = data.value.product.colors[0].color.name
   single_description.value = data.value.product.single_description
   description.value = data.value.product.description
+
+  width.value = data.value.product.detail.width
+  weigth.value = data.value.product.detail.weigth
+  height.value = data.value.product.detail.height
+  deep.value = data.value.product.detail.deep
+  material.value = data.value.product.detail.material
 
   data.value.product.colors[0].categories.forEach(element => { 
     categories.value.push(element.category.name)
@@ -348,40 +358,42 @@ const setThumbsSwiper = (swiper) => {
                   <span v-html="description" class="content"></span>
                 </v-window-item>
                 <v-window-item value="1">
-                  <VRow align="center">
-                    <VCol cols="3" md="2" class="col-item"><span>Alto</span></VCol>
-                    <VCol cols="9" md="10" class="col-value"><span>20 cm</span></VCol>
-                    <VCol cols="3" md="2" class="col-item"><span>Ancho</span></VCol>
-                    <VCol cols="9" md="10" class="col-value"><span>20 cm</span></VCol>
-                    <VCol cols="3" md="2" class="col-item"><span>Peso</span></VCol>
-                    <VCol cols="9" md="10" class="col-value"><span>200 g</span></VCol>
-                    <VCol cols="3" md="2" class="col-item"><span>Profundo</span></VCol>
-                    <VCol cols="9" md="10" class="col-value"><span>40 cm</span></VCol>
-                    <VCol cols="3" md="2" class="col-item"><span>Material</span></VCol>
-                    <VCol cols="9" md="10" class="col-value"><span>Titanio</span></VCol>
-                    <VCol cols="3" md="2" class="col-item"><span>Color</span></VCol>
-                    <VCol cols="9" md="10" class="col-value"><span>Verde</span></VCol>
-                  </VRow>
+                  <VCardText class="mb-10">
+                    <VRow>
+                      <VCol cols="2" md="2" class="col-item"><span>Alto</span></VCol>
+                      <VCol cols="10" md="10" class="col-value"><span>{{ height }}cm</span></VCol>
+                      <VCol cols="2" md="2" class="col-item"><span>Ancho</span></VCol>
+                      <VCol cols="10" md="10" class="col-value"><span>{{ width }}cm</span></VCol>
+                      <VCol cols="2" md="2" class="col-item"><span>Peso</span></VCol>
+                      <VCol cols="10" md="10" class="col-value"><span>{{ weigth }}g</span></VCol>
+                      <VCol cols="2" md="2" class="col-item"><span>Profundo</span></VCol>
+                      <VCol cols="10" md="10" class="col-value"><span>{{ deep }}cm</span></VCol>
+                      <VCol cols="2" md="2" class="col-item"><span>Material</span></VCol>
+                      <VCol cols="10" md="10" class="col-value"><span>{{ material }}</span></VCol>
+                    </VRow>
+                  </VCardText>
                 </v-window-item>
                 <v-window-item value="2">
-                  <VRow align="center" class="row-reviews">
-                    <VCol cols="1">
-                      <VImg :src="default_review" class="image-review"/>
-                    </VCol>
-                    <VCol cols="11">
-                      <v-rating
-                        hover
-                        :length="5"
-                        :size="32"
-                        :model-value="3"
-                        style="margin-left:-10px;"
-                        active-color="#FFC549"
-                      />
+                  <VCardText class="mb-10 py-0">
+                    <VRow class="row-reviews border-title" v-for="n in 3">
+                      <VCol cols="1">
+                        <VImg :src="default_review" class="image-review"/>
+                      </VCol>
+                      <VCol cols="11">
+                        <v-rating
+                          hover
+                          :length="5"
+                          :size="32"
+                          :model-value="3"
+                          style="margin-left:-10px;"
+                          active-color="#FFC549"
+                        />
 
-                      <p>De <span>Diego Bolivar</span> | 26 de Octubre, 2023</p> <br>
-                      <p>Lorem ipsum dolor sit amet consectetur. Lorem nunc scelerisque consequat quis adipiscing. Dui vulputate lacus tellus consectetur auctor.</p> 
-                    </VCol>
-                  </VRow>
+                        <p>De <span>Diego Bolivar</span> | 26 de Octubre, 2023</p> <br>
+                        <p>Lorem ipsum dolor sit amet consectetur. Lorem nunc scelerisque consequat quis adipiscing. Dui vulputate lacus tellus consectetur auctor.</p> 
+                      </VCol>
+                    </VRow>
+                  </VCardText>
                 </v-window-item>
               </v-window>
             </VCol>
@@ -566,9 +578,7 @@ const setThumbsSwiper = (swiper) => {
     border: 1px solid #FFC549;
   }
 
-  .description
-  {
-    border-bottom: 1px solid #D9EEF2;
+  .description {
     border-top: 1px solid #D9EEF2;
     padding: 16px 0px!important;
   }
@@ -659,23 +669,20 @@ const setThumbsSwiper = (swiper) => {
         border-radius: 8px;
     }
 
-    .col-item
-    {
+    .col-item {
       padding: 16px 32px;
       border: 1px solid  #E1E1E1;
       background-color: #E2F8FC;
     }
 
-    .col-value
-    {
+    .col-value {
       padding: 16px 32px;
       border: 1px solid #E1E1E1;
       background-color: #FFF;
     }
 
-    .col-item span
-    {
-      color: #0A1B33;
+    .col-item span {
+      color: #999;
       font-size: 16px;
       font-style: normal;
       font-weight: 600;
@@ -690,20 +697,17 @@ const setThumbsSwiper = (swiper) => {
       line-height: 16px; /* 100% */
     }
 
-    .row-reviews
-    {
+    .row-reviews {
       padding: 32px;
     }
 
-    .image-review
-    {
+    .image-review {
       width: 70px;
       border-radius: 70px;
       border: 1px solid var(--Grey-2, #E1E1E1);
     }
 
-    .row-reviews p
-    {
+    .row-reviews p {
       color: #999;
       font-size: 14px;
       font-style: normal;
@@ -711,8 +715,7 @@ const setThumbsSwiper = (swiper) => {
       line-height: 16px; /* 114.286% */
     }
 
-    .row-reviews span
-    {
+    .row-reviews span {
       color: #FF0090;
       font-size: 14px;
       font-style: normal;
