@@ -80,7 +80,14 @@ const isLastItem = (index) => {
                 </VRow>
                 <VRow class="row-realizar">
                     <VCol cols="12">
-                        <button>Realizar pedido</button>
+                        <VBtn
+                            variant="flat"
+                            width="100%"
+                            style="border-radius:32px;"
+                            class="btn-register tw-text-white tw-bg-primary button-hover mt-2"
+                            @click="emit('update:currentStep', 3)">
+                                Realizar pedido
+                        </VBtn>
                     </VCol>
                 </VRow>
                 <VRow align="center" class="row-payu text-center">
