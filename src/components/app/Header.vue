@@ -9,6 +9,7 @@
   import user from '@assets/icons/user.svg?inline';
   import arrow_right from '@assets/icons/arrow_right.svg?inline';
   import icon_right from '@assets/icons/right-icon.svg';
+  import default_item from '@assets/images/subitem-menu-default.png'
 
   const color = ref('#FF0090')
   
@@ -60,6 +61,8 @@
     })
 
   }
+
+
 </script>
 
 <template>
@@ -141,6 +144,7 @@
       <VContainer class="p-0 tw-text-white d-flex align-center">
         
           <div class="hover:tw-text-yellow">
+            <!--INICIO DEL MENÚ PRODUCTOS-->
             <v-menu>
               <template  v-slot:activator="{ props }">
                 
@@ -153,15 +157,35 @@
                   <v-list-item-title><span class="title-menu">PRODUCTOS</span></v-list-item-title>
                 </v-list-item>
                 <v-list-item>
-                    <VRow align="center">  
+                    <VRow align="center"> 
                           <VCol cols="10">
-                            <span class="subtitle-menu" v-bind="props">Fiestas infantiles</span>                        
+                            <!--INICIO SUB MENÚ DEL ITEM-->
+                            <v-menu location="end">
+                              <template v-slot:activator="{ props }">
+                                <span class="subtitle-menu" v-bind="props">Fiestas infantiles</span>
+                              </template>
+                              <v-list class="style-submenu">
+                                <v-list-item>
+                                  <span class="subtitle-menu">Niños</span>
+                                </v-list-item>
+                                <v-list-item>
+                                  <span class="subtitle-menu">Niñas</span>
+                                </v-list-item>
+                                <v-list-item>
+                                  <span class="subtitle-menu">Bebes</span>
+                                </v-list-item>
+                                <v-list-item>
+                                  <VImg :src="default_item" class="image-item"></VImg>
+                                </v-list-item>
+                              </v-list>
+                            </v-menu>
+                            <!--FIN SUB MENÚ DEL ITEM-->                        
                           </VCol>
                           <VCol cols="2">
                             <VImg :src="icon_right" class="icon-right" v-bind="props"></VImg>  
                           </VCol>                     
                     </VRow>
-                </v-list-item>
+                </v-list-item>               
                 <v-list-item>
                     <VRow align="center">
                       <VCol cols="10">
@@ -401,6 +425,7 @@
   .subtitle-menu:hover
   {
     color: #FF0090;
+    cursor: pointer;
   }
   .icon-right
   {
@@ -413,5 +438,20 @@
     min-width: 314px;
     border-radius: 0px 0px 0px 24px!important;
   }
+
+  .image-item
+  {
+    width: 250px;
+    height: 186.831px;
+    flex-shrink: 0;
+    border-radius: 16px;
+  }
+
+  .style-submenu
+  {
+    padding: 88px 32px 32px 32px;
+    border-radius: 0px 0px 0px 24px!important;
+  }
  
 </style>
+
