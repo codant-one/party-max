@@ -296,8 +296,8 @@ watchEffect(() => {
       }
 
         .stepper-chevron-indicator {
-            g {
-                fill: rgb(var(--v-theme-primary)) !important;
+            path {
+                stroke: rgb(var(--v-theme-primary)) !important;
             }
         }
 
