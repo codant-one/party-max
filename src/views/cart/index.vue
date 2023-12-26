@@ -123,30 +123,30 @@ const redirect = (name) => {
 
             <!--SECCIÓN PRODUCTOS RECOMENDADOS-->
 
-            <VRow class="row-recomendados">
-            <VCol cols="12" style="border-bottom: 1px solid #0A1B33;">
-                <VRow style="padding:16px 0px;">
-                    <VCol cols="12" md="6" class="text-left">
-                        <h3>Recomendaciones que te pueden interesar</h3>
-                    </VCol>
-                    <VCol cols="12" md="6" class="text-right">
-                        <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
-                    </VCol>
-                </VRow>
-            </VCol>
+            <VRow class="row-recomendados" v-if="currentStep === 0">
+                <VCol cols="12" style="border-bottom: 1px solid #0A1B33;">
+                    <VRow style="padding:16px 0px;">
+                        <VCol cols="12" md="6" class="text-left">
+                            <h3>Recomendaciones que te pueden interesar</h3>
+                        </VCol>
+                        <VCol cols="12" md="6" class="text-right">
+                            <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
+                        </VCol>
+                    </VRow>
+                </VCol>
             
-            <VCol cols="12">
-                    <VCard class="mt-1 no-shadown card-information p-0" style="background:none;">
-                        <VCardText class="px-0 mt-3 mb-3 d-flex align-items-stretch justify-content-between" v-if="data">
-                            <Product1 
-                                v-for="(product, i) in data.recommendations"
-                                :key="i"
-                                :product="product"
-                                :readonly="true"
-                                :bg="bg"/>
-                        </VCardText> 
-                    </VCard> 
-            </VCol>
+                <VCol cols="12">
+                        <VCard class="mt-1 no-shadown card-information p-0" style="background:none;">
+                            <VCardText class="px-0 mt-3 mb-3 d-flex align-items-stretch justify-content-between" v-if="data">
+                                <Product1 
+                                    v-for="(product, i) in data.recommendations"
+                                    :key="i"
+                                    :product="product"
+                                    :readonly="true"
+                                    :bg="bg"/>
+                            </VCardText> 
+                        </VCard> 
+                </VCol>
             </VRow>
 
         </VContainer>
