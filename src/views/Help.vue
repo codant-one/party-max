@@ -100,7 +100,7 @@ const setFocus = async(category) => {
         :class="!categories.length ? 'd-flex justify-center align-center' : ''"
       >
         <VIcon
-          icon="tabler-help"
+          icon="mdi-alert-circle"
           start
           size="20"
         />

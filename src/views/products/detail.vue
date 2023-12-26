@@ -304,7 +304,7 @@ const setThumbsSwiper = (swiper) => {
                   <VCol cols="12" md="6">
                     <router-link
                       :to="{
-                        name:'shopping_cart'
+                        name:'cart'
                       }"
                       class="link-button px-10">
                       <VBtn 

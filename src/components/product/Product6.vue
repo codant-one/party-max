@@ -51,8 +51,8 @@ watchEffect(() => {
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow no-gutters>
                 <VCol cols="12" md="1" class="d-flex justify-content-center align-center">
-                    <VCardText class="border-img ms-14">
-                        <VImg 
+                    <VCardText class="border-img ms-16">
+                        <VImg
                             :width="100"
                             :src="baseURL + image" 
                             cover />
@@ -64,20 +64,20 @@ watchEffect(() => {
                     </VCardText>
                 </VCol>
                 <VCol cols="12" md="3" class="d-flex justify-content-end align-center">
-                    <div>
-                    <VCardText class="d-flex text-end align-end justify-content-end">
-                        <div class="d-flex text-center align-center justify-content-center">
-                            <span class="tw-text-primary tw-font-medium me-1">(-%16)</span>
-                        </div>
-                        <div class="d-flex text-center align-center justify-content-center">
-                            <span class="tw-text-gray">${{ price_for_sale }}</span>
-                        </div>
-                    </VCardText>
-                    <VCardText class="mt-1">
-                        <div class="d-flex text-center align-end justify-content-end">
-                            <span class="text_1 tw-text-tertiary">${{ price }}</span>
-                        </div>
-                    </VCardText>
+                    <div class="me-2">
+                        <VCardText class="d-flex text-end align-end justify-content-end">
+                            <div class="d-flex text-center align-center justify-content-center">
+                                <span class="tw-text-primary tw-font-medium me-1">(-%16)</span>
+                            </div>
+                            <div class="d-flex text-center align-center justify-content-center">
+                                <span class="tw-text-gray">${{ price_for_sale }}</span>
+                            </div>
+                        </VCardText>
+                        <VCardText class="mt-1">
+                            <div class="d-flex text-center align-end justify-content-end">
+                                <span class="text_1 tw-text-tertiary">${{ price }}</span>
+                            </div>
+                        </VCardText>
                     </div>
                 </VCol>
             </VRow>

@@ -21,7 +21,7 @@ async function fetchData() {
   var repeat = 'repeat'
   var size = 'contain'
 
-  if(route.name === 'shopping_cart' || route.name === 'shopping_delivery' || route.name === 'shopping_summary' || route.name === 'dashboard') {
+  if(route.name === 'cart' || route.name === 'dashboard') {
     background.value = 'tw-bg-green'
   } else {
     background.value = 'tw-bg-white'

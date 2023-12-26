@@ -15,9 +15,7 @@ import TypeClient from '@/views/clients/type_client.vue'
 import FormClient from '@/views/clients/form_client.vue'
 import FormSupplier from '@/views/clients/form_supplier.vue'
 import Login from '@/views/Login.vue'
-import Shopping from '@/views/shopping/index.vue'
-import Delivery from '@/views/shopping/form_delivery.vue'
-import Summary from '@/views/shopping/summary.vue'
+import Cart from '@/views/cart/index.vue'
 import Dashboard from '@/views/dashboard/index.vue'
 import success_registerp from '@/views/clients/success_registerper.vue'
 import success_registerc from '@/views/clients/success_registercom.vue'
@@ -75,7 +73,6 @@ const router = createRouter({
       name: 'suppliers',
       component: Suppliers
     },
-    
     {
       path: '/services',
       name: 'services',
@@ -86,7 +83,6 @@ const router = createRouter({
       name: 'register',
       component: Register
     },
-
     {
       path: '/type_client',
       name: 'type_client',
@@ -108,37 +104,21 @@ const router = createRouter({
       name: 'login',
       component: Login
     },
-
     {
-      path: '/shopping/cart',
-      name: 'shopping_cart',
-      component: Shopping
+      path: '/cart',
+      name: 'cart',
+      component: Cart
     },
-
-    {
-      path: '/shopping/delivery',
-      name: 'shopping_delivery',
-      component: Delivery
-    },
-
-    {
-      path: '/shopping/summary',
-      name: 'shopping_summary',
-      component: Summary
-    },
-
     {
       path: '/dashboard',
       name: 'dashboard',
       component: Dashboard
     },
-
     {
       path: '/register/success_person',
       name: 'success_person',
       component: success_registerp
     },
-
     {
       path: '/register/success_company',
       name: 'success_company',

@@ -51,7 +51,7 @@ watchEffect(() => {
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow no-gutters>
                 <VCol cols="12" md="2" class="d-flex justify-content-center align-center">
-                    <VCardText class="border-img ms-5">
+                    <VCardText class="border-img ms-10">
                         <VImg 
                             :width="100"
                             :src="baseURL + image" 
