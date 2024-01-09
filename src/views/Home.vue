@@ -289,7 +289,7 @@ const tab = ref('0')
               slug: 'globos'
             }
           }"
-          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary vendido-globos">
           Globos
         </router-link>
         <router-link 
@@ -299,7 +299,7 @@ const tab = ref('0')
               slug: 'hora-loca'
             }
           }"
-          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary vendido-globos">
           Piñatas
         </router-link>
         <router-link 
@@ -309,7 +309,7 @@ const tab = ref('0')
               slug: 'sorpresas'
             }
           }"
-          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary vendido-globos">
           Sorpresas
         </router-link>
         <router-link 
@@ -319,15 +319,15 @@ const tab = ref('0')
               slug: 'decoracion'
             }
           }"
-          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary vendido-globos">
           Decoración
         </router-link>
       </VCardTitle>
       <VDivider />
-      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data">
+      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between card-banner5" v-if="data">
         <VRow no-gutters class="transparent">
           <VCol cols="12" md="9">
-            <VImg :src="banner_5" class="border-img"/>
+            <VImg :src="banner_5" class="border-img banner5-mobile"/>
             <VCard class="no-shadown">
               <VTabs v-model="tab" class="mt-7"  color="pink-accent-3">
                 <VTab value="0">Agregados recientemente</VTab>
@@ -362,7 +362,7 @@ const tab = ref('0')
             </VCard>
           </VCol>
           <VCol cols="12" md="3" class="d-flex flex-column">
-            <VCardText class="p-0 ms-3">
+            <VCardText class="p-0 ms-3 col-mobile">
               <div v-if="tab === '0'">
                 <Product2 
                   v-for="(product, index) in data.mostSold.latestProducts"
@@ -392,15 +392,15 @@ const tab = ref('0')
     </VCard>
 
     <!-- banner 2 , banner 3-->
-    <VCard class="mt-7 no-shadown card-information p-0 d-flex transparent">
-        <VCard class="no-shadown card-information p-0 w-50">
+    <VCard class="mt-7 no-shadown card-information p-0 d-flex transparent card-banner34">
+        <VCard class="no-shadown card-information p-0 w-50 grid-item w-100">
           <router-link to="/products" class="tw-no-underline">
             <VCardItem class="p-0">
               <VImg :src="banner_3" cover/>
             </VCardItem>  
           </router-link>
         </VCard>
-        <VCard class="no-shadown card-information p-0 w-50 ms-5">
+        <VCard class="no-shadown card-information p-0 w-50 ms-5 grid-item w-100">
           <router-link to="/products" class="tw-no-underline">
             <VCardItem class="p-0">
               <VImg :src="banner_4" cover/>
@@ -445,26 +445,26 @@ const tab = ref('0')
       </VCardTitle>
       <VDivider class="hr-primary"/>
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
-        <router-link to="/products" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_1" class="border-theme d-block"/>
-          <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
-        </router-link>
-        <router-link to="/products" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_2" class="border-theme d-block"/>
-          <span class="d-block size-theme tw-text-tertiary mt-5">Hawaiana</span>
-        </router-link>
-        <router-link to="/products" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_3" class="border-theme d-block"/>
-          <span class="d-block size-theme tw-text-tertiary mt-5">Vallenata</span>
-        </router-link>
-        <router-link to="/products" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_4" class="border-theme d-block"/>
-          <span class="d-block size-theme tw-text-tertiary mt-5">Metalizada</span>
-        </router-link>
-        <router-link to="/products" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_5" class="border-theme d-block"/>
-          <span class="d-block size-theme tw-text-tertiary mt-5">Neón</span>
-        </router-link>
+          <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+            <img :src="t_1" class="border-theme d-block"/>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
+          </router-link>
+          <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+            <img :src="t_2" class="border-theme d-block"/>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Hawaiana</span>
+          </router-link>
+          <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+            <img :src="t_3" class="border-theme d-block"/>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Vallenata</span>
+          </router-link>
+          <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+            <img :src="t_4" class="border-theme d-block"/>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Metalizada</span>
+          </router-link>
+          <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+            <img :src="t_5" class="border-theme d-block"/>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Neón</span>
+          </router-link>
       </VCardText>   
     </VCard>
   </VContainer>
@@ -687,6 +687,37 @@ const tab = ref('0')
    {
     display: block!important;
    }
+
+   .vendido-globos
+   {
+    margin-inline-start: 0px !important;
+   }
+
+   .banner5-mobile
+   {
+      width: 325.088px;
+      height: 100px;
+   }
+
+   .card-banner5
+   {
+    padding-top: 8px!important;
+   }
+
+   .card-banner34
+   {
+
+      display: grid!important;
+      grid-template-columns: 1fr!important;
+      grid-gap: 0!important;
+    
+   }
+
+   .grid-item {
+      margin: 0!important;
+      padding: 0!important;
+    }
+
   
 
   }
