@@ -25,7 +25,7 @@ backgroundStyle.value = {
   <VContainer class="content py-13 text-center w-100">
     
     <VRow align="center" no-gutters>
-      <VCol cols="12" md="6" class="align-left">
+      <VCol cols="12" md="6" class="order-last order-md-first align-left">
         <h1  class="tw-text-primary title-about">Donde la magia de las celebraciones crea momentos inolvidables</h1>
 
         <p class="text-about">
@@ -199,5 +199,25 @@ margin-top: 40px;
   font-weight: 700;
   line-height: normal;
   text-transform: uppercase;
+}
+
+@media only screen and (max-width: 767px)
+{
+  .title-about
+  {
+    font-size: 24px;
+    line-height: 32px;
+    text-align: center;
+    margin-top: 24px;
+  }
+
+  .text-about
+  {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px; /* 150% */
+  }
+
 }
 </style>

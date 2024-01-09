@@ -32,7 +32,7 @@ fetchData()
     <Loader :isLoading="isLoading"/>
     <!-- slider -->
     <VRow class="d-flex justify-center">
-      <VCol cols="8">
+      <VCol cols="12" md="8">
          <blogsCard
             v-for="blog in blogs.slice(0, 3)"
             :blog="blog"
@@ -40,7 +40,7 @@ fetchData()
          />
       </VCol>
 
-      <VCol cols="4">
+      <VCol cols="12" md="4">
         <blogSearchCard
           :blogs="blogs.slice(0, 4)"
           :categories="categories"

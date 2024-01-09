@@ -75,7 +75,7 @@
 
     <VContainer class="mt-16">
       <VRow no-gutters class="tw-text-tertiary">
-        <VCol cols="12" md="3" class="d-block align-center text-left">
+        <VCol cols="7" md="3" class="d-block align-center text-left">
           <span class="contact-text">Contactanos</span>
           <div class="d-flex text-left mt-12 mb-5">
             <icophone class="mt-1 me-2"/>
@@ -95,9 +95,9 @@
           </div>
         </VCol>
 
-        <VCol cols="12" md="2" class="d-flex align-center"></VCol>
+        <VCol cols="12" md="2" class="d-flex align-center col-mobile"></VCol>
 
-        <VCol cols="12" md="2" class="d-flex flex-column align-start text-left tw-gap-3">
+        <VCol cols="12" md="2" class="d-flex flex-column align-start text-left tw-gap-3 col-mobile">
           <router-link to="/about-us" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Quiénes somos
           </router-link>
@@ -132,7 +132,7 @@
           </router-link>
         </VCol>
 
-        <VCol cols="12" md="2" class="d-flex flex-column align-start text-left tw-gap-3">
+        <VCol cols="12" md="2" class="d-flex flex-column align-start text-left tw-gap-3 col-mobile">
           <router-link 
             :to="{
               name: 'categories',
@@ -194,7 +194,7 @@
             Hora loca
           </router-link>
         </VCol>
-        <VCol cols="12" md="3" class="align-center text-right">
+        <VCol cols="5" md="3" class="align-center text-right">
           <img :src="festinfooter" class="border-theme"/>
         </VCol>
       </VRow>
@@ -203,10 +203,10 @@
 
     <VContainer class="mt-2">
       <VRow no-gutters class="tw-text-tertiary">
-        <VCol cols="12" md="6" class="d-block align-center text-left">
-          <span class="copyright">© 2023 PartyMax. All Rights Reserved</span>
+        <VCol cols="12" md="6" class="d-block align-center text-left col-copy">
+          <p class="copyright">© 2023 PartyMax. All Rights Reserved</p>
         </VCol>
-        <VCol cols="12" md="6" class="d-flex align-center text-right">
+        <VCol cols="12" md="6" class="d-flex align-center text-right col-mobile">
           <VSpacer />
           <span class="copyright">Pagos seguros con</span>
           <img :src="icopayment1" width="45" class="me-3 ms-8"/>
@@ -336,5 +336,31 @@
   }
   .text-colorfooter span{
     color: #FFFFFF!important;
+  }
+
+
+
+  @media only screen and (max-width: 767px)
+  {
+    .col-mobile
+    {
+      display: none!important;
+    }
+
+    .border-theme
+    {
+      width: 150px!important;
+    }
+    .phone-text
+    {
+      font-size: 20px;
+      line-height: 28.8px; /* 144% */
+    }
+
+    .col-copy p
+    {
+      text-align: center !important;
+    }
+
   }
 </style>

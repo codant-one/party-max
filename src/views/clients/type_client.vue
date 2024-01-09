@@ -9,8 +9,7 @@ import arrow_right from '@assets/icons/arrow-right.svg?inline';
 
 <template>
     <VContainer class="mt-10">
-        <VCard
-            :width="456" 
+        <VCard 
             class="no-shadown card-register d-block text-center mx-auto mb-5">
             <VImg :src="festin_image" class="img-festin mx-auto"/>
             <VCardItem class="subtitle-register px-0">
@@ -57,6 +56,7 @@ import arrow_right from '@assets/icons/arrow-right.svg?inline';
     .card-register {
         padding: 45px;
         border-radius: 32px;
+        width:456px;
         
     }
 
@@ -121,5 +121,19 @@ import arrow_right from '@assets/icons/arrow-right.svg?inline';
     .client-card .v-card-item__content {
         margin: auto;
     }
+    @media only screen and (max-width: 767px){
+
+    .card-register
+    {
+        width: 358px;
+        padding: 40px;
+    }    
+    .subtitle-register
+    {
+        font-size: 20px;
+        line-height: 24px; /* 120% */
+    }
+
+}
 
 </style>

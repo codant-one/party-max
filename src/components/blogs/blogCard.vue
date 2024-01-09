@@ -120,7 +120,6 @@ watchEffect(() => {
 
 <style scoped>
     .title-text {
-        font-size: 24px;
         color:  #FF0090!important;
         font-size: 36px;
         font-style: normal;
@@ -153,5 +152,24 @@ watchEffect(() => {
 
     .img-style {
         border-radius: 16px;
+    }
+
+    @media only screen and (max-width: 767px)
+    {
+        .title-text
+        {
+            font-size: 20px;
+        }
+        .description-text
+        {        
+            font-size: 14px;
+            line-height: 24px; /* 171.429% */
+        }
+
+        .subtitle-text
+        {
+            font-size: 14px;
+            line-height: 16px; /* 114.286% */
+        }
     }
 </style>

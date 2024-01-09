@@ -9,7 +9,6 @@
 <template>
     <VContainer class="mt-10">
         <VCard 
-            :width="536" 
             class="no-shadown card-register d-block text-center mx-auto">
             <VCardItem class="subtitle-register">
                 Completa los datos para solicitar tu <br> cuenta como proveedor
@@ -134,6 +133,7 @@
     .card-register {
         padding: 28px 48px;
         border-radius: 32px;
+        width:536px; 
     }
 
     .subtitle-register {
@@ -228,6 +228,21 @@
     .v-text-field::v-deep(.v-field-label) {
         top: 30% !important;
         font-size: 12px !important;
+    }
+
+    @media only screen and (max-width: 767px)
+    {
+        .card-register
+        {
+            width: 358px;
+            padding: 40px 20px;
+        }
+
+        .subtitle-register
+        {
+            font-size: 20px;
+            line-height: 24px; /* 120% */
+        }
     }
 
 </style>

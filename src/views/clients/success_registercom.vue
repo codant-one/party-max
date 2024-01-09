@@ -13,7 +13,6 @@ const redirect = (name) => {
 <template>
     <VContainer class="mt-10">
         <VCard
-            :width="456" 
             class="no-shadown card-register d-block text-center mx-auto">
             <VImg :src="festin_image" class="img-festin mx-auto"/>
             <VCardText class="subtitle-register p-0">
@@ -75,6 +74,7 @@ const redirect = (name) => {
     .card-register {
         padding: 20px;
         border-radius: 32px;
+        width:456px; 
     }
 
     .img-festin {
@@ -120,5 +120,20 @@ const redirect = (name) => {
     .button-hover:hover {
         background-color: #FF27B3 !important;
         box-shadow: 0px 0px 24px 0px #FF27B3;
+    }
+
+    @media only screen and (max-width: 767px)
+    {
+        .card-register
+        {
+            width: 358px;
+            padding: 40px 20px;
+        }
+
+        .subtitle-register
+        {
+            font-size: 20px;
+            line-height: 24px; /* 120% */
+        }
     }
 </style>

@@ -129,7 +129,7 @@ const  valores= [20, 40]
     <VContainer class="pt-0">
       <Loader :isLoading="isLoading"/>
       <VRow no-gutters>
-        <VCol cols="12" md="3">
+        <VCol cols="12" md="3" class="col-left">
           <VCard class="mt-7 sidebar-container">
               <VCardItem class="p-0 text-left mb-5">
                 CATEGORÍAS
@@ -226,7 +226,7 @@ const  valores= [20, 40]
               <v-window v-model="tab">
                   <v-window-item value="0">
                       <VRow no-gutters class="ms-3">
-                          <VCol cols="12" md="3" v-for="(product, i) in products" class="mb-7">
+                          <VCol cols="6" md="3" v-for="(product, i) in products" class="mb-7">
                               <Product3
                                   :key="i"
                                   :product="product"
@@ -321,6 +321,22 @@ const  valores= [20, 40]
   .container-vslider {
     max-height: 40px!important;
     margin-top: 24px;
+  }
+
+  @media only screen and (max-width: 767px)
+  {
+    .col-left
+    {
+      display: none;
+    }
+    .text-left
+    {
+      color: var(--Maastricht-Blue, #0A1B33);
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 16px; /* 114.286% */
+    }
   }
 
 </style>

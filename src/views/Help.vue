@@ -150,4 +150,20 @@ const setFocus = async(category) => {
     .v-btn.v-btn--density-default{
       height: 100px !important;
     }
+
+    @media only screen and (max-width: 767px)
+    {
+      .title-text
+      {
+        text-align: center;
+        font-size: 24px;
+        line-height: 24px; /* 100% */
+      }
+
+      .subtitle-text
+    {
+        text-align: center;
+        line-height: 24px; /* 133.333% */
+    }
+    }
 </style>
