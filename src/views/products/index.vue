@@ -75,6 +75,16 @@ async function fetchData() {
 
     bread.value.push(category.value)
 
+    if(route.query.subcategory) {
+      const subcategory = {
+        title: formatTitle(route.query.subcategory),
+        disabled: true,
+        href: '',
+    }
+
+      bread.value.push(subcategory)
+    }
+
     const product_ = {
       title: 'Productos',
       disabled: true,

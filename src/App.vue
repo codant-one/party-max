@@ -2,6 +2,7 @@
 
 import { ref } from 'vue'
 import { useAuthStores } from '@/stores/auth'
+import platform from 'platform';
 import Header from '@/components/app/Header.vue'
 import Footer from '@/components/app/Footer.vue'
 import home from '@assets/images/home.jpg';
@@ -13,6 +14,8 @@ const authStores = useAuthStores()
 const route = useRoute()
 const backgroundStyle = ref({})
 const background = ref('tw-bg-white')
+
+const isMobile = /Mobi/i.test(navigator.userAgent);
 
 watchEffect(fetchData)
 
@@ -49,6 +52,11 @@ async function fetchData() {
     backgroundRepeat: repeat
   }
 
+  // console.log(`Navegador: ${platform.name}`);
+  // console.log(`Versión del navegador: ${platform.version}`);
+  // console.log(`Sistema operativo: ${platform.os.family}`)
+  // console.log(isMobile ? 'Dispositivo móvil' : 'Dispositivo de escritorio');
+  // console.log(`Tipo de dispositivo: ${navigator.userAgent}`);
 }
 
 const me = async () => {
