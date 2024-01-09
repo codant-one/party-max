@@ -183,7 +183,7 @@
             <VBtn 
               variant="plain" 
               icon 
-              class="index heart ms-14">
+              class="index heart ms-12">
               <heart />
             </VBtn>
             <VBtn variant="plain" icon class="shoppinp_cart">
