@@ -174,14 +174,14 @@
         <VRow no-gutters v-else>
           <VCol cols="6" class="d-flex">
             <router-link to="/" class="tw-no-underline tw-text-white ms-4">
-              <img :src="logo" width="200" cover/>
+              <img :src="logo" width="180" cover/>
             </router-link>
           </VCol>
           <VCol cols="6" class="d-flex align-center align-items-stretch flex-shrink-0">
             <VBtn 
               variant="plain" 
               icon 
-              class="index heart ms-8">
+              class="index heart ms-10">
               <heart />
             </VBtn>
             <VBtn variant="plain" icon class="shoppinp_cart">
