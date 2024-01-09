@@ -31,6 +31,12 @@
   const isMobile = /Mobi/i.test(navigator.userAgent);
   const drawer = ref(false)
 
+  const items_check = ref([
+    { id: 1, name: 'item 1', children: [{ id: 1, name: 'item 1 (1)' }, { id: 2, name: 'item 1 (2)' }] },
+    { id: 2, name: 'item 2', children: [{ id: 1, name: 'item 2 (1)' }, { id: 2, name: 'item 2 (2)' }] },
+    { id: 3, name: 'item 3', children: [{ id: 1, name: 'item 3 (1)' }, { id: 2, name: 'item 3 (2)' }] }
+  ])
+
   watchEffect(fetchData)
 
   async function fetchData() {
@@ -105,15 +111,21 @@
       <VList>
         <VListItem>
           <VListItemTitle class="d-block lineheight borderList py-2">
-            <span class="d-block title-menu">Quiénes somos</span>
+            <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+              <span class="d-block title-menu">Quiénes somos</span>
+            </router-link>
           </VListItemTitle>
           <VListItemTitle class="d-block lineheight borderList py-2">
-            <span class="d-block title-menu">Blog</span>
+            <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+              <span class="d-block title-menu">Blog</span>
+            </router-link>
           </VListItemTitle>
           <VListItemTitle class="d-block lineheight borderList py-2">
-            <span class="d-block title-menu">Mayoristas</span>
+            <router-link to="/suppliers" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+              <span class="d-block title-menu">Mayoristas</span>
+            </router-link>
           </VListItemTitle>
-          <VListItemTitle class="d-block lineheight pt-4 pb-2">
+          <VListItemTitle class="d-block lineheight pt-6 pb-2">
             <span class="d-block title-menu">PRODUCTOS</span>
             <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
               <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
@@ -131,7 +143,7 @@
               elevation="0"
               rounded="rounded-0">
               <VExpansionPanelTitle
-                class="font-weight-medium title-text pt-4 pb-4 hover:tw-bg-yellow"
+                class="font-weight-medium title-text px-0 hover:tw-bg-yellow"
               >
                 {{ item.name }}
                 <template v-slot:actions="{ expanded }">
@@ -145,7 +157,7 @@
                 class="text-justify description-text"
               >
                 <VListItem 
-                  v-for="(i, index2) in categories[category].children"
+                  v-for="(i, index2) in categories[item.id - 1].children"
                   :key="index2">
                   <router-link
                     :to="{
@@ -158,6 +170,47 @@
                     class="tw-no-underline tw-text-tertiary">
                     <span class="subtitle-menu">{{ i.name }}</span>
                   </router-link>
+                </VListItem>
+              </VExpansionPanelText>
+            </VExpansionPanel>
+          </VExpansionPanels>
+        </VListItem>
+        <VListItem>
+          <VListItemTitle class="d-block lineheight pt-6 pb-2">
+            <span class="d-block title-menu">SERVICIOS</span>
+            <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
+            </svg>
+          </VListItemTitle>
+        </VListItem>
+        <VListItem>
+          <VExpansionPanels
+            variant="inset"
+            class="text-center item borderList"
+            v-for="item in items_check"
+            :key="item.id"
+            :value="item.name">
+            <VExpansionPanel                         
+              elevation="0"
+              rounded="rounded-0">
+              <VExpansionPanelTitle
+                class="font-weight-medium title-text px-0 hover:tw-bg-yellow"
+              >
+                {{ item.name }}
+                <template v-slot:actions="{ expanded }">
+                  <VIcon
+                    size="20" 
+                    :icon="expanded ? 'mdi-minus' : 'mdi-plus'"
+                  />
+                </template>
+              </VExpansionPanelTitle>
+              <VExpansionPanelText
+                class="text-justify description-text"
+              >
+                <VListItem 
+                  v-for="(i, index2) in items_check[item.id - 1].children"
+                  :key="index2">
+                  <span class="subtitle-menu">{{ i.name }}</span>
                 </VListItem>
               </VExpansionPanelText>
             </VExpansionPanel>
@@ -681,6 +734,30 @@
 
     .borderList {
       border-bottom: 1px solid #D9EEF2;
+    }
+
+    .v-expansion-panel--active > .v-expansion-panel-title:not(.v-expansion-panel-title--static) {
+      min-height: 30px;
+    }
+
+    .v-expansion-panels--variant-inset > .v-expansion-panel--active {
+      max-width: 100%;
+    }
+
+    .v-navigation-drawer::v-deep(.v-expansion-panel-text__wrapper) {
+      padding: 10px;
+    }
+
+    .item .v-list-item--density-default.v-list-item--one-line {
+      min-height: 20px !important;
+      padding-inline: 0 !important;
+    }
+
+    .subtitle-menu {
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 16px
     }
   }
 </style>
