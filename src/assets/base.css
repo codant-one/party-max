@@ -27,7 +27,7 @@ html {
   height: 96px !important;
 }
 
-.second-header .v-toolbar__content {
+.second-header .v-toolbar__content, .topFixed .v-toolbar__content {
   height: 44px !important;
   padding-inline-end: 0 !important;
 }

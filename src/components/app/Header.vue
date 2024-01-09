@@ -30,6 +30,8 @@
 
   const isMobile = /Mobi/i.test(navigator.userAgent);
   const drawer = ref(false)
+  const fixedSectionRef = ref(null)
+  const classFixed = ref('second-header')
 
   const items_check = ref([
     { id: 1, name: 'item 1', children: [{ id: 1, name: 'item 1 (1)' }, { id: 2, name: 'item 1 (2)' }] },
@@ -100,6 +102,19 @@
       }         
      })
   }
+
+  onMounted(() => {
+    window.addEventListener('scroll', handleScroll);
+  });
+
+  const handleScroll = () => {
+
+    if (fixedSectionRef.value && isMobile) {
+      const scrollY = window.scrollY || window.pageYOffset;
+    
+      classFixed.value = (scrollY === 0 ) ? 'second-header' : 'topFixed';
+    }
+  };
   
 </script>
 
@@ -342,7 +357,7 @@
         </VRow>
       </VContainer>
     </VAppBar>
-    <VAppBar flat class="second-header tw-bg-primary">
+    <VAppBar flat class="tw-bg-primary" :class="classFixed" ref="fixedSectionRef">
       <VContainer class="p-0 tw-text-white d-flex justify-space-around align-center" v-if="!isMobile">
         <div class="hover:tw-text-yellow">
           <VMenu 
@@ -646,6 +661,12 @@
   @media (max-width: 768px) {
     .second-header {
       top: 80px !important;
+      position: fixed !important;
+    }
+    
+    .topFixed {
+      top: 0 !important;
+      position: fixed !important;
     }
 
     .v-text-field::v-deep(.v-field) { 
