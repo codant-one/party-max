@@ -29,6 +29,15 @@
   const menuOpen = ref(false)
 
   const isMobile = /Mobi/i.test(navigator.userAgent);
+  const drawer = ref(false)
+  const fixedSectionRef = ref(null)
+  const classFixed = ref('second-header')
+
+  const items_check = ref([
+    { id: 1, name: 'item 1', children: [{ id: 1, name: 'item 1 (1)' }, { id: 2, name: 'item 1 (2)' }] },
+    { id: 2, name: 'item 2', children: [{ id: 1, name: 'item 2 (1)' }, { id: 2, name: 'item 2 (2)' }] },
+    { id: 3, name: 'item 3', children: [{ id: 1, name: 'item 3 (1)' }, { id: 2, name: 'item 3 (2)' }] }
+  ])
 
   watchEffect(fetchData)
 
@@ -93,11 +102,137 @@
       }         
      })
   }
+
+  onMounted(() => {
+    window.addEventListener('scroll', handleScroll);
+  });
+
+  const handleScroll = () => {
+
+    if (fixedSectionRef.value && isMobile) {
+      const scrollY = window.scrollY || window.pageYOffset;
+    
+      classFixed.value = (scrollY === 0 ) ? 'second-header' : 'topFixed';
+    }
+  };
   
 </script>
 
 <template>
   <section>
+    <VNavigationDrawer
+      v-model="drawer"
+      temporary>
+      <VList>
+        <VListItem>
+          <VListItemTitle class="d-block lineheight borderList py-2">
+            <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+              <span class="d-block title-menu">Quiénes somos</span>
+            </router-link>
+          </VListItemTitle>
+          <VListItemTitle class="d-block lineheight borderList py-2">
+            <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+              <span class="d-block title-menu">Blog</span>
+            </router-link>
+          </VListItemTitle>
+          <VListItemTitle class="d-block lineheight borderList py-2">
+            <router-link to="/suppliers" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+              <span class="d-block title-menu">Mayoristas</span>
+            </router-link>
+          </VListItemTitle>
+          <VListItemTitle class="d-block lineheight pt-6 pb-2">
+            <span class="d-block title-menu">PRODUCTOS</span>
+            <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
+            </svg>
+          </VListItemTitle>
+        </VListItem>
+        <VListItem>
+          <VExpansionPanels
+            variant="inset"
+            class="text-center item borderList"
+            v-for="item in categories"
+            :key="item.id"
+            :value="item.name">
+            <VExpansionPanel                         
+              elevation="0"
+              rounded="rounded-0">
+              <VExpansionPanelTitle
+                class="font-weight-medium title-text px-0 hover:tw-bg-yellow"
+              >
+                {{ item.name }}
+                <template v-slot:actions="{ expanded }">
+                  <VIcon
+                    size="20" 
+                    :icon="expanded ? 'mdi-minus' : 'mdi-plus'"
+                  />
+                </template>
+              </VExpansionPanelTitle>
+              <VExpansionPanelText
+                class="text-justify description-text"
+              >
+                <VListItem 
+                  v-for="(i, index2) in categories[item.id - 1].children"
+                  :key="index2">
+                  <router-link
+                    :to="{
+                      name: 'products',
+                      query: {
+                        category: i.slug.split('/')[0],
+                        subcategory: i.slug.split('/')[1]
+                      }
+                    }"
+                    class="tw-no-underline tw-text-tertiary">
+                    <span class="subtitle-menu">{{ i.name }}</span>
+                  </router-link>
+                </VListItem>
+              </VExpansionPanelText>
+            </VExpansionPanel>
+          </VExpansionPanels>
+        </VListItem>
+        <VListItem>
+          <VListItemTitle class="d-block lineheight pt-6 pb-2">
+            <span class="d-block title-menu">SERVICIOS</span>
+            <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
+            </svg>
+          </VListItemTitle>
+        </VListItem>
+        <VListItem>
+          <VExpansionPanels
+            variant="inset"
+            class="text-center item borderList"
+            v-for="item in items_check"
+            :key="item.id"
+            :value="item.name">
+            <VExpansionPanel                         
+              elevation="0"
+              rounded="rounded-0">
+              <VExpansionPanelTitle
+                class="font-weight-medium title-text px-0 hover:tw-bg-yellow"
+              >
+                {{ item.name }}
+                <template v-slot:actions="{ expanded }">
+                  <VIcon
+                    size="20" 
+                    :icon="expanded ? 'mdi-minus' : 'mdi-plus'"
+                  />
+                </template>
+              </VExpansionPanelTitle>
+              <VExpansionPanelText
+                class="text-justify description-text"
+              >
+                <VListItem 
+                  v-for="(i, index2) in items_check[item.id - 1].children"
+                  :key="index2">
+                  <span class="subtitle-menu">{{ i.name }}</span>
+                </VListItem>
+              </VExpansionPanelText>
+            </VExpansionPanel>
+          </VExpansionPanels>
+        </VListItem>
+      </VList>
+    </VNavigationDrawer>
     <VAppBar flat class="header">
       <VContainer class="tw-bg-white">
         <VRow no-gutters v-if="!isMobile">
@@ -222,7 +357,7 @@
         </VRow>
       </VContainer>
     </VAppBar>
-    <VAppBar flat class="second-header tw-bg-primary">
+    <VAppBar flat class="tw-bg-primary" :class="classFixed" ref="fixedSectionRef">
       <VContainer class="p-0 tw-text-white d-flex justify-space-around align-center" v-if="!isMobile">
         <div class="hover:tw-text-yellow">
           <VMenu 
@@ -287,115 +422,53 @@
                     </VListItem>
                   </VList>
                 </VCol>
-                </VRow>
-              </VCard>
-            </VMenu>
+              </VRow>
+            </VCard>
+          </VMenu>
           </div>
-          <div class="hover:tw-text-yellow">
-            <VAppBarNavIcon variant="text"/>
-            <span class="font-size-16 tw-cursor-pointer">Servicios</span>
-          </div>
-          <router-link to="/suppliers" class="tw-no-underline tw-text-white hover:tw-text-yellow d-flex align-center text-center hover-icon-arrow-right">
-            <span class="ms-8">Mayoristas</span>
-            <arrow_right class="ms-2 p-0 index"/>
-          </router-link>  
-          <VSpacer />
+        <div class="hover:tw-text-yellow">
+          <VAppBarNavIcon variant="text"/>
+          <span class="font-size-16 tw-cursor-pointer">Servicios</span>
+        </div>
+        <router-link to="/suppliers" class="tw-no-underline tw-text-white hover:tw-text-yellow d-flex align-center text-center hover-icon-arrow-right">
+          <span class="ms-8">Mayoristas</span>
+          <arrow_right class="ms-2 p-0 index"/>
+        </router-link>  
+        <VSpacer />
 
-          <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Quiénes somos</router-link>
-          <VDivider class="hr" vertical/>
-          <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Blogs</router-link>
-          <VDivider class="hr" vertical/>
-          <router-link to="/help" class="ms-5 tw-no-underline tw-text-white me-3 hover:tw-text-yellow">Ayuda</router-link>
+        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Quiénes somos</router-link>
+        <VDivider class="hr" vertical/>
+        <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Blogs</router-link>
+        <VDivider class="hr" vertical/>
+        <router-link to="/help" class="ms-5 tw-no-underline tw-text-white me-3 hover:tw-text-yellow">Ayuda</router-link>
 
       </VContainer>
       <VContainer class="p-0 tw-text-white d-flex" v-else>
         <div class="hover:tw-text-yellow">
-          <VMenu 
-            v-model="menuOpen"
-            transition="slide-x-transition" 
-            location="bottom"
-            :close-on-content-click="false"
-            @update:modelValue="chanceMenu">
-            <template  v-slot:activator="{ props }">
-              <div v-bind="props">
-                <VAppBarNavIcon variant="text" />
-              </div>
-            </template>
-            <VCard class="style-menu" :width="width">
-              <VRow no-gutters>
-                <VCol cols="12" :md="cols" class="py-5 pr-3">
-                  <VList class="pb-0">
-                    <VListItem>
-                      <VListItemTitle class="d-block lineheight">
-                        <span class="d-block title-menu">PRODUCTOS</span>
-                        <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
-                        </svg>
-                      </VListItemTitle>
-                    </VListItem>
-                    <VListItem  
-                      v-for="(item, index) in categories"
-                      :key="index">
-                        <div class="d-flex hover-icon-right tw-cursor-pointer" >
-                          <span 
-                            class="subtitle-menu" 
-                            @click="openCategory(item.id)">
-                            {{ item.name }}
-                          </span>
-                          <VSpacer />
-                          <icon_right/> 
-                        </div>
-                    </VListItem>
-                  </VList>
-                </VCol>
-                <VCol cols="12" :md="cols" v-show="cols === 6" class="borderCol py-5">
-                  <VList class="style-submenu mt-8">
-                    <VListItem 
-                      v-for="(i, index2) in categories[category].children"
-                      :key="index2"
-                      @click="closeMenu">
-                      <router-link
-                        :to="{
-                          name: 'products',
-                          query: {
-                            category: i.slug.split('/')[0],
-                            subcategory: i.slug.split('/')[1]
-                          }
-                        }"
-                        class="tw-no-underline tw-text-tertiary">
-                        <span class="subtitle-menu">{{ i.name }}</span>
-                      </router-link>
-                    </VListItem>
-                    <VListItem>
-                      <VImg :src="default_item" class="image-item"></VImg>
-                    </VListItem>
-                  </VList>
-                </VCol>
-                </VRow>
-            </VCard>
-          </VMenu>
+          <VAppBarNavIcon variant="text" @click.stop="drawer = !drawer"/> 
         </div>
-            <VSelect
-              v-model="categoriesSearch"
-              class="ms-1 tw-text-white w-15 custom-select"
-              variant="plain"
-              menu-icon="mdi-chevron-down"
-              :items="categories_"
-              item-title="name"
-              item-value="id"
-              :menu-props="{ maxHeight: '1000px', fontSize: '8px'}"
-              />
-            <VTextField
-              v-model="textSearch"
-              class="w-100x me-3"
-              placeholder="Quiero..."
-              :color="color"
-              flat
-              variant="solo">
-              <template v-slot:append-inner>
-                <VBtn @click="search" class="tw-bg-white tw-text-primary h-100 search-button button-hover">Buscar</VBtn>
-              </template>
-            </VTextField>
+        <!-- search -->
+        <VSelect
+          v-model="categoriesSearch"
+          class="ms-1 tw-text-white w-15 custom-select"
+          variant="plain"
+          menu-icon="mdi-chevron-down"
+          :items="categories_"
+          item-title="name"
+          item-value="id"
+          :menu-props="{ maxHeight: '1000px', fontSize: '8px'}"
+          />
+        <VTextField
+          v-model="textSearch"
+          class="w-100x me-3"
+          placeholder="Quiero..."
+          :color="color"
+          flat
+          variant="solo">
+          <template v-slot:append-inner>
+            <VBtn @click="search" class="tw-bg-white tw-text-primary h-100 search-button button-hover">Buscar</VBtn>
+          </template>
+        </VTextField>
       </VContainer>
     </VAppBar>
   </section>
@@ -588,6 +661,12 @@
   @media (max-width: 768px) {
     .second-header {
       top: 80px !important;
+      position: fixed !important;
+    }
+    
+    .topFixed {
+      top: 0 !important;
+      position: fixed !important;
     }
 
     .v-text-field::v-deep(.v-field) { 
@@ -661,6 +740,45 @@
 
     .button-hover:hover {
       color: #FFFFFF !important;
+    }
+
+    .v-navigation-drawer::v-deep(.v-navigation-drawer__content) {
+      padding: 10px;
+    }
+
+    .title-menu {
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 16px;
+    }
+
+    .borderList {
+      border-bottom: 1px solid #D9EEF2;
+    }
+
+    .v-expansion-panel--active > .v-expansion-panel-title:not(.v-expansion-panel-title--static) {
+      min-height: 30px;
+    }
+
+    .v-expansion-panels--variant-inset > .v-expansion-panel--active {
+      max-width: 100%;
+    }
+
+    .v-navigation-drawer::v-deep(.v-expansion-panel-text__wrapper) {
+      padding: 10px;
+    }
+
+    .item .v-list-item--density-default.v-list-item--one-line {
+      min-height: 20px !important;
+      padding-inline: 0 !important;
+    }
+
+    .subtitle-menu {
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 16px
     }
   }
 </style>
