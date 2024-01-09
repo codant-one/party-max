@@ -8,7 +8,7 @@
   import shoppinp_cart from '@assets/icons/shoppinp_cart.svg?inline';
   import user from '@assets/icons/user.svg?inline';
   import arrow_right from '@assets/icons/arrow_right.svg?inline';
-  import icon_right from '@assets/icons/right-icon.svg';
+  import icon_right from '@assets/icons/right-icon.svg?inline';
   import default_item from '@assets/images/subitem-menu-default.png'
 
   const color = ref('#FF0090')
@@ -16,53 +16,80 @@
   const homeStores = useHomeStores()
   const authStores = useAuthStores()
 
-  const categories = ref(null)
-  const categoriesSearch = ref('Todos')
+  const categories = ref([])
+  const categories_ = ref([])
+  const categoriesSearch = ref(null)
+  const textSearch = ref(null)
   const name = ref(null)
+
+  const cols = ref(12)
+  const category = ref(1)
+  const width = ref(260)
+  const openMenu = ref(false)
+  const menuOpen = ref(false)
 
   watchEffect(fetchData)
 
   async function fetchData() {
-
     await homeStores.fetchData()
     categories.value = homeStores.getData.parentCategories
+
+    categoriesSearch.value = 0
+    categories_.value = [{ id: 0, name: 'Todos' }, ...categories.value];
+
     me()
   }
 
   const me = async () => {
-
     if(localStorage.getItem('user_data')){
       const userData = localStorage.getItem('user_data')
       const userDataJ = JSON.parse(userData)
 
       name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
-
     }
   }
 
   const logout = () => {
-
     authStores.logout()
       .then(response => {
-        // Remove "user_data" from localStorage
-        localStorage.removeItem('user_data')
+        localStorage.removeItem('user_data')// Remove "user_data" from localStorage
+        localStorage.removeItem('accessToken')// Remove "accessToken" from localStorage
+        localStorage.removeItem('userAbilities')// Remove "userAbilities" from localStorage
 
-        // Remove "accessToken" from localStorage
-        localStorage.removeItem('accessToken')
-        
-        // Remove "userAbilities" from localStorage
-        localStorage.removeItem('userAbilities')
-
-        // Reset ability to initial ability
         router.push({ name: 'login' }).catch(() => {}).finally(() => {
             location.reload(true);
         });
-
     })
-
   }
 
+  const openCategory = (id) => {
+    cols.value = 6
+    category.value = id - 1
+    width.value = 750
+  }
 
+  const chanceMenu = () => {
+    cols.value = (openMenu.value === true) ? 6 : 12
+    category.value = 0
+    width.value = (openMenu.value === true) ? 750 : 260
+    openMenu.value = (openMenu.value === true) ? false : true
+  }
+
+  const closeMenu = () => {
+    menuOpen.value = false
+    chanceMenu()
+  }
+
+  const search = () => {
+    router.push({ 
+      name: 'products',
+      query: {
+        category: categories.value.filter(item => item.id === Number(categoriesSearch.value))[0].slug,
+        search: textSearch.value
+      }         
+     })
+  }
+  
 </script>
 
 <template>
@@ -70,35 +97,39 @@
     <VAppBar flat class="header">
       <VContainer class="tw-bg-white">
         <VRow no-gutters>
-          <VCol cols="10" class="d-flex">
+          <VCol cols="9" class="d-flex">
             <router-link to="/" class="tw-no-underline tw-text-white ms-2">
               <img :src="logo" width="255" cover/>
             </router-link>
-            <VLayout>
-              <VSelect
-                v-model="categoriesSearch"
-                class="ms-8 pt-4 tw-text-primary w-15"
-                variant="plain"
-                menu-icon="mdi-chevron-down"
-                :items="['Todos', 'Fiesta Infantiles', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+            <VSpacer />
+            <VSelect
+              v-model="categoriesSearch"
+              class="ms-8 pt-4 tw-text-primary w-15 custom-select"
+              variant="plain"
+              menu-icon="mdi-chevron-down"
+              :items="categories_"
+              item-title="name"
+              item-value="id"
+              :menu-props="{ maxHeight: '1000px', backgroundColor: 'red' }"
               />
-              <VTextField
-                class="me-24 pt-4 w-100x"
-                placeholder="Quiero..."
-                :color="color"
-                flat
-                variant="solo">
-                <template v-slot:append-inner>
-                  <VBtn class="tw-bg-primary tw-text-white h-100 search-button button-hover">Buscar</VBtn>
-                </template>
-              </VTextField>
-              <VSpacer />
-            </VLayout>
+            <VTextField
+              v-model="textSearch"
+              class="pt-4 w-100x"
+              placeholder="Quiero..."
+              :color="color"
+              flat
+              variant="solo">
+              <template v-slot:append-inner>
+                <VBtn @click="search" class="tw-bg-primary tw-text-white h-100 search-button button-hover">Buscar</VBtn>
+              </template>
+            </VTextField>
           </VCol>
-          <VCol cols="2" 
-            class="d-flex align-center align-items-stretch flex-shrink-0"
-            :class="(name === null) ? 'ms-n70': ''">
-            <VBtn variant="plain" icon class="pb-2 me-4 index heart">
+          <VCol cols="3" class="d-flex align-center align-items-stretch flex-shrink-0">
+            <VBtn 
+              variant="plain" 
+              icon 
+              class="pb-2 me-4 index heart"
+              :class="(name === null) ? 'ms-10': 'me-24'">
               <heart />
             </VBtn>
             <VBtn variant="plain" icon class="pb-2 me-4 shoppinp_cart">
@@ -141,137 +172,77 @@
       </VContainer>
     </VAppBar>
     <VAppBar flat class="second-header tw-bg-primary">
-      <VContainer class="p-0 tw-text-white d-flex align-center">
-        
-          <div class="hover:tw-text-yellow">
-            <!--INICIO DEL MENÚ PRODUCTOS-->
-            <v-menu>
-              <template  v-slot:activator="{ props }">
-                
-                  <VAppBarNavIcon variant="text" v-bind="props"/>
-                  <span class="font-size-16 me-7">Productos</span>
-                
-              </template>
-              <v-list class="style-menu">
-                <v-list-item>
-                  <v-list-item-title><span class="title-menu">PRODUCTOS</span></v-list-item-title>
-                </v-list-item>
-                <v-list-item>
-                    <VRow align="center"> 
-                          <VCol cols="10">
-                            <!--INICIO SUB MENÚ DEL ITEM-->
-                            <v-menu location="end">
-                              <template v-slot:activator="{ props }">
-                                <span class="subtitle-menu" v-bind="props">Fiestas infantiles</span>
-                              </template>
-                              <v-list class="style-submenu">
-                                <v-list-item>
-                                  <span class="subtitle-menu">Niños</span>
-                                </v-list-item>
-                                <v-list-item>
-                                  <span class="subtitle-menu">Niñas</span>
-                                </v-list-item>
-                                <v-list-item>
-                                  <span class="subtitle-menu">Bebes</span>
-                                </v-list-item>
-                                <v-list-item>
-                                  <VImg :src="default_item" class="image-item"></VImg>
-                                </v-list-item>
-                              </v-list>
-                            </v-menu>
-                            <!--FIN SUB MENÚ DEL ITEM-->                        
-                          </VCol>
-                          <VCol cols="2">
-                            <VImg :src="icon_right" class="icon-right" v-bind="props"></VImg>  
-                          </VCol>                     
-                    </VRow>
-                </v-list-item>               
-                <v-list-item>
-                    <VRow align="center">
-                      <VCol cols="10">
-                        <span class="subtitle-menu">Fiestas temáticas</span>                        
-                      </VCol>
-                      <VCol cols="2">
-                        <VImg :src="icon_right" class="icon-right"></VImg>  
-                      </VCol>
-                    </VRow>
-                </v-list-item>
-                <v-list-item>
-                    <VRow align="center">
-                      <VCol cols="10">
-                        <span class="subtitle-menu">Fiestas especiales</span>                        
-                      </VCol>
-                      <VCol cols="2">
-                        <VImg :src="icon_right" class="icon-right"></VImg>  
-                      </VCol>
-                    </VRow>
-                </v-list-item>
-                <v-list-item>
-                    <VRow align="center">
-                      <VCol cols="10">
-                        <span class="subtitle-menu">Globos</span>                        
-                      </VCol>
-                      <VCol cols="2">
-                        <VImg :src="icon_right" class="icon-right"></VImg>  
-                      </VCol>
-                    </VRow>
-                </v-list-item>
-                <v-list-item>
-                    <VRow align="center">
-                      <VCol cols="10">
-                        <span class="subtitle-menu">Decoración</span>                        
-                      </VCol>
-                      <VCol cols="2">
-                        <VImg :src="icon_right" class="icon-right"></VImg>  
-                      </VCol>
-                    </VRow>
-                </v-list-item>
-                <v-list-item>
-                    <VRow align="center">
-                      <VCol cols="10">
-                        <span class="subtitle-menu">Hora loca</span>                        
-                      </VCol>
-                      <VCol cols="2">
-                        <VImg :src="icon_right" class="icon-right"></VImg>  
-                      </VCol>
-                    </VRow>
-                </v-list-item>
-                <v-list-item>
-                    <VRow align="center">
-                      <VCol cols="10">
-                        <span class="subtitle-menu">Desechables</span>                        
-                      </VCol>
-                      <VCol cols="2">
-                        <VImg :src="icon_right" class="icon-right"></VImg>  
-                      </VCol>
-                    </VRow>
-                </v-list-item>
-                <v-list-item>
-                    <VRow align="center">
-                      <VCol cols="10">
-                        <span class="subtitle-menu">Accesorias para sorpresas</span>                        
-                      </VCol>
-                      <VCol cols="2">
-                        <VImg :src="icon_right" class="icon-right"></VImg>  
-                      </VCol>
-                    </VRow>
-                </v-list-item>
-                <v-list-item>
-                    <VRow align="center">
-                      <VCol cols="10">
-                        <span class="subtitle-menu">Ponqués</span>                        
-                      </VCol>
-                      <VCol cols="2">
-                        <VImg :src="icon_right" class="icon-right"></VImg>  
-                      </VCol>
-                    </VRow>
-                </v-list-item>
-              </v-list>
-            </v-menu>
+      <VContainer class="p-0 tw-text-white d-flex justify-space-around align-center">
+        <div class="hover:tw-text-yellow">
+          <VMenu 
+            v-model="menuOpen"
+            transition="slide-x-transition" 
+            location="bottom"
+            :close-on-content-click="false"
+            @update:modelValue="chanceMenu">
+            <template  v-slot:activator="{ props }">
+              <div v-bind="props">
+                <VAppBarNavIcon variant="text" />
+                <span class="font-size-16 me-7 tw-cursor-pointer">Productos</span>
+              </div>
+            </template>
+            <VCard class="style-menu" :width="width">
+              <VRow no-gutters>
+                <VCol cols="12" :md="cols" class="py-5 pr-3">
+                  <VList class="pb-0">
+                    <VListItem>
+                      <VListItemTitle class="d-block lineheight">
+                        <span class="d-block title-menu">PRODUCTOS</span>
+                        <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
+                        </svg>
+                      </VListItemTitle>
+                    </VListItem>
+                    <VListItem  
+                      v-for="(item, index) in categories"
+                      :key="index">
+                        <div class="d-flex hover-icon-right tw-cursor-pointer" >
+                          <span 
+                            class="subtitle-menu" 
+                            @click="openCategory(item.id)">
+                            {{ item.name }}
+                          </span>
+                          <VSpacer />
+                          <icon_right/> 
+                        </div>
+                    </VListItem>
+                  </VList>
+                </VCol>
+                <VCol cols="12" :md="cols" v-show="cols === 6" class="borderCol py-5">
+                  <VList class="style-submenu mt-8">
+                    <VListItem 
+                      v-for="(i, index2) in categories[category].children"
+                      :key="index2"
+                      @click="closeMenu">
+                      <router-link
+                        :to="{
+                          name: 'products',
+                          query: {
+                            category: i.slug.split('/')[0],
+                            subcategory: i.slug.split('/')[1]
+                          }
+                        }"
+                        class="tw-no-underline tw-text-tertiary">
+                        <span class="subtitle-menu">{{ i.name }}</span>
+                      </router-link>
+                    </VListItem>
+                    <VListItem>
+                      <VImg :src="default_item" class="image-item"></VImg>
+                    </VListItem>
+                  </VList>
+                </VCol>
+                </VRow>
+              </VCard>
+            </VMenu>
           </div>
           <div class="hover:tw-text-yellow">
             <VAppBarNavIcon variant="text"/>
-            <span class="font-size-16">Servicios</span>
+            <span class="font-size-16 tw-cursor-pointer">Servicios</span>
           </div>
           <router-link to="/suppliers" class="tw-no-underline tw-text-white hover:tw-text-yellow d-flex align-center text-center hover-icon-arrow-right">
             <span class="ms-8">Mayoristas</span>
@@ -292,9 +263,25 @@
 
 <style scoped>
 
-  .w-100x {
-    width: 500px;
+  .borderCol {
+    border-left: 1px solid #E1E1E1; 
   }
+
+  .lineheight {
+    line-height: 0;
+  }
+  .w-100x {
+    width: 68%;
+  }
+
+  .w-15 {
+    width: 32%;
+  }
+
+  .me-24 {
+    margin-inline-start: 150px !important;
+  }
+
   .v-toolbar::v-deep(.mdi-menu) { 
     font-size: 30px !important;
   }
@@ -318,10 +305,6 @@
     margin-inline-start: -55px !important;
   }
 
-  .w-15 {
-    width: auto;
-  }
-
   .w-30 {
     width: 30%;
   }
@@ -337,10 +320,6 @@
     border-bottom-left-radius: 0;
     font-size: 11.5px;
     padding-top: 2px;
-  }
- 
-  .me-24 {
-    margin-inline-end: 82px !important;
   }
 
   .v-text-field::v-deep(.v-field) { 
@@ -380,11 +359,28 @@
     padding: 0 !important;
   }
 
+  .custom-select .v-list-item { 
+    background-color: #FF0090;
+  }
+
   .button-hover:hover {
     background-color: #FF27B3 !important;
     box-shadow: 0px 0px 24px 0px #FF27B3;
   }
 
+  .hover-icon-right:hover::v-deep(path) {
+    fill: #FF0090;
+  }
+
+  .hover-icon-right:hover::v-deep(.subtitle-menu) {
+    color: #FF0090;
+    cursor: pointer;
+  }
+
+  .subtitle-menu:hover {
+    color: #FF0090;
+    cursor: pointer;
+  }
   .hover-icon-arrow-right:hover::v-deep(path) {
     fill: #FFC549;
   }
@@ -401,57 +397,52 @@
     fill: #FF0090;
   }
   
-  .link-header
-  {
+  .link-header {
     text-decoration: none;
   }
 
-  .title-menu
-  {
+  .title-menu {
     color: #0A1B33;
     font-size: 20px;
     font-style: normal;
     font-weight: 700;
     line-height: 16px; /* 80% */
   }
-  .subtitle-menu
-  {
+  .subtitle-menu {
     color:#0A1B33;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: 16px;
   }
-  .subtitle-menu:hover
-  {
-    color: #FF0090;
-    cursor: pointer;
-  }
-  .icon-right
-  {
+
+  .icon-right {
     width: 20px;
   }
 
-  .style-menu
-  {
-    padding:32px;
-    min-width: 314px;
-    border-radius: 0px 0px 0px 24px!important;
+  .style-menu {
+    padding: 0 15px 0 32px;
+    border-radius: 0px 0px 24px 24px!important;
   }
 
-  .image-item
-  {
+  .image-item {
     width: 250px;
     height: 186.831px;
     flex-shrink: 0;
     border-radius: 16px;
   }
 
-  .style-submenu
-  {
-    padding: 88px 32px 32px 32px;
+  .style-submenu {
+    padding: 22px 0 0 32px;
     border-radius: 0px 0px 0px 24px!important;
   }
  
+  .v-list-item--density-default.v-list-item--one-line {
+    min-height: 44px !important;
+  }
+
+  .style-submenu .v-list-item--density-default.v-list-item--one-line {
+    min-height: 20px !important;
+  }
 </style>
 
