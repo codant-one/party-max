@@ -39,6 +39,8 @@
     categoriesSearch.value = 0
     categories_.value = [{ id: 0, name: 'Todos' }, ...categories.value];
 
+    color.value = (isMobile.value) ? '#FFFFFF' : '#FF0090'
+
     me()
   }
 
@@ -112,7 +114,7 @@
               :items="categories_"
               item-title="name"
               item-value="id"
-              :menu-props="{ maxHeight: '1000px', backgroundColor: 'red' }"
+              :menu-props="{ maxHeight: '1000px'}"
               />
             <VTextField
               v-model="textSearch"
@@ -163,7 +165,7 @@
                   </VListItem>
                 </VList>
               </VMenu>
-              <router-link class="link-header" :to="{name:'register',}">
+              <router-link class="link-header" :to="{ name: 'register'}">
                 <span class="d-flex align-center tw-text-tertiary font-size-14 pb-2" v-if="name === null">
                   Ingresar o Registrarme
                 </span>
@@ -171,17 +173,17 @@
             </div>
           </VCol>
         </VRow>
-        <VRow no-gutters v-else>
+        <VRow no-gutters v-else class="px-3">
           <VCol cols="6" class="d-flex">
-            <router-link to="/" class="tw-no-underline tw-text-white ms-4">
-              <img :src="logo" width="180" cover/>
+            <router-link to="/" class="tw-no-underline tw-text-white">
+              <img :src="logo" width="200" cover/>
             </router-link>
           </VCol>
-          <VCol cols="6" class="d-flex align-center align-items-stretch flex-shrink-0">
+          <VCol cols="6" class="d-flex align-center align-items-stretch flex-shrink-0 iconsMobile">
             <VBtn 
               variant="plain" 
               icon 
-              class="index heart ms-10">
+              class="index heart ms-12">
               <heart />
             </VBtn>
             <VBtn variant="plain" icon class="shoppinp_cart">
@@ -189,7 +191,7 @@
             </VBtn>
             <div class="d-flex user-text">
               <VBtn v-if="name === null" variant="plain" icon class="user">
-                <router-link class="link-header" :to="{name:'register',}">
+                <router-link class="link-header" :to="{ name: 'register' }">
                   <user />
                 </router-link>
               </VBtn>
@@ -375,22 +377,23 @@
         </div>
             <VSelect
               v-model="categoriesSearch"
-              class="ms-1 tw-text-primary w-15 custom-select"
+              class="ms-1 tw-text-white w-15 custom-select"
               variant="plain"
               menu-icon="mdi-chevron-down"
               :items="categories_"
               item-title="name"
               item-value="id"
+              :menu-props="{ maxHeight: '1000px', fontSize: '8px'}"
               />
             <VTextField
               v-model="textSearch"
-              class="=w-100x"
+              class="w-100x me-3"
               placeholder="Quiero..."
               :color="color"
               flat
               variant="solo">
               <template v-slot:append-inner>
-                <VBtn @click="search" class="tw-bg-primary tw-text-white h-100 search-button button-hover">Buscar</VBtn>
+                <VBtn @click="search" class="tw-bg-white tw-text-primary h-100 search-button button-hover">Buscar</VBtn>
               </template>
             </VTextField>
       </VContainer>
@@ -408,11 +411,11 @@
     line-height: 0;
   }
   .w-100x {
-    width: 68%;
+    width: 73%;
   }
 
   .w-15 {
-    width: 32%;
+    width: 27%;
   }
 
   .me-24 {
@@ -480,7 +483,7 @@
 
   .v-select::v-deep(.v-field__input) {
     padding-top: 0;
-    padding-left: 20%;
+    padding-left: 8%;
    }
 
    .v-select::v-deep(.v-field__append-inner) {
@@ -594,20 +597,30 @@
       border-bottom-left-radius: 0;
       border: 1.5px solid #FFFFFF !important;
       height: 30px;
+      top: 35%;
     } 
 
+    .v-text-field::v-deep(.v-field__input) { 
+      min-height: 27px;
+      background-color: #FF0090;
+    }
+    
     .v-text-field::v-deep(::placeholder) { 
-      color: #FF0090 !important;
+      color: #FFFFFF !important;
       opacity: inherit;
     }
 
     .v-text-field::v-deep(input) { 
-      padding-top: 0 !important;
-    color: #FF0090 !important;
-  }
+      padding: 0 0 0 4% !important;
+      color: #FFFFFF !important;
+      font-size: 8px;
+    }
     .v-select::v-deep(.v-field__input) {
-      padding-top: 0;
-      padding-left: 20%;
+      padding-top: 6%;
+      padding-left: 10%;
+      font-size: 8px;
+      opacity: 1;
+      border-radius: 24px;
     }
 
     .v-select::v-deep(.v-field__append-inner) {
@@ -621,6 +634,33 @@
       border-bottom-left-radius: 100px;
       border: 1.5px solid #FFFFFF !important;
       padding: 0 !important;
+    }
+
+    .v-select::v-deep(.v-field__append-inner > .v-icon) { 
+      opacity: 1;
+    }
+
+    .v-select::v-deep(.v-icon--size-default) {
+      font-size: calc(var(--v-icon-size-multiplier) * 1em);
+    }
+    .w-100x {
+      width: 68%;
+    }
+
+    .w-15 {
+      width: 32%;
+    }
+
+    .iconsMobile .v-btn--icon.v-btn--density-default {
+      width: calc(var(--v-btn-height) + 6px) !important;
+    }
+
+    .search-button {
+      font-size: 8px;
+    }
+
+    .button-hover:hover {
+      color: #FFFFFF !important;
     }
   }
 </style>
