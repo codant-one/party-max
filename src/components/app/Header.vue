@@ -28,6 +28,8 @@
   const openMenu = ref(false)
   const menuOpen = ref(false)
 
+  const isMobile = /Mobi/i.test(navigator.userAgent);
+
   watchEffect(fetchData)
 
   async function fetchData() {
@@ -96,7 +98,7 @@
   <section>
     <VAppBar flat class="header">
       <VContainer class="tw-bg-white">
-        <VRow no-gutters>
+        <VRow no-gutters v-if="!isMobile">
           <VCol cols="9" class="d-flex">
             <router-link to="/" class="tw-no-underline tw-text-white ms-2">
               <img :src="logo" width="255" cover/>
@@ -169,10 +171,57 @@
             </div>
           </VCol>
         </VRow>
+        <VRow no-gutters v-else>
+          <VCol cols="6" class="d-flex">
+            <router-link to="/" class="tw-no-underline tw-text-white ms-4">
+              <img :src="logo" width="200" cover/>
+            </router-link>
+          </VCol>
+          <VCol cols="6" class="d-flex align-center align-items-stretch flex-shrink-0">
+            <VBtn 
+              variant="plain" 
+              icon 
+              class="index heart ms-8">
+              <heart />
+            </VBtn>
+            <VBtn variant="plain" icon class="shoppinp_cart">
+              <shoppinp_cart />
+            </VBtn>
+            <div class="d-flex user-text">
+              <VBtn v-if="name === null" variant="plain" icon class="user">
+                <router-link class="link-header" :to="{name:'register',}">
+                  <user />
+                </router-link>
+              </VBtn>
+              <VMenu v-else>
+                <template v-slot:activator="{ props }">
+                  <VBtn variant="plain" icon class="user" v-bind="props">
+                    <user />
+                  </VBtn>
+                </template>
+                <VList>
+                  <VListItem class="px-0">
+                    <VListItemTitle class="px-5"><b>Hola</b></VListItemTitle>
+                    <VListItemTitle class="px-5 mb-5">{{name}}</VListItemTitle>
+                    <VListItemTitle class="px-5">
+                      <router-link class="link-header" :to=" { name : 'dashboard' }">
+                        Dashboard
+                      </router-link>
+                    </VListItemTitle>
+                    <VListItemTitle class="px-5">Configuración</VListItemTitle>
+                    <VListItemTitle class="px-5 mb-2">Historial</VListItemTitle> 
+                    <VDivider />
+                    <VListItemTitle class="px-5 mt-2 tw-cursor-pointer" @click="logout">Cerrar Sesión</VListItemTitle>
+                  </VListItem>
+                </VList>
+              </VMenu>
+            </div>
+          </VCol>
+        </VRow>
       </VContainer>
     </VAppBar>
     <VAppBar flat class="second-header tw-bg-primary">
-      <VContainer class="p-0 tw-text-white d-flex justify-space-around align-center">
+      <VContainer class="p-0 tw-text-white d-flex justify-space-around align-center" v-if="!isMobile">
         <div class="hover:tw-text-yellow">
           <VMenu 
             v-model="menuOpen"
@@ -256,6 +305,94 @@
           <VDivider class="hr" vertical/>
           <router-link to="/help" class="ms-5 tw-no-underline tw-text-white me-3 hover:tw-text-yellow">Ayuda</router-link>
 
+      </VContainer>
+      <VContainer class="p-0 tw-text-white d-flex" v-else>
+        <div class="hover:tw-text-yellow">
+          <VMenu 
+            v-model="menuOpen"
+            transition="slide-x-transition" 
+            location="bottom"
+            :close-on-content-click="false"
+            @update:modelValue="chanceMenu">
+            <template  v-slot:activator="{ props }">
+              <div v-bind="props">
+                <VAppBarNavIcon variant="text" />
+              </div>
+            </template>
+            <VCard class="style-menu" :width="width">
+              <VRow no-gutters>
+                <VCol cols="12" :md="cols" class="py-5 pr-3">
+                  <VList class="pb-0">
+                    <VListItem>
+                      <VListItemTitle class="d-block lineheight">
+                        <span class="d-block title-menu">PRODUCTOS</span>
+                        <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
+                        </svg>
+                      </VListItemTitle>
+                    </VListItem>
+                    <VListItem  
+                      v-for="(item, index) in categories"
+                      :key="index">
+                        <div class="d-flex hover-icon-right tw-cursor-pointer" >
+                          <span 
+                            class="subtitle-menu" 
+                            @click="openCategory(item.id)">
+                            {{ item.name }}
+                          </span>
+                          <VSpacer />
+                          <icon_right/> 
+                        </div>
+                    </VListItem>
+                  </VList>
+                </VCol>
+                <VCol cols="12" :md="cols" v-show="cols === 6" class="borderCol py-5">
+                  <VList class="style-submenu mt-8">
+                    <VListItem 
+                      v-for="(i, index2) in categories[category].children"
+                      :key="index2"
+                      @click="closeMenu">
+                      <router-link
+                        :to="{
+                          name: 'products',
+                          query: {
+                            category: i.slug.split('/')[0],
+                            subcategory: i.slug.split('/')[1]
+                          }
+                        }"
+                        class="tw-no-underline tw-text-tertiary">
+                        <span class="subtitle-menu">{{ i.name }}</span>
+                      </router-link>
+                    </VListItem>
+                    <VListItem>
+                      <VImg :src="default_item" class="image-item"></VImg>
+                    </VListItem>
+                  </VList>
+                </VCol>
+                </VRow>
+            </VCard>
+          </VMenu>
+        </div>
+            <VSelect
+              v-model="categoriesSearch"
+              class="ms-1 tw-text-primary w-15 custom-select"
+              variant="plain"
+              menu-icon="mdi-chevron-down"
+              :items="categories_"
+              item-title="name"
+              item-value="id"
+              />
+            <VTextField
+              v-model="textSearch"
+              class="=w-100x"
+              placeholder="Quiero..."
+              :color="color"
+              flat
+              variant="solo">
+              <template v-slot:append-inner>
+                <VBtn @click="search" class="tw-bg-primary tw-text-white h-100 search-button button-hover">Buscar</VBtn>
+              </template>
+            </VTextField>
       </VContainer>
     </VAppBar>
   </section>
@@ -443,6 +580,48 @@
 
   .style-submenu .v-list-item--density-default.v-list-item--one-line {
     min-height: 20px !important;
+  }
+
+  @media (max-width: 768px) {
+    .second-header {
+      top: 80px !important;
+    }
+
+    .v-text-field::v-deep(.v-field) { 
+      border-top-right-radius: 100px;
+      border-bottom-right-radius: 100px;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border: 1.5px solid #FFFFFF !important;
+      height: 30px;
+    } 
+
+    .v-text-field::v-deep(::placeholder) { 
+      color: #FF0090 !important;
+      opacity: inherit;
+    }
+
+    .v-text-field::v-deep(input) { 
+      padding-top: 0 !important;
+    color: #FF0090 !important;
+  }
+    .v-select::v-deep(.v-field__input) {
+      padding-top: 0;
+      padding-left: 20%;
+    }
+
+    .v-select::v-deep(.v-field__append-inner) {
+      padding-top: 30% !important;
+      padding-right: 10% !important;
+    }
+    .v-select::v-deep(.v-field) { 
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-top-left-radius: 100px;
+      border-bottom-left-radius: 100px;
+      border: 1.5px solid #FFFFFF !important;
+      padding: 0 !important;
+    }
   }
 </style>
 
