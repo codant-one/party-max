@@ -49,7 +49,7 @@ const title = ref(null)
 const brand = ref(null)
 const rating = ref(null)
 const sku = ref(null)
-const price = ref(null)
+const wholesale_price = ref(null)
 const price_for_sale = ref(null)
 const store = ref(null)
 const in_stock = ref(null)
@@ -119,7 +119,7 @@ async function fetchData() {
   brand.value = data.value.product.brand.name
   rating.value = data.value.product.rating
   sku.value = data.value.product.colors[0].sku
-  price.value = data.value.product.price
+  wholesale_price.value = data.value.product.wholesale_price
   price_for_sale.value = data.value.product.price_for_sale
   store.value = data.value.product.user.name + ' ' + (data.value.product.user.last_name ?? '')
   in_stock.value = data.value.product.in_stock
@@ -246,8 +246,8 @@ const setThumbsSwiper = (swiper) => {
             <VCol cols="12" md="7">
               <VCardText class="p-0">
                 <div class="d-flex py-2">
-                <span class="text_1">$ {{ price }}</span>
-                <span class="text_2 ms-2 d-flex align-end">$ {{ price_for_sale }}</span>
+                <span class="text_1">$ {{ price_for_sale }}</span>
+                <span class="text_2 ms-2 d-flex align-end">$ {{ wholesale_price }}</span>
                 </div>
               </VCardText>
               <VCardText class="p-0 d-flex border-title">
