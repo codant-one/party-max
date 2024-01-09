@@ -16,7 +16,7 @@ const props = defineProps({
 })
 
 const image = ref(null)
-const price = ref(null)
+const wholesale_price = ref(null)
 const price_for_sale = ref(null)
 const name = ref(null)
 const store = ref(null)
@@ -31,7 +31,7 @@ watchEffect(() => {
 
     if (!(Object.entries(props.product).length === 0) && props.product.constructor === Object) {
         image.value = props.product.image
-        price.value = props.product.price
+        wholesale_price.value = props.product.wholesale_price
         price_for_sale.value = props.product.price_for_sale
         name.value = props.product.name
         store.value = props.product.user.name + ' ' + (props.product.user.last_name ?? '')
@@ -87,12 +87,12 @@ watchEffect(() => {
                             <span class="tw-text-primary tw-font-medium me-1">(-%16)</span>
                         </div>
                         <div class="d-flex text-center align-center justify-content-center">
-                            <span class="tw-text-gray">${{ price_for_sale }}</span>
+                            <span class="tw-text-gray">${{ wholesale_price }}</span>
                         </div>
                     </VCardText>
                     <VCardText class="mt-1">
                         <div class="d-flex text-center align-center justify-content-center">
-                            <span class="text_1 tw-text-tertiary">${{ price }}</span>
+                            <span class="text_1 tw-text-tertiary">${{ price_for_sale }}</span>
                         </div>
                     </VCardText>
                 </VCol>
