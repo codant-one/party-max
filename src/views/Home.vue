@@ -111,7 +111,7 @@ const tab = ref('0')
     <Loader :isLoading="isLoading"/>
     <!-- slider -->
     <VRow no-gutters class="transparent">
-      <VCol cols="12" md="3">
+      <VCol cols="12" md="3" class="col-mobile">
         <VSheet class="border">
           <VList class="p-0 border">
             <router-link
@@ -145,10 +145,11 @@ const tab = ref('0')
           <VCol cols="12" md="7" class="pslider">        
             <VCarousel 
               cycle
+              class="carousel-home"
               color="white"
               :show-arrows="false" 
               hide-delimiter-background
-              height="389px">
+              >
               <VCarouselItem
                 v-for="(item,i) in sliders"
                 :key="i"
@@ -159,7 +160,7 @@ const tab = ref('0')
           </VCol>
           <VCol cols="12" md="5" class="pslider">
             <VRow no-gutters class="transparent">
-              <VCol cols="12" md="6" class="pslider2">
+              <VCol cols="6" md="6" class="pslider2">
                 <router-link 
                   :to="{
                     name: 'categories',
@@ -171,7 +172,7 @@ const tab = ref('0')
                   <VImg :src="Plaza_1" class="img-galery"/>
                 </router-link>
               </VCol>
-              <VCol cols="12" md="6" class="pslider2">
+              <VCol cols="6" md="6" class="pslider2">
                 <router-link
                   :to="{
                     name: 'categories',
@@ -199,17 +200,17 @@ const tab = ref('0')
           </VCol>
           <VCol cols="12" md="7" class="pslider4">
             <router-link to="/services">
-              <VImg :src="Banner" class="img-galery"  height="192" cover />
+              <VImg :src="Banner" class="img-galery"  height="auto" cover />
             </router-link>
           </VCol>
           <VCol cols="12" md="5" class="pslider4">
             <VRow no-gutters class="transparent">
-              <VCol cols="12" md="6" class="pslider2">
+              <VCol cols="6" md="6" class="pslider2">
                 <router-link to="/services">
                   <VImg :src="Plaza_4" class="img-galery"/>
                 </router-link>
               </VCol>
-              <VCol cols="12" md="6" class="pslider2">
+              <VCol cols="6" md="6" class="pslider2">
                 <router-link to="/services">
                   <VImg :src="Plaza_5" class="border-bottom-right img-galery"/>
                 </router-link>
@@ -245,7 +246,7 @@ const tab = ref('0')
               <span class="d-block card-information-subtitle">A los mejores precios</span>
             </div>
           </VCol>
-          <VCol cols="12" md="3" class="d-flex align-center">
+          <VCol cols="12" md="3" class="d-flex align-center col-siguecompra">
             <img :src="tracking" width="60" class="ms-10"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Sigue tu compra</span>
@@ -278,7 +279,7 @@ const tab = ref('0')
     
     <!-- the most sold -->
     <VCard class="mt-7 no-shadown card-information p-0">
-      <VCardTitle class="px-7 py-3 d-flex align-center">
+      <VCardTitle class="px-7 py-3 d-flex align-center card-vendido">
         <span>Lo más vendido</span>
         <VSpacer />
         <router-link 
@@ -635,4 +636,58 @@ const tab = ref('0')
     background-color: teal !important;
   }
 
+  .carousel-home
+  {
+    height:389px!important;
+  }
+  @media only screen and (max-width: 767px)
+  {
+    .col-mobile
+    {
+      display: none;
+    }
+
+    .pslider
+    {
+      width: 358px;
+    }
+
+    .carousel-home
+    {
+      height:180px!important;
+    }
+
+    .border-top-right
+    {
+      border-top-right-radius: 0px!important;
+    }
+
+    
+   .hr
+   {
+    border-right: 0px;
+    border-bottom: 1px solid #D9EEF2;
+    width: 80%;
+    padding-top: 64px!important;
+    padding-bottom: 64px!important;
+   }
+
+   .col-siguecompra
+   {
+    padding-top: 32px!important;
+    padding-bottom: 32px!important;
+   }
+
+   .card-information
+   {
+    padding: 10px 32px;
+   }
+
+   .card-vendido
+   {
+    display: block!important;
+   }
+  
+
+  }
 </style>
