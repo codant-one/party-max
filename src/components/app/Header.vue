@@ -165,7 +165,7 @@
                   </VListItem>
                 </VList>
               </VMenu>
-              <router-link class="link-header" :to="{name:'register',}">
+              <router-link class="link-header" :to="{ name: 'register'}">
                 <span class="d-flex align-center tw-text-tertiary font-size-14 pb-2" v-if="name === null">
                   Ingresar o Registrarme
                 </span>
@@ -173,9 +173,9 @@
             </div>
           </VCol>
         </VRow>
-        <VRow no-gutters v-else>
+        <VRow no-gutters v-else class="px-3">
           <VCol cols="6" class="d-flex">
-            <router-link to="/" class="tw-no-underline tw-text-white ms-4">
+            <router-link to="/" class="tw-no-underline tw-text-white">
               <img :src="logo" width="200" cover/>
             </router-link>
           </VCol>
@@ -191,7 +191,7 @@
             </VBtn>
             <div class="d-flex user-text">
               <VBtn v-if="name === null" variant="plain" icon class="user">
-                <router-link class="link-header" :to="{name:'register',}">
+                <router-link class="link-header" :to="{ name: 'register' }">
                   <user />
                 </router-link>
               </VBtn>
@@ -601,7 +601,7 @@
     } 
 
     .v-text-field::v-deep(.v-field__input) { 
-      min-height: 28px;
+      min-height: 27px;
       background-color: #FF0090;
     }
     
