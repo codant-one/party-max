@@ -17,6 +17,12 @@ import FormSupplier from '@/views/clients/form_supplier.vue'
 import Login from '@/views/Login.vue'
 import Cart from '@/views/cart/index.vue'
 import Dashboard from '@/views/dashboard/index.vue'
+import Profile from '@/views/dashboard/profile/index.vue'
+import Testing2 from '@/views/dashboard/profile/testing.vue'
+import information_client from '@/views/dashboard/profile/information.vue'
+import security_client from '@/views/dashboard/profile/security.vue'
+import address_client from '@/views/dashboard/profile/address.vue'
+import add_address from '@/views/dashboard/profile/add_address.vue'
 import success_registerp from '@/views/clients/success_registerper.vue'
 import success_registerc from '@/views/clients/success_registercom.vue'
 
@@ -112,7 +118,33 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: Dashboard
+      component: Dashboard,
+      children: [
+        {
+          path: '/dashboard',
+          component: Profile,
+        },
+        {
+          path: '/testing2',
+          component: Testing2,
+        },
+        {
+          path: '/mydata',
+          component: information_client,
+        },
+        {
+          path: '/security',
+          component: security_client,
+        },
+        {
+          path:'/client-address',
+          component: address_client,
+        },
+        {
+          path: '/add-address',
+          component: add_address, 
+        }
+      ],
     },
     {
       path: '/register/success_person',

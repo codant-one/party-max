@@ -8,8 +8,29 @@ import icon_address from '@assets/icons/icon-address.svg';
 import icon_privacity from '@assets/icons/icon-privacity.svg';
 import icon_comunications from '@assets/icons/icon-comunications.svg';
 import icon_right from '@assets/icons/right-icon.svg';
+import icon_profile from '@assets/icons/perfil.svg';
+import icon_account from '@assets/icons/lineas-de-cuadricula.svg';
+import icon_favorites from '@assets/icons/heart2.svg';
 
 import icon_compras from '@assets/icons/icon-compras.svg';
+
+const name = ref(null)
+const usermail= ref(null)
+
+   
+
+
+const me = async () => {
+    if(localStorage.getItem('user_data')){
+      const userData = localStorage.getItem('user_data')
+      const userDataJ = JSON.parse(userData)
+
+      name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
+      usermail.value = userDataJ.email
+    }
+  }
+
+  me()
 
 </script>
 
@@ -22,103 +43,16 @@ import icon_compras from '@assets/icons/icon-compras.svg';
             permanent
         >
             <VList density="compact" nav class="mt-5">
-                <VListItem prepend-icon="mdi-view-dashboard" title="Home" value="Mi cuenta"></VListItem>
-                <VListItem prepend-icon="mdi-forum" title="Compras" value="Compras"></VListItem>
-                <VListItem prepend-icon="mdi-view-dashboard" title="Profile" value="Mi perfil"></VListItem>
-                <VListItem prepend-icon="mdi-forum" title="Configuracion" value="Configuración"></VListItem>
+                <VListItem :prepend-avatar="icon_account" title="Home" value="account"></VListItem>
+                <VListItem :prepend-avatar="icon_profile" title="Mi perfil" value="profile"></VListItem>
+                <VListItem :prepend-avatar="icon_compras" title="Compras" value="Compras"></VListItem>
+                <VListItem :prepend-avatar="icon_favorites" title="Mis Favoritos" value="Mis favoritos"></VListItem>
             </VList>
         </VNavigationDrawer>
-        <VMain class="d-flex align-center justify-center" style="min-height: 300px;">
-            <VContainer class="mt-10 mb-15 container-dashboard">
-                <VRow align="center" no-gutters>
-                    <VCol cols="1">
-                        <VImg :src="default_image" class="profile-image"/>
-                    </VCol>
-                    <VCol cols="11" class="ps-3">
-                        <span class="name-client">Diego Bolivar</span> <br>
-                        <span class="text-titles">dbolivarv90@gmail.com</span>
-                    </VCol>
-                </VRow>
-                <VRow no-gutters>
-                    <VCol cols="12">
-                        <VCard class="card-profile">
-                            <VRow align="center" no-gutters class="items-profile">
-                                <VCol cols="12" md="1">
-                                    <VImg :src="icon_misdatos" class="icon_profile"/>
-                                </VCol>
-                                <VCol cols="12" md="10">
-                                    <span class="text-titles">Mis datos</span> <br>
-                                    <span class="text-subtitles">Valida tus datos.</span>
-                                </VCol>
-                                <VCol cols="1">
-                                    <VImg :src="icon_right" class="icon-right"/>
-                                </VCol>
-                            </VRow>
-                            <VRow align="center" no-gutters class="items-profile">
-                                <VCol cols="12" md="1">
-                                    <VImg :src="icon_seguridad" class="icon_profile"/>
-                                </VCol>
-                                <VCol cols="12" md="10">
-                                    <span class="text-titles">Seguridad</span> <br>
-                                    <span class="text-subtitles">Tienes configuraciones pendientes.</span>
-                                </VCol>
-                                <VCol cols="1">
-                                    <VImg :src="icon_right" class="icon-right"/>
-                                </VCol>
-                            </VRow>
-                            <VRow align="center" no-gutters class="items-profile">
-                                <VCol cols="12" md="1">
-                                    <VImg :src="icon_card" class="icon_profile"/>
-                                </VCol>
-                                <VCol cols="12" md="10">
-                                    <span class="text-titles">Tarjetas</span> <br>
-                                    <span class="text-subtitles">Tarjetas guardadas en tu cuenta.</span>
-                                </VCol>
-                                <VCol cols="1">
-                                    <VImg :src="icon_right" class="icon-right"/>
-                                </VCol>
-                            </VRow>
-                            <VRow align="center" no-gutters class="items-profile">
-                                <VCol cols="12" md="1">
-                                    <VImg :src="icon_address" class="icon_profile"/>
-                                </VCol>
-                                <VCol cols="12" md="10">
-                                    <span class="text-titles">Direcciones</span> <br>
-                                    <span class="text-subtitles">Direcciones guardadas en tu cuenta.</span>
-                                </VCol>
-                                <VCol cols="1">
-                                    <VImg :src="icon_right" class="icon-right"/>
-                                </VCol>
-                            </VRow>
-                            <VRow align="center" no-gutters class="items-profile">
-                                <VCol cols="12" md="1">
-                                    <VImg :src="icon_privacity" class="icon_profile"/>
-                                </VCol>
-                                <VCol cols="12" md="10">
-                                    <span class="text-titles">Privacidad</span> <br>
-                                    <span class="text-subtitles">Preferencias y control sobre el uso de tus datos.</span>
-                                </VCol>
-                                <VCol cols="1">
-                                    <VImg :src="icon_right" class="icon-right"/>
-                                </VCol>
-                            </VRow>
-                            <VRow align="center" no-gutters class="items-profile">
-                                <VCol cols="12" md="1">
-                                    <VImg :src="icon_comunications" class="icon_profile"/>
-                                </VCol>
-                                <VCol cols="12" md="10">
-                                    <span class="text-titles">Comunicaciones</span> <br>
-                                    <span class="text-subtitles">Elige qué tipo de información quieres recibir.</span>
-                                </VCol>
-                                <VCol cols="1">
-                                    <VImg :src="icon_right" class="icon-right"/>
-                                </VCol>
-                            </VRow>
-                        </VCard>
-                    </VCol>
-                </VRow>
+        <VMain class="d-flex align-center justify-center" style="min-height: 300px; background-color: #E2F8FC;">
 
-                </VContainer>
+            <router-view/>
+           
         </VMain>
     </VLayout>
 
@@ -195,5 +129,21 @@ import icon_compras from '@assets/icons/icon-compras.svg';
         font-weight: 400;
         line-height: 18.2px;
     }
+
+    .text-menu
+    {
+        color: #FFFFFF;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        margin: 0;    
+    }
+
+    .link-menu
+    {
+        text-decoration: none;
+    }
+
 
 </style>
