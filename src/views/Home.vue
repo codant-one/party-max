@@ -511,37 +511,37 @@ const tab = ref('0')
         <VRow no-gutters class="transparent">
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
             <router-link to="/products" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_1" class="border-theme d-block" width="150px"/>
+              <img :src="t_1" class="border-theme d-block" width="150"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </router-link>
           </VCol>
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
             <router-link to="/products" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="border-theme d-block" width="150px"/>
+              <img :src="t_2" class="border-theme d-block" width="150"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
             </router-link>
           </VCol>
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
             <router-link to="/products" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_3" class="border-theme d-block" width="150px"/>
+              <img :src="t_3" class="border-theme d-block" width="150"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </router-link>
           </VCol>
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
             <router-link to="/products" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_4" class="border-theme d-block" width="150px"/>
+              <img :src="t_4" class="border-theme d-block" width="150"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </router-link>
           </VCol>
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
             <router-link to="/products" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_5" class="border-theme d-block" width="150px"/>
+              <img :src="t_5" class="border-theme d-block" width="150"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Neón</span>
             </router-link>
           </VCol>
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
             <router-link to="/products" class="tw-no-underline d-block text-center zoom mt-0">
-              <img :src="t_6" class="border-theme d-block" width="150px"/>
+              <img :src="t_6" class="border-theme d-block" width="150"/>
               <span class="d-block size-theme tw-text-tertiary mt-2 transparentColor">.</span>
             </router-link>
           </VCol>
@@ -582,25 +582,25 @@ const tab = ref('0')
           <VRow no-gutters class="transparent">
             <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
               <router-link to="/products" class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_1" class="border-theme d-block" width="150px"/>
+                <img :src="f_1" class="border-theme d-block" width="150"/>
                 <span class="d-block size-theme tw-text-white mt-2">Niños</span>
               </router-link>
             </VCol>
             <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
               <router-link to="/products" class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_2" class="border-theme d-block" width="150px"/>
+                <img :src="f_2" class="border-theme d-block" width="150"/>
                 <span class="d-block size-theme tw-text-white mt-2">Niñas</span>
               </router-link>
             </VCol>
             <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
               <router-link to="/products" class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_3" class="border-theme d-block" width="150px" />
+                <img :src="f_3" class="border-theme d-block" width="150" />
                 <span class="d-block size-theme tw-text-white mt-2">Bebes</span>
               </router-link>
             </VCol>
             <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
               <router-link to="/products" class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_4" class="border-theme d-white" width="150px"/>
+                <img :src="f_4" class="border-theme d-white" width="150"/>
                 <span class="d-block size-theme tw-text-white mt-2">Adultos</span>
               </router-link>
             </VCol>

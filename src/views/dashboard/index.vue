@@ -44,9 +44,9 @@ const me = async () => {
         >
             <VList density="compact" nav class="mt-5">
                 <VListItem :prepend-avatar="icon_account" title="Home" value="account"></VListItem>
-                <VListItem :prepend-avatar="icon_profile" title="Mi perfil" value="profile"></VListItem>
-                <VListItem :prepend-avatar="icon_compras" title="Compras" value="Compras"></VListItem>
-                <VListItem :prepend-avatar="icon_favorites" title="Mis Favoritos" value="Mis favoritos"></VListItem>
+                <router-link to="/dashboard" class="link-menu"><VListItem :prepend-avatar="icon_profile" style="margin-top: 40px;" title="Mi perfil" value="profile"></VListItem></router-link>
+                <router-link to="/my-purchases" class="link-menu"><VListItem :prepend-avatar="icon_compras" style="margin-top: 16px;" title="Compras" value="Compras"></VListItem></router-link>
+                <router-link to="/my-favorites" class="link-menu"><VListItem :prepend-avatar="icon_favorites" style="margin-top: 16px;" title="Mis Favoritos" value="Mis favoritos"></VListItem></router-link>
             </VList>
         </VNavigationDrawer>
         <VMain class="d-flex align-center justify-center" style="min-height: 300px; background-color: #E2F8FC;">
@@ -143,7 +143,10 @@ const me = async () => {
     .link-menu
     {
         text-decoration: none;
+        color: #FFFFFF;
     }
+
+
 
 
 </style>

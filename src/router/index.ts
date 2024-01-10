@@ -24,6 +24,9 @@ import information_client from '@/views/dashboard/profile/information.vue'
 import security_client from '@/views/dashboard/profile/security.vue'
 import address_client from '@/views/dashboard/profile/address.vue'
 import add_address from '@/views/dashboard/profile/add_address.vue'
+import Purchases from '@/views/dashboard/purchases.vue'
+import Favorites from '@/views/dashboard/favorites.vue'
+import Detail_pusher from '@/views/dashboard/details_purchases.vue'
 import success_registerp from '@/views/clients/success_registerper.vue'
 import success_registerc from '@/views/clients/success_registercom.vue'
 
@@ -149,6 +152,20 @@ const router = createRouter({
         {
           path: '/add-address',
           component: add_address, 
+        },
+        {
+          path: '/my-purchases',
+          name: 'my_purchases',
+          component: Purchases,
+        },
+        {
+          path: '/my-favorites',
+          component: Favorites,
+        },
+        {
+          path: '/detail-purchases',
+          name: 'detail_pusher',
+          component: Detail_pusher,
         }
       ],
     },

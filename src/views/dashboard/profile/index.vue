@@ -1,5 +1,5 @@
 <script setup>
-
+import { ref } from 'vue'
 import default_image from '@assets/images/default-image-client.png';
 import icon_misdatos from '@assets/icons/icon-misdatos.svg';
 import icon_seguridad from '@assets/icons/icon-seguridad.svg';
@@ -59,7 +59,9 @@ const me = async () => {
                                     <span class="text-subtitles">Valida tus datos.</span>
                                 </VCol>
                                 <VCol cols="1">
-                                    <VImg :src="icon_right" class="icon-right"/>
+                                    <router-link to="/mydata">
+                                        <VImg :src="icon_right" class="icon-right"/>
+                                    </router-link>
                                 </VCol>
                             </VRow>
                             <VRow align="center" no-gutters class="items-profile">
@@ -71,9 +73,11 @@ const me = async () => {
                                     <span class="text-subtitles">Tienes configuraciones pendientes.</span>
                                 </VCol>
                                 <VCol cols="1">
-                                    <VImg :src="icon_right" class="icon-right"/>
+                                    <router-link to="/security">
+                                     <VImg :src="icon_right" class="icon-right"/>
+                                    </router-link>
                                 </VCol>
-                            </VRow>
+                            </VRow><!--
                             <VRow align="center" no-gutters class="items-profile">
                                 <VCol cols="12" md="1">
                                     <VImg :src="icon_card" class="icon_profile"/>
@@ -85,7 +89,7 @@ const me = async () => {
                                 <VCol cols="1">
                                     <VImg :src="icon_right" class="icon-right"/>
                                 </VCol>
-                            </VRow>
+                            </VRow>-->
                             <VRow align="center" no-gutters class="items-profile">
                                 <VCol cols="12" md="1">
                                     <VImg :src="icon_address" class="icon_profile"/>
@@ -95,9 +99,11 @@ const me = async () => {
                                     <span class="text-subtitles">Direcciones guardadas en tu cuenta.</span>
                                 </VCol>
                                 <VCol cols="1">
-                                    <VImg :src="icon_right" class="icon-right"/>
+                                    <router-link to="/client-address">
+                                        <VImg :src="icon_right" class="icon-right"/>
+                                    </router-link>
                                 </VCol>
-                            </VRow>
+                            </VRow><!--
                             <VRow align="center" no-gutters class="items-profile">
                                 <VCol cols="12" md="1">
                                     <VImg :src="icon_privacity" class="icon_profile"/>
@@ -109,7 +115,8 @@ const me = async () => {
                                 <VCol cols="1">
                                     <VImg :src="icon_right" class="icon-right"/>
                                 </VCol>
-                            </VRow>
+                            </VRow>-->
+                            <!--
                             <VRow align="center" no-gutters class="items-profile">
                                 <VCol cols="12" md="1">
                                     <VImg :src="icon_comunications" class="icon_profile"/>
@@ -121,7 +128,7 @@ const me = async () => {
                                 <VCol cols="1">
                                     <VImg :src="icon_right" class="icon-right"/>
                                 </VCol>
-                            </VRow>
+                            </VRow>-->
                         </VCard>
                     </VCol>
                 </VRow>
