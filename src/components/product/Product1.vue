@@ -141,8 +141,8 @@ watchEffect(() => {
 
     @media only screen and (max-width: 767px) {
         .border-img {
-            width: 140px;
-            height: 140px;
+            width: 110px;
+            height: 110px;
         }
     }
     

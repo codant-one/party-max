@@ -294,12 +294,13 @@ const tab = ref('0')
             dynamicBullets: true,
           }"
           :modules="modules"
-          :spaceBetween="10"
+          :spaceBetween="5"
           :slidesPerView="2"
           :freeMode="true"
           :watchSlidesProgress="true"
           @swiper="setThumbsSwiper"
           class="mySwiper"
+          :style="{ height: '370px' }"
           >
           <swiper-slide v-for="(product, i) in data.recommendations" :key="i">
             <Product1 
@@ -869,6 +870,10 @@ const tab = ref('0')
 
     .swiper::v-deep(.swiper-pagination-bullet-active) {
       background: #FF0090 !important;
+    }
+
+    .swiper::v-deep(.swiper-pagination-horizontal ) {
+      top: 95%
     }
   }
 </style>
