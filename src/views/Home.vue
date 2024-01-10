@@ -65,6 +65,8 @@ const backgroundStyle = {
   backgroundSize: 'cover'
 }
 
+const isMobile = /Mobi/i.test(navigator.userAgent);
+
 const items = ref([
   { text: 'Fiestas infantiles', icon: icon1, slug: 'fiestas-infantiles' },
   { text: 'Fiestas temáticas', icon: icon2, slug: 'fiestas-tematicas' },
@@ -83,7 +85,6 @@ const sliders = ref( [
   { src: Slider2 },
   { src: Slider3 }
 ])
-
 
 const homeStores = useHomeStores()
 
@@ -107,7 +108,7 @@ const tab = ref('0')
 </script>
 
 <template>
-  <VContainer class="mt-10">
+  <VContainer class="mt-2 mt-md-10">
     <Loader :isLoading="isLoading"/>
     <!-- slider -->
     <VRow no-gutters class="transparent">
@@ -159,7 +160,7 @@ const tab = ref('0')
             </VCarousel>
           </VCol>
           <VCol cols="12" md="5" class="pslider">
-            <VRow no-gutters class="transparent">
+            <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent">
               <VCol cols="6" md="6" class="pslider2">
                 <router-link 
                   :to="{
@@ -198,13 +199,13 @@ const tab = ref('0')
               </VCol>
             </VRow>
           </VCol>
-          <VCol cols="12" md="7" class="pslider4">
+          <VCol cols="12" md="7" class="pslider4" :class="isMobile ? 'order-last order-md-first pslider5' : ''">
             <router-link to="/services">
-              <VImg :src="Banner" class="img-galery"  height="auto" cover />
+              <VImg :src="Banner" class="img-galery" :class="isMobile ? 'slider5Img' : ''" height="auto" cover />
             </router-link>
           </VCol>
           <VCol cols="12" md="5" class="pslider4">
-            <VRow no-gutters class="transparent">
+            <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent">
               <VCol cols="6" md="6" class="pslider2">
                 <router-link to="/services">
                   <VImg :src="Plaza_4" class="img-galery"/>
@@ -636,89 +637,116 @@ const tab = ref('0')
     background-color: teal !important;
   }
 
-  .carousel-home
-  {
-    height:389px!important;
+  .carousel-home {
+    height:389px !important;
   }
-  @media only screen and (max-width: 767px)
-  {
-    .col-mobile
-    {
+
+  @media only screen and (max-width: 767px) {
+    .col-mobile {
       display: none;
     }
 
-    .pslider
-    {
-      width: 358px;
+    .pslider {
+      padding: 3px 3px 0 3px !important;
     }
 
-    .carousel-home
-    {
-      height:180px!important;
+    .pslider2 {
+      padding: 12px 2px 3px 2px !important;
     }
 
-    .border-top-right
-    {
+    .carousel-home {
+      height: 195px !important;
+      border-radius:  16px 16px 0 0 !important;
+    }
+
+    .border-categories {
+      border-top-left-radius: 16px;
+      border-bottom-left-radius: 16px;
+    }
+
+    .border-top-right {
       border-top-right-radius: 0px!important;
     }
 
-    
-   .hr
-   {
-    border-right: 0px;
-    border-bottom: 1px solid #D9EEF2;
-    width: 80%;
-    padding-top: 64px!important;
-    padding-bottom: 64px!important;
-   }
+    .hr {
+      border-right: 0px;
+      border-bottom: 1px solid #D9EEF2;
+      width: 80%;
+      padding-top: 64px!important;
+      padding-bottom: 64px!important;
+    }
 
-   .col-siguecompra
-   {
-    padding-top: 32px!important;
-    padding-bottom: 32px!important;
-   }
+    .col-siguecompra {
+      padding-top: 32px!important;
+      padding-bottom: 32px!important;
+    }
 
-   .card-information
-   {
-    padding: 10px 32px;
-   }
+    .card-information {
+      padding: 10px 32px;
+    }
 
-   .card-vendido
-   {
-    display: block!important;
-   }
+    .card-vendido {
+      display: block!important;
+    }
 
-   .vendido-globos
-   {
-    margin-inline-start: 0px !important;
-   }
+    .vendido-globos {
+      margin-inline-start: 0px !important;
+    }
 
-   .banner5-mobile
-   {
+    .banner5-mobile {
       width: 325.088px;
       height: 100px;
-   }
+    }
 
-   .card-banner5
-   {
-    padding-top: 8px!important;
-   }
+    .card-banner5 {
+        padding-top: 8px!important;
+    }
 
-   .card-banner34
-   {
-
+    .card-banner34 {
       display: grid!important;
       grid-template-columns: 1fr!important;
       grid-gap: 0!important;
-    
-   }
+    }
 
-   .grid-item {
+    .grid-item {
       margin: 0!important;
       padding: 0!important;
     }
 
-  
+    .v-carousel::v-deep(.v-btn--icon.v-btn--density-default) {
+      width: calc(var(--v-btn-height) + 1px);
+      height: calc(var(--v-btn-height) + 1px);
+    }
+
+    .v-carousel::v-deep(.v-icon--size-default) {
+      font-size: calc(var(--v-icon-size-multiplier) * 1.1em);
+    }
+
+    .px-mobile {
+      padding-right: 10px !important;
+      padding-left: 10px !important;
+    }
+
+    .pslider3 {
+      padding: 0 2px 14px 2px !important
+    }
+
+    .border-bottom-right {
+      border-radius: 0 !important;
+    }
+
+    .pslider4 {
+      padding: 1px 3px 3px 3px!important;
+    }
+
+    .pslider5 {
+      padding: 9px 3px 3px 3px!important;
+    }
+
+    .slider5Img {
+      border-bottom-right-radius: 16px!important;
+      border-bottom-left-radius: 16px!important;
+    }
 
   }
 </style>
