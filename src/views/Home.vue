@@ -2,7 +2,12 @@
 
 import { ref } from 'vue'
 import { useHomeStores } from '@/stores/home'
-    
+import { Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+
+import 'swiper/css';
+import 'swiper/css/pagination';
+
 import Product1 from '@/components/product/Product1.vue'
 import Product2 from '@/components/product/Product2.vue'
 import Loader from '@/components/common/Loader.vue'
@@ -41,6 +46,11 @@ import banner_3 from '@assets/images/Banner_3.jpg';
 import banner_4 from '@assets/images/Banner_4.jpg';
 import banner_5 from '@assets/images/Banner_5.jpg';
 
+import banner_2_mobile from '@assets/images/Banner_2_mobile.jpg';
+import banner_3_mobile from '@assets/images/Banner_3_mobile.jpg';
+import banner_4_mobile from '@assets/images/Banner_4_mobile.jpg';
+import banner_5_mobile from '@assets/images/Banner_5_mobile.jpg';
+
 import p_1 from '@assets/images/p_1.jpg';
 import p_2 from '@assets/images/p_2.jpg';
 import p_3 from '@assets/images/p_3.jpg';
@@ -52,6 +62,7 @@ import t_2 from '@assets/images/t_2.jpg';
 import t_3 from '@assets/images/t_3.jpg';
 import t_4 from '@assets/images/t_4.jpg';
 import t_5 from '@assets/images/t_5.jpg';
+import t_6 from '@assets/images/t_6.jpg';
 
 import f_1 from '@assets/images/f_1.jpg';
 import f_2 from '@assets/images/f_2.jpg';
@@ -59,6 +70,13 @@ import f_3 from '@assets/images/f_3.jpg';
 import f_4 from '@assets/images/f_4.jpg';
 
 import frame_pink from '@assets/images/frame_pink.jpeg';
+
+const thumbsSwiper = ref(null);
+const modules = ref([Pagination])
+
+const setThumbsSwiper = (swiper) => {
+    thumbsSwiper.value = swiper;
+}
 
 const backgroundStyle = {
   backgroundImage: `url(${frame_pink})`,
@@ -260,27 +278,48 @@ const tab = ref('0')
 
     <!-- recommendations -->
     <VCard class="mt-7 no-shadown card-information p-0">
-      <VCardTitle class="px-7 py-3"> Recomendaciones según tus búsquedas</VCardTitle>
+      <VCardTitle class="px-7 py-3 cardtitles"> Recomendaciones según tus búsquedas</VCardTitle>
       <VDivider />
-      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data">
+      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
         <Product1 
           v-for="(product, i) in data.recommendations"
           :key="i"
           :product="product"
           :readonly="true"/>
       </VCardText>  
+      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && isMobile">
+        
+        <swiper
+          :pagination="{
+            dynamicBullets: true,
+          }"
+          :modules="modules"
+          :spaceBetween="10"
+          :slidesPerView="2"
+          :freeMode="true"
+          :watchSlidesProgress="true"
+          @swiper="setThumbsSwiper"
+          class="mySwiper"
+          >
+          <swiper-slide v-for="(product, i) in data.recommendations" :key="i">
+            <Product1 
+              :product="product"
+              :readonly="true"/>
+          </swiper-slide>
+        </swiper>
+      </VCardText> 
     </VCard>
 
     <!-- banner 2 -->
     <VCard class="mt-7 no-shadown card-information p-0">
       <VCardItem class="p-0">
-        <VImg :src="banner_2" cover/>
+        <VImg :src="isMobile ? banner_2_mobile : banner_2" cover/>
       </VCardItem>  
     </VCard>
     
     <!-- the most sold -->
     <VCard class="mt-7 no-shadown card-information p-0">
-      <VCardTitle class="px-7 py-3 d-flex align-center card-vendido">
+      <VCardTitle class="px-7 py-3 d-flex align-center card-vendido cardtitles">
         <span>Lo más vendido</span>
         <VSpacer />
         <router-link 
@@ -290,7 +329,7 @@ const tab = ref('0')
               slug: 'globos'
             }
           }"
-          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary vendido-globos">
+          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-1 me-md-3 hover:tw-text-primary vendido-globos">
           Globos
         </router-link>
         <router-link 
@@ -300,7 +339,7 @@ const tab = ref('0')
               slug: 'hora-loca'
             }
           }"
-          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary vendido-globos">
+          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-1 me-md-3 hover:tw-text-primary vendido-globos">
           Piñatas
         </router-link>
         <router-link 
@@ -310,7 +349,7 @@ const tab = ref('0')
               slug: 'sorpresas'
             }
           }"
-          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary vendido-globos">
+          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-1 me-md-3 hover:tw-text-primary vendido-globos">
           Sorpresas
         </router-link>
         <router-link 
@@ -320,7 +359,7 @@ const tab = ref('0')
               slug: 'decoracion'
             }
           }"
-          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary vendido-globos">
+          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-1 me-md-3 hover:tw-text-primary vendido-globos">
           Decoración
         </router-link>
       </VCardTitle>
@@ -328,7 +367,7 @@ const tab = ref('0')
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between card-banner5" v-if="data">
         <VRow no-gutters class="transparent">
           <VCol cols="12" md="9">
-            <VImg :src="banner_5" class="border-img banner5-mobile"/>
+            <VImg :src="isMobile ? banner_5_mobile : banner_5" class="border-img banner5-mobile"/>
             <VCard class="no-shadown">
               <VTabs v-model="tab" class="mt-7"  color="pink-accent-3">
                 <VTab value="0">Agregados recientemente</VTab>
@@ -362,8 +401,8 @@ const tab = ref('0')
               </VCardText>
             </VCard>
           </VCol>
-          <VCol cols="12" md="3" class="d-flex flex-column">
-            <VCardText class="p-0 ms-3 col-mobile">
+          <VCol cols="12" md="3" class="d-flex flex-column col-mobile">
+            <VCardText class="p-0 ms-3">
               <div v-if="tab === '0'">
                 <Product2 
                   v-for="(product, index) in data.mostSold.latestProducts"
@@ -397,14 +436,14 @@ const tab = ref('0')
         <VCard class="no-shadown card-information p-0 w-50 grid-item w-100">
           <router-link to="/products" class="tw-no-underline">
             <VCardItem class="p-0">
-              <VImg :src="banner_3" cover/>
+              <VImg :src="isMobile ? banner_3_mobile : banner_3" cover/>
             </VCardItem>  
           </router-link>
         </VCard>
         <VCard class="no-shadown card-information p-0 w-50 ms-5 grid-item w-100">
           <router-link to="/products" class="tw-no-underline">
             <VCardItem class="p-0">
-              <VImg :src="banner_4" cover/>
+              <VImg :src="isMobile ? banner_4_mobile : banner_4" cover/>
             </VCardItem>  
           </router-link>
         </VCard>
@@ -442,10 +481,10 @@ const tab = ref('0')
       <VCardTitle class="px-7 py-3 d-flex align-center">
         <span>Fiestas temáticas</span>
         <VSpacer />
-        <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
+        <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary" v-if="!isMobile">Ver todos</router-link>
       </VCardTitle>
       <VDivider class="hr-primary"/>
-      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
+      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
           <router-link to="/products" class="tw-no-underline d-block text-center zoom">
             <img :src="t_1" class="border-theme d-block"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
@@ -466,7 +505,47 @@ const tab = ref('0')
             <img :src="t_5" class="border-theme d-block"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Neón</span>
           </router-link>
-      </VCardText>   
+      </VCardText> 
+      <VCardText class="px-0 mt-2 mb-2 d-flex align-items-stretch justify-content-between" v-else>
+        <VRow no-gutters class="transparent">
+          <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
+            <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+              <img :src="t_1" class="border-theme d-block" width="150px"/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
+            </router-link>
+          </VCol>
+          <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
+            <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+              <img :src="t_2" class="border-theme d-block" width="150px"/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
+            </router-link>
+          </VCol>
+          <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
+            <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+              <img :src="t_3" class="border-theme d-block" width="150px"/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
+            </router-link>
+          </VCol>
+          <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
+            <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+              <img :src="t_4" class="border-theme d-block" width="150px"/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
+            </router-link>
+          </VCol>
+          <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
+            <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+              <img :src="t_5" class="border-theme d-block" width="150px"/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Neón</span>
+            </router-link>
+          </VCol>
+          <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
+            <router-link to="/products" class="tw-no-underline d-block text-center zoom mt-0">
+              <img :src="t_6" class="border-theme d-block" width="150px"/>
+              <span class="d-block size-theme tw-text-tertiary mt-2 transparentColor">.</span>
+            </router-link>
+          </VCol>
+        </VRow>
+      </VCardText>     
     </VCard>
   </VContainer>
 
@@ -480,7 +559,7 @@ const tab = ref('0')
           <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-white hover:tw-text-yellow">Ver todos</router-link>
         </VCardTitle>
         <VDivider class="hr-secondary"/>
-        <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
+        <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
           <router-link to="/products" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_1" class="border-theme d-block"/>
             <span class="d-block size-theme tw-text-white mt-5">Niños</span>
@@ -497,6 +576,34 @@ const tab = ref('0')
             <img :src="f_4" class="border-theme d-white"/>
             <span class="d-block size-theme tw-text-white mt-5">Adultos</span>
           </router-link>
+        </VCardText> 
+        <VCardText class="px-0 mt-2 mb-2 d-flex align-items-stretch justify-content-between" v-else>
+          <VRow no-gutters class="transparent">
+            <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
+              <router-link to="/products" class="tw-no-underline d-block text-center img-zoom mt-0">
+                <img :src="f_1" class="border-theme d-block" width="150px"/>
+                <span class="d-block size-theme tw-text-white mt-2">Niños</span>
+              </router-link>
+            </VCol>
+            <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
+              <router-link to="/products" class="tw-no-underline d-block text-center img-zoom mt-0">
+                <img :src="f_2" class="border-theme d-block" width="150px"/>
+                <span class="d-block size-theme tw-text-white mt-2">Niñas</span>
+              </router-link>
+            </VCol>
+            <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
+              <router-link to="/products" class="tw-no-underline d-block text-center img-zoom mt-0">
+                <img :src="f_3" class="border-theme d-block" width="150px" />
+                <span class="d-block size-theme tw-text-white mt-2">Bebes</span>
+              </router-link>
+            </VCol>
+            <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
+              <router-link to="/products" class="tw-no-underline d-block text-center img-zoom mt-0">
+                <img :src="f_4" class="border-theme d-white" width="150px"/>
+                <span class="d-block size-theme tw-text-white mt-2">Adultos</span>
+              </router-link>
+            </VCol>
+          </VRow>
         </VCardText>   
       </VCard>
     </VContainer>
@@ -579,6 +686,10 @@ const tab = ref('0')
   .transparent {
     background: transparent !important;
   }
+
+  .transparentColor {
+    color: transparent !important;
+  }
   .border {
     border: 0 !important;
     border-top-right-radius: 0 !important;
@@ -643,7 +754,7 @@ const tab = ref('0')
 
   @media only screen and (max-width: 767px) {
     .col-mobile {
-      display: none;
+      display: none !important;
     }
 
     .pslider {
@@ -709,7 +820,7 @@ const tab = ref('0')
     }
 
     .grid-item {
-      margin: 0!important;
+      margin: 0 0 15px 0px !important;
       padding: 0!important;
     }
 
@@ -748,5 +859,16 @@ const tab = ref('0')
       border-bottom-left-radius: 16px!important;
     }
 
+    .cardtitles {
+      white-space: pre-wrap;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+
+    .swiper::v-deep(.swiper-pagination-bullet-active) {
+      background: #FF0090 !important;
+    }
   }
 </style>

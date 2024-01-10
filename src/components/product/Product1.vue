@@ -16,6 +16,7 @@ const props = defineProps({
     }
 })
 
+const isMobile = /Mobi/i.test(navigator.userAgent);
 const image = ref(null)
 const wholesale_price = ref(null)
 const price_for_sale = ref(null)
@@ -64,7 +65,7 @@ watchEffect(() => {
                 </div>
             </VCardText>
             <VCardText>
-                <span v-if="name.length > 40" class="d-block text_2 py-2 tw-text-tertiary title-product">
+                <span v-if="name.length > 40 && !isMobile" class="d-block text_2 py-2 tw-text-tertiary title-product">
                     {{ name.slice(0, 40) + '...'}}
                 </span>
                 <span v-else class="d-block text_2 py-2 tw-text-tertiary title-product">
@@ -136,6 +137,13 @@ watchEffect(() => {
         font-style: normal;
         font-weight: 400;
         line-height: 19.6px;
+    }
+
+    @media only screen and (max-width: 767px) {
+        .border-img {
+            width: 140px;
+            height: 140px;
+        }
     }
     
 </style>
