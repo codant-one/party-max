@@ -40,6 +40,31 @@ export const useMiscellaneousStores = defineStore('miscellaneous', {
                 })
             
         },
+        blogsByCategory(slug: string) {
+            this.setLoading(true)
+            
+            return Miscellaneous.blogsByCategory(slug)
+                .then((response) => {
+                    return Promise.resolve(response.data.data)
+                })
+                .catch(error => Promise.reject(error))
+                .finally(() => {
+                    this.setLoading(false)
+                })
+            
+        },
+        getBlog(slug: string) {
+           
+            return Miscellaneous.blog(slug)
+                .then((response) => {
+                    return Promise.resolve(response.data.data)
+                })
+                .catch(error => console.log(error))
+                .finally(() => {
+                    this.setLoading(false)
+                })
+            
+        },
         allFaqs() {
             this.setLoading(true)
             
