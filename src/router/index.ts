@@ -3,6 +3,7 @@ import Home from '@/views/Home.vue'
 import Testing from '@/views/Testing.vue'
 import Blogs from '@/views/blogs/index.vue'
 import BlogDetail from '@/views/blogs/detail.vue'
+import BlogsByCategory from '@/views/blogs/blogsByCategory.vue'
 import About from '@/views/About.vue'
 import Help from '@/views/Help.vue'
 import Categories from '@/views/categories/index.vue'
@@ -48,6 +49,11 @@ const router = createRouter({
       path: '/blogs/:slug',
       name: 'blogDetail',
       component: BlogDetail
+    },
+    {
+      path: '/blogs/categories/:slug',
+      name: 'blogsByCategory',
+      component: BlogsByCategory
     },
     {
       path: '/about-us',

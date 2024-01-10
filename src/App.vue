@@ -22,7 +22,7 @@ watchEffect(fetchData)
 async function fetchData() {
   var bg = ''
   var repeat = 'repeat'
-  var size = 'contain'
+  var size = (isMobile) ? 'auto' : 'contain'
 
   if(route.name === 'cart' || route.name === 'dashboard') {
     background.value = 'tw-bg-green'

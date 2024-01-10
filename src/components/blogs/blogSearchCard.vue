@@ -10,8 +10,6 @@ const props = defineProps({
             required: true
         }
     });
-
-
 </script>
 
 <template>
@@ -53,11 +51,18 @@ const props = defineProps({
         >
             <VListItem
                 v-for="blog in blogs"
-                :key="blog.id"
                 :title="blog.title"
                 base-color="#999999"
                 class="hover:tw-bg-yellow"
-            />
+                :link="true"
+                :to="{
+                        name: 'blogDetail',
+                        params: {
+                            slug: blog.slug                    
+                        }
+                    }"
+            >
+            </VListItem>
         </VList>
 
         <VDivider class="mt-4 mb-4" />
@@ -72,6 +77,13 @@ const props = defineProps({
                 :key="category.id"
                 :title="category.name"
                 base-color="#999999"
+                :link="true"
+                :to="{
+                        name: 'blogsByCategory',
+                        params: {
+                            slug: category.slug                    
+                        }
+                    }"
             >
                 <template #prepend>
                     <VIcon
