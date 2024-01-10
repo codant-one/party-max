@@ -1,0 +1,22 @@
+<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="icon-email-ml.svg" clip-path="url(#clip0_2103_16409)">
+<g id="Clip path group">
+<mask id="mask0_2103_16409" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25">
+<g id="clip0_3413_34856">
+<path id="Vector" d="M24.1074 0.550781H0.107422V24.5508H24.1074V0.550781Z" fill="white"/>
+</g>
+</mask>
+<g mask="url(#mask0_2103_16409)">
+<g id="Group">
+<path id="Vector_2" d="M24.1074 0.550781H0.107422V24.5508H24.1074V0.550781Z" fill="white"/>
+<path id="Vector_3" fill-rule="evenodd" clip-rule="evenodd" d="M22.9066 5.35059H1.30664V19.7506H22.9066V5.35059ZM21.4654 9.46661V18.3094H2.74544V9.46524L10.3191 13.7976L10.5438 13.9158C11.6068 14.4283 12.8605 14.3889 13.8941 13.7976L21.4654 9.46661ZM21.4654 7.80766V6.78939H2.74544V7.80629L11.0341 12.5476C11.6382 12.8932 12.3675 12.9246 12.9944 12.6419L13.1791 12.5476L21.4654 7.80766Z" fill="#0A1B33"/>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_2103_16409">
+<rect width="24" height="24" fill="white" transform="translate(0.107422 0.550781)"/>
+</clipPath>
+</defs>
+</svg>

@@ -9,6 +9,7 @@ import Loader from '@/components/common/Loader.vue'
 const blogsStores = useMiscellaneousStores()
 
 const blogs = ref([])
+const blogsAll = ref([])
 const categories = ref([])
 const isLoading = ref(true)
 const route = useRoute()
@@ -16,9 +17,10 @@ const route = useRoute()
 const fetchData = async () => {
   isLoading.value = true
   
-  let response = await blogsStores.blogs()
+  let response = await blogsStores.blogsByCategory(route.params.slug)
     
   blogs.value = response.blogs
+  blogsAll.value = response.blogsAll
   categories.value = response.categories
   
   isLoading.value = false  
@@ -38,7 +40,7 @@ fetchData()
     >
       <VCol cols="12" md="8">
          <blogsCard
-            v-for="blog in blogs.slice(0, 3)"
+            v-for="blog in blogs.slice(0, 4)"
             :blog="blog"
             :type="1"
          />
@@ -46,7 +48,7 @@ fetchData()
 
       <VCol cols="12" md="4">
         <blogSearchCard
-          :blogs="blogs.slice(0, 4)"
+          :blogs="blogsAll.slice(0, 4)"
           :categories="categories"
         />   
       </VCol>
