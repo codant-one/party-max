@@ -183,7 +183,7 @@ const onSubmit = () => {
                         </VCol>
                         <VCol cols="12" class="d-flex text-start p-0">
                             <VCheckbox :rules="[requiredValidator]"/>
-                            <div class="text1 ms-5 mt-2">
+                            <div class="text1 ms-5 mt-2 mb-3 mb-md-0">
                                 Acepto los 
                                 <router-link
                                     :to="{ name: 'home' }"
