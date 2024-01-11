@@ -11,7 +11,7 @@ const redirect = (name) => {
 </script>
 
 <template>
-    <VContainer class="mt-10">
+    <VContainer class="mt-1 mt-md-10">
         <VCard
             class="no-shadown card-register d-block text-center mx-auto">
             <VImg :src="festin_image" class="img-festin mx-auto"/>
@@ -19,42 +19,23 @@ const redirect = (name) => {
                 Para crear tu cuenta te pediremos <br> algunos datos
             </VCardText>
             <VCardText class="text-register p-0 my-4">Solo te tomará unos minutos.</VCardText>
-            <!-- <VCardText class="d-flex text-start p-0 mt-8">
-                <VCheckbox class="px-6" />
-                <div class="pr-10 text1">
-                    Acepto los 
-                    <router-link
-                        :to="{ name: 'home' }"
-                        class="text2"
-                    >
-                        Términos y condiciones
-                    </router-link>
-                    y autorizo el uso de mis datos de acuerdo a la 
-                    <router-link
-                        :to="{ name: 'home' }"
-                        class="text2"
-                    >
-                        Declaración de Privacidad.
-                    </router-link>
-                </div>
-            </VCardText> -->
             <VCardText class="d-block align-center text-center justify-content-center py-2">
-                    <VBtn
-                        variant="flat"
-                        :width="288"
-                        :height="48"
-                        class="btn-register tw-text-white tw-bg-primary button-hover"
-                        @click="redirect('form_client')">
-                        Crear cuenta personal
-                    </VBtn>
-                    <VBtn
-                        variant="flat"
-                        :width="288"
-                        :height="48"
-                        class="btn-register tw-text-white tw-bg-primary button-hover mt-2"
-                        @click="redirect('form_supplier')">
-                        Crear cuenta empresa
-                    </VBtn>
+                <VBtn
+                    variant="flat"
+                    :width="288"
+                    :height="48"
+                    class="btn-register tw-text-white tw-bg-primary button-hover"
+                    @click="redirect('form_client')">
+                    Crear cuenta personal
+                </VBtn>
+                <VBtn
+                    variant="flat"
+                    :width="288"
+                    :height="48"
+                    class="btn-register tw-text-white tw-bg-primary button-hover mt-2"
+                     @click="redirect('form_supplier')">
+                    Crear cuenta empresa
+                </VBtn>
             </VCardText>    
             <VCardText class="px-0 more">
               <router-link to="/type_client" class="d-flex my-6 tw-no-underline tw-text-tertiary hover:tw-text-primary hover-icon-arrow-right justify-content-center">
@@ -99,7 +80,7 @@ const redirect = (name) => {
     }
 
     .img-festin {
-        width: 164px!important;
+        width: 164px !important;
         height: auto;
     }
 
@@ -143,16 +124,22 @@ const redirect = (name) => {
         box-shadow: 0px 0px 24px 0px #FF27B3;
     }
 
-    @media only screen and (max-width: 767px)
-    {
-        .card-register
-        {
-            width: 358px;
+    @media only screen and (max-width: 767px) {
+        .card-register {
+            width: auto;
         }
-        .subtitle-register
-        {
+        .subtitle-register {
             font-size: 20px;
             line-height: 24px; /* 120% */
+        }
+
+        .img-festin {
+            width: 120px !important;
+            height: auto;
+        }
+
+        .v-row.v-row--no-gutters > .v-col, .v-row.v-row--no-gutters > [class*=v-col-] {
+            line-height: 20px;
         }
     }
 </style>

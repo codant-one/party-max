@@ -39,7 +39,7 @@
     <div class="container-footer" :class="isProduct ? 'tw-bg-primary text-colorfooter' : ''">
         <VContainer class="my-10">
             <VRow no-gutters class="tw-text-tertiary">
-              <VCol cols="12" md="5" class="d-flex xs:tw-text-center md:tw-text-left">
+              <VCol cols="12" md="5" class="d-flex xs:tw-text-center md:tw-text-left mb-4 mb-md-0">
                 <p class="line-p"><span class="text-footer">Conoce todas nuestras ofertas</span> <br>
                 <span class="subtext-footer">Regístrate ahora a nuestro newsletter.</span></p>
               </VCol> 
@@ -73,7 +73,7 @@
     
     <VDivider class="hr" />
 
-    <VContainer class="mt-16">
+    <VContainer class="mt-5 mt-md-16 borderBottom">
       <VRow no-gutters class="tw-text-tertiary">
         <VCol cols="7" md="3" class="d-block align-center text-left">
           <span class="contact-text">Contactanos</span>
@@ -198,7 +198,7 @@
           <img :src="festinfooter" class="border-theme"/>
         </VCol>
       </VRow>
-      <VDivider class="hr mt-10" />
+      <VDivider class="hr mt-10 d-none d-md-block" />
     </VContainer>
 
     <VContainer class="mt-2">
@@ -330,43 +330,38 @@
     line-height: 22.4px;
   }
 
-  .container-footer
-  {
+  .container-footer {
     width: 100%;
   }
-  .text-colorfooter span{
+  .text-colorfooter span {
     color: #FFFFFF!important;
   }
 
 
-
-  @media only screen and (max-width: 767px)
-  {
-    .col-mobile
-    {
+  @media only screen and (max-width: 767px) {
+    .col-mobile {
       display: none!important;
     }
 
-    .border-theme
-    {
+    .border-theme  {
       width: 150px!important;
     }
-    .phone-text
-    {
+    .phone-text {
       font-size: 20px;
       line-height: 28.8px; /* 144% */
     }
 
-    .col-copy p
-    {
+    .col-copy p {
       text-align: center !important;
     }
 
-    .line-p
-    {
+    .line-p {
       margin: auto;
     }
 
+    .borderBottom {
+      border-bottom: 1px solid #D9EEF2;
+    }
 
   }
 </style>
