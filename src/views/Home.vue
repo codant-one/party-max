@@ -277,9 +277,9 @@ const tab = ref('0')
 
     <!-- recommendations -->
     <VCard class="mt-7 no-shadown card-information p-0">
-      <VCardTitle class="px-7 py-3 cardtitles"> Recomendaciones según tus búsquedas</VCardTitle>
+      <VCardTitle class="px-4 px-md-7 py-3 cardtitles"> Recomendaciones según tus búsquedas</VCardTitle>
       <VDivider />
-      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
+      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
         <Product1 
           v-for="(product, i) in data.recommendations"
           :key="i"
@@ -318,7 +318,7 @@ const tab = ref('0')
     
     <!-- the most sold -->
     <VCard class="mt-7 no-shadown card-information p-0">
-      <VCardTitle class="px-7 py-3 d-flex align-center card-vendido cardtitles">
+      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center card-vendido cardtitles">
         <span>Lo más vendido</span>
         <VSpacer />
         <router-link 
@@ -375,7 +375,7 @@ const tab = ref('0')
                   />
               </VCardText>
               <VCardText class="p-0">
-                <VTabs v-model="tab" class="mt-7"  color="pink-accent-3">
+                <VTabs v-model="tab" class="mt-3 mt-md-7"  color="pink-accent-3">
                   <VTab value="0">Agregados recientemente</VTab>
                   <VTab value="1">Lo  mejor de lo mejor</VTab>
                 </VTabs>
@@ -511,13 +511,13 @@ const tab = ref('0')
 
     <!-- suppliers -->
     <VCard class="mt-7 no-shadown card-information p-0">
-      <VCardTitle class="px-7 py-3 d-flex align-center">
+      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center">
         <span>Top proveedores mayoristas</span>
         <VSpacer />
         <router-link to="/suppliers" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
       </VCardTitle>
       <VDivider />
-      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
+      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
         <router-link to="/suppliers" class="tw-no-underline">
           <img :src="p_1" class="border-img"/>
         </router-link>
@@ -538,13 +538,13 @@ const tab = ref('0')
 
     <!-- theme parties -->
     <VCard class="mt-7 no-shadown card-information transparent p-0">
-      <VCardTitle class="px-7 py-3 d-flex align-center">
+      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center">
         <span>Fiestas temáticas</span>
         <VSpacer />
         <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary" v-if="!isMobile">Ver todos</router-link>
       </VCardTitle>
       <VDivider class="hr-primary"/>
-      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
+      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
           <router-link
                 :to="{
                       name: 'products',
@@ -674,13 +674,13 @@ const tab = ref('0')
     <VContainer>
       <!-- birthday -->
       <VCard class="mt-7 no-shadown card-information transparent p-0 tw-text-white">
-        <VCardTitle class="px-7 py-3 d-flex align-center">
+        <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center">
           <span>Cumpleaños</span>
           <VSpacer />
           <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-white hover:tw-text-yellow">Ver todos</router-link>
         </VCardTitle>
         <VDivider class="hr-secondary"/>
-        <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
+        <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
           <router-link :to="{
                       name: 'products',
                       query: {
@@ -794,7 +794,6 @@ const tab = ref('0')
   }
 
   .border-img {
-    width: 100%;
     border-radius: 16px !important;
   }
   .hr {
