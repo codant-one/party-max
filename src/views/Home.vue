@@ -482,14 +482,26 @@ const tab = ref('0')
     <!-- banner 2 , banner 3-->
     <VCard class="mt-7 no-shadown card-information p-0 d-flex transparent card-banner34">
         <VCard class="no-shadown card-information p-0 w-50 grid-item w-100">
-          <router-link to="/products" class="tw-no-underline">
+          <router-link :to="{
+                      name: 'products',
+                      query: {
+                        category: 'decoracion',
+                        subcategory: 'velas'
+                      }
+                    }" class="tw-no-underline">
             <VCardItem class="p-0">
               <VImg :src="isMobile ? banner_3_mobile : banner_3" cover/>
             </VCardItem>  
           </router-link>
         </VCard>
         <VCard class="no-shadown card-information p-0 w-50 ms-5 grid-item w-100">
-          <router-link to="/products" class="tw-no-underline">
+          <router-link :to="{
+                      name: 'products',
+                      query: {
+                        category: 'globos',
+                        subcategory: 'globos-metalizados'
+                      }
+                    }" class="tw-no-underline">
             <VCardItem class="p-0">
               <VImg :src="isMobile ? banner_4_mobile : banner_4" cover/>
             </VCardItem>  
@@ -533,23 +545,54 @@ const tab = ref('0')
       </VCardTitle>
       <VDivider class="hr-primary"/>
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
-          <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+          <router-link
+                :to="{
+                      name: 'products',
+                      query: {
+                        category: 'fiestas-tematicas',
+                        subcategory: 'tematica-mexicana'
+                      }
+                    }" class="tw-no-underline d-block text-center zoom">
             <img :src="t_1" class="border-theme d-block"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
           </router-link>
-          <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+          <router-link :to="{
+                      name: 'products',
+                      query: {
+                        category: 'fiestas-tematicas',
+                        subcategory: 'tematica-hawaiana'
+                      }
+                    }" class="tw-no-underline d-block text-center zoom">
             <img :src="t_2" class="border-theme d-block"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Hawaiana</span>
           </router-link>
-          <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+          <router-link :to="{
+                      name: 'products',
+                      query: {
+                        category: 'fiestas-tematicas',
+                        subcategory: 'tematica-vallenata'
+                      }
+                    }" class="tw-no-underline d-block text-center zoom">
             <img :src="t_3" class="border-theme d-block"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Vallenata</span>
           </router-link>
-          <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+          <router-link :to="{
+                      name: 'products',
+                      query: {
+                        category: 'fiestas-tematicas',
+                        subcategory: 'tematica-metalizada'
+                      }
+                    }" class="tw-no-underline d-block text-center zoom">
             <img :src="t_4" class="border-theme d-block"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Metalizada</span>
           </router-link>
-          <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+          <router-link :to="{
+                      name: 'products',
+                      query: {
+                        category: 'fiestas-tematicas',
+                        subcategory: 'tematica-neon'
+                      }
+                    }" class="tw-no-underline d-block text-center zoom">
             <img :src="t_5" class="border-theme d-block"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Neón</span>
           </router-link>
@@ -557,31 +600,61 @@ const tab = ref('0')
       <VCardText class="px-0 mt-2 mb-2 d-flex align-items-stretch justify-content-between" v-else>
         <VRow no-gutters class="transparent">
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
-            <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+            <router-link :to="{
+                      name: 'products',
+                      query: {
+                        category: 'fiestas-tematicas',
+                        subcategory: 'tematica-mexicana'
+                      }
+                    }" class="tw-no-underline d-block text-center zoom">
               <img :src="t_1" class="border-theme d-block" width="150"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </router-link>
           </VCol>
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
-            <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+            <router-link :to="{
+                      name: 'products',
+                      query: {
+                        category: 'fiestas-tematicas',
+                        subcategory: 'tematica-hawaiana'
+                      }
+                    }" class="tw-no-underline d-block text-center zoom">
               <img :src="t_2" class="border-theme d-block" width="150"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
             </router-link>
           </VCol>
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
-            <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+            <router-link :to="{
+                      name: 'products',
+                      query: {
+                        category: 'fiestas-tematicas',
+                        subcategory: 'tematica-vallenata'
+                      }
+                    }" class="tw-no-underline d-block text-center zoom">
               <img :src="t_3" class="border-theme d-block" width="150"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </router-link>
           </VCol>
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
-            <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+            <router-link :to="{
+                      name: 'products',
+                      query: {
+                        category: 'fiestas-tematicas',
+                        subcategory: 'tematica-metalizada'
+                      }
+                    }" class="tw-no-underline d-block text-center zoom">
               <img :src="t_4" class="border-theme d-block" width="150"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </router-link>
           </VCol>
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
-            <router-link to="/products" class="tw-no-underline d-block text-center zoom">
+            <router-link :to="{
+                      name: 'products',
+                      query: {
+                        category: 'fiestas-tematicas',
+                        subcategory: 'tematica-neon'
+                      }
+                    }" class="tw-no-underline d-block text-center zoom">
               <img :src="t_5" class="border-theme d-block" width="150"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Neón</span>
             </router-link>
@@ -608,15 +681,33 @@ const tab = ref('0')
         </VCardTitle>
         <VDivider class="hr-secondary"/>
         <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
-          <router-link to="/products" class="tw-no-underline d-block text-center img-zoom">
+          <router-link :to="{
+                      name: 'products',
+                      query: {
+                        category: 'fiestas-infantiles',
+                        subcategory: 'fiestas-ninos'
+                      }
+                    }" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_1" class="border-theme d-block"/>
             <span class="d-block size-theme tw-text-white mt-5">Niños</span>
           </router-link>
-          <router-link to="/products" class="tw-no-underline d-block text-center img-zoom">
+          <router-link :to="{
+                      name: 'products',
+                      query: {
+                        category: 'fiestas-infantiles',
+                        subcategory: 'tematica-ninas'
+                      }
+                    }" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_2" class="border-theme d-block"/>
             <span class="d-block size-theme tw-text-white mt-5">Niñas</span>
           </router-link>
-          <router-link to="/products" class="tw-no-underline d-block text-center img-zoom">
+          <router-link :to="{
+                      name: 'products',
+                      query: {
+                        category: 'fiestas-infantiles',
+                        subcategory: 'tematica-bebes'
+                      }
+                    }" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_3" class="border-theme d-block"/>
             <span class="d-block size-theme tw-text-white mt-5">Bebes</span>
           </router-link>
