@@ -286,7 +286,7 @@ const tab = ref('0')
           :product="product"
           :readonly="true"/>
       </VCardText>  
-      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && isMobile">  
+      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && isMobile">  
         <swiper
           :pagination="{
             dynamicBullets: true,
