@@ -511,10 +511,10 @@ const tab = ref('0')
 
     <!-- suppliers -->
     <VCard class="mt-7 no-shadown card-information p-0">
-      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center">
+      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center cardtitles">
         <span>Top proveedores mayoristas</span>
         <VSpacer />
-        <router-link to="/suppliers" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
+        <router-link to="/suppliers" class="ms-0 ms-md-5 tw-no-underline tw-text-tertiary font-size-16 me-0 me-md-3 hover:tw-text-primary">Ver todos</router-link>
       </VCardTitle>
       <VDivider />
       <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
@@ -538,7 +538,7 @@ const tab = ref('0')
 
     <!-- theme parties -->
     <VCard class="mt-7 no-shadown card-information transparent p-0">
-      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center">
+      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center cardtitles">
         <span>Fiestas temáticas</span>
         <VSpacer />
         <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary" v-if="!isMobile">Ver todos</router-link>
@@ -674,7 +674,7 @@ const tab = ref('0')
     <VContainer>
       <!-- birthday -->
       <VCard class="mt-7 no-shadown card-information transparent p-0 tw-text-white">
-        <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center">
+        <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center cardtitles">
           <span>Cumpleaños</span>
           <VSpacer />
           <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-white hover:tw-text-yellow">Ver todos</router-link>
@@ -1012,7 +1012,7 @@ const tab = ref('0')
 
     .cardtitles {
       white-space: pre-wrap;
-      font-size: 20px;
+      font-size: 17px;
       font-style: normal;
       font-weight: 400;
       line-height: normal;
