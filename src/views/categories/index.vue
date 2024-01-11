@@ -1,6 +1,11 @@
 <script setup>
 
 import { useMiscellaneousStores } from '@/stores/miscellaneous'
+import { Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 import Product1 from '@/components/product/Product1.vue'
 import Loader from '@/components/common/Loader.vue'
@@ -21,6 +26,15 @@ const image2 = ref(null)
 const image3 = ref(null)
 const image4 = ref(null)
 
+const isMobile = /Mobi/i.test(navigator.userAgent);
+
+const thumbsSwiper = ref(null);
+const modules = ref([Pagination])
+
+const setThumbsSwiper = (swiper) => {
+    thumbsSwiper.value = swiper;
+}
+ 
 watchEffect(fetchData)
 
 async function fetchData() {
@@ -40,7 +54,7 @@ async function fetchData() {
 </script>
 
 <template>
-  <VContainer class="mt-10" v-if="data">
+  <VContainer class="mt-1 mt-md-10" v-if="data">
     <VCard class="no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
         <router-link 
@@ -58,7 +72,7 @@ async function fetchData() {
 
     <!-- novedades -->
     <VCard class="mt-7 no-shadown card-information p-0">
-      <VCardTitle class="px-7 py-3 d-flex">
+      <VCardTitle class="px-7 py-3 d-flex align-center cardtitles">
         <span>Novedades</span>
         <VSpacer />
         <router-link
@@ -71,18 +85,39 @@ async function fetchData() {
           class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
       </VCardTitle>
       <VDivider />
-      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data">
+      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
         <Product1 
           v-for="(product, i) in data.products"
           :key="i"
           :product="product"
           :readonly="true"/>
       </VCardText>
+      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && isMobile">
+        <swiper
+          :pagination="{
+            dynamicBullets: true,
+          }"
+          :modules="modules"
+          :spaceBetween="5"
+          :slidesPerView="2"
+          :freeMode="true"
+          :watchSlidesProgress="true"
+          @swiper="setThumbsSwiper"
+          class="mySwiper"
+          :style="{ height: '370px' }"
+          >
+          <swiper-slide v-for="(product, i) in data.products" :key="i">
+            <Product1 
+              :product="product"
+              :readonly="true"/>
+          </swiper-slide>
+        </swiper>
+      </VCardText>
     </VCard>
 
     <!-- banner 2 , banner 3-->
-    <VCard class="mt-7 no-shadown card-information p-0 d-flex transparent">
-        <VCard class="no-shadown card-information p-0 w-50">
+    <VCard class="mt-7 no-shadown card-information p-0 d-block d-md-flex transparent">
+        <VCard class="no-shadown card-information p-0 w-100 w-md-50">
           <router-link
             :to="{
               name:'products',
@@ -97,7 +132,7 @@ async function fetchData() {
             </VCardItem>  
           </router-link>
         </VCard>
-        <VCard class="no-shadown card-information p-0 w-50 ms-5">
+        <VCard class="no-shadown card-information p-0 w-100 w-md-50 ms-0 ms-md-5 mt-7 mt-md-0">
           <router-link
             :to="{
               name:'products',
@@ -172,8 +207,34 @@ async function fetchData() {
         border-radius: 16px;
     }
 
-    .link-button
-    {
+    .link-button {
       text-decoration: none;
+    }
+
+    @media only screen and (max-width: 767px) {
+      .img-style {
+          height: 140px;
+      }
+
+      .swiper::v-deep(.swiper-pagination-bullet-active) {
+        background: #FF0090 !important;
+      }
+
+      .swiper::v-deep(.swiper-pagination-horizontal ) {
+        top: 95%
+      }
+
+      .cardtitles {
+        white-space: pre-wrap;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+      }
+
+      .button-product {
+        font-size: 14px !important;
+        line-height: 14px; 
+      }
     }
 </style>
