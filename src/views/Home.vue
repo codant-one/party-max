@@ -49,7 +49,6 @@ import banner_5 from '@assets/images/Banner_5.jpg';
 import banner_2_mobile from '@assets/images/Banner_2_mobile.jpg';
 import banner_3_mobile from '@assets/images/Banner_3_mobile.jpg';
 import banner_4_mobile from '@assets/images/Banner_4_mobile.jpg';
-import banner_5_mobile from '@assets/images/Banner_5_mobile.jpg';
 
 import p_1 from '@assets/images/p_1.jpg';
 import p_2 from '@assets/images/p_2.jpg';
@@ -287,8 +286,7 @@ const tab = ref('0')
           :product="product"
           :readonly="true"/>
       </VCardText>  
-      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && isMobile">
-        
+      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && isMobile">  
         <swiper
           :pagination="{
             dynamicBullets: true,
@@ -300,7 +298,7 @@ const tab = ref('0')
           :watchSlidesProgress="true"
           @swiper="setThumbsSwiper"
           class="mySwiper"
-          :style="{ height: '370px' }"
+          :style="{ height: isMobile ? '320px' : '370px' }"
           >
           <swiper-slide v-for="(product, i) in data.recommendations" :key="i">
             <Product1 
@@ -365,20 +363,25 @@ const tab = ref('0')
         </router-link>
       </VCardTitle>
       <VDivider />
-      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between card-banner5" v-if="data">
-        <VRow no-gutters class="transparent">
+      <VCardText class="px-4 px-md-7 mt-2 mt-md-5 mb-2 mb-md-5 d-flex align-items-stretch justify-content-between card-banner5" v-if="data">
+        <VRow no-gutters class="transparent mostSoldMobile">
           <VCol cols="12" md="9">
-            <VImg :src="isMobile ? banner_5_mobile : banner_5" class="border-img banner5-mobile"/>
             <VCard class="no-shadown">
-              <VTabs v-model="tab" class="mt-7"  color="pink-accent-3">
-                <VTab value="0">Agregados recientemente</VTab>
-                <VTab value="1">Lo  mejor de lo mejor</VTab>
-              </VTabs>
-
               <VCardText class="p-0">
+                <VImg 
+                  :src="banner_5" 
+                  class="border-img" 
+                  cover
+                  />
+              </VCardText>
+              <VCardText class="p-0">
+                <VTabs v-model="tab" class="mt-7"  color="pink-accent-3">
+                  <VTab value="0">Agregados recientemente</VTab>
+                  <VTab value="1">Lo  mejor de lo mejor</VTab>
+                </VTabs>
                 <v-window v-model="tab">
                   <v-window-item value="0">
-                    <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between">
+                    <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
                       <Product1 
                         v-for="(product, index) in data.mostSold.latestProducts"
                         v-show="index < 4"
@@ -386,16 +389,60 @@ const tab = ref('0')
                         :product="product"
                         :readonly="true"/>
                     </VCardText>
+
+                    <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between" v-else>
+                      <swiper
+                        :pagination="{
+                          dynamicBullets: true,
+                        }"
+                        :modules="modules"
+                        :spaceBetween="5"
+                        :slidesPerView="2"
+                        :freeMode="true"
+                        :watchSlidesProgress="true"
+                        @swiper="setThumbsSwiper"
+                        class="mySwiper"
+                        :style="{ height: isMobile ? '320px' : '370px' }"
+                        >
+                        <swiper-slide v-for="(product, i) in data.mostSold.latestProducts" :key="i">
+                          <Product1 
+                            :product="product"
+                            :readonly="true"/>
+                        </swiper-slide>
+                      </swiper>
+                    </VCardText>
                   </v-window-item>
 
                   <v-window-item value="1">
-                    <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between">
+                    <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
                       <Product1 
                         v-for="(product, index) in data.mostSold.bestSellers"
                         v-show="index < 4"
                         :key="index"
                         :product="product"
                         :readonly="true"/>
+                    </VCardText>
+
+                    <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between" v-else>
+                      <swiper
+                        :pagination="{
+                          dynamicBullets: true,
+                        }"
+                        :modules="modules"
+                        :spaceBetween="5"
+                        :slidesPerView="2"
+                        :freeMode="true"
+                        :watchSlidesProgress="true"
+                        @swiper="setThumbsSwiper"
+                        class="mySwiper"
+                        :style="{ height: isMobile ? '320px' : '370px' }"
+                        >
+                        <swiper-slide v-for="(product, i) in data.mostSold.bestSellers" :key="i">
+                          <Product1 
+                            :product="product"
+                            :readonly="true"/>
+                        </swiper-slide>
+                      </swiper>
                     </VCardText>
                   </v-window-item>
                 </v-window>
@@ -656,6 +703,7 @@ const tab = ref('0')
   }
 
   .border-img {
+    width: 100%;
     border-radius: 16px !important;
   }
   .hr {
@@ -751,6 +799,18 @@ const tab = ref('0')
 
   .carousel-home {
     height:389px !important;
+  }
+
+  .v-tab::v-deep(.v-btn__content) {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 25.6px;
+    text-transform: none !important;
+  }
+
+  .text-pink-accent-3 {
+    color: #FF0090 !important;
   }
 
   @media only screen and (max-width: 767px) {
@@ -873,7 +933,23 @@ const tab = ref('0')
     }
 
     .swiper::v-deep(.swiper-pagination-horizontal ) {
-      top: 95%
+      top: 94%
+    }
+
+    .mostSoldMobile {
+      width: -webkit-fill-available;
+    }
+
+    .v-tab::v-deep(.v-btn__content) {
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 16px;
+    }
+
+    .v-tabs::v-deep(.v-btn.v-btn--density-default) {
+      height: 40px !important;
+      padding: 0 2px;
     }
   }
 </style>

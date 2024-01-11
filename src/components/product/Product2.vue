@@ -27,7 +27,7 @@ watchEffect(() => {
         image.value = props.product.image
         wholesale_price.value = props.product.wholesale_price
         price_for_sale.value = props.product.price_for_sale
-        name.value = props.product.name
+        name.value = props.product.name.toLowerCase().replace(/\b\w/g, (match) => match.toUpperCase())
         store.value = props.product.store
         rating.value = props.product.rating
         slug.value = props.product.slug
