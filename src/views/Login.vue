@@ -97,7 +97,7 @@ const onSubmit = () => {
 </script>
 
 <template>
-    <VContainer class="mt-10">  
+    <VContainer class="mt-1 mt-md-10">  
         <VForm
             ref="refVForm"
             @submit.prevent="onSubmit"
@@ -151,7 +151,7 @@ const onSubmit = () => {
                         </VCol>
                         </VRow>
                     </VCardItem>
-                    <VCardText class="d-flex align-center flex-wrap justify-space-between pb-0">
+                    <VCardText class="d-block d-md-flex text-center align-center flex-wrap justify-space-between pb-0">
                         <VCheckbox
                             v-model="remember_me" 
                             label="Recordar mi cuenta"/>
@@ -200,11 +200,6 @@ const onSubmit = () => {
     .more {
         text-align: end;
         display: contents;
-    }
-
-    .card-register {
-        padding: 20px;
-        border-radius: 32px;
     }
 
     .img-festin {
@@ -360,5 +355,32 @@ const onSubmit = () => {
     .button-hover:hover {
         background-color: #FF27B3 !important;
         box-shadow: 0px 0px 24px 0px #FF27B3;
+    }
+
+    @media only screen and (max-width: 767px) {
+        .card-register {
+            padding: 20px;
+            width: auto;
+        }
+        .subtitle-register {
+            font-size: 20px;
+            line-height: 24px; /* 120% */
+        }
+
+        .img-festin {
+            width: 120px !important;
+            height: auto;
+        }
+
+        .v-row.v-row--no-gutters > .v-col, .v-row.v-row--no-gutters > [class*=v-col-] {
+            line-height: 20px;
+        }
+
+        .v-checkbox::v-deep(.v-selection-control) {
+            text-align: center;
+            align-items: center; 
+            justify-content: center; 
+            min-height: 35px;
+        }
     }
 </style>

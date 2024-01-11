@@ -8,7 +8,7 @@ import arrow_right from '@assets/icons/arrow-right.svg?inline';
 </script>
 
 <template>
-    <VContainer class="mt-10">
+    <VContainer class="mt-1 mt-md-10">
         <VCard 
             class="no-shadown card-register d-block text-center mx-auto mb-5">
             <VImg :src="festin_image" class="img-festin mx-auto"/>
@@ -61,7 +61,6 @@ import arrow_right from '@assets/icons/arrow-right.svg?inline';
     }
 
     .img-festin {
-
         width: 164px!important;
         height: auto;
     }
@@ -121,19 +120,30 @@ import arrow_right from '@assets/icons/arrow-right.svg?inline';
     .client-card .v-card-item__content {
         margin: auto;
     }
-    @media only screen and (max-width: 767px){
 
-    .card-register
-    {
-        width: 358px;
-        padding: 40px;
-    }    
-    .subtitle-register
-    {
-        font-size: 20px;
-        line-height: 24px; /* 120% */
+    @media only screen and (max-width: 767px) {
+
+        .card-register {
+            width: auto;
+            padding: 40px;
+        }    
+        .subtitle-register {
+            font-size: 20px;
+            line-height: 24px; /* 120% */
+        }
+
+        .img-festin {
+            width: 120px !important;
+            height: auto;
+        }
+
+        .v-row.v-row--no-gutters > .v-col, .v-row.v-row--no-gutters > [class*=v-col-] {
+            line-height: 20px;
+        }
+
+        .subtitle-register {
+            margin-top: 5px;
+        }
     }
-
-}
 
 </style>

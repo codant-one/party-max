@@ -1,17 +1,11 @@
 <script setup>
 
 import festin_image from '@assets/images/festin-aboutus.jpg';
-import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
-import router from '@/router'
-
-const redirect = (name) => {
-    router.push({ name : name})
-}
 
 </script>
 
 <template>
-    <VContainer class="mt-10">
+    <VContainer class="mt-1 mt-md-10">
         <VCard
             class="no-shadown card-register d-block text-center mx-auto">
             <VImg :src="festin_image" class="img-festin mx-auto"/>
@@ -21,26 +15,6 @@ const redirect = (name) => {
             <VCardText class="text-register p-0 my-4">
                 Muy atento a tu correo electrónico, <br> daremos respuesta a tu solicitud lo antes<br> posible. 
             </VCardText>
-            <!-- <VCardText class="d-flex text-start p-0 mt-8">
-                <VCheckbox class="px-6" />
-                <div class="pr-10 text1">
-                    Acepto los 
-                    <router-link
-                        :to="{ name: 'home' }"
-                        class="text2"
-                    >
-                        Términos y condiciones
-                    </router-link>
-                    y autorizo el uso de mis datos de acuerdo a la 
-                    <router-link
-                        :to="{ name: 'home' }"
-                        class="text2"
-                    >
-                        Declaración de Privacidad.
-                    </router-link>
-                </div>
-            </VCardText> -->  
-               
         </VCard>
     </VContainer>
 </template>
@@ -122,18 +96,20 @@ const redirect = (name) => {
         box-shadow: 0px 0px 24px 0px #FF27B3;
     }
 
-    @media only screen and (max-width: 767px)
-    {
-        .card-register
-        {
-            width: 358px;
+    @media only screen and (max-width: 767px) {
+        .card-register {
+            width: auto;
             padding: 40px 20px;
         }
 
-        .subtitle-register
-        {
+        .subtitle-register {
             font-size: 20px;
             line-height: 24px; /* 120% */
+        }
+
+        .img-festin {
+            width: 120px !important;
+            height: auto;
         }
     }
 </style>

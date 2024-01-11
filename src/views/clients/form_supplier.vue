@@ -7,7 +7,7 @@
 </script>
 
 <template>
-    <VContainer class="mt-10">
+    <VContainer class="mt-1 mt-md-10">
         <VCard 
             class="no-shadown card-register d-block text-center mx-auto">
             <VCardItem class="subtitle-register">
@@ -230,18 +230,19 @@
         font-size: 12px !important;
     }
 
-    @media only screen and (max-width: 767px)
-    {
-        .card-register
-        {
-            width: 358px;
+    @media only screen and (max-width: 767px) {
+        .card-register {
+            width: auto;
             padding: 40px 20px;
         }
 
-        .subtitle-register
-        {
+        .subtitle-register {
             font-size: 20px;
             line-height: 24px; /* 120% */
+        }
+
+        .v-row.v-row--no-gutters > .v-col, .v-row.v-row--no-gutters > [class*=v-col-] {
+            line-height: 20px;
         }
     }
 
