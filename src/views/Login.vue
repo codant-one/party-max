@@ -157,7 +157,7 @@ const onSubmit = () => {
                             label="Recordar mi cuenta"/>
                         <router-link
                             class="letter hover:tw-text-primary"
-                            :to="{ name: 'home' }"
+                            :to="{ name: 'forgot_password' }"
                         >
                             ¿Olvidaste su contraseña?
                         </router-link>
