@@ -162,6 +162,7 @@ const router = createRouter({
         },
         {
           path: '/my-favorites',
+          name: 'favorites',
           component: Favorites,
         },
         {
@@ -196,7 +197,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const privatePages = ['/dashboard'];
+  const privatePages = ['/dashboard','/my-favorites','/detail-purchases','/my-purchases','/mydata','/security','/client-address','/add-address'];
   const authRequired = privatePages.includes(to.path);
   const loggedIn = localStorage.getItem('user_data');
 

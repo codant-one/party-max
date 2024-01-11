@@ -28,6 +28,8 @@
   const openMenu = ref(false)
   const menuOpen = ref(false)
 
+  const cant_shop = 1;
+
   const isMobile = /Mobi/i.test(navigator.userAgent);
   const drawer = ref(false)
   const fixedSectionRef = ref(null)
@@ -115,6 +117,11 @@
       classFixed.value = (scrollY === 0 ) ? 'second-header' : 'topFixed';
     }
   };
+
+  const redirect = (name) => {
+    router.push({ name : name})
+}
+
   
 </script>
 
@@ -264,15 +271,23 @@
             </VTextField>
           </VCol>
           <VCol cols="3" class="d-flex align-center align-items-stretch flex-shrink-0">
+           
             <VBtn 
-              variant="plain" 
-              icon 
-              class="pb-2 me-4 index heart"
-              :class="(name === null) ? 'ms-10': 'me-24'">
-              <heart />
+                variant="plain" 
+                icon 
+                class="pb-2 me-4 index heart"
+                :class="(name === null) ? 'ms-10': 'me-24'" @click="redirect('favorites')">
+                <heart />
             </VBtn>
-            <VBtn variant="plain" icon class="pb-2 me-4 shoppinp_cart">
-              <shoppinp_cart />
+              
+            <VBtn variant="plain" icon class="pb-2 me-4 shoppinp_cart" @click="redirect('cart')">
+              <VBadge
+                color="primary"
+                :content="cant_shop"
+                location="end top"
+              >
+                <shoppinp_cart />
+              </VBadge>
             </VBtn>
             <div class="d-flex user-text">
               <VBtn v-if="name === null" variant="plain" icon class="pb-2 user">
