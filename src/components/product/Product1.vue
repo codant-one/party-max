@@ -69,7 +69,7 @@ watchEffect(() => {
                     {{ name.slice(0, 50) + '...'}}
                 </span>
                 <span v-else class="d-block text_2 tw-text-tertiary title-product">
-                    <span v-if="isMobile"> {{ name.slice(0, 30) + '...'}}</span>
+                    <span v-if="isMobile"> {{ name.slice(0, 25) + '...'}}</span>
                     <span v-else> {{ name }}</span>
                 </span>
             </VCardText>
