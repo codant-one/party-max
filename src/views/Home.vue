@@ -298,7 +298,7 @@ const tab = ref('0')
           :watchSlidesProgress="true"
           @swiper="setThumbsSwiper"
           class="mySwiper"
-          :style="{ height: isMobile ? '320px' : '370px' }"
+          :style="{ height: isMobile ? '330px' : '370px' }"
           >
           <swiper-slide v-for="(product, i) in data.recommendations" :key="i">
             <Product1 
