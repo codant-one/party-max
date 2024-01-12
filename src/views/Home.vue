@@ -286,7 +286,7 @@ const tab = ref('0')
           :product="product"
           :readonly="true"/>
       </VCardText>  
-      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && isMobile">  
+      <VCardText class="pb-0 px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && isMobile">  
         <swiper
           :pagination="{
             dynamicBullets: true,
@@ -297,8 +297,7 @@ const tab = ref('0')
           :freeMode="true"
           :watchSlidesProgress="true"
           @swiper="setThumbsSwiper"
-          class="mySwiper"
-          :style="{ height: isMobile ? '330px' : '370px' }"
+          :style="{ height: isMobile ? '340px' : '370px' }"
           >
           <swiper-slide v-for="(product, i) in data.recommendations" :key="i">
             <Product1 
@@ -390,7 +389,7 @@ const tab = ref('0')
                         :readonly="true"/>
                     </VCardText>
 
-                    <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between" v-else>
+                    <VCardText class="pb-0 px-0 mt-5 d-flex align-items-stretch justify-content-between" v-else>
                       <swiper
                         :pagination="{
                           dynamicBullets: true,
@@ -401,8 +400,7 @@ const tab = ref('0')
                         :freeMode="true"
                         :watchSlidesProgress="true"
                         @swiper="setThumbsSwiper"
-                        class="mySwiper"
-                        :style="{ height: isMobile ? '320px' : '370px' }"
+                        :style="{ height: isMobile ? '330px' : '370px' }"
                         >
                         <swiper-slide v-for="(product, i) in data.mostSold.latestProducts" :key="i">
                           <Product1 
@@ -434,8 +432,7 @@ const tab = ref('0')
                         :freeMode="true"
                         :watchSlidesProgress="true"
                         @swiper="setThumbsSwiper"
-                        class="mySwiper"
-                        :style="{ height: isMobile ? '320px' : '370px' }"
+                        :style="{ height: isMobile ? '330px' : '370px' }"
                         >
                         <swiper-slide v-for="(product, i) in data.mostSold.bestSellers" :key="i">
                           <Product1 
@@ -517,7 +514,7 @@ const tab = ref('0')
         <router-link to="/suppliers" class="ms-0 ms-md-5 tw-no-underline tw-text-tertiary font-size-16 me-0 me-md-3 hover:tw-text-primary">Ver todos</router-link>
       </VCardTitle>
       <VDivider />
-      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
+      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
         <router-link to="/suppliers" class="tw-no-underline">
           <img :src="p_1" class="border-img"/>
         </router-link>
@@ -534,6 +531,46 @@ const tab = ref('0')
           <img :src="p_5" class="border-img"/>
         </router-link>
       </VCardText>  
+      <VCardText class="pb-0 px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-else>
+        <swiper
+          :pagination="{
+            dynamicBullets: true,
+          }"
+          :modules="modules"
+          :spaceBetween="5"
+          :slidesPerView="2"
+          :freeMode="true"
+          :watchSlidesProgress="true"
+          @swiper="setThumbsSwiper"
+          :style="{ height: isMobile ? '180px' : '370px' }"
+          >
+          <swiper-slide>
+            <router-link to="/suppliers" class="tw-no-underline">
+              <img width="144" :src="p_1" class="border-img"/>
+            </router-link>
+          </swiper-slide>
+          <swiper-slide>
+            <router-link to="/suppliers" class="tw-no-underline">
+              <img width="144" :src="p_2" class="border-img"/>
+            </router-link>
+          </swiper-slide>
+          <swiper-slide>
+            <router-link to="/suppliers" class="tw-no-underline">
+              <img width="144" :src="p_3" class="border-img"/>
+            </router-link>
+          </swiper-slide>
+          <swiper-slide>
+            <router-link to="/suppliers" class="tw-no-underline">
+              <img width="144" :src="p_4" class="border-img"/>
+            </router-link>
+          </swiper-slide>
+          <swiper-slide>
+            <router-link to="/suppliers" class="tw-no-underline">
+              <img width="144" :src="p_5" class="border-img"/>
+            </router-link>
+          </swiper-slide>
+        </swiper>
+      </VCardText>
     </VCard>
 
     <!-- theme parties -->
@@ -1023,8 +1060,8 @@ const tab = ref('0')
     }
 
     .swiper::v-deep(.swiper-pagination-horizontal ) {
-      top: 94%
-    }
+      top: 90%;
+    }    
 
     .mostSoldMobile {
       width: -webkit-fill-available;
