@@ -376,5 +376,13 @@
       line-height: 146.3%; 
     }
 
+    .v-text-field::v-deep(input) {
+      font-size: 14px;
+      padding-top: 4px !important;
+     }
+
+     .search-button {
+      font-size: 10px;
+     }
   }
 </style>
