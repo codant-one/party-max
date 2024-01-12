@@ -2,55 +2,61 @@
 
 import festin_image from '@assets/images/festin-register.jpg';
 import arrow_left from '@assets/icons/Arrow_left.svg?inline';
-import router from '@/router'
-
-const redirect = (name) => {
-    router.push({ name : name})
-}
+import icon1 from '@assets/icons/Mail.svg';
 
 </script>
 
 <template>
-    <VContainer class="mt-10">
+    <VContainer class="mt-1 mt-md-10">
         <VCard
-            class="no-shadown card-register d-block text-center mx-auto">
+            class="pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
             <VImg :src="festin_image" class="img-festin mx-auto"/>
             <VCardText class="subtitle-register p-0">
                 ¿Olvido su contraseña?
             </VCardText>
-            <VCardText class="text-register p-0 my-4">
+            <VCardText class="text-register px-2 my-0 my-md-2 pb-0">
                 Ingrese su correo electrónico y enviaremos un link para reiniciar su contraseña
             </VCardText>
-            <VRow style="padding:0px 40px;">
-                <VCol cols="12">
-                            <VTextField
-                                label="E-mail"
-                                variant="outlined"
-                                type="email"
-                            />
-                </VCol>
-            </VRow>
-            <VCardText class="p-0 more">
-              <VRow style="padding: 20px 50px;">
+            <VCardItem class="pb-0 client-card">
+                <VRow no-gutters class="text-left align-center">
+                    <VCol cols="12" class="d-flex text-left mb-2">
+                        <img :src="icon1" class="me-3"/>
+                        <div class="d-block">
+                            <span class="text-client text-left">E-mail</span> <br>
+                            <span class="p-client text-left">Recibirás información.</span>
+                        </div>
+                    </VCol>
+                    <VCol cols="12" class="mb-1">
+                        <VTextField
+                            label="E-mail"
+                            variant="outlined"
+                            type="email"
+                        />
+                    </VCol>
+                </VRow>
+            </VCardItem>
+            <VCardText class="pb-0 pb-md-2 d-block align-center text-center justify-content-center">
                 <VBtn
-                            variant="flat"
-                            block
-                            type="submit"
-                            class="btn-register tw-text-white tw-bg-primary button-hover"
-                        >
-                            Enviar
-                            <VProgressCircular
-                                v-if="load"
-                                indeterminate
-                                color="#fff"
-                            />
+                    variant="flat"
+                    :width="288"
+                    :height="48"
+                    block
+                    type="submit"
+                    class="btn-register tw-text-white tw-bg-primary button-hover"
+                >
+                    Enviar
+                    <VProgressCircular
+                        v-if="load"
+                        indeterminate
+                        color="#fff"
+                    />
                 </VBtn>
-
+            </VCardText>
+            <VCardText class="px-0 more">
                 <router-link to="/login" class="d-flex my-6 tw-no-underline tw-text-tertiary hover:tw-text-primary hover-icon-arrow-right justify-content-center" style="margin: auto;">
                     <arrow_left class="ms-2" />
                     <span class="ms-5">Volver a inicio de sesión</span>
                 </router-link>
-              </VRow>
             </VCardText>    
         </VCard>
     </VContainer>
@@ -69,7 +75,7 @@ const redirect = (name) => {
     .card-register {
         padding: 20px;
         border-radius: 32px;
-        width: 456px; 
+        width: 500px; 
     }
 
     .img-festin {
@@ -117,11 +123,16 @@ const redirect = (name) => {
         box-shadow: 0px 0px 24px 0px #FF27B3;
     }
 
-    .v-text-field::v-deep(.v-field-label) {
-        top: 30% !important;
-        font-size: 12px !important;
+    .v-text-field::v-deep(.v-field) { 
+        border-radius: 24px;
+        height: 35px;
+        font-size: 14px;
     }
-
+    
+    .v-text-field::v-deep(.v-field__outline) {
+        border-radius: 24px;
+    }
+    
     .v-text-field::v-deep(.v-field__outline__start) {
         border-start-start-radius: 24px;
     }
@@ -133,31 +144,53 @@ const redirect = (name) => {
 
     .v-text-field::v-deep(input) { 
         padding-top: 0 !important;
+        padding-bottom: 0 !important;
     }
 
-    .v-text-field::v-deep(.v-field) { 
-        border-radius: 24px;
-        height: 35px;
-        font-size: 14px;
+    .v-text-field::v-deep(.v-field-label) {
+        top: 30% !important;
+        font-size: 12px !important;
     }
-    
-    .v-text-field::v-deep(.v-field__outline) {
-        border-radius: 24px;
+
+    .v-text-field::v-deep(.v-field__append-inner) { 
+        padding-top: 8px !important;
+        align-items: start !important;
     }
-    
 
+    .text-client {
+        color: #0A1B33;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 8px; /* 50% */
+    }
 
-    @media only screen and (max-width: 767px){
-    .card-register
-        {
-            width: 358px;
+    .p-client {
+        color:  #999;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 8px; /* 50% */
+    }
+
+    @media only screen and (max-width: 767px) {
+        .card-register {
+            width: auto;
             padding: 40px 20px;
         }
 
-        .subtitle-register
-        {
+        .subtitle-register {
             font-size: 20px;
             line-height: 24px; /* 120% */
+        }
+
+        .img-festin {
+            width: 120px !important;
+            height: auto;
+        }
+
+        .v-row.v-row--no-gutters > .v-col, .v-row.v-row--no-gutters > [class*=v-col-] {
+            line-height: 20px;
         }
     }
 </style>

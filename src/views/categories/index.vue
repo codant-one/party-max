@@ -92,7 +92,7 @@ async function fetchData() {
           :product="product"
           :readonly="true"/>
       </VCardText>
-      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && isMobile">
+      <VCardText class="pb-0 px-3 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && isMobile">
         <swiper
           :pagination="{
             dynamicBullets: true,
@@ -104,7 +104,7 @@ async function fetchData() {
           :watchSlidesProgress="true"
           @swiper="setThumbsSwiper"
           class="mySwiper"
-          :style="{ height: '370px' }"
+          :style="{ height: isMobile ? '350px' : '370px' }"
           >
           <swiper-slide v-for="(product, i) in data.products" :key="i">
             <Product1 
@@ -221,12 +221,12 @@ async function fetchData() {
       }
 
       .swiper::v-deep(.swiper-pagination-horizontal ) {
-        top: 95%
+        top: 90%
       }
 
       .cardtitles {
         white-space: pre-wrap;
-        font-size: 20px;
+        font-size: 17px;
         font-style: normal;
         font-weight: 400;
         line-height: normal;
