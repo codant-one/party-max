@@ -295,10 +295,13 @@
   .text-footer {
     font-size: 24px;
     font-weight: 600;
+    line-height: 146.3%;
   }
 
   .subtext-footer {
     font-size: 12px;
+    font-weight: 400;
+    line-height: 146.3%; 
   }
   .line-p {
     line-height: 20px;
@@ -361,6 +364,16 @@
 
     .borderBottom {
       border-bottom: 1px solid #D9EEF2;
+    }
+
+    .text-footer {
+      font-size: 20px;
+    }
+
+    .subtext-footer {
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 146.3%; 
     }
 
   }
