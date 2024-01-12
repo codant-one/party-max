@@ -189,7 +189,7 @@ const router = createRouter({
       component:forgot_password
     },
     {
-      path: '/reset_password',
+      path: '/reset-password',
       name: 'reset_password',
       component: reset_password
     }
