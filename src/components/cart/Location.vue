@@ -12,7 +12,7 @@ const emit = defineEmits(['update:currentStep'])
                 <VCardText class="row-cardp px-0 pt-2">
                     <h2 class="home px-5 mb-5">Enviar a domicilio</h2>
                     <VRow class="row-card px-5">
-                        <VCol cols="12" md="7">
+                        <VCol cols="8" md="7">
                             <VRow>
                                 <VCol cols="2" class="text-center">    
                                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
@@ -25,14 +25,14 @@ const emit = defineEmits(['update:currentStep'])
                             </VRow>
                         </VCol>
 
-                        <VCol cols="12" md="5" class="text-right">
+                        <VCol cols="4" md="5" class="text-right">
                             <span>$0.000</span>
                         </VCol>
                     </VRow>
 
                     <!--item 2-->
                     <VRow class="row-card2 px-5">
-                        <VCol cols="12" md="7">
+                        <VCol cols="8" md="7">
                             <VRow>
                                 <VCol cols="2" class="text-center">    
                                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
@@ -45,7 +45,7 @@ const emit = defineEmits(['update:currentStep'])
                             </VRow>
                         </VCol>
 
-                        <VCol cols="12" md="5" class="text-right">
+                        <VCol cols="4" md="5" class="text-right">
                             <span>$0.000</span>
                         </VCol>
                     </VRow>
@@ -61,7 +61,7 @@ const emit = defineEmits(['update:currentStep'])
                 <VCardTitle class="home">Retirar en un punto físico </VCardTitle>
                 <VCardText class="row-cardp_ px-0 pt-2">
                     <VRow class="row-card px-5 mt-2">
-                        <VCol cols="12" md="7">
+                        <VCol cols="8" md="7">
                             <VRow>
                                 <VCol cols="2" class="text-center">    
                                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
@@ -74,14 +74,14 @@ const emit = defineEmits(['update:currentStep'])
                             </VRow>
                         </VCol>
 
-                        <VCol cols="12" md="5" class="text-right">
+                        <VCol cols="4" md="5" class="text-right">
                             <span class="free-text">Gratis</span>
                         </VCol>
                     </VRow>
 
                     <!--item 2-->
                     <VRow class="row-card2 px-5">
-                        <VCol cols="12" md="7">
+                        <VCol cols="8" md="7">
                             <VRow>
                                 <VCol cols="2" class="text-center">    
                                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
@@ -94,7 +94,7 @@ const emit = defineEmits(['update:currentStep'])
                             </VRow>
                         </VCol>
 
-                        <VCol cols="12" md="5" class="text-right">
+                        <VCol cols="4" md="5" class="text-right">
                             <span class="free-text">Gratis</span>
                         </VCol>
                     </VRow>
@@ -104,7 +104,6 @@ const emit = defineEmits(['update:currentStep'])
             <VCol cols="12" class="text-right">
                 <VBtn
                     variant="flat"
-                    width="25%"
                     style="border-radius:32px;"
                     class="btn-register tw-text-white tw-bg-primary button-hover mt-2"
                     @click="emit('update:currentStep', 2)">
@@ -116,23 +115,23 @@ const emit = defineEmits(['update:currentStep'])
             <VCard class="card-summary px-0">
                 <VCardTitle class="subtitle-card row-buy pb-8">Resumen de compra</VCardTitle>
                 <VCardText class="px-10 mt-5">
-                    <VRow>
-                        <VCol cols="12" md="6" class="text-left">
+                    <VRow align="center">
+                        <VCol cols="9" md="6" class="text-left">
                             <span>Productos</span>
                         </VCol>
-                        <VCol cols="12" md="6" class="text-right">
+                        <VCol cols="3" md="6" class="text-right">
                             <span>$5.600</span>
                         </VCol>
-                        <VCol cols="12" md="6" class="text-left">
+                        <VCol cols="9" md="6" class="text-left">
                             <span>Envío</span>
                         </VCol>
-                        <VCol cols="12" md="6" class="text-right">
+                        <VCol cols="3" md="6" class="text-right">
                             <span>$2.000</span>
                         </VCol>
-                        <VCol cols="12" md="6" class="text-left">
+                        <VCol cols="9" md="6" class="text-left">
                             <h4>Total</h4>
                         </VCol>
-                        <VCol cols="12" md="6" class="text-right">
+                        <VCol cols="3" md="6" class="text-right">
                             <h4>$7.600</h4>
                         </VCol>
                     </VRow>
@@ -174,6 +173,7 @@ const emit = defineEmits(['update:currentStep'])
         line-height: 14px;
         border-radius: 32px;
         height: 54px;
+        width: 25%;
     }
     .button-hover:hover {
         background-color: #FF27B3 !important;
@@ -268,6 +268,18 @@ const emit = defineEmits(['update:currentStep'])
         font-style: normal;
         font-weight: 600;
         line-height: normal;
+    }
+
+    @media only screen and (max-width: 767px)
+    {
+        .title-card
+        {
+            font-size: 20px;
+        }
+        .btn-register
+        {
+            width: 100%;
+        }
     }
 
 </style>

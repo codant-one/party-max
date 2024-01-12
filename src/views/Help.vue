@@ -52,7 +52,6 @@ const setFocus = async(category) => {
         <VBtn
           v-for="category in categories"
           min-width="20%"
-          width="20%"
           class="selected-class"
           selected-class="selected-class"
           rounded="lg"
@@ -75,7 +74,7 @@ const setFocus = async(category) => {
               cols="12"
               sm="12"
               lg="12"
-              class="icons-text">
+              class="icons-text tw-text-tertiary">
               {{ category.name }}
             </VCol>
           </VRow>
@@ -135,7 +134,6 @@ const setFocus = async(category) => {
     }
 
     .icons-text{
-      color:  #FF0090!important;
       font-size: 14px;
       font-style: normal;
       font-weight: 600;
@@ -145,6 +143,7 @@ const setFocus = async(category) => {
       background-color: var(--Light-Cyan-1, #E2F8FC);
       margin: 0.25rem !important;
       padding: 0.25rem 0 !important;
+      width: 20%;
     }
 
     .v-btn.v-btn--density-default{
@@ -164,6 +163,11 @@ const setFocus = async(category) => {
     {
         text-align: center;
         line-height: 24px; /* 133.333% */
+    }
+
+    .selected-class
+    {
+      width: 40%;
     }
     }
 </style>

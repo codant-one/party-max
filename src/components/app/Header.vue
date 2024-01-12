@@ -333,11 +333,17 @@
             <VBtn 
               variant="plain" 
               icon 
-              class="index heart ms-12">
+              class="index heart ms-12" @click="redirect('favorites')">
               <heart />
             </VBtn>
-            <VBtn variant="plain" icon class="shoppinp_cart">
-              <shoppinp_cart />
+            <VBtn variant="plain" icon class="shoppinp_cart" @click="redirect('cart')">
+              <VBadge
+                color="primary"
+                :content="cant_shop"
+                location="end top"
+              >
+                <shoppinp_cart />
+              </VBadge>
             </VBtn>
             <div class="d-flex user-text">
               <VBtn v-if="name === null" variant="plain" icon class="user">
