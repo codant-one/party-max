@@ -226,7 +226,7 @@ async function fetchData() {
 
       .cardtitles {
         white-space: pre-wrap;
-        font-size: 20px;
+        font-size: 17px;
         font-style: normal;
         font-weight: 400;
         line-height: normal;
