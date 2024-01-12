@@ -128,7 +128,8 @@ watchEffect(() => {
             <hr class="col-12 v-divider v-theme--myCustomLightTheme mb-2 mt-4">
             
             <VCol 
-                cols="6"
+                cols="12"
+                md="6"
                 class="d-flex flex-row align-center px-1 py-1"
             >
                 <VCol 
@@ -156,7 +157,8 @@ watchEffect(() => {
             </VCol>
 
             <VCol 
-                cols="6"
+                cols="12"
+                md="6"
                 class="d-flex flex-row align-center px-1 py-1"
             >
                 <VCol 
@@ -276,6 +278,7 @@ watchEffect(() => {
         .title-text
         {
             font-size: 20px;
+            line-height: 24px;
         }
         .description-text
         {        
