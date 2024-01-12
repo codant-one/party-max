@@ -33,7 +33,7 @@ watchEffect(() => {
         image.value = props.product.image
         wholesale_price.value = props.product.wholesale_price
         price_for_sale.value = props.product.price_for_sale
-        name.value = props.product.name
+        name.value = props.product.name.toLowerCase().replace(/\b\w/g, (match) => match.toUpperCase())
         store.value = props.product.user.name + ' ' + (props.product.user.last_name ?? '')
         rating.value = props.product.rating
         slug.value = props.product.slug
@@ -51,7 +51,7 @@ watchEffect(() => {
             }
         }"
         class="tw-no-underline zoom-product">
-        <VCard class="no-shadown card-information p-0" :width="230" :class="props.bg">
+        <VCard class="no-shadown card-information p-0" :width="isMobile ? 'auto' : 230" :class="props.bg">
             <VCardText class="border-img ms-1">
                 <VImg 
                     :width="230"
@@ -65,22 +65,23 @@ watchEffect(() => {
                 </div>
             </VCardText>
             <VCardText>
-                <span v-if="name.length > 40 && !isMobile" class="d-block text_2 py-2 tw-text-tertiary title-product">
-                    {{ name.slice(0, 40) + '...'}}
+                <span v-if="name.length > 50 && !isMobile" class="d-block text_2 tw-text-tertiary title-product">
+                    {{ name.slice(0, 50) + '...'}}
                 </span>
-                <span v-else class="d-block text_2 py-2 tw-text-tertiary title-product">
-                    {{ name }}
+                <span v-else class="d-block text_2 tw-text-tertiary title-product">
+                    <span v-if="isMobile"> {{ name.slice(0, 25) + '...'}}</span>
+                    <span v-else> {{ name }}</span>
                 </span>
             </VCardText>
             <VCardText>
-                <span class="d-block text_2">Store: <strong>{{ store }}</strong></span>
+                <span class="d-block text_2 store">Store: <strong>{{ store }}</strong></span>
             </VCardText>
             <VCardText class="px-1 mt-2">
                 <div class="d-flex">
                     <VRating
                         half-increments
                         :length="5"
-                        :size="25"
+                        :size="isMobile ? 20 : 25"
                         :model-value="rating"
                         :readonly="readonly"
                         color="yellow-darken-2"
@@ -121,7 +122,7 @@ watchEffect(() => {
     }
 
     .title-product {
-        min-height: 60px;
+        min-height: 45px;
     }
 
     .text_1 {
@@ -143,6 +144,22 @@ watchEffect(() => {
         .border-img {
             width: 110px;
             height: 110px;
+        }
+
+        .text_1 {
+            font-size: 16px;
+        }
+
+        .text_2 {
+            font-size: 13px;
+        }
+
+        .title-product {
+            min-height: 40px;
+        }
+
+        .store {
+            min-height: 40px;
         }
     }
     

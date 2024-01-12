@@ -76,4 +76,9 @@ html {
   .header .v-toolbar__content, .header .v-container {
     height: 80px !important;
   }
+
+  .font-size-16 {
+    font-size: 14px;
+    line-height: 16px;
+  }
 }

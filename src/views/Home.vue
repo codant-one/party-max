@@ -49,7 +49,6 @@ import banner_5 from '@assets/images/Banner_5.jpg';
 import banner_2_mobile from '@assets/images/Banner_2_mobile.jpg';
 import banner_3_mobile from '@assets/images/Banner_3_mobile.jpg';
 import banner_4_mobile from '@assets/images/Banner_4_mobile.jpg';
-import banner_5_mobile from '@assets/images/Banner_5_mobile.jpg';
 
 import p_1 from '@assets/images/p_1.jpg';
 import p_2 from '@assets/images/p_2.jpg';
@@ -278,17 +277,16 @@ const tab = ref('0')
 
     <!-- recommendations -->
     <VCard class="mt-7 no-shadown card-information p-0">
-      <VCardTitle class="px-7 py-3 cardtitles"> Recomendaciones según tus búsquedas</VCardTitle>
+      <VCardTitle class="px-4 px-md-7 py-3 cardtitles"> Recomendaciones según tus búsquedas</VCardTitle>
       <VDivider />
-      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
+      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
         <Product1 
           v-for="(product, i) in data.recommendations"
           :key="i"
           :product="product"
           :readonly="true"/>
       </VCardText>  
-      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && isMobile">
-        
+      <VCardText class="pb-0 px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && isMobile">  
         <swiper
           :pagination="{
             dynamicBullets: true,
@@ -299,8 +297,7 @@ const tab = ref('0')
           :freeMode="true"
           :watchSlidesProgress="true"
           @swiper="setThumbsSwiper"
-          class="mySwiper"
-          :style="{ height: '370px' }"
+          :style="{ height: isMobile ? '340px' : '370px' }"
           >
           <swiper-slide v-for="(product, i) in data.recommendations" :key="i">
             <Product1 
@@ -320,7 +317,7 @@ const tab = ref('0')
     
     <!-- the most sold -->
     <VCard class="mt-7 no-shadown card-information p-0">
-      <VCardTitle class="px-7 py-3 d-flex align-center card-vendido cardtitles">
+      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center card-vendido cardtitles">
         <span>Lo más vendido</span>
         <VSpacer />
         <router-link 
@@ -365,20 +362,25 @@ const tab = ref('0')
         </router-link>
       </VCardTitle>
       <VDivider />
-      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between card-banner5" v-if="data">
-        <VRow no-gutters class="transparent">
+      <VCardText class="px-4 px-md-7 mt-2 mt-md-5 mb-2 mb-md-5 d-flex align-items-stretch justify-content-between card-banner5" v-if="data">
+        <VRow no-gutters class="transparent mostSoldMobile">
           <VCol cols="12" md="9">
-            <VImg :src="isMobile ? banner_5_mobile : banner_5" class="border-img banner5-mobile"/>
             <VCard class="no-shadown">
-              <VTabs v-model="tab" class="mt-7"  color="pink-accent-3">
-                <VTab value="0">Agregados recientemente</VTab>
-                <VTab value="1">Lo  mejor de lo mejor</VTab>
-              </VTabs>
-
               <VCardText class="p-0">
+                <VImg 
+                  :src="banner_5" 
+                  class="border-img" 
+                  cover
+                  />
+              </VCardText>
+              <VCardText class="p-0">
+                <VTabs v-model="tab" class="mt-3 mt-md-7"  color="pink-accent-3">
+                  <VTab value="0">Agregados recientemente</VTab>
+                  <VTab value="1">Lo  mejor de lo mejor</VTab>
+                </VTabs>
                 <v-window v-model="tab">
                   <v-window-item value="0">
-                    <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between">
+                    <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
                       <Product1 
                         v-for="(product, index) in data.mostSold.latestProducts"
                         v-show="index < 4"
@@ -386,16 +388,58 @@ const tab = ref('0')
                         :product="product"
                         :readonly="true"/>
                     </VCardText>
+
+                    <VCardText class="pb-0 px-0 mt-5 d-flex align-items-stretch justify-content-between" v-else>
+                      <swiper
+                        :pagination="{
+                          dynamicBullets: true,
+                        }"
+                        :modules="modules"
+                        :spaceBetween="5"
+                        :slidesPerView="2"
+                        :freeMode="true"
+                        :watchSlidesProgress="true"
+                        @swiper="setThumbsSwiper"
+                        :style="{ height: isMobile ? '330px' : '370px' }"
+                        >
+                        <swiper-slide v-for="(product, i) in data.mostSold.latestProducts" :key="i">
+                          <Product1 
+                            :product="product"
+                            :readonly="true"/>
+                        </swiper-slide>
+                      </swiper>
+                    </VCardText>
                   </v-window-item>
 
                   <v-window-item value="1">
-                    <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between">
+                    <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
                       <Product1 
                         v-for="(product, index) in data.mostSold.bestSellers"
                         v-show="index < 4"
                         :key="index"
                         :product="product"
                         :readonly="true"/>
+                    </VCardText>
+
+                    <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between" v-else>
+                      <swiper
+                        :pagination="{
+                          dynamicBullets: true,
+                        }"
+                        :modules="modules"
+                        :spaceBetween="5"
+                        :slidesPerView="2"
+                        :freeMode="true"
+                        :watchSlidesProgress="true"
+                        @swiper="setThumbsSwiper"
+                        :style="{ height: isMobile ? '330px' : '370px' }"
+                        >
+                        <swiper-slide v-for="(product, i) in data.mostSold.bestSellers" :key="i">
+                          <Product1 
+                            :product="product"
+                            :readonly="true"/>
+                        </swiper-slide>
+                      </swiper>
                     </VCardText>
                   </v-window-item>
                 </v-window>
@@ -464,13 +508,13 @@ const tab = ref('0')
 
     <!-- suppliers -->
     <VCard class="mt-7 no-shadown card-information p-0">
-      <VCardTitle class="px-7 py-3 d-flex align-center">
+      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center cardtitles">
         <span>Top proveedores mayoristas</span>
         <VSpacer />
-        <router-link to="/suppliers" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
+        <router-link to="/suppliers" class="ms-0 ms-md-5 tw-no-underline tw-text-tertiary font-size-16 me-0 me-md-3 hover:tw-text-primary">Ver todos</router-link>
       </VCardTitle>
       <VDivider />
-      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between">
+      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
         <router-link to="/suppliers" class="tw-no-underline">
           <img :src="p_1" class="border-img"/>
         </router-link>
@@ -487,17 +531,57 @@ const tab = ref('0')
           <img :src="p_5" class="border-img"/>
         </router-link>
       </VCardText>  
+      <VCardText class="pb-0 px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-else>
+        <swiper
+          :pagination="{
+            dynamicBullets: true,
+          }"
+          :modules="modules"
+          :spaceBetween="5"
+          :slidesPerView="2"
+          :freeMode="true"
+          :watchSlidesProgress="true"
+          @swiper="setThumbsSwiper"
+          :style="{ height: isMobile ? '180px' : '370px' }"
+          >
+          <swiper-slide>
+            <router-link to="/suppliers" class="tw-no-underline">
+              <img width="144" :src="p_1" class="border-img"/>
+            </router-link>
+          </swiper-slide>
+          <swiper-slide>
+            <router-link to="/suppliers" class="tw-no-underline">
+              <img width="144" :src="p_2" class="border-img"/>
+            </router-link>
+          </swiper-slide>
+          <swiper-slide>
+            <router-link to="/suppliers" class="tw-no-underline">
+              <img width="144" :src="p_3" class="border-img"/>
+            </router-link>
+          </swiper-slide>
+          <swiper-slide>
+            <router-link to="/suppliers" class="tw-no-underline">
+              <img width="144" :src="p_4" class="border-img"/>
+            </router-link>
+          </swiper-slide>
+          <swiper-slide>
+            <router-link to="/suppliers" class="tw-no-underline">
+              <img width="144" :src="p_5" class="border-img"/>
+            </router-link>
+          </swiper-slide>
+        </swiper>
+      </VCardText>
     </VCard>
 
     <!-- theme parties -->
     <VCard class="mt-7 no-shadown card-information transparent p-0">
-      <VCardTitle class="px-7 py-3 d-flex align-center">
+      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center cardtitles">
         <span>Fiestas temáticas</span>
         <VSpacer />
         <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary" v-if="!isMobile">Ver todos</router-link>
       </VCardTitle>
       <VDivider class="hr-primary"/>
-      <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
+      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
           <router-link
                 :to="{
                       name: 'products',
@@ -627,13 +711,13 @@ const tab = ref('0')
     <VContainer>
       <!-- birthday -->
       <VCard class="mt-7 no-shadown card-information transparent p-0 tw-text-white">
-        <VCardTitle class="px-7 py-3 d-flex align-center">
+        <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center cardtitles">
           <span>Cumpleaños</span>
           <VSpacer />
           <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-white hover:tw-text-yellow">Ver todos</router-link>
         </VCardTitle>
         <VDivider class="hr-secondary"/>
-        <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
+        <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
           <router-link :to="{
                       name: 'products',
                       query: {
@@ -844,6 +928,18 @@ const tab = ref('0')
     height:389px !important;
   }
 
+  .v-tab::v-deep(.v-btn__content) {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 25.6px;
+    text-transform: none !important;
+  }
+
+  .text-pink-accent-3 {
+    color: #FF0090 !important;
+  }
+
   @media only screen and (max-width: 767px) {
     .col-mobile {
       display: none !important;
@@ -953,7 +1049,7 @@ const tab = ref('0')
 
     .cardtitles {
       white-space: pre-wrap;
-      font-size: 20px;
+      font-size: 17px;
       font-style: normal;
       font-weight: 400;
       line-height: normal;
@@ -964,7 +1060,23 @@ const tab = ref('0')
     }
 
     .swiper::v-deep(.swiper-pagination-horizontal ) {
-      top: 95%
+      top: 90%;
+    }    
+
+    .mostSoldMobile {
+      width: -webkit-fill-available;
+    }
+
+    .v-tab::v-deep(.v-btn__content) {
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 16px;
+    }
+
+    .v-tabs::v-deep(.v-btn.v-btn--density-default) {
+      height: 40px !important;
+      padding: 0 2px;
     }
   }
 </style>
