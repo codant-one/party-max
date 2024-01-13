@@ -3,9 +3,9 @@ import { isEmpty, isEmptyArray, isNullOrUndefined } from './index'
 // 👉 Required Validator
 export const requiredValidator = (value: boolean) => {
   if (isNullOrUndefined(value) || isEmptyArray(value) || value === false)
-    return 'Este campo es obligatorio'
+    return 'requerido *'
   
-  return !!String(value).trim().length || 'Este campo es obligatorio'
+  return !!String(value).trim().length || 'requerido *'
 }
 
 // 👉 Email Validator
@@ -22,17 +22,17 @@ export const emailValidator = (value: any[]) => {
 // 👉 Password Validator
 export const passwordValidator = (password: string) => {
   // const regExp = /(?=.*\d){0,1}(?=.*[a-z|A-Z]){8,}/
-  const regExp = /^([a-z|A-Z])*(\d)([a-z|A-Z])*$/
+  const regExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,#^(_\-+=)`~{}/;'"|:<>\\\[\\\]])[A-Za-z\d$@$!%*?&.,#^(_\-+=)`~{}/;'"|:<>\\\[\\\]]{8,}$/
   const validPassword = regExp.test(password) && (password.length >= 8)
   
   return (
     // eslint-disable-next-line operator-linebreak
     validPassword ||
-        'El campo debe contener mayúsculas, minúsculas y un dígito con un mínimo de 8 caracteres')
+      'El campo debe contener mayúsculas, minúsculas y dígitos; con un mínimo de 8 caracteres')
 }
 
 // 👉 Confirm Password Validator
-export const confirmedValidator = (value: any, target: any) => value === target || 'La confirmación del campo Confirmar contraseña no coincide'
+export const confirmedValidator = (value: any, target: any) => value === target || 'Las contraseñas no coinciden.'
 
 // 👉 Between Validator
 export const betweenValidator = (value: any, min: any, max: any) => {

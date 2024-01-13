@@ -13,9 +13,9 @@ import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
             <VCardText class="subtitle-register p-0">
                 ¡Gracias por unirte a <br>nuestra fiesta!
             </VCardText>
-            <VCardText class="text-register p-0 my-4">
-                Para comenzar a disfrutar de PartyMax te <br> 
-                enviamos un correo electrónico de <br> 
+            <VCardText class="text-register p-0 px-10 my-4">
+                Para comenzar a disfrutar de PartyMax te 
+                enviamos un correo electrónico de
                 confirmación de tu cuenta.
             </VCardText> 
             <VCardText class="px-0 more">

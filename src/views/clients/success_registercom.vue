@@ -12,8 +12,8 @@ import festin_image from '@assets/images/festin-aboutus.jpg';
             <VCardText class="subtitle-register p-0">
                 ¡Gracias por unirte a <br>nuestra fiesta!
             </VCardText>
-            <VCardText class="text-register p-0 my-4">
-                Muy atento a tu correo electrónico, <br> daremos respuesta a tu solicitud lo antes<br> posible. 
+            <VCardText class="text-register p-0 my-4 px-5 px-md-14">
+                Muy atento a tu correo electrónico, daremos respuesta a tu solicitud lo antes posible. 
             </VCardText>
         </VCard>
     </VContainer>

@@ -23,9 +23,7 @@ const email = ref('')
 const name = ref('')
 const phone = ref('')
 const password = ref('')
-const remember_me = ref(true)
 const load = ref(false)
-
 
 const inputChange = () => {
   errors.value = {

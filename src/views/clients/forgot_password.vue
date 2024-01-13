@@ -1,64 +1,150 @@
 <script setup>
 
+import { useAuthStores } from '@/stores/auth'
+import { emailValidator, requiredValidator } from '@validators'
+import router from '@/router'
 import festin_image from '@assets/images/festin-register.jpg';
+import festin_about from '@assets/images/festin-aboutus.jpg';
 import arrow_left from '@assets/icons/Arrow_left.svg?inline';
 import icon1 from '@assets/icons/Mail.svg';
+
+const authStores = useAuthStores()
+
+const errors = ref({
+  email: undefined
+})
+
+const refVForm = ref()
+const email = ref('')
+const load = ref(false)
+const isDialogVisible = ref(false)
+
+const inputChange = () => {
+  errors.value = {
+    email: undefined
+  }
+}
+
+const forgot_password = () => {
+  load.value = true
+
+  let data = {
+    email: email.value
+  }
+
+  authStores.forgot_password(data)
+    .then(response => {
+        load.value = false
+        isDialogVisible.value = true
+
+        setTimeout(() => {
+            router.push({ name: 'login' })
+        }, 5000)
+
+    }).catch(err => {
+
+      load.value = false
+      var message = ''
+
+      if(err.message === 'error') {
+        message = err.data.register_success
+      } else if(err.message === 'not_found'){
+        message = err.errors
+      } else {
+        message = 'Se ha producido un error...! (Server Error)'
+      }
+
+      errors.value = {
+        email: message, 
+        password: ''
+      }
+
+      console.error('error', err.response.data)
+    })
+}
+
+const onSubmit = () => {
+    refVForm.value?.validate().then(({ valid: isValid }) => {
+        if (isValid) {
+            forgot_password()
+        }
+    })
+}
 
 </script>
 
 <template>
     <VContainer class="mt-1 mt-md-10">
-        <VCard
-            class="pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-            <VImg :src="festin_image" class="img-festin mx-auto"/>
-            <VCardText class="subtitle-register p-0">
-                ¿Olvido su contraseña?
-            </VCardText>
-            <VCardText class="text-register px-2 my-0 my-md-2 pb-0">
-                Ingrese su correo electrónico y enviaremos un link para reiniciar su contraseña
-            </VCardText>
-            <VCardItem class="pb-0 client-card">
-                <VRow no-gutters class="text-left align-center">
-                    <VCol cols="12" class="d-flex text-left mb-2">
-                        <img :src="icon1" class="me-3"/>
-                        <div class="d-block">
-                            <span class="text-client text-left">E-mail</span> <br>
-                            <span class="p-client text-left">Recibirás información.</span>
-                        </div>
-                    </VCol>
-                    <VCol cols="12" class="mb-1">
-                        <VTextField
-                            label="E-mail"
-                            variant="outlined"
-                            type="email"
+        <VForm
+            ref="refVForm"
+            @submit.prevent="onSubmit"
+            > 
+            <VCard
+                class="pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
+                <VImg :src="festin_image" class="img-festin mx-auto"/>
+                <VCardText class="subtitle-register p-0">
+                    ¿Olvido su contraseña?
+                </VCardText>
+                <VCardText class="text-register px-2 my-0 my-md-2 pb-0">
+                    Ingrese su correo electrónico y enviaremos un link para reiniciar su contraseña
+                </VCardText>
+                <VCardItem class="pb-0 client-card">
+                    <VRow no-gutters class="text-left align-center">
+                        <VCol cols="12" class="d-flex text-left mb-2">
+                            <img :src="icon1" class="me-3"/>
+                            <div class="d-block">
+                                <span class="text-client text-left">E-mail</span> <br>
+                                <span class="p-client text-left">Recibirás información.</span>
+                            </div>
+                        </VCol>
+                        <VCol cols="12" class="mb-3">
+                            <VTextField
+                                label="E-mail"
+                                v-model="email"
+                                variant="outlined"
+                                type="email"
+                                :rules="[requiredValidator, emailValidator]"
+                                :error-messages="errors.email"
+                                @input="inputChange()"
+                            />
+                        </VCol>
+                    </VRow>
+                </VCardItem>
+                <VCardText class="pb-0 pb-md-2 d-block align-center text-center justify-content-center">
+                    <VBtn
+                        variant="flat"
+                        :width="288"
+                        :height="48"
+                        block
+                        type="submit"
+                        class="btn-register tw-text-white tw-bg-primary button-hover"
+                    >
+                        Enviar
+                        <VProgressCircular
+                            v-if="load"
+                            indeterminate
+                            color="#fff"
                         />
-                    </VCol>
-                </VRow>
-            </VCardItem>
-            <VCardText class="pb-0 pb-md-2 d-block align-center text-center justify-content-center">
-                <VBtn
-                    variant="flat"
-                    :width="288"
-                    :height="48"
-                    block
-                    type="submit"
-                    class="btn-register tw-text-white tw-bg-primary button-hover"
-                >
-                    Enviar
-                    <VProgressCircular
-                        v-if="load"
-                        indeterminate
-                        color="#fff"
-                    />
-                </VBtn>
-            </VCardText>
-            <VCardText class="px-0 more">
-                <router-link to="/login" class="d-flex my-6 tw-no-underline tw-text-tertiary hover:tw-text-primary hover-icon-arrow-right justify-content-center" style="margin: auto;">
-                    <arrow_left class="ms-2" />
-                    <span class="ms-5">Volver a inicio de sesión</span>
-                </router-link>
-            </VCardText>    
-        </VCard>
+                    </VBtn>
+                </VCardText>
+                <VCardText class="px-0 more">
+                    <router-link to="/login" class="d-flex my-6 tw-no-underline tw-text-tertiary hover:tw-text-primary hover-icon-arrow-right justify-content-center" style="margin: auto;">
+                        <arrow_left class="ms-2" />
+                        <span class="ms-5">Volver a inicio de sesión</span>
+                    </router-link>
+                </VCardText>    
+            </VCard>
+        </VForm>
+        <VDialog v-model="isDialogVisible" >
+            <VCard 
+                :width="800"
+                class="py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
+                <VImg width="100" :src="festin_about" class="mx-auto"/>
+                <VCardText class="text-register p-0 mb-5">
+                    Tu solicitud se ha procesado satisfactoriamente.
+                </VCardText>
+            </VCard>
+        </VDialog>
     </VContainer>
 </template>
 
@@ -74,7 +160,7 @@ import icon1 from '@assets/icons/Mail.svg';
 
     .card-register {
         padding: 20px;
-        border-radius: 32px;
+        border-radius: 32px !important;
         width: 500px; 
     }
 
@@ -144,7 +230,6 @@ import icon1 from '@assets/icons/Mail.svg';
 
     .v-text-field::v-deep(input) { 
         padding-top: 0 !important;
-        padding-bottom: 0 !important;
     }
 
     .v-text-field::v-deep(.v-field-label) {
