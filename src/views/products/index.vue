@@ -116,7 +116,6 @@ async function fetchData() {
   totalPages.value = aux.products.last_page
   totalProducts.value = aux.productsTotalCount
 
-  console.log('productsTotalCount', totalProducts.value)
   isLoading.value = false
 }
 
@@ -260,10 +259,10 @@ const  valores= [20, 40]
               </v-window>
             </VCol>
             <VCol cols="12">
+              <VCardText v-if="totalProducts === 0" class="d-flex align-center justify-content-center py-3 px-5">
+                Datos no disponibles
+              </VCardText>
               <VCardText class="d-flex align-center justify-content-center py-3 px-5">
-                <div v-show="!totalPages.length" class="text-center">
-                  Datos no disponibles
-                </div>
                 <VPagination
                   v-model="currentPage"
                   size="small"
