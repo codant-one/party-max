@@ -103,4 +103,19 @@ const props = defineProps({
     .v-expansion-panel-title__icon{
         font-size: 20px !important;
     }
+
+    @media only screen and (max-width: 767px)
+    {
+        .title-text {
+        font-size: 20px;
+    }
+    .description-text {
+        font-size: 16px;
+    }
+
+    .name-text 
+    {
+        font-size: 24px;
+    }
+    }
 </style>

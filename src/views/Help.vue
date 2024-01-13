@@ -157,6 +157,7 @@ const setFocus = async(category) => {
         text-align: center;
         font-size: 24px;
         line-height: 24px; /* 100% */
+        white-space: pre-wrap;
       }
 
       .subtitle-text
