@@ -25,6 +25,11 @@ const image1 = ref(null)
 const image2 = ref(null)
 const image3 = ref(null)
 const image4 = ref(null)
+const slug1 = ref(null)
+const slug2 = ref(null)
+const slug3 = ref(null)
+const slug4 = ref(null)
+
 
 const isMobile = /Mobi/i.test(navigator.userAgent);
 
@@ -45,9 +50,13 @@ async function fetchData() {
   data.value = miscellaneousStores.getData
 
   image1.value = (data.value.category.banner === null) ? banner1 : baseURL.value + data.value.category.banner
+  slug1.value = data.value.category.banner1.slug.split('/')[1]
   image2.value = (data.value.category.banner_2 === null) ? banner2 : baseURL.value + data.value.category.banner_2
+  slug2.value = data.value.category.banner2.slug.split('/')[1]
   image3.value = (data.value.category.banner_3 === null) ? banner3 : baseURL.value + data.value.category.banner_3
+  slug3.value = data.value.category.banner3.slug.split('/')[1]
   image4.value = (data.value.category.banner_4 === null) ? banner4 : baseURL.value + data.value.category.banner_4
+  slug4.value = data.value.category.banner4.slug.split('/')[1]
 
   isLoading.value = false
 }
@@ -62,7 +71,7 @@ async function fetchData() {
             name:'products',
             query: {
                 category: route.params.slug,
-                subcategory: route.params.slug
+                subcategory: slug1
             }
           }">
           <VImg :src="image1" cover class="img-style"/>
@@ -123,7 +132,7 @@ async function fetchData() {
               name:'products',
               query: {
                 category: route.params.slug,
-                subcategory: route.params.slug
+                subcategory: slug2
               }
             }"
             class="tw-no-underline">
@@ -138,7 +147,7 @@ async function fetchData() {
               name:'products',
               query: {
                 category: route.params.slug,
-                subcategory: route.params.slug
+                subcategory: slug3
               }
             }"
             class="tw-no-underline">
@@ -157,7 +166,7 @@ async function fetchData() {
             name:'products',
             query: {
               category: route.params.slug,
-              subcategory: route.params.slug
+              subcategory: slug4
             }
           }">
           <VImg :src="image4" cover class="img-style"/>

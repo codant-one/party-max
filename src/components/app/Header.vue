@@ -96,13 +96,23 @@
   }
 
   const search = () => {
-    router.push({ 
-      name: 'products',
-      query: {
-        category: categories.value.filter(item => item.id === Number(categoriesSearch.value))[0].slug,
-        search: textSearch.value
-      }         
-     })
+
+    if(categoriesSearch.value === 0)
+      router.push({ 
+        name: 'products',
+        query: {
+          category: 'all',
+          search: textSearch.value
+        }         
+      })
+    else 
+      router.push({ 
+        name: 'products',
+        query: {
+          category: categories.value.filter(item => item.id === Number(categoriesSearch.value))[0].slug,
+          search: textSearch.value
+        }         
+      })
   }
 
   onMounted(() => {

@@ -94,8 +94,6 @@ async function fetchData() {
     bread.value.push(product_)
   } 
 
-  
-
   isLoading.value = true
 
   await homeStores.fetchData()
@@ -106,7 +104,10 @@ async function fetchData() {
     orderByField: 'id',
     orderBy: 'desc',
     limit: rowPerPage.value,
-    page: currentPage.value
+    page: currentPage.value,
+    category: route.query.category ?? null,
+    subcategory: route.query.subcategory ?? null,
+    search: route.query.search ?? null
   }
 
   var aux = await miscellaneousStores.products(info)
