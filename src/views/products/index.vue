@@ -261,6 +261,9 @@ const  valores= [20, 40]
             </VCol>
             <VCol cols="12">
               <VCardText class="d-flex align-center justify-content-center py-3 px-5">
+                <div v-show="!totalPages.length" class="text-center">
+                  Datos no disponibles
+                </div>
                 <VPagination
                   v-model="currentPage"
                   size="small"
