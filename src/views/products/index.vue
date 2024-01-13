@@ -116,6 +116,7 @@ async function fetchData() {
   totalPages.value = aux.products.last_page
   totalProducts.value = aux.productsTotalCount
 
+  console.log('productsTotalCount', totalProducts.value)
   isLoading.value = false
 }
 
@@ -207,8 +208,8 @@ const  valores= [20, 40]
           <VCard class="mt-7 menu-prod">
             <VRow no-gutters class="align-center">
               <VCol cols="6" class="text-left">
-                <span>{{ products.length }} </span>
-                <span v-if="products.length === 1">  Producto </span>
+                <span>{{ totalProducts }} </span>
+                <span v-if="totalProducts === 1">  Producto </span>
                 <span v-else>  Productos </span>
               </VCol>
               <VCol cols="4" class="text-left">
