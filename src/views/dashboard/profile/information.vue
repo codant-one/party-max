@@ -39,10 +39,10 @@ const me = async () => {
                     <VCol cols="3">
                         <span class="labels tw-text-tertiary">E-mail</span>
                     </VCol>
-                    <VCol cols="7">
+                    <VCol cols="8" class="col-info">
                         <span class="labels tw-text-gray">{{ usermail }}</span>
                     </VCol>
-                    <VCol cols="2" class="text-right">
+                    <VCol cols="1" class="text-right">
                         <VImg :src="icon_right" class="icon-right"/>
                     </VCol>
 
@@ -58,10 +58,10 @@ const me = async () => {
                     <VCol cols="3">
                         <span class="labels tw-text-tertiary">Nombre y apellido</span>
                     </VCol>
-                    <VCol cols="7">
+                    <VCol cols="8" class="col-info">
                         <span class="labels tw-text-gray">{{ name }}</span>
                     </VCol>
-                    <VCol cols="2" class="text-right">
+                    <VCol cols="1" class="text-right">
                         <VImg :src="icon_right" class="icon-right"/>
                     </VCol>
 
@@ -72,10 +72,10 @@ const me = async () => {
                     <VCol cols="3">
                         <span class="labels tw-text-tertiary">Documento</span>
                     </VCol>
-                    <VCol cols="7">
+                    <VCol cols="8" class="col-info">
                         <span class="labels tw-text-gray">123456</span>
                     </VCol>
-                    <VCol cols="2" class="text-right">
+                    <VCol cols="1" class="text-right">
                         <VImg :src="icon_right" class="icon-right"/>
                     </VCol>
 
@@ -86,10 +86,10 @@ const me = async () => {
                     <VCol cols="3">
                         <span class="labels tw-text-tertiary">Teléfono</span>
                     </VCol>
-                    <VCol cols="7">
+                    <VCol cols="8" class="col-info">
                         <span class="labels tw-text-gray">{{ phone }}</span>
                     </VCol>
-                    <VCol cols="2" class="text-right">
+                    <VCol cols="1" class="text-right">
                         <VImg :src="icon_right" class="icon-right"/>
                     </VCol>
 
@@ -146,6 +146,23 @@ const me = async () => {
         margin: auto;
       
     }
+
+    @media only screen and (max-width: 767px) 
+    {
+        .container-dashboard
+        {
+            padding: 0px 16px;
+        }
+        .labels
+        {
+            font-size: 13px;
+        }
+
+        .col-info
+        {
+            padding-left: 16px!important;
+        }
+    }    
 
 
 </style>

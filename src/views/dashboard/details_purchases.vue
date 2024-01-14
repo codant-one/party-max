@@ -43,14 +43,14 @@ const me = async () => {
                     
                     <VRow align="center" class="row-summary">
 
-                        <VCol cols="3">
+                        <VCol cols="12" md="3" class="d-flex justify-center">
                             <VImg :src="image_product" class="image-product"/>
                         </VCol>
-                        <VCol cols="6" class="d-block">
+                        <VCol cols="12" md="6" class="d-block">
                            <span class="name-product tw-text-tertiary">Edifier Powered Bookshelf Speakers</span> <br>
                            <span class="text-status tw-text-gray">#2000007185463638</span>
                         </VCol>
-                        <VCol cols="3" class="text-right">
+                        <VCol cols="12" md="3" class="text-center">
 
                             <VBtn
                                 class="btn-comprar tw-bg-primary tw-text-white"
@@ -65,10 +65,10 @@ const me = async () => {
 
             <VCard class="card-profile">
                 <VRow align="center" class="row-summary">
-                    <VCol cols="6">
+                    <VCol cols="12" md="6">
                         <span class="text-opinion tw-text-primary">Tu opinión es importante</span>
                     </VCol>
-                    <VCol cols="4" class="text-center">
+                    <VCol cols="12" md="4" class="text-center">
                         <v-rating
                             hover
                             :length="5"
@@ -77,7 +77,7 @@ const me = async () => {
                             active-color="yellow"
                          />
                     </VCol>
-                    <VCol cols="2">
+                    <VCol cols="12" md="2" class="col-editar">
                         <span class="text-editar tw-text-tertiary">Editar opinión</span>
                     </VCol>
                 </VRow>
@@ -246,6 +246,26 @@ const me = async () => {
     font-weight: 400;
     line-height: 24px; 
 }
+
+@media only screen and (max-width: 767px) 
+    {
+        .container-dashboard
+        {
+            padding: 0px 16px;
+        }
+
+        .btn-comprar
+        {
+            width: 100%;
+        }
+
+        .col-editar
+        {
+            text-align: center;
+        }
+
+    }
+
 
 
 </style>

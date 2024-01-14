@@ -58,11 +58,11 @@ const me = async () => {
                     <VCol cols="3">
                         <VImg :src="icon_email" class="icons"/>
                     </VCol>
-                    <VCol cols="7" class="d-block">
+                    <VCol cols="8" class="d-block">
                         <span class="labels tw-text-tertiary">E-mail</span><br>
                         <span class="labels tw-text-gray">{{ usermail }}</span>
                     </VCol>
-                    <VCol cols="2" class="text-right">
+                    <VCol cols="1" class="text-right">
                         <VImg :src="icon_right" class="icon-right"/>
                     </VCol>
 
@@ -73,11 +73,11 @@ const me = async () => {
                     <VCol cols="3">
                         <VImg :src="icon_phone" class="icons"/>
                     </VCol>
-                    <VCol cols="7" class="d-block">
+                    <VCol cols="8" class="d-block">
                         <span class="labels tw-text-tertiary">Teléfono</span><br>
                         <span class="labels tw-text-gray">{{ phone }}</span>
                     </VCol>
-                    <VCol cols="2" class="text-right">
+                    <VCol cols="1" class="text-right">
                         <VImg :src="icon_right" class="icon-right"/>
                     </VCol>
 
@@ -88,11 +88,11 @@ const me = async () => {
                     <VCol cols="3">
                         <VImg :src="icon_auth" class="icons"/>
                     </VCol>
-                    <VCol cols="7" class="d-block">
+                    <VCol cols="8" class="d-block">
                         <span class="labels tw-text-tertiary">Google Authenticator </span><br>
                         <span class="labels tw-text-gray">Actívalo para usar códigos de verificación.</span>
                     </VCol>
-                    <VCol cols="2" class="text-right">
+                    <VCol cols="1" class="text-right">
                         <VImg :src="icon_right" class="icon-right"/>
                     </VCol>
 
@@ -156,6 +156,14 @@ const me = async () => {
     border: 1px solid var(--Grey-2, #E1E1E1);
     background: var(--White, #FFF);
 }
+
+@media only screen and (max-width: 767px) 
+    {
+        .container-dashboard
+        {
+            padding: 0px 16px;
+        }
+    }   
 
 
 </style>

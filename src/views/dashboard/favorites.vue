@@ -40,10 +40,10 @@ const me = async () => {
 
                     <VRow align="center" class="row-summary">
 
-                        <VCol cols="3">
+                        <VCol cols="12" md="3">
                             <VImg :src="image_product" class="image-product"/>
                         </VCol>
-                        <VCol cols="9" class="d-block">
+                        <VCol cols="12" md="9" class="d-block">
                             <span class="name-product tw-text-tertiary">Edifier Powered Bookshelf Speakers</span> <br><br>
                             <span class="text-price tw-text-tertiary">$567.99</span> <br> <br>
                            <span class="text-status tw-text-primary">Eliminar</span>
@@ -121,6 +121,15 @@ const me = async () => {
     font-weight: 600;
     line-height: 16px;
 }
+
+@media only screen and (max-width: 767px) 
+    {
+        .container-dashboard
+        {
+            padding: 0px 16px;
+        }
+    }
+
 
 
 </style>

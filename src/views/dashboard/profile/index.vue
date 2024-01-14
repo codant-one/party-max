@@ -38,41 +38,41 @@ const me = async () => {
     
             
             <VContainer class="mt-10 mb-15 container-dashboard">
-                <VRow align="center" no-gutters>
-                    <VCol cols="1">
+                <VRow align="center">
+                    <VCol cols="4" md="1" class="d-flex justify-end">
                         <VImg :src="default_image" class="profile-image"/>
                     </VCol>
-                    <VCol cols="11" class="ps-3">
+                    <VCol cols="8" md="11" class="ps-3">
                         <span class="name-client">{{name}}</span> <br>
                         <span class="text-titles">{{ usermail }}</span>
                     </VCol>
                 </VRow>
-                <VRow no-gutters>
+                <VRow align="center" no-gutters>
                     <VCol cols="12">
                         <VCard class="card-profile">
                             <VRow align="center" no-gutters class="items-profile">
-                                <VCol cols="12" md="1">
+                                <VCol cols="3" md="1">
                                     <VImg :src="icon_misdatos" class="icon_profile"/>
                                 </VCol>
-                                <VCol cols="12" md="10">
+                                <VCol cols="7" md="10">
                                     <span class="text-titles">Mis datos</span> <br>
                                     <span class="text-subtitles">Valida tus datos.</span>
                                 </VCol>
-                                <VCol cols="1">
+                                <VCol cols="2" md="1">
                                     <router-link to="/mydata">
                                         <VImg :src="icon_right" class="icon-right"/>
                                     </router-link>
                                 </VCol>
                             </VRow>
                             <VRow align="center" no-gutters class="items-profile">
-                                <VCol cols="12" md="1">
+                                <VCol cols="3" md="1">
                                     <VImg :src="icon_seguridad" class="icon_profile"/>
                                 </VCol>
-                                <VCol cols="12" md="10">
+                                <VCol cols="7" md="10">
                                     <span class="text-titles">Seguridad</span> <br>
                                     <span class="text-subtitles">Tienes configuraciones pendientes.</span>
                                 </VCol>
-                                <VCol cols="1">
+                                <VCol cols="2" md="1">
                                     <router-link to="/security">
                                      <VImg :src="icon_right" class="icon-right"/>
                                     </router-link>
@@ -91,14 +91,14 @@ const me = async () => {
                                 </VCol>
                             </VRow>-->
                             <VRow align="center" no-gutters class="items-profile">
-                                <VCol cols="12" md="1">
+                                <VCol cols="3" md="1">
                                     <VImg :src="icon_address" class="icon_profile"/>
                                 </VCol>
-                                <VCol cols="12" md="10">
+                                <VCol cols="7" md="10">
                                     <span class="text-titles">Direcciones</span> <br>
                                     <span class="text-subtitles">Direcciones guardadas en tu cuenta.</span>
                                 </VCol>
-                                <VCol cols="1">
+                                <VCol cols="2" md="1">
                                     <router-link to="/client-address">
                                         <VImg :src="icon_right" class="icon-right"/>
                                     </router-link>
@@ -224,6 +224,14 @@ const me = async () => {
     .link-menu
     {
         text-decoration: none;
+    }
+
+    @media only screen and (max-width: 767px) 
+    {
+        .container-dashboard
+        {
+            padding: 0px 16px;
+        }
     }
 
 

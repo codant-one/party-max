@@ -8,17 +8,17 @@ import icon_address from '@assets/icons/icon-address.svg';
 import icon_privacity from '@assets/icons/icon-privacity.svg';
 import icon_comunications from '@assets/icons/icon-comunications.svg';
 import icon_right from '@assets/icons/right-icon.svg';
-import icon_profile from '@assets/icons/perfil.svg';
-import icon_account from '@assets/icons/lineas-de-cuadricula.svg';
-import icon_favorites from '@assets/icons/heart2.svg';
+import icon_profile from '@assets/icons/icon-perfil-white.svg?inline';
+import icon_account from '@assets/icons/lineas-de-cuadricula.svg?inline';
+import icon_favorites from '@assets/icons/heart2.svg?inline';
 
-import icon_compras from '@assets/icons/icon-compras.svg';
+import icon_compras from '@assets/icons/icon-compras.svg?inline';
 
 const name = ref(null)
 const usermail= ref(null)
-
    
-
+const isMobile = /Mobi/i.test(navigator.userAgent);
+const drawer = ref(isMobile ? false : true)
 
 const me = async () => {
     if(localStorage.getItem('user_data')){
@@ -37,16 +37,39 @@ const me = async () => {
 <template>
     <VLayout>
         <VNavigationDrawer 
+        v-model="drawer"
             class="custom-background"
             app 
             floating
             permanent
         >
             <VList density="compact" nav class="mt-5">
-                <VListItem :prepend-avatar="icon_account" title="Home" value="account"></VListItem>
-                <router-link to="/dashboard" class="link-menu"><VListItem :prepend-avatar="icon_profile" style="margin-top: 40px;" title="Mi perfil" value="profile"></VListItem></router-link>
-                <router-link to="/my-purchases" class="link-menu"><VListItem :prepend-avatar="icon_compras" style="margin-top: 16px;" title="Compras" value="Compras"></VListItem></router-link>
-                <router-link to="/my-favorites" class="link-menu"><VListItem :prepend-avatar="icon_favorites" style="margin-top: 16px;" title="Mis Favoritos" value="Mis favoritos"></VListItem></router-link>
+                <VListItem class="items-list" title="Home" value="account" >
+                    <template v-slot:prepend>
+                            <icon_account style="width: 24px; height: 24px;"></icon_account>
+                    </template>
+                </VListItem>
+                <router-link to="/dashboard" class="link-menu" active-class="active-link">
+                    <VListItem class="items-list" style="margin-top: 40px;" title="Mi perfil" value="profile">
+                        <template v-slot:prepend>
+                            <icon_profile class="icon-profile"></icon_profile>
+                        </template>
+                    </VListItem>
+                </router-link>
+                <router-link to="/my-purchases" class="link-menu" active-class="active-link" exact>
+                    <VListItem class="items-list" style="margin-top: 16px;" title="Compras" value="Compras">
+                        <template v-slot:prepend>
+                            <icon_compras style="width: 24px; height: 24px;"></icon_compras>
+                        </template>
+                    </VListItem>
+                </router-link>
+                <router-link to="/my-favorites" class="link-menu" active-class="active-link" exact>
+                    <VListItem class="items-list" style="margin-top: 16px;" title="Mis Favoritos" value="Mis favoritos">
+                        <template v-slot:prepend>
+                            <icon_favorites></icon_favorites>
+                        </template>
+                    </VListItem>
+                </router-link>
             </VList>
         </VNavigationDrawer>
         <VMain class="d-flex align-center justify-center" style="min-height: 300px; background-color: #E2F8FC;">
@@ -144,6 +167,17 @@ const me = async () => {
     {
         text-decoration: none;
         color: #FFFFFF;
+    }
+
+    .items-list::v-deep(.v-list-item-title)
+    {
+        text-align: left;
+        margin-left: 12px;
+    }
+
+    .active-link
+    {
+        color: #FFC549!important;
     }
 
 

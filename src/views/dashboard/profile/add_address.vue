@@ -138,4 +138,13 @@ const me = async () => {
     padding: 30px 30px;
 }
 
+@media only screen and (max-width: 767px) 
+    {
+        .container-dashboard
+        {
+            padding: 0px 16px;
+        }
+    }
+
+
 </style>

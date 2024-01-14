@@ -50,15 +50,15 @@ const me = async () => {
                     </VCol>
                     <VRow align="center" class="row-summary">
 
-                        <VCol cols="3">
+                        <VCol cols="12" md="3" class="d-flex justify-center">
                             <VImg :src="image_product" class="image-product"/>
                         </VCol>
-                        <VCol cols="6" class="d-block">
+                        <VCol cols="12" md="6" class="d-block">
                            <span class="text-status tw-text-secondary">Entregado</span> <br>
                            <span class="name-product tw-text-tertiary">Edifier Powered Bookshelf Speakers</span> <br>
                            <span class="text-status tw-text-gray">1 unidad</span>
                         </VCol>
-                        <VCol cols="3" class="text-right">
+                        <VCol cols="12" md="3" class="text-center">
                             <VBtn
                                 class="btn-compra tw-text-tertiary"
                                 @click="redirect('detail_pusher')"
@@ -223,6 +223,26 @@ const me = async () => {
     background: var(--Maastricht-Blue, #0A1B33);
     color: #FFFFFF!important;
 }
+
+@media only screen and (max-width: 767px) 
+    {
+        .container-dashboard
+        {
+            padding: 0px 16px;
+        }
+
+        .btn-compra
+        {
+            width: 100%;
+        }
+
+        .btn-comprar
+        {
+            width: 100%;
+        }
+
+    }
+
 
 
 </style>

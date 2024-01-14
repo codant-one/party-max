@@ -124,5 +124,14 @@ const me = async () => {
     border-top: 1px solid var(--Grey-2, #E1E1E1);
 }
 
+@media only screen and (max-width: 767px) 
+    {
+        .container-dashboard
+        {
+            padding: 0px 16px;
+        }
+    }
+
+
 
 </style>
