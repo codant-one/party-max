@@ -2,11 +2,12 @@
 
 import icon_more from '@assets/icons/more-vertical.svg';
 import icon_address from '@assets/icons/icon-domicilio.svg';
-import icon_right from '@assets/icons/right-pink.svg';
+import icon_right from '@assets/icons/right-pink.svg?inline';
 
 const name = ref(null)
 const usermail= ref(null)
 const phone= ref(null)
+const dialog = ref(false)
 
 const me = async () => {
     if(localStorage.getItem('user_data')){
@@ -55,14 +56,115 @@ const me = async () => {
                     <VCol cols="10">
                         <span class="labels tw-text-primary">Agregar domicilio</span>
                     </VCol>
-                    <VCol cols="2">
-                        <VImg :src="icon_right" class="icon-right"/>
+                    <VCol cols="2" class="text-right">
+                        <v-btn variant="plain" @click="dialog=true">
+                            <icon_right class="icon-right"></icon_right>
+                        </v-btn>
                     </VCol>
                 </VRow>
 
             </VCard>
         </VCol>
     </VRow>
+
+
+    <!--MODAL ACTUALIZAR DATOS-->
+    <VDialog v-model="dialog" transition="dialog-top-transition">
+        <VForm
+            @submit.prevent="onSubmit"
+        > 
+                <VCard class="py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto card-form">
+                    
+                    <VCardText class="text-register p-0 mb-5">
+                        <v-container>
+                            <v-row class="row-form">
+                                <v-col cols="12" class="text-center">
+                                    
+                                        <h2>AGREGAR NUEVA DIRECCIÓN</h2>
+                        
+                                </v-col>
+                                <v-col
+                                        cols="12"
+                                        md="6"
+                                        class="col-field"
+                                >
+                                    <v-text-field
+                                        label="Departamento"
+                                        variant="outlined"
+                                        required
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col
+                                    cols="12"
+                                    md="6"
+                                >
+                                    <v-text-field
+                                        label="Ciudad"
+                                        variant="outlined"
+                                        
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col
+                                    cols="12"
+                                    md="6"
+                                >
+                                    <v-text-field
+                                        label="Teléfono de contacto"
+                                        variant="outlined"
+                                        required
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="6">
+                                    <v-text-field
+                                        label="Calle o avenida"
+                                        variant="outlined"
+                                        required
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-text-field
+                                        label="Dirección"
+                                        variant="outlined"
+                                        required
+                                    ></v-text-field>
+                                </v-col>
+
+                                <v-col cols="12">
+                                    <VBtn
+                                        variant="flat"
+                                        :width="288"
+                                        :height="48"
+                                        block
+                                        type="submit"
+                                        class="btn-register tw-text-white tw-bg-primary button-hover"
+                                    >
+                                        Agregar dirección
+                                        <VProgressCircular
+                                            v-if="load"
+                                            indeterminate
+                                            color="#fff"
+                                        />
+                                    </VBtn>
+                                </v-col>
+
+                            </v-row>
+                        </v-container>
+                    </VCardText>
+
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            color="primary"
+                            variant="text"
+                            class="text-close"
+                            @click="dialog = false"
+                        >
+                            Cerrar
+                        </v-btn>
+                    </v-card-actions>
+                </VCard>
+        </VForm>
+    </VDialog>
     
   </VContainer>
 </template>
@@ -97,10 +199,9 @@ const me = async () => {
     line-height: 20px; /* 133.333% */
 }
 
-.icon-right {
-    width:8px; 
-    height:13px;
-    margin: auto;
+.icon-right 
+    {
+        cursor: pointer;
       
     }
 .icon-more
@@ -123,12 +224,78 @@ const me = async () => {
     padding: 24px;
     border-top: 1px solid var(--Grey-2, #E1E1E1);
 }
+.row-form
+{
+    padding: 0px 32px;
+}
+
+.v-text-field::v-deep(.v-field) { 
+        border-radius: 24px;
+        height: 35px;
+        font-size: 14px;
+    }
+    
+    .v-text-field::v-deep(.v-field__outline) {
+        border-radius: 24px;
+    }
+    
+    .v-text-field::v-deep(.v-field__outline__start) {
+        border-start-start-radius: 24px;
+    }
+
+    .v-text-field::v-deep(::placeholder) { 
+        color: #0A1B33 !important;
+        opacity: inherit;
+    }
+
+    .v-text-field::v-deep(input) { 
+        padding-top: 0 !important;
+    }
+
+    .v-text-field::v-deep(.v-field-label) {
+        top: 30% !important;
+        font-size: 14px !important;
+    }
+
+    .v-text-field::v-deep(.v-field__append-inner) { 
+        padding-top: 8px !important;
+        align-items: start !important;
+    }
+
+    .btn-register {
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 14px;
+        border-radius: 32px;
+    }
+
+    .button-hover:hover {
+        background-color: #FF27B3 !important;
+        box-shadow: 0px 0px 24px 0px #FF27B3;
+    }
+
+    .card-register
+    {
+        border-radius: 32px!important;
+    }
+
+    .card-form
+    {
+        width: 800px;
+    }
+
 
 @media only screen and (max-width: 767px) 
     {
         .container-dashboard
         {
             padding: 0px 16px;
+        }
+
+        .card-form
+        {
+            width: 350px;
         }
     }
 

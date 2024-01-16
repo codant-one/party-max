@@ -7,6 +7,7 @@ import Loader from '@/components/common/Loader.vue'
 import icon1 from '@/assets/icons/icon-menu-product.svg'
 import icon2 from '@/assets/icons/icon-menu-product2.svg'
 
+
 import Product3 from '@/components/product/Product3.vue'
 import Product4 from '@/components/product/Product4.vue'
 
@@ -126,8 +127,7 @@ const chancePagination = () => {
 const isLastItem = (index) => {
   return index === products.value.length - 1;
 }
-const  valores= [20, 40]
-
+const valores = ref([10, 200])
 </script>
 
 <template>
@@ -142,13 +142,23 @@ const  valores= [20, 40]
       <VRow no-gutters>
         <VCol cols="12" md="3" class="col-left">
           <VCard class="mt-7 sidebar-container">
-              <VCardItem class="p-0 text-left mb-5">
+              <VCardItem class="p-0 text-left mb-6 mt-6">
                 CATEGORÍAS
               </VCardItem> 
-              <v-list :items="items" class="text-left sidebar-container"></v-list>
+
+              <VCardItem class="p-0 text-allcategories tw-font-bold ml-5">
+                TODAS LAS CATEGORIAS
+              </VCardItem> 
+
+              <VCardItem class="p-0 text-allcategories tw-font-bold" style="margin-top: 10px;">
+                Categoría
+              </VCardItem> 
+              
+
+              <v-list :items="items" class="text-left sidebar-container mb-6"></v-list>
           </VCard>
           <VCard class="mt-7 sidebar-container">
-              <VCardItem class="p-0 text-left mb-5">
+              <VCardItem class="p-0 text-left mb-6 mt-6">
                 PROVEEDORES
               </VCardItem>
               <v-card-text class="text-left align-left p-0">
@@ -162,7 +172,7 @@ const  valores= [20, 40]
                 />
               </v-card-text>
 
-              <v-checkbox class="custom-check"
+              <v-checkbox class="custom-check tw-text-tertiary"
                 v-for="(item, index) in items_check"
                 :key="index"
                 v-model="item.selected"
@@ -183,35 +193,37 @@ const  valores= [20, 40]
                 </VCol>
               </VRow>
               <VCardItem class="p-0 text-left mt-5">
-                Price: $10 — $200
+                Price: {{valores}}
               </VCardItem>
 
               <VCardItem class="p-0 text-left mt-9">
                 REVIEW
               </VCardItem>
 
-              <VCardItem class="p-0 text-left mt-5">
-                <v-rating
-                  hover
-                  :length="5"
-                  :size="32"
-                  :model-value="3"
-                  active-color="primary"
-                /> 
+              <VCardItem class="p-0 text-left mt-5 mb-6">
+                  <v-rating
+                    hover
+                    :length="5"
+                    :size="24"
+                    :model-value="3"
+                    active-color="yellow"
+                  /> 
+                
               </VCardItem>
               
             </VCard>  
         </VCol> 
         
-        <VCol cols="12" md="9" class="pl-5"> 
+        <VCol cols="12" md="9" class="col-menuproduct"> 
           <VCard class="mt-7 menu-prod">
             <VRow no-gutters class="align-center">
-              <VCol cols="6" class="text-left">
+              <VCol cols="6" md="6" class="text-left order-first order-md-first">
                 <span>{{ totalProducts }} </span>
                 <span v-if="totalProducts === 1">  Producto </span>
                 <span v-else>  Productos </span>
               </VCol>
-              <VCol cols="4" class="text-left">
+
+              <VCol cols="6" md="4" class="text-left">
                 <v-select class="my-custom-select"
                   clearable
                   label="Select"
@@ -219,9 +231,10 @@ const  valores= [20, 40]
                   variant="outlined"
                 ></v-select>
               </VCol> 
-              <VCol cols="2"  class="pl-7 d-flex align-center justify-content-between">
+
+              <VCol cols="6" md="2"  class="pl-7 d-flex align-center justify-content-between order-first order-md-last">
                 <span>Vista</span>
-                <VTabs v-model="tab" >
+                <VTabs v-model="tab"  >
                   <VTab value="0" >
                       <img :src="icon1"/>
                   </VTab>
@@ -229,7 +242,10 @@ const  valores= [20, 40]
                       <img :src="icon2" />
                   </VTab>
               </VTabs>
-              </VCol>  
+              </VCol> 
+
+              
+               
             </VRow>
           </VCard> 
           <VRow class="align-center row-products" no-gutters>
@@ -293,11 +309,17 @@ const  valores= [20, 40]
   }
 
   .sidebar-container {
-    padding: 25px 20px;
+    padding: 0px 20px;
     background-color: #E2F8FC;
     border-radius: 16px; 
     box-shadow: none !important;
   }
+
+  .col-menuproduct
+  {
+    padding-left: 20px!important;
+  }
+
   .menu-prod {
     padding: 8px 16px;
     border-radius: 32px;
@@ -337,6 +359,21 @@ const  valores= [20, 40]
     margin-top: 24px;
   }
 
+  .custom-check::deep(.v-label)
+  {
+    margin-left: 10px!important;
+  }
+
+  .text-left
+  {
+    font-size: 18px;
+  }
+
+  .text-allcategories
+  {
+    font-size: 14px;
+  }
+
   @media only screen and (max-width: 767px)
   {
     .col-left
@@ -351,6 +388,18 @@ const  valores= [20, 40]
       font-weight: 400;
       line-height: 16px; /* 114.286% */
     }
+
+    .menu-prod
+    {
+      border-radius: 16px;
+    }
+
+    .col-menuproduct
+    {
+      padding-left: 0px!important;
+    }
+
+  
   }
 
 </style>
