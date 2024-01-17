@@ -32,7 +32,7 @@ const homeStores = useHomeStores()
 const miscellaneousStores = useMiscellaneousStores()
 
 const isLoading = ref(true)
-const data = ref(null)
+const categories = ref(null)
 const products = ref([])
 const tab = ref('0')
 const category = ref(null)
@@ -41,6 +41,8 @@ const rowPerPage = ref(12)
 const currentPage = ref(1)
 const totalPages = ref(1)
 const totalProducts = ref(0)
+
+const categories_url = ref(null)
 
 const formatTitle = (slug) => {
   const words = slug.split('-');
@@ -98,8 +100,10 @@ async function fetchData() {
   isLoading.value = true
 
   await homeStores.fetchData()
-    
-  data.value = homeStores.getData
+ 
+  categories.value = homeStores.getData.parentCategories
+  console.log("categorias: ",categories.value)
+  
   
   let info = {
     orderByField: 'id',
@@ -128,6 +132,7 @@ const isLastItem = (index) => {
   return index === products.value.length - 1;
 }
 const valores = ref([10, 200])
+
 </script>
 
 <template>
@@ -147,15 +152,43 @@ const valores = ref([10, 200])
               </VCardItem> 
 
               <VCardItem class="p-0 text-allcategories tw-font-bold ml-5">
-                TODAS LAS CATEGORIAS
+                <router-link to="/products" class="tw-no-underline tw-text-tertiary">
+                  TODAS LAS CATEGORIAS
+                </router-link>
               </VCardItem> 
 
               <VCardItem class="p-0 text-allcategories tw-font-bold" style="margin-top: 10px;">
                 Categoría
               </VCardItem> 
               
+             
 
-              <v-list :items="items" class="text-left sidebar-container mb-6"></v-list>
+              <v-list class="text-left sidebar-container mb-6">
+              
+                <v-list-group  v-for="(i, index2) in categories" :key="index2" :value="i.id">
+                  <template v-slot:activator="{ props }">
+                    <v-list-item v-bind="props" :title="i.name"></v-list-item>
+                    
+                  </template>
+
+                  <v-list-item v-for="(j, index3) in i.children" :key="index3">
+
+                    <router-link
+                        :to="{
+                          name: 'products',
+                          query: {
+                            category: i.slug.split('/')[0],
+                            subcategory: j.slug.split('/')[1]
+                          }
+                        }"
+                        class="tw-no-underline tw-text-tertiary">
+                        <span class="text-subitem tw-text-tertiary">{{ j.name }}</span>
+                      </router-link>
+                  </v-list-item>
+
+                </v-list-group>
+                      
+              </v-list>
           </VCard>
           <VCard class="mt-7 sidebar-container">
               <VCardItem class="p-0 text-left mb-6 mt-6">
@@ -372,6 +405,13 @@ const valores = ref([10, 200])
   .text-allcategories
   {
     font-size: 14px;
+  }
+
+  .text-subitem
+  {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
   }
 
   @media only screen and (max-width: 767px)
