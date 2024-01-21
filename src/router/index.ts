@@ -31,6 +31,9 @@ import success_registerp from '@/views/clients/success_registerper.vue'
 import success_registerc from '@/views/clients/success_registercom.vue'
 import forgot_password from '@/views/clients/forgot_password.vue'
 import reset_password from '@/views/clients/reset_password.vue'
+import wholesalers from '@/views/wholesalers/index.vue'
+import suppliers_wholesalers from '@/views/wholesalers/suppliers.vue'
+import detail_wholesalers from '@/views/wholesalers/detail.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -192,6 +195,24 @@ const router = createRouter({
       path: '/reset-password',
       name: 'reset_password',
       component: reset_password
+    },
+    {
+      path: '/wholesalers',
+      name: 'wholesalers',
+      component: wholesalers
+    },
+
+    {
+      path:'/wholesalers/suppliers',
+      name:'suppliers_wholesalers',
+      component:suppliers_wholesalers
+    },
+
+    {
+      path: '/wholesalers/suppliers-store',
+      name: 'detail_wholesalers',
+      component: detail_wholesalers
+
     }
   ]
 })

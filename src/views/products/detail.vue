@@ -332,7 +332,7 @@ const setThumbsSwiper = (swiper) => {
                 </VBtn>
               </VCardText>
               <VCardText class="p-0 d-block mt-2">
-                <span class="d-block tw-text-tertiary">Categorías: 
+                <span class="tw-text-tertiary" style="display: none;">Categorías: 
                   <span class="ms-1">{{ categories.join(", ") }}</span>
                 </span>
                 <span class="d-block tw-text-tertiary">Tags: 

@@ -32,7 +32,7 @@ async function fetchData() {
 
   if(route.name === 'home')
     bg = home
-  else if(route.name === 'categories')
+  else if(route.name === 'categories'||route.name==='wholesalers')
     bg = categories
   else if(route.name === 'register'|| route.name === 'type_client'|| route.name === 'form_client' || 
           route.name === 'form_supplier' || route.name === 'login' || route.name === 'success_person' || 

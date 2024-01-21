@@ -158,7 +158,7 @@
             </router-link>
           </VListItemTitle>
           <VListItemTitle class="d-block lineheight borderList py-2">
-            <router-link to="/suppliers" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+            <router-link to="/wholesalers" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Mayoristas</span>
             </router-link>
           </VListItemTitle>
@@ -466,7 +466,7 @@
           <VAppBarNavIcon variant="text"/>
           <span class="font-size-16 tw-cursor-pointer">Servicios</span>
         </div>
-        <router-link to="/suppliers" class="tw-no-underline tw-text-white hover:tw-text-yellow d-flex align-center text-center hover-icon-arrow-right">
+        <router-link to="/wholesalers" class="tw-no-underline tw-text-white hover:tw-text-yellow d-flex align-center text-center hover-icon-arrow-right">
           <span class="ms-8">Mayoristas</span>
           <arrow_right class="ms-2 p-0 index"/>
         </router-link>  
