@@ -14,7 +14,7 @@ const document= ref(null)
 const country = ref(null)
 const address = ref(null)
 const dialog = ref(false)
-const onSubmit = ref(null)
+
 const me = async () => {
     if(localStorage.getItem('user_data')){
       const userData = localStorage.getItem('user_data')
@@ -31,7 +31,11 @@ const me = async () => {
     }
   }
 
-  me()
+const onSubmit = () => {
+    console.log('lcik')
+}
+  
+me() 
 </script>
 
 <template>
