@@ -70,9 +70,7 @@ const login = () => {
             localStorage.setItem('password', ''); 
         }
 
-        router.push({ name: 'dashboard' }).catch(() => {}).finally(() => {
-            location.reload(true);
-        });
+        router.push({ name: 'profile' });
     }).catch(err => {
 
       load.value = false

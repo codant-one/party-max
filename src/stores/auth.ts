@@ -3,8 +3,13 @@ import Auth from '@/api/auth'
 
 export const useAuthStores = defineStore('auth', {
     state: () => ({
-        items: {}
+        user: null
     }),
+    getters:{
+        getUser(): any {
+            return this.user
+        }
+    },
     actions: {
         me(hash: string) {
             return Auth.me(hash)
@@ -18,6 +23,7 @@ export const useAuthStores = defineStore('auth', {
             
             return Auth.login(data)
                 .then((response) => {
+                    this.user = response.data.data.user_data
                     return Promise.resolve(response.data)
                 }).catch(error => {
                     return Promise.reject(error)
@@ -26,6 +32,7 @@ export const useAuthStores = defineStore('auth', {
         logout(){
             return Auth.logout()
                 .then((response) => {
+                    this.user = null
                     return Promise.resolve(response.data)
                 }).catch(error => {
                     return Promise.reject(error)

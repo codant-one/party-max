@@ -994,6 +994,11 @@
   border-color: rgba(226, 248, 252, var(--tw-divide-opacity)) !important
 }
 
+.tw-divide-lightCyan > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1 !important;
+  border-color: rgba(217, 238, 242, var(--tw-divide-opacity)) !important
+}
+
 .tw-dark .dark\:tw-divide-primary > :not([hidden]) ~ :not([hidden]) {
   --tw-divide-opacity: 1 !important;
   border-color: rgba(255, 0, 144, var(--tw-divide-opacity)) !important
@@ -1032,6 +1037,11 @@
 .tw-dark .dark\:tw-divide-green > :not([hidden]) ~ :not([hidden]) {
   --tw-divide-opacity: 1 !important;
   border-color: rgba(226, 248, 252, var(--tw-divide-opacity)) !important
+}
+
+.tw-dark .dark\:tw-divide-lightCyan > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1 !important;
+  border-color: rgba(217, 238, 242, var(--tw-divide-opacity)) !important
 }
 
 .tw-divide-solid > :not([hidden]) ~ :not([hidden]) {
@@ -1317,6 +1327,11 @@
   background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
 }
 
+.tw-bg-lightCyan {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+}
+
 .tw-group:hover .group-hover\:tw-bg-primary {
   --tw-bg-opacity: 1 !important;
   background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -1355,6 +1370,11 @@
 .tw-group:hover .group-hover\:tw-bg-green {
   --tw-bg-opacity: 1 !important;
   background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+}
+
+.tw-group:hover .group-hover\:tw-bg-lightCyan {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
 }
 
 .focus-within\:tw-bg-primary:focus-within {
@@ -1397,6 +1417,11 @@
   background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
 }
 
+.focus-within\:tw-bg-lightCyan:focus-within {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+}
+
 .hover\:tw-bg-primary:hover {
   --tw-bg-opacity: 1 !important;
   background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -1435,6 +1460,11 @@
 .hover\:tw-bg-green:hover {
   --tw-bg-opacity: 1 !important;
   background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+}
+
+.hover\:tw-bg-lightCyan:hover {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
 }
 
 .focus\:tw-bg-primary:focus {
@@ -1477,6 +1507,11 @@
   background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
 }
 
+.focus\:tw-bg-lightCyan:focus {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+}
+
 .tw-dark .dark\:tw-bg-primary {
   --tw-bg-opacity: 1 !important;
   background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -1515,6 +1550,11 @@
 .tw-dark .dark\:tw-bg-green {
   --tw-bg-opacity: 1 !important;
   background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+}
+
+.tw-dark .dark\:tw-bg-lightCyan {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
 }
 
 .tw-dark .tw-group:hover .dark\:group-hover\:tw-bg-primary {
@@ -1557,6 +1597,11 @@
   background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
 }
 
+.tw-dark .tw-group:hover .dark\:group-hover\:tw-bg-lightCyan {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+}
+
 .tw-dark .dark\:focus-within\:tw-bg-primary:focus-within {
   --tw-bg-opacity: 1 !important;
   background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -1595,6 +1640,11 @@
 .tw-dark .dark\:focus-within\:tw-bg-green:focus-within {
   --tw-bg-opacity: 1 !important;
   background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+}
+
+.tw-dark .dark\:focus-within\:tw-bg-lightCyan:focus-within {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
 }
 
 .tw-dark .dark\:hover\:tw-bg-primary:hover {
@@ -1637,6 +1687,11 @@
   background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
 }
 
+.tw-dark .dark\:hover\:tw-bg-lightCyan:hover {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+}
+
 .tw-dark .dark\:focus\:tw-bg-primary:focus {
   --tw-bg-opacity: 1 !important;
   background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -1675,6 +1730,11 @@
 .tw-dark .dark\:focus\:tw-bg-green:focus {
   --tw-bg-opacity: 1 !important;
   background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+}
+
+.tw-dark .dark\:focus\:tw-bg-lightCyan:focus {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
 }
 
 .tw-bg-none {
@@ -1753,6 +1813,11 @@
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
 }
 
+.tw-from-lightCyan {
+  --tw-gradient-from: #D9EEF2 !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+}
+
 .tw-via-primary {
   --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
 }
@@ -1785,6 +1850,10 @@
   --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
 }
 
+.tw-via-lightCyan {
+  --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+}
+
 .tw-to-primary {
   --tw-gradient-to: #FF0090 !important
 }
@@ -1815,6 +1884,10 @@
 
 .tw-to-green {
   --tw-gradient-to: #E2F8FC !important
+}
+
+.tw-to-lightCyan {
+  --tw-gradient-to: #D9EEF2 !important
 }
 
 .hover\:tw-from-primary:hover {
@@ -1857,6 +1930,11 @@
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
 }
 
+.hover\:tw-from-lightCyan:hover {
+  --tw-gradient-from: #D9EEF2 !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+}
+
 .hover\:tw-via-primary:hover {
   --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
 }
@@ -1889,6 +1967,10 @@
   --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
 }
 
+.hover\:tw-via-lightCyan:hover {
+  --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+}
+
 .hover\:tw-to-primary:hover {
   --tw-gradient-to: #FF0090 !important
 }
@@ -1919,6 +2001,10 @@
 
 .hover\:tw-to-green:hover {
   --tw-gradient-to: #E2F8FC !important
+}
+
+.hover\:tw-to-lightCyan:hover {
+  --tw-gradient-to: #D9EEF2 !important
 }
 
 .focus\:tw-from-primary:focus {
@@ -1961,6 +2047,11 @@
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
 }
 
+.focus\:tw-from-lightCyan:focus {
+  --tw-gradient-from: #D9EEF2 !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+}
+
 .focus\:tw-via-primary:focus {
   --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
 }
@@ -1993,6 +2084,10 @@
   --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
 }
 
+.focus\:tw-via-lightCyan:focus {
+  --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+}
+
 .focus\:tw-to-primary:focus {
   --tw-gradient-to: #FF0090 !important
 }
@@ -2023,6 +2118,10 @@
 
 .focus\:tw-to-green:focus {
   --tw-gradient-to: #E2F8FC !important
+}
+
+.focus\:tw-to-lightCyan:focus {
+  --tw-gradient-to: #D9EEF2 !important
 }
 
 .tw-dark .dark\:tw-from-primary {
@@ -2065,6 +2164,11 @@
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
 }
 
+.tw-dark .dark\:tw-from-lightCyan {
+  --tw-gradient-from: #D9EEF2 !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+}
+
 .tw-dark .dark\:tw-via-primary {
   --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
 }
@@ -2097,6 +2201,10 @@
   --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
 }
 
+.tw-dark .dark\:tw-via-lightCyan {
+  --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+}
+
 .tw-dark .dark\:tw-to-primary {
   --tw-gradient-to: #FF0090 !important
 }
@@ -2127,6 +2235,10 @@
 
 .tw-dark .dark\:tw-to-green {
   --tw-gradient-to: #E2F8FC !important
+}
+
+.tw-dark .dark\:tw-to-lightCyan {
+  --tw-gradient-to: #D9EEF2 !important
 }
 
 .tw-dark .dark\:hover\:tw-from-primary:hover {
@@ -2169,6 +2281,11 @@
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
 }
 
+.tw-dark .dark\:hover\:tw-from-lightCyan:hover {
+  --tw-gradient-from: #D9EEF2 !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+}
+
 .tw-dark .dark\:hover\:tw-via-primary:hover {
   --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
 }
@@ -2201,6 +2318,10 @@
   --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
 }
 
+.tw-dark .dark\:hover\:tw-via-lightCyan:hover {
+  --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+}
+
 .tw-dark .dark\:hover\:tw-to-primary:hover {
   --tw-gradient-to: #FF0090 !important
 }
@@ -2231,6 +2352,10 @@
 
 .tw-dark .dark\:hover\:tw-to-green:hover {
   --tw-gradient-to: #E2F8FC !important
+}
+
+.tw-dark .dark\:hover\:tw-to-lightCyan:hover {
+  --tw-gradient-to: #D9EEF2 !important
 }
 
 .tw-dark .dark\:focus\:tw-from-primary:focus {
@@ -2273,6 +2398,11 @@
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
 }
 
+.tw-dark .dark\:focus\:tw-from-lightCyan:focus {
+  --tw-gradient-from: #D9EEF2 !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+}
+
 .tw-dark .dark\:focus\:tw-via-primary:focus {
   --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
 }
@@ -2305,6 +2435,10 @@
   --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
 }
 
+.tw-dark .dark\:focus\:tw-via-lightCyan:focus {
+  --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+}
+
 .tw-dark .dark\:focus\:tw-to-primary:focus {
   --tw-gradient-to: #FF0090 !important
 }
@@ -2335,6 +2469,10 @@
 
 .tw-dark .dark\:focus\:tw-to-green:focus {
   --tw-gradient-to: #E2F8FC !important
+}
+
+.tw-dark .dark\:focus\:tw-to-lightCyan:focus {
+  --tw-gradient-to: #D9EEF2 !important
 }
 
 .tw-bg-opacity-0 {
@@ -3057,6 +3195,11 @@
   border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
 }
 
+.tw-border-lightCyan {
+  --tw-border-opacity: 1 !important;
+  border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+}
+
 .tw-group:hover .group-hover\:tw-border-primary {
   --tw-border-opacity: 1 !important;
   border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -3095,6 +3238,11 @@
 .tw-group:hover .group-hover\:tw-border-green {
   --tw-border-opacity: 1 !important;
   border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+}
+
+.tw-group:hover .group-hover\:tw-border-lightCyan {
+  --tw-border-opacity: 1 !important;
+  border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
 }
 
 .focus-within\:tw-border-primary:focus-within {
@@ -3137,6 +3285,11 @@
   border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
 }
 
+.focus-within\:tw-border-lightCyan:focus-within {
+  --tw-border-opacity: 1 !important;
+  border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+}
+
 .hover\:tw-border-primary:hover {
   --tw-border-opacity: 1 !important;
   border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -3175,6 +3328,11 @@
 .hover\:tw-border-green:hover {
   --tw-border-opacity: 1 !important;
   border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+}
+
+.hover\:tw-border-lightCyan:hover {
+  --tw-border-opacity: 1 !important;
+  border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
 }
 
 .focus\:tw-border-primary:focus {
@@ -3217,6 +3375,11 @@
   border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
 }
 
+.focus\:tw-border-lightCyan:focus {
+  --tw-border-opacity: 1 !important;
+  border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+}
+
 .tw-dark .dark\:tw-border-primary {
   --tw-border-opacity: 1 !important;
   border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -3255,6 +3418,11 @@
 .tw-dark .dark\:tw-border-green {
   --tw-border-opacity: 1 !important;
   border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+}
+
+.tw-dark .dark\:tw-border-lightCyan {
+  --tw-border-opacity: 1 !important;
+  border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
 }
 
 .tw-dark .tw-group:hover .dark\:group-hover\:tw-border-primary {
@@ -3297,6 +3465,11 @@
   border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
 }
 
+.tw-dark .tw-group:hover .dark\:group-hover\:tw-border-lightCyan {
+  --tw-border-opacity: 1 !important;
+  border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+}
+
 .tw-dark .dark\:focus-within\:tw-border-primary:focus-within {
   --tw-border-opacity: 1 !important;
   border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -3335,6 +3508,11 @@
 .tw-dark .dark\:focus-within\:tw-border-green:focus-within {
   --tw-border-opacity: 1 !important;
   border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+}
+
+.tw-dark .dark\:focus-within\:tw-border-lightCyan:focus-within {
+  --tw-border-opacity: 1 !important;
+  border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
 }
 
 .tw-dark .dark\:hover\:tw-border-primary:hover {
@@ -3377,6 +3555,11 @@
   border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
 }
 
+.tw-dark .dark\:hover\:tw-border-lightCyan:hover {
+  --tw-border-opacity: 1 !important;
+  border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+}
+
 .tw-dark .dark\:focus\:tw-border-primary:focus {
   --tw-border-opacity: 1 !important;
   border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -3415,6 +3598,11 @@
 .tw-dark .dark\:focus\:tw-border-green:focus {
   --tw-border-opacity: 1 !important;
   border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+}
+
+.tw-dark .dark\:focus\:tw-border-lightCyan:focus {
+  --tw-border-opacity: 1 !important;
+  border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
 }
 
 .tw-border-opacity-0 {
@@ -9341,6 +9529,11 @@
   color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
 }
 
+.tw-placeholder-lightCyan::placeholder {
+  --tw-placeholder-opacity: 1 !important;
+  color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
+}
+
 .focus\:tw-placeholder-primary:focus::placeholder {
   --tw-placeholder-opacity: 1 !important;
   color: rgba(255, 0, 144, var(--tw-placeholder-opacity)) !important
@@ -9379,6 +9572,11 @@
 .focus\:tw-placeholder-green:focus::placeholder {
   --tw-placeholder-opacity: 1 !important;
   color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
+}
+
+.focus\:tw-placeholder-lightCyan:focus::placeholder {
+  --tw-placeholder-opacity: 1 !important;
+  color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
 }
 
 .tw-dark .dark\:tw-placeholder-primary::placeholder {
@@ -9421,6 +9619,11 @@
   color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
 }
 
+.tw-dark .dark\:tw-placeholder-lightCyan::placeholder {
+  --tw-placeholder-opacity: 1 !important;
+  color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
+}
+
 .tw-dark .dark\:focus\:tw-placeholder-primary:focus::placeholder {
   --tw-placeholder-opacity: 1 !important;
   color: rgba(255, 0, 144, var(--tw-placeholder-opacity)) !important
@@ -9459,6 +9662,11 @@
 .tw-dark .dark\:focus\:tw-placeholder-green:focus::placeholder {
   --tw-placeholder-opacity: 1 !important;
   color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
+}
+
+.tw-dark .dark\:focus\:tw-placeholder-lightCyan:focus::placeholder {
+  --tw-placeholder-opacity: 1 !important;
+  color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
 }
 
 .tw-placeholder-opacity-0::placeholder {
@@ -12915,6 +13123,10 @@
   --tw-ring-offset-color: #E2F8FC !important
 }
 
+.tw-ring-offset-lightCyan {
+  --tw-ring-offset-color: #D9EEF2 !important
+}
+
 .focus-within\:tw-ring-offset-primary:focus-within {
   --tw-ring-offset-color: #FF0090 !important
 }
@@ -12945,6 +13157,10 @@
 
 .focus-within\:tw-ring-offset-green:focus-within {
   --tw-ring-offset-color: #E2F8FC !important
+}
+
+.focus-within\:tw-ring-offset-lightCyan:focus-within {
+  --tw-ring-offset-color: #D9EEF2 !important
 }
 
 .focus\:tw-ring-offset-primary:focus {
@@ -12979,6 +13195,10 @@
   --tw-ring-offset-color: #E2F8FC !important
 }
 
+.focus\:tw-ring-offset-lightCyan:focus {
+  --tw-ring-offset-color: #D9EEF2 !important
+}
+
 .tw-dark .dark\:tw-ring-offset-primary {
   --tw-ring-offset-color: #FF0090 !important
 }
@@ -13009,6 +13229,10 @@
 
 .tw-dark .dark\:tw-ring-offset-green {
   --tw-ring-offset-color: #E2F8FC !important
+}
+
+.tw-dark .dark\:tw-ring-offset-lightCyan {
+  --tw-ring-offset-color: #D9EEF2 !important
 }
 
 .tw-dark .dark\:focus-within\:tw-ring-offset-primary:focus-within {
@@ -13043,6 +13267,10 @@
   --tw-ring-offset-color: #E2F8FC !important
 }
 
+.tw-dark .dark\:focus-within\:tw-ring-offset-lightCyan:focus-within {
+  --tw-ring-offset-color: #D9EEF2 !important
+}
+
 .tw-dark .dark\:focus\:tw-ring-offset-primary:focus {
   --tw-ring-offset-color: #FF0090 !important
 }
@@ -13073,6 +13301,10 @@
 
 .tw-dark .dark\:focus\:tw-ring-offset-green:focus {
   --tw-ring-offset-color: #E2F8FC !important
+}
+
+.tw-dark .dark\:focus\:tw-ring-offset-lightCyan:focus {
+  --tw-ring-offset-color: #D9EEF2 !important
 }
 
 .tw-ring-offset-0 {
@@ -13175,6 +13407,11 @@
   --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
 }
 
+.tw-ring-lightCyan {
+  --tw-ring-opacity: 1 !important;
+  --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+}
+
 .focus-within\:tw-ring-primary:focus-within {
   --tw-ring-opacity: 1 !important;
   --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -13213,6 +13450,11 @@
 .focus-within\:tw-ring-green:focus-within {
   --tw-ring-opacity: 1 !important;
   --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+}
+
+.focus-within\:tw-ring-lightCyan:focus-within {
+  --tw-ring-opacity: 1 !important;
+  --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
 }
 
 .focus\:tw-ring-primary:focus {
@@ -13255,6 +13497,11 @@
   --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
 }
 
+.focus\:tw-ring-lightCyan:focus {
+  --tw-ring-opacity: 1 !important;
+  --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+}
+
 .tw-dark .dark\:tw-ring-primary {
   --tw-ring-opacity: 1 !important;
   --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -13293,6 +13540,11 @@
 .tw-dark .dark\:tw-ring-green {
   --tw-ring-opacity: 1 !important;
   --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+}
+
+.tw-dark .dark\:tw-ring-lightCyan {
+  --tw-ring-opacity: 1 !important;
+  --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
 }
 
 .tw-dark .dark\:focus-within\:tw-ring-primary:focus-within {
@@ -13335,6 +13587,11 @@
   --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
 }
 
+.tw-dark .dark\:focus-within\:tw-ring-lightCyan:focus-within {
+  --tw-ring-opacity: 1 !important;
+  --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+}
+
 .tw-dark .dark\:focus\:tw-ring-primary:focus {
   --tw-ring-opacity: 1 !important;
   --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -13373,6 +13630,11 @@
 .tw-dark .dark\:focus\:tw-ring-green:focus {
   --tw-ring-opacity: 1 !important;
   --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+}
+
+.tw-dark .dark\:focus\:tw-ring-lightCyan:focus {
+  --tw-ring-opacity: 1 !important;
+  --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
 }
 
 .tw-ring-opacity-0 {
@@ -13755,6 +14017,22 @@
   fill: #FFC549 !important
 }
 
+.tw-fill-cyan {
+  fill: #F3FCFE !important
+}
+
+.tw-fill-gray {
+  fill: #999999 !important
+}
+
+.tw-fill-green {
+  fill: #E2F8FC !important
+}
+
+.tw-fill-lightCyan {
+  fill: #D9EEF2 !important
+}
+
 .tw-stroke-current {
   stroke: currentColor !important
 }
@@ -13835,6 +14113,11 @@
   color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
 }
 
+.tw-text-lightCyan {
+  --tw-text-opacity: 1 !important;
+  color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+}
+
 .tw-group:hover .group-hover\:tw-text-primary {
   --tw-text-opacity: 1 !important;
   color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -13873,6 +14156,11 @@
 .tw-group:hover .group-hover\:tw-text-green {
   --tw-text-opacity: 1 !important;
   color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+}
+
+.tw-group:hover .group-hover\:tw-text-lightCyan {
+  --tw-text-opacity: 1 !important;
+  color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
 }
 
 .focus-within\:tw-text-primary:focus-within {
@@ -13915,6 +14203,11 @@
   color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
 }
 
+.focus-within\:tw-text-lightCyan:focus-within {
+  --tw-text-opacity: 1 !important;
+  color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+}
+
 .hover\:tw-text-primary:hover {
   --tw-text-opacity: 1 !important;
   color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -13953,6 +14246,11 @@
 .hover\:tw-text-green:hover {
   --tw-text-opacity: 1 !important;
   color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+}
+
+.hover\:tw-text-lightCyan:hover {
+  --tw-text-opacity: 1 !important;
+  color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
 }
 
 .focus\:tw-text-primary:focus {
@@ -13995,6 +14293,11 @@
   color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
 }
 
+.focus\:tw-text-lightCyan:focus {
+  --tw-text-opacity: 1 !important;
+  color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+}
+
 .tw-dark .dark\:tw-text-primary {
   --tw-text-opacity: 1 !important;
   color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -14033,6 +14336,11 @@
 .tw-dark .dark\:tw-text-green {
   --tw-text-opacity: 1 !important;
   color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+}
+
+.tw-dark .dark\:tw-text-lightCyan {
+  --tw-text-opacity: 1 !important;
+  color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
 }
 
 .tw-dark .tw-group:hover .dark\:group-hover\:tw-text-primary {
@@ -14075,6 +14383,11 @@
   color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
 }
 
+.tw-dark .tw-group:hover .dark\:group-hover\:tw-text-lightCyan {
+  --tw-text-opacity: 1 !important;
+  color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+}
+
 .tw-dark .dark\:focus-within\:tw-text-primary:focus-within {
   --tw-text-opacity: 1 !important;
   color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -14113,6 +14426,11 @@
 .tw-dark .dark\:focus-within\:tw-text-green:focus-within {
   --tw-text-opacity: 1 !important;
   color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+}
+
+.tw-dark .dark\:focus-within\:tw-text-lightCyan:focus-within {
+  --tw-text-opacity: 1 !important;
+  color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
 }
 
 .tw-dark .dark\:hover\:tw-text-primary:hover {
@@ -14155,6 +14473,11 @@
   color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
 }
 
+.tw-dark .dark\:hover\:tw-text-lightCyan:hover {
+  --tw-text-opacity: 1 !important;
+  color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+}
+
 .tw-dark .dark\:focus\:tw-text-primary:focus {
   --tw-text-opacity: 1 !important;
   color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -14193,6 +14516,11 @@
 .tw-dark .dark\:focus\:tw-text-green:focus {
   --tw-text-opacity: 1 !important;
   color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+}
+
+.tw-dark .dark\:focus\:tw-text-lightCyan:focus {
+  --tw-text-opacity: 1 !important;
+  color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
 }
 
 .tw-text-opacity-0 {
@@ -20967,6 +21295,11 @@
     border-color: rgba(226, 248, 252, var(--tw-divide-opacity)) !important
   }
 
+  .xs\:tw-divide-lightCyan > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-divide-opacity)) !important
+  }
+
   .tw-dark .xs\:dark\:tw-divide-primary > :not([hidden]) ~ :not([hidden]) {
     --tw-divide-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-divide-opacity)) !important
@@ -21005,6 +21338,11 @@
   .tw-dark .xs\:dark\:tw-divide-green > :not([hidden]) ~ :not([hidden]) {
     --tw-divide-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-divide-opacity)) !important
+  }
+
+  .tw-dark .xs\:dark\:tw-divide-lightCyan > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-divide-opacity)) !important
   }
 
   .xs\:tw-divide-solid > :not([hidden]) ~ :not([hidden]) {
@@ -21290,6 +21628,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .xs\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-group:hover .xs\:group-hover\:tw-bg-primary {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -21328,6 +21671,11 @@
   .tw-group:hover .xs\:group-hover\:tw-bg-green {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-group:hover .xs\:group-hover\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .xs\:focus-within\:tw-bg-primary:focus-within {
@@ -21370,6 +21718,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .xs\:focus-within\:tw-bg-lightCyan:focus-within {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .xs\:hover\:tw-bg-primary:hover {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -21408,6 +21761,11 @@
   .xs\:hover\:tw-bg-green:hover {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .xs\:hover\:tw-bg-lightCyan:hover {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .xs\:focus\:tw-bg-primary:focus {
@@ -21450,6 +21808,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .xs\:focus\:tw-bg-lightCyan:focus {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-dark .xs\:dark\:tw-bg-primary {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -21488,6 +21851,11 @@
   .tw-dark .xs\:dark\:tw-bg-green {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-dark .xs\:dark\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .tw-dark .tw-group:hover .xs\:dark\:group-hover\:tw-bg-primary {
@@ -21530,6 +21898,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .tw-dark .tw-group:hover .xs\:dark\:group-hover\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-dark .xs\:dark\:focus-within\:tw-bg-primary:focus-within {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -21568,6 +21941,11 @@
   .tw-dark .xs\:dark\:focus-within\:tw-bg-green:focus-within {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-dark .xs\:dark\:focus-within\:tw-bg-lightCyan:focus-within {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .tw-dark .xs\:dark\:hover\:tw-bg-primary:hover {
@@ -21610,6 +21988,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .tw-dark .xs\:dark\:hover\:tw-bg-lightCyan:hover {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-dark .xs\:dark\:focus\:tw-bg-primary:focus {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -21648,6 +22031,11 @@
   .tw-dark .xs\:dark\:focus\:tw-bg-green:focus {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-dark .xs\:dark\:focus\:tw-bg-lightCyan:focus {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .xs\:tw-bg-none {
@@ -21726,6 +22114,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .xs\:tw-from-lightCyan {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .xs\:tw-via-primary {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -21758,6 +22151,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .xs\:tw-via-lightCyan {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .xs\:tw-to-primary {
     --tw-gradient-to: #FF0090 !important
   }
@@ -21788,6 +22185,10 @@
 
   .xs\:tw-to-green {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .xs\:tw-to-lightCyan {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .xs\:hover\:tw-from-primary:hover {
@@ -21830,6 +22231,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .xs\:hover\:tw-from-lightCyan:hover {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .xs\:hover\:tw-via-primary:hover {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -21862,6 +22268,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .xs\:hover\:tw-via-lightCyan:hover {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .xs\:hover\:tw-to-primary:hover {
     --tw-gradient-to: #FF0090 !important
   }
@@ -21892,6 +22302,10 @@
 
   .xs\:hover\:tw-to-green:hover {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .xs\:hover\:tw-to-lightCyan:hover {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .xs\:focus\:tw-from-primary:focus {
@@ -21934,6 +22348,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .xs\:focus\:tw-from-lightCyan:focus {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .xs\:focus\:tw-via-primary:focus {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -21966,6 +22385,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .xs\:focus\:tw-via-lightCyan:focus {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .xs\:focus\:tw-to-primary:focus {
     --tw-gradient-to: #FF0090 !important
   }
@@ -21996,6 +22419,10 @@
 
   .xs\:focus\:tw-to-green:focus {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .xs\:focus\:tw-to-lightCyan:focus {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .tw-dark .xs\:dark\:tw-from-primary {
@@ -22038,6 +22465,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .xs\:dark\:tw-from-lightCyan {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .xs\:dark\:tw-via-primary {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -22070,6 +22502,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .xs\:dark\:tw-via-lightCyan {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .xs\:dark\:tw-to-primary {
     --tw-gradient-to: #FF0090 !important
   }
@@ -22100,6 +22536,10 @@
 
   .tw-dark .xs\:dark\:tw-to-green {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .tw-dark .xs\:dark\:tw-to-lightCyan {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .tw-dark .xs\:dark\:hover\:tw-from-primary:hover {
@@ -22142,6 +22582,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .xs\:dark\:hover\:tw-from-lightCyan:hover {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .xs\:dark\:hover\:tw-via-primary:hover {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -22174,6 +22619,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .xs\:dark\:hover\:tw-via-lightCyan:hover {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .xs\:dark\:hover\:tw-to-primary:hover {
     --tw-gradient-to: #FF0090 !important
   }
@@ -22204,6 +22653,10 @@
 
   .tw-dark .xs\:dark\:hover\:tw-to-green:hover {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .tw-dark .xs\:dark\:hover\:tw-to-lightCyan:hover {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .tw-dark .xs\:dark\:focus\:tw-from-primary:focus {
@@ -22246,6 +22699,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .xs\:dark\:focus\:tw-from-lightCyan:focus {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .xs\:dark\:focus\:tw-via-primary:focus {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -22278,6 +22736,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .xs\:dark\:focus\:tw-via-lightCyan:focus {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .xs\:dark\:focus\:tw-to-primary:focus {
     --tw-gradient-to: #FF0090 !important
   }
@@ -22308,6 +22770,10 @@
 
   .tw-dark .xs\:dark\:focus\:tw-to-green:focus {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .tw-dark .xs\:dark\:focus\:tw-to-lightCyan:focus {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .xs\:tw-bg-opacity-0 {
@@ -23030,6 +23496,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .xs\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-group:hover .xs\:group-hover\:tw-border-primary {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -23068,6 +23539,11 @@
   .tw-group:hover .xs\:group-hover\:tw-border-green {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-group:hover .xs\:group-hover\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .xs\:focus-within\:tw-border-primary:focus-within {
@@ -23110,6 +23586,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .xs\:focus-within\:tw-border-lightCyan:focus-within {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .xs\:hover\:tw-border-primary:hover {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -23148,6 +23629,11 @@
   .xs\:hover\:tw-border-green:hover {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .xs\:hover\:tw-border-lightCyan:hover {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .xs\:focus\:tw-border-primary:focus {
@@ -23190,6 +23676,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .xs\:focus\:tw-border-lightCyan:focus {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-dark .xs\:dark\:tw-border-primary {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -23228,6 +23719,11 @@
   .tw-dark .xs\:dark\:tw-border-green {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-dark .xs\:dark\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .tw-dark .tw-group:hover .xs\:dark\:group-hover\:tw-border-primary {
@@ -23270,6 +23766,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .tw-dark .tw-group:hover .xs\:dark\:group-hover\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-dark .xs\:dark\:focus-within\:tw-border-primary:focus-within {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -23308,6 +23809,11 @@
   .tw-dark .xs\:dark\:focus-within\:tw-border-green:focus-within {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-dark .xs\:dark\:focus-within\:tw-border-lightCyan:focus-within {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .tw-dark .xs\:dark\:hover\:tw-border-primary:hover {
@@ -23350,6 +23856,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .tw-dark .xs\:dark\:hover\:tw-border-lightCyan:hover {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-dark .xs\:dark\:focus\:tw-border-primary:focus {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -23388,6 +23899,11 @@
   .tw-dark .xs\:dark\:focus\:tw-border-green:focus {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-dark .xs\:dark\:focus\:tw-border-lightCyan:focus {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .xs\:tw-border-opacity-0 {
@@ -29314,6 +29830,11 @@
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
   }
 
+  .xs\:tw-placeholder-lightCyan::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
+  }
+
   .xs\:focus\:tw-placeholder-primary:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-placeholder-opacity)) !important
@@ -29352,6 +29873,11 @@
   .xs\:focus\:tw-placeholder-green:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
+  }
+
+  .xs\:focus\:tw-placeholder-lightCyan:focus::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
   }
 
   .tw-dark .xs\:dark\:tw-placeholder-primary::placeholder {
@@ -29394,6 +29920,11 @@
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
   }
 
+  .tw-dark .xs\:dark\:tw-placeholder-lightCyan::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
+  }
+
   .tw-dark .xs\:dark\:focus\:tw-placeholder-primary:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-placeholder-opacity)) !important
@@ -29432,6 +29963,11 @@
   .tw-dark .xs\:dark\:focus\:tw-placeholder-green:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
+  }
+
+  .tw-dark .xs\:dark\:focus\:tw-placeholder-lightCyan:focus::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
   }
 
   .xs\:tw-placeholder-opacity-0::placeholder {
@@ -32875,6 +33411,10 @@
     --tw-ring-offset-color: #E2F8FC !important
   }
 
+  .xs\:tw-ring-offset-lightCyan {
+    --tw-ring-offset-color: #D9EEF2 !important
+  }
+
   .xs\:focus-within\:tw-ring-offset-primary:focus-within {
     --tw-ring-offset-color: #FF0090 !important
   }
@@ -32905,6 +33445,10 @@
 
   .xs\:focus-within\:tw-ring-offset-green:focus-within {
     --tw-ring-offset-color: #E2F8FC !important
+  }
+
+  .xs\:focus-within\:tw-ring-offset-lightCyan:focus-within {
+    --tw-ring-offset-color: #D9EEF2 !important
   }
 
   .xs\:focus\:tw-ring-offset-primary:focus {
@@ -32939,6 +33483,10 @@
     --tw-ring-offset-color: #E2F8FC !important
   }
 
+  .xs\:focus\:tw-ring-offset-lightCyan:focus {
+    --tw-ring-offset-color: #D9EEF2 !important
+  }
+
   .tw-dark .xs\:dark\:tw-ring-offset-primary {
     --tw-ring-offset-color: #FF0090 !important
   }
@@ -32969,6 +33517,10 @@
 
   .tw-dark .xs\:dark\:tw-ring-offset-green {
     --tw-ring-offset-color: #E2F8FC !important
+  }
+
+  .tw-dark .xs\:dark\:tw-ring-offset-lightCyan {
+    --tw-ring-offset-color: #D9EEF2 !important
   }
 
   .tw-dark .xs\:dark\:focus-within\:tw-ring-offset-primary:focus-within {
@@ -33003,6 +33555,10 @@
     --tw-ring-offset-color: #E2F8FC !important
   }
 
+  .tw-dark .xs\:dark\:focus-within\:tw-ring-offset-lightCyan:focus-within {
+    --tw-ring-offset-color: #D9EEF2 !important
+  }
+
   .tw-dark .xs\:dark\:focus\:tw-ring-offset-primary:focus {
     --tw-ring-offset-color: #FF0090 !important
   }
@@ -33033,6 +33589,10 @@
 
   .tw-dark .xs\:dark\:focus\:tw-ring-offset-green:focus {
     --tw-ring-offset-color: #E2F8FC !important
+  }
+
+  .tw-dark .xs\:dark\:focus\:tw-ring-offset-lightCyan:focus {
+    --tw-ring-offset-color: #D9EEF2 !important
   }
 
   .xs\:tw-ring-offset-0 {
@@ -33135,6 +33695,11 @@
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
   }
 
+  .xs\:tw-ring-lightCyan {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+  }
+
   .xs\:focus-within\:tw-ring-primary:focus-within {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -33173,6 +33738,11 @@
   .xs\:focus-within\:tw-ring-green:focus-within {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+  }
+
+  .xs\:focus-within\:tw-ring-lightCyan:focus-within {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
   }
 
   .xs\:focus\:tw-ring-primary:focus {
@@ -33215,6 +33785,11 @@
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
   }
 
+  .xs\:focus\:tw-ring-lightCyan:focus {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+  }
+
   .tw-dark .xs\:dark\:tw-ring-primary {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -33253,6 +33828,11 @@
   .tw-dark .xs\:dark\:tw-ring-green {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+  }
+
+  .tw-dark .xs\:dark\:tw-ring-lightCyan {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
   }
 
   .tw-dark .xs\:dark\:focus-within\:tw-ring-primary:focus-within {
@@ -33295,6 +33875,11 @@
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
   }
 
+  .tw-dark .xs\:dark\:focus-within\:tw-ring-lightCyan:focus-within {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+  }
+
   .tw-dark .xs\:dark\:focus\:tw-ring-primary:focus {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -33333,6 +33918,11 @@
   .tw-dark .xs\:dark\:focus\:tw-ring-green:focus {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+  }
+
+  .tw-dark .xs\:dark\:focus\:tw-ring-lightCyan:focus {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
   }
 
   .xs\:tw-ring-opacity-0 {
@@ -33715,6 +34305,22 @@
     fill: #FFC549 !important
   }
 
+  .xs\:tw-fill-cyan {
+    fill: #F3FCFE !important
+  }
+
+  .xs\:tw-fill-gray {
+    fill: #999999 !important
+  }
+
+  .xs\:tw-fill-green {
+    fill: #E2F8FC !important
+  }
+
+  .xs\:tw-fill-lightCyan {
+    fill: #D9EEF2 !important
+  }
+
   .xs\:tw-stroke-current {
     stroke: currentColor !important
   }
@@ -33795,6 +34401,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .xs\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-group:hover .xs\:group-hover\:tw-text-primary {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -33833,6 +34444,11 @@
   .tw-group:hover .xs\:group-hover\:tw-text-green {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-group:hover .xs\:group-hover\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .xs\:focus-within\:tw-text-primary:focus-within {
@@ -33875,6 +34491,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .xs\:focus-within\:tw-text-lightCyan:focus-within {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .xs\:hover\:tw-text-primary:hover {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -33913,6 +34534,11 @@
   .xs\:hover\:tw-text-green:hover {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .xs\:hover\:tw-text-lightCyan:hover {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .xs\:focus\:tw-text-primary:focus {
@@ -33955,6 +34581,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .xs\:focus\:tw-text-lightCyan:focus {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-dark .xs\:dark\:tw-text-primary {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -33993,6 +34624,11 @@
   .tw-dark .xs\:dark\:tw-text-green {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-dark .xs\:dark\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .tw-dark .tw-group:hover .xs\:dark\:group-hover\:tw-text-primary {
@@ -34035,6 +34671,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .tw-dark .tw-group:hover .xs\:dark\:group-hover\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-dark .xs\:dark\:focus-within\:tw-text-primary:focus-within {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -34073,6 +34714,11 @@
   .tw-dark .xs\:dark\:focus-within\:tw-text-green:focus-within {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-dark .xs\:dark\:focus-within\:tw-text-lightCyan:focus-within {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .tw-dark .xs\:dark\:hover\:tw-text-primary:hover {
@@ -34115,6 +34761,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .tw-dark .xs\:dark\:hover\:tw-text-lightCyan:hover {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-dark .xs\:dark\:focus\:tw-text-primary:focus {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -34153,6 +34804,11 @@
   .tw-dark .xs\:dark\:focus\:tw-text-green:focus {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-dark .xs\:dark\:focus\:tw-text-lightCyan:focus {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .xs\:tw-text-opacity-0 {
@@ -40805,6 +41461,11 @@
     border-color: rgba(226, 248, 252, var(--tw-divide-opacity)) !important
   }
 
+  .sm\:tw-divide-lightCyan > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-divide-opacity)) !important
+  }
+
   .tw-dark .sm\:dark\:tw-divide-primary > :not([hidden]) ~ :not([hidden]) {
     --tw-divide-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-divide-opacity)) !important
@@ -40843,6 +41504,11 @@
   .tw-dark .sm\:dark\:tw-divide-green > :not([hidden]) ~ :not([hidden]) {
     --tw-divide-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-divide-opacity)) !important
+  }
+
+  .tw-dark .sm\:dark\:tw-divide-lightCyan > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-divide-opacity)) !important
   }
 
   .sm\:tw-divide-solid > :not([hidden]) ~ :not([hidden]) {
@@ -41128,6 +41794,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .sm\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-group:hover .sm\:group-hover\:tw-bg-primary {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -41166,6 +41837,11 @@
   .tw-group:hover .sm\:group-hover\:tw-bg-green {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-group:hover .sm\:group-hover\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .sm\:focus-within\:tw-bg-primary:focus-within {
@@ -41208,6 +41884,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .sm\:focus-within\:tw-bg-lightCyan:focus-within {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .sm\:hover\:tw-bg-primary:hover {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -41246,6 +41927,11 @@
   .sm\:hover\:tw-bg-green:hover {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .sm\:hover\:tw-bg-lightCyan:hover {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .sm\:focus\:tw-bg-primary:focus {
@@ -41288,6 +41974,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .sm\:focus\:tw-bg-lightCyan:focus {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-dark .sm\:dark\:tw-bg-primary {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -41326,6 +42017,11 @@
   .tw-dark .sm\:dark\:tw-bg-green {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-dark .sm\:dark\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .tw-dark .tw-group:hover .sm\:dark\:group-hover\:tw-bg-primary {
@@ -41368,6 +42064,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .tw-dark .tw-group:hover .sm\:dark\:group-hover\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-dark .sm\:dark\:focus-within\:tw-bg-primary:focus-within {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -41406,6 +42107,11 @@
   .tw-dark .sm\:dark\:focus-within\:tw-bg-green:focus-within {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-dark .sm\:dark\:focus-within\:tw-bg-lightCyan:focus-within {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .tw-dark .sm\:dark\:hover\:tw-bg-primary:hover {
@@ -41448,6 +42154,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .tw-dark .sm\:dark\:hover\:tw-bg-lightCyan:hover {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-dark .sm\:dark\:focus\:tw-bg-primary:focus {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -41486,6 +42197,11 @@
   .tw-dark .sm\:dark\:focus\:tw-bg-green:focus {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-dark .sm\:dark\:focus\:tw-bg-lightCyan:focus {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .sm\:tw-bg-none {
@@ -41564,6 +42280,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .sm\:tw-from-lightCyan {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .sm\:tw-via-primary {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -41596,6 +42317,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .sm\:tw-via-lightCyan {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .sm\:tw-to-primary {
     --tw-gradient-to: #FF0090 !important
   }
@@ -41626,6 +42351,10 @@
 
   .sm\:tw-to-green {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .sm\:tw-to-lightCyan {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .sm\:hover\:tw-from-primary:hover {
@@ -41668,6 +42397,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .sm\:hover\:tw-from-lightCyan:hover {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .sm\:hover\:tw-via-primary:hover {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -41700,6 +42434,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .sm\:hover\:tw-via-lightCyan:hover {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .sm\:hover\:tw-to-primary:hover {
     --tw-gradient-to: #FF0090 !important
   }
@@ -41730,6 +42468,10 @@
 
   .sm\:hover\:tw-to-green:hover {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .sm\:hover\:tw-to-lightCyan:hover {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .sm\:focus\:tw-from-primary:focus {
@@ -41772,6 +42514,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .sm\:focus\:tw-from-lightCyan:focus {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .sm\:focus\:tw-via-primary:focus {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -41804,6 +42551,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .sm\:focus\:tw-via-lightCyan:focus {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .sm\:focus\:tw-to-primary:focus {
     --tw-gradient-to: #FF0090 !important
   }
@@ -41834,6 +42585,10 @@
 
   .sm\:focus\:tw-to-green:focus {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .sm\:focus\:tw-to-lightCyan:focus {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .tw-dark .sm\:dark\:tw-from-primary {
@@ -41876,6 +42631,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .sm\:dark\:tw-from-lightCyan {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .sm\:dark\:tw-via-primary {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -41908,6 +42668,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .sm\:dark\:tw-via-lightCyan {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .sm\:dark\:tw-to-primary {
     --tw-gradient-to: #FF0090 !important
   }
@@ -41938,6 +42702,10 @@
 
   .tw-dark .sm\:dark\:tw-to-green {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .tw-dark .sm\:dark\:tw-to-lightCyan {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .tw-dark .sm\:dark\:hover\:tw-from-primary:hover {
@@ -41980,6 +42748,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .sm\:dark\:hover\:tw-from-lightCyan:hover {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .sm\:dark\:hover\:tw-via-primary:hover {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -42012,6 +42785,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .sm\:dark\:hover\:tw-via-lightCyan:hover {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .sm\:dark\:hover\:tw-to-primary:hover {
     --tw-gradient-to: #FF0090 !important
   }
@@ -42042,6 +42819,10 @@
 
   .tw-dark .sm\:dark\:hover\:tw-to-green:hover {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .tw-dark .sm\:dark\:hover\:tw-to-lightCyan:hover {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .tw-dark .sm\:dark\:focus\:tw-from-primary:focus {
@@ -42084,6 +42865,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .sm\:dark\:focus\:tw-from-lightCyan:focus {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .sm\:dark\:focus\:tw-via-primary:focus {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -42116,6 +42902,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .sm\:dark\:focus\:tw-via-lightCyan:focus {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .sm\:dark\:focus\:tw-to-primary:focus {
     --tw-gradient-to: #FF0090 !important
   }
@@ -42146,6 +42936,10 @@
 
   .tw-dark .sm\:dark\:focus\:tw-to-green:focus {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .tw-dark .sm\:dark\:focus\:tw-to-lightCyan:focus {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .sm\:tw-bg-opacity-0 {
@@ -42868,6 +43662,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .sm\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-group:hover .sm\:group-hover\:tw-border-primary {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -42906,6 +43705,11 @@
   .tw-group:hover .sm\:group-hover\:tw-border-green {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-group:hover .sm\:group-hover\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .sm\:focus-within\:tw-border-primary:focus-within {
@@ -42948,6 +43752,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .sm\:focus-within\:tw-border-lightCyan:focus-within {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .sm\:hover\:tw-border-primary:hover {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -42986,6 +43795,11 @@
   .sm\:hover\:tw-border-green:hover {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .sm\:hover\:tw-border-lightCyan:hover {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .sm\:focus\:tw-border-primary:focus {
@@ -43028,6 +43842,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .sm\:focus\:tw-border-lightCyan:focus {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-dark .sm\:dark\:tw-border-primary {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -43066,6 +43885,11 @@
   .tw-dark .sm\:dark\:tw-border-green {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-dark .sm\:dark\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .tw-dark .tw-group:hover .sm\:dark\:group-hover\:tw-border-primary {
@@ -43108,6 +43932,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .tw-dark .tw-group:hover .sm\:dark\:group-hover\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-dark .sm\:dark\:focus-within\:tw-border-primary:focus-within {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -43146,6 +43975,11 @@
   .tw-dark .sm\:dark\:focus-within\:tw-border-green:focus-within {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-dark .sm\:dark\:focus-within\:tw-border-lightCyan:focus-within {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .tw-dark .sm\:dark\:hover\:tw-border-primary:hover {
@@ -43188,6 +44022,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .tw-dark .sm\:dark\:hover\:tw-border-lightCyan:hover {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-dark .sm\:dark\:focus\:tw-border-primary:focus {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -43226,6 +44065,11 @@
   .tw-dark .sm\:dark\:focus\:tw-border-green:focus {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-dark .sm\:dark\:focus\:tw-border-lightCyan:focus {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .sm\:tw-border-opacity-0 {
@@ -49152,6 +49996,11 @@
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
   }
 
+  .sm\:tw-placeholder-lightCyan::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
+  }
+
   .sm\:focus\:tw-placeholder-primary:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-placeholder-opacity)) !important
@@ -49190,6 +50039,11 @@
   .sm\:focus\:tw-placeholder-green:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
+  }
+
+  .sm\:focus\:tw-placeholder-lightCyan:focus::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
   }
 
   .tw-dark .sm\:dark\:tw-placeholder-primary::placeholder {
@@ -49232,6 +50086,11 @@
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
   }
 
+  .tw-dark .sm\:dark\:tw-placeholder-lightCyan::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
+  }
+
   .tw-dark .sm\:dark\:focus\:tw-placeholder-primary:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-placeholder-opacity)) !important
@@ -49270,6 +50129,11 @@
   .tw-dark .sm\:dark\:focus\:tw-placeholder-green:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
+  }
+
+  .tw-dark .sm\:dark\:focus\:tw-placeholder-lightCyan:focus::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
   }
 
   .sm\:tw-placeholder-opacity-0::placeholder {
@@ -52713,6 +53577,10 @@
     --tw-ring-offset-color: #E2F8FC !important
   }
 
+  .sm\:tw-ring-offset-lightCyan {
+    --tw-ring-offset-color: #D9EEF2 !important
+  }
+
   .sm\:focus-within\:tw-ring-offset-primary:focus-within {
     --tw-ring-offset-color: #FF0090 !important
   }
@@ -52743,6 +53611,10 @@
 
   .sm\:focus-within\:tw-ring-offset-green:focus-within {
     --tw-ring-offset-color: #E2F8FC !important
+  }
+
+  .sm\:focus-within\:tw-ring-offset-lightCyan:focus-within {
+    --tw-ring-offset-color: #D9EEF2 !important
   }
 
   .sm\:focus\:tw-ring-offset-primary:focus {
@@ -52777,6 +53649,10 @@
     --tw-ring-offset-color: #E2F8FC !important
   }
 
+  .sm\:focus\:tw-ring-offset-lightCyan:focus {
+    --tw-ring-offset-color: #D9EEF2 !important
+  }
+
   .tw-dark .sm\:dark\:tw-ring-offset-primary {
     --tw-ring-offset-color: #FF0090 !important
   }
@@ -52807,6 +53683,10 @@
 
   .tw-dark .sm\:dark\:tw-ring-offset-green {
     --tw-ring-offset-color: #E2F8FC !important
+  }
+
+  .tw-dark .sm\:dark\:tw-ring-offset-lightCyan {
+    --tw-ring-offset-color: #D9EEF2 !important
   }
 
   .tw-dark .sm\:dark\:focus-within\:tw-ring-offset-primary:focus-within {
@@ -52841,6 +53721,10 @@
     --tw-ring-offset-color: #E2F8FC !important
   }
 
+  .tw-dark .sm\:dark\:focus-within\:tw-ring-offset-lightCyan:focus-within {
+    --tw-ring-offset-color: #D9EEF2 !important
+  }
+
   .tw-dark .sm\:dark\:focus\:tw-ring-offset-primary:focus {
     --tw-ring-offset-color: #FF0090 !important
   }
@@ -52871,6 +53755,10 @@
 
   .tw-dark .sm\:dark\:focus\:tw-ring-offset-green:focus {
     --tw-ring-offset-color: #E2F8FC !important
+  }
+
+  .tw-dark .sm\:dark\:focus\:tw-ring-offset-lightCyan:focus {
+    --tw-ring-offset-color: #D9EEF2 !important
   }
 
   .sm\:tw-ring-offset-0 {
@@ -52973,6 +53861,11 @@
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
   }
 
+  .sm\:tw-ring-lightCyan {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+  }
+
   .sm\:focus-within\:tw-ring-primary:focus-within {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -53011,6 +53904,11 @@
   .sm\:focus-within\:tw-ring-green:focus-within {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+  }
+
+  .sm\:focus-within\:tw-ring-lightCyan:focus-within {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
   }
 
   .sm\:focus\:tw-ring-primary:focus {
@@ -53053,6 +53951,11 @@
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
   }
 
+  .sm\:focus\:tw-ring-lightCyan:focus {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+  }
+
   .tw-dark .sm\:dark\:tw-ring-primary {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -53091,6 +53994,11 @@
   .tw-dark .sm\:dark\:tw-ring-green {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+  }
+
+  .tw-dark .sm\:dark\:tw-ring-lightCyan {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
   }
 
   .tw-dark .sm\:dark\:focus-within\:tw-ring-primary:focus-within {
@@ -53133,6 +54041,11 @@
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
   }
 
+  .tw-dark .sm\:dark\:focus-within\:tw-ring-lightCyan:focus-within {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+  }
+
   .tw-dark .sm\:dark\:focus\:tw-ring-primary:focus {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -53171,6 +54084,11 @@
   .tw-dark .sm\:dark\:focus\:tw-ring-green:focus {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+  }
+
+  .tw-dark .sm\:dark\:focus\:tw-ring-lightCyan:focus {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
   }
 
   .sm\:tw-ring-opacity-0 {
@@ -53553,6 +54471,22 @@
     fill: #FFC549 !important
   }
 
+  .sm\:tw-fill-cyan {
+    fill: #F3FCFE !important
+  }
+
+  .sm\:tw-fill-gray {
+    fill: #999999 !important
+  }
+
+  .sm\:tw-fill-green {
+    fill: #E2F8FC !important
+  }
+
+  .sm\:tw-fill-lightCyan {
+    fill: #D9EEF2 !important
+  }
+
   .sm\:tw-stroke-current {
     stroke: currentColor !important
   }
@@ -53633,6 +54567,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .sm\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-group:hover .sm\:group-hover\:tw-text-primary {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -53671,6 +54610,11 @@
   .tw-group:hover .sm\:group-hover\:tw-text-green {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-group:hover .sm\:group-hover\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .sm\:focus-within\:tw-text-primary:focus-within {
@@ -53713,6 +54657,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .sm\:focus-within\:tw-text-lightCyan:focus-within {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .sm\:hover\:tw-text-primary:hover {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -53751,6 +54700,11 @@
   .sm\:hover\:tw-text-green:hover {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .sm\:hover\:tw-text-lightCyan:hover {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .sm\:focus\:tw-text-primary:focus {
@@ -53793,6 +54747,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .sm\:focus\:tw-text-lightCyan:focus {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-dark .sm\:dark\:tw-text-primary {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -53831,6 +54790,11 @@
   .tw-dark .sm\:dark\:tw-text-green {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-dark .sm\:dark\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .tw-dark .tw-group:hover .sm\:dark\:group-hover\:tw-text-primary {
@@ -53873,6 +54837,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .tw-dark .tw-group:hover .sm\:dark\:group-hover\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-dark .sm\:dark\:focus-within\:tw-text-primary:focus-within {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -53911,6 +54880,11 @@
   .tw-dark .sm\:dark\:focus-within\:tw-text-green:focus-within {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-dark .sm\:dark\:focus-within\:tw-text-lightCyan:focus-within {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .tw-dark .sm\:dark\:hover\:tw-text-primary:hover {
@@ -53953,6 +54927,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .tw-dark .sm\:dark\:hover\:tw-text-lightCyan:hover {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-dark .sm\:dark\:focus\:tw-text-primary:focus {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -53991,6 +54970,11 @@
   .tw-dark .sm\:dark\:focus\:tw-text-green:focus {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-dark .sm\:dark\:focus\:tw-text-lightCyan:focus {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .sm\:tw-text-opacity-0 {
@@ -60643,6 +61627,11 @@
     border-color: rgba(226, 248, 252, var(--tw-divide-opacity)) !important
   }
 
+  .md\:tw-divide-lightCyan > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-divide-opacity)) !important
+  }
+
   .tw-dark .md\:dark\:tw-divide-primary > :not([hidden]) ~ :not([hidden]) {
     --tw-divide-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-divide-opacity)) !important
@@ -60681,6 +61670,11 @@
   .tw-dark .md\:dark\:tw-divide-green > :not([hidden]) ~ :not([hidden]) {
     --tw-divide-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-divide-opacity)) !important
+  }
+
+  .tw-dark .md\:dark\:tw-divide-lightCyan > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-divide-opacity)) !important
   }
 
   .md\:tw-divide-solid > :not([hidden]) ~ :not([hidden]) {
@@ -60966,6 +61960,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .md\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-group:hover .md\:group-hover\:tw-bg-primary {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -61004,6 +62003,11 @@
   .tw-group:hover .md\:group-hover\:tw-bg-green {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-group:hover .md\:group-hover\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .md\:focus-within\:tw-bg-primary:focus-within {
@@ -61046,6 +62050,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .md\:focus-within\:tw-bg-lightCyan:focus-within {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .md\:hover\:tw-bg-primary:hover {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -61084,6 +62093,11 @@
   .md\:hover\:tw-bg-green:hover {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .md\:hover\:tw-bg-lightCyan:hover {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .md\:focus\:tw-bg-primary:focus {
@@ -61126,6 +62140,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .md\:focus\:tw-bg-lightCyan:focus {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-dark .md\:dark\:tw-bg-primary {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -61164,6 +62183,11 @@
   .tw-dark .md\:dark\:tw-bg-green {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-dark .md\:dark\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .tw-dark .tw-group:hover .md\:dark\:group-hover\:tw-bg-primary {
@@ -61206,6 +62230,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .tw-dark .tw-group:hover .md\:dark\:group-hover\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-dark .md\:dark\:focus-within\:tw-bg-primary:focus-within {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -61244,6 +62273,11 @@
   .tw-dark .md\:dark\:focus-within\:tw-bg-green:focus-within {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-dark .md\:dark\:focus-within\:tw-bg-lightCyan:focus-within {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .tw-dark .md\:dark\:hover\:tw-bg-primary:hover {
@@ -61286,6 +62320,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .tw-dark .md\:dark\:hover\:tw-bg-lightCyan:hover {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-dark .md\:dark\:focus\:tw-bg-primary:focus {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -61324,6 +62363,11 @@
   .tw-dark .md\:dark\:focus\:tw-bg-green:focus {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-dark .md\:dark\:focus\:tw-bg-lightCyan:focus {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .md\:tw-bg-none {
@@ -61402,6 +62446,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .md\:tw-from-lightCyan {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .md\:tw-via-primary {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -61434,6 +62483,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .md\:tw-via-lightCyan {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .md\:tw-to-primary {
     --tw-gradient-to: #FF0090 !important
   }
@@ -61464,6 +62517,10 @@
 
   .md\:tw-to-green {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .md\:tw-to-lightCyan {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .md\:hover\:tw-from-primary:hover {
@@ -61506,6 +62563,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .md\:hover\:tw-from-lightCyan:hover {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .md\:hover\:tw-via-primary:hover {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -61538,6 +62600,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .md\:hover\:tw-via-lightCyan:hover {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .md\:hover\:tw-to-primary:hover {
     --tw-gradient-to: #FF0090 !important
   }
@@ -61568,6 +62634,10 @@
 
   .md\:hover\:tw-to-green:hover {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .md\:hover\:tw-to-lightCyan:hover {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .md\:focus\:tw-from-primary:focus {
@@ -61610,6 +62680,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .md\:focus\:tw-from-lightCyan:focus {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .md\:focus\:tw-via-primary:focus {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -61642,6 +62717,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .md\:focus\:tw-via-lightCyan:focus {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .md\:focus\:tw-to-primary:focus {
     --tw-gradient-to: #FF0090 !important
   }
@@ -61672,6 +62751,10 @@
 
   .md\:focus\:tw-to-green:focus {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .md\:focus\:tw-to-lightCyan:focus {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .tw-dark .md\:dark\:tw-from-primary {
@@ -61714,6 +62797,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .md\:dark\:tw-from-lightCyan {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .md\:dark\:tw-via-primary {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -61746,6 +62834,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .md\:dark\:tw-via-lightCyan {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .md\:dark\:tw-to-primary {
     --tw-gradient-to: #FF0090 !important
   }
@@ -61776,6 +62868,10 @@
 
   .tw-dark .md\:dark\:tw-to-green {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .tw-dark .md\:dark\:tw-to-lightCyan {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .tw-dark .md\:dark\:hover\:tw-from-primary:hover {
@@ -61818,6 +62914,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .md\:dark\:hover\:tw-from-lightCyan:hover {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .md\:dark\:hover\:tw-via-primary:hover {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -61850,6 +62951,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .md\:dark\:hover\:tw-via-lightCyan:hover {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .md\:dark\:hover\:tw-to-primary:hover {
     --tw-gradient-to: #FF0090 !important
   }
@@ -61880,6 +62985,10 @@
 
   .tw-dark .md\:dark\:hover\:tw-to-green:hover {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .tw-dark .md\:dark\:hover\:tw-to-lightCyan:hover {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .tw-dark .md\:dark\:focus\:tw-from-primary:focus {
@@ -61922,6 +63031,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .md\:dark\:focus\:tw-from-lightCyan:focus {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .md\:dark\:focus\:tw-via-primary:focus {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -61954,6 +63068,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .md\:dark\:focus\:tw-via-lightCyan:focus {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .md\:dark\:focus\:tw-to-primary:focus {
     --tw-gradient-to: #FF0090 !important
   }
@@ -61984,6 +63102,10 @@
 
   .tw-dark .md\:dark\:focus\:tw-to-green:focus {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .tw-dark .md\:dark\:focus\:tw-to-lightCyan:focus {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .md\:tw-bg-opacity-0 {
@@ -62706,6 +63828,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .md\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-group:hover .md\:group-hover\:tw-border-primary {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -62744,6 +63871,11 @@
   .tw-group:hover .md\:group-hover\:tw-border-green {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-group:hover .md\:group-hover\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .md\:focus-within\:tw-border-primary:focus-within {
@@ -62786,6 +63918,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .md\:focus-within\:tw-border-lightCyan:focus-within {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .md\:hover\:tw-border-primary:hover {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -62824,6 +63961,11 @@
   .md\:hover\:tw-border-green:hover {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .md\:hover\:tw-border-lightCyan:hover {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .md\:focus\:tw-border-primary:focus {
@@ -62866,6 +64008,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .md\:focus\:tw-border-lightCyan:focus {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-dark .md\:dark\:tw-border-primary {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -62904,6 +64051,11 @@
   .tw-dark .md\:dark\:tw-border-green {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-dark .md\:dark\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .tw-dark .tw-group:hover .md\:dark\:group-hover\:tw-border-primary {
@@ -62946,6 +64098,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .tw-dark .tw-group:hover .md\:dark\:group-hover\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-dark .md\:dark\:focus-within\:tw-border-primary:focus-within {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -62984,6 +64141,11 @@
   .tw-dark .md\:dark\:focus-within\:tw-border-green:focus-within {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-dark .md\:dark\:focus-within\:tw-border-lightCyan:focus-within {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .tw-dark .md\:dark\:hover\:tw-border-primary:hover {
@@ -63026,6 +64188,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .tw-dark .md\:dark\:hover\:tw-border-lightCyan:hover {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-dark .md\:dark\:focus\:tw-border-primary:focus {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -63064,6 +64231,11 @@
   .tw-dark .md\:dark\:focus\:tw-border-green:focus {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-dark .md\:dark\:focus\:tw-border-lightCyan:focus {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .md\:tw-border-opacity-0 {
@@ -68990,6 +70162,11 @@
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
   }
 
+  .md\:tw-placeholder-lightCyan::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
+  }
+
   .md\:focus\:tw-placeholder-primary:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-placeholder-opacity)) !important
@@ -69028,6 +70205,11 @@
   .md\:focus\:tw-placeholder-green:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
+  }
+
+  .md\:focus\:tw-placeholder-lightCyan:focus::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
   }
 
   .tw-dark .md\:dark\:tw-placeholder-primary::placeholder {
@@ -69070,6 +70252,11 @@
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
   }
 
+  .tw-dark .md\:dark\:tw-placeholder-lightCyan::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
+  }
+
   .tw-dark .md\:dark\:focus\:tw-placeholder-primary:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-placeholder-opacity)) !important
@@ -69108,6 +70295,11 @@
   .tw-dark .md\:dark\:focus\:tw-placeholder-green:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
+  }
+
+  .tw-dark .md\:dark\:focus\:tw-placeholder-lightCyan:focus::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
   }
 
   .md\:tw-placeholder-opacity-0::placeholder {
@@ -72551,6 +73743,10 @@
     --tw-ring-offset-color: #E2F8FC !important
   }
 
+  .md\:tw-ring-offset-lightCyan {
+    --tw-ring-offset-color: #D9EEF2 !important
+  }
+
   .md\:focus-within\:tw-ring-offset-primary:focus-within {
     --tw-ring-offset-color: #FF0090 !important
   }
@@ -72581,6 +73777,10 @@
 
   .md\:focus-within\:tw-ring-offset-green:focus-within {
     --tw-ring-offset-color: #E2F8FC !important
+  }
+
+  .md\:focus-within\:tw-ring-offset-lightCyan:focus-within {
+    --tw-ring-offset-color: #D9EEF2 !important
   }
 
   .md\:focus\:tw-ring-offset-primary:focus {
@@ -72615,6 +73815,10 @@
     --tw-ring-offset-color: #E2F8FC !important
   }
 
+  .md\:focus\:tw-ring-offset-lightCyan:focus {
+    --tw-ring-offset-color: #D9EEF2 !important
+  }
+
   .tw-dark .md\:dark\:tw-ring-offset-primary {
     --tw-ring-offset-color: #FF0090 !important
   }
@@ -72645,6 +73849,10 @@
 
   .tw-dark .md\:dark\:tw-ring-offset-green {
     --tw-ring-offset-color: #E2F8FC !important
+  }
+
+  .tw-dark .md\:dark\:tw-ring-offset-lightCyan {
+    --tw-ring-offset-color: #D9EEF2 !important
   }
 
   .tw-dark .md\:dark\:focus-within\:tw-ring-offset-primary:focus-within {
@@ -72679,6 +73887,10 @@
     --tw-ring-offset-color: #E2F8FC !important
   }
 
+  .tw-dark .md\:dark\:focus-within\:tw-ring-offset-lightCyan:focus-within {
+    --tw-ring-offset-color: #D9EEF2 !important
+  }
+
   .tw-dark .md\:dark\:focus\:tw-ring-offset-primary:focus {
     --tw-ring-offset-color: #FF0090 !important
   }
@@ -72709,6 +73921,10 @@
 
   .tw-dark .md\:dark\:focus\:tw-ring-offset-green:focus {
     --tw-ring-offset-color: #E2F8FC !important
+  }
+
+  .tw-dark .md\:dark\:focus\:tw-ring-offset-lightCyan:focus {
+    --tw-ring-offset-color: #D9EEF2 !important
   }
 
   .md\:tw-ring-offset-0 {
@@ -72811,6 +74027,11 @@
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
   }
 
+  .md\:tw-ring-lightCyan {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+  }
+
   .md\:focus-within\:tw-ring-primary:focus-within {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -72849,6 +74070,11 @@
   .md\:focus-within\:tw-ring-green:focus-within {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+  }
+
+  .md\:focus-within\:tw-ring-lightCyan:focus-within {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
   }
 
   .md\:focus\:tw-ring-primary:focus {
@@ -72891,6 +74117,11 @@
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
   }
 
+  .md\:focus\:tw-ring-lightCyan:focus {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+  }
+
   .tw-dark .md\:dark\:tw-ring-primary {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -72929,6 +74160,11 @@
   .tw-dark .md\:dark\:tw-ring-green {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+  }
+
+  .tw-dark .md\:dark\:tw-ring-lightCyan {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
   }
 
   .tw-dark .md\:dark\:focus-within\:tw-ring-primary:focus-within {
@@ -72971,6 +74207,11 @@
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
   }
 
+  .tw-dark .md\:dark\:focus-within\:tw-ring-lightCyan:focus-within {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+  }
+
   .tw-dark .md\:dark\:focus\:tw-ring-primary:focus {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -73009,6 +74250,11 @@
   .tw-dark .md\:dark\:focus\:tw-ring-green:focus {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+  }
+
+  .tw-dark .md\:dark\:focus\:tw-ring-lightCyan:focus {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
   }
 
   .md\:tw-ring-opacity-0 {
@@ -73391,6 +74637,22 @@
     fill: #FFC549 !important
   }
 
+  .md\:tw-fill-cyan {
+    fill: #F3FCFE !important
+  }
+
+  .md\:tw-fill-gray {
+    fill: #999999 !important
+  }
+
+  .md\:tw-fill-green {
+    fill: #E2F8FC !important
+  }
+
+  .md\:tw-fill-lightCyan {
+    fill: #D9EEF2 !important
+  }
+
   .md\:tw-stroke-current {
     stroke: currentColor !important
   }
@@ -73471,6 +74733,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .md\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-group:hover .md\:group-hover\:tw-text-primary {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -73509,6 +74776,11 @@
   .tw-group:hover .md\:group-hover\:tw-text-green {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-group:hover .md\:group-hover\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .md\:focus-within\:tw-text-primary:focus-within {
@@ -73551,6 +74823,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .md\:focus-within\:tw-text-lightCyan:focus-within {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .md\:hover\:tw-text-primary:hover {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -73589,6 +74866,11 @@
   .md\:hover\:tw-text-green:hover {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .md\:hover\:tw-text-lightCyan:hover {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .md\:focus\:tw-text-primary:focus {
@@ -73631,6 +74913,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .md\:focus\:tw-text-lightCyan:focus {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-dark .md\:dark\:tw-text-primary {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -73669,6 +74956,11 @@
   .tw-dark .md\:dark\:tw-text-green {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-dark .md\:dark\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .tw-dark .tw-group:hover .md\:dark\:group-hover\:tw-text-primary {
@@ -73711,6 +75003,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .tw-dark .tw-group:hover .md\:dark\:group-hover\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-dark .md\:dark\:focus-within\:tw-text-primary:focus-within {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -73749,6 +75046,11 @@
   .tw-dark .md\:dark\:focus-within\:tw-text-green:focus-within {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-dark .md\:dark\:focus-within\:tw-text-lightCyan:focus-within {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .tw-dark .md\:dark\:hover\:tw-text-primary:hover {
@@ -73791,6 +75093,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .tw-dark .md\:dark\:hover\:tw-text-lightCyan:hover {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-dark .md\:dark\:focus\:tw-text-primary:focus {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -73829,6 +75136,11 @@
   .tw-dark .md\:dark\:focus\:tw-text-green:focus {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-dark .md\:dark\:focus\:tw-text-lightCyan:focus {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .md\:tw-text-opacity-0 {
@@ -80481,6 +81793,11 @@
     border-color: rgba(226, 248, 252, var(--tw-divide-opacity)) !important
   }
 
+  .lg\:tw-divide-lightCyan > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-divide-opacity)) !important
+  }
+
   .tw-dark .lg\:dark\:tw-divide-primary > :not([hidden]) ~ :not([hidden]) {
     --tw-divide-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-divide-opacity)) !important
@@ -80519,6 +81836,11 @@
   .tw-dark .lg\:dark\:tw-divide-green > :not([hidden]) ~ :not([hidden]) {
     --tw-divide-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-divide-opacity)) !important
+  }
+
+  .tw-dark .lg\:dark\:tw-divide-lightCyan > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-divide-opacity)) !important
   }
 
   .lg\:tw-divide-solid > :not([hidden]) ~ :not([hidden]) {
@@ -80804,6 +82126,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .lg\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-group:hover .lg\:group-hover\:tw-bg-primary {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -80842,6 +82169,11 @@
   .tw-group:hover .lg\:group-hover\:tw-bg-green {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-group:hover .lg\:group-hover\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .lg\:focus-within\:tw-bg-primary:focus-within {
@@ -80884,6 +82216,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .lg\:focus-within\:tw-bg-lightCyan:focus-within {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .lg\:hover\:tw-bg-primary:hover {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -80922,6 +82259,11 @@
   .lg\:hover\:tw-bg-green:hover {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .lg\:hover\:tw-bg-lightCyan:hover {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .lg\:focus\:tw-bg-primary:focus {
@@ -80964,6 +82306,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .lg\:focus\:tw-bg-lightCyan:focus {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-dark .lg\:dark\:tw-bg-primary {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -81002,6 +82349,11 @@
   .tw-dark .lg\:dark\:tw-bg-green {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-dark .lg\:dark\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .tw-dark .tw-group:hover .lg\:dark\:group-hover\:tw-bg-primary {
@@ -81044,6 +82396,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .tw-dark .tw-group:hover .lg\:dark\:group-hover\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-dark .lg\:dark\:focus-within\:tw-bg-primary:focus-within {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -81082,6 +82439,11 @@
   .tw-dark .lg\:dark\:focus-within\:tw-bg-green:focus-within {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-dark .lg\:dark\:focus-within\:tw-bg-lightCyan:focus-within {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .tw-dark .lg\:dark\:hover\:tw-bg-primary:hover {
@@ -81124,6 +82486,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .tw-dark .lg\:dark\:hover\:tw-bg-lightCyan:hover {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-dark .lg\:dark\:focus\:tw-bg-primary:focus {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -81162,6 +82529,11 @@
   .tw-dark .lg\:dark\:focus\:tw-bg-green:focus {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-dark .lg\:dark\:focus\:tw-bg-lightCyan:focus {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .lg\:tw-bg-none {
@@ -81240,6 +82612,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .lg\:tw-from-lightCyan {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .lg\:tw-via-primary {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -81272,6 +82649,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .lg\:tw-via-lightCyan {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .lg\:tw-to-primary {
     --tw-gradient-to: #FF0090 !important
   }
@@ -81302,6 +82683,10 @@
 
   .lg\:tw-to-green {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .lg\:tw-to-lightCyan {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .lg\:hover\:tw-from-primary:hover {
@@ -81344,6 +82729,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .lg\:hover\:tw-from-lightCyan:hover {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .lg\:hover\:tw-via-primary:hover {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -81376,6 +82766,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .lg\:hover\:tw-via-lightCyan:hover {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .lg\:hover\:tw-to-primary:hover {
     --tw-gradient-to: #FF0090 !important
   }
@@ -81406,6 +82800,10 @@
 
   .lg\:hover\:tw-to-green:hover {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .lg\:hover\:tw-to-lightCyan:hover {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .lg\:focus\:tw-from-primary:focus {
@@ -81448,6 +82846,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .lg\:focus\:tw-from-lightCyan:focus {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .lg\:focus\:tw-via-primary:focus {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -81480,6 +82883,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .lg\:focus\:tw-via-lightCyan:focus {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .lg\:focus\:tw-to-primary:focus {
     --tw-gradient-to: #FF0090 !important
   }
@@ -81510,6 +82917,10 @@
 
   .lg\:focus\:tw-to-green:focus {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .lg\:focus\:tw-to-lightCyan:focus {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .tw-dark .lg\:dark\:tw-from-primary {
@@ -81552,6 +82963,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .lg\:dark\:tw-from-lightCyan {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .lg\:dark\:tw-via-primary {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -81584,6 +83000,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .lg\:dark\:tw-via-lightCyan {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .lg\:dark\:tw-to-primary {
     --tw-gradient-to: #FF0090 !important
   }
@@ -81614,6 +83034,10 @@
 
   .tw-dark .lg\:dark\:tw-to-green {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .tw-dark .lg\:dark\:tw-to-lightCyan {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .tw-dark .lg\:dark\:hover\:tw-from-primary:hover {
@@ -81656,6 +83080,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .lg\:dark\:hover\:tw-from-lightCyan:hover {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .lg\:dark\:hover\:tw-via-primary:hover {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -81688,6 +83117,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .lg\:dark\:hover\:tw-via-lightCyan:hover {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .lg\:dark\:hover\:tw-to-primary:hover {
     --tw-gradient-to: #FF0090 !important
   }
@@ -81718,6 +83151,10 @@
 
   .tw-dark .lg\:dark\:hover\:tw-to-green:hover {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .tw-dark .lg\:dark\:hover\:tw-to-lightCyan:hover {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .tw-dark .lg\:dark\:focus\:tw-from-primary:focus {
@@ -81760,6 +83197,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .lg\:dark\:focus\:tw-from-lightCyan:focus {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .lg\:dark\:focus\:tw-via-primary:focus {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -81792,6 +83234,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .lg\:dark\:focus\:tw-via-lightCyan:focus {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .lg\:dark\:focus\:tw-to-primary:focus {
     --tw-gradient-to: #FF0090 !important
   }
@@ -81822,6 +83268,10 @@
 
   .tw-dark .lg\:dark\:focus\:tw-to-green:focus {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .tw-dark .lg\:dark\:focus\:tw-to-lightCyan:focus {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .lg\:tw-bg-opacity-0 {
@@ -82544,6 +83994,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .lg\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-group:hover .lg\:group-hover\:tw-border-primary {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -82582,6 +84037,11 @@
   .tw-group:hover .lg\:group-hover\:tw-border-green {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-group:hover .lg\:group-hover\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .lg\:focus-within\:tw-border-primary:focus-within {
@@ -82624,6 +84084,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .lg\:focus-within\:tw-border-lightCyan:focus-within {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .lg\:hover\:tw-border-primary:hover {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -82662,6 +84127,11 @@
   .lg\:hover\:tw-border-green:hover {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .lg\:hover\:tw-border-lightCyan:hover {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .lg\:focus\:tw-border-primary:focus {
@@ -82704,6 +84174,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .lg\:focus\:tw-border-lightCyan:focus {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-dark .lg\:dark\:tw-border-primary {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -82742,6 +84217,11 @@
   .tw-dark .lg\:dark\:tw-border-green {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-dark .lg\:dark\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .tw-dark .tw-group:hover .lg\:dark\:group-hover\:tw-border-primary {
@@ -82784,6 +84264,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .tw-dark .tw-group:hover .lg\:dark\:group-hover\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-dark .lg\:dark\:focus-within\:tw-border-primary:focus-within {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -82822,6 +84307,11 @@
   .tw-dark .lg\:dark\:focus-within\:tw-border-green:focus-within {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-dark .lg\:dark\:focus-within\:tw-border-lightCyan:focus-within {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .tw-dark .lg\:dark\:hover\:tw-border-primary:hover {
@@ -82864,6 +84354,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .tw-dark .lg\:dark\:hover\:tw-border-lightCyan:hover {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-dark .lg\:dark\:focus\:tw-border-primary:focus {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -82902,6 +84397,11 @@
   .tw-dark .lg\:dark\:focus\:tw-border-green:focus {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-dark .lg\:dark\:focus\:tw-border-lightCyan:focus {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .lg\:tw-border-opacity-0 {
@@ -88828,6 +90328,11 @@
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
   }
 
+  .lg\:tw-placeholder-lightCyan::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
+  }
+
   .lg\:focus\:tw-placeholder-primary:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-placeholder-opacity)) !important
@@ -88866,6 +90371,11 @@
   .lg\:focus\:tw-placeholder-green:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
+  }
+
+  .lg\:focus\:tw-placeholder-lightCyan:focus::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
   }
 
   .tw-dark .lg\:dark\:tw-placeholder-primary::placeholder {
@@ -88908,6 +90418,11 @@
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
   }
 
+  .tw-dark .lg\:dark\:tw-placeholder-lightCyan::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
+  }
+
   .tw-dark .lg\:dark\:focus\:tw-placeholder-primary:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-placeholder-opacity)) !important
@@ -88946,6 +90461,11 @@
   .tw-dark .lg\:dark\:focus\:tw-placeholder-green:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
+  }
+
+  .tw-dark .lg\:dark\:focus\:tw-placeholder-lightCyan:focus::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
   }
 
   .lg\:tw-placeholder-opacity-0::placeholder {
@@ -92389,6 +93909,10 @@
     --tw-ring-offset-color: #E2F8FC !important
   }
 
+  .lg\:tw-ring-offset-lightCyan {
+    --tw-ring-offset-color: #D9EEF2 !important
+  }
+
   .lg\:focus-within\:tw-ring-offset-primary:focus-within {
     --tw-ring-offset-color: #FF0090 !important
   }
@@ -92419,6 +93943,10 @@
 
   .lg\:focus-within\:tw-ring-offset-green:focus-within {
     --tw-ring-offset-color: #E2F8FC !important
+  }
+
+  .lg\:focus-within\:tw-ring-offset-lightCyan:focus-within {
+    --tw-ring-offset-color: #D9EEF2 !important
   }
 
   .lg\:focus\:tw-ring-offset-primary:focus {
@@ -92453,6 +93981,10 @@
     --tw-ring-offset-color: #E2F8FC !important
   }
 
+  .lg\:focus\:tw-ring-offset-lightCyan:focus {
+    --tw-ring-offset-color: #D9EEF2 !important
+  }
+
   .tw-dark .lg\:dark\:tw-ring-offset-primary {
     --tw-ring-offset-color: #FF0090 !important
   }
@@ -92483,6 +94015,10 @@
 
   .tw-dark .lg\:dark\:tw-ring-offset-green {
     --tw-ring-offset-color: #E2F8FC !important
+  }
+
+  .tw-dark .lg\:dark\:tw-ring-offset-lightCyan {
+    --tw-ring-offset-color: #D9EEF2 !important
   }
 
   .tw-dark .lg\:dark\:focus-within\:tw-ring-offset-primary:focus-within {
@@ -92517,6 +94053,10 @@
     --tw-ring-offset-color: #E2F8FC !important
   }
 
+  .tw-dark .lg\:dark\:focus-within\:tw-ring-offset-lightCyan:focus-within {
+    --tw-ring-offset-color: #D9EEF2 !important
+  }
+
   .tw-dark .lg\:dark\:focus\:tw-ring-offset-primary:focus {
     --tw-ring-offset-color: #FF0090 !important
   }
@@ -92547,6 +94087,10 @@
 
   .tw-dark .lg\:dark\:focus\:tw-ring-offset-green:focus {
     --tw-ring-offset-color: #E2F8FC !important
+  }
+
+  .tw-dark .lg\:dark\:focus\:tw-ring-offset-lightCyan:focus {
+    --tw-ring-offset-color: #D9EEF2 !important
   }
 
   .lg\:tw-ring-offset-0 {
@@ -92649,6 +94193,11 @@
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
   }
 
+  .lg\:tw-ring-lightCyan {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+  }
+
   .lg\:focus-within\:tw-ring-primary:focus-within {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -92687,6 +94236,11 @@
   .lg\:focus-within\:tw-ring-green:focus-within {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+  }
+
+  .lg\:focus-within\:tw-ring-lightCyan:focus-within {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
   }
 
   .lg\:focus\:tw-ring-primary:focus {
@@ -92729,6 +94283,11 @@
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
   }
 
+  .lg\:focus\:tw-ring-lightCyan:focus {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+  }
+
   .tw-dark .lg\:dark\:tw-ring-primary {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -92767,6 +94326,11 @@
   .tw-dark .lg\:dark\:tw-ring-green {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+  }
+
+  .tw-dark .lg\:dark\:tw-ring-lightCyan {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
   }
 
   .tw-dark .lg\:dark\:focus-within\:tw-ring-primary:focus-within {
@@ -92809,6 +94373,11 @@
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
   }
 
+  .tw-dark .lg\:dark\:focus-within\:tw-ring-lightCyan:focus-within {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+  }
+
   .tw-dark .lg\:dark\:focus\:tw-ring-primary:focus {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -92847,6 +94416,11 @@
   .tw-dark .lg\:dark\:focus\:tw-ring-green:focus {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+  }
+
+  .tw-dark .lg\:dark\:focus\:tw-ring-lightCyan:focus {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
   }
 
   .lg\:tw-ring-opacity-0 {
@@ -93229,6 +94803,22 @@
     fill: #FFC549 !important
   }
 
+  .lg\:tw-fill-cyan {
+    fill: #F3FCFE !important
+  }
+
+  .lg\:tw-fill-gray {
+    fill: #999999 !important
+  }
+
+  .lg\:tw-fill-green {
+    fill: #E2F8FC !important
+  }
+
+  .lg\:tw-fill-lightCyan {
+    fill: #D9EEF2 !important
+  }
+
   .lg\:tw-stroke-current {
     stroke: currentColor !important
   }
@@ -93309,6 +94899,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .lg\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-group:hover .lg\:group-hover\:tw-text-primary {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -93347,6 +94942,11 @@
   .tw-group:hover .lg\:group-hover\:tw-text-green {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-group:hover .lg\:group-hover\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .lg\:focus-within\:tw-text-primary:focus-within {
@@ -93389,6 +94989,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .lg\:focus-within\:tw-text-lightCyan:focus-within {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .lg\:hover\:tw-text-primary:hover {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -93427,6 +95032,11 @@
   .lg\:hover\:tw-text-green:hover {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .lg\:hover\:tw-text-lightCyan:hover {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .lg\:focus\:tw-text-primary:focus {
@@ -93469,6 +95079,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .lg\:focus\:tw-text-lightCyan:focus {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-dark .lg\:dark\:tw-text-primary {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -93507,6 +95122,11 @@
   .tw-dark .lg\:dark\:tw-text-green {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-dark .lg\:dark\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .tw-dark .tw-group:hover .lg\:dark\:group-hover\:tw-text-primary {
@@ -93549,6 +95169,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .tw-dark .tw-group:hover .lg\:dark\:group-hover\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-dark .lg\:dark\:focus-within\:tw-text-primary:focus-within {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -93587,6 +95212,11 @@
   .tw-dark .lg\:dark\:focus-within\:tw-text-green:focus-within {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-dark .lg\:dark\:focus-within\:tw-text-lightCyan:focus-within {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .tw-dark .lg\:dark\:hover\:tw-text-primary:hover {
@@ -93629,6 +95259,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .tw-dark .lg\:dark\:hover\:tw-text-lightCyan:hover {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-dark .lg\:dark\:focus\:tw-text-primary:focus {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -93667,6 +95302,11 @@
   .tw-dark .lg\:dark\:focus\:tw-text-green:focus {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-dark .lg\:dark\:focus\:tw-text-lightCyan:focus {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .lg\:tw-text-opacity-0 {
@@ -100319,6 +101959,11 @@
     border-color: rgba(226, 248, 252, var(--tw-divide-opacity)) !important
   }
 
+  .xl\:tw-divide-lightCyan > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-divide-opacity)) !important
+  }
+
   .tw-dark .xl\:dark\:tw-divide-primary > :not([hidden]) ~ :not([hidden]) {
     --tw-divide-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-divide-opacity)) !important
@@ -100357,6 +102002,11 @@
   .tw-dark .xl\:dark\:tw-divide-green > :not([hidden]) ~ :not([hidden]) {
     --tw-divide-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-divide-opacity)) !important
+  }
+
+  .tw-dark .xl\:dark\:tw-divide-lightCyan > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-divide-opacity)) !important
   }
 
   .xl\:tw-divide-solid > :not([hidden]) ~ :not([hidden]) {
@@ -100642,6 +102292,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .xl\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-group:hover .xl\:group-hover\:tw-bg-primary {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -100680,6 +102335,11 @@
   .tw-group:hover .xl\:group-hover\:tw-bg-green {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-group:hover .xl\:group-hover\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .xl\:focus-within\:tw-bg-primary:focus-within {
@@ -100722,6 +102382,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .xl\:focus-within\:tw-bg-lightCyan:focus-within {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .xl\:hover\:tw-bg-primary:hover {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -100760,6 +102425,11 @@
   .xl\:hover\:tw-bg-green:hover {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .xl\:hover\:tw-bg-lightCyan:hover {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .xl\:focus\:tw-bg-primary:focus {
@@ -100802,6 +102472,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .xl\:focus\:tw-bg-lightCyan:focus {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-dark .xl\:dark\:tw-bg-primary {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -100840,6 +102515,11 @@
   .tw-dark .xl\:dark\:tw-bg-green {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-dark .xl\:dark\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .tw-dark .tw-group:hover .xl\:dark\:group-hover\:tw-bg-primary {
@@ -100882,6 +102562,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .tw-dark .tw-group:hover .xl\:dark\:group-hover\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-dark .xl\:dark\:focus-within\:tw-bg-primary:focus-within {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -100920,6 +102605,11 @@
   .tw-dark .xl\:dark\:focus-within\:tw-bg-green:focus-within {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-dark .xl\:dark\:focus-within\:tw-bg-lightCyan:focus-within {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .tw-dark .xl\:dark\:hover\:tw-bg-primary:hover {
@@ -100962,6 +102652,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .tw-dark .xl\:dark\:hover\:tw-bg-lightCyan:hover {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-dark .xl\:dark\:focus\:tw-bg-primary:focus {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -101000,6 +102695,11 @@
   .tw-dark .xl\:dark\:focus\:tw-bg-green:focus {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-dark .xl\:dark\:focus\:tw-bg-lightCyan:focus {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .xl\:tw-bg-none {
@@ -101078,6 +102778,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .xl\:tw-from-lightCyan {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .xl\:tw-via-primary {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -101110,6 +102815,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .xl\:tw-via-lightCyan {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .xl\:tw-to-primary {
     --tw-gradient-to: #FF0090 !important
   }
@@ -101140,6 +102849,10 @@
 
   .xl\:tw-to-green {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .xl\:tw-to-lightCyan {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .xl\:hover\:tw-from-primary:hover {
@@ -101182,6 +102895,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .xl\:hover\:tw-from-lightCyan:hover {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .xl\:hover\:tw-via-primary:hover {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -101214,6 +102932,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .xl\:hover\:tw-via-lightCyan:hover {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .xl\:hover\:tw-to-primary:hover {
     --tw-gradient-to: #FF0090 !important
   }
@@ -101244,6 +102966,10 @@
 
   .xl\:hover\:tw-to-green:hover {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .xl\:hover\:tw-to-lightCyan:hover {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .xl\:focus\:tw-from-primary:focus {
@@ -101286,6 +103012,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .xl\:focus\:tw-from-lightCyan:focus {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .xl\:focus\:tw-via-primary:focus {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -101318,6 +103049,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .xl\:focus\:tw-via-lightCyan:focus {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .xl\:focus\:tw-to-primary:focus {
     --tw-gradient-to: #FF0090 !important
   }
@@ -101348,6 +103083,10 @@
 
   .xl\:focus\:tw-to-green:focus {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .xl\:focus\:tw-to-lightCyan:focus {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .tw-dark .xl\:dark\:tw-from-primary {
@@ -101390,6 +103129,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .xl\:dark\:tw-from-lightCyan {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .xl\:dark\:tw-via-primary {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -101422,6 +103166,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .xl\:dark\:tw-via-lightCyan {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .xl\:dark\:tw-to-primary {
     --tw-gradient-to: #FF0090 !important
   }
@@ -101452,6 +103200,10 @@
 
   .tw-dark .xl\:dark\:tw-to-green {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .tw-dark .xl\:dark\:tw-to-lightCyan {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .tw-dark .xl\:dark\:hover\:tw-from-primary:hover {
@@ -101494,6 +103246,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .xl\:dark\:hover\:tw-from-lightCyan:hover {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .xl\:dark\:hover\:tw-via-primary:hover {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -101526,6 +103283,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .xl\:dark\:hover\:tw-via-lightCyan:hover {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .xl\:dark\:hover\:tw-to-primary:hover {
     --tw-gradient-to: #FF0090 !important
   }
@@ -101556,6 +103317,10 @@
 
   .tw-dark .xl\:dark\:hover\:tw-to-green:hover {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .tw-dark .xl\:dark\:hover\:tw-to-lightCyan:hover {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .tw-dark .xl\:dark\:focus\:tw-from-primary:focus {
@@ -101598,6 +103363,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .xl\:dark\:focus\:tw-from-lightCyan:focus {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .xl\:dark\:focus\:tw-via-primary:focus {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -101630,6 +103400,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .xl\:dark\:focus\:tw-via-lightCyan:focus {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .xl\:dark\:focus\:tw-to-primary:focus {
     --tw-gradient-to: #FF0090 !important
   }
@@ -101660,6 +103434,10 @@
 
   .tw-dark .xl\:dark\:focus\:tw-to-green:focus {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .tw-dark .xl\:dark\:focus\:tw-to-lightCyan:focus {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .xl\:tw-bg-opacity-0 {
@@ -102382,6 +104160,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .xl\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-group:hover .xl\:group-hover\:tw-border-primary {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -102420,6 +104203,11 @@
   .tw-group:hover .xl\:group-hover\:tw-border-green {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-group:hover .xl\:group-hover\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .xl\:focus-within\:tw-border-primary:focus-within {
@@ -102462,6 +104250,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .xl\:focus-within\:tw-border-lightCyan:focus-within {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .xl\:hover\:tw-border-primary:hover {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -102500,6 +104293,11 @@
   .xl\:hover\:tw-border-green:hover {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .xl\:hover\:tw-border-lightCyan:hover {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .xl\:focus\:tw-border-primary:focus {
@@ -102542,6 +104340,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .xl\:focus\:tw-border-lightCyan:focus {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-dark .xl\:dark\:tw-border-primary {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -102580,6 +104383,11 @@
   .tw-dark .xl\:dark\:tw-border-green {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-dark .xl\:dark\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .tw-dark .tw-group:hover .xl\:dark\:group-hover\:tw-border-primary {
@@ -102622,6 +104430,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .tw-dark .tw-group:hover .xl\:dark\:group-hover\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-dark .xl\:dark\:focus-within\:tw-border-primary:focus-within {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -102660,6 +104473,11 @@
   .tw-dark .xl\:dark\:focus-within\:tw-border-green:focus-within {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-dark .xl\:dark\:focus-within\:tw-border-lightCyan:focus-within {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .tw-dark .xl\:dark\:hover\:tw-border-primary:hover {
@@ -102702,6 +104520,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .tw-dark .xl\:dark\:hover\:tw-border-lightCyan:hover {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-dark .xl\:dark\:focus\:tw-border-primary:focus {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -102740,6 +104563,11 @@
   .tw-dark .xl\:dark\:focus\:tw-border-green:focus {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-dark .xl\:dark\:focus\:tw-border-lightCyan:focus {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .xl\:tw-border-opacity-0 {
@@ -108666,6 +110494,11 @@
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
   }
 
+  .xl\:tw-placeholder-lightCyan::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
+  }
+
   .xl\:focus\:tw-placeholder-primary:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-placeholder-opacity)) !important
@@ -108704,6 +110537,11 @@
   .xl\:focus\:tw-placeholder-green:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
+  }
+
+  .xl\:focus\:tw-placeholder-lightCyan:focus::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
   }
 
   .tw-dark .xl\:dark\:tw-placeholder-primary::placeholder {
@@ -108746,6 +110584,11 @@
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
   }
 
+  .tw-dark .xl\:dark\:tw-placeholder-lightCyan::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
+  }
+
   .tw-dark .xl\:dark\:focus\:tw-placeholder-primary:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-placeholder-opacity)) !important
@@ -108784,6 +110627,11 @@
   .tw-dark .xl\:dark\:focus\:tw-placeholder-green:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
+  }
+
+  .tw-dark .xl\:dark\:focus\:tw-placeholder-lightCyan:focus::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
   }
 
   .xl\:tw-placeholder-opacity-0::placeholder {
@@ -112227,6 +114075,10 @@
     --tw-ring-offset-color: #E2F8FC !important
   }
 
+  .xl\:tw-ring-offset-lightCyan {
+    --tw-ring-offset-color: #D9EEF2 !important
+  }
+
   .xl\:focus-within\:tw-ring-offset-primary:focus-within {
     --tw-ring-offset-color: #FF0090 !important
   }
@@ -112257,6 +114109,10 @@
 
   .xl\:focus-within\:tw-ring-offset-green:focus-within {
     --tw-ring-offset-color: #E2F8FC !important
+  }
+
+  .xl\:focus-within\:tw-ring-offset-lightCyan:focus-within {
+    --tw-ring-offset-color: #D9EEF2 !important
   }
 
   .xl\:focus\:tw-ring-offset-primary:focus {
@@ -112291,6 +114147,10 @@
     --tw-ring-offset-color: #E2F8FC !important
   }
 
+  .xl\:focus\:tw-ring-offset-lightCyan:focus {
+    --tw-ring-offset-color: #D9EEF2 !important
+  }
+
   .tw-dark .xl\:dark\:tw-ring-offset-primary {
     --tw-ring-offset-color: #FF0090 !important
   }
@@ -112321,6 +114181,10 @@
 
   .tw-dark .xl\:dark\:tw-ring-offset-green {
     --tw-ring-offset-color: #E2F8FC !important
+  }
+
+  .tw-dark .xl\:dark\:tw-ring-offset-lightCyan {
+    --tw-ring-offset-color: #D9EEF2 !important
   }
 
   .tw-dark .xl\:dark\:focus-within\:tw-ring-offset-primary:focus-within {
@@ -112355,6 +114219,10 @@
     --tw-ring-offset-color: #E2F8FC !important
   }
 
+  .tw-dark .xl\:dark\:focus-within\:tw-ring-offset-lightCyan:focus-within {
+    --tw-ring-offset-color: #D9EEF2 !important
+  }
+
   .tw-dark .xl\:dark\:focus\:tw-ring-offset-primary:focus {
     --tw-ring-offset-color: #FF0090 !important
   }
@@ -112385,6 +114253,10 @@
 
   .tw-dark .xl\:dark\:focus\:tw-ring-offset-green:focus {
     --tw-ring-offset-color: #E2F8FC !important
+  }
+
+  .tw-dark .xl\:dark\:focus\:tw-ring-offset-lightCyan:focus {
+    --tw-ring-offset-color: #D9EEF2 !important
   }
 
   .xl\:tw-ring-offset-0 {
@@ -112487,6 +114359,11 @@
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
   }
 
+  .xl\:tw-ring-lightCyan {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+  }
+
   .xl\:focus-within\:tw-ring-primary:focus-within {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -112525,6 +114402,11 @@
   .xl\:focus-within\:tw-ring-green:focus-within {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+  }
+
+  .xl\:focus-within\:tw-ring-lightCyan:focus-within {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
   }
 
   .xl\:focus\:tw-ring-primary:focus {
@@ -112567,6 +114449,11 @@
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
   }
 
+  .xl\:focus\:tw-ring-lightCyan:focus {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+  }
+
   .tw-dark .xl\:dark\:tw-ring-primary {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -112605,6 +114492,11 @@
   .tw-dark .xl\:dark\:tw-ring-green {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+  }
+
+  .tw-dark .xl\:dark\:tw-ring-lightCyan {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
   }
 
   .tw-dark .xl\:dark\:focus-within\:tw-ring-primary:focus-within {
@@ -112647,6 +114539,11 @@
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
   }
 
+  .tw-dark .xl\:dark\:focus-within\:tw-ring-lightCyan:focus-within {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+  }
+
   .tw-dark .xl\:dark\:focus\:tw-ring-primary:focus {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -112685,6 +114582,11 @@
   .tw-dark .xl\:dark\:focus\:tw-ring-green:focus {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+  }
+
+  .tw-dark .xl\:dark\:focus\:tw-ring-lightCyan:focus {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
   }
 
   .xl\:tw-ring-opacity-0 {
@@ -113067,6 +114969,22 @@
     fill: #FFC549 !important
   }
 
+  .xl\:tw-fill-cyan {
+    fill: #F3FCFE !important
+  }
+
+  .xl\:tw-fill-gray {
+    fill: #999999 !important
+  }
+
+  .xl\:tw-fill-green {
+    fill: #E2F8FC !important
+  }
+
+  .xl\:tw-fill-lightCyan {
+    fill: #D9EEF2 !important
+  }
+
   .xl\:tw-stroke-current {
     stroke: currentColor !important
   }
@@ -113147,6 +115065,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .xl\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-group:hover .xl\:group-hover\:tw-text-primary {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -113185,6 +115108,11 @@
   .tw-group:hover .xl\:group-hover\:tw-text-green {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-group:hover .xl\:group-hover\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .xl\:focus-within\:tw-text-primary:focus-within {
@@ -113227,6 +115155,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .xl\:focus-within\:tw-text-lightCyan:focus-within {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .xl\:hover\:tw-text-primary:hover {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -113265,6 +115198,11 @@
   .xl\:hover\:tw-text-green:hover {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .xl\:hover\:tw-text-lightCyan:hover {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .xl\:focus\:tw-text-primary:focus {
@@ -113307,6 +115245,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .xl\:focus\:tw-text-lightCyan:focus {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-dark .xl\:dark\:tw-text-primary {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -113345,6 +115288,11 @@
   .tw-dark .xl\:dark\:tw-text-green {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-dark .xl\:dark\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .tw-dark .tw-group:hover .xl\:dark\:group-hover\:tw-text-primary {
@@ -113387,6 +115335,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .tw-dark .tw-group:hover .xl\:dark\:group-hover\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-dark .xl\:dark\:focus-within\:tw-text-primary:focus-within {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -113425,6 +115378,11 @@
   .tw-dark .xl\:dark\:focus-within\:tw-text-green:focus-within {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-dark .xl\:dark\:focus-within\:tw-text-lightCyan:focus-within {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .tw-dark .xl\:dark\:hover\:tw-text-primary:hover {
@@ -113467,6 +115425,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .tw-dark .xl\:dark\:hover\:tw-text-lightCyan:hover {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-dark .xl\:dark\:focus\:tw-text-primary:focus {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -113505,6 +115468,11 @@
   .tw-dark .xl\:dark\:focus\:tw-text-green:focus {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-dark .xl\:dark\:focus\:tw-text-lightCyan:focus {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .xl\:tw-text-opacity-0 {
@@ -120157,6 +122125,11 @@
     border-color: rgba(226, 248, 252, var(--tw-divide-opacity)) !important
   }
 
+  .\32xl\:tw-divide-lightCyan > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-divide-opacity)) !important
+  }
+
   .tw-dark .\32xl\:dark\:tw-divide-primary > :not([hidden]) ~ :not([hidden]) {
     --tw-divide-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-divide-opacity)) !important
@@ -120195,6 +122168,11 @@
   .tw-dark .\32xl\:dark\:tw-divide-green > :not([hidden]) ~ :not([hidden]) {
     --tw-divide-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-divide-opacity)) !important
+  }
+
+  .tw-dark .\32xl\:dark\:tw-divide-lightCyan > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-divide-opacity)) !important
   }
 
   .\32xl\:tw-divide-solid > :not([hidden]) ~ :not([hidden]) {
@@ -120480,6 +122458,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .\32xl\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-group:hover .\32xl\:group-hover\:tw-bg-primary {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -120518,6 +122501,11 @@
   .tw-group:hover .\32xl\:group-hover\:tw-bg-green {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-group:hover .\32xl\:group-hover\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .\32xl\:focus-within\:tw-bg-primary:focus-within {
@@ -120560,6 +122548,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .\32xl\:focus-within\:tw-bg-lightCyan:focus-within {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .\32xl\:hover\:tw-bg-primary:hover {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -120598,6 +122591,11 @@
   .\32xl\:hover\:tw-bg-green:hover {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .\32xl\:hover\:tw-bg-lightCyan:hover {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .\32xl\:focus\:tw-bg-primary:focus {
@@ -120640,6 +122638,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .\32xl\:focus\:tw-bg-lightCyan:focus {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-dark .\32xl\:dark\:tw-bg-primary {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -120678,6 +122681,11 @@
   .tw-dark .\32xl\:dark\:tw-bg-green {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-dark .\32xl\:dark\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .tw-dark .tw-group:hover .\32xl\:dark\:group-hover\:tw-bg-primary {
@@ -120720,6 +122728,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .tw-dark .tw-group:hover .\32xl\:dark\:group-hover\:tw-bg-lightCyan {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-dark .\32xl\:dark\:focus-within\:tw-bg-primary:focus-within {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -120758,6 +122771,11 @@
   .tw-dark .\32xl\:dark\:focus-within\:tw-bg-green:focus-within {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-dark .\32xl\:dark\:focus-within\:tw-bg-lightCyan:focus-within {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .tw-dark .\32xl\:dark\:hover\:tw-bg-primary:hover {
@@ -120800,6 +122818,11 @@
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
   }
 
+  .tw-dark .\32xl\:dark\:hover\:tw-bg-lightCyan:hover {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
+  }
+
   .tw-dark .\32xl\:dark\:focus\:tw-bg-primary:focus {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(255, 0, 144, var(--tw-bg-opacity)) !important
@@ -120838,6 +122861,11 @@
   .tw-dark .\32xl\:dark\:focus\:tw-bg-green:focus {
     --tw-bg-opacity: 1 !important;
     background-color: rgba(226, 248, 252, var(--tw-bg-opacity)) !important
+  }
+
+  .tw-dark .\32xl\:dark\:focus\:tw-bg-lightCyan:focus {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(217, 238, 242, var(--tw-bg-opacity)) !important
   }
 
   .\32xl\:tw-bg-none {
@@ -120916,6 +122944,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .\32xl\:tw-from-lightCyan {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .\32xl\:tw-via-primary {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -120948,6 +122981,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .\32xl\:tw-via-lightCyan {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .\32xl\:tw-to-primary {
     --tw-gradient-to: #FF0090 !important
   }
@@ -120978,6 +123015,10 @@
 
   .\32xl\:tw-to-green {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .\32xl\:tw-to-lightCyan {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .\32xl\:hover\:tw-from-primary:hover {
@@ -121020,6 +123061,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .\32xl\:hover\:tw-from-lightCyan:hover {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .\32xl\:hover\:tw-via-primary:hover {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -121052,6 +123098,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .\32xl\:hover\:tw-via-lightCyan:hover {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .\32xl\:hover\:tw-to-primary:hover {
     --tw-gradient-to: #FF0090 !important
   }
@@ -121082,6 +123132,10 @@
 
   .\32xl\:hover\:tw-to-green:hover {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .\32xl\:hover\:tw-to-lightCyan:hover {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .\32xl\:focus\:tw-from-primary:focus {
@@ -121124,6 +123178,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .\32xl\:focus\:tw-from-lightCyan:focus {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .\32xl\:focus\:tw-via-primary:focus {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -121156,6 +123215,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .\32xl\:focus\:tw-via-lightCyan:focus {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .\32xl\:focus\:tw-to-primary:focus {
     --tw-gradient-to: #FF0090 !important
   }
@@ -121186,6 +123249,10 @@
 
   .\32xl\:focus\:tw-to-green:focus {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .\32xl\:focus\:tw-to-lightCyan:focus {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .tw-dark .\32xl\:dark\:tw-from-primary {
@@ -121228,6 +123295,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .\32xl\:dark\:tw-from-lightCyan {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .\32xl\:dark\:tw-via-primary {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -121260,6 +123332,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .\32xl\:dark\:tw-via-lightCyan {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .\32xl\:dark\:tw-to-primary {
     --tw-gradient-to: #FF0090 !important
   }
@@ -121290,6 +123366,10 @@
 
   .tw-dark .\32xl\:dark\:tw-to-green {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .tw-dark .\32xl\:dark\:tw-to-lightCyan {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .tw-dark .\32xl\:dark\:hover\:tw-from-primary:hover {
@@ -121332,6 +123412,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .\32xl\:dark\:hover\:tw-from-lightCyan:hover {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .\32xl\:dark\:hover\:tw-via-primary:hover {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -121364,6 +123449,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .\32xl\:dark\:hover\:tw-via-lightCyan:hover {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .\32xl\:dark\:hover\:tw-to-primary:hover {
     --tw-gradient-to: #FF0090 !important
   }
@@ -121394,6 +123483,10 @@
 
   .tw-dark .\32xl\:dark\:hover\:tw-to-green:hover {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .tw-dark .\32xl\:dark\:hover\:tw-to-lightCyan:hover {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .tw-dark .\32xl\:dark\:focus\:tw-from-primary:focus {
@@ -121436,6 +123529,11 @@
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .\32xl\:dark\:focus\:tw-from-lightCyan:focus {
+    --tw-gradient-from: #D9EEF2 !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .\32xl\:dark\:focus\:tw-via-primary:focus {
     --tw-gradient-stops: var(--tw-gradient-from), #FF0090, var(--tw-gradient-to, rgba(255, 0, 144, 0)) !important
   }
@@ -121468,6 +123566,10 @@
     --tw-gradient-stops: var(--tw-gradient-from), #E2F8FC, var(--tw-gradient-to, rgba(226, 248, 252, 0)) !important
   }
 
+  .tw-dark .\32xl\:dark\:focus\:tw-via-lightCyan:focus {
+    --tw-gradient-stops: var(--tw-gradient-from), #D9EEF2, var(--tw-gradient-to, rgba(217, 238, 242, 0)) !important
+  }
+
   .tw-dark .\32xl\:dark\:focus\:tw-to-primary:focus {
     --tw-gradient-to: #FF0090 !important
   }
@@ -121498,6 +123600,10 @@
 
   .tw-dark .\32xl\:dark\:focus\:tw-to-green:focus {
     --tw-gradient-to: #E2F8FC !important
+  }
+
+  .tw-dark .\32xl\:dark\:focus\:tw-to-lightCyan:focus {
+    --tw-gradient-to: #D9EEF2 !important
   }
 
   .\32xl\:tw-bg-opacity-0 {
@@ -122220,6 +124326,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .\32xl\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-group:hover .\32xl\:group-hover\:tw-border-primary {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -122258,6 +124369,11 @@
   .tw-group:hover .\32xl\:group-hover\:tw-border-green {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-group:hover .\32xl\:group-hover\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .\32xl\:focus-within\:tw-border-primary:focus-within {
@@ -122300,6 +124416,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .\32xl\:focus-within\:tw-border-lightCyan:focus-within {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .\32xl\:hover\:tw-border-primary:hover {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -122338,6 +124459,11 @@
   .\32xl\:hover\:tw-border-green:hover {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .\32xl\:hover\:tw-border-lightCyan:hover {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .\32xl\:focus\:tw-border-primary:focus {
@@ -122380,6 +124506,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .\32xl\:focus\:tw-border-lightCyan:focus {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-dark .\32xl\:dark\:tw-border-primary {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -122418,6 +124549,11 @@
   .tw-dark .\32xl\:dark\:tw-border-green {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-dark .\32xl\:dark\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .tw-dark .tw-group:hover .\32xl\:dark\:group-hover\:tw-border-primary {
@@ -122460,6 +124596,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .tw-dark .tw-group:hover .\32xl\:dark\:group-hover\:tw-border-lightCyan {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-dark .\32xl\:dark\:focus-within\:tw-border-primary:focus-within {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -122498,6 +124639,11 @@
   .tw-dark .\32xl\:dark\:focus-within\:tw-border-green:focus-within {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-dark .\32xl\:dark\:focus-within\:tw-border-lightCyan:focus-within {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .tw-dark .\32xl\:dark\:hover\:tw-border-primary:hover {
@@ -122540,6 +124686,11 @@
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
   }
 
+  .tw-dark .\32xl\:dark\:hover\:tw-border-lightCyan:hover {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
+  }
+
   .tw-dark .\32xl\:dark\:focus\:tw-border-primary:focus {
     --tw-border-opacity: 1 !important;
     border-color: rgba(255, 0, 144, var(--tw-border-opacity)) !important
@@ -122578,6 +124729,11 @@
   .tw-dark .\32xl\:dark\:focus\:tw-border-green:focus {
     --tw-border-opacity: 1 !important;
     border-color: rgba(226, 248, 252, var(--tw-border-opacity)) !important
+  }
+
+  .tw-dark .\32xl\:dark\:focus\:tw-border-lightCyan:focus {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(217, 238, 242, var(--tw-border-opacity)) !important
   }
 
   .\32xl\:tw-border-opacity-0 {
@@ -128504,6 +130660,11 @@
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
   }
 
+  .\32xl\:tw-placeholder-lightCyan::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
+  }
+
   .\32xl\:focus\:tw-placeholder-primary:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-placeholder-opacity)) !important
@@ -128542,6 +130703,11 @@
   .\32xl\:focus\:tw-placeholder-green:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
+  }
+
+  .\32xl\:focus\:tw-placeholder-lightCyan:focus::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
   }
 
   .tw-dark .\32xl\:dark\:tw-placeholder-primary::placeholder {
@@ -128584,6 +130750,11 @@
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
   }
 
+  .tw-dark .\32xl\:dark\:tw-placeholder-lightCyan::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
+  }
+
   .tw-dark .\32xl\:dark\:focus\:tw-placeholder-primary:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-placeholder-opacity)) !important
@@ -128622,6 +130793,11 @@
   .tw-dark .\32xl\:dark\:focus\:tw-placeholder-green:focus::placeholder {
     --tw-placeholder-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-placeholder-opacity)) !important
+  }
+
+  .tw-dark .\32xl\:dark\:focus\:tw-placeholder-lightCyan:focus::placeholder {
+    --tw-placeholder-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-placeholder-opacity)) !important
   }
 
   .\32xl\:tw-placeholder-opacity-0::placeholder {
@@ -132065,6 +134241,10 @@
     --tw-ring-offset-color: #E2F8FC !important
   }
 
+  .\32xl\:tw-ring-offset-lightCyan {
+    --tw-ring-offset-color: #D9EEF2 !important
+  }
+
   .\32xl\:focus-within\:tw-ring-offset-primary:focus-within {
     --tw-ring-offset-color: #FF0090 !important
   }
@@ -132095,6 +134275,10 @@
 
   .\32xl\:focus-within\:tw-ring-offset-green:focus-within {
     --tw-ring-offset-color: #E2F8FC !important
+  }
+
+  .\32xl\:focus-within\:tw-ring-offset-lightCyan:focus-within {
+    --tw-ring-offset-color: #D9EEF2 !important
   }
 
   .\32xl\:focus\:tw-ring-offset-primary:focus {
@@ -132129,6 +134313,10 @@
     --tw-ring-offset-color: #E2F8FC !important
   }
 
+  .\32xl\:focus\:tw-ring-offset-lightCyan:focus {
+    --tw-ring-offset-color: #D9EEF2 !important
+  }
+
   .tw-dark .\32xl\:dark\:tw-ring-offset-primary {
     --tw-ring-offset-color: #FF0090 !important
   }
@@ -132159,6 +134347,10 @@
 
   .tw-dark .\32xl\:dark\:tw-ring-offset-green {
     --tw-ring-offset-color: #E2F8FC !important
+  }
+
+  .tw-dark .\32xl\:dark\:tw-ring-offset-lightCyan {
+    --tw-ring-offset-color: #D9EEF2 !important
   }
 
   .tw-dark .\32xl\:dark\:focus-within\:tw-ring-offset-primary:focus-within {
@@ -132193,6 +134385,10 @@
     --tw-ring-offset-color: #E2F8FC !important
   }
 
+  .tw-dark .\32xl\:dark\:focus-within\:tw-ring-offset-lightCyan:focus-within {
+    --tw-ring-offset-color: #D9EEF2 !important
+  }
+
   .tw-dark .\32xl\:dark\:focus\:tw-ring-offset-primary:focus {
     --tw-ring-offset-color: #FF0090 !important
   }
@@ -132223,6 +134419,10 @@
 
   .tw-dark .\32xl\:dark\:focus\:tw-ring-offset-green:focus {
     --tw-ring-offset-color: #E2F8FC !important
+  }
+
+  .tw-dark .\32xl\:dark\:focus\:tw-ring-offset-lightCyan:focus {
+    --tw-ring-offset-color: #D9EEF2 !important
   }
 
   .\32xl\:tw-ring-offset-0 {
@@ -132325,6 +134525,11 @@
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
   }
 
+  .\32xl\:tw-ring-lightCyan {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+  }
+
   .\32xl\:focus-within\:tw-ring-primary:focus-within {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -132363,6 +134568,11 @@
   .\32xl\:focus-within\:tw-ring-green:focus-within {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+  }
+
+  .\32xl\:focus-within\:tw-ring-lightCyan:focus-within {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
   }
 
   .\32xl\:focus\:tw-ring-primary:focus {
@@ -132405,6 +134615,11 @@
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
   }
 
+  .\32xl\:focus\:tw-ring-lightCyan:focus {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+  }
+
   .tw-dark .\32xl\:dark\:tw-ring-primary {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -132443,6 +134658,11 @@
   .tw-dark .\32xl\:dark\:tw-ring-green {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+  }
+
+  .tw-dark .\32xl\:dark\:tw-ring-lightCyan {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
   }
 
   .tw-dark .\32xl\:dark\:focus-within\:tw-ring-primary:focus-within {
@@ -132485,6 +134705,11 @@
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
   }
 
+  .tw-dark .\32xl\:dark\:focus-within\:tw-ring-lightCyan:focus-within {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
+  }
+
   .tw-dark .\32xl\:dark\:focus\:tw-ring-primary:focus {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(255, 0, 144, var(--tw-ring-opacity)) !important
@@ -132523,6 +134748,11 @@
   .tw-dark .\32xl\:dark\:focus\:tw-ring-green:focus {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgba(226, 248, 252, var(--tw-ring-opacity)) !important
+  }
+
+  .tw-dark .\32xl\:dark\:focus\:tw-ring-lightCyan:focus {
+    --tw-ring-opacity: 1 !important;
+    --tw-ring-color: rgba(217, 238, 242, var(--tw-ring-opacity)) !important
   }
 
   .\32xl\:tw-ring-opacity-0 {
@@ -132905,6 +135135,22 @@
     fill: #FFC549 !important
   }
 
+  .\32xl\:tw-fill-cyan {
+    fill: #F3FCFE !important
+  }
+
+  .\32xl\:tw-fill-gray {
+    fill: #999999 !important
+  }
+
+  .\32xl\:tw-fill-green {
+    fill: #E2F8FC !important
+  }
+
+  .\32xl\:tw-fill-lightCyan {
+    fill: #D9EEF2 !important
+  }
+
   .\32xl\:tw-stroke-current {
     stroke: currentColor !important
   }
@@ -132985,6 +135231,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .\32xl\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-group:hover .\32xl\:group-hover\:tw-text-primary {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -133023,6 +135274,11 @@
   .tw-group:hover .\32xl\:group-hover\:tw-text-green {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-group:hover .\32xl\:group-hover\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .\32xl\:focus-within\:tw-text-primary:focus-within {
@@ -133065,6 +135321,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .\32xl\:focus-within\:tw-text-lightCyan:focus-within {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .\32xl\:hover\:tw-text-primary:hover {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -133103,6 +135364,11 @@
   .\32xl\:hover\:tw-text-green:hover {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .\32xl\:hover\:tw-text-lightCyan:hover {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .\32xl\:focus\:tw-text-primary:focus {
@@ -133145,6 +135411,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .\32xl\:focus\:tw-text-lightCyan:focus {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-dark .\32xl\:dark\:tw-text-primary {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -133183,6 +135454,11 @@
   .tw-dark .\32xl\:dark\:tw-text-green {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-dark .\32xl\:dark\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .tw-dark .tw-group:hover .\32xl\:dark\:group-hover\:tw-text-primary {
@@ -133225,6 +135501,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .tw-dark .tw-group:hover .\32xl\:dark\:group-hover\:tw-text-lightCyan {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-dark .\32xl\:dark\:focus-within\:tw-text-primary:focus-within {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -133263,6 +135544,11 @@
   .tw-dark .\32xl\:dark\:focus-within\:tw-text-green:focus-within {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-dark .\32xl\:dark\:focus-within\:tw-text-lightCyan:focus-within {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .tw-dark .\32xl\:dark\:hover\:tw-text-primary:hover {
@@ -133305,6 +135591,11 @@
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
   }
 
+  .tw-dark .\32xl\:dark\:hover\:tw-text-lightCyan:hover {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
+  }
+
   .tw-dark .\32xl\:dark\:focus\:tw-text-primary:focus {
     --tw-text-opacity: 1 !important;
     color: rgba(255, 0, 144, var(--tw-text-opacity)) !important
@@ -133343,6 +135634,11 @@
   .tw-dark .\32xl\:dark\:focus\:tw-text-green:focus {
     --tw-text-opacity: 1 !important;
     color: rgba(226, 248, 252, var(--tw-text-opacity)) !important
+  }
+
+  .tw-dark .\32xl\:dark\:focus\:tw-text-lightCyan:focus {
+    --tw-text-opacity: 1 !important;
+    color: rgba(217, 238, 242, var(--tw-text-opacity)) !important
   }
 
   .\32xl\:tw-text-opacity-0 {

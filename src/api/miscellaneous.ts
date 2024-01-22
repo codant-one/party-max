@@ -14,16 +14,12 @@ class Miscellaneous {
         return axios.get('/miscellaneous/faqs/all')
     }
 
-    blogs(){
-        return axios.get('/miscellaneous/blogs/populars')
+    blogs(params: Object){
+        return axios.get(`/miscellaneous/blogs/populars`, {params})
     }
 
     blog(slug: string){
         return axios.get(`/miscellaneous/blogs/${slug}`)
-    }
-
-    blogsByCategory(slug: string){
-        return axios.get(`/miscellaneous/blogs/categories/${slug}`)
     }
 
     products(params: Object) {

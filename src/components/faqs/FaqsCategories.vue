@@ -20,18 +20,18 @@ const props = defineProps({
 
         <VCardTitle 
             :id="props.name"
-            class=" name-text pt-8">
+            class=" name-text pt-3 pt-md-8">
             {{ props.name }}
         </VCardTitle>
 
         <VCardText>
-            <VRow style="margin-top: 10px">
+            <VRow class="mt-0 mt-md-3">
               <VCol
                 v-show="items.length"
                 cols="12"
                 sm="12"
                 lg="12"
-                class="position-relative mt-1"
+                class="position-relative mt-0 mt-md-1"
               >
                 <VExpansionPanels
                     variant="inset"

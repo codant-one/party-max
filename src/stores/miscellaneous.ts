@@ -27,23 +27,10 @@ export const useMiscellaneousStores = defineStore('miscellaneous', {
                 })
             
         },
-        blogs() {
+        blogs(params: Object) {
             this.setLoading(true)
-            
-            return Miscellaneous.blogs()
-                .then((response) => {
-                    return Promise.resolve(response.data.data)
-                })
-                .catch(error => Promise.reject(error))
-                .finally(() => {
-                    this.setLoading(false)
-                })
-            
-        },
-        blogsByCategory(slug: string) {
-            this.setLoading(true)
-            
-            return Miscellaneous.blogsByCategory(slug)
+
+            return Miscellaneous.blogs(params)
                 .then((response) => {
                     return Promise.resolve(response.data.data)
                 })

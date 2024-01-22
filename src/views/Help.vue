@@ -28,7 +28,7 @@ const setFocus = async(category) => {
 </script>
 
 <template>
-  <VContainer class="mt-10 text-center">
+  <VContainer class="mt-1 mt-md-10 text-center">
     <Loader :isLoading="isLoading"/>
     <VCard flat class="text-center card-header">
       <VCardText>
@@ -85,7 +85,7 @@ const setFocus = async(category) => {
         cols="12"
         sm="12"
         lg="12"
-        class="position-relative mt-3 mb-15"
+        class="position-relative mt-md-3 mb-0 mb-md-15"
       >
         <FaqsCategories 
           v-for="category in categories"

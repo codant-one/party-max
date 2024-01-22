@@ -1,53 +1,59 @@
-<script setup lang="ts">
+<script setup>
 
 import { ref } from 'vue'
 import { useMiscellaneousStores } from '@/stores/miscellaneous' 
-import blogsCard from '@/components/blogs/blogCard.vue'
-import blogSearchCard from '@/components/blogs/blogSearchCard.vue'
+import Card from '@/components/blogs/Card.vue'
+import Search from '@/components/blogs/Search.vue'
 import Loader from '@/components/common/Loader.vue'
 
 const blogsStores = useMiscellaneousStores()
-
-const blogs = ref([])
-const categories = ref([])
-const isLoading = ref(true)
 const route = useRoute()
 
-const fetchData = async () => {
+const blogs = ref([])
+const tags = ref([])
+const latestBlogs = ref([])
+const isLoading = ref(true)
+
+watchEffect(fetchData)
+
+async function fetchData() {
   isLoading.value = true
+
+  let data = {
+    tag: route.query.tag ?? null,
+    search: route.query.search ?? null,
+  }
   
-  let response = await blogsStores.blogs()
+  let response = await blogsStores.blogs(data)
     
   blogs.value = response.blogs
-  categories.value = response.categories
+  tags.value = response.tags
+  latestBlogs.value = response.latestBlogs
   
   isLoading.value = false  
 }
 
-fetchData()
-
 </script>
 
 <template>
-  <VContainer class="mt-10">
+  <VContainer class="mt-1 mt-md-10">
     <Loader :isLoading="isLoading"/>
-    <!-- slider -->
     <VRow 
       v-show="blogs.length"
       class="d-flex justify-center"
     >
       <VCol cols="12" md="8">
-         <blogsCard
-            v-for="blog in blogs.slice(0, 3)"
+         <Card
+            v-for="blog in blogs"
             :blog="blog"
             :type="1"
          />
       </VCol>
 
       <VCol cols="12" md="4">
-        <blogSearchCard
-          :blogs="blogs.slice(0, 4)"
-          :categories="categories"
+        <Search
+          :blogs="latestBlogs"
+          :tags="tags"
         />   
       </VCol>
     </VRow> 

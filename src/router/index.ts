@@ -3,7 +3,6 @@ import Home from '@/views/Home.vue'
 import Testing from '@/views/Testing.vue'
 import Blogs from '@/views/blogs/index.vue'
 import BlogDetail from '@/views/blogs/detail.vue'
-import BlogsByCategory from '@/views/blogs/blogsByCategory.vue'
 import About from '@/views/About.vue'
 import Help from '@/views/Help.vue'
 import Categories from '@/views/categories/index.vue'
@@ -19,7 +18,6 @@ import Login from '@/views/Login.vue'
 import Cart from '@/views/cart/index.vue'
 import Dashboard from '@/views/dashboard/index.vue'
 import Profile from '@/views/dashboard/profile/index.vue'
-import Testing2 from '@/views/dashboard/profile/testing.vue'
 import information_client from '@/views/dashboard/profile/information.vue'
 import security_client from '@/views/dashboard/profile/security.vue'
 import address_client from '@/views/dashboard/profile/address.vue'
@@ -57,11 +55,6 @@ const router = createRouter({
       path: '/blogs/:slug',
       name: 'blogDetail',
       component: BlogDetail
-    },
-    {
-      path: '/blogs/categories/:slug',
-      name: 'blogsByCategory',
-      component: BlogsByCategory
     },
     {
       path: '/about-us',
@@ -136,11 +129,8 @@ const router = createRouter({
       children: [
         {
           path: '/dashboard',
+          name: 'profile',
           component: Profile,
-        },
-        {
-          path: '/testing2',
-          component: Testing2,
         },
         {
           path: '/mydata',
