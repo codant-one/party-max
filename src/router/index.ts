@@ -18,7 +18,6 @@ import Login from '@/views/Login.vue'
 import Cart from '@/views/cart/index.vue'
 import Dashboard from '@/views/dashboard/index.vue'
 import Profile from '@/views/dashboard/profile/index.vue'
-import Testing2 from '@/views/dashboard/profile/testing.vue'
 import information_client from '@/views/dashboard/profile/information.vue'
 import security_client from '@/views/dashboard/profile/security.vue'
 import address_client from '@/views/dashboard/profile/address.vue'
@@ -130,11 +129,8 @@ const router = createRouter({
       children: [
         {
           path: '/dashboard',
+          name: 'profile',
           component: Profile,
-        },
-        {
-          path: '/testing2',
-          component: Testing2,
         },
         {
           path: '/mydata',

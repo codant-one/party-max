@@ -20,6 +20,7 @@
   const categories_ = ref([])
   const categoriesSearch = ref(null)
   const textSearch = ref(null)
+  const user_data = ref(authStores.getUser)
   const name = ref(null)
 
   const cols = ref(12)
@@ -41,6 +42,12 @@
     { id: 3, name: 'item 3', children: [{ id: 1, name: 'item 3 (1)' }, { id: 2, name: 'item 3 (2)' }] }
   ])
 
+  watch(() => 
+    authStores.getUser, (user) => {
+      user_data.value = user
+      name.value = (user_data.value === null) ? null : (user_data.value.name + ' ' +(user_data.value.last_name ?? ''))
+    });
+
   watchEffect(fetchData)
 
   async function fetchData() {
@@ -51,17 +58,6 @@
     categories_.value = [{ id: 0, name: 'Todos' }, ...categories.value];
 
     color.value = (isMobile.value) ? '#FFFFFF' : '#FF0090'
-
-    me()
-  }
-
-  const me = async () => {
-    if(localStorage.getItem('user_data')){
-      const userData = localStorage.getItem('user_data')
-      const userDataJ = JSON.parse(userData)
-
-      name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
-    }
   }
 
   const logout = () => {
@@ -71,9 +67,7 @@
         localStorage.removeItem('accessToken')// Remove "accessToken" from localStorage
         localStorage.removeItem('userAbilities')// Remove "userAbilities" from localStorage
 
-        router.push({ name: 'login' }).catch(() => {}).finally(() => {
-            location.reload(true);
-        });
+        router.push({ name: 'login' });
     })
   }
 
@@ -319,7 +313,7 @@
                     <VListItemTitle class="px-5"><b>Hola</b></VListItemTitle>
                     <VListItemTitle class="px-5 mb-5">{{name}}</VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header" :to=" { name : 'dashboard' }">
+                      <router-link class="link-header" :to=" { name : 'profile' }">
                         Dashboard
                       </router-link>
                     </VListItemTitle>
@@ -377,7 +371,7 @@
                     <VListItemTitle class="px-5"><b>Hola</b></VListItemTitle>
                     <VListItemTitle class="px-5 mb-5">{{name}}</VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header" :to=" { name : 'dashboard' }">
+                      <router-link class="link-header" :to=" { name : 'profile' }">
                         Dashboard
                       </router-link>
                     </VListItemTitle>

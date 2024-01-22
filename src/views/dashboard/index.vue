@@ -37,7 +37,7 @@ const me = async () => {
 <template>
     <VLayout>
         <VNavigationDrawer 
-        v-model="drawer"
+            v-model="drawer"
             class="custom-background"
             app 
             floating
@@ -73,9 +73,7 @@ const me = async () => {
             </VList>
         </VNavigationDrawer>
         <VMain class="d-flex align-center justify-center" style="min-height: 300px; background-color: #E2F8FC;">
-
             <router-view/>
-           
         </VMain>
     </VLayout>
 
