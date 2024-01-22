@@ -34,7 +34,6 @@ const inputChange = () => {
   }
 }
 
-
 const register = () => {
   load.value = true
 

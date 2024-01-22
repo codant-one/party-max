@@ -154,7 +154,7 @@
           </VListItemTitle>          
           <VListItemTitle class="d-block lineheight borderList py-2">
             <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-              <span class="d-block title-menu">Blog</span>
+              <span class="d-block title-menu">Blogs</span>
             </router-link>
           </VListItemTitle>
           <VListItemTitle class="d-block lineheight borderList py-2">

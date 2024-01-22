@@ -23,7 +23,8 @@ module.exports = {
       yellow: '#FFC549',
       cyan: '#F3FCFE',
       gray: '#999999',
-      green: '#E2F8FC'
+      green: '#E2F8FC',
+      lightCyan: '#D9EEF2'
     },
     fill: {
       primary: '#FF0090',
@@ -31,6 +32,10 @@ module.exports = {
       tertiary: '#0A1B33',
       white: '#FFFFFF',
       yellow: '#FFC549',
+      cyan: '#F3FCFE',
+      gray: '#999999',
+      green: '#E2F8FC',
+      lightCyan: '#D9EEF2'
     },
     screens: {
       'xs': '320px',
