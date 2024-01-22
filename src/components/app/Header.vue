@@ -317,7 +317,7 @@
                 <VList>
                   <VListItem class="px-0">
                     <VListItemTitle class="px-5"><b>Hola</b></VListItemTitle>
-                    <VListItemTitle class="px-5 mb-5">{{name}}</VListItemTitle>
+                    <VListItemTitle class="px-5 mb-5 line-div tw-text-primary">{{name}}</VListItemTitle>
                     <VListItemTitle class="px-5">
                       <router-link class="link-header" :to=" { name : 'dashboard' }">
                         Dashboard
@@ -375,7 +375,7 @@
                 <VList>
                   <VListItem class="px-0">
                     <VListItemTitle class="px-5"><b>Hola</b></VListItemTitle>
-                    <VListItemTitle class="px-5 mb-5">{{name}}</VListItemTitle>
+                    <VListItemTitle class="px-5 mb-5 line-div tw-text-primary">{{name}}</VListItemTitle>
                     <VListItemTitle class="px-5">
                       <router-link class="link-header" :to=" { name : 'dashboard' }">
                         Dashboard
@@ -692,6 +692,11 @@
 
   .style-submenu .v-list-item--density-default.v-list-item--one-line {
     min-height: 20px !important;
+  }
+
+  .line-div
+  {
+    border-bottom: 1px solid var(--Light-Cyan-3, #D9EEF2)!important;
   }
 
   @media (max-width: 768px) {
