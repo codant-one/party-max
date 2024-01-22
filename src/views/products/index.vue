@@ -36,13 +36,17 @@ const categories = ref(null)
 const products = ref([])
 const tab = ref('0')
 const category = ref(null)
+const toggle = ref(null)
 
 const rowPerPage = ref(12)
 const currentPage = ref(1)
 const totalPages = ref(1)
 const totalProducts = ref(0)
 
+
 const categories_url = ref(null)
+
+const color_chip = ref(['#ffff00','#0000ff','#FF0000','#008f39', '#9b9b9b','#FF0090','#2ef8a0','00b8ff'])
 
 const formatTitle = (slug) => {
   const words = slug.split('-');
@@ -205,6 +209,33 @@ const valores = ref([10, 200])
                 />
               </v-card-text>
 
+              <v-card-text class="text-left align-left p-0 mt-4">
+                
+                  <div class="d-flex align-center flex-column">
+                    <v-btn-toggle
+                      v-model="toggle"
+                      color="primary"
+                      class="tw-bg-none"
+                      mandatory
+                      style="flex-wrap: wrap; height: auto;"
+                    >
+                      <v-btn class="button-chip" variant="text"><v-chip :style="{background:color_chip[0]}"  class="color-chip"></v-chip></v-btn>
+                      <v-btn class="button-chip" variant="text"><v-chip :style="{background:color_chip[1]}"  class="color-chip"></v-chip></v-btn>
+                      <v-btn class="button-chip" variant="text"><v-chip :style="{background:color_chip[2]}" class="color-chip"></v-chip></v-btn>
+                      <v-btn class="button-chip" variant="text"><v-chip :style="{background:color_chip[3]}"  class="color-chip"></v-chip></v-btn>
+                      <v-btn class="button-chip" variant="text"><v-chip :style="{background:color_chip[4]}"  class="color-chip"></v-chip></v-btn>
+                      <v-btn class="button-chip" variant="text"><v-chip :style="{background:color_chip[5]}" class="color-chip"></v-chip></v-btn>
+                      <v-btn class="button-chip" variant="text"><v-chip :style="{background:color_chip[6]}"  class="color-chip"></v-chip></v-btn>
+                      <v-btn class="button-chip" variant="text"><v-chip :style="{background:color_chip[7]}"  class="color-chip"></v-chip></v-btn>
+                      
+                      
+                    </v-btn-toggle>
+                  
+                  </div>
+              
+
+              </v-card-text>
+
               <v-checkbox class="custom-check tw-text-tertiary"
                 v-for="(item, index) in items_check"
                 :key="index"
@@ -330,6 +361,18 @@ const valores = ref([10, 200])
 </template>
 
 <style scoped>
+
+.color-chip {
+  width: 25!important;
+  height: 25px!important;
+  border-radius: 50%;
+  opacity: 1!important;
+}
+
+.button-chip {
+  padding: 0;
+  opacity: 1!important;
+}
   .breadcumb {
     height: 55px !important;
   }
@@ -413,6 +456,11 @@ const valores = ref([10, 200])
     font-style: normal;
     font-weight: 400;
   }
+
+  .color-chip {
+  margin: 4px;
+  cursor: pointer;
+}
 
   @media only screen and (max-width: 767px)
   {
