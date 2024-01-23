@@ -3,12 +3,26 @@ import Profile from '@/api/profile'
 
 export const useProfileStores = defineStore('profile',{
     state: () => ({
+        countries: {},
+        provinces: {},
+        genders: {},
         user: null
     }),
     getters:{
         getUser(): any {
             return this.user
-        }
+        },
+        getCountries() {
+            return this.countries
+          },
+        getProvinces() {
+            return this.provinces
+        },
+
+        getGenders() {
+            return this.genders
+          }
+        
     },
     actions: {
     change_password(data: object) {
@@ -40,6 +54,49 @@ export const useProfileStores = defineStore('profile',{
             }).catch(error => {
                 return Promise.reject(error)
             })
+    },
+
+    setLoading(payload){
+        this.loading = payload
+    },
+
+    fetchCountries(){
+        this.setLoading(true)
+
+        return Profile.get_countries()
+            .then((countries) => {
+                this.countries = countries.data.data
+            })
+            .catch(error => Promise.reject(error))
+            .finally(() => {
+                this.setLoading(false)
+            });
+    },
+
+    fetchProvinces(){
+        this.setLoading(true)
+
+        return Profile.get_provinces()
+            .then((provinces) => {
+                this.provinces = provinces.data.data
+            })
+            .catch(error => Promise.reject(error))
+            .finally(() => {
+                this.setLoading(false)
+            });
+    },
+
+    fetchGenders(){
+        this.setLoading(true)
+
+        return Profile.get_gender()
+            .then((genders) => {
+                this.genders = genders.data.data
+            })
+            .catch(error => Promise.reject(error))
+            .finally(() => {
+                this.setLoading(false)
+            });
     }
 }
 })
