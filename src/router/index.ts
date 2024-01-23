@@ -134,10 +134,12 @@ const router = createRouter({
         },
         {
           path: '/mydata',
+          name: 'information_client',
           component: information_client,
         },
         {
           path: '/security',
+          name: 'security_client',
           component: security_client,
         },
         {

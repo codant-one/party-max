@@ -1,6 +1,14 @@
 <script setup>
 
+import { useProfileStores } from '@/stores/profile'
+import { requiredValidator } from '@validators'
+import router from '@/router'
+
 import icon_right from '@assets/icons/right-icon.svg';
+import festin_about from '@assets/images/festin-aboutus.jpg';
+import festin_cancel from '@assets/images/festin_cancel.jpg';
+
+const profileStores = useProfileStores()
 
 const load = ref(false)
 const refVForm = ref()
@@ -14,11 +22,51 @@ const document= ref(null)
 const country = ref(null)
 const address = ref(null)
 const dialog = ref(false)
+const isDialogVisible = ref(false)
+const message = ref()
+const isError = ref(false)
+
+const newfname = ref(null) 
+const newlname = ref(null)
+const newdocument = ref(null)
+const newaddress = ref(null)
+const newbirthday = ref(null)
+const newgender = ref(null)
+const newprovince = ref(null)
+const newusername = ref(null)
+
+const errors = ref({
+  newfname: undefined,
+  newlname: undefined,
+  newdocument: undefined,
+  newaddress: undefined,
+  newbirthday: undefined,
+  newgender: undefined,
+  newprovince: undefined,
+  newusername: undefined
+})
+
+
+const inputChange = () => {
+  errors.value = {
+    newfname: undefined,
+    newlname: undefined,
+    newdocument: undefined,
+    newaddress: undefined,
+    newbirthday: undefined,
+    newgender: undefined,
+    newprovince: undefined,
+    newusername: undefined
+  }
+}
+
 
 const me = async () => {
     if(localStorage.getItem('user_data')){
       const userData = localStorage.getItem('user_data')
       const userDataJ = JSON.parse(userData)
+
+      console.log(userDataJ)
 
       name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
       first_name.value = userDataJ.name
@@ -28,11 +76,77 @@ const me = async () => {
       document.value = userDataJ.user_details.document 
       country.value = userDataJ.user_details.province.country.name
       address.value = userDataJ.user_details.address
+
+      newfname.value = userDataJ.name
+      newlname.value = userDataJ.last_name
+      newdocument.value = userDataJ.user_details.document
+      newaddress.value = userDataJ.user_details.address
+      newbirthday.value = userDataJ.client.birthday
+      newgender.value = userDataJ.client.gender_id 
+      newprovince.value = userDataJ.user_details.province_id 
+      newusername.value = userDataJ.username
+
     }
   }
 
 const onSubmit = () => {
-    console.log('lcik')
+    refVForm.value?.validate().then(({ valid: isValid }) => {
+        if (isValid) {
+
+            load.value = true
+
+            let data = {
+                name: newfname.value,
+                last_name: newlname.value,
+                document: newdocument.value,
+                address: newaddress.value,
+                gender_id: newgender.value,
+                province_id: newprovince.value,
+                username: newusername.value,
+                birthday: newbirthday.value
+            }
+
+            profileStores.update_profile(data)
+                .then(response => {
+                    isDialogVisible.value = true
+                    message.value = response.data
+                    
+
+                    setTimeout(() => {
+                        isDialogVisible.value = false
+                        message.value = ''
+                        isError.value = false
+                        router.push({ name: 'information_client' })
+                    }, 5000)
+
+                    load.value = false                    
+                    
+                }).catch(err => {
+
+                    load.value = false
+
+                    if(err.message === 'error'){
+                        isDialogVisible.value = true
+                        message.value = err.errors
+                        isError.value = true
+                    } else {
+                        isDialogVisible.value = true
+                        isError.value = true
+                        message.value = 'Se ha producido un error...! (Server Error)'
+                    }                    
+
+                    setTimeout(() => {
+                        isDialogVisible.value = false
+                        message.value = ''
+                        isError.value = false
+                    }, 5000)
+
+                    console.error(err.message)
+                })
+
+        }
+    
+    })
 }
   
 me() 
@@ -111,17 +225,7 @@ me()
                     </VCol>
 
                 </VRow>
-
-                <VRow align="center" class="mt-10 mb-5" no-gutters>
-
-                    <VCol cols="4">
-                        <span class="labels tw-text-tertiary">Teléfono</span>
-                    </VCol>
-                    <VCol cols="8" class="col-info">
-                        <span class="labels tw-text-gray">{{ phone }}</span>
-                    </VCol>
-
-                </VRow>  
+  
                 
                 <VRow align="center" class="mt-10 mb-5" no-gutters>
 
@@ -160,19 +264,11 @@ me()
                                 >
                                     <v-text-field
                                         label="Nombre"
-                                        v-model="first_name"
+                                        v-model="newfname"
                                         variant="outlined"
-                                        required
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col
-                                    cols="12"
-                                    md="6"
-                                >
-                                    <v-text-field
-                                        label="Apellido"
-                                        v-model="last_name"
-                                        variant="outlined"
+                                        :rules="[requiredValidator]"
+                                        :error-messages="errors.newfname"
+                                        @input="inputChange()"
                                         
                                     ></v-text-field>
                                 </v-col>
@@ -181,26 +277,96 @@ me()
                                     md="6"
                                 >
                                     <v-text-field
-                                        label="Nro Documento"
-                                        v-model="document"
+                                        label="Apellido"
+                                        v-model="newlname"
                                         variant="outlined"
-                                        required
+                                        :rules="[requiredValidator]"
+                                        :error-messages="errors.newlname"
+                                        @input="inputChange()"
+                                        
                                     ></v-text-field>
                                 </v-col>
+
+                                <v-col
+                                    cols="12"
+                                    md="6"
+                                >
+                                    <v-text-field
+                                        label="Username"
+                                        v-model="newusername"
+                                        variant="outlined"
+                                        :rules="[requiredValidator]"
+                                        :error-messages="errors.newusername"
+                                        @input="inputChange()"
+                                        
+                                    ></v-text-field>
+                                </v-col>
+
+                                <v-col
+                                    cols="12"
+                                    md="6"
+                                >
+                                    <v-text-field
+                                        label="Fecha de nacimiento"
+                                        v-model="newbirthday"
+                                        type="date"
+                                        variant="outlined"
+                                        :rules="[requiredValidator]"
+                                        :error-messages="errors.newbirthday"
+                                        @input="inputChange()"
+                                    ></v-text-field>
+                                </v-col>
+
+                                <v-col
+                                    cols="12"
+                                    md="6"
+                                >
+                                    <v-text-field
+                                        label="Nro Documento"
+                                        v-model="newdocument"
+                                        variant="outlined"
+                                        :rules="[requiredValidator]"
+                                        :error-messages="errors.newdocument"
+                                        @input="inputChange()"
+                                    ></v-text-field>
+                                </v-col>
+
+                                <v-col
+                                    cols="12"
+                                    md="6"
+                                >
+                                    <v-text-field
+                                        label="Genero"
+                                        v-model="newgender"
+                                        variant="outlined"
+                                        :rules="[requiredValidator]"
+                                        :error-messages="errors.newgender"
+                                        @input="inputChange()"
+                                    ></v-text-field>
+                                </v-col>
+
+                                <v-col
+                                    cols="12"
+                                    md="6"
+                                >
+                                    <v-text-field
+                                        label="País"
+                                        v-model="newprovince"
+                                        variant="outlined"
+                                        :rules="[requiredValidator]"
+                                        :error-messages="errors.newprovince"
+                                        @input="inputChange()"
+                                    ></v-text-field>
+                                </v-col>
+
                                 <v-col cols="12" md="6">
                                     <v-text-field
-                                        label="Teléfono"
-                                        v-model="phone"
-                                        variant="outlined"
-                                        required
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col cols="12">
-                                    <v-text-field
                                         label="Dirección"
-                                        v-model="address"
+                                        v-model="newaddress"
                                         variant="outlined"
-                                        required
+                                        :rules="[requiredValidator]"
+                                        :error-messages="errors.newaddress"
+                                        @input="inputChange()"
                                     ></v-text-field>
                                 </v-col>
 
@@ -239,6 +405,19 @@ me()
                     </v-card-actions>
                 </VCard>
             </VForm>
+        </VDialog>
+
+        <!--PopUp de respuesta-->
+
+        <VDialog v-model="isDialogVisible" >
+            <VCard 
+                :width="800"
+                class="py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
+                <VImg width="100" :src="isError ? festin_cancel : festin_about" class="mx-auto"/>
+                <VCardText class="text-register p-0 mb-5">
+                    {{ message }}
+                </VCardText>
+            </VCard>
         </VDialog>
     </VContainer>
 </template>
