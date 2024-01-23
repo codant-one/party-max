@@ -19,15 +19,22 @@
   const categories = ref([])
   const categories_ = ref([])
   const categoriesSearch = ref(null)
+  const services = ref([])
   const textSearch = ref(null)
   const user_data = ref(authStores.getUser)
   const name = ref(null)
 
   const cols = ref(12)
+  const colse = ref(12)
   const category = ref(1)
+  const service = ref(1)
   const width = ref(260)
+  const widths = ref(260)
   const openMenu = ref(false)
   const menuOpen = ref(false)
+
+  const openMenuS = ref(false)
+  const menuOpenS = ref(false)
 
   const cant_shop = 1;
 
@@ -53,7 +60,8 @@
   async function fetchData() {
     await homeStores.fetchData()
     categories.value = homeStores.getData.parentCategories
-
+    services.value = homeStores.getData.parentServices
+  
     categoriesSearch.value = 0
     categories_.value = [{ id: 0, name: 'Todos' }, ...categories.value];
 
@@ -77,6 +85,13 @@
     width.value = 750
   }
 
+  const openService = (id) => {
+    colse.value = 6
+    service.value = id - 161
+    widths.value = 750
+    console.log(service.value)
+  }
+
   const chanceMenu = () => {
     cols.value = (openMenu.value === true) ? 6 : 12
     category.value = 0
@@ -87,6 +102,18 @@
   const closeMenu = () => {
     menuOpen.value = false
     chanceMenu()
+  }
+
+  const chanceMenuS = () => {
+    colse.value = (openMenuS.value === true) ? 6 : 12
+    service.value = 0
+    widths.value = (openMenuS.value === true) ? 750 : 260
+    openMenuS.value = (openMenuS.value === true) ? false : true
+  }
+
+  const closeMenuS = () => {
+    menuOpenS.value = false
+    chanceMenuS()
   }
 
   const search = () => {
@@ -418,13 +445,25 @@
                       v-for="(item, index) in categories"
                       :key="index">
                         <div class="d-flex hover-icon-right tw-cursor-pointer" >
-                          <span 
+                          <span v-if="item.children.length>0"
                             class="subtitle-menu" 
                             @click="openCategory(item.id)">
                             {{ item.name }}
                           </span>
+
+                          <router-link 
+                            :to="{
+                                  name: 'categories',
+                                  params: {
+                                  slug: item.slug
+                                  }
+                                }" 
+                            class="subtitle-menu tw-no-underline"   
+                            v-else>{{ item.name }}
+                          </router-link> 
                           <VSpacer />
-                          <icon_right/> 
+                          <icon_right v-if="item.children.length>0"/> 
+                           
                         </div>
                     </VListItem>
                   </VList>
@@ -457,8 +496,83 @@
           </VMenu>
           </div>
         <div class="hover:tw-text-yellow">
-          <VAppBarNavIcon variant="text"/>
-          <span class="font-size-16 tw-cursor-pointer">Servicios</span>
+          <VMenu 
+            v-model="menuOpenS"
+            transition="slide-x-transition" 
+            location="bottom"
+            :close-on-content-click="false"
+            @update:modelValue="chanceMenuS">
+            <template  v-slot:activator="{ props }">
+              <div v-bind="props">
+                <VAppBarNavIcon variant="text" />
+                <span class="font-size-16 me-7 tw-cursor-pointer">Servicios</span>
+              </div>
+            </template>
+            <VCard class="style-menu" :width="widths">
+              <VRow no-gutters>
+                <VCol cols="12" :md="colse" class="py-5 pr-3">
+                  <VList class="pb-0">
+                    <VListItem>
+                      <VListItemTitle class="d-block lineheight">
+                        <span class="d-block title-menu">SERVICIOS</span>
+                        <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
+                        </svg>
+                      </VListItemTitle>
+                    </VListItem>
+                    <VListItem  
+                      v-for="(item, index) in services"
+                      :key="index">
+                        <div class="d-flex hover-icon-right tw-cursor-pointer" >
+                          <span v-if="item.children.length>0"
+                            class="subtitle-menu" 
+                            @click="openService(item.id)">
+                            {{ item.name }}
+                          </span>
+
+                          <router-link 
+                            :to="{
+                                  name: 'categories',
+                                  params: {
+                                  slug: item.slug
+                                  }
+                                }" 
+                            class="subtitle-menu tw-no-underline"   
+                            v-else>{{ item.name }}
+                          </router-link> 
+                          <VSpacer />
+                          <icon_right v-if="item.children.length>0"/> 
+                           
+                        </div>
+                    </VListItem>
+                  </VList>
+                </VCol>
+                <VCol cols="12" :md="colse" v-show="colse === 6" class="borderCol py-5">
+                  <VList class="style-submenu mt-8">
+                    <VListItem 
+                      v-for="(i, index2) in services[service].children"
+                      :key="index2"
+                      @click="closeMenuS">
+                      <router-link
+                        :to="{
+                          name: 'products',
+                          query: {
+                            category: i.slug.split('/')[0],
+                            subcategory: i.slug.split('/')[1]
+                          }
+                        }"
+                        class="tw-no-underline tw-text-tertiary">
+                        <span class="subtitle-menu">{{ i.name }}</span>
+                      </router-link>
+                    </VListItem>
+                    <VListItem>
+                      <VImg :src="default_item" class="image-item"></VImg>
+                    </VListItem>
+                  </VList>
+                </VCol>
+              </VRow>
+            </VCard>
+          </VMenu>
         </div>
         <router-link to="/wholesalers" class="tw-no-underline tw-text-white hover:tw-text-yellow d-flex align-center text-center hover-icon-arrow-right">
           <span class="ms-8">Mayoristas</span>
