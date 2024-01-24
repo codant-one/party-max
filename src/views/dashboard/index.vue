@@ -26,7 +26,7 @@ me()
 </script>
 
 <template>
-    <VLayout>
+    <VLayout class="dashboard">
         <VNavigationDrawer 
             v-model="drawer"
             class="custom-background"
@@ -179,5 +179,11 @@ me()
 
     .v-list-item--active::v-deep(.v-list-item__overlay) {
         opacity: 0 !important;
+    }
+
+    @media (max-width: 768px) {
+        .dashboard {
+            margin-top: -10px;
+        }
     }
 </style>

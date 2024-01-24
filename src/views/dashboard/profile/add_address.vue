@@ -140,7 +140,7 @@ const me = async () => {
     {
         .container-dashboard
         {
-            padding: 0px 16px;
+            padding: 0px 20px;
         }
     }
 

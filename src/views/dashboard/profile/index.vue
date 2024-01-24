@@ -24,6 +24,7 @@ const avatar = ref('')
 const avatarOld = ref('')
 const fileInput = ref()
 
+const isMobile = /Mobi/i.test(navigator.userAgent);
 const isDialogVisible = ref(false)
 const message = ref()
 const isError = ref(false)
@@ -155,6 +156,7 @@ const refresh = async () => {
         localStorage.setItem('user_data', JSON.stringify(user_data))
     }
 }
+
 const me = async () => {
 
     isLoading.value = true
@@ -182,7 +184,7 @@ me()
         <VCard class="no-shadown card-information p-0 transparent">
             <VCardTitle class="p-0 d-flex align-center">
                 <VRow no-gutters>
-                    <VCol cols="4" md="2" class="d-flex justify-end">
+                    <VCol cols="4" md="2" class="d-flex justify-md-end">
                         <VCardText class="d-block d-md-flex">
                             <VBadge
                                 class="tw-cursor-pointer"
@@ -191,7 +193,7 @@ me()
                                 icon="mdi-camera-plus"
                                 @click="triggerFileInput">
                                 <VAvatar
-                                    size="100"
+                                    :size="isMobile ? '80': '100'"
                                     :color="avatar ? 'default' : 'primary'"
                                     variant="tonal"
                                 >
@@ -222,10 +224,10 @@ me()
                             />
                         </VCardText>
                     </VCol>
-                    <VCol cols="8" md="8" class="ps-3 d-flex align-center">
+                    <VCol cols="8" md="10" class="ps-3 d-flex align-center">
                         <div class="d-block">
                             <span class="d-block name-client">{{ name }}</span>
-                            <span class="d-block text-titles">{{ usermail }}</span>
+                            <span class="d-block text-subtitles">{{ usermail }}</span>
                         </div>
                     </VCol>
                 </VRow>
@@ -237,8 +239,8 @@ me()
                 <router-link 
                     to="/mydata"
                     class="tw-no-underline d-flex align-center items-profile">
-                    <my_data_error class="icon_profile mt-3"/>
-                    <div class="d-block ms-5">
+                    <my_data_error class="mt-5 mt-md-3"/>
+                    <div class="d-block ms-2 ms-md-5">
                         <span class="d-block text-titles">Mis datos</span>
                         <span class="d-block text-subtitles">Valida tus datos.</span>
                     </div>
@@ -250,8 +252,8 @@ me()
                 <router-link 
                     to="/security"
                     class="tw-no-underline d-flex align-center items-profile">
-                    <security class="icon_profile mt-3"/>
-                    <div class="d-block ms-5">
+                    <security class="mt-5 mt-md-3"/>
+                    <div class="d-block ms-2 ms-md-5">
                         <span class="d-block text-titles">Seguridad</span>
                         <span class="d-block text-subtitles">Tienes configuraciones pendientes.</span>
                     </div>
@@ -263,8 +265,8 @@ me()
                 <router-link
                     to="/client-address"
                     class="tw-no-underline d-flex align-center items-profile">
-                    <icon_address class="icon_profile mt-3"/>
-                    <div class="d-block ms-5">
+                    <icon_address class="mt-5 mt-md-3"/>
+                    <div class="d-block ms-2 ms-md-5">
                         <span class="d-block text-titles">Direcciones</span>
                         <span class="d-block text-subtitles">Direcciones guardadas en tu cuenta.</span>
                     </div>
@@ -350,11 +352,6 @@ me()
         padding: 5px 0px;
     }
 
-    .icon_profile {
-        width: 56px;
-        height: 74.8px;
-    }
-
     .icon-right {
         width: 20px;
     }
@@ -396,7 +393,19 @@ me()
 
     @media only screen and (max-width: 767px) {
         .container-dashboard {
-            padding: 0px 16px;
+            padding: 0px 20px;
+        }
+
+        .name-client {
+            font-size: 15px;
+        }
+
+        .card-profile {
+            padding: 16px 10px !important;
+        }
+
+        .text-subtitles {
+            font-size: 11px;
         }
     }
 
