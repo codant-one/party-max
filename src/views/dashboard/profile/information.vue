@@ -1,17 +1,24 @@
 <script setup>
 
 import { useProfileStores } from '@/stores/profile'
+import { useCountriesStores } from '@/stores/countries'
+import { useProvincesStores } from '@/stores/provinces'
+import { useGendersStores } from '@/stores/genders'
 import { requiredValidator } from '@validators'
+import Loader from '@/components/common/Loader.vue'
 import router from '@/router'
 
-import icon_right from '@assets/icons/right-icon.svg';
 import festin_about from '@assets/images/festin-aboutus.jpg';
 import festin_cancel from '@assets/images/festin_cancel.jpg';
 
 const profileStores = useProfileStores()
+const countriesStores = useCountriesStores()
+const provincesStores = useProvincesStores()
+const gendersStores = useGendersStores()
 
 const load = ref(false)
 const refVForm = ref()
+const isLoading = ref(true)
 
 const name = ref(null)
 const usermail = ref(null)
@@ -40,9 +47,10 @@ const newusername = ref(null)
 const listCountries = ref([])
 const listProvinces = ref([])
 const listProvincesByCountry = ref([])
-const client_country_id = ref('Colombia')
-const countryOld_id = ref('Colombia')
+const client_country_id = ref(null)
+const countryOld_id = ref(null)
 const province_id = ref('')
+const provinceOld_id = ref('')
 const genders = ref('')
 
 const errors = ref({
@@ -70,34 +78,98 @@ const inputChange = () => {
   }
 }
 
-
-const me = async () => {
-    if(localStorage.getItem('user_data')){
-      const userData = localStorage.getItem('user_data')
-      const userDataJ = JSON.parse(userData)
-      console.log('aa',userDataJ )
-      name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
-      usermail.value = userDataJ.email
-      username.value = userDataJ.username
-      phone.value = userDataJ.user_details.phone
-      document.value = userDataJ.user_details.document 
-      country.value = userDataJ.user_details.province.country.name
-      address.value = userDataJ.user_details.address
-      birthday.value = userDataJ.client.birthday
-      gender.value = userDataJ.client.gender.name 
-      province.value =  userDataJ.user_details.province.name
-
-    
-      newfname.value = userDataJ.name
-      newlname.value = userDataJ.last_name
-      newdocument.value = userDataJ.user_details.document
-      newaddress.value = userDataJ.user_details.address
-      newbirthday.value = userDataJ.client.birthday
-      newgender.value = userDataJ.client.gender_id 
-      newprovince.value = userDataJ.user_details.province_id 
-      newusername.value = userDataJ.username  
+const getProvinces = computed(() => {
+  return listProvincesByCountry.value.map((province) => {
+    return {
+      title: province.name,
+      value: province.id,
     }
+  })
+})
+
+const getGenders = computed(() => {
+  return genders.value.map((gender) => {
+    return {
+      title: gender.name,
+      value: gender.id,
+    }
+  })
+})
+
+
+onMounted(async () => {
+
+    isLoading.value = true
+
+    await countriesStores.getAll();
+    await provincesStores.getAll();
+    await gendersStores.getAll();
+
+    loadCountries()
+    loadProvinces()
+    loadGenders()
+
+    selectCountry(countryOld_id.value)
+    fetchData()
+    isLoading.value = false
+})
+
+
+watchEffect(fetchData)
+
+async function fetchData() { 
+    if(localStorage.getItem('user_data')){
+        const userData = localStorage.getItem('user_data')
+        const userDataJ = JSON.parse(userData)
+        name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
+        usermail.value = userDataJ.email
+        username.value = userDataJ.username
+        phone.value = userDataJ.user_details.phone
+        document.value = userDataJ.user_details.document 
+        country.value = userDataJ.user_details.province.country.name
+        address.value = userDataJ.user_details.address
+        birthday.value = userDataJ.client.birthday
+        gender.value = userDataJ.client.gender.name 
+        province.value =  userDataJ.user_details.province.name
+
+        client_country_id.value = userDataJ.user_details.province.country.name
+        countryOld_id.value = userDataJ.user_details.province.country.name
+
+        province_id.value = userDataJ.user_details.province.name
+        provinceOld_id.value = userDataJ.user_details.province.name
+
+        newfname.value = userDataJ.name
+        newlname.value = userDataJ.last_name
+        newdocument.value = userDataJ.user_details.document
+        newaddress.value = userDataJ.user_details.address
+        newbirthday.value = userDataJ.client.birthday
+        newgender.value = userDataJ.client.gender_id 
+        newprovince.value = userDataJ.user_details.province_id 
+        newusername.value = userDataJ.username  
+    }
+}
+const loadCountries = () => {
+  listCountries.value = countriesStores.getCountries
+}
+
+const loadProvinces = () => {
+  listProvinces.value = provincesStores.getProvinces
+}
+
+const loadGenders= () => {
+    genders.value = gendersStores.getGenders
+}
+
+const selectCountry = country => {
+  if (country) {
+    let _country = listCountries.value.find(item => item.name === country)
+    client_country_id.value = _country.name
+ 
+    province_id.value = null
+    
+    listProvincesByCountry.value = listProvinces.value.filter(item => item.country_id === _country.id)
   }
+}
 
 const onSubmit = () => {
     refVForm.value?.validate().then(({ valid: isValid }) => {
@@ -159,94 +231,36 @@ const onSubmit = () => {
     })
 }
 
-
-
-const getProvinces = computed(() => {
-  return listProvincesByCountry.value.map((province) => {
-    return {
-      title: province.name,
-      value: province.id,
-    }
+const getFlagCountry = country => {
+  let val = listCountries.value.find(item => {
+    return item.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === country.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
   })
-})
 
-const getGenders = computed(() => {
-  return genders.value.map((gender) => {
-    return {
-      title: gender.name,
-      value: gender.id,
-    }
-  })
-})
-
-onMounted(async () => {
-
-//   await profileStores.fetchCountries();
-//   await profileStores.fetchProvinces();
-//   await profileStores.fetchGenders();
-  
-//   loadCountries()
-//   loadProvinces()
-//   loadGenders()
-})
-
-
-
-const loadCountries = () => {
-  listCountries.value = profileStores.getCountries
-
+  if(val)
+    return 'https://hatscripts.github.io/circle-flags/flags/'+val.iso.toLowerCase()+'.svg'
+  else
+    return ''
 }
-
-const loadProvinces = () => {
-  listProvinces.value = profileStores.getProvinces
-
-}
-
-const loadGenders= () => {
-    genders.value = profileStores.getGenders
-}
-
-const selectCountry = country => {
-  if (country) {
-    let _country = listCountries.value.find(item => item.name === country)
-    client_country_id.value = _country.name
- 
-    province_id.value = null
-    
-    listProvincesByCountry.value = listProvinces.value.filter(item => item.country_id === _country.id)
-  }
-}
-
-
-
-watchEffect(async() => {
-
-// selectCountry(countryOld_id.value)
-
-
-})
-
-  
-me() 
 </script>
 
 <template>
-    <VContainer class="mt-15 mb-15 container-dashboard">
+    <Loader :isLoading="isLoading"/>
+    <VContainer class="mt-1 mt-md-10 container-dashboard" v-if="listCountries.length > 0">
 
-        <h2 class="data-title">Mis datos</h2>
+        <h2 class="data-title mt-5">Mis datos</h2>
         <h6 class="data-subtitle tw-text-tertiary">Datos de cuenta</h6>
 
         <VCard class="card-profile">
             <VRow no-gutters class="align-center">
-                <VCol cols="4"><span class="labels tw-text-tertiary">E-mail</span> </VCol>
-                <VCol cols="8" class="col-info"> <span class="labels tw-text-gray">{{ usermail }}</span></VCol>
+                <VCol cols="12" md="4"><span class="labels tw-text-tertiary">E-mail</span> </VCol>
+                <VCol cols="12" md="8"> <span class="labels tw-text-gray">{{ usermail }}</span></VCol>
             </VRow>
         </VCard>
             
         <h6 class="data-subtitle tw-text-tertiary">Datos personales</h6>
 
-        <VCard class="card-profile px-0">
-            <VCardItem class="px-5 border_text">
+        <VCard class="card-profile px-0 mb-5">
+            <VCardItem class="px-8 border_text">
                 <VCardTitle>Datos personales</VCardTitle>
                 <template v-slot:append>
                     <VBtn variant="plain" class="edit-button" @click="dialog=true">
@@ -259,54 +273,61 @@ me()
                     </VBtn>
                 </template>
             </VCardItem>
-            <VCardItem class="px-5">
-                <VRow class="align-center my-5">
-                    <VCol cols="4">
+            <VCardItem class="px-8">
+                <VRow no-gutters class="align-center my-5">
+                    <VCol cols="12" md="4" class="mb-0 mb-md-4">
                         <span class="labels tw-text-tertiary">Nombre y apellido</span>
                     </VCol>
-                    <VCol cols="8" class="col-info">
+                    <VCol cols="12" md="8" class="mb-2 mb-md-4">
                         <span class="labels tw-text-gray">{{ name }}</span>
                     </VCol>
-                    <VCol cols="4">
+                    <VCol cols="12" md="4" class="mb-0 mb-md-4">
                         <span class="labels tw-text-tertiary">Username</span>
                     </VCol>
-                    <VCol cols="8" class="col-info">
+                    <VCol cols="12" md="8" class="mb-2 mb-md-4">
                         <span class="labels tw-text-gray">{{ username }}</span>
                     </VCol>
-                    <VCol cols="4">
+                    <VCol cols="12" md="4" class="mb-0 mb-md-4">
                         <span class="labels tw-text-tertiary">Documento</span>
                     </VCol>
-                    <VCol cols="8" class="col-info">
+                    <VCol cols="12" md="8" class="mb-2 mb-md-4">
                         <span class="labels tw-text-gray">{{ document }}</span>
                     </VCol>
-                    <VCol cols="4">
+                    <VCol cols="12" md="4" class="mb-0 mb-md-4">
                         <span class="labels tw-text-tertiary">País</span>
                     </VCol>
-                    <VCol cols="8" class="col-info">
-                        <span class="labels tw-text-gray">{{ country }}</span>
+                    <VCol cols="12" md="8" class="mb-2 mb-md-4">
+                        <VAvatar
+                            start
+                            size="25"
+                            :image="getFlagCountry(country)"
+                            />
+                        <span class="labels tw-text-gray">
+                            {{ country }}
+                        </span>
                     </VCol>
-                    <VCol cols="4">
+                    <VCol cols="12" md="4" class="mb-0 mb-md-4">
                         <span class="labels tw-text-tertiary">Provincia</span>
                     </VCol>
-                    <VCol cols="8" class="col-info">
+                    <VCol cols="12" md="8" class="mb-2 mb-md-4">
                         <span class="labels tw-text-gray">{{ province }}</span>
                     </VCol>
-                    <VCol cols="4">
+                    <VCol cols="12" md="4" class="mb-0 mb-md-4">
                         <span class="labels tw-text-tertiary">Dirección</span>
                     </VCol>
-                    <VCol cols="8" class="col-info">
+                    <VCol cols="12" md="8" class="mb-2 mb-md-4">
                         <span class="labels tw-text-gray">{{ address }}</span>
                     </VCol>
-                    <VCol cols="4">
+                    <VCol cols="12" md="4" class="mb-0 mb-md-4">
                         <span class="labels tw-text-tertiary">Fecha de cumpleaños</span>
                     </VCol>
-                    <VCol cols="8" class="col-info">
+                    <VCol cols="12" md="8" class="mb-2 mb-md-4">
                         <span class="labels tw-text-gray">{{ birthday }}</span>
                     </VCol>
-                    <VCol cols="4">
+                    <VCol cols="12" md="4">
                         <span class="labels tw-text-tertiary">Género</span>
                     </VCol>
-                    <VCol cols="8" class="col-info">
+                    <VCol cols="12" md="8">
                         <span class="labels tw-text-gray">{{ gender }}</span>
                     </VCol>
                 </VRow>
@@ -316,111 +337,82 @@ me()
         <!--MODAL ACTUALIZAR DATOS-->
         <VDialog v-model="dialog" transition="dialog-top-transition">
             <VForm
-            ref="refVForm"
-            @submit.prevent="onSubmit"
-            > 
-                <VCard class="py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto card-form">
-                    
-                    <VCardText class="text-register p-0 mb-5">
-                        <v-container>
-                            <v-row class="row-form">
-                                <v-col cols="12" class="text-center">
-                                    
-                                        <h2>ACTUALIZAR DATOS</h2>
-                        
-                                </v-col>
-                                <v-col
-                                        cols="12"
-                                        md="6"
-                                        class="col-field"
-                                >
-                                    <v-text-field
-                                        label="Nombre"
-                                        v-model="newfname"
-                                        variant="outlined"
-                                        :rules="[requiredValidator]"
-                                        :error-messages="errors.newfname"
-                                        @input="inputChange()"
-                                        
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col
-                                    cols="12"
-                                    md="6"
-                                >
-                                    <v-text-field
-                                        label="Apellido"
-                                        v-model="newlname"
-                                        variant="outlined"
-                                        :rules="[requiredValidator]"
-                                        :error-messages="errors.newlname"
-                                        @input="inputChange()"
-                                        
-                                    ></v-text-field>
-                                </v-col>
-
-                                <v-col
-                                    cols="12"
-                                    md="6"
-                                >
-                                    <v-text-field
-                                        label="Username"
-                                        v-model="newusername"
-                                        variant="outlined"
-                                        :rules="[requiredValidator]"
-                                        :error-messages="errors.newusername"
-                                        @input="inputChange()"
-                                        
-                                    ></v-text-field>
-                                </v-col>
-
-                                <v-col
-                                    cols="12"
-                                    md="6"
-                                >
-                                    <v-text-field
-                                        label="Fecha de nacimiento"
-                                        v-model="newbirthday"
-                                        type="date"
-                                        variant="outlined"
-                                        :rules="[requiredValidator]"
-                                        :error-messages="errors.newbirthday"
-                                        @input="inputChange()"
-                                    ></v-text-field>
-                                </v-col>
-
-                                <v-col
-                                    cols="12"
-                                    md="6"
-                                >
-                                    <v-text-field
-                                        label="Nro Documento"
-                                        v-model="newdocument"
-                                        variant="outlined"
-                                        :rules="[requiredValidator]"
-                                        :error-messages="errors.newdocument"
-                                        @input="inputChange()"
-                                    ></v-text-field>
-                                </v-col>
-
-                                <v-col
-                                    cols="12"
-                                    md="6"
-                                >
-                                    <v-autocomplete
+                ref="refVForm"
+                @submit.prevent="onSubmit"> 
+                <VCard class="pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto card-form">
+                    <VCardText class="subtitle-register p-0">
+                        ACTUALIZAR DATOS
+                    </VCardText>
+                    <VCardItem class="pb-0 px-10">
+                        <VRow no-gutters class="text-left align-center">
+                            <VCol cols="12" md="6" class="textinput">
+                                <VTextField
+                                    label="Nombre"
+                                    v-model="newfname"
+                                    variant="outlined"
+                                    :rules="[requiredValidator]"
+                                    :error-messages="errors.newfname"
+                                    @input="inputChange()"
+                                    class="mt-2 me-2"
+                                    />
+                            </VCol>
+                            <VCol cols="12" md="6" class="textinput">
+                                <VTextField
+                                    label="Apellido"
+                                    v-model="newlname"
+                                    variant="outlined"
+                                    :rules="[requiredValidator]"
+                                    :error-messages="errors.newlname"
+                                    @input="inputChange()"
+                                    class="mt-2"
+                                />
+                            </VCol>
+                            <VCol cols="12" md="6" class="textinput">
+                                <VTextField
+                                    label="Username"
+                                    v-model="newusername"
+                                    variant="outlined"
+                                    :rules="[requiredValidator]"
+                                    :error-messages="errors.newusername"
+                                    @input="inputChange()"
+                                    class="me-2"
+                                />
+                            </VCol>
+                            <VCol cols="12" md="6" class="textinput">
+                                <VTextField
+                                    label="Fecha de nacimiento"
+                                    v-model="newbirthday"
+                                    type="date"
+                                    variant="outlined"
+                                    :rules="[requiredValidator]"
+                                    :error-messages="errors.newbirthday"
+                                     @input="inputChange()"
+                                />
+                            </VCol>
+                            <VCol cols="12" md="6" class="textinput">
+                                <VTextField
+                                    label="Nro Documento"
+                                    v-model="newdocument"
+                                    variant="outlined"
+                                    :rules="[requiredValidator]"
+                                    :error-messages="errors.newdocument"
+                                    @input="inputChange()"
+                                    class="me-2"
+                                />
+                            </VCol>
+                            <VCol cols="12" md="6" class="textinput">
+                                <VAutocomplete
+                                    variant="outlined"
                                     v-model="newgender"
                                     label="Género"
                                     :rules="[requiredValidator]"
                                     :items="getGenders"
                                     :menu-props="{ maxHeight: '200px' }"
                                     />
-                                </v-col>
-
-                                <v-col
-                                    cols="12"
-                                    md="6"
-                                >
-                                    <VAutocomplete
+                            </VCol>
+                            <VCol cols="12" md="6" class="textinput">
+                                <VAutocomplete
+                                    variant="outlined"
                                     v-model="client_country_id"
                                     label="País"
                                     :rules="[requiredValidator]"
@@ -429,71 +421,66 @@ me()
                                     item-value="name"
                                     :menu-props="{ maxHeight: '200px' }"
                                     @update:model-value="selectCountry"
-                                    >
-
-                                        <template
+                                    class="me-2">
+                                    <template 
                                         v-if="client_country_id"
                                         #prepend
                                         >
-                                                
-                                        </template>
-                                    </VAutocomplete>
-                                </v-col>
-
-                                <v-col cols="12" md="6">
-                                    <v-autocomplete
-                                        v-model="province_id"
-                                        label="Provincias"
-                                        :rules="[requiredValidator]"
-                                        :items="getProvinces"
-                                        :menu-props="{ maxHeight: '200px' }"
-                                    />
-                                </v-col>
-
-                                <v-col cols="12">
-                                    <v-text-field
-                                        label="Dirección"
-                                        v-model="newaddress"
-                                        variant="outlined"
-                                        :rules="[requiredValidator]"
-                                        :error-messages="errors.newaddress"
-                                        @input="inputChange()"
-                                    ></v-text-field>
-                                </v-col>
-
-                                <v-col cols="12">
-                                    <VBtn
-                                        variant="flat"
-                                        :width="288"
-                                        :height="48"
-                                        block
-                                        type="submit"
-                                        class="btn-register tw-text-white tw-bg-primary button-hover"
-                                    >
-                                        Actualizar datos
-                                        <VProgressCircular
-                                            v-if="load"
-                                            indeterminate
-                                            color="#fff"
-                                        />
-                                    </VBtn>
-                                </v-col>
-
-                            </v-row>
-                        </v-container>
-                    </VCardText>
-
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
+                                        <VAvatar
+                                            start
+                                            style="margin-top: -8px;"
+                                            size="36"
+                                            :image="getFlagCountry(client_country_id)"
+                                            />
+                                    </template>
+                                </VAutocomplete>
+                            </VCol>
+                            <VCol cols="12" md="6" class="textinput">
+                                <VAutocomplete
+                                    variant="outlined"
+                                    v-model="province_id"
+                                    label="Provincias"
+                                    :rules="[requiredValidator]"
+                                    :items="getProvinces"
+                                    :menu-props="{ maxHeight: '200px' }"
+                                />
+                            </VCol>
+                             <VCol cols="12">
+                                <VTextarea
+                                    rows="3"
+                                    label="Dirección"
+                                    v-model="newaddress"
+                                    variant="outlined"
+                                    :rules="[requiredValidator]"
+                                    :error-messages="errors.newaddress"
+                                    @input="inputChange()"
+                                />
+                            </VCol>
+                        </VRow>
+                    </VCardItem>
+                    <VCardActions class="px-10">
+                        <VSpacer />
+                        <VBtn
+                            variant="flat"   
+                            type="submit"
+                            class="btn-register tw-text-white tw-bg-primary button-hover"
+                            >
+                            Enviar
+                            <VProgressCircular
+                                v-if="load"
+                                indeterminate
+                                color="#fff"
+                            />
+                        </VBtn>
+                        <VBtn
                             color="primary"
-                            variant="text"
-                            class="text-close"
+                            variant="outlined"
+                            class="btn-register"
                             @click="dialog = false"
                         >
                             Cerrar
-                        </v-btn>
-                    </v-card-actions>
+                        </VBtn>
+                    </VCardActions>
                 </VCard>
             </VForm>
         </VDialog>
@@ -514,6 +501,15 @@ me()
 </template>
 
 <style scoped>
+    .subtitle-register {
+        color: #FF0090;
+        text-align: center;
+        font-size: 23px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 30px;
+        margin-top: 34px;   
+    }
     .container-dashboard {
         padding: 10px 200px;
     }
@@ -521,89 +517,69 @@ me()
     .border_text {
         border-bottom: 1px solid #E1E1E1;
     }   
+    .data-title {
+        color: #0A1B33;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        text-align: left;
+    }
 
-.data-title
-{
+    .data-subtitle {
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        margin-top: 32px;
+    }
 
-    color: #0A1B33;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-    text-align: left;
-
-}
-
-.data-subtitle
-{
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-    margin-top: 32px;
-}
-
-.card-profile {
+    .card-profile {
         padding: 16px 32px;
         margin-top: 24px;
         border-radius: 16px;
         box-shadow: none;
     }
-.labels
-{
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 20px; /* 133.333% */
-}
+    .labels {
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 20px; /* 133.333% */
+    }
 
-.icon-edit 
-{
-    stroke:#FF0090; 
-      
-}
+    .icon-edit {
+        stroke:#FF0090;   
+    }
 
-.link-menu
-{
-    text-decoration: none;
-}
+    .link-menu {
+        text-decoration: none;
+    }
 
+    .edit-button {
+        box-shadow: none;
+    }
 
+    .edit-button .icon-edit:hover {
+        stroke:#FF27B3; 
+        transform: scale(1.2);
+    }
 
-.edit-button
-{
-    box-shadow: none;
-}
+    .text-close {
+        font-size:18px;
+        font-weight: 700;
+    }
+    .row-form {
+        padding: 0px 32px;
+    }
 
-.edit-button .icon-edit:hover
-{
-    stroke:#FF27B3; 
-    transform: scale(1.2);
-}
-
-.text-close
-{
-    font-size:18px;
-    font-weight: 700;
-}
-
-
-.row-form
-{
-    padding: 0px 32px;
-}
-.v-text-field::v-deep(.v-field) { 
+    .textinput .v-text-field::v-deep(.v-field) { 
         border-radius: 24px;
         height: 35px;
         font-size: 14px;
     }
-    
-    .v-text-field::v-deep(.v-field__outline) {
-        border-radius: 24px;
-    }
-    
+
     .v-text-field::v-deep(.v-field__outline__start) {
-        border-start-start-radius: 24px;
+        flex: 0 0 17px !important;
     }
 
     .v-text-field::v-deep(::placeholder) { 
@@ -613,10 +589,11 @@ me()
 
     .v-text-field::v-deep(input) { 
         padding-top: 0 !important;
+        padding-left: 20px !important;
     }
 
     .v-text-field::v-deep(.v-field-label) {
-        top: 30% !important;
+        top: 33% !important;
         font-size: 14px !important;
     }
 
@@ -625,8 +602,20 @@ me()
         align-items: start !important;
     }
 
+    .v-autocomplete::v-deep(.v-field__overlay) {
+        background: white !important;
+    }
+
+    .v-autocomplete::v-deep(.v-field__input) { 
+        padding-top: 0 !important;
+    }
+
+    .v-textarea::v-deep(.v-field) { 
+        border-radius: 24px !important;
+    }
+
     .btn-register {
-        font-size: 16px;
+        font-size: 14px;
         font-style: normal;
         font-weight: 700;
         line-height: 14px;
@@ -638,36 +627,30 @@ me()
         box-shadow: 0px 0px 24px 0px #FF27B3;
     }
 
-    .card-register
-    {
+    .card-register {
         border-radius: 32px!important;
     }
 
-    .card-form
-    {
+    .card-form {
         width: 800px;
     }
-    @media only screen and (max-width: 767px) 
-    {
-        .container-dashboard
-        {
+
+    @media only screen and (max-width: 767px) {
+        .container-dashboard {
             padding: 0px 20px;
         }
-        .labels
-        {
+
+        .labels {
             font-size: 13px;
         }
 
-        .col-info
-        {
-            padding-left: 16px!important;
+        .col-info {
+            padding-left: 0 !important;
         }
-
         .card-form
         {
             width: 350px;
         }
     }    
-
 
 </style>

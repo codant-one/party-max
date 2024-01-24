@@ -221,12 +221,17 @@
         opacity: inherit;
     }
 
+    .v-text-field::v-deep(.v-field__outline__start) {
+        flex: 0 0 17px !important;
+    }
+
     .v-text-field::v-deep(input) { 
         padding-top: 0 !important;
+        padding-left: 20px !important;
     }
 
     .v-text-field::v-deep(.v-field-label) {
-        top: 30% !important;
+        top: 33% !important;
         font-size: 12px !important;
     }
 

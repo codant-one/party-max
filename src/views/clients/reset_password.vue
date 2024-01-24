@@ -139,6 +139,7 @@ const onSubmit = () => {
                         </VCol>
                         <VCol cols="12" class="mb-1">
                             <VTextField
+                                placeholder=""
                                 label="Contraseña"
                                 variant="outlined"
                                 v-model="password"
@@ -161,6 +162,7 @@ const onSubmit = () => {
                         </VCol>
                         <VCol cols="12" class="p-0">
                             <VTextField
+                                placeholder=""
                                 label="Confirmar contraseña"
                                 variant="outlined"
                                 v-model="passwordConfirmation"
@@ -298,16 +300,21 @@ const onSubmit = () => {
 
     .v-text-field::v-deep(input) { 
         padding-top: 0 !important;
+        padding-left: 20px !important;
     }
 
     .v-text-field::v-deep(.v-field-label) {
-        top: 30% !important;
+        top: 33% !important;
         font-size: 12px !important;
     }
 
     .v-text-field::v-deep(.v-field__append-inner) { 
         padding-top: 8px !important;
         align-items: start !important;
+    }
+
+    .v-text-field::v-deep(.v-field__outline__start) {
+        flex: 0 0 17px !important;
     }
 
     .text-client {
