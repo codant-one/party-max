@@ -35,6 +35,14 @@ const newgender = ref(null)
 const newprovince = ref(null)
 const newusername = ref(null)
 
+const listCountries = ref([])
+const listProvinces = ref([])
+const listProvincesByCountry = ref([])
+const client_country_id = ref('Colombia')
+const countryOld_id = ref('Colombia')
+const province_id = ref('')
+const genders = ref('')
+
 const errors = ref({
   newfname: undefined,
   newlname: undefined,
@@ -84,8 +92,7 @@ const me = async () => {
       newbirthday.value = userDataJ.client.birthday
       newgender.value = userDataJ.client.gender_id 
       newprovince.value = userDataJ.user_details.province_id 
-      newusername.value = userDataJ.username
-
+      newusername.value = userDataJ.username  
     }
   }
 
@@ -101,7 +108,7 @@ const onSubmit = () => {
                 document: newdocument.value,
                 address: newaddress.value,
                 gender_id: newgender.value,
-                province_id: newprovince.value,
+                province_id: province_id.value,
                 username: newusername.value,
                 birthday: newbirthday.value
             }
@@ -148,6 +155,74 @@ const onSubmit = () => {
     
     })
 }
+
+
+
+const getProvinces = computed(() => {
+  return listProvincesByCountry.value.map((province) => {
+    return {
+      title: province.name,
+      value: province.id,
+    }
+  })
+})
+
+const getGenders = computed(() => {
+  return genders.value.map((gender) => {
+    return {
+      title: gender.name,
+      value: gender.id,
+    }
+  })
+})
+
+onMounted(async () => {
+
+  await profileStores.fetchCountries();
+  await profileStores.fetchProvinces();
+  await profileStores.fetchGenders();
+  
+  loadCountries()
+  loadProvinces()
+  loadGenders()
+})
+
+
+
+const loadCountries = () => {
+  listCountries.value = profileStores.getCountries
+
+}
+
+const loadProvinces = () => {
+  listProvinces.value = profileStores.getProvinces
+
+}
+
+const loadGenders= () => {
+    genders.value = profileStores.getGenders
+}
+
+const selectCountry = country => {
+  if (country) {
+    let _country = listCountries.value.find(item => item.name === country)
+    client_country_id.value = _country.name
+ 
+    province_id.value = null
+    
+    listProvincesByCountry.value = listProvinces.value.filter(item => item.country_id === _country.id)
+  }
+}
+
+
+
+watchEffect(async() => {
+
+selectCountry(countryOld_id.value)
+
+
+})
+
   
 me() 
 </script>
@@ -335,31 +410,50 @@ me()
                                     cols="12"
                                     md="6"
                                 >
-                                    <v-text-field
-                                        label="Genero"
-                                        v-model="newgender"
-                                        variant="outlined"
-                                        :rules="[requiredValidator]"
-                                        :error-messages="errors.newgender"
-                                        @input="inputChange()"
-                                    ></v-text-field>
+                                    <v-autocomplete
+                                    v-model="newgender"
+                                    label="Genero"
+                                    :rules="[requiredValidator]"
+                                    :items="getGenders"
+                                    :menu-props="{ maxHeight: '200px' }"
+                                    />
                                 </v-col>
 
                                 <v-col
                                     cols="12"
                                     md="6"
                                 >
-                                    <v-text-field
-                                        label="País"
-                                        v-model="newprovince"
-                                        variant="outlined"
-                                        :rules="[requiredValidator]"
-                                        :error-messages="errors.newprovince"
-                                        @input="inputChange()"
-                                    ></v-text-field>
+                                    <VAutocomplete
+                                    v-model="client_country_id"
+                                    label="País"
+                                    :rules="[requiredValidator]"
+                                    :items="listCountries"
+                                    item-title="name"
+                                    item-value="name"
+                                    :menu-props="{ maxHeight: '200px' }"
+                                    @update:model-value="selectCountry"
+                                    >
+
+                                        <template
+                                        v-if="client_country_id"
+                                        #prepend
+                                        >
+                                                
+                                        </template>
+                                    </VAutocomplete>
                                 </v-col>
 
                                 <v-col cols="12" md="6">
+                                    <v-autocomplete
+                                        v-model="province_id"
+                                        label="Provincias"
+                                        :rules="[requiredValidator]"
+                                        :items="getProvinces"
+                                        :menu-props="{ maxHeight: '200px' }"
+                                    />
+                                </v-col>
+
+                                <v-col cols="12">
                                     <v-text-field
                                         label="Dirección"
                                         v-model="newaddress"

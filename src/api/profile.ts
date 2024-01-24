@@ -16,6 +16,18 @@ class Profile {
     change_avatar(data: object) {
         return axios.post('profile/changeAvatar', data)
     }
+    
+    get_countries() {
+        return axios.get('countries')
+    }
+
+    get_provinces() {
+        return axios.get('provinces')
+    }
+
+    get_gender() {
+        return axios.get('genders')
+    }
 }
 
 const profile = new Profile();
