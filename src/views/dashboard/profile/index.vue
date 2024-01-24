@@ -1,148 +1,303 @@
 <script setup>
+
 import { ref } from 'vue'
-import default_image from '@assets/images/default-image-client.png';
-import icon_misdatos from '@assets/icons/icon-misdatos.svg';
-import icon_seguridad from '@assets/icons/icon-seguridad.svg';
-import icon_card from '@assets/icons/icon-card.svg';
-import icon_address from '@assets/icons/icon-address.svg';
-import icon_privacity from '@assets/icons/icon-privacity.svg';
-import icon_comunications from '@assets/icons/icon-comunications.svg';
-import icon_right from '@assets/icons/right-icon.svg';
-import icon_profile from '@assets/icons/perfil.svg';
-import icon_account from '@assets/icons/lineas-de-cuadricula.svg';
-import icon_favorites from '@assets/icons/heart2.svg';
+import { useProfileStores } from '@/stores/profile';
+import { useAuthStores } from '@/stores/auth'
+import { avatarText} from '@formatters'
+import Loader from '@/components/common/Loader.vue'
+import my_data_error from '@assets/icons/my_data_error.svg?inline';
+import my_data_success from '@assets/icons/my_data_success.svg?inline';
 
-import icon_compras from '@assets/icons/icon-compras.svg';
+import security from '@assets/icons/icon-seguridad.svg?inline';
+import icon_address from '@assets/icons/icon-address.svg?inline';
+import icon_right from '@assets/icons/right-icon.svg?inline';
+import festin_about from '@assets/images/festin-aboutus.jpg';
+import festin_cancel from '@assets/images/festin_cancel.jpg';
 
+const profileStores = useProfileStores()
+const authStores = useAuthStores()
+
+const isLoading = ref(true)
 const name = ref(null)
 const usermail= ref(null)
+const avatar = ref('')
+const avatarOld = ref('')
+const fileInput = ref()
 
-   
+const isDialogVisible = ref(false)
+const message = ref()
+const isError = ref(false)
 
+const onImageSelected = event => {
+  const file = event.target.files[0]
 
-const me = async () => {
-    if(localStorage.getItem('user_data')){
-      const userData = localStorage.getItem('user_data')
-      const userDataJ = JSON.parse(userData)
+  if (!file) return
+  // avatarOld.value = file
 
-      name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
-      usermail.value = userDataJ.email
+  URL.createObjectURL(file)
+
+  resizeImage(file, 400, 400, 0.9)
+    .then(async blob => {
+      avatarOld.value = blob
+      let r = await blobToBase64(blob)
+      avatar.value = 'data:image/jpeg;base64,' + r
+
+      updateAvatar()
+    })
+}
+
+const resizeImage = function(file, maxWidth, maxHeight, quality) {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+
+    img.src = URL.createObjectURL(file)
+    img.onload = () => {
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+
+      let width = img.width
+      let height = img.height
+
+      if (maxWidth && width > maxWidth) {
+        height *= maxWidth / width
+        width = maxWidth
+      }
+
+      if (maxHeight && height > maxHeight) {
+        width *= maxHeight / height
+        height = maxHeight
+      }
+
+      canvas.width = width
+      canvas.height = height
+
+      ctx.drawImage(img, 0, 0, width, height)
+
+      canvas.toBlob(blob => {
+        resolve(blob)
+      }, file.type, quality)
     }
-  }
+    img.onerror = error => {
+      reject(error)
+    }
+  })
+}
 
-  me()
+const blobToBase64 = blob => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+
+    reader.readAsDataURL(blob)
+    reader.onload = () => {
+      resolve(reader.result.split(',')[1])
+    }
+    reader.onerror = error => {
+      reject(error)
+    }
+  })
+}
+
+const updateAvatar = () => {
+
+    isLoading.value = true
+
+    let formData = new FormData()
+    formData.append('image', avatarOld.value)
+
+    profileStores.change_avatar(formData)
+        .then(response => {
+
+            isDialogVisible.value = true
+            message.value = "Imagen Cambiaba"
+
+            refresh()
+            setTimeout(() => {
+                isDialogVisible.value = false
+                message.value = ''
+                isError.value = false 
+            }, 5000)
+
+            isLoading.value = false                    
+                    
+        }).catch(err => {
+            isLoading.value = false  
+
+            if(err.message === 'error'){
+                isDialogVisible.value = true
+                message.value = err.errors
+            } else {
+                isDialogVisible.value = true
+                message.value = 'Se ha producido un error...! (Server Error)'
+            }                    
+
+            setTimeout(() => {
+                isDialogVisible.value = false
+                message.value = ''
+                isError.value = false
+            }, 5000)
+
+            console.error(err.message)
+    })
+}
+
+const triggerFileInput = () => {
+    fileInput.value.$el.querySelector('input[type=file]').click();
+}
+
+const refresh = async () => {
+    if(localStorage.getItem('user_data')){
+        const userData = localStorage.getItem('user_data')
+        const userDataJ = JSON.parse(userData)
+
+        const { user_data, userAbilities } = await authStores.me(userDataJ.hash)
+
+        localStorage.setItem('userAbilities', JSON.stringify(userAbilities))
+        localStorage.setItem('user_data', JSON.stringify(user_data))
+    }
+}
+const me = async () => {
+
+    isLoading.value = true
+    if(localStorage.getItem('user_data')){
+        const userData = localStorage.getItem('user_data')
+        const userDataJ = JSON.parse(userData)
+
+        name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
+        usermail.value = userDataJ.email
+
+        avatarOld.value = userDataJ.avatar
+        avatar.value = userDataJ.avatar
+    }
+
+    isLoading.value = false
+}
+
+me()
 
 </script>
 
-<template>
-    
-            
-            <VContainer class="mt-10 mb-15 container-dashboard">
-                <VRow align="center">
-                    <VCol cols="4" md="1" class="d-flex justify-end">
-                        <VImg :src="default_image" class="profile-image"/>
+<template>  
+    <Loader :isLoading="isLoading"/>
+    <VContainer class="mt-1 mt-md-10 container-dashboard">
+        <VCard class="no-shadown card-information p-0 transparent">
+            <VCardTitle class="p-0 d-flex align-center">
+                <VRow no-gutters>
+                    <VCol cols="4" md="2" class="d-flex justify-end">
+                        <VCardText class="d-block d-md-flex">
+                            <VBadge
+                                class="tw-cursor-pointer"
+                                color="primary"
+                                location="bottom end" 
+                                icon="mdi-camera-plus"
+                                @click="triggerFileInput">
+                                <VAvatar
+                                    size="100"
+                                    :color="avatar ? 'default' : 'primary'"
+                                    variant="tonal"
+                                >
+                                    <VImg
+                                        v-if="avatar"
+                                        style="border-radius: 6px;"
+                                        :src="avatar"
+                                    />
+                                    <span
+                                        v-else
+                                        class="text-5xl font-weight-semibold"
+                                    >
+                                        {{ avatarText(name) }}
+                                    </span>
+                            </VAvatar>
+                            
+                            </VBadge>
+                            
+                            <!-- 👉 Upload Photo -->
+                            <VFileInput  
+                                ref="fileInput"          
+                                class="d-none"              
+                                label="Avatar"
+                                accept="image/png, image/jpeg, image/bmp"
+                                placeholder="Avatar"
+                                prepend-icon="tabler-camera"
+                                @change="onImageSelected"
+                            />
+                        </VCardText>
                     </VCol>
-                    <VCol cols="8" md="11" class="ps-3">
-                        <span class="name-client">{{name}}</span> <br>
-                        <span class="text-titles">{{ usermail }}</span>
-                    </VCol>
-                </VRow>
-                <VRow align="center" no-gutters>
-                    <VCol cols="12">
-                        <VCard class="card-profile">
-                            <VRow align="center" no-gutters class="items-profile">
-                                <VCol cols="3" md="1">
-                                    <VImg :src="icon_misdatos" class="icon_profile"/>
-                                </VCol>
-                                <VCol cols="7" md="10">
-                                    <span class="text-titles">Mis datos</span> <br>
-                                    <span class="text-subtitles">Valida tus datos.</span>
-                                </VCol>
-                                <VCol cols="2" md="1">
-                                    <router-link to="/mydata">
-                                        <VImg :src="icon_right" class="icon-right"/>
-                                    </router-link>
-                                </VCol>
-                            </VRow>
-                            <VRow align="center" no-gutters class="items-profile">
-                                <VCol cols="3" md="1">
-                                    <VImg :src="icon_seguridad" class="icon_profile"/>
-                                </VCol>
-                                <VCol cols="7" md="10">
-                                    <span class="text-titles">Seguridad</span> <br>
-                                    <span class="text-subtitles">Tienes configuraciones pendientes.</span>
-                                </VCol>
-                                <VCol cols="2" md="1">
-                                    <router-link to="/security">
-                                     <VImg :src="icon_right" class="icon-right"/>
-                                    </router-link>
-                                </VCol>
-                            </VRow><!--
-                            <VRow align="center" no-gutters class="items-profile">
-                                <VCol cols="12" md="1">
-                                    <VImg :src="icon_card" class="icon_profile"/>
-                                </VCol>
-                                <VCol cols="12" md="10">
-                                    <span class="text-titles">Tarjetas</span> <br>
-                                    <span class="text-subtitles">Tarjetas guardadas en tu cuenta.</span>
-                                </VCol>
-                                <VCol cols="1">
-                                    <VImg :src="icon_right" class="icon-right"/>
-                                </VCol>
-                            </VRow>-->
-                            <VRow align="center" no-gutters class="items-profile">
-                                <VCol cols="3" md="1">
-                                    <VImg :src="icon_address" class="icon_profile"/>
-                                </VCol>
-                                <VCol cols="7" md="10">
-                                    <span class="text-titles">Direcciones</span> <br>
-                                    <span class="text-subtitles">Direcciones guardadas en tu cuenta.</span>
-                                </VCol>
-                                <VCol cols="2" md="1">
-                                    <router-link to="/client-address">
-                                        <VImg :src="icon_right" class="icon-right"/>
-                                    </router-link>
-                                </VCol>
-                            </VRow><!--
-                            <VRow align="center" no-gutters class="items-profile">
-                                <VCol cols="12" md="1">
-                                    <VImg :src="icon_privacity" class="icon_profile"/>
-                                </VCol>
-                                <VCol cols="12" md="10">
-                                    <span class="text-titles">Privacidad</span> <br>
-                                    <span class="text-subtitles">Preferencias y control sobre el uso de tus datos.</span>
-                                </VCol>
-                                <VCol cols="1">
-                                    <VImg :src="icon_right" class="icon-right"/>
-                                </VCol>
-                            </VRow>-->
-                            <!--
-                            <VRow align="center" no-gutters class="items-profile">
-                                <VCol cols="12" md="1">
-                                    <VImg :src="icon_comunications" class="icon_profile"/>
-                                </VCol>
-                                <VCol cols="12" md="10">
-                                    <span class="text-titles">Comunicaciones</span> <br>
-                                    <span class="text-subtitles">Elige qué tipo de información quieres recibir.</span>
-                                </VCol>
-                                <VCol cols="1">
-                                    <VImg :src="icon_right" class="icon-right"/>
-                                </VCol>
-                            </VRow>-->
-                        </VCard>
+                    <VCol cols="8" md="8" class="ps-3 d-flex align-center">
+                        <div class="d-block">
+                            <span class="d-block name-client">{{ name }}</span>
+                            <span class="d-block text-titles">{{ usermail }}</span>
+                        </div>
                     </VCol>
                 </VRow>
+            </VCardTitle>
+        </VCard>
 
-            </VContainer>
-
-
-
+        <VCard class="card-profile">
+            <VCardText class="py-0">
+                <router-link 
+                    to="/mydata"
+                    class="tw-no-underline d-flex align-center items-profile">
+                    <my_data_error class="icon_profile mt-3"/>
+                    <div class="d-block ms-5">
+                        <span class="d-block text-titles">Mis datos</span>
+                        <span class="d-block text-subtitles">Valida tus datos.</span>
+                    </div>
+                    <VSpacer />
+                    <icon_right class="icon-right"/>
+                </router-link>
+            </VCardText>
+            <VCardText class="py-0">
+                <router-link 
+                    to="/security"
+                    class="tw-no-underline d-flex align-center items-profile">
+                    <security class="icon_profile mt-3"/>
+                    <div class="d-block ms-5">
+                        <span class="d-block text-titles">Seguridad</span>
+                        <span class="d-block text-subtitles">Tienes configuraciones pendientes.</span>
+                    </div>
+                    <VSpacer />
+                    <icon_right class="icon-right"/>
+                </router-link>
+            </VCardText>
+            <VCardText class="py-0">
+                <router-link
+                    to="/client-address"
+                    class="tw-no-underline d-flex align-center items-profile">
+                    <icon_address class="icon_profile mt-3"/>
+                    <div class="d-block ms-5">
+                        <span class="d-block text-titles">Direcciones</span>
+                        <span class="d-block text-subtitles">Direcciones guardadas en tu cuenta.</span>
+                    </div>
+                    <VSpacer />
+                    <icon_right class="icon-right"/>
+                </router-link>
+            </VCardText>
+        </VCard>
+    </VContainer>
+    <VDialog v-model="isDialogVisible" >
+        <VCard 
+            width="auto"
+            class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
+            <VImg width="100" :src="isError ? festin_cancel : festin_about" class="mx-auto"/>
+            <VCardText class="text-register p-0 mb-5">
+                {{ message }}
+            </VCardText>
+        </VCard>
+    </VDialog>
 </template>
 
 <style scoped>
 
+    .card-register {
+        padding: 20px;
+        border-radius: 32px !important;
+        width: 500px; 
+    }
+    .transparent {
+        background: transparent !important;
+    }
     .container-dashboard {
-        padding: 10px 200px;
+        padding: 0 200px;
     }
 
     .profile-image {
@@ -179,10 +334,11 @@ const me = async () => {
         padding: 16px 32px;
         margin-top: 24px;
         border-radius: 16px;
+        box-shadow: none !important;
     }
 
     .items-profile {
-        padding: 14px 0px;
+        padding: 5px 0px;
     }
 
     .icon_profile {
@@ -221,18 +377,18 @@ const me = async () => {
         margin: 0;    
     }
 
-    .link-menu
-    {
+    .link-menu {
         text-decoration: none;
     }
 
-    @media only screen and (max-width: 767px) 
-    {
-        .container-dashboard
-        {
+    .v-badge__wrapper::deep(.v-badge__badge)  {
+        background: transparent !important;
+    }
+
+    @media only screen and (max-width: 767px) {
+        .container-dashboard {
             padding: 0px 16px;
         }
     }
-
 
 </style>

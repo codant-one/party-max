@@ -16,6 +16,7 @@ import FormClient from '@/views/clients/form_client.vue'
 import FormSupplier from '@/views/clients/form_supplier.vue'
 import Login from '@/views/Login.vue'
 import Cart from '@/views/cart/index.vue'
+import DashboardHome from '@/views/dashboard/dashboard.vue'
 import Dashboard from '@/views/dashboard/index.vue'
 import Profile from '@/views/dashboard/profile/index.vue'
 import information_client from '@/views/dashboard/profile/information.vue'
@@ -128,9 +129,24 @@ const router = createRouter({
       component: Dashboard,
       children: [
         {
-          path: '/dashboard',
+          path: '/',
+          name: 'dashboard',
+          component: DashboardHome,
+        },
+        {
+          path: '/profile',
           name: 'profile',
           component: Profile,
+        },
+        {
+          path: '/purchases',
+          name: 'purchases',
+          component: Purchases,
+        },
+        {
+          path: '/favorites',
+          name: 'favorites',
+          component: Favorites,
         },
         {
           path: '/mydata',
@@ -149,16 +165,6 @@ const router = createRouter({
         {
           path: '/add-address',
           component: add_address, 
-        },
-        {
-          path: '/my-purchases',
-          name: 'my_purchases',
-          component: Purchases,
-        },
-        {
-          path: '/my-favorites',
-          name: 'favorites',
-          component: Favorites,
         },
         {
           path: '/detail-purchases',
@@ -210,7 +216,18 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const privatePages = ['/dashboard','/my-favorites','/detail-purchases','/my-purchases','/mydata','/security','/client-address','/add-address'];
+  const privatePages = [
+    '/dashboard',
+    '/profile',
+    '/purchases',
+    '/favorites',
+    
+    '/detail-purchases',
+    '/mydata',
+    '/security',
+    '/client-address',
+    '/add-address'
+  ];
   const authRequired = privatePages.includes(to.path);
   const loggedIn = localStorage.getItem('user_data');
 
