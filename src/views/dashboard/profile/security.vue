@@ -254,6 +254,7 @@ const me = async () => {
     <!--MODAL ACTUALIZAR DATOS-->
     <VDialog v-model="dialog" transition="dialog-top-transition">
             <VForm
+            :width="800"
             ref="refVForm"
             @submit.prevent="onSubmit"
             > 
@@ -528,6 +529,7 @@ const me = async () => {
 
 .card-register
     {
+        width: 500px;
         border-radius: 32px!important;
     }
 
@@ -547,6 +549,17 @@ const me = async () => {
         {
             width: 350px;
         }
+
+        .card-register {
+            width: auto;
+            padding: 40px 20px !important;
+        }
+
+        .text-message {
+            padding: 0 30px !important;
+            font-size: 18px;
+        }
+
     }   
 
 

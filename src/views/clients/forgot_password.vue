@@ -136,8 +136,7 @@ const onSubmit = () => {
             </VCard>
         </VForm>
         <VDialog v-model="isDialogVisible" >
-            <VCard 
-                :width="500"
+            <VCard
                 class="py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
                 <VImg width="100" :src="check_circle" class="mx-auto"/>
                 <VCardText class="text-message mt-10 mb-5">
@@ -276,7 +275,12 @@ const onSubmit = () => {
     @media only screen and (max-width: 767px) {
         .card-register {
             width: auto;
-            padding: 40px 20px;
+            padding: 40px 20px !important;
+        }
+
+        .text-message {
+            padding: 0 30px !important;
+            font-size: 18px;
         }
 
         .subtitle-register {

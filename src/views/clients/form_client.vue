@@ -344,7 +344,7 @@ const onSubmit = () => {
     @media only screen and (max-width: 767px) {
         .card-register {
             width: auto;
-            padding: 40px 20px;
+            padding: 40px 20px !important;
         }
 
         .subtitle-register {

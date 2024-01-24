@@ -339,7 +339,9 @@ const getFlagCountry = country => {
             <VForm
                 ref="refVForm"
                 @submit.prevent="onSubmit"> 
-                <VCard class="pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto card-form">
+                <VCard 
+                    :width="800"
+                    class="pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto card-form">
                     <VCardText class="subtitle-register p-0">
                         ACTUALIZAR DATOS
                     </VCardText>
@@ -488,8 +490,7 @@ const getFlagCountry = country => {
         <!--PopUp de respuesta-->
 
         <VDialog v-model="isDialogVisible" >
-            <VCard 
-                :width="800"
+            <VCard
                 class="py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
                 <VImg width="100" :src="isError ? festin_cancel : festin_about" class="mx-auto"/>
                 <VCardText class="text-register p-0 mb-5">
@@ -628,6 +629,7 @@ const getFlagCountry = country => {
     }
 
     .card-register {
+        width: 500px; 
         border-radius: 32px!important;
     }
 
@@ -647,9 +649,18 @@ const getFlagCountry = country => {
         .col-info {
             padding-left: 0 !important;
         }
-        .card-form
-        {
+        .card-form {
             width: 350px;
+        }
+
+        .card-register {
+            width: auto;
+            padding: 40px 20px !important;
+        }
+
+        .text-message {
+            padding: 0 30px !important;
+            font-size: 18px;
         }
     }    
 

@@ -85,6 +85,22 @@ export const useAuthStores = defineStore('auth', {
                 }).catch(error => {
                     return Promise.reject(error)
                 })
-        }
+        },
+        findToken(token: string) {
+            return Auth.findToken(token)
+                .then((response) => {
+                    return Promise.resolve(response.data)
+                }).catch(error => {
+                    return Promise.reject(error)
+                })
+        },
+        completed(data: object) {
+            return Auth.completed(data)
+                .then((response) => {
+                    return Promise.resolve(response.data)
+                }).catch(error => {
+                    return Promise.reject(error)
+                })
+        },
     }
 })

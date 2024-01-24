@@ -3,6 +3,7 @@
 import { useAuthStores } from '@/stores/auth'
 import { emailValidator, requiredValidator } from '@validators'
 import router from '@/router'
+import check_circle from '@assets/icons/check-circle.svg';
 import festin_image2 from '@assets/images/festin-register.jpg';
 import icon2 from '@assets/icons/input-user.svg';
 import icon4 from '@assets/icons/icon-password.svg';
@@ -15,6 +16,8 @@ const errors = ref({
 })
 
 const refVForm = ref()
+const isDialogVisible = ref(false)
+const message = ref('')
 const isPasswordVisible = ref(false)
 const email = ref('')
 const password = ref('')
@@ -75,12 +78,22 @@ const login = () => {
 
       load.value = false
 
-      errors.value = {
-        email: err.response.data.errors, 
-        password: ''
-      }
+      if(err.response.data.message === 'not_confirm') {
+        isDialogVisible.value = true
+        message.value = err.response.data.errors
 
-    //   console.error('error', err.response.data)
+        setTimeout(() => {
+            isDialogVisible.value = false
+            message.value = ''
+        }, 5000)
+
+      } else 
+        errors.value = {
+            email: err.response.data.errors, 
+            password: ''
+        }
+
+      console.error('error', err.response.data)
     })
 }
 
@@ -181,7 +194,16 @@ const onSubmit = () => {
                 </VCard>
             </VRow>
         </VForm>
-    </VContainer>    
+    </VContainer>   
+    <VDialog v-model="isDialogVisible" >
+        <VCard
+            class="py-14 pb-2 pb-md-4 no-shadown card-dialog d-block text-center mx-auto">
+            <VImg width="100" :src="check_circle" class="mx-auto"/>
+            <VCardText class="text-message mt-10 mb-5">
+                {{ message }}
+            </VCardText>
+        </VCard>
+    </VDialog> 
 </template>
 
 <style scoped>
@@ -253,6 +275,22 @@ const onSubmit = () => {
     .card-register {
         padding: 48px;
         border-radius: 32px;
+    }
+
+    .card-dialog {
+        padding: 20px;
+        border-radius: 32px !important;
+        width: 500px; 
+    }
+
+    .text-message {
+        color:  #FF0090;
+        text-align: center;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 30px; 
+        padding: 0 80px !important;
     }
 
     .subtitle-register {
@@ -361,6 +399,17 @@ const onSubmit = () => {
     }
 
     @media only screen and (max-width: 767px) {
+
+        .card-dialog {
+            width: auto;
+            padding: 40px 20px !important;
+        }
+
+        .text-message {
+            padding: 0 30px !important;
+            font-size: 18px;
+        }
+
         .card-register {
             padding: 20px;
             width: auto;

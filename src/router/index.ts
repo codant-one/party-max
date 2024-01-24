@@ -11,6 +11,7 @@ import ProductDetail from '@/views/products/detail.vue'
 import Suppliers from '@/views/Suppliers.vue'
 import Services from '@/views/Services.vue'
 import Register from '@/views/clients/register.vue'
+import RegisterConfirm from '@/views/clients/register_confirm.vue'
 import TypeClient from '@/views/clients/type_client.vue'
 import FormClient from '@/views/clients/form_client.vue'
 import FormSupplier from '@/views/clients/form_supplier.vue'
@@ -96,6 +97,11 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: Register
+    },
+    {
+      path: '/register-confirm',
+      name: 'register_confirm',
+      component: RegisterConfirm
     },
     {
       path: '/type_client',
