@@ -74,8 +74,6 @@ const me = async () => {
       const userData = localStorage.getItem('user_data')
       const userDataJ = JSON.parse(userData)
 
-      console.log(userDataJ)
-
       name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
       first_name.value = userDataJ.name
       last_name.value = userDataJ.last_name
@@ -148,7 +146,7 @@ const onSubmit = () => {
                         isError.value = false
                     }, 5000)
 
-                    console.error(err.message)
+                    // console.error(err.message)
                 })
 
         }
@@ -178,13 +176,13 @@ const getGenders = computed(() => {
 
 onMounted(async () => {
 
-  await profileStores.fetchCountries();
-  await profileStores.fetchProvinces();
-  await profileStores.fetchGenders();
+//   await profileStores.fetchCountries();
+//   await profileStores.fetchProvinces();
+//   await profileStores.fetchGenders();
   
-  loadCountries()
-  loadProvinces()
-  loadGenders()
+//   loadCountries()
+//   loadProvinces()
+//   loadGenders()
 })
 
 
@@ -218,7 +216,7 @@ const selectCountry = country => {
 
 watchEffect(async() => {
 
-selectCountry(countryOld_id.value)
+// selectCountry(countryOld_id.value)
 
 
 })

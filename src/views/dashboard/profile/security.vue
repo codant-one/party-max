@@ -61,7 +61,6 @@ const me = async () => {
       phone.value = userDataJ.user_details.phone
       newphone.value = userDataJ.user_details.phone
 
-      console.log(phone.value)
     }
   }
 
@@ -113,7 +112,7 @@ const me = async () => {
                         isError.value = false
                     }, 5000)
 
-                    console.error(err.message)
+                    // console.error(err.message)
                 })
         }
     })
@@ -164,7 +163,7 @@ const me = async () => {
                         isError.value = false
                     }, 5000)
 
-                    console.error(err.message)
+                    // console.error(err.message)
                 })
     })
   }

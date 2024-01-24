@@ -5,8 +5,8 @@ import { confirmedValidator, passwordValidator, requiredValidator } from '@valid
 import festin_image from '@assets/images/festin-register.jpg';
 import router from '@/router'
 import icon4 from '@assets/icons/icon-password.svg';
-import festin_about from '@assets/images/festin-aboutus.jpg';
-import festin_cancel from '@assets/images/festin_cancel.jpg';
+import check_circle from '@assets/icons/check-circle.svg';
+import error_circle from '@assets/icons/error-circle.svg';
 
 const route = useRoute()
 const authStores = useAuthStores()
@@ -55,7 +55,7 @@ async function fetchData() {
                 isError.value = false
             }, 5000)
 
-            console.error(err.message)
+            // console.error(err.message)
         })
 }
 
@@ -106,7 +106,7 @@ const onSubmit = () => {
                         isError.value = false
                     }, 5000)
 
-                    console.error(err.message)
+                    // console.error(err.message)
                 })
         }
     })
@@ -195,12 +195,12 @@ const onSubmit = () => {
         </VForm>
         <VDialog v-model="isDialogVisible" >
             <VCard 
-                :width="800"
+                :width="500"
                 class="py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-                <VImg width="100" :src="isError ? festin_cancel : festin_about" class="mx-auto"/>
-                <VCardText class="text-register p-0 mb-5">
-                    {{ message }}
-                </VCardText>
+                <VImg width="100" :src="isError ? error_circle : check_circle" class="mx-auto"/>
+                <VCardText class="text-message mt-10 mb-5">
+                {{ message }}
+            </VCardText>
             </VCard>
         </VDialog>
     </VContainer>
@@ -244,6 +244,16 @@ const onSubmit = () => {
         font-style: normal;
         font-weight: 400;
         line-height: 20px; /* 133.333% */
+    }
+
+    .text-message {
+        color:  #FF0090;
+        text-align: center;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 30px; 
+        padding: 0 80px !important;
     }
 
     .v-checkbox::v-deep(.v-label) {

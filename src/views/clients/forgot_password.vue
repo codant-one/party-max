@@ -4,7 +4,7 @@ import { useAuthStores } from '@/stores/auth'
 import { emailValidator, requiredValidator } from '@validators'
 import router from '@/router'
 import festin_image from '@assets/images/festin-register.jpg';
-import festin_about from '@assets/images/festin-aboutus.jpg';
+import check_circle from '@assets/icons/check-circle.svg';
 import arrow_left from '@assets/icons/Arrow_left.svg?inline';
 import icon1 from '@assets/icons/Mail.svg';
 
@@ -59,7 +59,7 @@ const forgot_password = () => {
         password: ''
       }
 
-      console.error('error', err.response.data)
+    //   console.error('error', err.response.data)
     })
 }
 
@@ -137,10 +137,10 @@ const onSubmit = () => {
         </VForm>
         <VDialog v-model="isDialogVisible" >
             <VCard 
-                :width="800"
+                :width="500"
                 class="py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-                <VImg width="100" :src="festin_about" class="mx-auto"/>
-                <VCardText class="text-register p-0 mb-5">
+                <VImg width="100" :src="check_circle" class="mx-auto"/>
+                <VCardText class="text-message mt-10 mb-5">
                     Tu solicitud se ha procesado satisfactoriamente.
                 </VCardText>
             </VCard>
@@ -177,6 +177,16 @@ const onSubmit = () => {
         font-weight: 600;
         line-height: 30px;
         margin-top: 34px;    
+    }
+
+    .text-message {
+        color:  #FF0090;
+        text-align: center;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 30px; 
+        padding: 0 80px !important;
     }
 
     .text-register {

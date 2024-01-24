@@ -18,7 +18,6 @@ const me = async () => {
       usermail.value = userDataJ.email
       phone.value = userDataJ.user_details.phone
 
-      console.log(phone.value)
     }
   }
 

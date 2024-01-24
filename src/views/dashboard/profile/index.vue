@@ -11,8 +11,8 @@ import my_data_success from '@assets/icons/my_data_success.svg?inline';
 import security from '@assets/icons/icon-seguridad.svg?inline';
 import icon_address from '@assets/icons/icon-address.svg?inline';
 import icon_right from '@assets/icons/right-icon.svg?inline';
-import festin_about from '@assets/images/festin-aboutus.jpg';
-import festin_cancel from '@assets/images/festin_cancel.jpg';
+import check_circle from '@assets/icons/check-circle.svg';
+import error_circle from '@assets/icons/error-circle.svg';
 
 const profileStores = useProfileStores()
 const authStores = useAuthStores()
@@ -108,7 +108,7 @@ const updateAvatar = () => {
         .then(response => {
 
             isDialogVisible.value = true
-            message.value = "Imagen Cambiaba"
+            message.value = "Se cambio su imagen correctamente"
 
             refresh()
             setTimeout(() => {
@@ -276,10 +276,10 @@ me()
     </VContainer>
     <VDialog v-model="isDialogVisible" >
         <VCard 
-            width="auto"
+            :width="500"
             class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-            <VImg width="100" :src="isError ? festin_cancel : festin_about" class="mx-auto"/>
-            <VCardText class="text-register p-0 mb-5">
+            <VImg width="100" :src="isError ? error_circle : check_circle" class="mx-auto"/>
+            <VCardText class="text-message mt-10 mb-5">
                 {{ message }}
             </VCardText>
         </VCard>
@@ -288,10 +288,19 @@ me()
 
 <style scoped>
 
+    .text-message {
+        color:  #FF0090;
+        text-align: center;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 30px; 
+        padding: 0 80px !important;
+    }
+
     .card-register {
         padding: 20px;
         border-radius: 32px !important;
-        width: 500px; 
     }
     .transparent {
         background: transparent !important;

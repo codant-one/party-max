@@ -15,8 +15,6 @@ const me = async () => {
       name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
       usermail.value = userDataJ.email
       phone.value = userDataJ.user_details.phone
-
-      console.log(phone.value)
     }
   }
 

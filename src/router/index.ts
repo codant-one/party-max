@@ -221,9 +221,9 @@ router.beforeEach((to, from, next) => {
     '/profile',
     '/purchases',
     '/favorites',
-    
-    '/detail-purchases',
     '/mydata',
+
+    '/detail-purchases',
     '/security',
     '/client-address',
     '/add-address'

@@ -89,7 +89,6 @@
     colse.value = 6
     service.value = id - 161
     widths.value = 750
-    console.log(service.value)
   }
 
   const chanceMenu = () => {

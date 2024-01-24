@@ -56,9 +56,6 @@ isLoading.value = true
 await homeStores.fetchData()
 
 categories.value = homeStores.getData.parentCategories
-console.log("categorias: ",categories.value)
-
-
 
 isLoading.value = false
 }
