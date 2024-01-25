@@ -165,11 +165,13 @@ const router = createRouter({
           component: security_client,
         },
         {
-          path:'/client-address',
+          path: '/address',
+          name: 'address',
           component: address_client,
         },
         {
-          path: '/add-address',
+          path: '/address/add',
+          name: 'add_address',
           component: add_address, 
         },
         {
@@ -228,11 +230,10 @@ router.beforeEach((to, from, next) => {
     '/purchases',
     '/favorites',
     '/mydata',
-
     '/detail-purchases',
     '/security',
-    '/client-address',
-    '/add-address'
+    '/address',
+    '/address/add'
   ];
   const authRequired = privatePages.includes(to.path);
   const loggedIn = localStorage.getItem('user_data');

@@ -1,5 +1,6 @@
 <script setup>
 
+import { useAuthStores } from '@/stores/auth'
 import { useProfileStores } from '@/stores/profile';
 import { confirmedValidator, passwordValidator, requiredValidator, phoneValidator} from '@validators'
 import router from '@/router'
@@ -11,10 +12,9 @@ import icon_phone from '@assets/icons/icon-phone.svg?inline';
 import icon_auth from '@assets/icons/icon-authenticator.svg?inline';
 import check_circle from '@assets/icons/check-circle.svg';
 import error_circle from '@assets/icons/error-circle.svg';
-import festin_about from '@assets/images/festin-aboutus.jpg';
-import festin_cancel from '@assets/images/festin_cancel.jpg';
 
 const profileStores = useProfileStores()
+const authStores = useAuthStores()
 
 const name = ref(null)
 const usermail= ref(null)
@@ -53,7 +53,9 @@ const inputChangeP = () =>{
 }
 
 
-const me = async () => {
+watchEffect(fetchData)
+
+async function fetchData() { 
     if(localStorage.getItem('user_data')){
       const userData = localStorage.getItem('user_data')
       const userDataJ = JSON.parse(userData)
@@ -64,9 +66,7 @@ const me = async () => {
       newphone.value = userDataJ.user_details.phone
 
     }
-  }
-
-  me()
+}
 
   const onSubmit = () => {
     refVForm.value?.validate().then(({ valid: isValid }) => {
@@ -82,8 +82,10 @@ const me = async () => {
                 .then(response => {
 
                     isDialogVisible.value = true
-                    message.value = response.data
-                    
+                    message.value = 'Datos actualizados exitosamente'
+                    dialog.value = false
+
+                    refresh(response.data.user_data.hash)
 
                     setTimeout(() => {
                         isDialogVisible.value = false
@@ -133,8 +135,10 @@ const me = async () => {
                 .then(response => {
 
                     isDialogVisible.value = true
-                    message.value = response.data
-                    
+                    message.value = 'Datos actualizados exitosamente'
+                    dialog_phone.value = false
+
+                    refresh(false)
 
                     setTimeout(() => {
                         isDialogVisible.value = false
@@ -148,6 +152,7 @@ const me = async () => {
                 }).catch(err => {
 
                     load.value = false
+                    dialog_phone.value = false
 
                     if(err.message === 'error'){
                         isDialogVisible.value = true
@@ -169,6 +174,25 @@ const me = async () => {
                 })
     })
   }
+
+  const refresh = async (hash) => {
+
+    if(hash) {
+        const { user_data, userAbilities } = await authStores.me(hash)
+
+        localStorage.setItem('userAbilities', JSON.stringify(userAbilities))
+        localStorage.setItem('user_data', JSON.stringify(user_data))
+    } else if(localStorage.getItem('user_data')){
+        const userData = localStorage.getItem('user_data')
+        const userDataJ = JSON.parse(userData)
+
+        const { user_data, userAbilities } = await authStores.me(userDataJ.hash)
+
+        localStorage.setItem('userAbilities', JSON.stringify(userAbilities))
+        localStorage.setItem('user_data', JSON.stringify(user_data))
+        fetchData()
+    }
+}
 
 </script>
 
@@ -217,237 +241,202 @@ const me = async () => {
         </VCardText>
     </VCard>
 
-
-
     <!--MODAL ACTUALIZAR DATOS-->
     <VDialog v-model="dialog" transition="dialog-top-transition">
-            <VForm
-            :width="800"
+        <VForm
             ref="refVForm"
             @submit.prevent="onSubmit"
             > 
-                <VCard class="py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto card-form px-5">
-                    
-                    <VCardText class="text-register p-0 mb-5">
-                        <v-container>
-                            <v-row class="row-form">
-                                <v-col cols="12" class="text-center">
-                                    
-                                        <h2 class="tw-text-primary">Actualizar contraseña</h2>
-                        
-                                </v-col>
-                                <v-col
-                                        cols="12"
-                                        class="col-field"
-                                >
-                                    <VTextField
-                                        label="Nueva Contraseña"
-                                        variant="outlined"
-                                        v-model="password"
-                                        :error-messages="errors.password"
-                                        :rules="[requiredValidator, passwordValidator]"
-                                        @input="inputChange()"
-                                        :type="isPasswordVisible ? 'text' : 'password'"
-                                        :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                                        @click:append-inner="isPasswordVisible = !isPasswordVisible"
-                                    />
-                                </v-col>
-                                <v-col
-                                    cols="12"
-                                >
-                                    <v-text-field
-                                        label="Confirmar contraseña"
-                                        variant="outlined"
-                                        v-model="passwordConfirmation"
-                                        :error-messages="errors.passwordConfirmation"
-                                        :rules="[requiredValidator, confirmedValidator(passwordConfirmation, password)]"
-                                        @input="inputChange()"
-                                        :type="isConfirmPasswordVisible ? 'text' : 'password'"
-                                        :append-inner-icon="isConfirmPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                                        @click:append-inner="isConfirmPasswordVisible = !isConfirmPasswordVisible"
-                                    />
-                                </v-col>
-
-                                <v-col cols="12">
-                                    <VBtn
-                                        variant="flat"
-                                        :width="288"
-                                        :height="48"
-                                        block
-                                        type="submit"
-                                        class="btn-register tw-text-white tw-bg-primary button-hover"
-                                    >
-                                        Cambiar contraseña
-                                        <VProgressCircular
-                                            v-if="load"
-                                            indeterminate
-                                            color="#fff"
-                                        />
-                                    </VBtn>
-                                </v-col>
-
-                            </v-row>
-                        </v-container>
-                    </VCardText>
-
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                            color="primary"
-                            variant="text"
-                            class="text-close"
-                            @click="dialog = false"
+            <VCard class="pb-2 pb-md-4 no-shadown card-password d-block text-center mx-auto card-form">
+                <VCardText class="subtitle-register p-0 mt-0 mt-md-7">
+                    ACTUALIZAR CONTRASEÑA
+                </VCardText>
+                <VCardItem class="pb-0 px-3 px-md-10">
+                    <VRow no-gutters class="text-left align-center">
+                        <VCol cols="12" md="12" class="textinput mb-0 mb-md-2 mt-3">
+                            <VTextField
+                                label="Nueva Contraseña"
+                                variant="outlined"
+                                v-model="password"
+                                :error-messages="errors.password"
+                                :rules="[requiredValidator, passwordValidator]"
+                                @input="inputChange()"
+                                :type="isPasswordVisible ? 'text' : 'password'"
+                                :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                                @click:append-inner="isPasswordVisible = !isPasswordVisible"
+                            />
+                        </VCol>
+                        <VCol cols="12" md="12" class="textinput mb-2">
+                            <VTextField
+                                label="Confirmar contraseña"
+                                variant="outlined"
+                                v-model="passwordConfirmation"
+                                :error-messages="errors.passwordConfirmation"
+                                :rules="[requiredValidator, confirmedValidator(passwordConfirmation, password)]"
+                                @input="inputChange()"
+                                :type="isConfirmPasswordVisible ? 'text' : 'password'"
+                                :append-inner-icon="isConfirmPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                                @click:append-inner="isConfirmPasswordVisible = !isConfirmPasswordVisible"
+                            />
+                        </VCol>
+                    </VRow>
+                </VCardItem>
+                <VCardActions class="px-10 d-flex justify-content-center">
+                    <VSpacer class="d-none d-md-block"/>
+                    <VBtn
+                        variant="flat"   
+                        type="submit"
+                        class="btn-register tw-text-white tw-bg-primary button-hover"
                         >
-                            Cerrar
-                        </v-btn>
-                    </v-card-actions>
-                </VCard>
-            </VForm>
-        </VDialog>
+                        Enviar
+                        <VProgressCircular
+                            v-if="load"
+                            indeterminate
+                            color="#fff"
+                        />
+                    </VBtn>
+                    <VBtn
+                        color="primary"
+                        variant="outlined"
+                        class="btn-register"
+                        @click="dialog = false"
+                    >
+                        Cerrar
+                    </VBtn>
+                </VCardActions>
+            </VCard>
+        </VForm>
+    </VDialog>
 
-        <!--MODAL ACTUALIZAR NÚMERO DE TELÉFONO-->
-
-        <VDialog v-model="dialog_phone" transition="dialog-top-transition">
-            <VForm
+    <!--MODAL ACTUALIZAR NÚMERO DE TELÉFONO-->
+    <VDialog v-model="dialog_phone" transition="dialog-top-transition">
+        <VForm
             ref="refVForm"
             @submit.prevent="onSubmitP"
             > 
-                <VCard class="py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto card-form px-5">
-                    
-                    <VCardText class="text-register p-0 mb-5">
-                        <v-container>
-                            <v-row class="row-form">
-                                <v-col cols="12" class="text-center">
-                                    
-                                        <h2 class="tw-text-primary">Actualizar número de teléfono</h2>
-                        
-                                </v-col>
-                                <v-col
-                                        cols="12"
-                                        class="col-field"
-                                >
-                                    <VTextField
-                                        label="Teléfono"
-                                        v-model="newphone"
-                                        variant="outlined"
-                                        :rules="[requiredValidator,phoneValidator]"
-                                        :error-messages="errors.newphone"
-                                        @input="inputChangeP()"
-                                    />
-                                </v-col>
-
-                                <v-col cols="12">
-                                    <VBtn
-                                        variant="flat"
-                                        :width="288"
-                                        :height="48"
-                                        block
-                                        type="submit"
-                                        class="btn-register tw-text-white tw-bg-primary button-hover"
-                                    >
-                                        Cambiar número de teléfono
-                                        <VProgressCircular
-                                            v-if="load"
-                                            indeterminate
-                                            color="#fff"
-                                        />
-                                    </VBtn>
-                                </v-col>
-
-                            </v-row>
-                        </v-container>
-                    </VCardText>
-
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                            color="primary"
-                            variant="text"
-                            class="text-close"
-                            @click="dialog_phone = false"
-                        >
-                            Cerrar
-                        </v-btn>
-                    </v-card-actions>
-                </VCard>
-            </VForm>
-        </VDialog>
-
-
-
-        <!--PopUp de respuesta-->
-
-        <VDialog v-model="isDialogVisible" >
-            <VCard 
-                :width="800"
-                class="py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-                <VImg width="100" :src="isError ? festin_cancel : festin_about" class="mx-auto"/>
-                <VCardText class="text-register p-0 mb-5">
-                    {{ message }}
+            <VCard class="pb-2 pb-md-4 no-shadown card-password d-block text-center mx-auto card-form">
+                <VCardText class="subtitle-register p-0 mt-0 mt-md-7">
+                    ACTUALIZAR NÚMERO DE TELÉFONO
                 </VCardText>
+                <VCardItem class="pb-0 px-3 px-md-10">
+                    <VRow no-gutters class="text-left align-center">
+                        <VCol cols="12" md="12" class="textinput mb-0 mb-md-2 mt-3">
+                            <VTextField
+                                label="Teléfono"
+                                v-model="newphone"
+                                variant="outlined"
+                                :rules="[requiredValidator,phoneValidator]"
+                                :error-messages="errors.newphone"
+                                @input="inputChangeP()"
+                            />
+                        </VCol>
+                    </VRow>
+                </VCardItem>
+                <VCardActions class="px-10 d-flex justify-content-center">
+                    <VSpacer class="d-none d-md-block"/>
+                    <VBtn
+                        variant="flat"   
+                        type="submit"
+                        class="btn-register tw-text-white tw-bg-primary button-hover"
+                        >
+                        Enviar
+                        <VProgressCircular
+                            v-if="load"
+                            indeterminate
+                            color="#fff"
+                        />
+                    </VBtn>
+                    <VBtn
+                        color="primary"
+                        variant="outlined"
+                        class="btn-register"
+                        @click="dialog = false"
+                    >
+                        Cerrar
+                    </VBtn>
+                </VCardActions>
             </VCard>
-        </VDialog>
+        </VForm>
+    </VDialog>
+
+    <VDialog v-model="isDialogVisible" >
+        <VCard
+            class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
+            <VImg width="100" :src="isError ? error_circle : check_circle" class="mx-auto"/>
+            <VCardText class="text-message mt-10 mb-5">
+                {{ message }}
+            </VCardText>
+        </VCard>
+    </VDialog>
     
   </VContainer>
 </template>
 
 <style scoped>
-
+    .text-message {
+        color:  #FF0090;
+        text-align: center;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 30px; 
+        padding: 0 80px !important;
+    }
     .border_line {
         border-bottom: 1px solid #E1E1E1;
     }
-.container-dashboard {
+    .subtitle-register {
+        color: #FF0090;
+        text-align: center;
+        font-size: 23px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 30px;  
+    }
+    .container-dashboard {
         padding: 10px 200px;
     }
-.data-title
-{
+    .data-title {
+        color: #0A1B33;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        text-align: left;
+    }
 
-    color: #0A1B33;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-    text-align: left;
-
-}
-
-.data-subtitle
-{
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-}
-
-.card-profile {
+    .data-subtitle {
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+    .card-profile {
         padding: 16px 32px;
         margin-top: 24px;
         border-radius: 16px;
         box-shadow: none;
     }
-.labels , .text-subtitles
-{
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 20px; /* 133.333% */
-}
+    .labels , .text-subtitles {
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 20px; /* 133.333% */
+    }
 
-.icon-right {
+    .icon-right {
         width: 20px;
         margin: auto;
       
     }
-.icons
-{
-    width: 56px;
-    height: 56px;
-    border-radius: 27px;
-    border: 1px solid var(--Grey-2, #E1E1E1);
-    background: var(--White, #FFF);
-}
-
-.v-text-field::v-deep(.v-field) { 
+    .icons {
+        width: 56px;
+        height: 56px;
+        border-radius: 27px;
+        border: 1px solid var(--Grey-2, #E1E1E1);
+        background: var(--White, #FFF);
+    }
+    .v-text-field::v-deep(.v-field) { 
         border-radius: 24px;
         height: 35px;
         font-size: 14px;
@@ -486,7 +475,7 @@ const me = async () => {
     }
 
     .btn-register {
-        font-size: 16px;
+        font-size: 14px;
         font-style: normal;
         font-weight: 700;
         line-height: 14px;
@@ -498,44 +487,40 @@ const me = async () => {
         box-shadow: 0px 0px 24px 0px #FF27B3;
     }
 
-
-.card-register
-    {
+    .card-register {
         width: 500px;
         border-radius: 32px!important;
     }
 
-    .card-form
-    {
+    .card-password {
+        width: 400px !important;
+        border-radius: 32px!important;
+    }
+
+    .card-form {
         width: 600px;
     }
 
-@media only screen and (max-width: 767px) 
-    {
+    @media only screen and (max-width: 767px) {
         .text-subtitles {
             font-size: 11px;
         }
-        .container-dashboard
-        {
+
+        .container-dashboard {
             padding: 0px 20px;
         }
 
-        .card-form
-        {
+        .card-form {
             width: 350px;
         }
-
-        .card-register {
-            width: auto;
+        .card-register, .card-password {
+            width: auto !important;
             padding: 40px 20px !important;
         }
-
         .text-message {
             padding: 0 30px !important;
             font-size: 18px;
         }
 
-    }   
-
-
+    }
 </style>

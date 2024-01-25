@@ -211,6 +211,7 @@ const onSubmit = () => {
                 }).catch(err => {
 
                     load.value = false
+                    dialog.value = false
 
                     if(err.message === 'error'){
                         isDialogVisible.value = true
@@ -511,7 +512,7 @@ const getFlagCountry = country => {
                     {{ message }}
                 </VCardText>
             </VCard>
-    </VDialog>
+        </VDialog>
     </VContainer>
 </template>
 

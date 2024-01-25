@@ -51,7 +51,7 @@ const me = async () => {
 
                 </VRow>
 
-                <VRow align="center" no-gutters class="add-address">
+                <VRow align="center" no-gutters class="address/add">
                     <VCol cols="10">
                         <span class="labels tw-text-primary">Agregar domicilio</span>
                     </VCol>
@@ -218,7 +218,7 @@ const me = async () => {
     background: var(--White, #FFF);
 }
 
-.add-address
+.address/add
 {
     padding: 24px;
     border-top: 1px solid var(--Grey-2, #E1E1E1);

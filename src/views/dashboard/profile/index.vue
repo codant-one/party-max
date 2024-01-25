@@ -271,7 +271,7 @@ me()
             </VCardText>
             <VCardText class="py-0 px-7 px-md-12 mt-1 mb-1 mt-md-2">
                 <router-link
-                    to="/client-address"
+                    to="/address"
                     class="tw-no-underline d-flex align-center">
                     <icon_address class="mt-4 mt-md-2 mb-md-1"/>
                     <div class="d-block ms-2 ms-md-5 mt-3 mt-md-0">
