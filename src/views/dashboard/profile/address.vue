@@ -18,7 +18,6 @@ const me = async () => {
       usermail.value = userDataJ.email
       phone.value = userDataJ.user_details.phone
 
-      console.log(phone.value)
     }
   }
 
@@ -250,10 +249,15 @@ const me = async () => {
 
     .v-text-field::v-deep(input) { 
         padding-top: 0 !important;
+        padding-left: 20px !important;
+    }
+
+    .v-text-field::v-deep(.v-field__outline__start) {
+        flex: 0 0 17px !important;
     }
 
     .v-text-field::v-deep(.v-field-label) {
-        top: 30% !important;
+        top: 33% !important;
         font-size: 14px !important;
     }
 
@@ -290,7 +294,7 @@ const me = async () => {
     {
         .container-dashboard
         {
-            padding: 0px 16px;
+            padding: 0px 20px;
         }
 
         .card-form

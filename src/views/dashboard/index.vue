@@ -1,23 +1,14 @@
 <script setup>
 
-import default_image from '@assets/images/default-image-client.png';
-import icon_misdatos from '@assets/icons/icon-misdatos.svg';
-import icon_seguridad from '@assets/icons/icon-seguridad.svg';
-import icon_card from '@assets/icons/icon-card.svg';
-import icon_address from '@assets/icons/icon-address.svg';
-import icon_privacity from '@assets/icons/icon-privacity.svg';
-import icon_comunications from '@assets/icons/icon-comunications.svg';
-import icon_right from '@assets/icons/right-icon.svg';
-import icon_profile from '@assets/icons/icon-perfil-white.svg?inline';
-import icon_account from '@assets/icons/lineas-de-cuadricula.svg?inline';
-import icon_favorites from '@assets/icons/heart2.svg?inline';
-
-import icon_compras from '@assets/icons/icon-compras.svg?inline';
+import profile from '@assets/icons/icon-perfil-white.svg?inline';
+import home from '@assets/icons/lineas-de-cuadricula.svg?inline';
+import favorites from '@assets/icons/heart2.svg?inline';
+import purchases from '@assets/icons/icon-compras.svg?inline';
 
 const name = ref(null)
-const usermail= ref(null)
+const usermail = ref(null)
    
-const isMobile = /Mobi/i.test(navigator.userAgent);
+const isMobile = /Mobi/i.test(navigator.userAgent)
 const drawer = ref(isMobile ? false : true)
 
 const me = async () => {
@@ -28,14 +19,14 @@ const me = async () => {
       name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
       usermail.value = userDataJ.email
     }
-  }
+}
 
-  me()
+me()
 
 </script>
 
 <template>
-    <VLayout>
+    <VLayout class="dashboard">
         <VNavigationDrawer 
             v-model="drawer"
             class="custom-background"
@@ -44,35 +35,52 @@ const me = async () => {
             permanent
         >
             <VList density="compact" nav class="mt-5">
-                <VListItem class="items-list" title="Home" value="account" >
-                    <template v-slot:prepend>
-                            <icon_account style="width: 24px; height: 24px;"></icon_account>
-                    </template>
-                </VListItem>
-                <router-link to="/dashboard" class="link-menu" active-class="active-link">
-                    <VListItem class="items-list" style="margin-top: 40px;" title="Mi perfil" value="profile">
+                <router-link :to="{ name: 'dashboard' }" class="link-menu" exact>
+                    <VListItem 
+                        :class="{ 'v-list-item--active': ($route.name === 'dashboard') }"
+                        class="items-list" title="Home" value="dashboard" >
                         <template v-slot:prepend>
-                            <icon_profile class="icon-profile"></icon_profile>
+                            <home style="width: 24px; height: 24px;"></home>
                         </template>
                     </VListItem>
                 </router-link>
-                <router-link to="/my-purchases" class="link-menu" active-class="active-link" exact>
-                    <VListItem class="items-list" style="margin-top: 16px;" title="Compras" value="Compras">
+                <router-link :to="{ name: 'profile' }" class="link-menu" exact>
+                    <VListItem 
+                        :class="{ 'v-list-item--active': $route.name === 'profile' }"
+                        class="items-list" style="margin-top: 40px;" title="Mi perfil" value="profile">
                         <template v-slot:prepend>
-                            <icon_compras style="width: 24px; height: 24px;"></icon_compras>
+                            <profile class="icon-profile"></profile>
                         </template>
                     </VListItem>
                 </router-link>
-                <router-link to="/my-favorites" class="link-menu" active-class="active-link" exact>
-                    <VListItem class="items-list" style="margin-top: 16px;" title="Mis Favoritos" value="Mis favoritos">
+                <router-link :to="{ name: 'purchases' }" class="link-menu" exact>
+                    <VListItem 
+                        :class="{ 'v-list-item--active': $route.name === 'purchases' }"
+                        class="items-list" style="margin-top: 16px;" title="Compras" value="purchases">
                         <template v-slot:prepend>
-                            <icon_favorites></icon_favorites>
+                            <purchases style="width: 24px; height: 24px;"></purchases>
+                        </template>
+                    </VListItem>
+                </router-link>
+                <router-link :to="{ name: 'favorites' }" class="link-menu" exact>
+                    <VListItem 
+                        :class="{ 'v-list-item--active': $route.name === 'favorites' }"
+                        class="items-list" style="margin-top: 16px;" title="Mis Favoritos" value="favorites">
+                        <template v-slot:prepend>
+                            <favorites></favorites>
                         </template>
                     </VListItem>
                 </router-link>
             </VList>
         </VNavigationDrawer>
-        <VMain class="d-flex align-center justify-center" style="min-height: 300px; background-color: #E2F8FC;">
+        <VMain style="min-height: 750px; background-color: #E2F8FC;">
+            <VContainer class="mt-1 mt-md-10 container-dashboard d-block d-md-none">
+                <VCard class="no-shadown card-information p-0 transparent">
+                    <VCardTitle class="p-0 d-flex align-center">
+                        AQUI HACER LOS COSITOS
+                    </VCardTitle>
+                </VCard>
+            </VContainer>
             <router-view/>
         </VMain>
     </VLayout>
@@ -81,6 +89,11 @@ const me = async () => {
 
 <style scoped>
 
+    .card-information {
+        padding: 16px 32px;
+        margin-top: 24px;
+        border-radius: 16px;
+    }
     .container-dashboard {
         padding: 10px 200px;
     }
@@ -125,11 +138,6 @@ const me = async () => {
         padding: 14px 0px;
     }
 
-    .icon_profile {
-        width: 56px;
-        height: 74.8px;
-    }
-
     .icon-right {
         width: 20px;
     }
@@ -151,8 +159,7 @@ const me = async () => {
         line-height: 18.2px;
     }
 
-    .text-menu
-    {
+    .text-menu {
         color: #FFFFFF;
         font-size: 12px;
         font-style: normal;
@@ -161,24 +168,39 @@ const me = async () => {
         margin: 0;    
     }
 
-    .link-menu
-    {
+    .link-menu {
         text-decoration: none;
         color: #FFFFFF;
     }
 
-    .items-list::v-deep(.v-list-item-title)
-    {
+    .items-list::v-deep(.v-list-item-title) {
         text-align: left;
         margin-left: 12px;
     }
 
-    .active-link
-    {
+    .router-link-exact-active {
         color: #FFC549!important;
     }
 
+    .router-link-exact-active::v-deep(path) {
+        stroke: #FFC549 !important;
+    }
 
+    .v-list-item--nav {
+        padding-inline: 15px !important
+    }
 
+    .v-list-item--active::v-deep(.v-list-item__overlay) {
+        opacity: 0 !important;
+    }
 
+    @media (max-width: 768px) {
+        .dashboard {
+            margin-top: -10px;
+        }
+
+        .container-dashboard {
+            padding: 0px 20px;
+        }
+    }
 </style>

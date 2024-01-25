@@ -548,7 +548,9 @@ me()
 
 <style scoped>
 
-  
+  .text-pink-accent-3 {
+    color: #FF0090 !important;
+  }
   .v-text-field::v-deep(.v-field) { 
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;

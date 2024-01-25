@@ -106,8 +106,6 @@ async function fetchData() {
   await homeStores.fetchData()
  
   categories.value = homeStores.getData.parentCategories
-  console.log("categorias: ",categories.value)
-  
   
   let info = {
     orderByField: 'id',

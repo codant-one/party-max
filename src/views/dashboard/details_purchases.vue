@@ -22,8 +22,6 @@ const me = async () => {
       name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
       usermail.value = userDataJ.email
       phone.value = userDataJ.user_details.phone
-
-      console.log(phone.value)
     }
   }
 
@@ -251,7 +249,7 @@ const me = async () => {
     {
         .container-dashboard
         {
-            padding: 0px 16px;
+            padding: 0px 20px;
         }
 
         .btn-comprar

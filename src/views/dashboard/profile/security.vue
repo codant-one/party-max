@@ -61,7 +61,6 @@ const me = async () => {
       phone.value = userDataJ.user_details.phone
       newphone.value = userDataJ.user_details.phone
 
-      console.log(phone.value)
     }
   }
 
@@ -113,7 +112,7 @@ const me = async () => {
                         isError.value = false
                     }, 5000)
 
-                    console.error(err.message)
+                    // console.error(err.message)
                 })
         }
     })
@@ -164,7 +163,7 @@ const me = async () => {
                         isError.value = false
                     }, 5000)
 
-                    console.error(err.message)
+                    // console.error(err.message)
                 })
     })
   }
@@ -255,6 +254,7 @@ const me = async () => {
     <!--MODAL ACTUALIZAR DATOS-->
     <VDialog v-model="dialog" transition="dialog-top-transition">
             <VForm
+            :width="800"
             ref="refVForm"
             @submit.prevent="onSubmit"
             > 
@@ -494,12 +494,17 @@ const me = async () => {
         opacity: inherit;
     }
 
+    .v-text-field::v-deep(.v-field__outline__start) {
+        flex: 0 0 17px !important;
+    }
+
     .v-text-field::v-deep(input) { 
         padding-top: 0 !important;
+        padding-left: 20px !important;
     }
 
     .v-text-field::v-deep(.v-field-label) {
-        top: 30% !important;
+        top: 33% !important;
         font-size: 14px !important;
     }
 
@@ -524,6 +529,7 @@ const me = async () => {
 
 .card-register
     {
+        width: 500px;
         border-radius: 32px!important;
     }
 
@@ -536,13 +542,24 @@ const me = async () => {
     {
         .container-dashboard
         {
-            padding: 0px 16px;
+            padding: 0px 20px;
         }
 
         .card-form
         {
             width: 350px;
         }
+
+        .card-register {
+            width: auto;
+            padding: 40px 20px !important;
+        }
+
+        .text-message {
+            padding: 0 30px !important;
+            font-size: 18px;
+        }
+
     }   
 
 

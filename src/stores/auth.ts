@@ -14,13 +14,13 @@ export const useAuthStores = defineStore('auth', {
         me(hash: string) {
             return Auth.me(hash)
                 .then((response) => {
+                    this.user = response.data.data.user_data
                     return Promise.resolve(response.data.data)
                 }).catch(error => {
                     return Promise.reject(error)
                 })            
         },
         login(data: object) {
-            
             return Auth.login(data)
                 .then((response) => {
                     this.user = response.data.data.user_data
@@ -39,7 +39,6 @@ export const useAuthStores = defineStore('auth', {
                 })
         },
         validate(data: object) {
-            
             return Auth.validate(data)
                 .then((response) => {
                     return Promise.resolve(response.data)
@@ -48,7 +47,6 @@ export const useAuthStores = defineStore('auth', {
                 })
         },
         forgot_password(data: object) {
-            
             return Auth.forgot_password(data)
                 .then((response) => {
                     return Promise.resolve(response.data)
@@ -57,7 +55,6 @@ export const useAuthStores = defineStore('auth', {
                 })
         },
         find(token: string) {
-            
             return Auth.find(token)
                 .then((response) => {
                     return Promise.resolve(response.data)
@@ -66,7 +63,6 @@ export const useAuthStores = defineStore('auth', {
                 })
         },
         change(data: object) {
-            
             return Auth.change(data)
                 .then((response) => {
                     return Promise.resolve(response.data)
@@ -83,13 +79,28 @@ export const useAuthStores = defineStore('auth', {
                 })            
         },
         register(data: object) {
-            
             return Auth.register(data)
                 .then((response) => {
                     return Promise.resolve(response.data)
                 }).catch(error => {
                     return Promise.reject(error)
                 })
-        }
+        },
+        findToken(token: string) {
+            return Auth.findToken(token)
+                .then((response) => {
+                    return Promise.resolve(response.data)
+                }).catch(error => {
+                    return Promise.reject(error)
+                })
+        },
+        completed(data: object) {
+            return Auth.completed(data)
+                .then((response) => {
+                    return Promise.resolve(response.data)
+                }).catch(error => {
+                    return Promise.reject(error)
+                })
+        },
     }
 })

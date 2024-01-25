@@ -25,7 +25,8 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '@axios': fileURLToPath(new URL('./src/plugins/axios', import.meta.url)),
       '@assets': fileURLToPath(new URL('./src/assets/', import.meta.url)),
-      '@validators': fileURLToPath(new URL('./src/utils/validators', import.meta.url))
+      '@validators': fileURLToPath(new URL('./src/utils/validators', import.meta.url)),
+      '@formatters': fileURLToPath(new URL('./src/utils/formatters', import.meta.url))
     }
   }
 })

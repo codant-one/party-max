@@ -221,19 +221,24 @@
         opacity: inherit;
     }
 
+    .v-text-field::v-deep(.v-field__outline__start) {
+        flex: 0 0 17px !important;
+    }
+
     .v-text-field::v-deep(input) { 
         padding-top: 0 !important;
+        padding-left: 20px !important;
     }
 
     .v-text-field::v-deep(.v-field-label) {
-        top: 30% !important;
+        top: 33% !important;
         font-size: 12px !important;
     }
 
     @media only screen and (max-width: 767px) {
         .card-register {
             width: auto;
-            padding: 40px 20px;
+            padding: 40px 20px !important;
         }
 
         .subtitle-register {

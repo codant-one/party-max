@@ -56,9 +56,6 @@ isLoading.value = true
 await homeStores.fetchData()
 
 categories.value = homeStores.getData.parentCategories
-console.log("categorias: ",categories.value)
-
-
 
 isLoading.value = false
 }
@@ -137,8 +134,6 @@ isLoading.value = false
             </VCol>
             
             <VCol cols="12" md="9" class="col-right">
-
-               
                     <VCard class="col-tab mt-7">
                         <VTabs v-model="tab" color="pink-accent-3" class="tab-main" align-tabs="center">
                             <VTab value="0">Productos</VTab>
@@ -167,6 +162,9 @@ isLoading.value = false
 </template>
 
 <style scoped>
+    .text-pink-accent-3 {
+        color: #FF0090 !important;
+    }
 .banner-img
 {
     width: 100%;

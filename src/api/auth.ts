@@ -37,6 +37,14 @@ class Auth {
     register(data: object) {
         return axios.post('auth/register', data)
     }
+
+    findToken(token: string) {
+        return axios.get(`auth/find/${token}`)
+    }
+
+    completed(data: object) {
+        return axios.post('auth/completed', data)
+    }
 }
 
 const auth = new Auth();

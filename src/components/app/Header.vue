@@ -89,7 +89,6 @@
     colse.value = 6
     service.value = id - 161
     widths.value = 750
-    console.log(service.value)
   }
 
   const chanceMenu = () => {
@@ -152,7 +151,6 @@
   const redirect = (name) => {
     router.push({ name : name})
 }
-
   
 </script>
 
@@ -338,16 +336,28 @@
                 <VList>
                   <VListItem class="px-0">
                     <VListItemTitle class="px-5"><b>Hola</b></VListItemTitle>
-                    <VListItemTitle class="px-5 mb-5 line-div tw-text-primary">{{name}}</VListItemTitle>
+                    <VListItemTitle class="px-5 mb-3 pb-3 line-div tw-text-primary">{{name}}</VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header" :to=" { name : 'profile' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard' }">
                         Dashboard
                       </router-link>
                     </VListItemTitle>
-                    <VListItemTitle class="px-5">Configuración</VListItemTitle>
-                    <VListItemTitle class="px-5 mb-2">Historial</VListItemTitle> 
-                    <VDivider />
-                    <VListItemTitle class="px-5 mt-2 tw-cursor-pointer" @click="logout">Cerrar Sesión</VListItemTitle>
+                    <VListItemTitle class="px-5">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'profile' }">
+                        Mi Perfil
+                      </router-link>
+                    </VListItemTitle>
+                    <VListItemTitle class="px-5">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'purchases' }">
+                        Compras
+                      </router-link>
+                    </VListItemTitle>
+                    <VListItemTitle class="px-5 mb-3 pb-3 line-div">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'favorites' }">
+                        Mis favoritos
+                      </router-link>
+                    </VListItemTitle>
+                    <VListItemTitle class="px-5 mt-2 tw-cursor-pointer tw-text-gray hover:tw-text-primary" @click="logout">Cerrar Sesión</VListItemTitle>
                   </VListItem>
                 </VList>
               </VMenu>
@@ -396,16 +406,28 @@
                 <VList>
                   <VListItem class="px-0">
                     <VListItemTitle class="px-5"><b>Hola</b></VListItemTitle>
-                    <VListItemTitle class="px-5 mb-5 line-div tw-text-primary">{{name}}</VListItemTitle>
+                    <VListItemTitle class="px-5 mb-3 pb-3 line-div tw-text-primary">{{name}}</VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header" :to=" { name : 'profile' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard' }">
                         Dashboard
                       </router-link>
                     </VListItemTitle>
-                    <VListItemTitle class="px-5">Configuración</VListItemTitle>
-                    <VListItemTitle class="px-5 mb-2">Historial</VListItemTitle> 
-                    <VDivider />
-                    <VListItemTitle class="px-5 mt-2 tw-cursor-pointer" @click="logout">Cerrar Sesión</VListItemTitle>
+                    <VListItemTitle class="px-5">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'profile' }">
+                        Mi Perfil
+                      </router-link>
+                    </VListItemTitle>
+                    <VListItemTitle class="px-5">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'purchases' }">
+                        Compras
+                      </router-link>
+                    </VListItemTitle>
+                    <VListItemTitle class="px-5 mb-3 pb-3 line-div">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'favorites' }">
+                        Mis favoritos
+                      </router-link>
+                    </VListItemTitle>
+                    <VListItemTitle class="px-5 mt-2 tw-cursor-pointer tw-text-gray hover:tw-text-primary" @click="logout">Cerrar Sesión</VListItemTitle>
                   </VListItem>
                 </VList>
               </VMenu>
