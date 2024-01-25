@@ -93,7 +93,7 @@ me()
         </VNavigationDrawer>
         <VMain style="min-height: 750px; background-color: #E2F8FC;" class="pt-30">
             <div class="mt-0 p-0 mt-md-10 container-dashboard d-block d-md-none">
-                <VCard class="no-shadown card-information p-2 transparent" :class="classFixedd" ref="fixedSectionRefd">
+                <VCard class="no-shadown card-information p-2 transparent box-bottom" :class="classFixedd" ref="fixedSectionRefd">
                     <VCardTitle class="p-0 d-flex align-center justify-content-center">
                         <div class="d-block text-center box-iconmob">
                             <router-link :to="{ name: 'profile' }" class="link-menumob tw-text-tertiary tw-no-underline" exact>
@@ -297,9 +297,13 @@ me()
 
         .box-comp
         {
-            border-left: 1px solid var(--Grey-2, #E1E1E1);
-            border-right: 1px solid var(--Grey-2, #E1E1E1);
+            border-left: 1px solid #E2F8FC;
+            border-right: 1px solid #E2F8FC;
 
+        }
+
+        .box-bottom {
+            border-bottom: 1px solid #E2F8FC;
         }
 
         .pt-30
