@@ -2,7 +2,8 @@
 
 import profile from '@assets/icons/icon-perfil-white.svg?inline';
 import home from '@assets/icons/lineas-de-cuadricula.svg?inline';
-import favorites from '@assets/icons/heart-mobile.svg?inline';
+import favorites from '@assets/icons/heart2.svg?inline';
+import favorites_mobile from '@assets/icons/heart-mobile.svg?inline';
 import purchases from '@assets/icons/icon-compras.svg?inline';
 
 const name = ref(null)
@@ -110,7 +111,7 @@ me()
 
                         <div class="d-block text-center box-iconmob">
                             <router-link :to="{ name: 'favorites' }" class="link-menumob tw-text-tertiary tw-no-underline" exact>
-                                <favorites class="icon-menumob"></favorites>
+                                <favorites_mobile class="icon-menumob"></favorites_mobile>
                                 <h5 class="text-menumob">Mis favoritos</h5>
                             </router-link>
                         </div>
