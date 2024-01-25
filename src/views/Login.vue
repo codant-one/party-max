@@ -47,6 +47,7 @@ const login = () => {
   let data = {
     email: email.value,
     password: password.value,
+    panel: 'client'
   }
 
   authStores.login(data)
@@ -78,7 +79,7 @@ const login = () => {
 
       load.value = false
 
-      if(err.response.data.message === 'not_confirm') {
+      if(err.response.data.message === 'not_confirm' || err.response.data.message === 'not_role') {
         isDialogVisible.value = true
         message.value = err.response.data.errors
 

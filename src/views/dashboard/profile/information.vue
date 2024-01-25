@@ -197,7 +197,7 @@ const onSubmit = () => {
                     isDialogVisible.value = true
                     message.value = 'Datos actualizados exitosamente'
                     dialog.value = false
-                    
+
                     refresh()
                     setTimeout(() => {
                         isDialogVisible.value = false
@@ -274,8 +274,6 @@ const getFlagCountry = country => {
             </VRow>
         </VCard>
             
-        <h6 class="data-subtitle tw-text-tertiary">Datos personales</h6>
-
         <VCard class="card-profile px-0 mb-5">
             <VCardItem class="px-8 border_text">
                 <VCardTitle>Datos personales</VCardTitle>

@@ -4,11 +4,13 @@ import { useProfileStores } from '@/stores/profile';
 import { confirmedValidator, passwordValidator, requiredValidator, phoneValidator} from '@validators'
 import router from '@/router'
 
-import icon_right from '@assets/icons/right-icon.svg';
-import icon_candado from '@assets/icons/candado.svg';
-import icon_email from '@assets/icons/icon-email.svg';
-import icon_phone from '@assets/icons/icon-phone.svg';
-import icon_auth from '@assets/icons/icon-authenticator.svg';
+import icon_right from '@assets/icons/right-icon.svg?inline';
+import icon_candado from '@assets/icons/candado.svg?inline';
+import icon_email from '@assets/icons/icon-email.svg?inline';
+import icon_phone from '@assets/icons/icon-phone.svg?inline';
+import icon_auth from '@assets/icons/icon-authenticator.svg?inline';
+import check_circle from '@assets/icons/check-circle.svg';
+import error_circle from '@assets/icons/error-circle.svg';
 import festin_about from '@assets/images/festin-aboutus.jpg';
 import festin_cancel from '@assets/images/festin_cancel.jpg';
 
@@ -167,88 +169,54 @@ const me = async () => {
                 })
     })
   }
+
 </script>
 
 <template>
- 
+  <VContainer class="mt-1 mt-md-10 container-dashboard"> 
 
-  <VContainer class="mt-15 mb-15 container-dashboard">
-   
-    <VRow>
-        <VCol cols="12" class="d-block">
-            <h2 class="data-title">Métodos de verificación</h2>
-            <h6 class="data-subtitle tw-text-tertiary">Los métodos de verificación sirven para confirmar que eres tú cuando inicias sesión.</h6>
+    <h2 class="data-title mt-5">Métodos de verificación</h2>
+    <h6 class="data-subtitle tw-text-tertiary">Los métodos de verificación sirven para confirmar que eres tú cuando inicias sesión.</h6>
 
-            <VCard class="card-profile">
+    <VCard class="card-profile px-0 py-0">
+        <VCardText class="d-flex align-center py-0 px-7 px-md-12 border_line mb-2">
+            <icon_email class="mt-6 mb-4 mt-md-6 mb-md-5"/>
+            <div class="d-block ms-2 ms-md-5 mb-md-4 mt-md-5">
+                <span class="d-block labels tw-text-tertiary">E-mail</span>
+                <span class="d-block text-subtitles tw-text-gray">{{ usermail }}</span>
+            </div>
+            <VSpacer />
+            <v-icon color="primary" icon="mdi-check-bold"></v-icon>
+        </VCardText>
+        <VCardText class="d-flex align-center py-0 px-7 px-md-12 border_line tw-cursor-pointer" @click="dialog = true">       
+            <icon_candado class="mt-4 mb-5 mt-md-3 mb-md-5"/>
+            <div class="d-block ms-2 ms-md-5 mb-md-4 mt-md-2">
+                <span class="d-block labels tw-text-tertiary">Contraseña</span>
+                <span class="d-block text-subtitles tw-text-gray">Puedes actualizar tu contraseña.</span>
+            </div>
+            <VSpacer />
+            <icon_right class="icon-right"/>  
+        </VCardText>
+        <VCardText class="d-flex align-center py-0 px-7 px-md-12 border_line tw-cursor-pointer" @click="dialog_phone = true">
+            <icon_phone class="mt-5 mb-5 mt-md-6 mb-md-5"/>
+            <div class="d-block ms-2 ms-md-5 mb-md-4 mt-md-4">
+                <span class="d-block labels tw-text-tertiary">Teléfono</span>
+                <span class="d-block text-subtitles tw-text-gray">{{ phone }}</span>
+            </div>
+            <VSpacer />
+            <icon_right class="icon-right"/>
+        </VCardText>
+        <VCardText class="d-flex align-center py-0 px-7 px-md-12 tw-cursor-pointer">  
+            <icon_auth class="mt-5 mb-6 mt-md-5 mb-md-6"/>
+            <div class="d-block ms-2 ms-md-5 mb-md-0 mt-md-0"> 
+                <span class="d-block labels tw-text-tertiary">Google Authenticator </span>
+                <span class="d-block text-subtitles tw-text-gray">Actívalo para usar 2FA.</span>
+            </div>
+            <VSpacer />
+            <icon_right class="icon-right"/>
+        </VCardText>
+    </VCard>
 
-                <VRow align="center" class="mt-5 mb-10" no-gutters>
-
-                    <VCol cols="3">
-                        <VImg :src="icon_candado" class="icons"/>
-                    </VCol>
-                    <VCol cols="8" class="d-block">
-                        <span class="labels tw-text-tertiary">Contraseña</span><br>
-                        <span class="labels tw-text-gray">Puedes actualizar tu contraseña.</span>
-                    </VCol>
-                    <VCol cols="1" class="text-right">
-                        <v-btn variant="text" class="edit-button tw-text-tertiary" @click="dialog=true">
-                            <VImg :src="icon_right" class="icon-right"/>
-                        </v-btn>
-                    </VCol>
-
-                </VRow>
-
-                <VRow align="center" class="mt-10 mb-10" no-gutters>
-
-                    <VCol cols="3">
-                        <VImg :src="icon_email" class="icons"/>
-                    </VCol>
-                    <VCol cols="8" class="d-block">
-                        <span class="labels tw-text-tertiary">E-mail</span><br>
-                        <span class="labels tw-text-gray">{{ usermail }}</span>
-                    </VCol>
-                    <VCol cols="1" class="text-right">
-                        <VImg :src="icon_right" class="icon-right"/>
-                    </VCol>
-
-                </VRow>
-
-                <VRow align="center" class="mt-10 mb-10" no-gutters>
-
-                    <VCol cols="3">
-                        <VImg :src="icon_phone" class="icons"/>
-                    </VCol>
-                    <VCol cols="8" class="d-block">
-                        <span class="labels tw-text-tertiary">Teléfono</span><br>
-                        <span class="labels tw-text-gray">{{ phone }}</span>
-                    </VCol>
-                    <VCol cols="1" class="text-right">
-                        <v-btn variant="text" class="edit-button tw-text-tertiary" @click="dialog_phone=true">
-                            <VImg :src="icon_right" class="icon-right"/>
-                        </v-btn>
-                        
-                    </VCol>
-
-                </VRow>
-
-                <VRow align="center" class="mt-10 mb-5" no-gutters>
-
-                    <VCol cols="3">
-                        <VImg :src="icon_auth" class="icons"/>
-                    </VCol>
-                    <VCol cols="8" class="d-block">
-                        <span class="labels tw-text-tertiary">Google Authenticator </span><br>
-                        <span class="labels tw-text-gray">Actívalo para usar códigos de verificación.</span>
-                    </VCol>
-                    <VCol cols="1" class="text-right">
-                        <VImg :src="icon_right" class="icon-right"/>
-                    </VCol>
-
-                </VRow>
-
-            </VCard>
-        </VCol>
-    </VRow>
 
 
     <!--MODAL ACTUALIZAR DATOS-->
@@ -424,6 +392,10 @@ const me = async () => {
 </template>
 
 <style scoped>
+
+    .border_line {
+        border-bottom: 1px solid #E1E1E1;
+    }
 .container-dashboard {
         padding: 10px 200px;
     }
@@ -453,7 +425,7 @@ const me = async () => {
         border-radius: 16px;
         box-shadow: none;
     }
-.labels
+.labels , .text-subtitles
 {
     font-size: 15px;
     font-style: normal;
@@ -540,6 +512,9 @@ const me = async () => {
 
 @media only screen and (max-width: 767px) 
     {
+        .text-subtitles {
+            font-size: 11px;
+        }
         .container-dashboard
         {
             padding: 0px 20px;

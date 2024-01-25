@@ -187,7 +187,7 @@ me()
     <Loader :isLoading="isLoading"/>
     <VContainer class="mt-1 mt-md-10 container-dashboard">
         <VCard class="no-shadown card-information p-0 transparent">
-            <VCardTitle class="p-0 d-flex align-center">
+            <VCardTitle class="p-0 d-flex align-center mt-5">
                 <VRow no-gutters>
                     <VCol cols="4" md="2" class="d-flex justify-md-end">
                         <VCardText class="d-block d-md-flex">
@@ -206,6 +206,7 @@ me()
                                         v-if="avatar"
                                         style="border-radius: 6px;"
                                         :src="avatar"
+                                        cover
                                     />
                                     <span
                                         v-else
@@ -239,14 +240,15 @@ me()
             </VCardTitle>
         </VCard>
 
-        <VCard class="card-profile">
-            <VCardText class="py-0">
+        <VCard class="card-profile px-0 py-5">
+            <VCardText class="py-0 px-7 px-md-12 border_line mb-2">
                 <router-link 
                     to="/mydata"
-                    class="tw-no-underline d-flex align-center mt-3 mt-md-0">
-                    <my_data_success v-if="full_profile" class="mt-2 mb-2 mt-md-3 mb-md-3"/>
-                    <my_data_error v-else class="mt-5 mt-md-3"/>
-                    <div class="d-block ms-2 ms-md-5">
+                    class="tw-no-underline d-flex align-center mb-md-0"
+                    :class="(full_profile) ? 'mb-3' : ''">
+                    <my_data_success v-if="full_profile" class="mt-2 mb-2 mt-md-1 mb-md-5"/>
+                    <my_data_error v-else class="mt-3 mt-md-1"/>
+                    <div class="d-block ms-2 ms-md-5 mb-md-4">
                         <span class="d-block text-titles">Mis datos</span>
                         <span class="d-block text-subtitles">{{ text }}</span>
                     </div>
@@ -254,12 +256,12 @@ me()
                     <icon_right class="icon-right"/>
                 </router-link>
             </VCardText>
-            <VCardText class="py-0">
+            <VCardText class="py-0 px-7 px-md-12 border_line my-0 my-md-3">
                 <router-link 
                     to="/security"
                     class="tw-no-underline d-flex align-center">
-                    <security class="mt-5 mt-md-3"/>
-                    <div class="d-block ms-2 ms-md-5">
+                    <security class="mt-3 mb-1 mt-md-2 mb-md-1"/>
+                    <div class="d-block ms-2 ms-md-5 mb-2 mb-md-3">
                         <span class="d-block text-titles">Seguridad</span>
                         <span class="d-block text-subtitles">Métodos de verificación.</span>
                     </div>
@@ -267,11 +269,11 @@ me()
                     <icon_right class="icon-right"/>
                 </router-link>
             </VCardText>
-            <VCardText class="py-0 mb-3">
+            <VCardText class="py-0 px-7 px-md-12 mt-1 mb-1 mt-md-2">
                 <router-link
                     to="/client-address"
                     class="tw-no-underline d-flex align-center">
-                    <icon_address class="mt-4 mt-md-3"/>
+                    <icon_address class="mt-4 mt-md-2 mb-md-1"/>
                     <div class="d-block ms-2 ms-md-5 mt-3 mt-md-0">
                         <span class="d-block text-titles">Direcciones</span>
                         <span class="d-block text-subtitles">Direcciones guardadas en tu cuenta.</span>
@@ -294,6 +296,9 @@ me()
 </template>
 
 <style scoped>
+    .border_line {
+        border-bottom: 1px solid #E1E1E1;
+    }
 
     .text-message {
         color:  #FF0090;
@@ -404,7 +409,7 @@ me()
         }
 
         .card-profile {
-            padding: 16px 10px !important;
+            padding: 16px 0 !important;
         }
 
         .text-subtitles {
