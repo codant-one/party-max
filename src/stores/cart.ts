@@ -6,8 +6,7 @@ export const useCartStores = defineStore('cart',{
     state: () => ({
         data: {},
         user: null,
-        loading: false
-
+        loading: false,
     }),
 
     getters:{
