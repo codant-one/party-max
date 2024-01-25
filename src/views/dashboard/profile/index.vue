@@ -23,6 +23,8 @@ const usermail= ref(null)
 const avatar = ref('')
 const avatarOld = ref('')
 const fileInput = ref()
+const full_profile = ref(null)
+const text = ref('')
 
 const isMobile = /Mobi/i.test(navigator.userAgent);
 const isDialogVisible = ref(false)
@@ -160,6 +162,7 @@ const refresh = async () => {
 const me = async () => {
 
     isLoading.value = true
+
     if(localStorage.getItem('user_data')){
         const userData = localStorage.getItem('user_data')
         const userDataJ = JSON.parse(userData)
@@ -169,6 +172,8 @@ const me = async () => {
 
         avatarOld.value = userDataJ.avatar
         avatar.value = userDataJ.avatar
+        full_profile.value = (userDataJ.full_profile === 0) ? false : true
+        text.value = (userDataJ.full_profile === 0) ? 'Valida tus datos.' : 'Datos personales.'
     }
 
     isLoading.value = false
@@ -238,11 +243,12 @@ me()
             <VCardText class="py-0">
                 <router-link 
                     to="/mydata"
-                    class="tw-no-underline d-flex align-center items-profile">
-                    <my_data_error class="mt-5 mt-md-3"/>
+                    class="tw-no-underline d-flex align-center mt-3 mt-md-0">
+                    <my_data_success v-if="full_profile" class="mt-2 mb-2 mt-md-3 mb-md-3"/>
+                    <my_data_error v-else class="mt-5 mt-md-3"/>
                     <div class="d-block ms-2 ms-md-5">
                         <span class="d-block text-titles">Mis datos</span>
-                        <span class="d-block text-subtitles">Valida tus datos.</span>
+                        <span class="d-block text-subtitles">{{ text }}</span>
                     </div>
                     <VSpacer />
                     <icon_right class="icon-right"/>
@@ -251,27 +257,27 @@ me()
             <VCardText class="py-0">
                 <router-link 
                     to="/security"
-                    class="tw-no-underline d-flex align-center items-profile">
+                    class="tw-no-underline d-flex align-center">
                     <security class="mt-5 mt-md-3"/>
                     <div class="d-block ms-2 ms-md-5">
                         <span class="d-block text-titles">Seguridad</span>
-                        <span class="d-block text-subtitles">Tienes configuraciones pendientes.</span>
+                        <span class="d-block text-subtitles">Métodos de verificación.</span>
                     </div>
                     <VSpacer />
                     <icon_right class="icon-right"/>
                 </router-link>
             </VCardText>
-            <VCardText class="py-0">
+            <VCardText class="py-0 mb-3">
                 <router-link
                     to="/client-address"
-                    class="tw-no-underline d-flex align-center items-profile">
-                    <icon_address class="mt-5 mt-md-3"/>
-                    <div class="d-block ms-2 ms-md-5">
+                    class="tw-no-underline d-flex align-center">
+                    <icon_address class="mt-4 mt-md-3"/>
+                    <div class="d-block ms-2 ms-md-5 mt-3 mt-md-0">
                         <span class="d-block text-titles">Direcciones</span>
                         <span class="d-block text-subtitles">Direcciones guardadas en tu cuenta.</span>
                     </div>
                     <VSpacer />
-                    <icon_right class="icon-right"/>
+                    <icon_right class="icon-right mt-3 mt-md-0"/>
                 </router-link>
             </VCardText>
         </VCard>
@@ -347,10 +353,6 @@ me()
         margin-top: 24px;
         border-radius: 16px;
         box-shadow: none !important;
-    }
-
-    .items-profile {
-        padding: 5px 0px;
     }
 
     .icon-right {

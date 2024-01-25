@@ -1,5 +1,6 @@
 <script setup>
 
+import { useAuthStores } from '@/stores/auth'
 import { useProfileStores } from '@/stores/profile'
 import { useCountriesStores } from '@/stores/countries'
 import { useProvincesStores } from '@/stores/provinces'
@@ -8,17 +9,19 @@ import { requiredValidator } from '@validators'
 import Loader from '@/components/common/Loader.vue'
 import router from '@/router'
 
-import festin_about from '@assets/images/festin-aboutus.jpg';
-import festin_cancel from '@assets/images/festin_cancel.jpg';
+import check_circle from '@assets/icons/check-circle.svg';
+import error_circle from '@assets/icons/error-circle.svg';
 
 const profileStores = useProfileStores()
 const countriesStores = useCountriesStores()
 const provincesStores = useProvincesStores()
 const gendersStores = useGendersStores()
+const authStores = useAuthStores()
 
 const load = ref(false)
 const refVForm = ref()
 const isLoading = ref(true)
+const isMobile = /Mobi/i.test(navigator.userAgent)
 
 const name = ref(null)
 const usermail = ref(null)
@@ -125,10 +128,10 @@ async function fetchData() {
         usermail.value = userDataJ.email
         username.value = userDataJ.username
         phone.value = userDataJ.user_details.phone
-        document.value = userDataJ.user_details.document 
+        document.value = userDataJ.user_details.document ?? '----'
         country.value = userDataJ.user_details.province.country.name
-        address.value = userDataJ.user_details.address
-        birthday.value = userDataJ.client.birthday
+        address.value = userDataJ.user_details.address ?? '----'
+        birthday.value = userDataJ.client.birthday ?? '----'
         gender.value = userDataJ.client.gender.name 
         province.value =  userDataJ.user_details.province.name
 
@@ -136,7 +139,7 @@ async function fetchData() {
         countryOld_id.value = userDataJ.user_details.province.country.name
 
         province_id.value = userDataJ.user_details.province.name
-        provinceOld_id.value = userDataJ.user_details.province.name
+        provinceOld_id.value = userDataJ.user_details.province_id
 
         newfname.value = userDataJ.name
         newlname.value = userDataJ.last_name
@@ -183,22 +186,24 @@ const onSubmit = () => {
                 document: newdocument.value,
                 address: newaddress.value,
                 gender_id: newgender.value,
-                province_id: province_id.value,
+                province_id: (Number.isInteger(province_id.value)) ? province_id.value : provinceOld_id.value,
                 username: newusername.value,
                 birthday: newbirthday.value
             }
 
             profileStores.update_profile(data)
                 .then(response => {
-                    isDialogVisible.value = true
-                    message.value = response.data
-                    
 
+                    isDialogVisible.value = true
+                    message.value = 'Datos actualizados exitosamente'
+                    dialog.value = false
+                    
+                    refresh()
                     setTimeout(() => {
                         isDialogVisible.value = false
                         message.value = ''
                         isError.value = false
-                        router.push({ name: 'information_client' })
+                        router.push({ name: 'profile' })
                     }, 5000)
 
                     load.value = false                    
@@ -229,6 +234,18 @@ const onSubmit = () => {
         }
     
     })
+}
+
+const refresh = async () => {
+    if(localStorage.getItem('user_data')){
+        const userData = localStorage.getItem('user_data')
+        const userDataJ = JSON.parse(userData)
+
+        const { user_data, userAbilities } = await authStores.me(userDataJ.hash)
+
+        localStorage.setItem('userAbilities', JSON.stringify(userAbilities))
+        localStorage.setItem('user_data', JSON.stringify(user_data))
+    }
 }
 
 const getFlagCountry = country => {
@@ -340,14 +357,13 @@ const getFlagCountry = country => {
                 ref="refVForm"
                 @submit.prevent="onSubmit"> 
                 <VCard 
-                    :width="800"
                     class="pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto card-form">
-                    <VCardText class="subtitle-register p-0">
+                    <VCardText class="subtitle-register p-0 mt-0 mt-md-7">
                         ACTUALIZAR DATOS
                     </VCardText>
-                    <VCardItem class="pb-0 px-10">
+                    <VCardItem class="pb-0 px-5 px-md-10">
                         <VRow no-gutters class="text-left align-center">
-                            <VCol cols="12" md="6" class="textinput">
+                            <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
                                 <VTextField
                                     label="Nombre"
                                     v-model="newfname"
@@ -355,10 +371,10 @@ const getFlagCountry = country => {
                                     :rules="[requiredValidator]"
                                     :error-messages="errors.newfname"
                                     @input="inputChange()"
-                                    class="mt-2 me-2"
+                                    class="mt-2 me-0 me-md-2"
                                     />
                             </VCol>
-                            <VCol cols="12" md="6" class="textinput">
+                            <VCol cols="12" md="6" class="textinput mb-2">
                                 <VTextField
                                     label="Apellido"
                                     v-model="newlname"
@@ -369,7 +385,7 @@ const getFlagCountry = country => {
                                     class="mt-2"
                                 />
                             </VCol>
-                            <VCol cols="12" md="6" class="textinput">
+                            <VCol cols="12" md="6" class="textinput mb-2">
                                 <VTextField
                                     label="Username"
                                     v-model="newusername"
@@ -377,10 +393,10 @@ const getFlagCountry = country => {
                                     :rules="[requiredValidator]"
                                     :error-messages="errors.newusername"
                                     @input="inputChange()"
-                                    class="me-2"
+                                    class="me-0 me-md-2"
                                 />
                             </VCol>
-                            <VCol cols="12" md="6" class="textinput">
+                            <VCol cols="12" md="6" class="textinput mb-2">
                                 <VTextField
                                     label="Fecha de nacimiento"
                                     v-model="newbirthday"
@@ -391,7 +407,7 @@ const getFlagCountry = country => {
                                      @input="inputChange()"
                                 />
                             </VCol>
-                            <VCol cols="12" md="6" class="textinput">
+                            <VCol cols="12" md="6" class="textinput mb-2">
                                 <VTextField
                                     label="Nro Documento"
                                     v-model="newdocument"
@@ -399,10 +415,10 @@ const getFlagCountry = country => {
                                     :rules="[requiredValidator]"
                                     :error-messages="errors.newdocument"
                                     @input="inputChange()"
-                                    class="me-2"
+                                    class="me-0 me-md-2"
                                 />
                             </VCol>
-                            <VCol cols="12" md="6" class="textinput">
+                            <VCol cols="12" md="6" class="textinput mb-2">
                                 <VAutocomplete
                                     variant="outlined"
                                     v-model="newgender"
@@ -412,7 +428,7 @@ const getFlagCountry = country => {
                                     :menu-props="{ maxHeight: '200px' }"
                                     />
                             </VCol>
-                            <VCol cols="12" md="6" class="textinput">
+                            <VCol cols="12" md="6" class="textinput mb-2">
                                 <VAutocomplete
                                     variant="outlined"
                                     v-model="client_country_id"
@@ -423,7 +439,7 @@ const getFlagCountry = country => {
                                     item-value="name"
                                     :menu-props="{ maxHeight: '200px' }"
                                     @update:model-value="selectCountry"
-                                    class="me-2">
+                                    class="me-0 me-md-2">
                                     <template 
                                         v-if="client_country_id"
                                         #prepend
@@ -431,13 +447,13 @@ const getFlagCountry = country => {
                                         <VAvatar
                                             start
                                             style="margin-top: -8px;"
-                                            size="36"
+                                            :size="isMobile ? '30' : '36'"
                                             :image="getFlagCountry(client_country_id)"
                                             />
                                     </template>
                                 </VAutocomplete>
                             </VCol>
-                            <VCol cols="12" md="6" class="textinput">
+                            <VCol cols="12" md="6" class="textinput mb-2">
                                 <VAutocomplete
                                     variant="outlined"
                                     v-model="province_id"
@@ -460,8 +476,8 @@ const getFlagCountry = country => {
                             </VCol>
                         </VRow>
                     </VCardItem>
-                    <VCardActions class="px-10">
-                        <VSpacer />
+                    <VCardActions class="px-10 d-flex justify-content-center">
+                        <VSpacer class="d-none d-md-block"/>
                         <VBtn
                             variant="flat"   
                             type="submit"
@@ -491,13 +507,13 @@ const getFlagCountry = country => {
 
         <VDialog v-model="isDialogVisible" >
             <VCard
-                class="py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-                <VImg width="100" :src="isError ? festin_cancel : festin_about" class="mx-auto"/>
-                <VCardText class="text-register p-0 mb-5">
+                class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
+                <VImg width="100" :src="isError ? error_circle : check_circle" class="mx-auto"/>
+                <VCardText class="text-message mt-10 mb-5">
                     {{ message }}
                 </VCardText>
             </VCard>
-        </VDialog>
+    </VDialog>
     </VContainer>
 </template>
 
@@ -508,8 +524,7 @@ const getFlagCountry = country => {
         font-size: 23px;
         font-style: normal;
         font-weight: 600;
-        line-height: 30px;
-        margin-top: 34px;   
+        line-height: 30px;  
     }
     .container-dashboard {
         padding: 10px 200px;
@@ -593,8 +608,16 @@ const getFlagCountry = country => {
         padding-left: 20px !important;
     }
 
-    .v-text-field::v-deep(.v-field-label) {
+    .v-text-field::v-deep(.v-input__details) {
+        min-height: 15px !important;
+    }
+    .textinput .v-text-field::v-deep(.v-field-label) {
         top: 33% !important;
+        font-size: 14px !important;
+    }
+
+    .v-textarea::v-deep(.v-field-label) {
+        top: 10% !important;
         font-size: 14px !important;
     }
 
@@ -635,6 +658,16 @@ const getFlagCountry = country => {
 
     .card-form {
         width: 800px;
+    }
+
+    .text-message {
+        color:  #FF0090;
+        text-align: center;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 30px; 
+        padding: 0 80px !important;
     }
 
     @media only screen and (max-width: 767px) {

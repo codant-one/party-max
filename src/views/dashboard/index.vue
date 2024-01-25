@@ -74,6 +74,13 @@ me()
             </VList>
         </VNavigationDrawer>
         <VMain style="min-height: 750px; background-color: #E2F8FC;">
+            <VContainer class="mt-1 mt-md-10 container-dashboard d-block d-md-none">
+                <VCard class="no-shadown card-information p-0 transparent">
+                    <VCardTitle class="p-0 d-flex align-center">
+                        AQUI HACER LOS COSITOS
+                    </VCardTitle>
+                </VCard>
+            </VContainer>
             <router-view/>
         </VMain>
     </VLayout>
@@ -81,6 +88,12 @@ me()
 </template>
 
 <style scoped>
+
+    .card-information {
+        padding: 16px 32px;
+        margin-top: 24px;
+        border-radius: 16px;
+    }
     .container-dashboard {
         padding: 10px 200px;
     }
@@ -184,6 +197,10 @@ me()
     @media (max-width: 768px) {
         .dashboard {
             margin-top: -10px;
+        }
+
+        .container-dashboard {
+            padding: 0px 20px;
         }
     }
 </style>
