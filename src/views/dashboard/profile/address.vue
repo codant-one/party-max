@@ -218,7 +218,7 @@ const me = async () => {
     background: var(--White, #FFF);
 }
 
-.address/add
+.address-add
 {
     padding: 24px;
     border-top: 1px solid var(--Grey-2, #E1E1E1);
