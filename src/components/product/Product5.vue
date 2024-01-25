@@ -24,6 +24,7 @@ const rating = ref(null)
 const single_description = ref(null)
 const slug = ref(null)
 const stock = ref(null)
+const quantity = ref(null)
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
@@ -39,6 +40,7 @@ watchEffect(() => {
         single_description.value = props.product.single_description
         slug.value = props.product.slug
         stock.value = props.product.stock
+        quantity.value = props.product.quantity ?? 1
     }
 })
 
@@ -72,6 +74,7 @@ watchEffect(() => {
                 <VCol cols="12" md="2" class="d-flex flex-column py-5">
                     <VCardText class="d-flex text-center align-center justify-content-center mt-5">  
                         <VTextField
+                        v-model="quantity"
                         placeholder="0"
                         variant="solo"
                         type="number"

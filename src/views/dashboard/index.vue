@@ -2,7 +2,7 @@
 
 import profile from '@assets/icons/icon-perfil-white.svg?inline';
 import home from '@assets/icons/lineas-de-cuadricula.svg?inline';
-import favorites from '@assets/icons/heart2.svg?inline';
+import favorites from '@assets/icons/heart-mobile.svg?inline';
 import purchases from '@assets/icons/icon-compras.svg?inline';
 
 const name = ref(null)
@@ -10,6 +10,9 @@ const usermail = ref(null)
    
 const isMobile = /Mobi/i.test(navigator.userAgent)
 const drawer = ref(isMobile ? false : true)
+
+const fixedSectionRefd = ref(null)
+const classFixedd = ref('second-headerd')
 
 const me = async () => {
     if(localStorage.getItem('user_data')){
@@ -20,6 +23,20 @@ const me = async () => {
       usermail.value = userDataJ.email
     }
 }
+
+onMounted(() => {
+    window.addEventListener('scroll', handleScroll);
+  });
+
+  const handleScroll = () => {
+
+    if (fixedSectionRefd.value && isMobile) {
+      const scrollY = window.scrollY || window.pageYOffset;
+    
+      classFixedd.value = (scrollY === 0 ) ? 'second-headerd' : 'topFixedd';
+    }
+  };
+
 
 me()
 
@@ -73,15 +90,34 @@ me()
                 </router-link>
             </VList>
         </VNavigationDrawer>
-        <VMain style="min-height: 750px; background-color: #E2F8FC;">
-            <VContainer class="mt-1 mt-md-10 container-dashboard d-block d-md-none">
-                <VCard class="no-shadown card-information p-0 transparent">
-                    <VCardTitle class="p-0 d-flex align-center">
-                        AQUI HACER LOS COSITOS
+        <VMain style="min-height: 750px; background-color: #E2F8FC;" class="pt-30">
+            <div class="mt-0 p-0 mt-md-10 container-dashboard d-block d-md-none">
+                <VCard class="no-shadown card-information p-2 transparent" :class="classFixedd" ref="fixedSectionRefd">
+                    <VCardTitle class="p-0 d-flex align-center justify-content-center">
+                        <div class="d-block text-center box-iconmob">
+                            <router-link :to="{ name: 'profile' }" class="link-menumob tw-text-tertiary tw-no-underline" exact>
+                                <profile class="icon-menumob"></profile>
+                                <h5 class="text-menumob">Mi perfil</h5>
+                            </router-link>
+                        </div>
+
+                        <div class="d-block text-center box-iconmob box-comp">
+                            <router-link :to="{ name: 'purchases' }" class="link-menumob tw-text-tertiary tw-no-underline" exact>
+                                <purchases class="icon-menumob"></purchases>
+                                <h5 class="text-menumob">Compras</h5>
+                            </router-link>
+                        </div>
+
+                        <div class="d-block text-center box-iconmob">
+                            <router-link :to="{ name: 'favorites' }" class="link-menumob tw-text-tertiary tw-no-underline" exact>
+                                <favorites class="icon-menumob"></favorites>
+                                <h5 class="text-menumob">Mis favoritos</h5>
+                            </router-link>
+                        </div>
                     </VCardTitle>
                 </VCard>
-            </VContainer>
-            <router-view/>
+            </div>
+            <router-view />
         </VMain>
     </VLayout>
 
@@ -89,11 +125,15 @@ me()
 
 <style scoped>
 
+
+
     .card-information {
-        padding: 16px 32px;
+        padding: 24px 32px;
         margin-top: 24px;
         border-radius: 16px;
     }
+
+
     .container-dashboard {
         padding: 10px 200px;
     }
@@ -195,6 +235,22 @@ me()
     }
 
     @media (max-width: 768px) {
+
+        .second-headerd {
+            top: 120px !important;
+            position: fixed !important;
+            width: 100%;
+            z-index: 1000;
+            }
+            
+        .topFixedd {
+            top: 45px !important;
+            position: fixed !important;
+            width: 100%;
+            z-index: 1000;
+            
+            }
+
         .dashboard {
             margin-top: -10px;
         }
@@ -202,5 +258,53 @@ me()
         .container-dashboard {
             padding: 0px 20px;
         }
+
+        .card-information
+        {
+            border-radius: 0px;
+            margin-top: 0px;
+            padding: 24px 0px;
+            margin-bottom: 50px;
+            
+
+        }
+        .icon-menumob
+        {
+            stroke: #0A1B33;
+        }
+
+        .text-menumob
+        {
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 20px;
+        }
+
+        .router-link-exact-active {
+            color: #FF0090!important;
+        }
+
+        .router-link-exact-active::v-deep(path) {
+        stroke: #FF0090 !important;
+        }
+
+        .box-iconmob
+        {
+            width: 33%;
+        }
+
+        .box-comp
+        {
+            border-left: 1px solid var(--Grey-2, #E1E1E1);
+            border-right: 1px solid var(--Grey-2, #E1E1E1);
+
+        }
+
+        .pt-30
+        {
+            padding-top: 110px;
+        }
+      
     }
 </style>

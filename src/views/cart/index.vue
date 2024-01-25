@@ -3,6 +3,8 @@
 import { ref } from 'vue'
 import { useHomeStores } from '@/stores/home'
 import { useMiscellaneousStores } from '@/stores/miscellaneous' 
+import { useCartStores } from '@/stores/cart'
+
 import Stepper from '@/components/cart/Stepper.vue'
 import Summary from '@/components/cart/Summary.vue'
 import Location from '@/components/cart/Location.vue'
@@ -19,9 +21,14 @@ import confirmation from '@assets/icons/confirmation.svg?inline'
 
 const homeStores = useHomeStores()
 const miscellaneousStores = useMiscellaneousStores()
+const cartStores = useCartStores()
+
 const data = ref(null)
 const bg = ref('tw-bg-green')
 const products = ref([])
+
+const client_id = ref(null)
+const cart_produc = ref([])
 
 const isLoading = ref(true)
 
@@ -46,6 +53,15 @@ const checkoutSteps = [
 
 const currentStep = ref(0)
 
+const me = async () => {
+
+if(localStorage.getItem('user_data')){
+  const userData = localStorage.getItem('user_data')
+  const userDataJ = JSON.parse(userData)
+  client_id.value = userDataJ.client.id
+}
+}
+
 watchEffect(fetchData)
 
 async function fetchData() {
@@ -62,8 +78,12 @@ async function fetchData() {
     page: 1
   }
 
-  var aux = await miscellaneousStores.products(info)
-  products.value = aux.products.data
+
+  await cartStores.show_cart(client_id.value)
+  cart_produc.value = cartStores.getData
+  products.value = cart_produc.value.detalles
+
+  console.log('Carrito de compras',products.value)
 
   isLoading.value = false
 }
@@ -72,6 +92,7 @@ const redirect = (name) => {
     router.push({ name : name})
 }
 
+me()
 
 </script>
 
