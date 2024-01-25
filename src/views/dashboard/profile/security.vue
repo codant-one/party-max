@@ -350,7 +350,7 @@ async function fetchData() {
                         color="primary"
                         variant="outlined"
                         class="btn-register"
-                        @click="dialog = false"
+                        @click="dialog_phone = false"
                     >
                         Cerrar
                     </VBtn>
