@@ -306,9 +306,8 @@ me()
             border-bottom: 1px solid #E2F8FC;
         }
 
-        .pt-30
-        {
-            padding-top: 110px;
+        .pt-30 {
+            padding-top: 30%;
         }
       
     }
