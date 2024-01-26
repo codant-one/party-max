@@ -12,19 +12,14 @@ export const useTestingStores = defineStore('testing', {
         }
     },
     actions: {
-        setLoading(payload: boolean){
-            this.loading = payload
-        },
         fetchPermissions() {
-           
             return Testing.permissions()
                 .then((response) => {
                     this.permissions = response.data.data
                 })
-                .catch(error => console.log(error))
-                .finally(() => {
-                    this.setLoading(false)
-                })
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
             
         }
     }

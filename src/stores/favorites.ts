@@ -1,64 +1,53 @@
 import { defineStore } from 'pinia'
-import Favorite from '@/api/favorites'
+import Favorites from '@/api/favorites'
 
-export const useFavoriteStores = defineStore('favorite',{
-
+export const useFavoritesStores = defineStore('favorites',{
     state: () => ({
-        data: {},
-        user: null,
-        loading: false,
+        data: {}
     }),
-
     getters:{
         getData(): any {
             return this.data
         }
     },
-
     actions: {
-
-        setLoading(payload: boolean){
-            this.loading = payload
-        },
-
-        add_favorite(data: object) {
-            
-            return Favorite.add_favorite(data)
-                .then((response) => {
-                    return Promise.resolve(response.data)
-                }).catch(error => {
-                    return Promise.reject(error)
-                })
-        },
-
-        show_favorites(id: Number)
-        {
-            this.setLoading(true)
-
-            return Favorite.show_favorites(id)
+        fetchFavorites(params: object) {
+            return Favorites.get(params)
                 .then((response) => {
                     this.data = response.data.data.favorites
                     return Promise.resolve(response.data.data.favorites)
                 })
-                .catch(error => Promise.reject(error))
-                .finally(() => {
-                    this.setLoading(false)
-                })
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
         },
-
-        delete_favorite(data: object) {
-            this.setLoading(true)
-
-            return Favorite.delete_favorite(data)
+        add(data: object) {
+            return Favorites.add(data)
+                .then((response) => {
+                    return Promise.resolve(response.data)
+                })
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
+        },
+        delete(data: object) {
+            return Favorites.delete(data)
                 .then((response) => {
                     return Promise.resolve(response)
                 })
-                .catch(error => {Promise.reject(error)})
-            
-            }
-                
-    
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
+
+        },
+        show(data: object) {
+            return Favorites.show(data)
+                .then((response) => {
+                    return Promise.resolve(response.data.data.favorite)
+                })
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
+        },   
     }
-
-
 })

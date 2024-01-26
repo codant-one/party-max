@@ -305,16 +305,13 @@
             </VTextField>
           </VCol>
           <VCol cols="3" class="d-flex align-center align-items-stretch flex-shrink-0">
-           
-            <VBtn 
-                variant="plain" 
-                icon 
-                class="pb-2 me-4 index heart"
-                :class="(name === null) ? 'ms-10': 'me-24'" @click="redirect('favorites')">
+            <VSpacer />
+            <span 
+                class="index heart tw-cursor-pointer"
+                :class="(name === null) ? 'ms-n70 me-5': 'me-5'" @click="redirect('favorites')">
                 <heart />
-            </VBtn>
-              
-            <VBtn variant="plain" icon class="pb-2 me-4 shoppinp_cart" @click="redirect('cart')">
+            </span>
+            <span icon class="me-3 shoppinp_cart tw-cursor-pointer" @click="redirect('cart')">
               <VBadge
                 color="primary"
                 :content="cant_shop"
@@ -322,16 +319,16 @@
               >
                 <shoppinp_cart />
               </VBadge>
-            </VBtn>
+            </span>
             <div class="d-flex user-text">
-              <VBtn v-if="name === null" variant="plain" icon class="pb-2 user">
+              <span v-if="name === null" class="user tw-cursor-pointer">
                 <user />
-              </VBtn>
+              </span>
               <VMenu v-else>
                 <template v-slot:activator="{ props }">
-                  <VBtn variant="plain" icon class="pb-2 user" v-bind="props">
+                  <span class="user ms-2 me-3" v-bind="props">
                     <user />
-                  </VBtn>
+                  </span>
                 </template>
                 <VList>
                   <VListItem class="px-0">
@@ -362,7 +359,7 @@
                 </VList>
               </VMenu>
               <router-link class="link-header" :to="{ name: 'register'}">
-                <span class="d-flex align-center tw-text-tertiary font-size-14 pb-2" v-if="name === null">
+                <span class="d-flex align-center tw-text-tertiary font-size-14 ms-2 text-regi" v-if="name === null">
                   Ingresar o Registrarme
                 </span>
               </router-link>
@@ -376,13 +373,11 @@
             </router-link>
           </VCol>
           <VCol cols="6" class="d-flex align-center align-items-stretch flex-shrink-0 iconsMobile">
-            <VBtn 
-              variant="plain" 
-              icon 
-              class="index heart ms-12" @click="redirect('favorites')">
+            <VSpacer />
+            <span class="index heart me-3" @click="redirect('favorites')">
               <heart />
-            </VBtn>
-            <VBtn variant="plain" icon class="shoppinp_cart" @click="redirect('cart')">
+            </span>
+            <span icon class="shoppinp_cart me-3" @click="redirect('cart')">
               <VBadge
                 color="primary"
                 :content="cant_shop"
@@ -390,18 +385,18 @@
               >
                 <shoppinp_cart />
               </VBadge>
-            </VBtn>
+            </span>
             <div class="d-flex user-text">
-              <VBtn v-if="name === null" variant="plain" icon class="user">
+              <span v-if="name === null" class="user">
                 <router-link class="link-header" :to="{ name: 'register' }">
                   <user />
                 </router-link>
-              </VBtn>
+              </span>
               <VMenu v-else>
                 <template v-slot:activator="{ props }">
-                  <VBtn variant="plain" icon class="user" v-bind="props">
+                  <span class="user" v-bind="props">
                     <user />
-                  </VBtn>
+                  </span>
                 </template>
                 <VList>
                   <VListItem class="px-0">
@@ -681,7 +676,11 @@
   }
 
   .ms-n70 {
-    margin-inline-start: -55px !important;
+    margin-inline-start: 90px  !important;
+  }
+
+  .text-regi {
+    line-height: 16px;
   }
 
   .w-30 {

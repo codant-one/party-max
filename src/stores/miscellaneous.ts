@@ -12,95 +12,68 @@ export const useMiscellaneousStores = defineStore('miscellaneous', {
         }
     },
     actions: {
-        setLoading(payload: boolean){
-            this.loading = payload
-        },
-        getCategory(slug: string) {
-           
+        getCategory(slug: string) {  
             return Miscellaneous.categories(slug)
                 .then((response) => {
                     this.data = response.data.data
                 })
-                .catch(error => console.log(error))
-                .finally(() => {
-                    this.setLoading(false)
-                })
-            
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
         },
         blogs(params: Object) {
-            this.setLoading(true)
-
             return Miscellaneous.blogs(params)
                 .then((response) => {
                     return Promise.resolve(response.data.data)
                 })
-                .catch(error => Promise.reject(error))
-                .finally(() => {
-                    this.setLoading(false)
+                .catch(error => {
+                    return Promise.reject(error)
                 })
-            
         },
         getBlog(slug: string) {
-           
             return Miscellaneous.blog(slug)
                 .then((response) => {
                     return Promise.resolve(response.data.data)
                 })
-                .catch(error => console.log(error))
-                .finally(() => {
-                    this.setLoading(false)
-                })
-            
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
         },
         allFaqs() {
-            this.setLoading(true)
-            
             return Miscellaneous.faqs()
                 .then((response) => {
                     return Promise.resolve(response.data.data)
                 })
-                .catch(error => Promise.reject(error))
-                .finally(() => {
-                    this.setLoading(false)
-                })
-            
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
         },
         allCategories() {
-            this.setLoading(true)
-            
             return Miscellaneous.categoriesAll()
                 .then((response) => {
                     return Promise.resolve(response.data.data)
                 })
-                .catch(error => Promise.reject(error))
-                .finally(() => {
-                    this.setLoading(false)
-                })
-            
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
         },
         products(params: Object) {
-            this.setLoading(true)
-            
             return Miscellaneous.products(params)
                 .then((response) => {
                     return Promise.resolve(response.data.data)
                 })
-                .catch(error => Promise.reject(error))
-                .finally(() => {
-                    this.setLoading(false)
-                })
-            
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
         },
-        getProduct(slug: string) {
-           
+        getProduct(slug: string) { 
             return Miscellaneous.product(slug)
                 .then((response) => {
                     this.data = response.data.data
                 })
-                .catch(error => console.log(error))
-                .finally(() => {
-                    this.setLoading(false)
-                })
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
             
         },
     }

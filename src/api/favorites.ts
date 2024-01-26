@@ -1,25 +1,24 @@
 import axios from '@axios'
 
-class Favorite
-{
+class Favorites {
 
-    show_favorites(id: Number)
-    {
-        return axios.get(`favorites/show/${id}`)
+    get(params: object) {
+        return axios.get('favorites', {params})
     }
 
-    add_favorite(data: object)
-    {
+    add(data: object) {
         return axios.post('favorites/add', data)
     }
 
-    delete_favorite(data: object)
-    {
-        console.log('enviando',data)
+    delete(data: object){
         return axios.post('favorites/delete',data)
+    }
+
+    show(data: object) {
+        return axios.post('favorites/show', data)
     }
 }
 
-const favorite = new Favorite();
+const favorites = new Favorites();
 
-export default favorite;
+export default favorites;

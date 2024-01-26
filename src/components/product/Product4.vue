@@ -43,24 +43,26 @@ watchEffect(() => {
 </script>
 
 <template>
-    <router-link
-        :to="{
-            name: 'productDetail',
-            params: {
-                slug: slug
-            }
-        }"
-        class="tw-no-underline zoom-product">
+    <div class="zoom-product">
         <VCard 
             class="no-shadown p-0 pb-5 w-100 mb-5" 
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow>
                 <VCol cols="12" md="3">
                     <VCardText class="border-img ms-5">
-                        <VImg 
-                            :width="230"
-                            :src="baseURL + image" 
-                            cover />
+                        <router-link
+                            :to="{
+                                name: 'productDetail',
+                                params: {
+                                    slug: slug
+                                }
+                            }"
+                            class="tw-no-underline">
+                            <VImg 
+                                :width="230"
+                                :src="baseURL + image" 
+                                cover />
+                        </router-link>
                     </VCardText>
                 </VCol>
                 <VCol cols="12" md="6">
@@ -119,7 +121,7 @@ watchEffect(() => {
                 </VCol>
             </VRow>
         </VCard>
-    </router-link>
+    </div>
 </template>
 
 <style scoped>

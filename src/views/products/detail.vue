@@ -5,10 +5,11 @@ import { requiredValidator } from '@validators'
 import { useMiscellaneousStores } from '@/stores/miscellaneous'
 import { useHomeStores } from '@/stores/home'
 import { useCartStores } from '@/stores/cart'
-import { useFavoriteStores } from '@/stores/favorites'
+import { useFavoritesStores } from '@/stores/favorites'
 import { FreeMode, Navigation, Thumbs, Scrollbar } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import CustomRadiosWithIcon from '@/components/app/CustomRadiosWithIcon.vue'
+import router from '@/router'
 import Loader from '@/components/common/Loader.vue'
 import Product1 from '@/components/product/Product1.vue'
 import whatsapp from '@assets/icons/whatsapp.svg?inline';
@@ -17,7 +18,6 @@ import instagram from '@assets/icons/instagram2.svg?inline';
 import threads from '@assets/icons/threads2.svg?inline';
 import iconmayorista from '@assets/icons/Union.svg';
 import heart from '@assets/icons/heart.svg?inline';
-import default_image from '@assets/images/default-description.png';
 import default_review from '@assets/images/image-review.png';
 import festin_about from '@assets/images/festin-aboutus.jpg';
 import festin_cancel from '@assets/images/festin_cancel.jpg';
@@ -32,7 +32,7 @@ const route = useRoute()
 const miscellaneousStores = useMiscellaneousStores()
 const homeStores = useHomeStores()
 const cartStores = useCartStores()
-const favoriteStores = useFavoriteStores()
+const favoritesStores = useFavoritesStores()
 
 const refVForm = ref()
 const isLoading = ref(true)
@@ -72,8 +72,6 @@ const deep = ref('')
 const weigth = ref('')
 const material = ref('')
 
-
-
 const radioContent = ref([])
 const selectedColor = ref(null)
 const color = ref('')
@@ -82,23 +80,21 @@ const imageAux = ref('')
 const cant_prod = ref(1)
 const client_id = ref(null)
 const product_id = ref(null)
-const load = ref(false)
-const isDialogVisible = ref(false)
-const message = ref()
-const isError = ref(false)
 const user_id = ref(null)
 
+const isFavorite = ref(null)
+const isFavoriteProduct = ref(null)
+const isSnackbarBottomStartVisible = ref(false)
+
 const me = async () => {
-
-    if(localStorage.getItem('user_data')){
-      const userData = localStorage.getItem('user_data')
-      const userDataJ = JSON.parse(userData)
-      client_id.value = userDataJ.client.id
-      user_id.value = userDataJ.id
-    }
+  if(localStorage.getItem('user_data')){
+    const userData = localStorage.getItem('user_data')
+    const userDataJ = JSON.parse(userData)
+      
+    client_id.value = userDataJ.client.id
+    user_id.value = userDataJ.id
   }
-
-
+}
 
 watchEffect(fetchData)
 
@@ -174,7 +170,9 @@ async function fetchData() {
   data.value.product.tags.forEach(element => { 
     tags.value.push(element.tag.name)
   });
- 
+
+  isFavoriteProduct.value = await favoritesStores.show({user_id: user_id.value, product_id: product_id.value })
+
   isLoading.value = false
 }
 
@@ -195,118 +193,53 @@ const setThumbsSwiper = (swiper) => {
     thumbsSwiper.value = swiper;
 }
 
-
 const onSubmit = () => {
 
-  if(client_id.value!==null)
-  {
-    refVForm.value?.validate().then(({ valid: isValid }) =>{
+  if(client_id.value !== null) {
+    refVForm.value?.validate().then(({ valid: isValid }) => {
+      if (isValid) {
 
-      if (isValid) 
-      {
-          load.value = true
+        let data = {
+          client_id: client_id.value,
+          product_id: product_id.value,
+          quantity: cant_prod.value
+        }
 
-            let data = {
-                client_id: client_id.value,
-                product_id: product_id.value,
-                quantity: cant_prod.value
-            }
+        cartStores.add_cart(data)
+          .then(response => {
+            
 
-            cartStores.add_cart(data)
-                .then(response => {
-                    isDialogVisible.value = true
-                    message.value = response.data
-                    
+          }).catch(err => {
 
-                    setTimeout(() => {
-                        isDialogVisible.value = false
-                        message.value = ''
-                        isError.value = false
-                        router.push({ name: 'information_client' })
-                    }, 3000)
-
-                    load.value = false                    
-                    
-                }).catch(err => {
-
-                    load.value = false
-
-                    if(err.message === 'error'){
-                        isDialogVisible.value = true
-                        message.value = err.errors
-                        isError.value = true
-                    } else {
-                        isDialogVisible.value = true
-                        isError.value = true
-                        message.value = 'Se ha producido un error...! (Server Error)'
-                    }                    
-
-                    setTimeout(() => {
-                        isDialogVisible.value = false
-                        message.value = ''
-                        isError.value = false
-                    }, 3000)
-
-                    console.error(err.message)
-                })
-
-
+            //console.error(err.message)
+          })
+      } else {
+          console.log('DEBES INICIAR SESIÓN PARA PODER COMPRAR')
       }
-
-      else
-      {
-        console.log('DEBES INICIAR SESIÓN PARA PODER COMPRAR')
-      }
-
     })  
   }
-
 }
 
 const addfavorite= () =>{
 
-  let data = {
-                user_id: user_id.value,
-                product_id: product_id.value
-            }
+  isFavorite.value = true
+  favoritesStores.add({user_id: user_id.value, product_id: product_id.value })
+    .then(response => {
 
-            favoriteStores.add_favorite(data)
-                .then(response => {
-                    isDialogVisible.value = true
-                    message.value = response.data
-                    
+      isFavorite.value = false
+      isSnackbarBottomStartVisible.value = true
+      isFavoriteProduct.value = true
+                  
+      setTimeout(() => {
+        isSnackbarBottomStartVisible.value = false
+      }, 3000)
 
-                    setTimeout(() => {
-                        isDialogVisible.value = false
-                        message.value = ''
-                        isError.value = false
-                        router.push({ name: 'favorites' })
-                    }, 3000)
+   
+    }).catch(err => {
+      isFavorite.value = false
 
-                    load.value = false                    
-                    
-                }).catch(err => {
-
-                    load.value = false
-
-                    if(err.message === 'error'){
-                        isDialogVisible.value = true
-                        message.value = err.errors
-                        isError.value = true
-                    } else {
-                        isDialogVisible.value = true
-                        isError.value = true
-                        message.value = 'Se ha producido un error...! (Server Error)'
-                    }                    
-
-                    setTimeout(() => {
-                        isDialogVisible.value = false
-                        message.value = ''
-                        isError.value = false
-                    }, 3000)
-
-                    console.error(err.message)
-                })
+      //console.error(err.message)
+    })
 
 }
 me() 
@@ -445,39 +378,43 @@ me()
                 </VCardText>
 
                 <VCardText class="p-0 d-flex my-2">
-                  <VRow align="center" class="row-add d-flex align-center">
-                    <VCol cols="12" md="2" class="d-flex flex-column">
-                      <span>Cantidad:</span>
-                      <VTextField
-                        v-model="cant_prod"
-                        variant="solo"
-                        type="number"
-                        :rules="[requiredValidator]"
-                      />
-                    </VCol>
-                    <VCol cols="12" md="6">
-                      
-                        <VBtn 
-                          variant="flat"
-                          :width="288"
-                          :height="48"
-                          type="submit"
-                          class="btn-register tw-text-white tw-bg-primary button-hover" 
-                          >
-                          Agregar al carrito
-                        </VBtn>
-                    
-                    </VCol>
-                    <VCol cols="12" md="4">
-                      <VBtn 
-                        variant="plain" 
-                        icon 
-                        class="me-4 index heart p-0"
-                        :class="(name === null) ? 'ms-10': 'me-24'" @click="addfavorite">
-                        <heart />
-                      </VBtn>
-                    </VCol>
-                  </VRow>  
+                  <div class="d-flex flex-column">
+                    <span>Cantidad:</span>
+                    <VTextField
+                      v-model="cant_prod"
+                      variant="solo"
+                      type="number"
+                      :rules="[requiredValidator]"
+                    />
+                  </div>
+                  <div class="my-auto ms-5">
+                    <VBtn 
+                      variant="flat"
+                      :width="288"
+                      :height="48"
+                      type="submit"
+                      class="btn-register tw-text-white tw-bg-primary button-hover" 
+                      >
+                      Agregar al carrito
+                    </VBtn>
+                  </div>
+                  <div class="my-auto ms-5">
+                    <span 
+                      v-if="!isFavorite" 
+                      class="me-4 index heart p-0 tw-cursor-pointer"
+                      :class="(isFavoriteProduct) ? 'heart_fill' : ''" 
+                      @click="addfavorite">
+                      <heart />
+                    </span>
+                    <VProgressCircular
+                      v-else
+                      :size="30"
+                      width="3"
+                      indeterminate
+                      color="primary"
+                    />
+                  </div>
+                  <VSpacer />  
                 </VCardText>
 
                 <VCardText class="p-0 d-flex border-title pb-2">
@@ -579,20 +516,14 @@ me()
         </VCardText>  
     </VCard>     
     </VContainer>
-
-
-    <!--PopUp de respuesta-->
-
-    <VDialog v-model="isDialogVisible" >
-            <VCard 
-                :width="800"
-                class="py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-                <VImg width="100" :src="isError ? festin_cancel : festin_about" class="mx-auto"/>
-                <VCardText class="text-register p-0 mb-5">
-                    {{ message }}
-                </VCardText>
-            </VCard>
-    </VDialog>
+    <VSnackbar
+      v-model="isSnackbarBottomStartVisible"
+      location="bottom start"
+      variant="tonal"
+      color="primary"
+    >
+      Producto agregado a la lista.
+    </VSnackbar>
   </section>
 </template>
 
@@ -630,12 +561,14 @@ me()
     padding-top: 0 !important;
     color: #0A1B33 !important;
   }
-
   
   .heart:hover::v-deep(path), .shoppinp_cart:hover::v-deep(path) {
     fill: #FF0090;
   }
 
+  .heart_fill::v-deep(path) {
+    fill: #FF0090 !important;
+  }
 
   .text_1 {
     font-size: 24px;
@@ -651,7 +584,7 @@ me()
     font-weight: 500;
     line-height: 14px;
   }
-    
+  
   .hr {
     height: 15px; 
     opacity: 1;
@@ -661,17 +594,14 @@ me()
   .border-title {
     border-bottom: 1px solid #D9EEF2;
   }
-
-  .border-title2
-  {
+  .border-title2 {
     border-bottom: 1px solid #D9EEF2;
     border-top: 1px solid #D9EEF2;
     padding-top: 16px;
     margin-top: 40px;
   }
 
-  .border-title2 span
-  {
+  .border-title2 span {
     color:  #0A1B33;
     font-size: 16px;
     font-style: normal;
@@ -679,16 +609,14 @@ me()
     line-height: 19.2px;
   }
 
-  .border-title2 p
-  {
+  .border-title2 p {
     color: #0A1B33;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: 22.4px; 
   }
-  .border-title2 span
-  {
+  .border-title2 span {
     color: #0A1B33;
     text-align: center;
     font-size: 20px;
@@ -698,8 +626,7 @@ me()
     line-height: 20px; /* 100% */
   }
 
-  .border-title2 span:hover
-  {
+  .border-title2 span:hover {
     color: #FF0090;
     text-decoration: underline #FF0090;
     cursor: pointer;
@@ -719,24 +646,16 @@ me()
   .breadcumb {
     height: 55px !important;
   }
-
-  
-  .hearth-icon path
-  {
+  .hearth-icon path {
     fill:#0A1B33;
   }
-  .hearth-icon path:hover
-  {
+  .hearth-icon path:hover {
     fill: #FF0090;
   }
-
-  .row-add
-  {
+  .row-add {
     width: 100%;
   }
-
-  .b-mayorista
-  {
+  .b-mayorista {
     display: inline-flex;
     height: 38px;
     padding: 24px;
@@ -750,8 +669,7 @@ me()
     font-weight: 700;
   }
 
-  .b-mayorista:hover
-  {
+  .b-mayorista:hover {
     background-color:  #FFC549;
     border: 1px solid #FFC549;
   }
@@ -761,8 +679,7 @@ me()
     padding: 16px 0px!important;
   }
 
-  .col-recomendaciones
-  {
+  .col-recomendaciones {
     background-color: #E2F8FC;
     border-radius: 32px;
     align-items: center;
@@ -770,23 +687,19 @@ me()
     margin-top: 16px;
     color:  #0A1B33;
   }
-  .col-recomendaciones p
-  {
+  .col-recomendaciones p {
     font-size:24px;
   }
-  .col-recomendaciones span
-  {
+  .col-recomendaciones span {
     font-size:14px;
   }
  
 </style>
 
 <style scoped>
-
     .carousel__item img {
         width: 60%;
     }
-
     .swiper-vertical > .swiper-pagination-bullets .swiper-pagination-bullet, .swiper-pagination-vertical.swiper-pagination-bullets .swiper-pagination-bullet {
         display: none !important;
     }
@@ -794,7 +707,6 @@ me()
         width: 100%;
         height: 100%;
     }
-
     .swiper-slide {
         text-align: center;
         font-size: 18px;
@@ -805,36 +717,30 @@ me()
         justify-content: center;
         align-items: center;
     }
-
     .swiper {
         width: 100%;
         height: 350px;
         margin-left: auto;
         margin-right: auto;
     }
-
     .swiper-slide {
         background-size: cover;
         background-position: center;
     }
-
     .mySwiper2 {
         height: 350px;
         width: 100%;
     }
-
     .mySwiper {
         box-sizing: border-box;
         padding: 10px 5px;
     }
-
     .mySwiper .swiper-slide {
         opacity: 0.4;
         border-style: solid;
         border-width: 1px;
         border-radius: 8px;
     }
-
     .mySwiper .swiper-slide-thumb-active {
         opacity: 1;
     }
@@ -846,13 +752,11 @@ me()
         object-fit: contain;
         border-radius: 8px;
     }
-
     .col-item {
       padding: 16px 32px;
       border: 1px solid  #E1E1E1;
       background-color: #E2F8FC;
     }
-
     .col-value {
       padding: 16px 32px;
       border: 1px solid #E1E1E1;
@@ -866,25 +770,21 @@ me()
       font-weight: 600;
       line-height: 16px; /* 100% */
     }
-    .col-value span
-    {
+    .col-value span {
       color: #999;
       font-size: 16px;
       font-style: normal;
       font-weight: 400;
       line-height: 16px; /* 100% */
     }
-
     .row-reviews {
       padding: 32px;
     }
-
     .image-review {
       width: 70px;
       border-radius: 70px;
       border: 1px solid var(--Grey-2, #E1E1E1);
     }
-
     .row-reviews p {
       color: #999;
       font-size: 14px;
@@ -892,7 +792,6 @@ me()
       font-weight: 400;
       line-height: 16px; /* 114.286% */
     }
-
     .row-reviews span {
       color: #FF0090;
       font-size: 14px;

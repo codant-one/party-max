@@ -15,35 +15,23 @@ const props = defineProps({
     }
 })
 
+const emit = defineEmits(['delete'])
+
 const image = ref(null)
-const wholesale_price = ref(null)
 const price_for_sale = ref(null)
 const name = ref(null)
-const store = ref(null)
-const rating = ref(null)
-const single_description = ref(null)
 const slug = ref(null)
-const stock = ref(null)
-const quantity = ref(null)
 const product_id = ref(null)
 
-const user_id = ref(null)
-
-const emit = defineEmits(['delete'])
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
 watchEffect(() => {
 
     if (!(Object.entries(props.product).length === 0) && props.product.constructor === Object) {
         image.value = props.product.image
-        wholesale_price.value = props.product.wholesale_price
         price_for_sale.value = props.product.price_for_sale
         name.value = props.product.name.toLowerCase().replace(/\b\w/g, (match) => match.toUpperCase())
-        rating.value = props.product.rating
-        single_description.value = props.product.single_description
         slug.value = props.product.slug
-        stock.value = props.product.stock
-        quantity.value = props.product.quantity ?? 1
         product_id.value = props.product.id
     }
 })
@@ -53,26 +41,32 @@ watchEffect(() => {
 <template>
     <div class="tw-no-underline zoom-product">
         <VCard 
-            class="no-shadown p-0 pb-5 w-100 mb-5" 
+            class="no-shadown py-5 pb-5 w-100 d-block d-md-flex" 
             :class="props.isLastItem ? '' : 'card-information'">
-            <VRow no-gutters>
-                <VCol cols="12" md="2" class="d-flex justify-content-center align-center">
-                    <VCardText class="border-img ms-10">
-                        <VImg 
-                            :width="100"
-                            :src="baseURL + image" 
-                            cover />
-                    </VCardText>
-                </VCol>
-
-                <VCol cols="12" md="10" class="d-block flex-column py-5 ps-3 ">
-                    <VCardText class="mt-5 pl-5 ml-5">
-                        <span class="d-block text_2 py-1 tw-text-tertiary title-product">{{ name }}</span>
-                        <h3 class="tw-text-tertiary price_prod mt-2">${{ price_for_sale }}</h3>
-                        <VBtn variant="text" class="text-left mt-2 p-0"><span class="tw-text-primary text-delete" @click="emit('delete', product_id)">Eliminar</span></VBtn>
-                    </VCardText>                 
-                </VCol>
-            </VRow>
+            <VCardText class="border-img ms-5 ms-md-10">
+                <router-link
+                    :to="{
+                        name: 'productDetail',
+                        params: {
+                            slug: slug
+                        }
+                    }"
+                    class="tw-no-underline">
+                    <VImg 
+                        :width="100"
+                        :src="baseURL + image" 
+                        cover />
+                </router-link>
+            </VCardText>
+            <VCardText class="pl-5 d-block details">
+                <span class="d-block my-3 my-md-5 text_2 tw-text-tertiary title-product">{{ name }}</span>
+                <span class="d-block my-3 my-md-5 tw-text-tertiary price_prod">${{ price_for_sale }}</span>
+                <span 
+                    class="d-block my-3 my-md-5 text-left p-0 tw-cursor-pointer tw-text-primary text-delete hover:tw-text-yellow" 
+                    @click="emit('delete', product_id)">
+                    Eliminar
+                </span>
+            </VCardText>
         </VCard>
     </div>
 </template>
@@ -100,6 +94,9 @@ watchEffect(() => {
         padding: 0 10px;
     }
 
+    .details {
+        width: 85%;
+    }
     .border-img {
         width: 130px;
         height: 130px;
@@ -186,5 +183,4 @@ watchEffect(() => {
         font-weight: 400;
         line-height: 16px; /* 100% */
     }
-    
 </style>
