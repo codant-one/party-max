@@ -15,7 +15,7 @@ class Cart
 
     delete_cart(data: object)
     {
-        return axios.delete('shopping-cart/delete',data)
+        return axios.post('shopping-cart/delete',data)
     }
 }
 

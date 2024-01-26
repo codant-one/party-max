@@ -83,13 +83,36 @@ async function fetchData() {
   cart_produc.value = cartStores.getData
   products.value = cart_produc.value.detalles
 
-  console.log('Carrito de compras',products.value)
-
   isLoading.value = false
 }
 
 const redirect = (name) => {
     router.push({ name : name})
+}
+
+const deleteProduct = (product_id) => {
+
+let data = {
+            client_id: client_id.value,
+            product_id: product_id,
+        }
+
+        cartStores.delete_cart(data)
+        fetchData()
+        
+
+}
+
+const add_cart = (data)=>{
+
+    let data_ = {
+                client_id: client_id.value,
+                product_id: data.product_id,
+                quantity: data.quantity
+            }
+    cartStores.add_cart(data_)
+
+    fetchData()
 }
 
 me()
@@ -126,7 +149,10 @@ me()
                 <VWindowItem>
                     <Summary
                         v-model:current-step="currentStep"
-                        :products="products"/>
+                        :products="products"
+                        @delete="deleteProduct"
+                        @add_cart="add_cart"
+                        />
                 </VWindowItem>
                 <VWindowItem>
                     <Location 

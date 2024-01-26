@@ -27,9 +27,10 @@ const stock = ref(null)
 const quantity = ref(null)
 const product_id = ref(null)
 
-const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
-const emit = defineEmits(['delete','add_cart'])
+const user_id = ref(null)
 
+const emit = defineEmits(['delete'])
+const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
 watchEffect(() => {
 
@@ -38,7 +39,6 @@ watchEffect(() => {
         wholesale_price.value = props.product.wholesale_price
         price_for_sale.value = props.product.price_for_sale
         name.value = props.product.name.toLowerCase().replace(/\b\w/g, (match) => match.toUpperCase())
-        store.value = props.product.user.name + ' ' + (props.product.user.last_name ?? '')
         rating.value = props.product.rating
         single_description.value = props.product.single_description
         slug.value = props.product.slug
@@ -47,16 +47,6 @@ watchEffect(() => {
         product_id.value = props.product.id
     }
 })
-
-const onChange = ()=>{
-
-    let data = {
-        quantity: quantity.value,
-        product_id: product_id.value
-    }
-
-    emit('add_cart',data)
-}
 
 </script>
 
@@ -74,45 +64,13 @@ const onChange = ()=>{
                             cover />
                     </VCardText>
                 </VCol>
-                <VCol cols="12" md="5" class="d-flex flex-column py-5 ps-3">
-                    <VCardText class="mt-5">
-                        <span class="d-block text_2 py-1 tw-text-tertiary title-product">{{ name }}</span>
-                    </VCardText>
-                    <VCardText class="d-flex mb-5">
-                        <span class="d-flex tw-text-xs py-1 tw-text-primary title-product tw-cursor-pointer me-3" @click="emit('delete', product_id)">Eliminar</span>
-                        <!--<span class="d-flex tw-text-xs py-1 tw-text-primary title-product me-3">Guardar</span>
-                        <span class="d-flex tw-text-xs py-1 tw-text-primary title-product">Modificar</span>-->
-                    </VCardText>
 
-                </VCol>
-                <VCol cols="12" md="2" class="d-flex flex-column py-5">
-                    <VCardText class="d-flex text-center align-center justify-content-center mt-5">  
-                        <VTextField
-                        v-model="quantity"
-                        placeholder="0"
-                        variant="solo"
-                        type="number"
-                        @change="onChange" 
-                        />
-                    </VCardText>
-                    <VCardText class="d-flex text-center align-center justify-content-center">
-                        <span class="te-text-gray tw-text-xs">{{ stock }} disponibles</span>
-                    </VCardText>
-                  </VCol>
-                <VCol cols="12" md="3" class="align-center text-center py-5">
-                    <VCardText class="d-flex text-center align-center justify-content-center mt-5">
-                        <div class="d-flex text-center align-center justify-content-center">
-                            <span class="tw-text-primary tw-font-medium me-1">(-%16)</span>
-                        </div>
-                        <div class="d-flex text-center align-center justify-content-center">
-                            <span class="tw-text-gray">${{ wholesale_price }}</span>
-                        </div>
-                    </VCardText>
-                    <VCardText class="mt-1">
-                        <div class="d-flex text-center align-center justify-content-center">
-                            <span class="text_1 tw-text-tertiary">${{ price_for_sale }}</span>
-                        </div>
-                    </VCardText>
+                <VCol cols="12" md="10" class="d-block flex-column py-5 ps-3 ">
+                    <VCardText class="mt-5 pl-5 ml-5">
+                        <span class="d-block text_2 py-1 tw-text-tertiary title-product">{{ name }}</span>
+                        <h3 class="tw-text-tertiary price_prod mt-2">${{ price_for_sale }}</h3>
+                        <VBtn variant="text" class="text-left mt-2 p-0"><span class="tw-text-primary text-delete" @click="emit('delete', product_id)">Eliminar</span></VBtn>
+                    </VCardText>                 
                 </VCol>
             </VRow>
         </VCard>
@@ -211,6 +169,22 @@ const onChange = ()=>{
         height: 0px !important;
         min-height: 0px !important;
         padding: 0px !important;
+    }
+
+    .price_prod
+    {
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 16px; /* 66.667% */
+    }
+
+    .text-delete
+    {
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px; /* 100% */
     }
     
 </style>

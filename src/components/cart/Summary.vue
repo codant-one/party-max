@@ -9,10 +9,35 @@ const props = defineProps({
     }
 })
 
-const emit = defineEmits(['update:currentStep'])
+var sum_price = ref(0)
+var price_q = ref(0)//Precio por cantidad
+var tot_sumprice = ref(0)
+
+const emit = defineEmits(['update:currentStep','delete','add_cart'])
 
 const isLastItem = (index) => {
   return index === props.products.length - 1;
+}
+
+watchEffect(fetchData)
+async function fetchData() 
+{
+    sum_price.value = 0
+    props.products.forEach(element => {
+     
+        price_q = parseFloat(element.price_for_sale)*element.quantity
+        sum_price.value += price_q
+        tot_sumprice.value = Number(sum_price.value.toFixed(2))
+     
+        
+    });
+
+}
+
+const add_cart = (data)=>
+{
+
+    emit('add_cart',data)
 }
 
 </script>
@@ -28,7 +53,10 @@ const isLastItem = (index) => {
                         :key="i"
                         :product="product"
                         :readonly="true"
-                        :isLastItem="isLastItem(i)"/>
+                        :isLastItem="isLastItem(i)"
+                        @delete="emit('delete', product.id)"
+                        @add_cart="add_cart"
+                        />
                 </VCardText>
                 <VRow class="row-cardp3">
                     <VCol cols="12" md="6" class="text-left">
@@ -50,7 +78,7 @@ const isLastItem = (index) => {
                             <span>Productos</span>
                         </VCol>
                         <VCol cols="12" md="6" class="text-right">
-                            <span>$5.600</span>
+                            <span>{{ tot_sumprice}}</span>
                         </VCol>
                         <VCol cols="12" md="6" class="text-left">
                             <span>Envío</span>

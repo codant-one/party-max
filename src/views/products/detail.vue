@@ -5,6 +5,7 @@ import { requiredValidator } from '@validators'
 import { useMiscellaneousStores } from '@/stores/miscellaneous'
 import { useHomeStores } from '@/stores/home'
 import { useCartStores } from '@/stores/cart'
+import { useFavoriteStores } from '@/stores/favorites'
 import { FreeMode, Navigation, Thumbs, Scrollbar } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import CustomRadiosWithIcon from '@/components/app/CustomRadiosWithIcon.vue'
@@ -31,6 +32,7 @@ const route = useRoute()
 const miscellaneousStores = useMiscellaneousStores()
 const homeStores = useHomeStores()
 const cartStores = useCartStores()
+const favoriteStores = useFavoriteStores()
 
 const refVForm = ref()
 const isLoading = ref(true)
@@ -70,6 +72,8 @@ const deep = ref('')
 const weigth = ref('')
 const material = ref('')
 
+
+
 const radioContent = ref([])
 const selectedColor = ref(null)
 const color = ref('')
@@ -82,6 +86,7 @@ const load = ref(false)
 const isDialogVisible = ref(false)
 const message = ref()
 const isError = ref(false)
+const user_id = ref(null)
 
 const me = async () => {
 
@@ -89,6 +94,7 @@ const me = async () => {
       const userData = localStorage.getItem('user_data')
       const userDataJ = JSON.parse(userData)
       client_id.value = userDataJ.client.id
+      user_id.value = userDataJ.id
     }
   }
 
@@ -256,6 +262,53 @@ const onSubmit = () => {
   }
 
 }
+
+const addfavorite= () =>{
+
+  let data = {
+                user_id: user_id.value,
+                product_id: product_id.value
+            }
+
+            favoriteStores.add_favorite(data)
+                .then(response => {
+                    isDialogVisible.value = true
+                    message.value = response.data
+                    
+
+                    setTimeout(() => {
+                        isDialogVisible.value = false
+                        message.value = ''
+                        isError.value = false
+                        router.push({ name: 'favorites' })
+                    }, 5000)
+
+                    load.value = false                    
+                    
+                }).catch(err => {
+
+                    load.value = false
+
+                    if(err.message === 'error'){
+                        isDialogVisible.value = true
+                        message.value = err.errors
+                        isError.value = true
+                    } else {
+                        isDialogVisible.value = true
+                        isError.value = true
+                        message.value = 'Se ha producido un error...! (Server Error)'
+                    }                    
+
+                    setTimeout(() => {
+                        isDialogVisible.value = false
+                        message.value = ''
+                        isError.value = false
+                    }, 5000)
+
+                    console.error(err.message)
+                })
+
+}
 me() 
 </script>
 
@@ -417,10 +470,10 @@ me()
                     </VCol>
                     <VCol cols="12" md="4">
                       <VBtn 
-                      variant="plain" 
-                      icon 
-                      class="me-4 index heart"
-                      :class="(name === null) ? 'ms-10': 'me-24'">
+                        variant="plain" 
+                        icon 
+                        class="me-4 index heart p-0"
+                        :class="(name === null) ? 'ms-10': 'me-24'" @click="addfavorite">
                         <heart />
                       </VBtn>
                     </VCol>

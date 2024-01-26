@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
-import Cart from '@/api/cart'
+import Favorite from '@/api/favorites'
 
-export const useCartStores = defineStore('cart',{
+export const useFavoriteStores = defineStore('favorite',{
 
     state: () => ({
         data: {},
@@ -21,9 +21,9 @@ export const useCartStores = defineStore('cart',{
             this.loading = payload
         },
 
-        add_cart(data: object) {
+        add_favorite(data: object) {
             
-            return Cart.add_cart(data)
+            return Favorite.add_favorite(data)
                 .then((response) => {
                     return Promise.resolve(response.data)
                 }).catch(error => {
@@ -31,14 +31,14 @@ export const useCartStores = defineStore('cart',{
                 })
         },
 
-        show_cart(id: Number)
+        show_favorites(id: Number)
         {
             this.setLoading(true)
 
-            return Cart.show_cart(id)
+            return Favorite.show_favorites(id)
                 .then((response) => {
-                    this.data = response.data.data.cart
-                    return Promise.resolve(response.data.data)
+                    this.data = response.data.data.favorites
+                    return Promise.resolve(response.data.data.favorites)
                 })
                 .catch(error => Promise.reject(error))
                 .finally(() => {
@@ -46,16 +46,17 @@ export const useCartStores = defineStore('cart',{
                 })
         },
 
-        delete_cart(data: object) {
+        delete_favorite(data: object) {
             this.setLoading(true)
 
-            return Cart.delete_cart(data)
+            return Favorite.delete_favorite(data)
                 .then((response) => {
                     return Promise.resolve(response)
                 })
                 .catch(error => {Promise.reject(error)})
             
             }
+                
     
     }
 
