@@ -28,7 +28,7 @@ async function fetchData() {
 
             setTimeout(() => { 
                 completed(response.data.token)
-            }, 5000)
+            }, 3000)
 
         }).catch(err => {
             isError.value = true
@@ -56,7 +56,7 @@ const completed = (token) => {
                 message.value = ''
                 isError.value = false
                 router.push({ name: 'login' })
-            }, 5000)
+            }, 3000)
             
 
         }).catch(err => {

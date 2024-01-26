@@ -92,7 +92,7 @@ async function fetchData() {
                         message.value = ''
                         isError.value = false
                         router.push({ name: 'security_client' })
-                    }, 5000)
+                    }, 3000)
 
                     load.value = false                    
                     
@@ -114,7 +114,7 @@ async function fetchData() {
                         isDialogVisible.value = false
                         message.value = ''
                         isError.value = false
-                    }, 5000)
+                    }, 3000)
 
                     // console.error(err.message)
                 })
@@ -145,7 +145,7 @@ async function fetchData() {
                         message.value = ''
                         isError.value = false
                         router.push({ name: 'security_client' })
-                    }, 5000)
+                    }, 3000)
 
                     load.value = false                    
                     
@@ -168,7 +168,7 @@ async function fetchData() {
                         isDialogVisible.value = false
                         message.value = ''
                         isError.value = false
-                    }, 5000)
+                    }, 3000)
 
                     // console.error(err.message)
                 })

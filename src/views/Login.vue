@@ -86,7 +86,7 @@ const login = () => {
         setTimeout(() => {
             isDialogVisible.value = false
             message.value = ''
-        }, 5000)
+        }, 3000)
 
       } else 
         errors.value = {

@@ -39,7 +39,7 @@ const forgot_password = () => {
 
         setTimeout(() => {
             router.push({ name: 'login' })
-        }, 5000)
+        }, 3000)
 
     }).catch(err => {
 

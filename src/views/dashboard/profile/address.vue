@@ -92,7 +92,6 @@ onMounted(async () => {
     loadProvinces()
 
     selectCountry(selectedAddress.value.country_id)
-    fetchData()
 
     isLoading.value = false
 })
@@ -186,7 +185,7 @@ const addAddress = () => {
 
             isDialogVisible.value = true
             message.value = 'Dirección creada exitosamente'
-            dialog.value = false
+            closeDialog()
 
             fetchData()
 
@@ -194,7 +193,7 @@ const addAddress = () => {
                 isDialogVisible.value = false
                 message.value = ''
                 isError.value = false
-            }, 5000)
+            }, 3000)
 
             load.value = false                    
             
@@ -216,7 +215,7 @@ const addAddress = () => {
                 isDialogVisible.value = false
                 message.value = ''
                 isError.value = false
-            }, 5000)
+            }, 3000)
 
             // console.error(err.message)
         })
@@ -235,7 +234,7 @@ const updateAddress = () => {
 
             isDialogVisible.value = true
             message.value = 'Dirección actualizada exitosamente'
-            dialog.value = false
+            closeDialog()
 
             fetchData()
 
@@ -244,7 +243,7 @@ const updateAddress = () => {
                 message.value = ''
                 isError.value = false
                 
-            }, 5000)
+            }, 3000)
 
             load.value = false                    
             
@@ -266,7 +265,7 @@ const updateAddress = () => {
                 isDialogVisible.value = false
                 message.value = ''
                 isError.value = false
-            }, 5000)
+            }, 3000)
 
             // console.error(err.message)
         })
@@ -278,10 +277,9 @@ const removeAddress = (addressData) => {
 
     addressesStores.deleteAddress(addressData.id)
         .then(response => {
-
+            closeDialog()
             isDialogVisible.value = true
             message.value = 'Dirección eliminada exitosamente'
-            dialog.value = false
             isLoading.value = false 
 
             setTimeout(() => {
@@ -289,7 +287,7 @@ const removeAddress = (addressData) => {
                 message.value = ''
                 isError.value = false
                 fetchData()
-            }, 5000)
+            }, 3000)
 
             load.value = false                    
             
@@ -312,10 +310,30 @@ const removeAddress = (addressData) => {
                 isDialogVisible.value = false
                 message.value = ''
                 isError.value = false
-            }, 5000)
+            }, 3000)
 
             // console.error(err.message)
         })
+}
+
+const closeDialog = () => {
+
+    isEdit.value = 0
+    dialog.value = false
+    selectedAddress.value = {
+        id: 0,
+        addresses_type_id: '1',
+        country_id: 'Colombia',
+        province_id: '',
+        title: '',
+        street: '',
+        city: '',
+        address: '',
+        phone: '',
+        postal_code: null,
+        default: false
+    }
+
 }
 
 const getFlagCountry = country => {
@@ -373,7 +391,10 @@ const getFlagCountry = country => {
                     </VList>
               </VMenu>
              </VCardText>       
-             <VCardText class="d-flex align-center py-0 px-7 px-md-12 border_line mb-2" @click="dialog=true">
+             <VCardText 
+                :class="(addresses.length > 0) ? 'border_line' : ''"
+                class="d-flex align-center py-0 px-7 px-md-12 mb-2" 
+                @click="dialog=true">
                 <span class="labels tw-text-primary mt-3 mb-1 mt-md-3 mb-md-2">Agregar domicilio</span>
                 <VSpacer />
                 <icon_right class="icon-right me-5 mt-2 mt-md-1"/>  
@@ -516,7 +537,7 @@ const getFlagCountry = country => {
                         color="primary"
                         variant="outlined"
                         class="btn-register"
-                        @click="dialog = false"
+                        @click="closeDialog"
                     >
                     Cerrar
                     </VBtn>

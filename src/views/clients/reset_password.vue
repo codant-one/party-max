@@ -53,7 +53,7 @@ async function fetchData() {
                 isDialogVisible.value = false
                 message.value = ''
                 isError.value = false
-            }, 5000)
+            }, 3000)
 
             // console.error(err.message)
         })
@@ -82,7 +82,7 @@ const onSubmit = () => {
                         message.value = ''
                         isError.value = false
                         router.push({ name: 'login' })
-                    }, 5000)
+                    }, 3000)
 
                     load.value = false                    
                     
@@ -104,7 +104,7 @@ const onSubmit = () => {
                         isDialogVisible.value = false
                         message.value = ''
                         isError.value = false
-                    }, 5000)
+                    }, 3000)
 
                     // console.error(err.message)
                 })

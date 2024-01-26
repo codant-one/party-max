@@ -223,7 +223,7 @@ const onSubmit = () => {
                         message.value = ''
                         isError.value = false
                         router.push({ name: 'information_client' })
-                    }, 5000)
+                    }, 3000)
 
                     load.value = false                    
                     
@@ -245,7 +245,7 @@ const onSubmit = () => {
                         isDialogVisible.value = false
                         message.value = ''
                         isError.value = false
-                    }, 5000)
+                    }, 3000)
 
                     console.error(err.message)
                 })
@@ -281,7 +281,7 @@ const addfavorite= () =>{
                         message.value = ''
                         isError.value = false
                         router.push({ name: 'favorites' })
-                    }, 5000)
+                    }, 3000)
 
                     load.value = false                    
                     
@@ -303,7 +303,7 @@ const addfavorite= () =>{
                         isDialogVisible.value = false
                         message.value = ''
                         isError.value = false
-                    }, 5000)
+                    }, 3000)
 
                     console.error(err.message)
                 })

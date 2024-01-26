@@ -118,7 +118,7 @@ const updateAvatar = () => {
                 isDialogVisible.value = false
                 message.value = ''
                 isError.value = false 
-            }, 5000)
+            }, 3000)
 
             isLoading.value = false                    
                     
@@ -137,7 +137,7 @@ const updateAvatar = () => {
                 isDialogVisible.value = false
                 message.value = ''
                 isError.value = false
-            }, 5000)
+            }, 3000)
 
             console.error(err.message)
     })
