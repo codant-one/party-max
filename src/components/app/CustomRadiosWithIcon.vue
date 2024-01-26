@@ -14,7 +14,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['update:selectedRadio'])
+const emit = defineEmits(['update:selectedRadio', 'change'])
 
 const updateSelectedOption = value => {
   emit('update:selectedRadio', value)
@@ -42,15 +42,13 @@ const updateSelectedOption = value => {
             <div class="d-flex flex-column align-center text-center gap-2">
               <VIcon
                 v-bind="item.icon"
-                class="text-high-emphasis"
+                class="text-high-emphasis icon-image"
               />
               <h6 class="cr-title text-base">
                 {{ item.title }}
               </h6>
 
-              <p class="text-sm mb-0 clamp-text">
-                {{ item.desc }}
-              </p>
+              <p class="text-sm mb-0 clamp-text" v-html="item.desc "></p>
             </div>
           </slot>
 
@@ -115,11 +113,26 @@ const updateSelectedOption = value => {
 
       .v-icon {
         color: #ff0090 !important;
+        
+      }
+
+      .icon-image svg,  .icon-image rect{
+        stroke: #ff0090 !important;
+      }
+
+      .icon-image path{
+        stroke: #ff0090 !important;
       }
     }
   }
 
   .border-rounded {
     border-radius: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .clamp-text {
+      font-size: 12px;
+    }
   }
 </style>

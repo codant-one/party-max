@@ -23,7 +23,6 @@ import Profile from '@/views/dashboard/profile/index.vue'
 import information_client from '@/views/dashboard/profile/information.vue'
 import security_client from '@/views/dashboard/profile/security.vue'
 import address_client from '@/views/dashboard/profile/address.vue'
-import add_address from '@/views/dashboard/profile/add_address.vue'
 import Purchases from '@/views/dashboard/purchases.vue'
 import Favorites from '@/views/dashboard/favorites.vue'
 import Detail_pusher from '@/views/dashboard/details_purchases.vue'
@@ -170,11 +169,6 @@ const router = createRouter({
           component: address_client,
         },
         {
-          path: '/address/add',
-          name: 'add_address',
-          component: add_address, 
-        },
-        {
           path: '/detail-purchases',
           name: 'detail_pusher',
           component: Detail_pusher,
@@ -232,8 +226,7 @@ router.beforeEach((to, from, next) => {
     '/mydata',
     '/detail-purchases',
     '/security',
-    '/address',
-    '/address/add'
+    '/address'
   ];
   const authRequired = privatePages.includes(to.path);
   const loggedIn = localStorage.getItem('user_data');
