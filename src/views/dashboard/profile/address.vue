@@ -376,7 +376,7 @@ const getFlagCountry = country => {
              <VCardText class="d-flex align-center py-0 px-7 px-md-12 border_line mb-2" @click="dialog=true">
                 <span class="labels tw-text-primary mt-3 mb-1 mt-md-3 mb-md-2">Agregar domicilio</span>
                 <VSpacer />
-                <icon_right class="icon-right me-2 mt-2 mt-md-1"/>  
+                <icon_right class="icon-right me-5 mt-2 mt-md-1"/>  
             </VCardText>
         </VCard>
     </VContainer>
