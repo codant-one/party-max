@@ -1,5 +1,6 @@
 <script setup>
   
+  import { useCartStores } from '@/stores/cart'
   import { useHomeStores } from '@/stores/home'
   import { useAuthStores } from '@/stores/auth'
   import router from '@/router'
@@ -15,6 +16,7 @@
   
   const homeStores = useHomeStores()
   const authStores = useAuthStores()
+  const cartStores = useCartStores()
 
   const categories = ref([])
   const categories_ = ref([])
@@ -22,6 +24,7 @@
   const services = ref([])
   const textSearch = ref(null)
   const user_data = ref(authStores.getUser)
+  const cart_products = ref(null)
   const name = ref(null)
 
   const cols = ref(12)
@@ -35,8 +38,6 @@
 
   const openMenuS = ref(false)
   const menuOpenS = ref(false)
-
-  const cant_shop = 1;
 
   const isMobile = /Mobi/i.test(navigator.userAgent);
   const drawer = ref(false)
@@ -55,6 +56,11 @@
       name.value = (user_data.value === null) ? null : (user_data.value.name + ' ' +(user_data.value.last_name ?? ''))
     });
 
+  watch(() => 
+    cartStores.getCount, (products) => {
+      cart_products.value = products
+    });
+
   watchEffect(fetchData)
 
   async function fetchData() {
@@ -70,10 +76,12 @@
 
   const logout = () => {
     authStores.logout()
-      .then(response => {
+      .then(async response => {
         localStorage.removeItem('user_data')// Remove "user_data" from localStorage
         localStorage.removeItem('accessToken')// Remove "accessToken" from localStorage
         localStorage.removeItem('userAbilities')// Remove "userAbilities" from localStorage
+
+        await cartStores.refreshData()
 
         router.push({ name: 'login' });
     })
@@ -314,14 +322,15 @@
             <span icon class="me-3 shoppinp_cart tw-cursor-pointer" @click="redirect('cart')">
               <VBadge
                 color="primary"
-                :content="cant_shop"
+                :content="cart_products"
+                :model-value="!!cart_products"
                 location="end top"
               >
                 <shoppinp_cart />
               </VBadge>
             </span>
             <div class="d-flex user-text">
-              <span v-if="name === null" class="user tw-cursor-pointer">
+              <span v-if="name === null" class="user tw-cursor-pointer ms-2">
                 <user />
               </span>
               <VMenu v-else>
@@ -380,7 +389,8 @@
             <span icon class="shoppinp_cart me-3" @click="redirect('cart')">
               <VBadge
                 color="primary"
-                :content="cant_shop"
+                :content="cart_products"
+                :model-value="!!cart_products"
                 location="end top"
               >
                 <shoppinp_cart />

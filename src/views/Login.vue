@@ -1,5 +1,6 @@
 <script setup>
 
+import { useCartStores } from '@/stores/cart'
 import { useAuthStores } from '@/stores/auth'
 import { emailValidator, requiredValidator } from '@validators'
 import router from '@/router'
@@ -9,6 +10,7 @@ import icon2 from '@assets/icons/input-user.svg';
 import icon4 from '@assets/icons/icon-password.svg';
 
 const authStores = useAuthStores()
+const cartStores = useCartStores()
 
 const errors = ref({
   email: undefined,
@@ -51,7 +53,7 @@ const login = () => {
   }
 
   authStores.login(data)
-    .then(response => {
+    .then(async response => {
         load.value = false
 
         const { qr, token, accessToken, user_data, userAbilities } = response.data     
@@ -73,6 +75,8 @@ const login = () => {
             localStorage.setItem('email', '');
             localStorage.setItem('password', ''); 
         }
+
+        await cartStores.fetchCart({client_id: user_data.client.id})
 
         router.push({ name: 'profile' });
     }).catch(err => {

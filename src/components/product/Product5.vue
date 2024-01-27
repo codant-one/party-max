@@ -15,6 +15,11 @@ const props = defineProps({
     }
 })
 
+const emit = defineEmits([
+    'delete', 
+    'addCart'
+])
+
 const image = ref(null)
 const wholesale_price = ref(null)
 const price_for_sale = ref(null)
@@ -26,15 +31,14 @@ const slug = ref(null)
 const stock = ref(null)
 const quantity = ref(null)
 const product_id = ref(null)
+const product_color_id = ref(null)
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
-const emit = defineEmits(['delete','add_cart'])
-
 
 watchEffect(() => {
 
     if (!(Object.entries(props.product).length === 0) && props.product.constructor === Object) {
-        image.value = props.product.image
+        image.value = (props.product.images.length === 0) ? props.product.image : props.product.images[0]?.image
         wholesale_price.value = props.product.wholesale_price
         price_for_sale.value = props.product.price_for_sale
         name.value = props.product.name.toLowerCase().replace(/\b\w/g, (match) => match.toUpperCase())
@@ -45,6 +49,7 @@ watchEffect(() => {
         stock.value = props.product.stock
         quantity.value = props.product.quantity ?? 1
         product_id.value = props.product.id
+        product_color_id.value = props.product.product_color_id
     }
 })
 
@@ -52,10 +57,10 @@ const onChange = ()=>{
 
     let data = {
         quantity: quantity.value,
-        product_id: product_id.value
+        product_color_id: product_color_id.value
     }
 
-    emit('add_cart',data)
+    emit('addCart',data)
 }
 
 </script>
@@ -63,7 +68,7 @@ const onChange = ()=>{
 <template>
     <div class="tw-no-underline zoom-product">
         <VCard 
-            class="no-shadown p-0 pb-5 w-100 mb-5" 
+            class="no-shadown p-0 w-100 py-7" 
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow no-gutters>
                 <VCol cols="12" md="2" class="d-flex justify-content-center align-center">
@@ -74,33 +79,38 @@ const onChange = ()=>{
                             cover />
                     </VCardText>
                 </VCol>
-                <VCol cols="12" md="5" class="d-flex flex-column py-5 ps-3">
-                    <VCardText class="mt-5">
+                <VCol cols="12" md="6" class="d-flex flex-column py-5 ps-7 my-auto">
+                    <VCardText>
                         <span class="d-block text_2 py-1 tw-text-tertiary title-product">{{ name }}</span>
                     </VCardText>
-                    <VCardText class="d-flex mb-5">
-                        <span class="d-flex tw-text-xs py-1 tw-text-primary title-product tw-cursor-pointer me-3" @click="emit('delete', product_id)">Eliminar</span>
+                    <VCardText>
+                        <span 
+                            class="d-flex tw-text-xs py-1 tw-text-primary title-product tw-cursor-pointer me-3" 
+                            @click="emit('delete', product_color_id)"
+                        >
+                            Eliminar
+                        </span>
                         <!--<span class="d-flex tw-text-xs py-1 tw-text-primary title-product me-3">Guardar</span>
                         <span class="d-flex tw-text-xs py-1 tw-text-primary title-product">Modificar</span>-->
                     </VCardText>
 
                 </VCol>
-                <VCol cols="12" md="2" class="d-flex flex-column py-5">
-                    <VCardText class="d-flex text-center align-center justify-content-center mt-5">  
+                <VCol cols="12" md="2" class="d-flex flex-column py-5 my-auto">
+                    <VCardText class="d-flex text-center align-center justify-content-center">  
                         <VTextField
-                        v-model="quantity"
-                        placeholder="0"
-                        variant="solo"
-                        type="number"
-                        @change="onChange" 
+                            v-model="quantity"
+                            placeholder="0"
+                            variant="solo"
+                            type="number"
+                            @change="onChange" 
                         />
                     </VCardText>
-                    <VCardText class="d-flex text-center align-center justify-content-center">
+                    <VCardText class="d-flex text-center align-center justify-content-center mt-2">
                         <span class="te-text-gray tw-text-xs">{{ stock }} disponibles</span>
                     </VCardText>
                   </VCol>
-                <VCol cols="12" md="3" class="align-center text-center py-5">
-                    <VCardText class="d-flex text-center align-center justify-content-center mt-5">
+                <VCol cols="12" md="2" class="align-center text-center py-5 my-auto pe-4">
+                    <VCardText class="d-flex text-center align-center justify-content-center">
                         <div class="d-flex text-center align-center justify-content-center">
                             <span class="tw-text-primary tw-font-medium me-1">(-%16)</span>
                         </div>
@@ -122,7 +132,7 @@ const onChange = ()=>{
 <style scoped>
 
     .card-information {
-        border-bottom: 1px solid var(--Grey-2, #E1E1E1);
+        border-bottom: 1px solid var(--Grey-2, #D9EEF2);
         border-radius: 0;
     }
 
@@ -146,7 +156,7 @@ const onChange = ()=>{
         width: 130px;
         height: 130px;
         border-radius: 16px !important;
-        border: 1px solid #D9EEF2;
+        border: 1px solid #E1E1E1;
         padding: 10px !important;
     }
 

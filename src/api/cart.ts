@@ -2,16 +2,16 @@ import axios from '@axios'
 
 class Cart {
 
-    show_cart(id: Number) {
-        return axios.get(`shopping-cart/show/${id}`)
+    get(params: object) {
+        return axios.get('shopping-cart', {params})
     }
 
-    add_cart(data: object) {
+    add(data: object) {
         return axios.post('shopping-cart/add', data)
     }
 
-    delete_cart(data: object) {
-        return axios.delete('shopping-cart/delete',data)
+    delete(data: object) {
+        return axios.post('shopping-cart/delete',data)
     }
 }
 

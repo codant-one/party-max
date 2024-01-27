@@ -219,6 +219,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const privatePages = [
+    '/cart',
     '/dashboard',
     '/profile',
     '/purchases',

@@ -2,7 +2,6 @@
 
 import { ref } from 'vue'
 import { useHomeStores } from '@/stores/home'
-import { useMiscellaneousStores } from '@/stores/miscellaneous' 
 import { useCartStores } from '@/stores/cart'
 
 import Stepper from '@/components/cart/Stepper.vue'
@@ -12,7 +11,6 @@ import Payments from '@/components/cart/Payments.vue'
 
 import Loader from '@/components/common/Loader.vue'
 import Product1 from '@/components/product/Product1.vue'
-import router from '@/router'
 
 import cart from '@assets/icons/cart.svg?inline'
 import address from '@assets/icons/address.svg?inline'
@@ -20,17 +18,13 @@ import payment from '@assets/icons/payment.svg?inline'
 import confirmation from '@assets/icons/confirmation.svg?inline'
 
 const homeStores = useHomeStores()
-const miscellaneousStores = useMiscellaneousStores()
 const cartStores = useCartStores()
 
 const data = ref(null)
 const bg = ref('tw-bg-green')
 const products = ref([])
-
 const client_id = ref(null)
-const cart_produc = ref([])
-
-const isLoading = ref(true)
+const isLoading = ref(false)
 
 const checkoutSteps = [
   {
@@ -53,69 +47,53 @@ const checkoutSteps = [
 
 const currentStep = ref(0)
 
-const me = async () => {
-
-if(localStorage.getItem('user_data')){
-  const userData = localStorage.getItem('user_data')
-  const userDataJ = JSON.parse(userData)
-  client_id.value = userDataJ.client.id
-}
-}
-
 watchEffect(fetchData)
 
 async function fetchData() {
 
-  isLoading.value = true
-  
-  await homeStores.fetchData()
-  data.value = homeStores.getData
+    if(localStorage.getItem('user_data')){
+        const userData = localStorage.getItem('user_data')
+        const userDataJ = JSON.parse(userData)
+        client_id.value = userDataJ.client.id
+    }
 
-  let info = {
-    orderByField: 'id',
-    orderBy: 'desc',
-    limit: 2,
-    page: 1
-  }
-
-
-  await cartStores.show_cart(client_id.value)
-  cart_produc.value = cartStores.getData
-  products.value = cart_produc.value.detalles
-
-  isLoading.value = false
-}
-
-const redirect = (name) => {
-    router.push({ name : name})
-}
-
-const deleteProduct = (product_id) => {
-
-let data = {
-            client_id: client_id.value,
-            product_id: product_id,
-        }
-
-        cartStores.delete_cart(data)
-        fetchData()
+    if(cartStores.getCount > 0) {
+        isLoading.value = true
         
+        await homeStores.fetchData()
+        data.value = homeStores.getData
+
+        await cartStores.fetchCart({client_id: client_id.value})
+        products.value = cartStores.getData
+        
+        isLoading.value = false
+    }
+}
+
+const deleteProduct = (product_color_id) => {
+
+    let data = {
+        client_id: client_id.value,
+        product_color_id: product_color_id,
+    }
+
+    cartStores.delete(data)
+    fetchData()   
 
 }
 
-const add_cart = (data)=>{
+const addCart = (data)=>{
 
     let data_ = {
-                client_id: client_id.value,
-                product_id: data.product_id,
-                quantity: data.quantity
-            }
-    cartStores.add_cart(data_)
+        client_id: client_id.value,
+        product_color_id: data.product_color_id,
+        quantity: data.quantity
+    }
+
+    cartStores.add(data_)
 
     fetchData()
 }
-
-me()
 
 </script>
 
@@ -133,6 +111,7 @@ me()
                     <Stepper
                         v-model:current-step="currentStep"
                         class="checkout-stepper"
+                        :isActiveStepValid="(products.length === 0) ? true : undefined"
                         :items="checkoutSteps"
                         :direction="$vuetify.display.mdAndUp ? 'horizontal' : 'vertical'"
                     />
@@ -142,6 +121,7 @@ me()
 
             <!-- 👉 stepper content -->
             <VWindow
+                v-if="products.length > 0"
                 v-model="currentStep"
                 class="disable-tab-transition mb-5"
                 :touch="false"
@@ -151,8 +131,8 @@ me()
                         v-model:current-step="currentStep"
                         :products="products"
                         @delete="deleteProduct"
-                        @add_cart="add_cart"
-                        />
+                        @addCart="addCart"
+                    />
                 </VWindowItem>
                 <VWindowItem>
                     <Location 
@@ -168,9 +148,17 @@ me()
                 </VWindowItem>
             </VWindow>
 
-            <!--SECCIÓN PRODUCTOS RECOMENDADOS-->
+            <VCard v-else class="mb-10 card-timeline px-0">
+                <VCardText class="d-flex flex-colum align-center text-center justify-content-center">
+                    <VCardItem class="d-block align-center text-center justify-content-center">
+                        <cart class="d-block mx-auto mb-5"/>
+                        <span class="d-block cart-empty">Tu carrito esta vacio.</span>
+                    </VCardItem>
+               </VCardText>
+            </VCard>
 
-            <VRow class="row-recomendados" v-if="currentStep === 0">
+            <!--SECCIÓN PRODUCTOS RECOMENDADOS-->
+            <VRow class="mt-5" v-if="currentStep === 0 && products.length > 0">
                 <VCol cols="12" style="border-bottom: 1px solid #0A1B33;">
                     <VRow style="padding:16px 0px;">
                         <VCol cols="12" md="6" class="text-left">
@@ -202,14 +190,24 @@ me()
 
 <style lang="scss">
 
+    .cart-empty {
+        color: #FF0090;
+        text-align: center;
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 30px;
+    }
+
     .w-60 {
         width: 65%;
     }
+
     .card-timeline {
         padding: 16px 0px;
         border-radius: 24px;
         box-shadow: none;
     }
+
     .checkout-stepper {
         .stepper-icon-step {
             .step-wrapper + svg {

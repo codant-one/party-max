@@ -9,7 +9,6 @@ import { useFavoritesStores } from '@/stores/favorites'
 import { FreeMode, Navigation, Thumbs, Scrollbar } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import CustomRadiosWithIcon from '@/components/app/CustomRadiosWithIcon.vue'
-import router from '@/router'
 import Loader from '@/components/common/Loader.vue'
 import Product1 from '@/components/product/Product1.vue'
 import whatsapp from '@assets/icons/whatsapp.svg?inline';
@@ -19,8 +18,6 @@ import threads from '@assets/icons/threads2.svg?inline';
 import iconmayorista from '@assets/icons/Union.svg';
 import heart from '@assets/icons/heart.svg?inline';
 import default_review from '@assets/images/image-review.png';
-import festin_about from '@assets/images/festin-aboutus.jpg';
-import festin_cancel from '@assets/images/festin_cancel.jpg';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -34,7 +31,6 @@ const homeStores = useHomeStores()
 const cartStores = useCartStores()
 const favoritesStores = useFavoritesStores()
 
-const refVForm = ref()
 const isLoading = ref(true)
 const tab = ref('0')
 
@@ -74,6 +70,8 @@ const material = ref('')
 
 const radioContent = ref([])
 const selectedColor = ref(null)
+const selectedColorId = ref(null)
+const load = ref(false)
 const color = ref('')
 const imageAux = ref('')
 
@@ -85,8 +83,14 @@ const user_id = ref(null)
 const isFavorite = ref(null)
 const isFavoriteProduct = ref(null)
 const isSnackbarBottomStartVisible = ref(false)
+const variant = ref('tonal')
+const colorMessage = ref('')
+const message = ref('')
 
-const me = async () => {
+watchEffect(fetchData)
+
+async function fetchData() {
+
   if(localStorage.getItem('user_data')){
     const userData = localStorage.getItem('user_data')
     const userDataJ = JSON.parse(userData)
@@ -94,11 +98,6 @@ const me = async () => {
     client_id.value = userDataJ.client.id
     user_id.value = userDataJ.id
   }
-}
-
-watchEffect(fetchData)
-
-async function fetchData() {
 
   if(route.query.category) {
     const category = {
@@ -132,6 +131,7 @@ async function fetchData() {
   productImages.value = (data.value.product.colors[0]?.images.length === 0) ? imageAux.value : data.value.product.colors[0]?.images
   color.value = data.value.product.colors[0]?.color.name
   selectedColor.value = data.value.product.colors[0]?.color.id.toString()
+  selectedColorId.value = data.value.product.colors[0]?.id
 
   data.value.product.colors.forEach(element => { 
     var aux = {
@@ -171,7 +171,8 @@ async function fetchData() {
     tags.value.push(element.tag.name)
   });
 
-  isFavoriteProduct.value = await favoritesStores.show({user_id: user_id.value, product_id: product_id.value })
+  if(client_id.value)
+    isFavoriteProduct.value = await favoritesStores.show({user_id: user_id.value, product_id: product_id.value })
 
   isLoading.value = false
 }
@@ -185,6 +186,7 @@ const chanceRadio = (value) => {
       productImages.value = (seleted?.images.length === 0) ? imageAux.value : seleted?.images
       color.value = seleted?.color.name
       selectedColor.value = seleted?.color.id.toString()
+      selectedColorId.value = seleted.id
       sku.value = seleted?.sku ?? null
   }
 }
@@ -193,56 +195,94 @@ const setThumbsSwiper = (swiper) => {
     thumbsSwiper.value = swiper;
 }
 
-const onSubmit = () => {
+const addCart = () => {
 
-  if(client_id.value !== null) {
-    refVForm.value?.validate().then(({ valid: isValid }) => {
-      if (isValid) {
+  if(client_id.value) {
+    
+    let data = {
+      client_id: client_id.value,
+      product_color_id: selectedColorId.value,
+      quantity: cant_prod.value
+    }
 
-        let data = {
-          client_id: client_id.value,
-          product_id: product_id.value,
-          quantity: cant_prod.value
-        }
+    load.value = true
 
-        cartStores.add_cart(data)
-          .then(response => {
-            
+    cartStores.add(data)
+      .then(response => {
 
-          }).catch(err => {
+        isSnackbarBottomStartVisible.value = true
+        message.value = 'Agregado al carrito'
+        colorMessage.value = 'primary'
+        variant.value = 'tonal'
+        load.value = false
 
-            //console.error(err.message)
-          })
-      } else {
-          console.log('DEBES INICIAR SESIÓN PARA PODER COMPRAR')
-      }
-    })  
+        setTimeout(() => {
+          isSnackbarBottomStartVisible.value = false
+          message.value = ''
+          colorMessage.value = ''
+        }, 3000)
+
+      }).catch(err => {
+        load.value = false
+        //console.error(err.message)
+      })
+  } else {
+    isSnackbarBottomStartVisible.value = true
+    message.value = 'Necesitas iniciar sesión antes de agregar un producto al carrito'
+    colorMessage.value = 'error'
+    variant.value = 'flat'
+                    
+    setTimeout(() => {
+      isSnackbarBottomStartVisible.value = false
+      message.value = ''
+      colorMessage.value = ''
+    }, 3000)
   }
-}
-
-const addfavorite= () =>{
-
-  isFavorite.value = true
-  favoritesStores.add({user_id: user_id.value, product_id: product_id.value })
-    .then(response => {
-
-      isFavorite.value = false
-      isSnackbarBottomStartVisible.value = true
-      isFavoriteProduct.value = true
-                  
-      setTimeout(() => {
-        isSnackbarBottomStartVisible.value = false
-      }, 3000)
-
-   
-    }).catch(err => {
-      isFavorite.value = false
-
-      //console.error(err.message)
-    })
 
 }
-me() 
+
+const addfavorite = () =>{
+
+  if(client_id.value) {
+    isFavorite.value = true
+
+    favoritesStores.add({user_id: user_id.value, product_id: product_id.value })
+      .then(response => {
+
+        isFavorite.value = false
+        isSnackbarBottomStartVisible.value = true
+        message.value = 'Agregado a la lista de favoritos'
+        isFavoriteProduct.value = true
+        colorMessage.value = 'primary'
+        variant.value = 'tonal'
+                    
+        setTimeout(() => {
+          isSnackbarBottomStartVisible.value = false
+          message.value = ''
+          colorMessage.value = ''
+        }, 3000)
+    
+      }).catch(err => {
+        isFavorite.value = false
+
+        //console.error(err.message)
+      })
+
+    } else {
+    isSnackbarBottomStartVisible.value = true
+    message.value = 'Necesitas iniciar sesión antes de agregar un producto a la lista'
+    colorMessage.value = 'error'
+    variant.value = 'flat'
+
+    setTimeout(() => {
+      isSnackbarBottomStartVisible.value = false
+      message.value = ''
+      colorMessage.value = ''
+    }, 3000)
+  }
+
+}
+
 </script>
 
 <template>
@@ -326,112 +366,112 @@ me()
               </swiper>
             </VCol>
             <VCol cols="12" md="7">
-              <VForm
-              ref="refVForm"
-              @submit.prevent="onSubmit"
-              > 
-                <VCardText class="p-0">
-                  <div class="d-flex py-2">
+              <VCardText class="p-0">
+                <div class="d-flex py-2">
                   <span class="text_1">$ {{ price_for_sale }}</span>
                   <span class="text_2 ms-2 d-flex align-end">$ {{ wholesale_price }}</span>
-                  </div>
-                </VCardText>
-                <VCardText class="p-0 d-flex border-title">
-                    <span class="d-block tw-text-tertiary">Tienda: 
-                      <strong class="tw-text-gray tw-text-base ms-1">{{ store }}</strong>
-                    </span>
-                    <span class="d-block tw-text-tertiary ms-8 mb-2">Status: 
-                      <strong class="tw-text-gray tw-text-base ms-1">
-                        {{ (in_stock === 1) ? 'En Stock' : 'Agotado' }}
-                      </strong>
-                    </span>
-                </VCardText>
-                <VCardText class="p-0 d-block border-title mt-2">
-                    <span class="d-block tw-text-tertiary mb-2">Color: 
-                      <strong class="tw-text-tertiary tw-text-base ms-1">{{ color }}</strong>
-                    </span>
-                    <span class="d-block tw-text-tertiary w-100" v-if="selectedColor">
-                      <CustomRadiosWithIcon
-                        v-model:selected-radio="selectedColor"
-                        :radio-content="radioContent"
-                        :grid-column="{ sm: '2', cols: '12' }"
-                        class="custom-input-setting"
-                        @change="chanceRadio"
-                      >
-                        <template #default="{ item }">
-                          <div class="text-center">
-                            <span class="font-weight-semibold text-uppercase tw-text-sm">
-                              {{ item.title }}
-                            </span>
-                            <div class="d-flex align-center justify-center">
-                              <img 
-                                width="75"
-                                :src="baseURL + item.image" />
-                            </div>
-                          </div>
-                        </template>
-                      </CustomRadiosWithIcon>
-                    </span>
-                </VCardText>
-                <VCardText class="p-0 d-block border-title mt-2" v-if="single_description !== null">
-                    <span class="d-block tw-text-tertiary ms-5 mb-2 tw-leading-5" v-html="single_description" />
-                </VCardText>
+                </div>
+              </VCardText>
+              <VCardText class="p-0 d-flex border-title">
+                <span class="d-block tw-text-tertiary">Tienda: 
+                  <strong class="tw-text-gray tw-text-base ms-1">{{ store }}</strong>
+                </span>
+                <span class="d-block tw-text-tertiary ms-8 mb-2">Status: 
+                  <strong class="tw-text-gray tw-text-base ms-1">
+                    {{ (in_stock === 1) ? 'En Stock' : 'Agotado' }}
+                  </strong>
+                </span>
+              </VCardText>
+              <VCardText class="p-0 d-block border-title mt-2">
+                <span class="d-block tw-text-tertiary mb-2">Color: 
+                  <strong class="tw-text-tertiary tw-text-base ms-1">{{ color }}</strong>
+                </span>
+                <span class="d-block tw-text-tertiary w-100" v-if="selectedColor">
+                  <CustomRadiosWithIcon
+                    v-model:selected-radio="selectedColor"
+                    :radio-content="radioContent"
+                    :grid-column="{ sm: '2', cols: '12' }"
+                    class="custom-input-setting"
+                    @change="chanceRadio"
+                  >
+                    <template #default="{ item }">
+                      <div class="text-center">
+                        <span class="font-weight-semibold text-uppercase tw-text-sm">
+                          {{ item.title }}
+                        </span>
+                        <div class="d-flex align-center justify-center">
+                          <img 
+                            width="75"
+                            :src="baseURL + item.image" />
+                        </div>
+                      </div>
+                    </template>
+                  </CustomRadiosWithIcon>
+                </span>
+              </VCardText>
+              <VCardText class="p-0 d-block border-title mt-2" v-if="single_description !== null">
+                <span class="d-block tw-text-tertiary ms-5 mb-2 tw-leading-5" v-html="single_description" />
+              </VCardText>
 
-                <VCardText class="p-0 d-flex my-2">
-                  <div class="d-flex flex-column">
-                    <span>Cantidad:</span>
-                    <VTextField
-                      v-model="cant_prod"
-                      variant="solo"
-                      type="number"
-                      :rules="[requiredValidator]"
-                    />
-                  </div>
-                  <div class="my-auto ms-5">
-                    <VBtn 
-                      variant="flat"
-                      :width="288"
-                      :height="48"
-                      type="submit"
-                      class="btn-register tw-text-white tw-bg-primary button-hover" 
-                      >
+              <VCardText class="p-0 d-flex my-2">
+                <div class="d-flex flex-column">
+                  <span>Cantidad:</span>
+                  <VTextField
+                    v-model="cant_prod"
+                    variant="solo"
+                    type="number"
+                    :rules="[requiredValidator]"
+                   />
+                </div>
+                <div class="my-auto ms-5">
+                  <VBtn 
+                    variant="flat"
+                    :width="288"
+                    :height="48"
+                    @click="addCart"
+                    class="btn-register tw-text-white tw-bg-primary button-hover" 
+                    >
                       Agregar al carrito
-                    </VBtn>
-                  </div>
-                  <div class="my-auto ms-5">
-                    <span 
-                      v-if="!isFavorite" 
-                      class="me-4 index heart p-0 tw-cursor-pointer"
-                      :class="(isFavoriteProduct) ? 'heart_fill' : ''" 
-                      @click="addfavorite">
-                      <heart />
-                    </span>
-                    <VProgressCircular
-                      v-else
-                      :size="30"
-                      width="3"
-                      indeterminate
-                      color="primary"
-                    />
-                  </div>
-                  <VSpacer />  
-                </VCardText>
-
-                <VCardText class="p-0 d-flex border-title pb-2">
-                  <VBtn class="b-mayorista">
-                    <img :src="iconmayorista" alt="Icono Mayorista" style="width: 24px; height: 24px; margin-right: 8px;">
-                      Precio al mayor
+                      <VProgressCircular
+                        v-if="load"
+                        indeterminate
+                        color="#fff"
+                      />
                   </VBtn>
-                </VCardText>
-                <VCardText class="p-0 d-block mt-2">
-                  <span class="tw-text-tertiary" style="display: none;">Categorías: 
-                    <span class="ms-1">{{ categories.join(", ") }}</span>
+                </div>
+                <div class="my-auto ms-5">
+                  <span 
+                    v-if="!isFavorite" 
+                    class="me-4 index heart p-0 tw-cursor-pointer"
+                    :class="(isFavoriteProduct) ? 'heart_fill' : ''" 
+                     @click="addfavorite">
+                  <heart />
                   </span>
-                  <span class="d-block tw-text-tertiary">Tags: 
-                    <span class="ms-1">{{ tags.join(", ") }}</span>
-                  </span>
-                </VCardText>
-              </VForm>
+                  <VProgressCircular
+                    v-else
+                    :size="30"
+                    width="3"
+                    indeterminate
+                    color="primary"
+                  />
+                </div>
+                <VSpacer />  
+              </VCardText>
+
+              <VCardText class="p-0 d-flex border-title pb-2">
+                <VBtn class="b-mayorista">
+                  <img :src="iconmayorista" alt="Icono Mayorista" style="width: 24px; height: 24px; margin-right: 8px;">
+                  Precio al mayor
+                </VBtn>
+              </VCardText>
+              <VCardText class="p-0 d-block mt-2">
+                <span class="tw-text-tertiary" style="display: none;">Categorías: 
+                  <span class="ms-1">{{ categories.join(", ") }}</span>
+                </span>
+                <span class="d-block tw-text-tertiary">Tags: 
+                  <span class="ms-1">{{ tags.join(", ") }}</span>
+                </span>
+              </VCardText>
             </VCol>
           </VRow>
           </VCardText>
@@ -519,10 +559,10 @@ me()
     <VSnackbar
       v-model="isSnackbarBottomStartVisible"
       location="bottom start"
-      variant="tonal"
-      color="primary"
+      :variant="variant"
+      :color="colorMessage"
     >
-      Producto agregado a la lista.
+      {{ message }}
     </VSnackbar>
   </section>
 </template>

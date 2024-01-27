@@ -9,35 +9,39 @@ const props = defineProps({
     }
 })
 
-var sum_price = ref(0)
-var price_q = ref(0)//Precio por cantidad
-var tot_sumprice = ref(0)
+const emit = defineEmits([
+    'update:currentStep',
+    'delete',
+    'addCart'
+])
 
-const emit = defineEmits(['update:currentStep','delete','add_cart'])
+const sum_price = ref(0)
+const price_q = ref(0)
+const tot_sumprice = ref(0)
+const send = ref('2000.00')
+const total = ref(0)
 
 const isLastItem = (index) => {
   return index === props.products.length - 1;
 }
 
 watchEffect(fetchData)
-async function fetchData() 
-{
+
+async function fetchData() {
     sum_price.value = 0
     props.products.forEach(element => {
      
-        price_q = parseFloat(element.price_for_sale)*element.quantity
-        sum_price.value += price_q
-        tot_sumprice.value = Number(sum_price.value.toFixed(2))
+        price_q.value = (parseFloat(element.price_for_sale) * element.quantity)
+        sum_price.value += price_q.value
+        tot_sumprice.value = sum_price.value.toFixed(2)
      
-        
     });
 
+    total.value = (parseFloat(send.value) + parseFloat(tot_sumprice.value)).toFixed(2)
 }
 
-const add_cart = (data)=>
-{
-
-    emit('add_cart',data)
+const addCart = (data) => {
+    emit('addCart', data)
 }
 
 </script>
@@ -45,28 +49,24 @@ const add_cart = (data)=>
 <template>
    <VRow>
         <VCol cols="12" md="8">
-            <VCard class="card-products px-0">
-                <VCardTitle class="title-card">Productos</VCardTitle>
-                <VCardText class="row-cardp px-0">
+            <VCard class="card-products p-0">
+                <VCardTitle class="title-card mt-4 ms-4">Productos</VCardTitle>
+                <VCardText class="row-cardp p-0">
                     <Product5
                         v-for="(product, i) in props.products"
                         :key="i"
                         :product="product"
                         :readonly="true"
                         :isLastItem="isLastItem(i)"
-                        @delete="emit('delete', product.id)"
-                        @add_cart="add_cart"
+                        @delete="emit('delete', product.product_color_id)"
+                        @addCart="addCart"
                         />
                 </VCardText>
-                <VRow class="row-cardp3">
-                    <VCol cols="12" md="6" class="text-left">
-                        <span>Envío</span>
-                    </VCol>
-
-                    <VCol cols="12" md="6" class="text-right">
-                    <h4>$0.000</h4> 
-                    </VCol>
-                </VRow>
+                <VCardText class="d-flex row-cardp3">
+                    <span>Envío</span>
+                    <VSpacer />
+                    <h4>${{ send }}</h4> 
+                </VCardText>
             </VCard>
         </VCol>
         <VCol cols="12" md="4">
@@ -78,19 +78,19 @@ const add_cart = (data)=>
                             <span>Productos</span>
                         </VCol>
                         <VCol cols="12" md="6" class="text-right">
-                            <span>{{ tot_sumprice}}</span>
+                            <span>{{ tot_sumprice }}</span>
                         </VCol>
                         <VCol cols="12" md="6" class="text-left">
                             <span>Envío</span>
                         </VCol>
                         <VCol cols="12" md="6" class="text-right">
-                            <span>$2.000</span>
+                            <span>${{ send }}</span>
                         </VCol>
                         <VCol cols="12" md="6" class="text-left">
                             <h4>Total</h4>
                         </VCol>
                         <VCol cols="12" md="6" class="text-right">
-                            <h4>$7.600</h4>
+                            <h4>${{ total }}</h4>
                         </VCol>
                         <VCol cols="12" style="padding:24px 0px;">
                             <VBtn
