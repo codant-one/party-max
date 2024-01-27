@@ -1,6 +1,7 @@
 <script setup>
 
 import { ref } from 'vue'
+import { useAddressesStores } from '@/stores/addresses'
 import { useHomeStores } from '@/stores/home'
 import { useCartStores } from '@/stores/cart'
 
@@ -19,12 +20,21 @@ import confirmation from '@assets/icons/confirmation.svg?inline'
 
 const homeStores = useHomeStores()
 const cartStores = useCartStores()
+const addressesStores = useAddressesStores()
 
 const data = ref(null)
 const bg = ref('tw-bg-green')
+const addresses = ref(null)
 const products = ref([])
 const client_id = ref(null)
-const isLoading = ref(false)
+const address_id = ref(1)
+
+const summary = ref({
+    subTotal: 0,
+    send: '2000.00',
+    total: 0
+})
+
 
 const checkoutSteps = [
   {
@@ -46,6 +56,7 @@ const checkoutSteps = [
 ]
 
 const currentStep = ref(0)
+const isLoading = ref(false)
 
 watchEffect(fetchData)
 
@@ -63,11 +74,34 @@ async function fetchData() {
         await homeStores.fetchData()
         data.value = homeStores.getData
 
+        let data_ = {
+            limit: -1,
+            client_id: client_id.value
+        }
+
+        await addressesStores.fetchAddresses(data_)
+        addresses.value = addressesStores.getAddresses
+
         await cartStores.fetchCart({client_id: client_id.value})
         products.value = cartStores.getData
-        
+
+        let index = addresses.value.findIndex((item) => item.default === 1)
+        address_id.value = addresses.value[index].id
+
+        let sum = 0
+        products.value.forEach(element => {
+            sum += (parseFloat(element.price_for_sale) * element.quantity)
+        });
+
+        summary.value.subTotal = sum.toFixed(2)
+        summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
+
         isLoading.value = false
     }
+}
+
+const changeAddreess = (id) => {
+    address_id.value = id
 }
 
 const deleteProduct = (product_color_id) => {
@@ -130,18 +164,26 @@ const addCart = (data)=>{
                     <Summary
                         v-model:current-step="currentStep"
                         :products="products"
+                        :summary="summary"
                         @delete="deleteProduct"
                         @addCart="addCart"
                     />
                 </VWindowItem>
                 <VWindowItem>
                     <Location 
-                        v-model:current-step="currentStep"/>
+                        v-model:current-step="currentStep"
+                        :address_id="address_id"
+                        :addresses="addresses"
+                        :summary="summary"
+                        @changeAddreess="changeAddreess"/>
                 </VWindowItem>
                 <VWindowItem>
                     <Payments 
                         v-model:current-step="currentStep"
-                        :products="products"/>
+                        :address_id="address_id"
+                        :addresses="addresses"
+                        :products="products"
+                        :summary="summary"/>
                 </VWindowItem>
                 <VWindowItem>
                     PAY U

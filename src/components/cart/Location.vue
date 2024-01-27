@@ -1,63 +1,69 @@
 <script setup>
 
-const emit = defineEmits(['update:currentStep'])
+const props = defineProps({
+    addresses: {
+        type: Object,
+        required: true
+    },
+    summary: {
+        type: Object,
+        required: true
+    },
+    address_id: {
+        type: Number,
+        required: true
+    }
+})
+
+const id = ref(props.address_id)
+
+const emit = defineEmits([
+    'update:currentStep',
+    'changeAddreess'
+])
+
+const next = () => {
+    emit('update:currentStep', 2)
+    emit('changeAddreess', id.value)
+}
 
 </script>
 
 <template>
    <VRow>
         <VCol cols="12" md="8">
-            <VCard class="card-products px-0">
-                <VCardTitle class="title-card">Elige la forma de entrega</VCardTitle>
-                <VCardText class="row-cardp px-0 pt-2">
-                    <h2 class="home px-5 mb-5">Enviar a domicilio</h2>
-                    <VRow class="row-card px-5">
-                        <VCol cols="8" md="7">
-                            <VRow>
-                                <VCol cols="2" class="text-center">    
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
-                                        <circle cx="7.5" cy="8.25" r="6.5" stroke="#FF0090" stroke-width="2"/>
-                                    </svg>
-                                </VCol>
-                                <VCol cols="9">
-                                    <span>Calle 000 #000-00</span>
-                                </VCol>
-                            </VRow>
-                        </VCol>
-
-                        <VCol cols="4" md="5" class="text-right">
-                            <span>$0.000</span>
-                        </VCol>
-                    </VRow>
-
-                    <!--item 2-->
-                    <VRow class="row-card2 px-5">
-                        <VCol cols="8" md="7">
-                            <VRow>
-                                <VCol cols="2" class="text-center">    
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
-                                        <circle cx="7.5" cy="8.25" r="6.5" stroke="#FF0090" stroke-width="2"/>
-                                    </svg>
-                                </VCol>
-                                <VCol cols="9">
-                                    <span>Calle 000 #000-00</span>
-                                </VCol>
-                            </VRow>
-                        </VCol>
-
-                        <VCol cols="4" md="5" class="text-right">
-                            <span>$0.000</span>
-                        </VCol>
-                    </VRow>
+            <VCard class="card-products p-0">
+                <VCardTitle class="title-card border-line mt-4 ps-10">Elige la forma de entrega</VCardTitle>
+                <VCardText class="home px-10 pb-0 my-3">Enviar a domicilio</VCardText>
+                <VCardText class="row-cardp p-0">
+                    <VRadioGroup
+                        v-model="id"
+                        false-icon="mdi-circle-off-outline"
+                        true-icon="mdi-circle-slice-8"
+                    >
+                        <VRadio
+                            v-for="(address, i) in props.addresses"
+                            :key="i"
+                            :value="address.id"
+                            color="primary"
+                            class="ps-10 border-line"
+                        >
+                            <template v-slot:label>
+                                <VCardText class="d-flex my-1">
+                                    <span class="text-address ms-7 me-auto">{{ address.address }}</span>
+                                    <VSpacer />
+                                    <span class="text-address">$0.000</span>
+                                </VCardText>
+                            </template>
+                        </VRadio>
+                    </VRadioGroup>
                 </VCardText>
-                <VRow class="row-cardp3">
-                    <VCol cols="12" md="6" class="text-left">
-                        <span>Editar o elegir otro domicilio</span>
-                    </VCol>
-                </VRow>
+                <VCardText class="row-cardp3">
+                    <span>Editar o elegir otro domicilio</span>
+                </VCardText>
             </VCard>
 
-            <VCard class="card-products px-0 mt-5">
+            <VCard class="card-products px-0 mt-5" v-if="false">
                 <VCardTitle class="home">Retirar en un punto físico </VCardTitle>
                 <VCardText class="row-cardp_ px-0 pt-2">
                     <VRow class="row-card px-5 mt-2">
@@ -101,15 +107,17 @@ const emit = defineEmits(['update:currentStep'])
                 </VCardText>
             </VCard>
 
-            <VCol cols="12" class="text-right">
+            
+            <VCardText class="d-flex">
+                <VSpacer />
                 <VBtn
                     variant="flat"
                     style="border-radius:32px;"
-                    class="btn-register tw-text-white tw-bg-primary button-hover mt-2"
-                    @click="emit('update:currentStep', 2)">
+                    class="btn-register tw-text-white tw-bg-primary button-hover my-5"
+                    @click="next">
                     Continuar
                 </VBtn>
-            </VCol>
+            </VCardText>
         </VCol>
         <VCol cols="12" md="4">
             <VCard class="card-summary px-0">
@@ -120,19 +128,19 @@ const emit = defineEmits(['update:currentStep'])
                             <span>Productos</span>
                         </VCol>
                         <VCol cols="3" md="6" class="text-right">
-                            <span>$5.600</span>
+                            <span>${{ props.summary.subTotal }}</span>
                         </VCol>
                         <VCol cols="9" md="6" class="text-left">
                             <span>Envío</span>
                         </VCol>
                         <VCol cols="3" md="6" class="text-right">
-                            <span>$2.000</span>
+                            <span>${{ props.summary.send }}</span>
                         </VCol>
                         <VCol cols="9" md="6" class="text-left">
                             <h4>Total</h4>
                         </VCol>
                         <VCol cols="3" md="6" class="text-right">
-                            <h4>$7.600</h4>
+                            <h4>${{ props.summary.total }}</h4>
                         </VCol>
                     </VRow>
                 </VCardText>
@@ -142,6 +150,24 @@ const emit = defineEmits(['update:currentStep'])
 </template>
 
 <style scoped>
+
+    ::v-deep(.v-input__details) {
+        padding: 0;
+        height: 0;
+        min-height: 0;
+    }
+
+    ::v-deep(.v-label) {
+        width: 100% !important;
+    }
+    
+    .text-address {
+        color: #0A1B33;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+    }
 
     .card-summary {
         background-color:#F3FCFE;
@@ -211,20 +237,16 @@ const emit = defineEmits(['update:currentStep'])
     }
 
     .row-cardp {
-        border-bottom: 1px solid #D9EEF2;
-        border-top: 1px solid #D9EEF2;
         margin-top:11px;
         padding: 32px;
     }
 
     .row-cardp_ {
-        border-top: 1px solid #D9EEF2;
         margin-top:11px;
         padding: 32px;
     }
 
     .row-cardp2 {
-        border-bottom: 1px solid #D9EEF2;
         height:100px;
         padding: 32px;
 
@@ -250,7 +272,7 @@ const emit = defineEmits(['update:currentStep'])
         line-height: normal;
     }
 
-    .row-buy {
+    .row-buy, .border-line {
         border-bottom: 1px solid #D9EEF2;
     }
 

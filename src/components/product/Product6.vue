@@ -47,9 +47,9 @@ watchEffect(() => {
 <template>
     <div class="tw-no-underline zoom-product">
         <VCard 
-            class="no-shadown p-0 pb-5 w-100 mb-5" 
+            class="no-shadown p-0 w-100 py-5" 
             :class="props.isLastItem ? '' : 'card-information'">
-            <VRow no-gutters>
+            <VRow no-gutters class="px-14">
                 <VCol cols="12" md="1" class="d-flex justify-content-center align-center">
                     <VCardText class="border-img ms-16">
                         <VImg
