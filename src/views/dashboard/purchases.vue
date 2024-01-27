@@ -1,5 +1,11 @@
 <script setup>
 
+import { ref } from 'vue'
+import { useOrdersStores } from '@/stores/orders'
+import Loader from '@/components/common/Loader.vue'
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
+
 import icon_more from '@assets/icons/more-vertical.svg';
 import icon_right from '@assets/icons/right-pink.svg';
 import image_product from '@assets/images/product_2.png'
@@ -8,14 +14,23 @@ import router from '@/router'
 const name = ref(null)
 const usermail= ref(null)
 const phone= ref(null)
+const client_id = ref(null)
+const isLoading = ref(true)
+
+const ordersStores = useOrdersStores()
+
+const orders = ref(null)
+const products = ref(null)
 
 
+//router.push({ name: 'somewhere', params: { oops: 'gets removed' } })
 
-const redirect = (name) => {
-    router.push({ name : name})
-}
+const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
-const me = async () => {
+  watchEffect(fetchData)
+
+  async function fetchData() {
+    
     if(localStorage.getItem('user_data')){
       const userData = localStorage.getItem('user_data')
       const userDataJ = JSON.parse(userData)
@@ -23,10 +38,19 @@ const me = async () => {
       name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
       usermail.value = userDataJ.email
       phone.value = userDataJ.user_details.phone
+      client_id.value = userDataJ.client.id
     }
+
+    isLoading.value = true
+
+    await ordersStores.show_by_client(client_id.value)
+    orders.value = ordersStores.getData
+    products.value = orders.value.products
+
+    isLoading.value = false
+
   }
 
-  me()
 </script>
 
 <template>
@@ -38,31 +62,45 @@ const me = async () => {
         <VCol cols="12" class="d-block">
             <h2 class="data-title">Mis Compras</h2>
 
-            <VCard class="card-profile">
+            <VCard class="card-profile" v-for="(order, i) in orders">
 
 
                 <VRow align="center">
 
                     <VCol cols="12" class="col-date">
-                        <span class="text-date tw-text-tertiary">18 de diciembre de 2023</span>
+                        <span class="text-date tw-text-tertiary">{{  format(order.order_date, 'MMMM d, yyyy', { locale: es }).replace(/(^|\s)\S/g, (char) => char.toUpperCase()) }}</span>
                     </VCol>
+                </VRow>
                     <VRow align="center" class="row-summary">
 
-                        <VCol cols="12" md="3" class="d-flex justify-center">
-                            <VImg :src="image_product" class="image-product"/>
+                       <VCol cols="12" md="3" class="d-flex justify-center">
+                            <VImg :src="baseURL + order.products[0].product_image" class="image-product"/>
                         </VCol>
                         <VCol cols="12" md="6" class="d-block">
                            <span class="text-status tw-text-secondary">Entregado</span> <br>
-                           <span class="name-product tw-text-tertiary">Edifier Powered Bookshelf Speakers</span> <br>
-                           <span class="text-status tw-text-gray">1 unidad</span>
+                           <span class="name-product tw-text-tertiary">{{ order.products[0].product_name}}</span> <br>
+                           <span class="text-status tw-text-gray">{{ order.products[0].quantity }}</span>
                         </VCol>
                         <VCol cols="12" md="3" class="text-center">
-                            <VBtn
+
+                           
+
+                            <router-link
+                                :to="{
+                                    name: 'detail_pusher',
+                                    params: {
+                                        id: order.order_id
+                                    }
+                                }"
+                                class="tw-no-underline">
+                                <VBtn
                                 class="btn-compra tw-text-tertiary"
-                                @click="redirect('detail_pusher')"
-                            >
-                                Ver compra
-                            </VBtn>
+                                >
+                                    Ver compra
+                                </VBtn>
+                                
+                            </router-link>
+                            
 
                             <VBtn
                                 class="btn-comprar tw-bg-primary tw-text-white"
@@ -72,7 +110,7 @@ const me = async () => {
                             </VBtn>
                         </VCol>
                     </VRow>
-                </VRow>
+                
 
             </VCard>
         </VCol>

@@ -102,7 +102,8 @@ const onChange = ()=>{
                             placeholder="0"
                             variant="solo"
                             type="number"
-                            @change="onChange" 
+                            :min="1"
+                            @change="onChange"
                         />
                     </VCardText>
                     <VCardText class="d-flex text-center align-center justify-content-center mt-2">

@@ -159,6 +159,12 @@
   const redirect = (name) => {
     router.push({ name : name})
 }
+
+const redirect_ = (name, slug) =>{
+ router.push({name: name, 
+              params: {slug: slug}
+              })
+}
   
 </script>
 
@@ -189,6 +195,14 @@
               <span class="d-block title-menu">Mayoristas</span>
             </router-link>
           </VListItemTitle>
+
+          <VListItemTitle class="d-block lineheight pt-6 pb-2">
+            <span class="d-block title-menu">SERVICIOS</span>
+            <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
+            </svg>
+          </VListItemTitle>
+
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
             <span class="d-block title-menu">PRODUCTOS</span>
             <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -472,12 +486,14 @@
                       v-for="(item, index) in categories"
                       :key="index">
                         <div class="d-flex hover-icon-right tw-cursor-pointer" >
-                          <span v-if="item.children.length>0"
-                            class="subtitle-menu" 
-                            @click="openCategory(item.id)">
-                            {{ item.name }}
-                          </span>
-
+                           
+                            <span v-if="item.children.length>0"
+                              class="subtitle-menu" 
+                              @mouseover="openCategory(item.id)"
+                              @click="redirect_('categories', item.slug)">
+                              {{ item.name }}
+                            </span>
+                          
                           <router-link 
                             :to="{
                                   name: 'categories',
@@ -553,7 +569,7 @@
                         <div class="d-flex hover-icon-right tw-cursor-pointer" >
                           <span v-if="item.children.length>0"
                             class="subtitle-menu" 
-                            @click="openService(item.id)">
+                            @mouseover="openService(item.id)">
                             {{ item.name }}
                           </span>
 
