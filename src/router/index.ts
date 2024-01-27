@@ -169,7 +169,7 @@ const router = createRouter({
           component: address_client,
         },
         {
-          path: '/detail-purchases',
+          path: '/detail-purchases/:id',
           name: 'detail_pusher',
           component: Detail_pusher,
         }

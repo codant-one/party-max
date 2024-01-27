@@ -1,13 +1,31 @@
 <script setup>
 
+import { useOrdersStores } from '@/stores/orders'
+import Loader from '@/components/common/Loader.vue'
+
 import icon_more from '@assets/icons/more-vertical.svg';
 import icon_right from '@assets/icons/right-pink.svg';
 import image_product from '@assets/images/product_2.png'
 import router from '@/router'
 
+const route = useRoute()
+
 const name = ref(null)
 const usermail= ref(null)
 const phone= ref(null)
+
+const ordersStores = useOrdersStores()
+
+const orders = ref(null)
+const products = ref(null)
+const isLoading = ref(true)
+
+const subtotal = ref(null)
+const envio = ref(null)
+const total = ref(null)
+
+const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
+
 
 const redirect = (name) => {
     router.push({ name : name})
@@ -22,6 +40,16 @@ const me = async () => {
       name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
       usermail.value = userDataJ.email
       phone.value = userDataJ.user_details.phone
+
+      isLoading.value = true
+      await ordersStores.show_by_id(route.params.id)
+      orders.value = ordersStores.getData
+      products.value = orders.value[0].products
+      subtotal.value = orders.value[0].subtotal
+      envio.value = orders.value[0].costo_envio
+      total.value = orders.value[0].total
+
+      isLoading.value = false
     }
   }
 
@@ -39,13 +67,13 @@ const me = async () => {
             <VCard class="card-profile">
                 <VRow align="center">
                     
-                    <VRow align="center" class="row-summary">
+                    <VRow align="center" class="row-summary" v-for="(product, i) in products">
 
                         <VCol cols="12" md="3" class="d-flex justify-center">
-                            <VImg :src="image_product" class="image-product"/>
+                            <VImg :src="baseURL + product.product_image" class="image-product"/>
                         </VCol>
                         <VCol cols="12" md="6" class="d-block">
-                           <span class="name-product tw-text-tertiary">Edifier Powered Bookshelf Speakers</span> <br>
+                           <span class="name-product tw-text-tertiary">{{ product.product_name}}</span> <br>
                            <span class="text-status tw-text-gray">#2000007185463638</span>
                         </VCol>
                         <VCol cols="12" md="3" class="text-center">
@@ -95,7 +123,7 @@ const me = async () => {
                                 <span class="text-editar tw-text-tertiary">Productos</span>
                             </VCol>
                             <VCol cols="6 text-right">
-                                <span class="text-editar tw-text-tertiary">$567.99</span>
+                                <span class="text-editar tw-text-tertiary">${{subtotal}}</span>
                             </VCol>
                         </VRow>
 
@@ -104,7 +132,7 @@ const me = async () => {
                                 <span class="text-editar tw-text-tertiary">Envío</span>
                             </VCol>
                             <VCol cols="6 text-right">
-                                <span class="text-editar tw-text-tertiary">$000.00</span>
+                                <span class="text-editar tw-text-tertiary">${{envio}}</span>
                             </VCol>
                         </VRow>
 
@@ -113,7 +141,7 @@ const me = async () => {
                                 <span class="text-editar tw-text-tertiary tw-font-bold">Total</span>
                             </VCol>
                             <VCol cols="6 text-right">
-                                <span class="text-editar tw-text-tertiary tw-font-bold">$567.99</span>
+                                <span class="text-editar tw-text-tertiary tw-font-bold">${{total}}</span>
                             </VCol>
                         </VRow>
                     </VCol>
