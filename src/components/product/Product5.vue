@@ -92,6 +92,7 @@ const onChange = ()=>{
                         placeholder="0"
                         variant="solo"
                         type="number"
+                        :min="1"
                         @change="onChange" 
                         />
                     </VCardText>
