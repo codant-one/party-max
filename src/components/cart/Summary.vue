@@ -6,6 +6,10 @@ const props = defineProps({
     products: {
         type: Object,
         required: true
+    },
+    summary: {
+        type: Object,
+        required: true
     }
 })
 
@@ -15,29 +19,8 @@ const emit = defineEmits([
     'addCart'
 ])
 
-const sum_price = ref(0)
-const price_q = ref(0)
-const tot_sumprice = ref(0)
-const send = ref('2000.00')
-const total = ref(0)
-
 const isLastItem = (index) => {
   return index === props.products.length - 1;
-}
-
-watchEffect(fetchData)
-
-async function fetchData() {
-    sum_price.value = 0
-    props.products.forEach(element => {
-     
-        price_q.value = (parseFloat(element.price_for_sale) * element.quantity)
-        sum_price.value += price_q.value
-        tot_sumprice.value = sum_price.value.toFixed(2)
-     
-    });
-
-    total.value = (parseFloat(send.value) + parseFloat(tot_sumprice.value)).toFixed(2)
 }
 
 const addCart = (data) => {
@@ -65,7 +48,7 @@ const addCart = (data) => {
                 <VCardText class="d-flex row-cardp3">
                     <span>Envío</span>
                     <VSpacer />
-                    <h4>${{ send }}</h4> 
+                    <h4>${{ props.summary.send }}</h4> 
                 </VCardText>
             </VCard>
         </VCol>
@@ -78,19 +61,19 @@ const addCart = (data) => {
                             <span>Productos</span>
                         </VCol>
                         <VCol cols="12" md="6" class="text-right">
-                            <span>{{ tot_sumprice }}</span>
+                            <span>${{ props.summary.subTotal }}</span>
                         </VCol>
                         <VCol cols="12" md="6" class="text-left">
                             <span>Envío</span>
                         </VCol>
                         <VCol cols="12" md="6" class="text-right">
-                            <span>${{ send }}</span>
+                            <span>${{ props.summary.send }}</span>
                         </VCol>
                         <VCol cols="12" md="6" class="text-left">
                             <h4>Total</h4>
                         </VCol>
                         <VCol cols="12" md="6" class="text-right">
-                            <h4>${{ total }}</h4>
+                            <h4>${{ props.summary.total }}</h4>
                         </VCol>
                         <VCol cols="12" style="padding:24px 0px;">
                             <VBtn
