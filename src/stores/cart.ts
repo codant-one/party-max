@@ -46,6 +46,16 @@ export const useCartStores = defineStore('cart', {
                     return Promise.reject(error)
                 }) 
         },
+        deleteAll(data: object) {
+            return Cart.deleteAll(data)
+                .then((response) => {
+                    this.count = 0
+                    return Promise.resolve(response)
+                })
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
+        },
         refreshData() {
             this.count = 0
         }

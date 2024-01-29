@@ -24,6 +24,7 @@ const image = ref(null)
 const wholesale_price = ref(null)
 const price_for_sale = ref(null)
 const name = ref(null)
+const color = ref(null)
 const store = ref(null)
 const rating = ref(null)
 const single_description = ref(null)
@@ -50,6 +51,7 @@ watchEffect(() => {
         quantity.value = props.product.quantity ?? 1
         product_id.value = props.product.id
         product_color_id.value = props.product.product_color_id
+        color.value = props.product.color.name
     }
 })
 
@@ -82,6 +84,7 @@ const onChange = ()=>{
                 <VCol cols="12" md="6" class="d-flex flex-column py-5 ps-7 my-auto">
                     <VCardText>
                         <span class="d-block text_2 py-1 tw-text-tertiary title-product">{{ name }}</span>
+                        <span class="d-block py-0 tw-text-gray">Color: {{ color }}</span>
                     </VCardText>
                     <VCardText>
                         <span 

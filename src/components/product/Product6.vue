@@ -24,6 +24,8 @@ const rating = ref(null)
 const single_description = ref(null)
 const slug = ref(null)
 const stock = ref(null)
+const color = ref(null)
+const quantity = ref(null)
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
@@ -39,6 +41,8 @@ watchEffect(() => {
         single_description.value = props.product.single_description
         slug.value = props.product.slug
         stock.value = props.product.stock
+        color.value = props.product.color.name
+        quantity.value = props.product.quantity
     }
 })
 
@@ -61,6 +65,11 @@ watchEffect(() => {
                 <VCol cols="12" md="8" class="d-flex justify-content-center align-center ps-14">
                     <VCardText>
                         <span class="d-block text_2 py-1 tw-text-tertiary title-product">{{ name }}</span>
+                        <span class="d-block py-0 tw-text-gray">Color: {{ color }}</span>
+                        <span class="d-block py-0 tw-text-gray">
+                            <span>{{ quantity }} </span>
+                            <span>{{ (quantity > 1) ? ' Unidades' : ' Unidad' }}</span>
+                        </span>
                     </VCardText>
                 </VCol>
                 <VCol cols="12" md="3" class="d-flex justify-content-end align-center">

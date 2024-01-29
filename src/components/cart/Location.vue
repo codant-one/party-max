@@ -15,12 +15,13 @@ const props = defineProps({
     }
 })
 
-const id = ref(props.address_id)
-
 const emit = defineEmits([
     'update:currentStep',
-    'changeAddreess'
+    'changeAddreess',
+    'dialog'
 ])
+
+const id = ref(props.address_id)
 
 const next = () => {
     emit('update:currentStep', 2)
@@ -30,7 +31,7 @@ const next = () => {
 </script>
 
 <template>
-   <VRow>
+    <VRow>
         <VCol cols="12" md="8">
             <VCard class="card-products p-0">
                 <VCardTitle class="title-card border-line mt-4 ps-10">Elige la forma de entrega</VCardTitle>
@@ -50,16 +51,23 @@ const next = () => {
                         >
                             <template v-slot:label>
                                 <VCardText class="d-flex my-1">
-                                    <span class="text-address ms-7 me-auto">{{ address.address }}</span>
+                                    <div class="d-block">
+                                        <span class="d-block text-address ms-7 me-auto tw-font-semibold">{{ address.title }}</span>
+                                        <span class="d-block text-address ms-7 me-auto">{{ address.address }}</span>
+                                    </div>
                                     <VSpacer />
-                                    <span class="text-address">$0.000</span>
+                                    <span class="text-address my-auto">$0.000</span>
                                 </VCardText>
                             </template>
                         </VRadio>
                     </VRadioGroup>
                 </VCardText>
                 <VCardText class="row-cardp3">
-                    <span>Editar o elegir otro domicilio</span>
+                    <span
+                        class="tw-cursor-pointer" 
+                        @click="emit('dialog', true)">
+                        Agregar domicilio
+                    </span>
                 </VCardText>
             </VCard>
 
@@ -106,7 +114,6 @@ const next = () => {
                     </VRow>
                 </VCardText>
             </VCard>
-
             
             <VCardText class="d-flex">
                 <VSpacer />
@@ -120,9 +127,9 @@ const next = () => {
             </VCardText>
         </VCol>
         <VCol cols="12" md="4">
-            <VCard class="card-summary px-0">
-                <VCardTitle class="subtitle-card row-buy pb-8">Resumen de compra</VCardTitle>
-                <VCardText class="px-10 mt-5">
+            <VCard class="card-products p-0">
+                <VCardTitle class="subtitle-card row-buy mt-4 ps-10 pt-4 pb-5">Resumen de compra</VCardTitle>
+                <VCardText class="px-10 mt-5 mb-2">
                     <VRow align="center">
                         <VCol cols="9" md="6" class="text-left">
                             <span>Productos</span>
