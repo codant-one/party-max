@@ -196,12 +196,6 @@ const redirect_ = (name, slug) =>{
             </router-link>
           </VListItemTitle>
 
-          <VListItemTitle class="d-block lineheight pt-6 pb-2">
-            <span class="d-block title-menu">SERVICIOS</span>
-            <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
-            </svg>
-          </VListItemTitle>
 
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
             <span class="d-block title-menu">PRODUCTOS</span>
@@ -265,7 +259,7 @@ const redirect_ = (name, slug) =>{
           <VExpansionPanels
             variant="inset"
             class="text-center item borderList"
-            v-for="item in items_check"
+            v-for="item in services"
             :key="item.id"
             :value="item.name">
             <VExpansionPanel                         
