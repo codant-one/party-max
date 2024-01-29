@@ -49,10 +49,10 @@ const max = ref(null)
 
 const categories_url = ref(null)
 
-const colors_chip = ref([{id: 0, color:'#0000FF'},{id:1, color:'#ffff00'},{id:2, color:'#FF0000'},{id: 3, color:'#008000'},
-                        {id: 4, color:'#515151'},{id:5, color:'#000000'},{id:6, color:'#ffffff'},{id: 7, color:'#4A2364'},
-                        {id: 8, color:'#FF0090'},{id: 9, color:'#FF8000'},{id: 11, color:'#e3e4e5'},{id: 12, color:'#D4AF37'},
-                        {id: 13, color:'#b76e79'},{id: 14, color:'#2ef8a0'},{id: 15, color:'#8b8b8e'},{id: 16, color:'#C8A2C8'}])
+const colors_chip = ref([{id: 1, color:'#0000FF'},{id:2, color:'#ffff00'},{id:3, color:'#FF0000'},{id: 4, color:'#008000'},
+                        {id: 5, color:'#515151'},{id:6, color:'#000000'},{id:7, color:'#ffffff'},{id: 8, color:'#4A2364'},
+                        {id: 9, color:'#FF0090'},{id: 10, color:'#FF8000'},{id: 12, color:'#e3e4e5'},{id: 13, color:'#D4AF37'},
+                        {id: 14, color:'#b76e79'},{id: 15, color:'#2ef8a0'},{id: 16, color:'#8b8b8e'},{id: 17, color:'#C8A2C8'}])
 
 const formatTitle = (slug) => {
   const words = slug.split('-');
