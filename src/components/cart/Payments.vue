@@ -1,7 +1,7 @@
 <script setup>
 
 import Product6 from '@/components/product/Product6.vue'
-import Payu from '@/assets/images/Payu.png'
+import Payu from '@/assets/icons/payu.svg'
 
 const props = defineProps({
     products: {
@@ -72,7 +72,7 @@ watchEffect(() => {
                     </VCol>
 
                     <VCol cols="12" md="6" class="text-right">
-                        <h4>$0.000</h4> 
+                        <h4>${{ props.summary.send }}</h4> 
                     </VCol>
                 </VRow>
             </VCard>
@@ -90,49 +90,33 @@ watchEffect(() => {
                 </VRow>
             </VCard>
 
-            <VCard class="card-bono mx-auto px-0">
-                <VRow class="row-total">
-                    <VCol cols="12" md="6">
-                        <h4>Total</h4>     
-                    </VCol>
-                    <VCol cols="12" md="6">
-                        <h5>${{ props.summary.total }}</h5> 
-                    </VCol>
-                </VRow>
-                <VRow class="row-realizar">
-                    <VCol cols="12">
-                        <VBtn
-                            variant="flat"
-                            width="100%"
-                            style="border-radius:32px;"
-                            class="btn-register tw-text-white tw-bg-primary button-hover mt-2"
-                            @click="emit('update:currentStep', 3)">
-                                Realizar pedido
-                        </VBtn>
-                    </VCol>
-                </VRow>
-                <VRow align="center" class="row-payu text-center">
-
-                        <VCol cols="12" md="6" class="text-right">
-                            <span>PayU Latam Online Payments</span>                        
-                        </VCol>
-
-                        <VCol cols="12" md="6" class="text-left">
-                            <v-img
-                            class="bg-white align-imager"
-                            width="98.337px"
-                            height="50.488px"
-                            :src="Payu"
-                            ></v-img>
-                        </VCol>
-
-                        <VCol cols="12" class="text-center">
-                        <p>
-                                Pague con tarjeta de crédito, debito o transacción bancaria de forma segura a través de los <br>
-                                servidores seguros de PayU Latinoamérica.
-                            </p>     
-                        </VCol>
-                </VRow>
+            <VCard class="card-bono mx-auto p-0">
+                <VCardTitle class="d-flex row-total title-card px-16">
+                    <h4>Total</h4>     
+                    <VSpacer />
+                    <h5 class="tw-font-semibold">${{ props.summary.total }}</h5>
+                </VCardTitle>
+                <VCardText class="d-flex row-realizar title-card w-100 px-16">
+                    <VBtn
+                        block
+                        variant="flat"
+                        class="btn-register tw-text-white tw-bg-primary button-hover"
+                        @click="emit('update:currentStep', 3)">
+                            Realizar pedido
+                    </VBtn>
+                </VCardText>
+                <VCardText class="d-block row-payu align-center text-center p-0 px-16 pb-5">
+                    <div class="d-flex align-center text-center justify-content-center">
+                        <span class="me-5">PayU Latam Online Payments</span>
+                        <img :src="Payu"/>
+                    </div>
+                    <VCardItem class="align-center text-center py-0 px-15">
+                        <span>
+                            Pague con tarjeta de crédito, debito o transacción bancaria de forma segura a través de los
+                            servidores seguros de PayU Latinoamérica.
+                        </span>
+                    </VCardItem>
+                </VCardText>
              </VCard>
         </VCol>
     </VRow>
@@ -275,12 +259,10 @@ watchEffect(() => {
         font-style: normal;
         font-weight: 500;
         line-height: normal;
-
     }
 
     .row-realizar {
-        width: 100%;
-        padding: 16px 32px;
+        padding: 15px;
         flex-direction: column;
         align-items: center;
         gap: 16px;
@@ -308,11 +290,6 @@ watchEffect(() => {
         box-shadow: 0px 0px 24px 0px #FF27B3;
     }
 
-    .row-payu {
-        width:100%;
-        padding-bottom:32px;
-    }
-
     .row-payu span, p {
         color: #999;
         text-align: center;
@@ -320,7 +297,6 @@ watchEffect(() => {
         font-style: normal;
         font-weight: 400;
         line-height: 14px;
-
     }
 
 </style>

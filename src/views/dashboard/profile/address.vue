@@ -402,7 +402,7 @@ const getFlagCountry = country => {
         </VCard>
     </VContainer>
 
-    <!--MODAL ACTUALIZAR DATOS-->
+    <!--MODAL ADD ADDRESS-->
     <VDialog v-model="dialog" transition="dialog-top-transition">
         <VForm
             ref="refVForm"
@@ -546,7 +546,7 @@ const getFlagCountry = country => {
         </VForm>
     </VDialog>
     
-    <!--PopUp de respuesta-->
+    <!--PopUp Message-->
 
     <VDialog v-model="isDialogVisible" >
         <VCard
@@ -560,6 +560,16 @@ const getFlagCountry = country => {
 </template>
 
 <style scoped>
+
+    .text-message {
+        color:  #FF0090;
+        text-align: center;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 30px; 
+        padding: 0 80px !important;
+    }
 
     .subtitle-register {
         color: #FF0090;
@@ -742,6 +752,11 @@ const getFlagCountry = country => {
         .card-register, .card-password {
             width: auto !important;
             padding: 40px 20px !important;
+        }
+
+        .text-message {
+            padding: 0 30px !important;
+            font-size: 18px;
         }
     }
 </style>

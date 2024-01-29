@@ -502,7 +502,7 @@ const getFlagCountry = country => {
             </VForm>
         </VDialog>
 
-        <!--PopUp de respuesta-->
+        <!--PopUp Message-->
 
         <VDialog v-model="isDialogVisible" >
             <VCard

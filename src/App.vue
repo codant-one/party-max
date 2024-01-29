@@ -1,6 +1,7 @@
 <script setup>
 
 import { ref } from 'vue'
+import { useCartStores } from '@/stores/cart'
 import { useAuthStores } from '@/stores/auth'
 import platform from 'platform';
 import Header from '@/components/app/Header.vue'
@@ -11,15 +12,30 @@ import register from '@assets/images/register.jpg';
 import blogs from '@assets/images/blogs.jpg';
 
 const authStores = useAuthStores()
+const cartStores = useCartStores()
 const route = useRoute()
+
 const backgroundStyle = ref({})
 const background = ref('tw-bg-white')
-
 const isMobile = /Mobi/i.test(navigator.userAgent);
 
 watchEffect(fetchData)
 
 async function fetchData() {
+
+  if(localStorage.getItem('user_data')){
+    const userData = localStorage.getItem('user_data')
+    const userDataJ = JSON.parse(userData)
+
+    const { user_data, userAbilities } = await authStores.me(userDataJ.hash)
+
+    localStorage.setItem('userAbilities', JSON.stringify(userAbilities))
+    localStorage.setItem('user_data', JSON.stringify(user_data))
+
+    await cartStores.fetchCart({client_id: userDataJ.client.id})
+
+  }
+
   var bg = ''
   var repeat = 'repeat'
   var size = (isMobile) ? 'auto' : 'contain'
@@ -58,22 +74,6 @@ async function fetchData() {
   // console.log(isMobile ? 'Dispositivo móvil' : 'Dispositivo de escritorio');
   // console.log(`Tipo de dispositivo: ${navigator.userAgent}`);
 }
-
-const me = async () => {
-
-  if(localStorage.getItem('user_data')){
-    const userData = localStorage.getItem('user_data')
-    const userDataJ = JSON.parse(userData)
-
-    const { user_data, userAbilities } = await authStores.me(userDataJ.hash)
-
-    localStorage.setItem('userAbilities', JSON.stringify(userAbilities))
-    localStorage.setItem('user_data', JSON.stringify(user_data))
-
-  }
-}
-
-me()
 </script>
 
 <template>

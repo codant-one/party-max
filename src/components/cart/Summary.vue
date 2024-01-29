@@ -53,8 +53,8 @@ const addCart = (data) => {
             </VCard>
         </VCol>
         <VCol cols="12" md="4">
-            <VCard class="card-buy px-0">
-                <VCardTitle class="subtitle-card row-buy pb-8">Resumen de compra</VCardTitle>
+            <VCard class="card-products p-0">
+                <VCardTitle class="subtitle-card row-buy mt-4 ps-10 pt-4 pb-8">Resumen de compra</VCardTitle>
                 <VCardText class="px-10 mt-5">
                     <VRow>
                         <VCol cols="12" md="6" class="text-left">
