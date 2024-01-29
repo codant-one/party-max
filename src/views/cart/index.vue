@@ -7,11 +7,15 @@ import { useHomeStores } from '@/stores/home'
 import { useCartStores } from '@/stores/cart'
 import { useCountriesStores } from '@/stores/countries'
 import { useProvincesStores } from '@/stores/provinces'
+import { useOrdersStores } from '@/stores/orders'
+import { usePaymentsStores } from '@/stores/payments'
+import router from '@/router'
 
 import Stepper from '@/components/cart/Stepper.vue'
 import Summary from '@/components/cart/Summary.vue'
 import Location from '@/components/cart/Location.vue'
 import Payments from '@/components/cart/Payments.vue'
+import Confirmation from '@/components/cart/Confirmation.vue'
 
 import check_circle from '@assets/icons/check-circle.svg';
 import error_circle from '@assets/icons/error-circle.svg';
@@ -30,6 +34,9 @@ const cartStores = useCartStores()
 const addressesStores = useAddressesStores()
 const provincesStores = useProvincesStores()
 const countriesStores = useCountriesStores()
+const ordersStores = useOrdersStores()
+const paymentsStores = usePaymentsStores()
+const route = useRoute()
 
 const isMobile = /Mobi/i.test(navigator.userAgent)
 const refVForm = ref()
@@ -113,6 +120,7 @@ const provinceOld_id = ref('')
 
 const currentStep = ref(0)
 const isLoading = ref(false)
+const isActiveStepValid = ref(false)
 
 const getProvinces = computed(() => {
   return listProvincesByCountry.value.map((province) => {
@@ -175,6 +183,11 @@ async function fetchData() {
         summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
 
         isLoading.value = false
+    }
+
+    if(route.query.merchantId) {
+        currentStep.value = 3
+        isActiveStepValid.value = true
     }
 }
 
@@ -284,6 +297,104 @@ const addAddress = () => {
 
 }
 
+const sendPayU = async (billingDetail) => {
+
+    let product_color_id = []
+    let price = []
+    let quantity = []
+
+    products.value.forEach(element => {
+        product_color_id.push(element.product_color_id)
+        price.push(element.price_for_sale)
+        quantity.push(element.quantity)
+    });
+
+    let data = {
+        client_id:  client_id.value,
+        address_id: address_id.value,
+        sub_total: summary.value.subTotal,
+        shipping_total: summary.value.send,
+        tax: 0,
+        total: summary.value.total,
+        product_color_id: product_color_id,
+        price: price,
+        quantity: quantity,
+        province_id: billingDetail.province_id,
+        name: billingDetail.name,
+        last_name: billingDetail.last_name,
+        company: billingDetail.company,
+        email: billingDetail.email,
+        phone: billingDetail.phone,
+        address: billingDetail.address,
+        street: billingDetail.street,
+        city: billingDetail.city,
+        postal_code: billingDetail.postal_code,
+        note: billingDetail.note
+    }
+
+    isLoading.value = true 
+
+    let order = await ordersStores.addOrder(data)
+    let payment = await paymentsStores.signature({referenceCode: order.id, client_id: client_id.value, amount: summary.value.total})
+    
+    localStorage.setItem('order_id', order.id)
+    isLoading.value = false
+
+    const formData = new URLSearchParams();
+
+    formData.append('merchantId', payment.merchantId);
+    formData.append('accountId', payment.accountId);
+    formData.append('description', 'Order #'+ order.id);
+    formData.append('referenceCode', payment.referenceCode);
+    formData.append('amount', summary.value.total);
+    formData.append('tax', '0');
+    formData.append('taxReturnBase', '0');
+    formData.append('currency', 'COP');
+    formData.append('signature', payment.signature);
+    formData.append('test', (payment.test) ? '1' : '0');
+    formData.append('buyerEmail', billingDetail.email);
+    formData.append('buyerFullName', billingDetail.name + ' ' + billingDetail.last_name);
+    formData.append('mobilePhone', billingDetail.phone);
+    formData.append('telephone', billingDetail.phone);
+    formData.append('logoUrl', import.meta.env.VITE_APP_DOMAIN_API_URL + '/logos/slogan.png');
+    formData.append('shippingAddress', billingDetail.address);
+    formData.append('shippingCity', billingDetail.city);
+    formData.append('shippingCountry', 'CO');
+    formData.append('responseUrl', payment.responseUrl);
+
+    fetch(import.meta.env.VITE_PAYU_BASE_URI, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData,
+    })
+    .then(response => {
+        // console.log('response:', response);
+        window.location.href = response.url;
+    })
+    .catch(error => {
+        window.location.href = error.url;
+        // console.error('Error:', error);
+    });
+}
+
+const deleteAll = async () => {
+    await cartStores.deleteAll({client_id: client_id.value})
+}
+
+const updatePaymentState = async (payment_state_id) => {
+    await ordersStores.updatePaymentState({ payment_state_id: payment_state_id }, localStorage.getItem('order_id'))
+}
+
+const completed = () => {
+    window.location.href = router.resolve({ name: 'products' }).href
+}
+
+const refresh = () => {
+    window.location.href = router.resolve({ name: 'cart' }).href
+}
+
 const closeDialog = () => {
     dialog.value = false
     selectedAddress.value = {
@@ -328,7 +439,7 @@ const getFlagCountry = country => {
                     <Stepper
                         v-model:current-step="currentStep"
                         class="checkout-stepper"
-                        :isActiveStepValid="(products.length === 0) ? true : undefined"
+                        :isActiveStepValid="(products.length === 0 || isActiveStepValid) ? true : undefined"
                         :items="checkoutSteps"
                         :direction="$vuetify.display.mdAndUp ? 'horizontal' : 'vertical'"
                     />
@@ -367,10 +478,17 @@ const getFlagCountry = country => {
                         :address_id="address_id"
                         :addresses="addresses"
                         :products="products"
-                        :summary="summary"/>
+                        :summary="summary"
+                        :countries="listCountries"
+                        :provinces="listProvinces"
+                        @submit="sendPayU"/>
                 </VWindowItem>
                 <VWindowItem>
-                    PAY U
+                   <Confirmation 
+                    @refresh="refresh"
+                    @completed="completed"
+                    @updatePaymentState="updatePaymentState"
+                    @deleteAll="deleteAll"/>
                 </VWindowItem>
             </VWindow>
 
@@ -693,6 +811,16 @@ const getFlagCountry = country => {
         font-weight: 400;
         line-height: 18px; /* 138.462% */
         margin-left: 10px;
+    }
+
+    .text-message {
+        color:  #FF0090;
+        text-align: center;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 30px; 
+        padding: 0 80px !important;
     }
 
     @media only screen and (max-width: 767px) {

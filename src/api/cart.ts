@@ -13,6 +13,10 @@ class Cart {
     delete(data: object) {
         return axios.post('shopping-cart/delete',data)
     }
+
+    deleteAll(data: object) {
+        return axios.post('shopping-cart/deleteAll',data)
+    }
 }
 
 const cart = new Cart();

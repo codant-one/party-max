@@ -40,7 +40,7 @@ async function fetchData() {
   var repeat = 'repeat'
   var size = (isMobile) ? 'auto' : 'contain'
 
-  if(route.name === 'cart' || route.name === 'dashboard' || route.name === 'register_confirm') {
+  if(route.name === 'dashboard' || route.name === 'register_confirm') {
     background.value = 'tw-bg-green'
   } else {
     background.value = 'tw-bg-white'
@@ -48,11 +48,11 @@ async function fetchData() {
 
   if(route.name === 'home')
     bg = home
-  else if(route.name === 'categories'||route.name==='wholesalers')
+  else if(route.name === 'categories' || route.name === 'wholesalers')
     bg = categories
-  else if(route.name === 'register'|| route.name === 'type_client'|| route.name === 'form_client' || 
+  else if(route.name === 'register' || route.name === 'type_client' || route.name === 'form_client' || 
           route.name === 'form_supplier' || route.name === 'login' || route.name === 'success_person' || 
-          route.name === 'success_company'|| route.name === 'forgot_password' || route.name === 'reset_password') {
+          route.name === 'success_company' || route.name === 'forgot_password' || route.name === 'reset_password') {
     bg = register
     repeat = 'no-repeat'
     size = 'cover'
@@ -61,6 +61,16 @@ async function fetchData() {
     size = 'contain'
   } else 
     bg = ''
+
+  if (route.name === 'cart') {
+    if (Object.keys(route.query).length > 0) {
+      bg = register
+      repeat = 'no-repeat'
+      size = 'cover'
+    } else {
+      background.value = 'tw-bg-green'
+    }
+  }
 
   backgroundStyle.value = {
     backgroundImage: `url(${bg})`,
