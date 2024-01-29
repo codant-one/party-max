@@ -3,7 +3,6 @@
 import { ref } from 'vue'
 import { requiredValidator } from '@validators'
 import { useMiscellaneousStores } from '@/stores/miscellaneous'
-import { useHomeStores } from '@/stores/home'
 import { useCartStores } from '@/stores/cart'
 import { useFavoritesStores } from '@/stores/favorites'
 import { FreeMode, Navigation, Thumbs, Scrollbar } from 'swiper/modules';
@@ -25,9 +24,9 @@ import 'swiper/css/free-mode';
 import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar'
 
+const swiper_ = ref(null)
 const route = useRoute()
 const miscellaneousStores = useMiscellaneousStores()
-const homeStores = useHomeStores()
 const cartStores = useCartStores()
 const favoritesStores = useFavoritesStores()
 
@@ -48,7 +47,6 @@ const thumbsSwiper = ref(null);
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 const data = ref(null)
-const data_ = ref(null)
 
 const title = ref(null)
 const brand = ref(null)
@@ -87,6 +85,12 @@ const variant = ref('tonal')
 const colorMessage = ref('')
 const message = ref('')
 
+watch(() => 
+  route.path,(newPath, oldPath) => {
+    thumbsSwiper.value.destroy(false, true)
+  }
+);
+
 watchEffect(fetchData)
 
 async function fetchData() {
@@ -118,9 +122,10 @@ async function fetchData() {
   bread.value.push(product_)
 
   isLoading.value = true
-
-  await homeStores.fetchData()
-  data_.value = homeStores.getData
+  
+  radioContent.value = []
+  productImages.value = []
+  data.value = null
 
   await miscellaneousStores.getProduct(route.params.slug)
   data.value = miscellaneousStores.getData
@@ -546,7 +551,7 @@ const addfavorite = () =>{
             <VCol cols="12">
               <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data">
                 <Product1 
-                  v-for="(product, i) in data_.recommendations"
+                  v-for="(product, i) in data.recommendations"
                   :key="i"
                   :product="product"
                   :readonly="true"/>
@@ -554,7 +559,7 @@ const addfavorite = () =>{
             </VCol>
           </VRow>
         </VCardText>  
-    </VCard>     
+      </VCard>     
     </VContainer>
     <VSnackbar
       v-model="isSnackbarBottomStartVisible"
