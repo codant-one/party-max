@@ -16,3 +16,13 @@ export const kFormatter = (num: number) => {
 }
 
 export const prefixWithPlus = (value: number) => value > 0 ? `+${value}` : value
+
+export const formatNumber = (value: number) => {
+  if (!value) return value;
+
+  const numberString = value.toString();
+  const [integer, decimal] = numberString.split('.');
+  const formattedInteger = integer.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+  return `${formattedInteger}${decimal ? `.${decimal}` : ''}`;
+}
