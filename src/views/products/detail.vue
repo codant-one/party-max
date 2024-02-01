@@ -301,10 +301,10 @@ const addfavorite = () =>{
       <Loader :isLoading="isLoading"/>
       <!-- HEADER -->
       <VCard class="mt-7 no-shadown card-information p-0" v-if="!isLoading">
-        <VCardTitle class="p-0 d-flex align-end">
+        <VCardTitle class="d-flex p-0 align-end">
           {{ title }}
           <VSpacer />
-          <div class="d-flex align-end">
+          <div class="align-end redes-title">
             <whatsapp class="me-2" />
             <instagram class="me-2"/>
             <threads class="me-2"/>               
@@ -313,7 +313,7 @@ const addfavorite = () =>{
         </VCardTitle>
         <VCardSubtitle class="px-0 d-flex align-center border-title">
           <VRow no-gutters>
-            <VCol cols="12" md="6">
+            <VCol cols="12" md="6" class="text-infoprod">
               Marca: {{ brand }}
               <VDivider :thickness="2" color="#999" class="hr" vertical />
               <VRating
@@ -334,8 +334,16 @@ const addfavorite = () =>{
             <VCol cols="12" md="6" class="align-right">
             </VCol>
           </VRow>
+          
         </VCardSubtitle>
+        <VSpacer />
 
+          <div class="mt-4 align-end redes-mobile">
+            <whatsapp class="me-2" />
+            <instagram class="me-2"/>
+            <threads class="me-2"/>               
+            <facebook class="me-2"/>
+          </div>
         <!-- BODY -->
         <VCardText class="px-0 pb-0 mt-5 d-flex align-items-stretch justify-content-between">
           <VRow class="border-title pb-5">
@@ -846,6 +854,17 @@ const addfavorite = () =>{
       line-height: 16px; /* 114.286% */
     }
 
+    .redes-title
+    {
+      display: flex;
+    }
+
+    .redes-mobile
+    {
+      display: none;
+    }
+
+
 @media only screen and (max-width: 767px)
   {
 
@@ -863,12 +882,27 @@ const addfavorite = () =>{
 
     .text-tabs
     {
-      font-size: 12px!important;
+      font-size: 11px!important;
     }
 
     .col-recprod
     {
       display: none;
+    }
+
+    .redes-title
+    {
+      display: none;
+    }
+
+    .redes-mobile
+    {
+      display: flex!important;
+    }
+
+    .text-infoprod
+    {
+      font-size: 12px!important;
     }
 
   }
