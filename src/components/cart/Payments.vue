@@ -221,6 +221,7 @@ const getFlagCountry = country => {
                                 <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
                                     <VTextField
                                         v-model="billingDetail.phone"
+                                        type="tel"
                                         label="Teléfono"
                                         placeholder="+57 23 456 7890"
                                         variant="outlined"
@@ -233,6 +234,7 @@ const getFlagCountry = country => {
                                         v-model="billingDetail.postal_code"
                                         label="Código Postal"
                                         variant="outlined"
+                                        type="tel"
                                         :rules="[requiredValidator, phoneValidator]"
                                     />    
                                 </VCol>
