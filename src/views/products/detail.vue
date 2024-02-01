@@ -546,7 +546,7 @@ const addfavorite = () =>{
               </VRow>
             </VCol>
 
-            <VCol cols="12">
+            <VCol cols="12" class="col-recprod">
               <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data">
                 <Product1 
                   v-for="(product, i) in data.recommendations"
@@ -866,6 +866,10 @@ const addfavorite = () =>{
       font-size: 12px!important;
     }
 
+    .col-recprod
+    {
+      display: none;
+    }
 
   }
 
