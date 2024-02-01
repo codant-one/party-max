@@ -377,7 +377,17 @@ const sendPayU = async (billingDetail) => {
         window.location.href = response.url;
     })
     .catch(error => {
-        window.location.href = error.url;
+        // window.location.href = error.url;
+        
+        isDialogVisible.value = true
+        message.value = error
+        isError.value = true             
+
+        setTimeout(() => {
+            isDialogVisible.value = false
+            message.value = ''
+            isError.value = false
+        }, 3000)
         // console.error('Error:', error);
     });
 }
