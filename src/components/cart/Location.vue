@@ -1,4 +1,5 @@
 <script setup>
+import { formatNumber } from '@formatters'
 
 const props = defineProps({
     addresses: {
@@ -135,19 +136,19 @@ const next = () => {
                             <span>Productos</span>
                         </VCol>
                         <VCol cols="3" md="6" class="text-right">
-                            <span>${{ props.summary.subTotal }}</span>
+                            <span>${{ formatNumber(props.summary.subTotal) }}</span>
                         </VCol>
                         <VCol cols="9" md="6" class="text-left">
                             <span>Envío</span>
                         </VCol>
                         <VCol cols="3" md="6" class="text-right">
-                            <span>${{ props.summary.send }}</span>
+                            <span>${{ formatNumber(props.summary.send) }}</span>
                         </VCol>
                         <VCol cols="9" md="6" class="text-left">
                             <h4>Total</h4>
                         </VCol>
                         <VCol cols="3" md="6" class="text-right">
-                            <h4>${{ props.summary.total }}</h4>
+                            <h4>${{ formatNumber(props.summary.total) }}</h4>
                         </VCol>
                     </VRow>
                 </VCardText>

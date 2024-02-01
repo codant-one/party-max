@@ -172,7 +172,10 @@ async function fetchData() {
         products.value = cartStores.getData
 
         let index = addresses.value.findIndex((item) => item.default === 1)
-        address_id.value = addresses.value[index].id
+        if(index!==-1){
+            address_id.value = addresses.value[index].id
+        }
+        
 
         let sum = 0
         products.value.forEach(element => {

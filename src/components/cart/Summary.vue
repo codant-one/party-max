@@ -1,6 +1,7 @@
 <script setup>
 
 import Product5 from '@/components/product/Product5.vue'
+import { formatNumber } from '@formatters'
 
 const props = defineProps({
     products: {
@@ -61,19 +62,19 @@ const addCart = (data) => {
                             <span>Productos</span>
                         </VCol>
                         <VCol cols="12" md="6" class="text-right">
-                            <span>${{ props.summary.subTotal }}</span>
+                            <span>${{ formatNumber(props.summary.subTotal) }}</span>
                         </VCol>
                         <VCol cols="12" md="6" class="text-left">
                             <span>Envío</span>
                         </VCol>
                         <VCol cols="12" md="6" class="text-right">
-                            <span>${{ props.summary.send }}</span>
+                            <span>${{ formatNumber(props.summary.send) }}</span>
                         </VCol>
                         <VCol cols="12" md="6" class="text-left">
                             <h4>Total</h4>
                         </VCol>
                         <VCol cols="12" md="6" class="text-right">
-                            <h4>${{ props.summary.total }}</h4>
+                            <h4>${{ formatNumber(props.summary.total) }}</h4>
                         </VCol>
                         <VCol cols="12" style="padding:24px 0px;">
                             <VBtn

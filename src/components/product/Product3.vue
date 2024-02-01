@@ -1,5 +1,7 @@
 <script setup>
 
+import { formatNumber } from '@formatters'
+
 const props = defineProps({
     product: {
         type: Object,
@@ -45,10 +47,10 @@ watchEffect(() => {
             }
         }"
         class="tw-no-underline zoom-product">
-        <VCard class="no-shadown card-information p-0" :width="230">
+        <VCard class="no-shadown card-information p-0">
             <VCardText class="border-img ms-1">
                 <VImg 
-                    :width="230"
+                    class="img-prod"
                     :src="baseURL + image" 
                     cover />
             </VCardText>
@@ -79,8 +81,8 @@ watchEffect(() => {
             </VCardText>
             <VCardText class="mt-1">
                 <div class="d-flex py-2">
-                <span class="text_1">${{ price_for_sale }}</span>
-                <span class="text_2 ms-2">${{ wholesale_price }}</span>
+                <span class="text_1">${{ formatNumber(price_for_sale) }}</span>
+                <span class="text_2 ms-2">${{ formatNumber(wholesale_price) }}</span>
                 </div>
             </VCardText>
         </VCard>
@@ -130,5 +132,35 @@ watchEffect(() => {
         font-weight: 400;
         line-height: 19.6px;
     }
+
+    .card-information
+    {
+        width: 230px;
+    }
+
+    .img-prod
+    {
+        width:230px;
+    }
     
+
+@media only screen and (max-width: 767px)
+  {
+    .card-information
+    {
+        width: 171px;
+    }
+
+    .img-prod
+    {
+        width:171px;
+    }
+
+    .border-img
+    {
+        width: 171px;
+        height: 171px;
+
+    }
+  }
 </style>

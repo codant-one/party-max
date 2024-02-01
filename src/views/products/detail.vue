@@ -339,7 +339,7 @@ const addfavorite = () =>{
         <!-- BODY -->
         <VCardText class="px-0 pb-0 mt-5 d-flex align-items-stretch justify-content-between">
           <VRow class="border-title pb-5">
-            <VCol cols="12" md="1">
+            <VCol cols="3" md="1">
               <swiper
                 :direction="'vertical'"
                 :pagination="{ clickable: true}"
@@ -355,7 +355,7 @@ const addfavorite = () =>{
                 </swiper-slide>
               </swiper>
             </VCol>
-            <VCol cols="12" md="4">
+            <VCol cols="9" md="4">
               <swiper
                 :scrollbar="{
                   hide: true,
@@ -395,7 +395,7 @@ const addfavorite = () =>{
                   <CustomRadiosWithIcon
                     v-model:selected-radio="selectedColor"
                     :radio-content="radioContent"
-                    :grid-column="{ sm: '2', cols: '12' }"
+                    :grid-column="{ sm: '2', cols: '3' }"
                     class="custom-input-setting"
                     @change="chanceRadio"
                   >
@@ -431,8 +431,6 @@ const addfavorite = () =>{
                 <div class="my-auto ms-5">
                   <VBtn 
                     variant="flat"
-                    :width="288"
-                    :height="48"
                     @click="addCart"
                     class="btn-register tw-text-white tw-bg-primary button-hover" 
                     >
@@ -483,10 +481,10 @@ const addfavorite = () =>{
           <VCardText class="px-0 mb-5 d-flex align-items-stretch justify-content-between">
           <VRow no-gutters>
             <VCol cols="12" class="text-center">
-              <VTabs v-model="tab" color="pink-accent-3" align-tabs="center">
-                <VTab value="0">Descripción</VTab>
-                <VTab value="1">Especificaciones</VTab>
-                <VTab value="2">Reviews (3)</VTab>
+              <VTabs v-model="tab" color="pink-accent-3"  align-tabs="center">
+                <VTab value="0" class="text-tabs">Descripción</VTab>
+                <VTab value="1" class="text-tabs">Especificaciones</VTab>
+                <VTab value="2" class="text-tabs">Reviews (3)</VTab>
               </VTabs>
             </VCol>
 
@@ -498,16 +496,16 @@ const addfavorite = () =>{
                 <v-window-item value="1">
                   <VCardText class="mb-10">
                     <VRow>
-                      <VCol cols="2" md="2" class="col-item"><span>Alto</span></VCol>
-                      <VCol cols="10" md="10" class="col-value"><span>{{ height }}cm</span></VCol>
-                      <VCol cols="2" md="2" class="col-item"><span>Ancho</span></VCol>
-                      <VCol cols="10" md="10" class="col-value"><span>{{ width }}cm</span></VCol>
-                      <VCol cols="2" md="2" class="col-item"><span>Peso</span></VCol>
-                      <VCol cols="10" md="10" class="col-value"><span>{{ weigth }}g</span></VCol>
-                      <VCol cols="2" md="2" class="col-item"><span>Profundo</span></VCol>
-                      <VCol cols="10" md="10" class="col-value"><span>{{ deep }}cm</span></VCol>
-                      <VCol cols="2" md="2" class="col-item"><span>Material</span></VCol>
-                      <VCol cols="10" md="10" class="col-value"><span>{{ material }}</span></VCol>
+                      <VCol cols="12" md="2" class="col-item"><span>Alto</span></VCol>
+                      <VCol cols="12" md="10" class="col-value"><span>{{ height }}cm</span></VCol>
+                      <VCol cols="12" md="2" class="col-item"><span>Ancho</span></VCol>
+                      <VCol cols="12" md="10" class="col-value"><span>{{ width }}cm</span></VCol>
+                      <VCol cols="12" md="2" class="col-item"><span>Peso</span></VCol>
+                      <VCol cols="12" md="10" class="col-value"><span>{{ weigth }}g</span></VCol>
+                      <VCol cols="12" md="2" class="col-item"><span>Profundo</span></VCol>
+                      <VCol cols="12" md="10" class="col-value"><span>{{ deep }}cm</span></VCol>
+                      <VCol cols="12" md="2" class="col-item"><span>Material</span></VCol>
+                      <VCol cols="12" md="10" class="col-value"><span>{{ material }}</span></VCol>
                     </VRow>
                   </VCardText>
                 </v-window-item>
@@ -536,7 +534,7 @@ const addfavorite = () =>{
               </v-window>
             </VCol>
 
-            <VCol cols="12" class="d-flex col-recomendaciones">
+            <VCol cols="12" class="col-recomendaciones">
               <VRow align="center">
                 <VCol cols="6" class="text-left">
                   <p class="text-lef">Recomendaciones que te pueden interesar</p>
@@ -682,6 +680,8 @@ const addfavorite = () =>{
     font-weight: 700;
     line-height: 14px;
     border-radius: 32px;
+    width: 288px;
+    height: 48px;
   }
 
   .button-hover:hover {
@@ -725,6 +725,7 @@ const addfavorite = () =>{
   }
 
   .col-recomendaciones {
+    display: flex;
     background-color: #E2F8FC;
     border-radius: 32px;
     align-items: center;
@@ -844,5 +845,28 @@ const addfavorite = () =>{
       font-weight: 400;
       line-height: 16px; /* 114.286% */
     }
+
+@media only screen and (max-width: 767px)
+  {
+
+    .btn-register
+    {
+      width: 196px;
+      height: 54px;
+      font-size: 14px;
+    }
+
+    .col-recomendaciones
+    {
+      display: none;
+    }
+
+    .text-tabs
+    {
+      font-size: 12px!important;
+    }
+
+
+  }
 
 </style>

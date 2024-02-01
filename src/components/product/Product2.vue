@@ -1,5 +1,5 @@
 <script setup>
-
+import { formatNumber } from '@formatters'
 const props = defineProps({
     product: {
         type: Object,
@@ -61,8 +61,8 @@ watchEffect(() => {
                         {{ name }}
                     </span>
                     <div class="d-flex mt-1">
-                        <span class="text_1">${{ price_for_sale }}</span>
-                        <span class="text_2 ms-2">${{ wholesale_price }}</span>
+                        <span class="text_1">${{ formatNumber(price_for_sale) }}</span>
+                        <span class="text_2 ms-2">${{ formatNumber(wholesale_price) }}</span>
                     </div>
                 </VCardText>
             </div>
