@@ -13,6 +13,14 @@ export const usePaymentsStores = defineStore('payments', {
                 }).catch(error => {
                     return Promise.reject(error)
                 })            
-        }
+        },
+        redirectToPayU(data: object) {
+            return Payments.redirectToPayU(data)
+                .then((response: any) => {
+                    return Promise.resolve(response.data.data)
+                }).catch(error => {
+                    return Promise.reject(error)
+                })
+        },
     }
 })

@@ -172,10 +172,7 @@ async function fetchData() {
         products.value = cartStores.getData
 
         let index = addresses.value.findIndex((item) => item.default === 1)
-        if(index!==-1){
-            address_id.value = addresses.value[index].id
-        }
-        
+        address_id.value = (index > -1 ) ? addresses.value[index].id : addresses.value[0].id
 
         let sum = 0
         products.value.forEach(element => {
@@ -341,7 +338,6 @@ const sendPayU = async (billingDetail) => {
     let payment = await paymentsStores.signature({referenceCode: order.id, client_id: client_id.value, amount: summary.value.total})
     
     localStorage.setItem('order_id', order.id)
-    isLoading.value = false
 
     const formData = new URLSearchParams();
 
@@ -365,31 +361,26 @@ const sendPayU = async (billingDetail) => {
     formData.append('shippingCountry', 'CO');
     formData.append('responseUrl', payment.responseUrl);
 
-    fetch(import.meta.env.VITE_PAYU_BASE_URI, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: formData,
-    })
-    .then(response => {
-        // console.log('response:', response);
-        window.location.href = response.url;
-    })
-    .catch(error => {
-        // window.location.href = error.url;
-        
-        isDialogVisible.value = true
-        message.value = error + '....'
-        isError.value = true             
+    paymentsStores.redirectToPayU(formData)
+        .then(response => {
+            // console.log('response:', response);
+            isLoading.value = false
+            window.location.href = response.url;
+        })
+        .catch(error => {
+            
+            isLoading.value = false
+            isDialogVisible.value = true
+            message.value = error
+            isError.value = true             
 
-        setTimeout(() => {
-            isDialogVisible.value = false
-            message.value = ''
-            isError.value = false
-        }, 3000)
-        // console.error('Error:', error);
-    });
+            setTimeout(() => {
+                isDialogVisible.value = false
+                message.value = ''
+                isError.value = false
+            }, 3000)
+            // console.error('Error:', error);
+        });
 }
 
 const deleteAll = async () => {
