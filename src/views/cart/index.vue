@@ -368,8 +368,7 @@ const sendPayU = async (billingDetail) => {
     fetch(import.meta.env.VITE_PAYU_BASE_URI, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'accept' : '*'
+            'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: formData,
     })
@@ -381,7 +380,7 @@ const sendPayU = async (billingDetail) => {
         // window.location.href = error.url;
         
         isDialogVisible.value = true
-        message.value = error
+        message.value = error + '....'
         isError.value = true             
 
         setTimeout(() => {
