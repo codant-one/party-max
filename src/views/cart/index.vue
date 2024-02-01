@@ -380,7 +380,7 @@ const sendPayU = async (billingDetail) => {
         // window.location.href = error.url;
         
         isDialogVisible.value = true
-        message.value = error
+        message.value = import.meta.env.VITE_PAYU_BASE_URI + ' ' + error
         isError.value = true             
 
         setTimeout(() => {
