@@ -50,7 +50,7 @@ const bg = ref('tw-bg-green')
 const addresses = ref(null)
 const products = ref([])
 const client_id = ref(null)
-const address_id = ref(1)
+const address_id = ref(0)
 
 const summary = ref({
     subTotal: 0,
@@ -122,6 +122,8 @@ const currentStep = ref(0)
 const isLoading = ref(false)
 const isActiveStepValid = ref(false)
 
+const band_address = ref(null)
+
 const getProvinces = computed(() => {
   return listProvincesByCountry.value.map((province) => {
     return {
@@ -168,12 +170,17 @@ async function fetchData() {
         await addressesStores.fetchAddresses(data_)
         addresses.value = addressesStores.getAddresses
 
+
         await cartStores.fetchCart({client_id: client_id.value})
         products.value = cartStores.getData
 
-        let index = addresses.value.findIndex((item) => item.default === 1)
-        address_id.value = (index > -1 ) ? addresses.value[index].id : addresses.value[0].id
+        let index = addresses.value.findIndex((item) => item.default === 1) 
+        if (addresses.value.length > 0) {
+            address_id.value = (index > -1) ? addresses.value[index].id : addresses.value[0].id 
 
+        } 
+             
+        
         let sum = 0
         products.value.forEach(element => {
             sum += (parseFloat(element.price_for_sale) * element.quantity)
@@ -416,6 +423,19 @@ const closeDialog = () => {
     }
 }
 
+const dialog_error = ()=>
+{
+    message.value = "Debes agregar una dirección de envío"
+    isDialogVisible.value = true
+    isError.value = true
+
+    setTimeout(() => {
+                isDialogVisible.value = false
+                message.value = ''
+                isError.value = false
+            }, 3000)
+}
+
 const getFlagCountry = country => {
   let val = listCountries.value.find(item => {
     return item.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === country.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -474,7 +494,9 @@ const getFlagCountry = country => {
                         :addresses="addresses"
                         :summary="summary"
                         @changeAddreess="changeAddreess"
-                        @dialog="dialog = true"/>
+                        @dialog="dialog = true"
+                        @dialog_error = "dialog_error"
+                        />
                 </VWindowItem>
                 <VWindowItem>
                     <Payments 

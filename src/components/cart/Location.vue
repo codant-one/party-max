@@ -16,17 +16,27 @@ const props = defineProps({
     }
 })
 
+const error_address = ref('Debes agregar una dirección de envio')
+
 const emit = defineEmits([
     'update:currentStep',
     'changeAddreess',
-    'dialog'
+    'dialog',
+    'dialog_error'
 ])
 
 const id = ref(props.address_id)
 
 const next = () => {
-    emit('update:currentStep', 2)
-    emit('changeAddreess', id.value)
+
+    if (id.value > 0) {
+        emit('update:currentStep', 2)
+        emit('changeAddreess', id.value)
+
+    } else {
+        emit('dialog_error', error_address.value)
+    }
+    
 }
 
 </script>

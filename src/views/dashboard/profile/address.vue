@@ -7,7 +7,7 @@ import { useProvincesStores } from '@/stores/provinces'
 import CustomRadiosWithIcon from '@/components/app/CustomRadiosWithIcon.vue'
 import icon_more from '@assets/icons/more-vertical.svg?inline';
 import icon_address from '@assets/icons/icon-domicilio.svg?inline';
-import icon_office from '@assets/icons/icon-office.svg?inline';
+import icon_office from '@assets/icons/office-ico.svg?inline';
 import icon_right from '@assets/icons/right-pink.svg?inline';
 import Loader from '@/components/common/Loader.vue'
 
