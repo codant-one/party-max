@@ -142,22 +142,22 @@ const next = () => {
                 <VCardTitle class="subtitle-card row-buy mt-4 ps-10 pt-4 pb-5">Resumen de compra</VCardTitle>
                 <VCardText class="px-10 mt-5 mb-2">
                     <VRow align="center">
-                        <VCol cols="9" md="6" class="text-left">
+                        <VCol cols="7" md="6" class="text-left">
                             <span>Productos</span>
                         </VCol>
-                        <VCol cols="3" md="6" class="text-right">
+                        <VCol cols="5" md="6" class="text-right">
                             <span>${{ formatNumber(props.summary.subTotal) }}</span>
                         </VCol>
-                        <VCol cols="9" md="6" class="text-left">
+                        <VCol cols="7" md="6" class="text-left">
                             <span>Envío</span>
                         </VCol>
-                        <VCol cols="3" md="6" class="text-right">
+                        <VCol cols="5" md="6" class="text-right">
                             <span>${{ formatNumber(props.summary.send) }}</span>
                         </VCol>
-                        <VCol cols="9" md="6" class="text-left">
+                        <VCol cols="7" md="6" class="text-left">
                             <h4>Total</h4>
                         </VCol>
-                        <VCol cols="3" md="6" class="text-right">
+                        <VCol cols="5" md="6" class="text-right">
                             <h4>${{ formatNumber(props.summary.total) }}</h4>
                         </VCol>
                     </VRow>

@@ -73,7 +73,7 @@ const onChange = ()=>{
             class="no-shadown p-0 w-100 py-7" 
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow no-gutters>
-                <VCol cols="12" md="2" class="d-flex justify-content-center align-center">
+                <VCol cols="6" md="2" class="d-flex justify-content-center align-center">
                     <VCardText class="border-img ms-10">
                         <VImg 
                             :width="100"
@@ -98,7 +98,7 @@ const onChange = ()=>{
                     </VCardText>
 
                 </VCol>
-                <VCol cols="12" md="2" class="d-flex flex-column py-5 my-auto">
+                <VCol cols="6" md="2" class="d-flex flex-column py-5 my-auto">
                     <VCardText class="d-flex text-center align-center justify-content-center">  
                         <VTextField
                             v-model="quantity"
@@ -113,7 +113,7 @@ const onChange = ()=>{
                         <span class="te-text-gray tw-text-xs">{{ stock }} disponibles</span>
                     </VCardText>
                   </VCol>
-                <VCol cols="12" md="2" class="align-center text-center py-5 my-auto pe-4">
+                <VCol cols="6" md="2" class="align-center text-center py-5 my-auto pe-4">
                     <VCardText class="d-flex text-center align-center justify-content-center">
                         <div class="d-flex text-center align-center justify-content-center">
                             <span class="tw-text-primary tw-font-medium me-1">(-%16)</span>

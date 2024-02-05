@@ -121,7 +121,7 @@ const provinceOld_id = ref('')
 const currentStep = ref(0)
 const isLoading = ref(false)
 const isActiveStepValid = ref(false)
-
+const products_ = ref(null)
 const band_address = ref(null)
 
 const getProvinces = computed(() => {
@@ -860,5 +860,11 @@ const getFlagCountry = country => {
             padding: 20px;
             width: auto;
         }
+
+        .w-60
+        {
+            width: 100%;
+        }
+
     }
 </style>

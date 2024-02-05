@@ -3,6 +3,7 @@
 import { requiredValidator, phoneValidator, emailValidator } from '@validators'
 import Product6 from '@/components/product/Product6.vue'
 import Payu from '@/assets/icons/payu.svg'
+import { formatNumber } from '@formatters'
 
 const props = defineProps({
     products: {
@@ -115,15 +116,15 @@ const getFlagCountry = country => {
 
 <template>
     <VForm
-        ref="refVForm"
+        ref="refVForm" class="form-facturacion"
         @submit.prevent="onSubmit"> 
         <VRow>
             <VCol cols="12">
                 <VCard class="card-products mx-auto px-0">
                     <h1 class="title-summary border-title pb-4">Detalles de Facturación</h1>
-                    <VCardText class="p-0 mt-3 px-15">
-                        <VCardItem class="pb-0 px-15 px-md-10">
-                            <VRow no-gutters class="text-left align-center px-15">
+                    <VCardText class="p-0 mt-3 px-2 px-md-15">
+                        <VCardItem class="pb-0 px-2 px-md-10">
+                            <VRow no-gutters class="text-left align-center px-2 px-md-15">
                                 <VCol cols="12" md="6" class="textinput mb-2 mb-md-2 pt-3">
                                     <VTextField
                                         label="Nombre"
@@ -269,7 +270,7 @@ const getFlagCountry = country => {
                         </VCol>
 
                         <VCol cols="12" md="6" class="text-right">
-                            <h4>${{ props.summary.subTotal }}</h4> 
+                            <h4>${{ formatNumber(props.summary.subTotal) }}</h4> 
                         </VCol>
                     </VRow>
                 </VCard>
@@ -282,7 +283,7 @@ const getFlagCountry = country => {
                         </VCol>
 
                         <VCol cols="12" md="6" class="text-right">
-                            <h4>${{ props.summary.send }}</h4> 
+                            <h4>${{ formatNumber(props.summary.send) }}</h4> 
                         </VCol>
                     </VRow>
                 </VCard>
@@ -304,7 +305,7 @@ const getFlagCountry = country => {
                     <VCardTitle class="d-flex row-total title-card px-16">
                         <h4>Total</h4>     
                         <VSpacer />
-                        <h5 class="tw-font-semibold">${{ props.summary.total }}</h5>
+                        <h5 class="tw-font-semibold">${{ formatNumber(props.summary.total) }}</h5>
                     </VCardTitle>
                     <VCardText class="d-flex row-realizar title-card w-100 px-16">
                         <VBtn
@@ -315,12 +316,12 @@ const getFlagCountry = country => {
                                 Realizar pedido
                         </VBtn>
                     </VCardText>
-                    <VCardText class="d-block row-payu align-center text-center p-0 px-16 pb-5">
+                    <VCardText class="d-block row-payu align-center text-center p-0 px-8 px-md-16 pb-5">
                         <div class="d-flex align-center text-center justify-content-center">
                             <span class="me-5">PayU Latam Online Payments</span>
                             <img :src="Payu"/>
                         </div>
-                        <VCardItem class="align-center text-center py-0 px-15">
+                        <VCardItem class="align-center text-center py-5 py-md-0 px-2 px-md-15">
                             <span>
                                 Pague con tarjeta de crédito, debito o transacción bancaria de forma segura a través de los
                                 servidores seguros de PayU Latinoamérica.
@@ -571,6 +572,19 @@ const getFlagCountry = country => {
         font-style: normal;
         font-weight: 400;
         line-height: 14px;
+    }
+
+    @media only screen and (max-width: 767px)
+    {
+        .card-products
+        {
+            padding: 16px 10px;
+        }
+
+        .form-facturacion
+        {
+            width: 100%!important;
+        }
     }
 
 </style>
