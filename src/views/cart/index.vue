@@ -195,6 +195,8 @@ async function fetchData() {
     if(route.query.merchantId) {
         currentStep.value = 3
         isActiveStepValid.value = true
+
+        console.log(route.query)
     }
 }
 
@@ -367,6 +369,7 @@ const sendPayU = async (billingDetail) => {
     formData.append('shippingCity', billingDetail.city);
     formData.append('shippingCountry', 'CO');
     formData.append('responseUrl', payment.responseUrl);
+    formData.append('confirmationUrl', payment.confirmationUrl);
 
     paymentsStores.redirectToPayU(formData)
         .then(response => {
@@ -511,10 +514,10 @@ const getFlagCountry = country => {
                 </VWindowItem>
                 <VWindowItem>
                    <Confirmation 
-                    @refresh="refresh"
-                    @completed="completed"
-                    @updatePaymentState="updatePaymentState"
-                    @deleteAll="deleteAll"/>
+                        @refresh="refresh"
+                        @completed="completed"
+                        @updatePaymentState="updatePaymentState"
+                        @deleteAll="deleteAll"/>
                 </VWindowItem>
             </VWindow>
 
