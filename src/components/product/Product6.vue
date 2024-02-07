@@ -33,14 +33,14 @@ watchEffect(() => {
 
     if (!(Object.entries(props.product).length === 0) && props.product.constructor === Object) {
         image.value = props.product.image
-        wholesale_price.value = props.product.wholesale_price
-        price_for_sale.value = props.product.price_for_sale
-        name.value = props.product.name.toLowerCase().replace(/\b\w/g, (match) => match.toUpperCase())
-        store.value = props.product.user.name + ' ' + (props.product.user.last_name ?? '')
-        rating.value = props.product.rating
+        wholesale_price.value = props.product.product.wholesale_price
+        price_for_sale.value = props.product.product.price_for_sale
+        name.value = props.product.product.name.toLowerCase().replace(/\b\w/g, (match) => match.toUpperCase())
+        store.value = props.product.product.user.name + ' ' + (props.product.product.user.last_name ?? '')
+        rating.value = props.product.product.rating
         single_description.value = props.product.single_description
-        slug.value = props.product.slug
-        stock.value = props.product.stock
+        slug.value = props.product.product.slug
+        stock.value = props.product.product.stock
         color.value = props.product.color.name
         quantity.value = props.product.quantity
     }

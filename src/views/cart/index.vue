@@ -183,7 +183,7 @@ async function fetchData() {
         
         let sum = 0
         products.value.forEach(element => {
-            sum += (parseFloat(element.price_for_sale) * element.quantity)
+            sum += (parseFloat(element.product.price_for_sale) * element.quantity)
         });
 
         summary.value.subTotal = sum.toFixed(2)
@@ -312,7 +312,7 @@ const sendPayU = async (billingDetail) => {
 
     products.value.forEach(element => {
         product_color_id.push(element.product_color_id)
-        price.push(element.price_for_sale)
+        price.push(element.product.price_for_sale)
         quantity.push(element.quantity)
     });
 
