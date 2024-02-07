@@ -195,8 +195,6 @@ async function fetchData() {
     if(route.query.merchantId) {
         currentStep.value = 3
         isActiveStepValid.value = true
-
-        console.log(route.query)
     }
 }
 
@@ -398,7 +396,10 @@ const deleteAll = async () => {
 }
 
 const updatePaymentState = async (payment_state_id) => {
-    await ordersStores.updatePaymentState({ payment_state_id: payment_state_id }, localStorage.getItem('order_id'))
+    await ordersStores.updatePaymentState({ 
+        payment_state_id: payment_state_id,
+        transaction_id: route.query.transactionId
+    }, localStorage.getItem('order_id'))
 }
 
 const completed = () => {
