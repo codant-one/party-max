@@ -32,7 +32,7 @@ const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 watchEffect(() => {
 
     if (!(Object.entries(props.product).length === 0) && props.product.constructor === Object) {
-        image.value = (props.product.images.length === 0) ? props.product.image : props.product.images[0]?.image
+        image.value = (props.product.images.length === 0) ? props.product.product.image : props.product.images[0]?.image
         wholesale_price.value = props.product.product.wholesale_price
         price_for_sale.value = props.product.product.price_for_sale
         name.value = props.product.product.name.toLowerCase().replace(/\b\w/g, (match) => match.toUpperCase())
