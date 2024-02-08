@@ -398,7 +398,7 @@ const deleteAll = async () => {
 const updatePaymentState = async (payment_state_id) => {
     await ordersStores.updatePaymentState({ 
         payment_state_id: payment_state_id,
-        transaction_id: route.query.transactionId
+        reference_code: route.query.referenceCode
     }, localStorage.getItem('order_id'))
 }
 

@@ -15,7 +15,6 @@ const emit = defineEmits([
 ])
 
 const merchant_id = ref(null)
-const referenceCode = ref(null)
 const TX_VALUE = ref(null)
 const New_value = ref(null)
 const currency = ref(null)
@@ -26,7 +25,7 @@ const cus = ref(null)
 const extra1 = ref(null)
 const pseBank = ref(null)
 const lapPaymentMethod = ref(null)
-const transactionId = ref(null)
+const referenceCode = ref(null)
 
 const message = ref()
 const subMessage = ref()
@@ -47,7 +46,6 @@ watchEffect(() => {
     extra1.value = route.query.description
     pseBank.value = route.query.pseBank
     lapPaymentMethod.value = route.query.lapPaymentMethod
-    transactionId.value = route.query.transactionId
 
     switch (transactionState.value) {
         case '4':
