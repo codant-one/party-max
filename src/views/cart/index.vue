@@ -121,8 +121,6 @@ const provinceOld_id = ref('')
 const currentStep = ref(0)
 const isLoading = ref(false)
 const isActiveStepValid = ref(false)
-const products_ = ref(null)
-const band_address = ref(null)
 
 const getProvinces = computed(() => {
   return listProvincesByCountry.value.map((province) => {
@@ -476,7 +474,7 @@ const getFlagCountry = country => {
 
             <!-- 👉 stepper content -->
             <VWindow
-                v-if="products.length > 0"
+                v-if="products.length > 0 || (typeof route.query.merchantId !== 'undefined')"
                 v-model="currentStep"
                 class="disable-tab-transition mb-5"
                 :touch="false"
@@ -521,7 +519,9 @@ const getFlagCountry = country => {
                 </VWindowItem>
             </VWindow>
 
-            <VCard v-else class="mb-10 card-timeline px-0">
+            <VCard 
+                v-if="products.length === 0 && (typeof route.query.merchantId === 'undefined')"
+                class="mb-10 card-timeline px-0">
                 <VCardText class="d-flex flex-colum align-center text-center justify-content-center">
                     <VCardItem class="d-block align-center text-center justify-content-center">
                         <cart class="d-block mx-auto mb-5"/>
