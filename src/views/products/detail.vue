@@ -127,58 +127,60 @@ async function fetchData() {
   productImages.value = []
   data.value = null
 
-  await miscellaneousStores.getProduct(route.params.slug)
-  data.value = miscellaneousStores.getData
+  if(route.params.slug) {
+    await miscellaneousStores.getProduct(route.params.slug)
+    data.value = miscellaneousStores.getData
 
-  imageAux.value = [{ image : data.value.product.image }]
+    imageAux.value = [{ image : data.value.product.image }]
 
-  categories.value = data.value.product.colors[0]?.categories.map(item => item.category.name)
-  productImages.value = (data.value.product.colors[0]?.images.length === 0) ? imageAux.value : data.value.product.colors[0]?.images
-  color.value = data.value.product.colors[0]?.color.name
-  selectedColor.value = data.value.product.colors[0]?.color.id.toString()
-  selectedColorId.value = data.value.product.colors[0]?.id
+    categories.value = data.value.product.colors[0]?.categories.map(item => item.category.name)
+    productImages.value = (data.value.product.colors[0]?.images.length === 0) ? imageAux.value : data.value.product.colors[0]?.images
+    color.value = data.value.product.colors[0]?.color.name
+    selectedColor.value = data.value.product.colors[0]?.color.id.toString()
+    selectedColorId.value = data.value.product.colors[0]?.id
 
-  data.value.product.colors.forEach(element => { 
-    var aux = {
-      value: element.color.id.toString(),
-      title: element.color.name,
-      image:  (element.images.length === 0) ? data.value.product.image : element.images[0].image
-    }
+    data.value.product.colors.forEach(element => { 
+      var aux = {
+        value: element.color.id.toString(),
+        title: element.color.name,
+        image:  (element.images.length === 0) ? data.value.product.image : element.images[0].image
+      }
 
-    radioContent.value.push(aux)
-  });
+      radioContent.value.push(aux)
+    });
 
-  product_id.value = data.value.product.id
+    product_id.value = data.value.product.id
 
-  title.value = data.value.product.name
-  brand.value = data.value.product.brand.name
-  rating.value = data.value.product.rating
-  sku.value = data.value.product.colors[0].sku
-  wholesale_price.value = data.value.product.wholesale_price
-  price_for_sale.value = data.value.product.price_for_sale
-  store.value = data.value.product.user.name + ' ' + (data.value.product.user.last_name ?? '')
-  in_stock.value = data.value.product.in_stock
-  color.value = data.value.product.colors[0].color.name
-  single_description.value = data.value.product.single_description
-  description.value = data.value.product.description
+    title.value = data.value.product.name
+    brand.value = data.value.product.brand.name
+    rating.value = data.value.product.rating
+    sku.value = data.value.product.colors[0].sku
+    wholesale_price.value = data.value.product.wholesale_price
+    price_for_sale.value = data.value.product.price_for_sale
+    store.value = data.value.product.user.name + ' ' + (data.value.product.user.last_name ?? '')
+    in_stock.value = data.value.product.in_stock
+    color.value = data.value.product.colors[0].color.name
+    single_description.value = data.value.product.single_description
+    description.value = data.value.product.description
 
-  width.value = data.value.product.detail.width
-  weigth.value = data.value.product.detail.weigth
-  height.value = data.value.product.detail.height
-  deep.value = data.value.product.detail.deep
-  material.value = data.value.product.detail.material
+    width.value = data.value.product.detail.width
+    weigth.value = data.value.product.detail.weigth
+    height.value = data.value.product.detail.height
+    deep.value = data.value.product.detail.deep
+    material.value = data.value.product.detail.material
 
-  data.value.product.colors[0].categories.forEach(element => { 
-    categories.value.push(element.category.name)
-  });
+    data.value.product.colors[0].categories.forEach(element => { 
+      categories.value.push(element.category.name)
+    });
 
-  data.value.product.tags.forEach(element => { 
-    tags.value.push(element.tag.name)
-  });
+    data.value.product.tags.forEach(element => { 
+      tags.value.push(element.tag.name)
+    });
 
-  if(client_id.value)
-    isFavoriteProduct.value = await favoritesStores.show({user_id: user_id.value, product_id: product_id.value })
-
+    if(client_id.value)
+      isFavoriteProduct.value = await favoritesStores.show({user_id: user_id.value, product_id: product_id.value })
+  }
+  
   isLoading.value = false
 }
 
