@@ -367,6 +367,7 @@ const sendPayU = async (billingDetail) => {
     formData.append('shippingCity', billingDetail.city);
     formData.append('shippingCountry', 'CO');
     formData.append('responseUrl', payment.responseUrl);
+    formData.append('confirmationUrl', payment.confirmationUrl);
 
     paymentsStores.redirectToPayU(formData)
         .then(response => {
@@ -395,7 +396,10 @@ const deleteAll = async () => {
 }
 
 const updatePaymentState = async (payment_state_id) => {
-    await ordersStores.updatePaymentState({ payment_state_id: payment_state_id }, localStorage.getItem('order_id'))
+    await ordersStores.updatePaymentState({ 
+        payment_state_id: payment_state_id,
+        transaction_id: route.query.transactionId
+    }, localStorage.getItem('order_id'))
 }
 
 const completed = () => {
@@ -511,10 +515,10 @@ const getFlagCountry = country => {
                 </VWindowItem>
                 <VWindowItem>
                    <Confirmation 
-                    @refresh="refresh"
-                    @completed="completed"
-                    @updatePaymentState="updatePaymentState"
-                    @deleteAll="deleteAll"/>
+                        @refresh="refresh"
+                        @completed="completed"
+                        @updatePaymentState="updatePaymentState"
+                        @deleteAll="deleteAll"/>
                 </VWindowItem>
             </VWindow>
 
