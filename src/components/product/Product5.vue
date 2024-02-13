@@ -65,6 +65,17 @@ const onChange = ()=>{
     emit('addCart',data)
 }
 
+const control_cant =()=>
+{
+   
+
+    if (parseInt(quantity.value) > parseInt(stock.value)) { 
+        quantity.value = stock.value; 
+      } else if (parseInt(quantity.value) < 1) {
+        quantity.value = 1;
+      }
+}
+
 </script>
 
 <template>
@@ -106,7 +117,9 @@ const onChange = ()=>{
                             variant="solo"
                             type="number"
                             :min="1"
+                            :max="stock"
                             @change="onChange"
+                            @input="control_cant"
                         />
                     </VCardText>
                     <VCardText class="d-flex text-center align-center justify-content-center mt-2">

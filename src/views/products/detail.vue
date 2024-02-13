@@ -65,6 +65,8 @@ const height = ref('')
 const deep = ref('')
 const weigth = ref('')
 const material = ref('')
+const cant_stock = ref(1)
+
 
 const radioContent = ref([])
 const selectedColor = ref(null)
@@ -162,6 +164,9 @@ async function fetchData() {
     color.value = data.value.product.colors[0].color.name
     single_description.value = data.value.product.single_description
     description.value = data.value.product.description
+    cant_stock.value = parseInt(data.value.product.stock)
+
+    console.log('el numero de unidades que hay del articulo es:', cant_stock.value)
 
     width.value = data.value.product.detail.width
     weigth.value = data.value.product.detail.weigth
@@ -288,6 +293,17 @@ const addfavorite = () =>{
     }, 3000)
   }
 
+}
+
+const control_cant =()=>
+{
+   
+
+    if (parseInt(cant_prod.value) > parseInt(cant_stock.value)) { 
+        cant_prod.value = cant_stock.value; 
+      } else if (parseInt(cant_prod.value) < 1) {
+        cant_prod.value = 1;
+      }
 }
 
 </script>
@@ -435,7 +451,10 @@ const addfavorite = () =>{
                     v-model="cant_prod"
                     variant="solo"
                     type="number"
+                    :min="1"
+                    :max="cant_stock"
                     :rules="[requiredValidator]"
+                    @input="control_cant"
                    />
                 </div>
                 <div class="my-auto ms-5">
