@@ -5,6 +5,8 @@ import clients from '@assets/icons/client.svg?inline';
 import suppliers from '@assets/icons/proveedor.svg?inline';
 import arrow_right from '@assets/icons/arrow-right.svg?inline';
 
+const baseAdmin = ref(import.meta.env.VITE_APP_DOMAIN_ADMIN_URL + '/login')
+
 </script>
 
 <template>
@@ -33,7 +35,7 @@ import arrow_right from '@assets/icons/arrow-right.svg?inline';
             </VCardItem> 
                 
             <VCardItem class="d-flex client-card mt-4">
-                <router-link to="/type_client" class="tw-no-underline hover:tw-text-primary link-type-client">
+                <a :href="baseAdmin" target="_blank" class="tw-no-underline hover:tw-text-primary link-type-client">
                     <VRow class="text-center d-flex align-center row-type_client">
                         <VCol cols="4" class="hover-supplier">
                             <suppliers class="me-3 ms-4"/>
@@ -45,7 +47,7 @@ import arrow_right from '@assets/icons/arrow-right.svg?inline';
                             <arrow_right class="me-3 ms-4"/>    
                         </VCol>  
                     </VRow>
-                </router-link>
+                </a>
             </VCardItem>  
         </VCard>   
   </VContainer>
