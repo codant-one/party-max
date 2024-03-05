@@ -13,6 +13,9 @@ const props = defineProps({
     }
 })
 
+const route = useRoute()
+
+
 const image = ref(null)
 const wholesale_price = ref(null)
 const price_for_sale = ref(null)
@@ -20,6 +23,7 @@ const name = ref(null)
 const store = ref(null)
 const rating = ref(null)
 const slug = ref(null)
+const existence_whole = ref(false)
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
@@ -34,6 +38,8 @@ watchEffect(() => {
         rating.value = props.product.rating
         slug.value = props.product.slug
     }
+
+    existence_whole.value = route.query.wholesalers ? true : false;
 })
 
 </script>
@@ -81,8 +87,8 @@ watchEffect(() => {
             </VCardText>
             <VCardText class="mt-1">
                 <div class="d-flex py-2">
-                <span class="text_1">${{ formatNumber(price_for_sale) }}</span>
-                <span class="text_2 ms-2">${{ formatNumber(wholesale_price) }}</span>
+                <span v-if="!existence_whole" class="text_1">${{ formatNumber(price_for_sale) }}</span>
+                <span v-if="existence_whole" class="text_1">${{ formatNumber(wholesale_price) }}</span>
                 </div>
             </VCardText>
         </VCard>

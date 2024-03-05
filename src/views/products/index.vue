@@ -123,7 +123,8 @@ async function fetchData() {
     colorId: route.query.color_id ?? null,
     search: route.query.search ?? null,
     min: min.value ?? null,
-    max: max.value ?? null
+    max: max.value ?? null,
+    wholesalers: route.query.wholesalers ? true : false
   }
 
   var aux = await miscellaneousStores.products(info)
@@ -342,7 +343,8 @@ const valores = ref([10, 200])
                               <Product3
                                   :key="i"
                                   :product="product"
-                                  :readonly="true"/>
+                                  :readonly="true"
+                                  />
                           </VCol>
                       </VRow>
                   </v-window-item>
