@@ -244,10 +244,12 @@ const valores = ref([10, 200])
                           }
                         }"
                       >
-                        <v-chip
-                          :key="i" 
-                          :style="{background:color_.color}"  class="color-chip tw-cursor-pointer">
-                        </v-chip>
+                        <v-avatar
+                          :color="color_.color"
+                          size="40"
+                          class="color-chip tw-cursor-pointer"
+                        ></v-avatar>
+                       
                       </router-link>
                     </v-btn-toggle>
                   
