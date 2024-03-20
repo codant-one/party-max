@@ -211,8 +211,7 @@ const toggleSubGroup = (id) => {
                                 name: 'products',
                                 query: {
                                   category: i.slug.split('/')[0],
-                                  subcategory: j.slug.split('/')[1],
-                                  subcategory2: k.slug.split('/')[2]
+                                  subcategory: k.slug.split('/')[2]
                                 }
                               }"
                               class="tw-no-underline tw-text-tertiary">
