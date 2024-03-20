@@ -194,16 +194,27 @@ const toggleSubGroup = (id) => {
                   </template>
                 </VExpansionPanelTitle>
                 <VExpansionPanelText>
-                  
                   <VExpansionPanels v-model="panelSub" class="no-icon-rotate">
                     <VExpansionPanel v-for="j in i.children">
-                      <VExpansionPanelTitle disable-icon-rotate>
+                      <router-link
+                        v-if="j.grandchildren.length === 0"
+                        :to="{
+                          name: 'products',
+                          query: {
+                            category: i.slug.split('/')[0],
+                            subcategory: j.slug.split('/')[1]
+                          }
+                        }"
+                        class="tw-no-underline tw-text-tertiary">
+                        <span class="text-subitem tw-text-tertiary">{{ j.name }}</span>
+                      </router-link>
+                      <VExpansionPanelTitle v-else disable-icon-rotate>
                         {{ j.name }}
                         <template #actions>
-                          <VIcon v-if="j.grandchildren.length > 0" size="30" icon="mdi-chevron-down" />
+                          <VIcon size="30" icon="mdi-chevron-down" />
                         </template>
                       </VExpansionPanelTitle>
-                      <VExpansionPanelText>
+                      <VExpansionPanelText v-if="j.grandchildren.length > 0">
                         <VList class="tw-bg-green">
                           <VListItem v-for="k in j.grandchildren">
                             <router-link
@@ -226,34 +237,6 @@ const toggleSubGroup = (id) => {
                 </VExpansionPanelText>
               </VExpansionPanel>
             </VExpansionPanels>
-
-            <!-- <VList class="text-left sidebar-container mb-6" v-model:opened="openedGroups">
-              <VListGroup v-for="i in categories" :value="i.id">
-                <template #activator="{ props }">
-                  <VListItem v-bind="props" :title="i.name" v-model:opened="openedSubGroups" @click="toggleGroup(i.id)"/>
-                </template>
-
-                <VListGroup v-for="j in i.children" :value="j.id">
-                  <template #activator="{ props }">
-                    <VListItem v-bind="props" :title="j.name" @click="toggleSubGroup(j.id)"/>
-                  </template>
-
-                  <VListItem v-for="k in j.grandchildren">
-                    <router-link
-                      :to="{
-                        name: 'products',
-                        query: {
-                          category: i.slug.split('/')[0],
-                          subcategory: j.slug.split('/')[1]
-                        }
-                      }"
-                      class="tw-no-underline tw-text-tertiary">
-                      <span class="text-subitem tw-text-tertiary">{{ k.name }}</span>
-                    </router-link>
-                  </VListItem>
-                </VListGroup>
-              </VListGroup>
-            </VList> -->
           </VCard>
           <VCard class="mt-7 sidebar-container">
               <VCardItem class="p-0 text-left mb-6 mt-6">
