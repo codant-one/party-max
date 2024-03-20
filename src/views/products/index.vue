@@ -13,15 +13,6 @@ import Product4 from '@/components/product/Product4.vue'
 
 const route = useRoute()
 
-const items = ref([
-  { title: 'Item 01',value: 1, },
-  { title: 'Item 02',value: 2, },
-  { title: 'Item 03',value: 3, },
-  { title: 'Item 04',value: 4, },
-  { title: 'Item 05',value: 5, },
-  { title: 'Item 06',value: 6, },
-])
-
 const items_check = ref([
   { name: 'item 1 (2)', selected: false },
   { name: 'item 2 (3)', selected: false },
@@ -33,6 +24,10 @@ const miscellaneousStores = useMiscellaneousStores()
 
 const isLoading = ref(true)
 const categories = ref(null)
+const panelCat = ref(null)
+const panelSub = ref(null)
+const openedGroups = ref([])
+const openedSubGroups = ref([])
 const products = ref([])
 const tab = ref('0')
 const category = ref(null)
@@ -46,8 +41,6 @@ const rang_price = ref([0,100000])
 
 const min = ref(null)
 const max = ref(null)
-
-const categories_url = ref(null)
 
 const colors_chip = ref([{id: 1, color:'#0000FF'},{id:2, color:'#ffff00'},{id:3, color:'#FF0000'},{id: 4, color:'#008000'},
                         {id: 5, color:'#515151'},{id:6, color:'#000000'},{id:7, color:'#ffffff'},{id: 8, color:'#4A2364'},
@@ -113,6 +106,7 @@ async function fetchData() {
  
   categories.value = homeStores.getData.parentCategories
   
+  // console.log('categories.value',categories.value )
   let info = {
     orderByField: 'id',
     orderBy: 'desc',
@@ -150,8 +144,18 @@ const change_price = ()=>{
   fetchData()
 
 }
-const valores = ref([10, 200])
 
+const toggleGroup = (id) => {
+  console.log('id', id)
+  console.log('openedGroups.value', openedGroups.value)
+  console.log('openedGroups.value[0]', openedGroups.value[0])
+  openedGroups.value = (openedGroups.value[0] === id) ? [] : [id]
+}
+
+const toggleSubGroup = (id) => {
+  console.log('entro', id)
+  openedSubGroups.value = [id]
+}
 </script>
 
 <template>
@@ -166,48 +170,90 @@ const valores = ref([10, 200])
       <VRow no-gutters>
         <VCol cols="12" md="3" class="col-left">
           <VCard class="mt-7 sidebar-container">
-              <VCardItem class="p-0 text-left mb-6 mt-6">
-                CATEGORÍAS
-              </VCardItem> 
+            <VCardItem class="p-0 text-left mb-6 mt-6">
+              CATEGORÍAS
+            </VCardItem> 
 
-              <VCardItem class="p-0 text-allcategories tw-font-bold ml-5">
-                <router-link to="/products" class="tw-no-underline tw-text-tertiary">
-                  TODAS LAS CATEGORIAS
-                </router-link>
-              </VCardItem> 
+            <VCardItem class="p-0 text-allcategories tw-font-bold ml-5">
+              <router-link to="/products" class="tw-no-underline tw-text-tertiary">
+                TODAS LAS CATEGORIAS
+              </router-link>
+            </VCardItem> 
 
-              <VCardItem class="p-0 text-allcategories tw-font-bold" style="margin-top: 10px;">
-                Categoría
-              </VCardItem> 
-              
-             
+            <VCardItem class="p-0 text-allcategories tw-font-bold" style="margin-top: 10px;">
+              Categoría
+            </VCardItem> 
 
-              <v-list class="text-left sidebar-container mb-6">
-              
-                <v-list-group  v-for="(i, index2) in categories" :key="index2" :value="i.id">
-                  <template v-slot:activator="{ props }">
-                    <v-list-item v-bind="props" :title="i.name"></v-list-item>
-                    
+            <VExpansionPanels v-model="panelCat" class="no-icon-rotate">
+              <VExpansionPanel v-for="i in categories">
+                <VExpansionPanelTitle disable-icon-rotate>
+                  {{ i.name }}
+                  <template #actions>
+                    <VIcon size="30" icon="mdi-chevron-down" />
+                  </template>
+                </VExpansionPanelTitle>
+                <VExpansionPanelText>
+                  
+                  <VExpansionPanels v-model="panelSub" class="no-icon-rotate">
+                    <VExpansionPanel v-for="j in i.children">
+                      <VExpansionPanelTitle disable-icon-rotate>
+                        {{ j.name }}
+                        <template #actions>
+                          <VIcon v-if="j.grandchildren.length > 0" size="30" icon="mdi-chevron-down" />
+                        </template>
+                      </VExpansionPanelTitle>
+                      <VExpansionPanelText>
+                        <VList class="tw-bg-green">
+                          <VListItem v-for="k in j.grandchildren">
+                            <router-link
+                              :to="{
+                                name: 'products',
+                                query: {
+                                  category: i.slug.split('/')[0],
+                                  subcategory: j.slug.split('/')[1],
+                                  subcategory2: k.slug.split('/')[2]
+                                }
+                              }"
+                              class="tw-no-underline tw-text-tertiary">
+                              <span class="text-subitem tw-text-tertiary">{{ k.name }}</span>
+                            </router-link>
+                          </VListItem>
+                        </VList>
+                      </VExpansionPanelText>
+                    </VExpansionPanel>
+                  </VExpansionPanels>
+
+                </VExpansionPanelText>
+              </VExpansionPanel>
+            </VExpansionPanels>
+
+            <!-- <VList class="text-left sidebar-container mb-6" v-model:opened="openedGroups">
+              <VListGroup v-for="i in categories" :value="i.id">
+                <template #activator="{ props }">
+                  <VListItem v-bind="props" :title="i.name" v-model:opened="openedSubGroups" @click="toggleGroup(i.id)"/>
+                </template>
+
+                <VListGroup v-for="j in i.children" :value="j.id">
+                  <template #activator="{ props }">
+                    <VListItem v-bind="props" :title="j.name" @click="toggleSubGroup(j.id)"/>
                   </template>
 
-                  <v-list-item v-for="(j, index3) in i.children" :key="index3">
-
+                  <VListItem v-for="k in j.grandchildren">
                     <router-link
-                        :to="{
-                          name: 'products',
-                          query: {
-                            category: i.slug.split('/')[0],
-                            subcategory: j.slug.split('/')[1]
-                          }
-                        }"
-                        class="tw-no-underline tw-text-tertiary">
-                        <span class="text-subitem tw-text-tertiary">{{ j.name }}</span>
-                      </router-link>
-                  </v-list-item>
-
-                </v-list-group>
-                      
-              </v-list>
+                      :to="{
+                        name: 'products',
+                        query: {
+                          category: i.slug.split('/')[0],
+                          subcategory: j.slug.split('/')[1]
+                        }
+                      }"
+                      class="tw-no-underline tw-text-tertiary">
+                      <span class="text-subitem tw-text-tertiary">{{ k.name }}</span>
+                    </router-link>
+                  </VListItem>
+                </VListGroup>
+              </VListGroup>
+            </VList> -->
           </VCard>
           <VCard class="mt-7 sidebar-container">
               <VCardItem class="p-0 text-left mb-6 mt-6">
@@ -383,20 +429,46 @@ const valores = ref([10, 200])
 
 <style scoped>
 
-.color-chip {
-  width: 20px!important;
-  height: 20px!important;
-  border-radius: 50%;
-  opacity: 1!important;
-}
+  .v-expansion-panel {
+    background-color: #E2F8FC;
+  }
 
-.button-chip {
-  padding: 0;
-  opacity: 1!important;
-}
+  .v-expansion-panel::v-deep(.v-expansion-panel__shadow) { 
+    box-shadow: none !important;
+  }
+
+  .v-expansion-panel::v-deep(.v-expansion-panel-title) { 
+    padding: 10px 24px !important;
+  }
+
+  .v-expansion-panel::v-deep(.v-expansion-panel-title--active > .v-expansion-panel-title__overlay) {
+    opacity: 0 !important;
+  }
+
+  .v-expansion-panel--active > .v-expansion-panel-title:not(.v-expansion-panel-title--static) {
+    min-height: 30px !important;
+  }
+
+  .v-expansion-panel::v-deep(.v-expansion-panel-text__wrapper) {
+    padding: 0 10px !important;
+  }
+
+  .color-chip {
+    width: 20px!important;
+    height: 20px!important;
+    border-radius: 50%;
+    opacity: 1!important;
+  }
+
+  .button-chip {
+    padding: 0;
+    opacity: 1!important;
+  }
+
   .breadcumb {
     height: 55px !important;
   }
+
   .v-btn--size-default {
     padding: 0 10px !important;
   }
@@ -406,14 +478,13 @@ const valores = ref([10, 200])
   }
 
   .sidebar-container {
-    padding: 0px 20px;
+    padding: 0 20px 15px 20px;
     background-color: #E2F8FC;
     border-radius: 16px; 
     box-shadow: none !important;
   }
 
-  .col-menuproduct
-  {
+  .col-menuproduct {
     padding-left: 20px!important;
   }
 
@@ -429,68 +500,70 @@ const valores = ref([10, 200])
     font-size: 12px!important;
     max-height: 33px!important;
   }
+
   .v-select::v-deep(.v-label) {
     font-size: 14px!important;
   }
+
   .v-select::v-deep(.v-field__field) {
     height: 33px!important;
     border-radius: 48px!important;
   }
+
   .v-select::v-deep(.v-input__details) {
     height: 0px!important;
   }
+
   .v-select::v-deep(.v-field--appended) {
     background-color:#FFFFFF;
   }
+
   .row-products {
     padding: 50px 0;
   }
+
   .custom-check {
     max-height: 50px!important;
   }
+
   .custom-vslider::deep(.v-slider-track) {
     background-color: #0A1B33!important;
   }
+
   .container-vslider {
     max-height: 40px!important;
     margin-top: 24px;
   }
 
-  .custom-check::deep(.v-label)
-  {
+  .custom-check::deep(.v-label) {
     margin-left: 10px!important;
   }
 
-  .text-left
-  {
+  .text-left {
     font-size: 18px;
   }
 
-  .text-allcategories
-  {
+  .text-allcategories {
     font-size: 14px;
   }
 
-  .text-subitem
-  {
+  .text-subitem {
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
   }
 
   .color-chip {
-  margin: 4px;
-  cursor: pointer;
-}
+    margin: 4px;
+    cursor: pointer;
+  }
 
-  @media only screen and (max-width: 767px)
-  {
-    .col-left
-    {
+  @media only screen and (max-width: 767px) {
+    .col-left {
       display: none;
     }
-    .text-left
-    {
+
+    .text-left {
       color: var(--Maastricht-Blue, #0A1B33);
       font-size: 14px;
       font-style: normal;
@@ -498,17 +571,13 @@ const valores = ref([10, 200])
       line-height: 16px; /* 114.286% */
     }
 
-    .menu-prod
-    {
+    .menu-prod {
       border-radius: 16px;
     }
 
-    .col-menuproduct
-    {
+    .col-menuproduct {
       padding-left: 0px!important;
-    }
-
-  
+    }  
   }
 
 </style>
