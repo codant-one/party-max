@@ -1,5 +1,6 @@
 <script setup>
 
+import { formatNumber } from '@formatters'
 import { ref } from 'vue'
 import { requiredValidator } from '@validators'
 import { useMiscellaneousStores } from '@/stores/miscellaneous'
@@ -399,8 +400,7 @@ const control_cant =()=>
             <VCol cols="12" md="7">
               <VCardText class="p-0">
                 <div class="d-flex py-2">
-                  <span class="text_1">$ {{ price_for_sale }}</span>
-                  <span class="text_2 ms-2 d-flex align-end">$ {{ wholesale_price }}</span>
+                  <span class="text_1">$ {{ formatNumber(price_for_sale) }}</span>
                 </div>
               </VCardText>
               <VCardText class="p-0 d-flex border-title">

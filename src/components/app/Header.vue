@@ -611,7 +611,12 @@ const redirect_ = (name, slug) =>{
             </VCard>
           </VMenu>
         </div>
-        <router-link to="/wholesalers" class="tw-no-underline tw-text-white hover:tw-text-yellow d-flex align-center text-center hover-icon-arrow-right">
+        <router-link 
+        :to="{
+                name: 'products',
+                query:{wholesalers:'true'}
+              }" 
+        class="tw-no-underline tw-text-white hover:tw-text-yellow d-flex align-center text-center hover-icon-arrow-right">
           <span class="ms-8">Mayoristas</span>
           <arrow_right class="ms-2 p-0 index"/>
         </router-link>  

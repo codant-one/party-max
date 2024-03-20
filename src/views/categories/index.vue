@@ -83,6 +83,38 @@ async function fetchData() {
       </VCardItem>  
     </VCard>
 
+    <!--OTRAS CATEGORIAS-->
+
+    <!--LISTADO DE SUBCATEGORIAS-->
+
+    <!-- theme parties -->
+    <VCard class="mt-7 no-shadown card-information transparent p-0">
+      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center cardtitles">
+        <span>¡Encuentra exactamente lo que necesitas!</span>
+        <VSpacer />
+        <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary" v-if="!isMobile">Ver todos</router-link>
+      </VCardTitle>
+      <VDivider class="hr-primary"/>
+      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between card-icons">
+        
+          
+            <router-link v-for="(i, index2) in icons_categories"
+                  :to="{
+                        name: 'products',
+                        query: {
+                          category: route.params.slug,
+                          subcategory: i.slug.split('/')[1]
+                        }
+                      }" class="tw-no-underline d-block text-center justify-content-center zoom router-icons">
+              <img :src="baseURL + i.icon_subcategory" class="border-theme d-block" v-if="i.icon_subcategory !== null"/>
+              <span class="d-block size-theme tw-text-tertiary mt-5 mb-5" v-if="i.icon_subcategory !== null">{{i.name}}</span>
+            </router-link>
+          
+        
+          
+      </VCardText>      
+    </VCard>
+
     <!-- novedades -->
     <VCard class="mt-7 no-shadown card-information p-0">
       <VCardTitle class="px-7 py-3 d-flex align-center cardtitles">
@@ -178,35 +210,7 @@ async function fetchData() {
       </VCardItem>  
     </VCard>
 
-    <!--LISTADO DE SUBCATEGORIAS-->
-
-    <!-- theme parties -->
-    <VCard class="mt-7 no-shadown card-information transparent p-0">
-      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center cardtitles">
-        <span>¡Encuentra exactamente lo que necesitas!</span>
-        <VSpacer />
-        <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary" v-if="!isMobile">Ver todos</router-link>
-      </VCardTitle>
-      <VDivider class="hr-primary"/>
-      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between card-icons">
-        
-          
-            <router-link v-for="(i, index2) in icons_categories"
-                  :to="{
-                        name: 'products',
-                        query: {
-                          category: route.params.slug,
-                          subcategory: i.slug.split('/')[1]
-                        }
-                      }" class="tw-no-underline d-block text-center justify-content-center zoom router-icons">
-              <img :src="baseURL + i.icon_subcategory" class="border-theme d-block" v-if="i.icon_subcategory !== null"/>
-              <span class="d-block size-theme tw-text-tertiary mt-5 mb-5" v-if="i.icon_subcategory !== null">{{i.name}}</span>
-            </router-link>
-          
-        
-          
-      </VCardText>      
-    </VCard>
+    
     
     <router-link 
       :to="{

@@ -117,7 +117,8 @@ async function fetchData() {
     colorId: route.query.color_id ?? null,
     search: route.query.search ?? null,
     min: min.value ?? null,
-    max: max.value ?? null
+    max: max.value ?? null,
+    wholesalers: route.query.wholesalers ? true : false
   }
 
   var aux = await miscellaneousStores.products(info)
@@ -289,10 +290,12 @@ const toggleSubGroup = (id) => {
                           }
                         }"
                       >
-                        <v-chip
-                          :key="i" 
-                          :style="{background:color_.color}"  class="color-chip tw-cursor-pointer">
-                        </v-chip>
+                        <v-avatar
+                          :color="color_.color"
+                          size="40"
+                          class="color-chip tw-cursor-pointer"
+                        ></v-avatar>
+                       
                       </router-link>
                     </v-btn-toggle>
                   
@@ -388,7 +391,8 @@ const toggleSubGroup = (id) => {
                               <Product3
                                   :key="i"
                                   :product="product"
-                                  :readonly="true"/>
+                                  :readonly="true"
+                                  />
                           </VCol>
                       </VRow>
                   </v-window-item>
