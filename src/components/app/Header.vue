@@ -165,6 +165,16 @@ const redirect_ = (name, slug) =>{
               params: {slug: slug}
               })
 }
+
+const closeMenuOnMouseLeave = () => {
+
+   if (menuOpen.value !== false) {
+    closeMenu()
+  }else if (menuOpenS.value !== false) {
+    closeMenuS()
+  }
+  // console.log('menu ' + menuOpen.value, 'MenuS '+ menuOpenS.value)
+}
   
 </script>
 
@@ -464,7 +474,7 @@ const redirect_ = (name, slug) =>{
                 <span class="font-size-16 me-7 tw-cursor-pointer">Productos</span>
               </div>
             </template>
-            <VCard class="style-menu" :width="width">
+            <VCard class="style-menu" :width="width"  @mouseleave="closeMenuOnMouseLeave">
               <VRow no-gutters>
                 <VCol cols="12" :md="cols" class="py-5 pr-3">
                   <VList class="pb-0">
@@ -545,7 +555,7 @@ const redirect_ = (name, slug) =>{
                 <span class="font-size-16 me-7 tw-cursor-pointer">Servicios</span>
               </div>
             </template>
-            <VCard class="style-menu" :width="widths">
+            <VCard class="style-menu" :width="widths" @mouseleave="closeMenuOnMouseLeave">
               <VRow no-gutters>
                 <VCol cols="12" :md="colse" class="py-5 pr-3">
                   <VList class="pb-0">
