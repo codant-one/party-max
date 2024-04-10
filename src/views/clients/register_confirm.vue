@@ -18,30 +18,32 @@ watchEffect(fetchData)
 
 async function fetchData() {
 
-    isLoading.value = true
+    if(route.query.token) {
+        isLoading.value = true
 
-    authStores.findToken(route.query.token)
-        .then(response => {
+        authStores.findToken(route.query.token)
+            .then(response => {
 
-            message.value = response.message
-            show.value = true
+                message.value = response.message
+                show.value = true
 
-            setTimeout(() => { 
-                completed(response.data.token)
-            }, 3000)
+                setTimeout(() => { 
+                    completed(response.data.token)
+                }, 3000)
 
-        }).catch(err => {
-            isError.value = true
-            show.value = true
-            isLoading.value = false
+            }).catch(err => {
+                isError.value = true
+                show.value = true
+                isLoading.value = false
 
-            if(err.response.data.feedback === 'not_found' || err.response.data.feedback === 'error_token' )
-                message.value = err.response.data.message
-            else
-                message.value = err.response.data.exception
+                if(err.response.data.feedback === 'not_found' || err.response.data.feedback === 'error_token' )
+                    message.value = err.response.data.message
+                else
+                    message.value = err.response.data.exception
 
-            console.error(err.response)
-        })
+                console.error(err.response)
+            })
+    }
 }
 
 const completed = (token) => {

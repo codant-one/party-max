@@ -197,7 +197,7 @@ const closeMenuOnMouseLeave = () => {
           </VListItemTitle>          
           <VListItemTitle class="d-block lineheight borderList py-2">
             <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-              <span class="d-block title-menu">Blogs</span>
+              <span class="d-block title-menu">Blog</span>
             </router-link>
           </VListItemTitle>
           <VListItemTitle class="d-block lineheight borderList py-2">
@@ -469,9 +469,11 @@ const closeMenuOnMouseLeave = () => {
             :close-on-content-click="false"
             @update:modelValue="chanceMenu">
             <template  v-slot:activator="{ props }">
-              <div v-bind="props">
+              <div v-bind="props" class="d-flex">
                 <VAppBarNavIcon variant="text" />
-                <span class="font-size-16 me-7 tw-cursor-pointer">Productos</span>
+                <div class="pt-3">
+                  <span class="font-size-16 me-7 tw-cursor-pointer">Productos</span>
+                </div>
               </div>
             </template>
             <VCard class="style-menu" :width="width"  @mouseleave="closeMenuOnMouseLeave">
@@ -550,9 +552,11 @@ const closeMenuOnMouseLeave = () => {
             :close-on-content-click="false"
             @update:modelValue="chanceMenuS">
             <template  v-slot:activator="{ props }">
-              <div v-bind="props">
+              <div v-bind="props" class="d-flex">
                 <VAppBarNavIcon variant="text" />
-                <span class="font-size-16 me-7 tw-cursor-pointer">Servicios</span>
+                <div class="pt-3">
+                  <span class="font-size-16 me-7 tw-cursor-pointer">Servicios</span>
+                </div>
               </div>
             </template>
             <VCard class="style-menu" :width="widths" @mouseleave="closeMenuOnMouseLeave">
@@ -622,19 +626,19 @@ const closeMenuOnMouseLeave = () => {
           </VMenu>
         </div>
         <router-link 
-        :to="{
-                name: 'products',
-                query:{wholesalers:'true'}
-              }" 
-        class="tw-no-underline tw-text-white hover:tw-text-yellow d-flex align-center text-center hover-icon-arrow-right">
-          <span class="ms-8">Mayoristas</span>
-          <arrow_right class="ms-2 p-0 index"/>
+          :to="{
+            name: 'products',
+            query:{wholesalers:'true'}
+          }" 
+          class="tw-no-underline tw-text-white hover:tw-text-yellow d-flex align-center text-center hover-icon-arrow-right">
+            <span class="ms-2">Mayoristas</span>
+            <arrow_right class="ms-2 p-0 index"/>
         </router-link>  
         <VSpacer />
 
         <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Quiénes somos</router-link>
         <VDivider class="hr" vertical/>
-        <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Blogs</router-link>
+        <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Blog</router-link>
         <VDivider class="hr" vertical/>
         <router-link to="/help" class="ms-5 tw-no-underline tw-text-white me-3 hover:tw-text-yellow">Ayuda</router-link>
 
@@ -697,7 +701,7 @@ const closeMenuOnMouseLeave = () => {
 
   .hr {
     width: 2px;
-    margin: 15px 0 15px 15px;
+    margin: 15px 0 15px 20px;
     background-color: white;
     opacity: 1 !important;
   }

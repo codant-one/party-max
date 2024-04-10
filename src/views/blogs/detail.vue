@@ -17,15 +17,18 @@ const route = useRoute()
 watchEffect(fetchData)
 
 async function fetchData() {
-  isLoading.value = true
-  
-  let response = await blogsStores.getBlog(route.params.slug)
-    
-  blog.value = response.blog
-  latestBlogs.value = response.latestBlogs
-  tags.value = response.tags
 
-  isLoading.value = false  
+  if(route.params.slug) {
+    isLoading.value = true
+    
+    let response = await blogsStores.getBlog(route.params.slug)
+      
+    blog.value = response.blog
+    latestBlogs.value = response.latestBlogs
+    tags.value = response.tags
+
+    isLoading.value = false  
+  }
 }
 
 </script>

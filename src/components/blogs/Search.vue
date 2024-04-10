@@ -21,7 +21,7 @@ const search = () => {
   router.push({ 
     name: 'blogs',
     query: {
-        tag:route.query.tag ?? null,
+        tag: route.query.tag ?? null,
         search: textSearch.value
     }         
   })

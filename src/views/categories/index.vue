@@ -46,23 +46,24 @@ watchEffect(fetchData)
 
 async function fetchData() {
 
-  isLoading.value = true
+  if(route.params.slug) {
+    isLoading.value = true
 
-  await miscellaneousStores.getCategory(route.params.slug)
-  data.value = miscellaneousStores.getData
-  icons_categories.value = data.value.category.children
-  console.log('subcategorias: ',icons_categories.value)
+    await miscellaneousStores.getCategory(route.params.slug)
+    data.value = miscellaneousStores.getData
+    icons_categories.value = data.value.category.children
 
-  image1.value = (data.value.category.banner === null) ? banner1 : baseURL.value + data.value.category.banner
-  slug1.value = data.value.category.banner1.slug.split('/')[1]
-  image2.value = (data.value.category.banner_2 === null) ? banner2 : baseURL.value + data.value.category.banner_2
-  slug2.value = data.value.category.banner2.slug.split('/')[1]
-  image3.value = (data.value.category.banner_3 === null) ? banner3 : baseURL.value + data.value.category.banner_3
-  slug3.value = data.value.category.banner3.slug.split('/')[1]
-  image4.value = (data.value.category.banner_4 === null) ? banner4 : baseURL.value + data.value.category.banner_4
-  slug4.value = data.value.category.banner4.slug.split('/')[1]
+    image1.value = (data.value.category.banner === null) ? banner1 : baseURL.value + data.value.category.banner
+    slug1.value = data.value.category.banner1?.slug.split('/')[1]
+    image2.value = (data.value.category.banner_2 === null) ? banner2 : baseURL.value + data.value.category.banner_2
+    slug2.value = data.value.category.banner2?.slug.split('/')[1]
+    image3.value = (data.value.category.banner_3 === null) ? banner3 : baseURL.value + data.value.category.banner_3
+    slug3.value = data.value.category.banner3?.slug.split('/')[1]
+    image4.value = (data.value.category.banner_4 === null) ? banner4 : baseURL.value + data.value.category.banner_4
+    slug4.value = data.value.category.banner4?.slug.split('/')[1]
 
-  isLoading.value = false
+    isLoading.value = false
+  }
 }
 </script>
 
