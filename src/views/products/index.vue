@@ -219,6 +219,7 @@ const toggleSubGroupFn = (index, subCat) => {
         <VCol cols="12" md="3">
           <VCard class="mt-7 sidebar-container">
             <VCardItem class="p-0 text-left mt-6"> CATEGORÍAS </VCardItem>
+
             <VCardItem v-if="route.query.category" class="p-0 text-allcategories tw-font-bold mt-6">
               <router-link
                 to="/products"
@@ -249,17 +250,15 @@ const toggleSubGroupFn = (index, subCat) => {
                 <VListGroup v-else :value="i.name" class="px-0">
                   <template #activator="{ props }">
                     <VListItem class="px-2">
-                      <VListItemTitle>
-                        <router-link
-                          :to="{
-                            name: 'products',
-                            query: {
-                              category: i.slug.split('/')[0]
-                            },
-                          }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
-                          {{ i.name }}
-                        </router-link>    
-                      </VListItemTitle>
+                      <router-link
+                        :to="{
+                          name: 'products',
+                          query: {
+                            category: i.slug.split('/')[0]
+                          },
+                        }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                        <VListItemTitle>{{ i.name }}</VListItemTitle>
+                      </router-link>
                       <template #append>
                         <VIcon
                           v-bind="props"
@@ -274,34 +273,30 @@ const toggleSubGroupFn = (index, subCat) => {
 
                   <div v-for="(j, jIndex) in i.children" :key="jIndex">
                     <VListItem v-if="j.grandchildren.length === 0">
-                      <VListItemTitle>
-                        <router-link
-                          :to="{
-                            name: 'products',
-                            query: {
-                              category: i.slug.split('/')[0],
-                              subcategory: j.slug.split('/')[1]
-                            },
-                          }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
-                          {{ j.name }}
-                        </router-link> 
-                      </VListItemTitle>
+                      <router-link
+                        :to="{
+                          name: 'products',
+                          query: {
+                            category: i.slug.split('/')[0],
+                            subcategory: j.slug.split('/')[1]
+                          },
+                        }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary">
+                        <VListItemTitle> {{ j.name }} </VListItemTitle>
+                      </router-link>
                     </VListItem>
                     <VListGroup v-else :value="j.name">
                       <template #activator="{ props }">
                         <VListItem>
-                          <VListItemTitle>
-                            <router-link
-                              :to="{
-                                name: 'products',
-                                query: {
-                                  category: i.slug.split('/')[0],
-                                  subcategory: j.slug.split('/')[1]
-                                },
-                              }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
-                              {{ j.name }}
-                            </router-link> 
-                          </VListItemTitle>
+                          <router-link
+                            :to="{
+                              name: 'products',
+                              query: {
+                                category: i.slug.split('/')[0],
+                                subcategory: j.slug.split('/')[1]
+                              },
+                            }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                            <VListItemTitle> {{ j.name }} </VListItemTitle>
+                          </router-link>
                           <template #append>
                             <VIcon
                               v-bind="props"
@@ -366,11 +361,12 @@ const toggleSubGroupFn = (index, subCat) => {
                   </router-link> 
                 </span>
               </VListItem>
-              <VListItem
-                :title="category.subcategory"
-                :value="category.subcategory"
-                class="tw-font-bold tw-text-primary px-2"
-              />
+
+              <VListItem class="px-2">
+                <VListItemTitle class="tw-uppercase tw-font-bold tw-text-primary px-0 list-text">
+                  {{  category.subcategory }}
+                </VListItemTitle>
+              </VListItem>
             </VList>
 
             <!-- solo padres e hijos -->
@@ -379,6 +375,7 @@ const toggleSubGroupFn = (index, subCat) => {
               typeof route.query.subcategory !== 'undefined' 
               && route.query.category" 
               v-model:opened="panelCat">
+
               <VListItem class="tw-font-bold hover:tw-text-primary tw-uppercase px-0">
                 <span>
                   <VIcon icon="mdi-chevron-left" />
@@ -394,11 +391,11 @@ const toggleSubGroupFn = (index, subCat) => {
                 </span>
               </VListItem>
 
-              <VListItem
-                :title="category.subcategory"
-                :value="category.subcategory"
-                class="tw-font-bold tw-text-primary px-2"
-              />
+              <VListItem class="px-2">
+                <VListItemTitle class="tw-uppercase tw-font-bold tw-text-primary px-0 list-text">
+                  {{  category.subcategory }}
+                </VListItemTitle>
+              </VListItem>
 
               <div 
                 v-for="(j, jIndex) in 
@@ -426,11 +423,13 @@ const toggleSubGroupFn = (index, subCat) => {
               typeof route.query.subcategory === 'undefined' 
               && route.query.category" 
               v-model:opened="panelCat">
-              <VListItem
-                :title="category.title"
-                :value="category.title"
-                class="tw-font-bold tw-text-primary px-2"
-              />
+
+              <VListItem class="px-2">
+                <VListItemTitle class="tw-uppercase tw-font-bold tw-text-primary px-0 list-text">
+                  {{ category.title }}
+                </VListItemTitle>
+              </VListItem>
+
               <div v-for="(j, jIndex) in categories.filter(item =>item.slug === route.query.category)[0].children" :key="jIndex">
                   <VListItem v-if="j.grandchildren.length === 0">
                     <router-link
@@ -447,18 +446,16 @@ const toggleSubGroupFn = (index, subCat) => {
                   <VListGroup v-else :value="j.name">
                     <template #activator="{ props }">
                       <VListItem>
-                        <VListItemTitle>
-                          <router-link
-                            :to="{
-                              name: 'products',
-                              query: {
-                                category: route.query.category,
-                                subcategory: j.slug.split('/')[1]
-                              },
-                            }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
-                              {{ j.name }}
-                          </router-link> 
-                        </VListItemTitle>
+                        <router-link
+                          :to="{
+                            name: 'products',
+                            query: {
+                              category: route.query.category,
+                              subcategory: j.slug.split('/')[1]
+                            },
+                          }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                          <VListItemTitle> {{ j.name }} </VListItemTitle>
+                        </router-link>
                         <template #append>
                           <VIcon
                             v-bind="props"
@@ -490,6 +487,7 @@ const toggleSubGroupFn = (index, subCat) => {
             </VList>
 
           </VCard>
+
           <VCard class="mt-7 sidebar-container">
             <VCardItem class="p-0 text-left mt-6"> COLOR </VCardItem>
             <VCardText class="text-left align-left p-0 mt-4">
@@ -696,6 +694,15 @@ const toggleSubGroupFn = (index, subCat) => {
 
 .v-list::v-deep(.v-list-item__content) {
   font-size: 14px !important;
+}
+
+.v-list::v-deep(.v-list-item--active) {
+  background-color: #F3FCFE !important;
+}
+
+.list-text {
+  white-space: normal;
+  text-overflow: clip;
 }
 
 .color-chip {
