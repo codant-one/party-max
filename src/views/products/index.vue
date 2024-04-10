@@ -1,29 +1,21 @@
 <script setup>
+
 import { ref } from "vue";
 import { useHomeStores } from "@/stores/home";
 import { useMiscellaneousStores } from "@/stores/miscellaneous";
 import Loader from "@/components/common/Loader.vue";
 import icon1 from "@/assets/icons/icon-menu-product.svg";
 import icon2 from "@/assets/icons/icon-menu-product2.svg";
-
 import Product3 from "@/components/product/Product3.vue";
 import Product4 from "@/components/product/Product4.vue";
 
 const route = useRoute();
-
-const items_check = ref([
-  { name: "item 1 (2)", selected: false },
-  { name: "item 2 (3)", selected: false },
-  { name: "item 3 (4)", selected: false },
-]);
-
 const homeStores = useHomeStores();
 const miscellaneousStores = useMiscellaneousStores();
 
 const isLoading = ref(true);
 const categories = ref(null);
 const panelCat = ref(null);
-const panelSub = ref(null);
 const openedGroups = ref([]);
 const openedSubGroups = ref([]);
 const products = ref([]);
@@ -51,6 +43,7 @@ const colors_chip = ref([
   { id: 8, color: "#4A2364" },
   { id: 9, color: "#FF0090" },
   { id: 10, color: "#FF8000" },
+  { id: 11, color: "linear-gradient(to right, #FF0000, #ffff00, #FF0090, #FF8000, #0000FF)", isGradient: true },
   { id: 12, color: "#e3e4e5" },
   { id: 13, color: "#D4AF37" },
   { id: 14, color: "#b76e79" },
@@ -73,7 +66,7 @@ const bread = ref([
     title: "Home",
     disabled: false,
     href: "/",
-  },
+  }
 ]);
 
 // 👉 watching current page
@@ -85,14 +78,40 @@ watchEffect(() => {
 watchEffect(fetchData);
 
 async function fetchData() {
-  if (route.query.category && category.value === null) {
+
+  bread.value = [
+    {
+      title: "Home",
+      disabled: false,
+      href: "/",
+    }
+  ]
+
+  openedGroups.value = []
+  openedSubGroups.value = []
+
+  if (route.query.category) {
+    panelCat.value = null
+
     category.value = {
       title: formatTitle(route.query.category),
       disabled: false,
-      href: "categories/" + route.query.category,
+      href: "categories/" + route.query.category
     };
 
     bread.value.push(category.value);
+
+    if (route.query.fathercategory) {
+      const fathercategory = {
+        title: formatTitle(route.query.fathercategory),
+        disabled: true,
+        href: "",
+      };
+
+      category.value.fathercategory = formatTitle(route.query.fathercategory)
+
+      bread.value.push(fathercategory);
+    }
 
     if (route.query.subcategory) {
       const subcategory = {
@@ -100,6 +119,8 @@ async function fetchData() {
         disabled: true,
         href: "",
       };
+
+      category.value.subcategory = formatTitle(route.query.subcategory)
 
       bread.value.push(subcategory);
     }
@@ -127,7 +148,7 @@ async function fetchData() {
     page: currentPage.value,
     category: route.query.category ?? null,
     subcategory: route.query.subcategory ?? null,
-    colorId: route.query.color_id ?? null,
+    colorId: route.query.colorId ?? null,
     search: route.query.search ?? null,
     min: min.value ?? null,
     max: max.value ?? null,
@@ -157,190 +178,326 @@ const change_price = () => {
   fetchData();
 };
 
-const toggleGroup = (id) => {
-  console.log("id", id);
-  console.log("openedGroups.value", openedGroups.value);
-  console.log("openedGroups.value[0]", openedGroups.value[0]);
-  openedGroups.value = openedGroups.value[0] === id ? [] : [id];
-};
-
-const toggleSubGroup = (id) => {
-  console.log("entro", id);
-  openedSubGroups.value = [id];
-};
-
-const toggleGroupFn = (index) => {
+const toggleGroupFn = (index, cat) => {
   if (openedGroups.value.includes(index)) {
     openedGroups.value = [];
   } else {
     openedGroups.value = [index];
+    panelCat.value = [cat]
     // Cambiar el icono de todos los demás elementos a mdi-chevron-down
     for (let i = 0; i < categories.length; i++) {
+      console.log('i', i)
       if (i !== index) {
+        console.log('3')
         openedGroups.value.push(i);
       }
     }
   }
 };
 
-const toggleSubGroupFn = (index) => {
+const toggleSubGroupFn = (index, subCat) => {
   if (openedSubGroups.value.includes(index)) {
     openedSubGroups.value = [];
   } else {
     openedSubGroups.value = [index];
+    panelCat.value[1] = subCat
   }
 };
+
 </script>
 
 <template>
   <section>
     <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
-      <VContainer class="tw-text-tertiary d-flex align-center">
-        <v-breadcrumbs :items="bread" />
+      <VContainer class="tw-text-tertiary d-flex align-center px-0">
+        <v-breadcrumbs :items="bread" class="px-2"/>
       </VContainer>
     </VAppBar>
     <VContainer class="pt-0">
       <Loader :isLoading="isLoading" />
-      <VRow no-gutters>
-        <VCol cols="12" md="3" class="col-left">
+      <VRow no-gutters v-if="categories">
+        <VCol cols="12" md="3">
           <VCard class="mt-7 sidebar-container">
-            <!-- <VCardItem class="p-0 text-left mb-6 mt-6"> CATEGORÍAS </VCardItem>
-
-            <VCardItem class="p-0 text-allcategories tw-font-bold ml-5">
+            <VCardItem class="p-0 text-left mt-6"> CATEGORÍAS </VCardItem>
+            <VCardItem v-if="route.query.category" class="p-0 text-allcategories tw-font-bold mt-6">
               <router-link
                 to="/products"
-                class="tw-no-underline tw-text-tertiary"
+                class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
               >
-                TODAS LAS CATEGORIAS
+                <span>
+                  <VIcon icon="mdi-chevron-left" />
+                  TODAS LAS CATEGORIAS
+                </span>
               </router-link>
-            </VCardItem> -->
-            <VCardItem class="p-0 text-left mb-6 mt-6"> CATEGORÍA </VCardItem>
-            <!-- <VCardItem
-              class="p-0 text-allcategories tw-font-bold"
-              style="margin-top: 10px"
-            >
-              Categoría
-            </VCardItem> -->
+            </VCardItem>
 
-            <VExpansionPanels v-model="panelCat">
-              <VExpansionPanel v-for="(i, index) in categories" :key="index">
-                <VExpansionPanelTitle
-                  disable-icon-rotate>
-                  <!-- <router-link
-                    :to="{
-                      name: 'products',
-                      query: {
-                        category: i.slug.split('/')[0]
-                      },
-                    }"> -->
-                    {{ i.name }}
-                  <!-- </router-link> -->
-                  <template #actions>
-                    <VIcon
-                      size="30"
-                      :icon="
-                        openedGroups.includes(index)
+            <VList v-else v-model:opened="panelCat">
+              <div v-for="(i, index) in categories" :key="index">
+                <VListItem v-if="i.children.length === 0" class="px-2">
+                  <VListItemTitle>
+                    <router-link
+                      :to="{
+                        name: 'products',
+                        query: {
+                          category: i.slug.split('/')[0]
+                        },
+                      }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                      {{ i.name }}
+                    </router-link> 
+                  </VListItemTitle>
+                </VListItem>
+                <VListGroup v-else :value="i.name" class="px-0">
+                  <template #activator="{ props }">
+                    <VListItem class="px-2">
+                      <VListItemTitle>
+                        <router-link
+                          :to="{
+                            name: 'products',
+                            query: {
+                              category: i.slug.split('/')[0]
+                            },
+                          }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                          {{ i.name }}
+                        </router-link>    
+                      </VListItemTitle>
+                      <template #append>
+                        <VIcon
+                          v-bind="props"
+                          :icon="openedGroups.includes(index)
                           ? 'mdi-chevron-up'
-                          : 'mdi-chevron-down'
-                      "
-                      @click="toggleGroupFn(index)"
-                    />
+                          : 'mdi-chevron-down'"
+                          @click="toggleGroupFn(index, i.name)"
+                        />
+                      </template>
+                    </VListItem>
                   </template>
-                </VExpansionPanelTitle>
-                <VExpansionPanelText v-if="openedGroups.includes(index)">
-                  <VExpansionPanels v-model="panelSub" class="no-icon-rotate">
-                    <VExpansionPanel
-                      v-for="(j, jIndex) in i.children"
-                      :key="jIndex"
-                    >
-                      <router-link
-                        v-if="j.grandchildren.length === 0"
-                        :to="{
-                          name: 'products',
-                          query: {
-                            category: i.slug.split('/')[0],
-                            subcategory: j.slug.split('/')[1],
-                          },
-                        }"
-                        class="tw-no-underline tw-text-tertiary"
-                      >
-                        <!-- <VExpansionPanelTitle class="no-icon-rotate">
+
+                  <div v-for="(j, jIndex) in i.children" :key="jIndex">
+                    <VListItem v-if="j.grandchildren.length === 0">
+                      <VListItemTitle>
+                        <router-link
+                          :to="{
+                            name: 'products',
+                            query: {
+                              category: i.slug.split('/')[0],
+                              subcategory: j.slug.split('/')[1]
+                            },
+                          }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           {{ j.name }}
-                        </VExpansionPanelTitle> -->
-                        <VList class="tw-bg-green tw-p-0">
-                          <VListItem>
-                            <span class="text-subitem tw-text-tertiary tw-pl-5">
-                              {{ j.name }}
-                            </span>
-                          </VListItem>
-                        </VList>
-                        <!-- <span class="text-subitem tw-text-tertiary"
-                          >name {{ j.name }}</span
-                        > -->
-                      </router-link>
-                      <VExpansionPanelTitle
-                        v-else
-                        disable-icon-rotate
-                        @click="toggleSubGroupFn(jIndex)"
-                        class="tw-pl-3 tw-pt-2"
-                      >
-                        {{ j.name }}
-                        <template #actions>
-                          <VIcon
-                            size="30"
-                            :icon="
-                              openedSubGroups.includes(jIndex)
-                                ? 'mdi-chevron-up'
-                                : 'mdi-chevron-down'
-                            "
-                          />
-                        </template>
-                      </VExpansionPanelTitle>
-                      <VExpansionPanelText v-if="j.grandchildren.length > 0">
-                        <VList class="tw-bg-green tw-py-0 tw-px-5">
-                          <VListItem v-for="k in j.grandchildren">
+                        </router-link> 
+                      </VListItemTitle>
+                    </VListItem>
+                    <VListGroup v-else :value="j.name">
+                      <template #activator="{ props }">
+                        <VListItem>
+                          <VListItemTitle>
                             <router-link
                               :to="{
                                 name: 'products',
                                 query: {
                                   category: i.slug.split('/')[0],
-                                  subcategory: k.slug.split('/')[2],
+                                  subcategory: j.slug.split('/')[1]
                                 },
-                              }"
-                              class="tw-no-underline tw-text-tertiary"
-                            >
-                              <span class="text-subitem tw-text-tertiary">{{
-                                k.name
-                              }}</span>
-                            </router-link>
-                          </VListItem>
-                        </VList>
-                      </VExpansionPanelText>
-                    </VExpansionPanel>
-                  </VExpansionPanels>
-                </VExpansionPanelText>
-              </VExpansionPanel>
-            </VExpansionPanels>
+                              }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                              {{ j.name }}
+                            </router-link> 
+                          </VListItemTitle>
+                          <template #append>
+                            <VIcon
+                              v-bind="props"
+                              :icon="openedSubGroups.includes(jIndex)
+                              ? 'mdi-chevron-up'
+                              : 'mdi-chevron-down'"
+                              @click="toggleSubGroupFn(jIndex, j.name)"
+                            />
+                          </template>
+                        </VListItem>
+                      </template>
+                      <div v-for="k in j.grandchildren" :key="k">
+                        <VListItem>
+                          <router-link
+                            :to="{
+                              name: 'products',
+                              query: {
+                                category: i.slug.split('/')[0],
+                                fathercategory: j.slug.split('/')[1],
+                                subcategory: k.slug.split('/')[2]
+                              },
+                            }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                            {{ k.name }}
+                          </router-link> 
+                        </VListItem>
+                      </div>
+                    </VListGroup>
+                  </div>
+                </VListGroup>
+              </div>
+            </VList>
+
+            <!-- padres, hijos y nietos -->
+            <VList v-if="route.query.fathercategory" v-model:opened="panelCat">
+              <VListItem class="tw-font-bold hover:tw-text-primary tw-uppercase px-0">
+                <span>
+                  <VIcon icon="mdi-chevron-left" />
+                  <router-link
+                    :to="{
+                      name: 'products',
+                        query: {
+                          category: route.query.category
+                        },
+                      }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                      {{ category.title }}
+                  </router-link> 
+                </span>
+              </VListItem>
+
+              <VListItem class="tw-font-bold hover:tw-text-primary tw-uppercase px-0">
+                <span>
+                  <VIcon icon="mdi-chevron-left" />
+                  <router-link
+                    :to="{
+                      name: 'products',
+                        query: {
+                          category: route.query.category,
+                          subcategory: route.query.fathercategory
+                        },
+                      }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                      {{ category.fathercategory }}
+                  </router-link> 
+                </span>
+              </VListItem>
+              <VListItem
+                :title="category.subcategory"
+                :value="category.subcategory"
+                class="tw-font-bold tw-text-primary px-2"
+              />
+            </VList>
+
+            <!-- solo padres e hijos -->
+            <VList 
+              v-if="typeof route.query.fathercategory === 'undefined' && 
+              typeof route.query.subcategory !== 'undefined' 
+              && route.query.category" 
+              v-model:opened="panelCat">
+              <VListItem class="tw-font-bold hover:tw-text-primary tw-uppercase px-0">
+                <span>
+                  <VIcon icon="mdi-chevron-left" />
+                  <router-link
+                    :to="{
+                      name: 'products',
+                        query: {
+                          category: route.query.category
+                        },
+                      }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                      {{ category.title }}
+                  </router-link> 
+                </span>
+              </VListItem>
+
+              <VListItem
+                :title="category.subcategory"
+                :value="category.subcategory"
+                class="tw-font-bold tw-text-primary px-2"
+              />
+
+              <div 
+                v-for="(j, jIndex) in 
+                categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren" 
+                :key="jIndex">
+                <VListItem>
+                  <router-link
+                    :to="{
+                      name: 'products',
+                      query: {
+                        category: route.query.category,
+                        fathercategory: route.query.subcategory,
+                        subcategory: j.slug.split('/')[2]
+                      },
+                    }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                      {{ j.name }}
+                  </router-link> 
+                </VListItem>
+              </div>
+            </VList>
+
+            <!-- Solo padres -->
+            <VList 
+              v-if="typeof route.query.fathercategory === 'undefined' && 
+              typeof route.query.subcategory === 'undefined' 
+              && route.query.category" 
+              v-model:opened="panelCat">
+              <VListItem
+                :title="category.title"
+                :value="category.title"
+                class="tw-font-bold tw-text-primary px-2"
+              />
+              <div v-for="(j, jIndex) in categories.filter(item =>item.slug === route.query.category)[0].children" :key="jIndex">
+                  <VListItem v-if="j.grandchildren.length === 0">
+                    <router-link
+                      :to="{
+                        name: 'products',
+                        query: {
+                          category: route.query.category,
+                          subcategory: j.slug.split('/')[1]
+                        },
+                      }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                        {{ j.name }}
+                    </router-link> 
+                  </VListItem>
+                  <VListGroup v-else :value="j.name">
+                    <template #activator="{ props }">
+                      <VListItem>
+                        <VListItemTitle>
+                          <router-link
+                            :to="{
+                              name: 'products',
+                              query: {
+                                category: route.query.category,
+                                subcategory: j.slug.split('/')[1]
+                              },
+                            }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                              {{ j.name }}
+                          </router-link> 
+                        </VListItemTitle>
+                        <template #append>
+                          <VIcon
+                            v-bind="props"
+                            :icon="openedGroups.includes(jIndex)
+                            ? 'mdi-chevron-up'
+                            : 'mdi-chevron-down'"
+                            @click="toggleGroupFn(jIndex, j.name)"
+                          />
+                        </template>
+                      </VListItem>
+                    </template>
+                    <div v-for="k in j.grandchildren" :key="k">
+                      <VListItem>
+                        <router-link
+                          :to="{
+                            name: 'products',
+                            query: {
+                              category: route.query.category,
+                              fathercategory: j.slug.split('/')[1],
+                              subcategory: k.slug.split('/')[2]
+                            },
+                          }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                          {{ k.name }}
+                        </router-link> 
+                      </VListItem>
+                    </div>
+                  </VListGroup>
+              </div>
+            </VList>
+
           </VCard>
           <VCard class="mt-7 sidebar-container">
-            <VCardItem class="p-0 text-left mb-6 mt-6"> PROVEEDORES </VCardItem>
-            <v-card-text class="text-left align-left p-0">
-              <v-text-field
-                density="compact"
-                variant="solo"
-                label=""
-                append-inner-icon="mdi-magnify"
-                single-line
-                hide-details
-              />
-            </v-card-text>
-
-            <v-card-text class="text-left align-left p-0 mt-4">
+            <VCardItem class="p-0 text-left mt-6"> COLOR </VCardItem>
+            <VCardText class="text-left align-left p-0 mt-4">
               <div class="d-flex align-center flex-column">
-                <v-btn-toggle
+                <VBtnToggle
                   v-model="toggle"
                   color="primary"
-                  class="tw-bg-none"
+                  class="d-flex align-center flex-wrap tw-bg-none"
                   mandatory
                   style="flex-wrap: wrap; height: auto"
                 >
@@ -349,49 +506,52 @@ const toggleSubGroupFn = (index) => {
                     :to="{
                       name: 'products',
                       query: {
-                        color_id: color_.id,
+                        colorId: color_.id,
                       },
                     }"
                   >
-                    <v-avatar
-                      :color="color_.color"
-                      size="40"
+                    <v-avatar 
+                      v-if="color_.isGradient" 
+                      size="40" 
+                      class="color-chip tw-cursor-pointer" 
+                      :style="{ backgroundImage: color_.color }"
+                    />
+                    <v-avatar 
+                      v-else 
+                      :color="color_.color" 
+                      size="40" 
                       class="color-chip tw-cursor-pointer"
-                    ></v-avatar>
+                    />
                   </router-link>
-                </v-btn-toggle>
+                </VBtnToggle>
               </div>
-            </v-card-text>
+            </VCardText>
 
-            <v-checkbox
-              class="custom-check tw-text-tertiary"
-              v-for="(item, index) in items_check"
-              :key="index"
-              v-model="item.selected"
-              :label="item.name"
-            />
+            <VDivider class="mb-6 mt-6"/>
 
-            <VCardItem class="p-0 text-left mt-5"> PRICE </VCardItem>
+            <VCardItem class="p-0 text-left mb-6 mt-6"> PRECIO </VCardItem>
+            <VCardText class="text-left align-left p-0 mt-4">
+              <VRow class="align-center container-vslider">
+                <VCol cols="12">
+                  <VRangeSlider
+                    v-model="rang_price"
+                    :max="100000"
+                    step="10"
+                    thumb-label="always"
+                    color="primary"
+                    @update:modelValue="change_price"
+                  />
+                </VCol>
+              </VRow>
+              <VCardItem class="p-0 text-left mt-5">
+                Precio: ${{ rang_price[0] }} - ${{ rang_price[1] }}
+              </VCardItem>
+            </VCardText>
+           
+            <VDivider class="mb-6 mt-6"/>
 
-            <VRow class="align-center container-vslider">
-              <VCol cols="12">
-                <v-range-slider
-                  class="custom-vslider"
-                  v-model="rang_price"
-                  :max="100000"
-                  step="10"
-                  thumb-label="always"
-                  @update:modelValue="change_price"
-                ></v-range-slider>
-              </VCol>
-            </VRow>
-            <VCardItem class="p-0 text-left mt-5">
-              Price: {{ rang_price }}
-            </VCardItem>
-
-            <VCardItem class="p-0 text-left mt-9"> REVIEW </VCardItem>
-
-            <VCardItem class="p-0 text-left mt-5 mb-6">
+            <VCardItem class="p-0 text-left mb-6 mt-6"> REVIEW </VCardItem>
+            <VCardText class="p-0 text-left mt-5 mb-6">
               <v-rating
                 hover
                 :length="5"
@@ -399,7 +559,7 @@ const toggleSubGroupFn = (index) => {
                 :model-value="3"
                 active-color="yellow"
               />
-            </VCardItem>
+            </VCardText>
           </VCard>
         </VCol>
 
@@ -507,38 +667,40 @@ const toggleSubGroupFn = (index) => {
 </template>
 
 <style scoped>
-.v-expansion-panel {
+.v-list {
   background-color: #e2f8fc;
 }
 
-.v-expansion-panel::v-deep(.v-expansion-panel__shadow) {
-  box-shadow: none !important;
-}
-
-.v-expansion-panel::v-deep(.v-expansion-panel-title) {
-  padding: 10px 24px !important;
-}
-
-.v-expansion-panel::v-deep(
-    .v-expansion-panel-title--active > .v-expansion-panel-title__overlay
-  ) {
+.v-list::v-deep(.v-list-item:hover > .v-list-item__overlay) {
   opacity: 0 !important;
 }
 
-.v-expansion-panel--active
-  > .v-expansion-panel-title:not(.v-expansion-panel-title--static) {
-  min-height: 30px !important;
+.v-list::v-deep(.v-list-item__overlay) {
+  background-color: #e2f8fc;
 }
 
-.v-expansion-panel::v-deep(.v-expansion-panel-text__wrapper) {
-  padding: 0 10px !important;
+.v-list-group__items .v-list-item {
+    padding-inline-start: calc(5px + var(--indent-padding)) !important;
+}
+
+.v-list::v-deep(.v-list-item-title) {
+  font-size: 15px !important;
+}
+
+.v-list-item--density-default.v-list-item--one-line {
+  min-height: 40px !important;
+}
+
+.v-list::v-deep(.v-list-item__content) {
+  font-size: 14px !important;
 }
 
 .color-chip {
-  width: 20px !important;
-  height: 20px !important;
+  width: 25px !important;
+  height: 25px !important;
   border-radius: 50%;
   opacity: 1 !important;
+  margin: 5px !important;
 }
 
 .button-chip {
@@ -607,10 +769,6 @@ const toggleSubGroupFn = (index) => {
   max-height: 50px !important;
 }
 
-.custom-vslider::deep(.v-slider-track) {
-  background-color: #0a1b33 !important;
-}
-
 .container-vslider {
   max-height: 40px !important;
   margin-top: 24px;
@@ -640,10 +798,6 @@ const toggleSubGroupFn = (index) => {
 }
 
 @media only screen and (max-width: 767px) {
-  .col-left {
-    display: none;
-  }
-
   .text-left {
     color: var(--Maastricht-Blue, #0a1b33);
     font-size: 14px;
