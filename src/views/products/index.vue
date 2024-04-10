@@ -488,7 +488,7 @@ const toggleSubGroupFn = (index, subCat) => {
 
           </VCard>
 
-          <VCard class="mt-7 sidebar-container">
+          <VCard class="mt-7 sidebar-container card-extra">
             <VCardItem class="p-0 text-left mt-6"> COLOR </VCardItem>
             <VCardText class="text-left align-left p-0 mt-4">
               <div class="d-flex align-center flex-column">
@@ -735,6 +735,10 @@ const toggleSubGroupFn = (index, subCat) => {
   background-color: #e2f8fc;
   border-radius: 16px;
   box-shadow: none !important;
+}
+
+.card-extra {
+  min-height: 700px;
 }
 
 .col-menuproduct {
