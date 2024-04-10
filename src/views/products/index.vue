@@ -506,6 +506,9 @@ const toggleSubGroupFn = (index, subCat) => {
                     :to="{
                       name: 'products',
                       query: {
+                        category: route.query.category,
+                        fathercategory: route.query.fathercategory,
+                        subcategory: route.query.subcategory,
                         colorId: color_.id,
                       },
                     }"
