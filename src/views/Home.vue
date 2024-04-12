@@ -87,7 +87,7 @@ const isMobile = /Mobi/i.test(navigator.userAgent);
 const items = ref([
   { text: 'Fiestas infantiles', icon: icon1, slug: 'fiestas-infantiles' },
   { text: 'Fiestas temáticas', icon: icon2, slug: 'fiestas-tematicas' },
-  { text: 'Fechas especiales', icon: icon3, slug: 'fiestas-especiales' },
+  { text: 'Fechas especiales', icon: icon3, slug: 'fechas-especiales' },
   { text: 'Hora loca', icon: icon4, slug: 'hora-loca' },
   { text: 'Desechables', icon: icon5, slug: 'desechables' },
   { text: 'Decoración', icon: icon6, slug: 'decoracion' },

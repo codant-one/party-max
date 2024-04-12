@@ -75,6 +75,12 @@ watchEffect(() => {
     currentPage.value = totalPages.value;
 });
 
+watch(() => 
+  route.query,(newPath, oldPath) => {
+    fetchData()
+  }
+);
+
 watchEffect(fetchData);
 
 async function fetchData() {
@@ -89,58 +95,14 @@ async function fetchData() {
 
   openedGroups.value = []
   openedSubGroups.value = []
-
-  if (route.query.category) {
-    panelCat.value = null
-
-    category.value = {
-      title: formatTitle(route.query.category),
-      disabled: false,
-      href: "categories/" + route.query.category
-    };
-
-    bread.value.push(category.value);
-
-    if (route.query.fathercategory) {
-      const fathercategory = {
-        title: formatTitle(route.query.fathercategory),
-        disabled: true,
-        href: "",
-      };
-
-      category.value.fathercategory = formatTitle(route.query.fathercategory)
-
-      bread.value.push(fathercategory);
-    }
-
-    if (route.query.subcategory) {
-      const subcategory = {
-        title: formatTitle(route.query.subcategory),
-        disabled: true,
-        href: "",
-      };
-
-      category.value.subcategory = formatTitle(route.query.subcategory)
-
-      bread.value.push(subcategory);
-    }
-
-    const product_ = {
-      title: "Productos",
-      disabled: true,
-      href: "",
-    };
-
-    bread.value.push(product_);
-  }
-
+  category.value = null 
+  
   isLoading.value = true;
 
   await homeStores.fetchData();
 
   categories.value = homeStores.getData.parentCategories;
 
-  // console.log('categories.value',categories.value )
   let info = {
     orderByField: "id",
     orderBy: "desc",
@@ -160,6 +122,63 @@ async function fetchData() {
   totalPages.value = aux.products.last_page;
   totalProducts.value = aux.productsTotalCount;
 
+  if (route.query.category) {
+    panelCat.value = null
+    category.value = {
+      title: categories.value.filter(item => item.slug === route.query.category)[0].name,
+      disabled: false,
+      href: "categories/" + route.query.category
+    };
+
+    bread.value.push(category.value);
+
+    if (route.query.fathercategory) {
+      const fathercategory = {
+        title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name,
+        disabled: true,
+        href: "",
+      };
+
+      category.value.fathercategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name
+
+      bread.value.push(fathercategory);
+    }
+
+    if (typeof route.query.fathercategory === 'undefined' && route.query.subcategory) {
+      const subcategory = {
+        title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name,
+        disabled: true,
+        href: "",
+      };
+
+      category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name
+
+      bread.value.push(subcategory);
+    }
+
+    
+    if (typeof route.query.fathercategory !== 'undefined' && route.query.subcategory) {
+      const subcategory = {
+        title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name,
+        disabled: true,
+        href: "",
+      };
+
+      category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name
+
+      bread.value.push(subcategory);
+    }
+
+
+    const product_ = {
+      title: "Productos",
+      disabled: true,
+      href: "",
+    };
+
+    bread.value.push(product_);
+  }
+
   isLoading.value = false;
 }
 
@@ -174,7 +193,6 @@ const isLastItem = (index) => {
 const change_price = () => {
   min.value = rang_price.value[0];
   max.value = rang_price.value[1];
-  console.log(max.value);
   fetchData();
 };
 
@@ -186,9 +204,7 @@ const toggleGroupFn = (index, cat) => {
     panelCat.value = [cat]
     // Cambiar el icono de todos los demás elementos a mdi-chevron-down
     for (let i = 0; i < categories.length; i++) {
-      console.log('i', i)
       if (i !== index) {
-        console.log('3')
         openedGroups.value.push(i);
       }
     }
@@ -330,7 +346,7 @@ const toggleSubGroupFn = (index, subCat) => {
             </VList>
 
             <!-- padres, hijos y nietos -->
-            <VList v-if="route.query.fathercategory" v-model:opened="panelCat">
+            <VList v-if="route.query.fathercategory && category" v-model:opened="panelCat">
               <VListItem class="tw-font-bold hover:tw-text-primary tw-uppercase px-0">
                 <span>
                   <VIcon icon="mdi-chevron-left" />
@@ -373,7 +389,7 @@ const toggleSubGroupFn = (index, subCat) => {
             <VList 
               v-if="typeof route.query.fathercategory === 'undefined' && 
               typeof route.query.subcategory !== 'undefined' 
-              && route.query.category" 
+              && route.query.category && category" 
               v-model:opened="panelCat">
 
               <VListItem class="tw-font-bold hover:tw-text-primary tw-uppercase px-0">
@@ -421,7 +437,7 @@ const toggleSubGroupFn = (index, subCat) => {
             <VList 
               v-if="typeof route.query.fathercategory === 'undefined' && 
               typeof route.query.subcategory === 'undefined' 
-              && route.query.category" 
+              && route.query.category && category" 
               v-model:opened="panelCat">
 
               <VListItem class="px-2">
@@ -577,11 +593,13 @@ const toggleSubGroupFn = (index, subCat) => {
                 <span v-else> Productos </span>
               </VCol>
 
-              <VCol cols="6" md="4" class="text-left">
-                <v-select
+              <VCol cols="6" md="4" class="pl-7 text-left">
+                <VSelect
                   class="my-custom-select"
                   clearable
-                  label="Select"
+                  clear-icon="mdi-close"
+                  menu-icon="mdi-chevron-down"
+                  placeholder="Clasificación por defecto"
                   :items="[
                     'producto 1',
                     'producto 2',
@@ -591,7 +609,8 @@ const toggleSubGroupFn = (index, subCat) => {
                     'producto 5',
                   ]"
                   variant="outlined"
-                ></v-select>
+                  rounded
+                />
               </VCol>
 
               <VCol
@@ -668,6 +687,49 @@ const toggleSubGroupFn = (index, subCat) => {
 </template>
 
 <style scoped>
+
+.v-select::v-deep(.v-field__input) {
+  padding-top: 2%;
+  padding-left: 8%;
+}
+
+.v-select::v-deep(.v-field__append-inner) {
+  padding-top: 20% !important;
+}
+
+.v-select::v-deep(.v-field__append-inner > .v-icon) {
+  padding-right: 20% !important;
+}
+
+.v-select::v-deep(.v-field) {
+  padding: 0 !important;
+}
+
+.v-select::v-deep(.v-label) {
+  font-size: 14px !important;
+}
+
+.v-select::v-deep(.v-field__field) {
+  height: 33px !important;
+  border-radius: 48px !important;
+}
+
+.v-select::v-deep(.v-input__details) {
+  height: 0px !important;
+}
+
+.v-select::v-deep(.v-field--appended) {
+  background-color: #ffffff;
+}
+
+.v-select::v-deep(.v-field__outline__start) {
+  flex-basis: 20px !important;
+}
+
+.v-select::v-deep(.v-select__selection) {
+  margin-top: -12px !important;
+}
+
 .v-list {
   background-color: #e2f8fc;
 }
@@ -752,23 +814,6 @@ const toggleSubGroupFn = (index, subCat) => {
   border-radius: 48px !important;
   font-size: 12px !important;
   max-height: 33px !important;
-}
-
-.v-select::v-deep(.v-label) {
-  font-size: 14px !important;
-}
-
-.v-select::v-deep(.v-field__field) {
-  height: 33px !important;
-  border-radius: 48px !important;
-}
-
-.v-select::v-deep(.v-input__details) {
-  height: 0px !important;
-}
-
-.v-select::v-deep(.v-field--appended) {
-  background-color: #ffffff;
 }
 
 .row-products {

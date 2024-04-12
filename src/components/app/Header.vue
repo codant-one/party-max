@@ -763,10 +763,11 @@ const closeMenuOnMouseLeave = () => {
     padding-left: 8%;
    }
 
-   .v-select::v-deep(.v-field__append-inner) {
+  .v-select::v-deep(.v-field__append-inner) {
     padding-top: 30% !important;
     padding-right: 10% !important;
-   }
+  }
+
   .v-select::v-deep(.v-field) { 
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
