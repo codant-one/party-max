@@ -195,7 +195,7 @@ const tab = ref('0')
                   :to="{
                     name: 'categories',
                     params: {
-                      slug: 'ponques'
+                      slug: 'dulces-y-ponques'
                     }
                   }"
                 >
