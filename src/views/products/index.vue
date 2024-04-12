@@ -77,8 +77,8 @@ async function fetchData() {
   categories.value = homeStores.getData.parentCategories;
 
   let info = {
-    orderByField: "id",
-    orderBy: "desc",
+    orderByField: "pl.order_id",
+    orderBy: "asc",
     limit: rowPerPage.value,
     page: currentPage.value,
     category: route.query.category ?? null,
