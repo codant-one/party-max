@@ -92,9 +92,9 @@ const items = ref([
   { text: 'Desechables', icon: icon5, slug: 'desechables' },
   { text: 'Decoración', icon: icon6, slug: 'decoracion' },
   { text: 'Sorpresas', icon: icon7, slug: 'sorpresas' },
-  { text: 'Mobiliario', icon: icon8, slug: 'mobiliario' },
-  { text: 'Dulces', icon: icon9, slug: 'dulces' },
-  { text: 'Animación y entretenimiento', icon: icon10, slug: 'animacion-y-entretenimiento' }
+  { text: 'Mobiliario', icon: icon8, slug: 'renta-de-moviliario' },
+  { text: 'Dulces', icon: icon9, slug: 'dulces-y-ponques' },
+  { text: 'Animación y entretenimiento', icon: icon10, slug: 'animadores-de-fiestas' }
 ])
 
 const sliders = ref( [
