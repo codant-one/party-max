@@ -65,6 +65,7 @@ const updateSelectedOption = value => {
 .custom-radio-icon {
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   .v-radio {
     margin-block-end: -0.25rem;

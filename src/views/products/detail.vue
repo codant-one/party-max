@@ -25,7 +25,6 @@ import 'swiper/css/free-mode';
 import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar'
 
-const swiper_ = ref(null)
 const route = useRoute()
 const miscellaneousStores = useMiscellaneousStores()
 const cartStores = useCartStores()
@@ -67,7 +66,6 @@ const deep = ref('')
 const weigth = ref('')
 const material = ref('')
 const cant_stock = ref(1)
-
 
 const radioContent = ref([])
 const selectedColor = ref(null)
@@ -166,8 +164,6 @@ async function fetchData() {
     single_description.value = data.value.product.single_description
     description.value = data.value.product.description
     cant_stock.value = parseInt(data.value.product.stock)
-
-    console.log('el numero de unidades que hay del articulo es:', cant_stock.value)
 
     width.value = data.value.product.detail.width
     weigth.value = data.value.product.detail.weigth
@@ -378,7 +374,7 @@ const control_cant =()=>
                 class="mySwiper"
               >
                 <swiper-slide v-for="(picture, index) in productImages" :key="index">
-                  <img :src="baseURL + picture.image" />
+                  <img width="60" :src="baseURL + picture.image" />
                 </swiper-slide>
               </swiper>
             </VCol>
@@ -390,7 +386,7 @@ const control_cant =()=>
                 :spaceBetween="10"
                 :thumbs="{ swiper: thumbsSwiper }"
                 :modules="modules"
-                class="mySwiper2"
+                class="mySwiper2 border-img"
                 >
                 <swiper-slide v-for="(picture, index) in productImages" :key="index">
                   <img :src="baseURL + picture.image" />
@@ -612,6 +608,7 @@ const control_cant =()=>
   .text-pink-accent-3 {
     color: #FF0090 !important;
   }
+
   .v-text-field::v-deep(.v-field) { 
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
@@ -666,6 +663,7 @@ const control_cant =()=>
   .border-title {
     border-bottom: 1px solid #D9EEF2;
   }
+
   .border-title2 {
     border-bottom: 1px solid #D9EEF2;
     border-top: 1px solid #D9EEF2;
@@ -688,6 +686,7 @@ const control_cant =()=>
     font-weight: 400;
     line-height: 22.4px; 
   }
+
   .border-title2 span {
     color: #0A1B33;
     text-align: center;
@@ -703,6 +702,7 @@ const control_cant =()=>
     text-decoration: underline #FF0090;
     cursor: pointer;
   }
+
   .btn-register {
     font-size: 16px;
     font-style: normal;
@@ -717,18 +717,23 @@ const control_cant =()=>
     background-color: #FF27B3 !important;
     box-shadow: 0px 0px 24px 0px #FF27B3;
   }
+
   .breadcumb {
     height: 55px !important;
   }
+
   .hearth-icon path {
     fill:#0A1B33;
   }
+
   .hearth-icon path:hover {
     fill: #FF0090;
   }
+
   .row-add {
     width: 100%;
   }
+
   .b-mayorista {
     display: inline-flex;
     height: 38px;
@@ -762,9 +767,11 @@ const control_cant =()=>
     margin-top: 16px;
     color:  #0A1B33;
   }
+  
   .col-recomendaciones p {
     font-size:24px;
   }
+
   .col-recomendaciones span {
     font-size:14px;
   }
@@ -772,160 +779,182 @@ const control_cant =()=>
 </style>
 
 <style scoped>
-    .carousel__item img {
-        width: 60%;
-    }
-    .swiper-vertical > .swiper-pagination-bullets .swiper-pagination-bullet, .swiper-pagination-vertical.swiper-pagination-bullets .swiper-pagination-bullet {
-        display: none !important;
-    }
-    .swiper {
-        width: 100%;
-        height: 100%;
-    }
-    .swiper-slide {
-        text-align: center;
-        font-size: 18px;
-        background: #fff;
 
-        /* Center slide text vertically */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .swiper {
-        width: 100%;
-        height: 350px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .swiper-slide {
-        background-size: cover;
-        background-position: center;
-    }
-    .mySwiper2 {
-        height: 350px;
-        width: 100%;
-    }
-    .mySwiper {
-        box-sizing: border-box;
-        padding: 10px 5px;
-    }
-    .mySwiper .swiper-slide {
-        opacity: 0.4;
-        border-style: solid;
-        border-width: 1px;
-        border-radius: 8px;
-    }
-    .mySwiper .swiper-slide-thumb-active {
-        opacity: 1;
-    }
-
-    .swiper-slide img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        border-radius: 8px;
-    }
-    .col-item {
-      padding: 16px 32px;
-      border: 1px solid  #E1E1E1;
-      background-color: #E2F8FC;
-    }
-    .col-value {
-      padding: 16px 32px;
-      border: 1px solid #E1E1E1;
-      background-color: #FFF;
-    }
-
-    .col-item span {
-      color: #999;
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 16px; /* 100% */
-    }
-    .col-value span {
-      color: #999;
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 16px; /* 100% */
-    }
-    .row-reviews {
-      padding: 32px;
-    }
-    .image-review {
-      width: 70px;
-      border-radius: 70px;
-      border: 1px solid var(--Grey-2, #E1E1E1);
-    }
-    .row-reviews p {
-      color: #999;
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 16px; /* 114.286% */
-    }
-    .row-reviews span {
-      color: #FF0090;
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 16px; /* 114.286% */
-    }
-
-    .redes-title
-    {
-      display: flex;
-    }
-
-    .redes-mobile
-    {
-      display: none;
-    }
-
-
-@media only screen and (max-width: 767px)
-  {
-
-    .btn-register
-    {
-      width: 196px;
-      height: 54px;
-      font-size: 14px;
-    }
-
-    .col-recomendaciones
-    {
-      display: none;
-    }
-
-    .text-tabs
-    {
-      font-size: 11px!important;
-    }
-
-    .col-recprod
-    {
-      display: none;
-    }
-
-    .redes-title
-    {
-      display: none;
-    }
-
-    .redes-mobile
-    {
-      display: flex!important;
-    }
-
-    .text-infoprod
-    {
-      font-size: 12px!important;
-    }
-
+  .carousel__item img {
+    width: 60%;
   }
+    
+  .swiper-vertical > .swiper-pagination-bullets .swiper-pagination-bullet, .swiper-pagination-vertical.swiper-pagination-bullets .swiper-pagination-bullet {
+    display: none !important;
+  }
+
+  .swiper {
+    width: 100%;
+    height: 100%;
+  }
+    
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+
+    /* Center slide text vertically */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .swiper {
+    width: 100%;
+    height: 350px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+    
+  .swiper-slide {
+    background-size: cover;
+    background-position: center;
+  }
+
+  .mySwiper2 {
+    height: 350px;
+    width: 100%;
+  }
+
+  .border-img {
+    border-radius: 16px !important;
+    border: 1px solid #D9EEF2;
+    padding: 10px !important;
+    background-color: white;
+    text-align: center;
+    align-items: center;
+    display: flex;
+  }
+
+  .mySwiper {
+    box-sizing: border-box;
+    padding: 10px 5px;
+  }
+    
+  .mySwiper .swiper-slide {
+    opacity: 0.4;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+    width: 60px;
+  }
+    
+  .mySwiper .swiper-slide-thumb-active {
+    opacity: 1;
+  }
+
+  .swiper::v-deep(.swiper-wrapper)  {
+    width: 60px !important;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+    
+  .col-item {
+    padding: 16px 32px;
+    border: 1px solid  #E1E1E1;
+    background-color: #E2F8FC;
+  }
+    
+  .col-value {
+    padding: 16px 32px;
+    border: 1px solid #E1E1E1;
+    background-color: #FFF;
+  }
+
+  .col-item span {
+    color: #999;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 16px; /* 100% */
+    
+  }
+    
+  .col-value span {
+    color: #999;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px; /* 100% */
+  }
+
+  .row-reviews {
+    padding: 32px;
+  }
+    
+  .image-review {
+    width: 70px;
+    border-radius: 70px;
+    border: 1px solid var(--Grey-2, #E1E1E1);
+  }
+    
+  .row-reviews p {
+    color: #999;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px; /* 114.286% */
+  }
+    
+  .row-reviews span {
+    color: #FF0090;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px; /* 114.286% */
+  }
+
+  .redes-title {
+    display: flex;
+  }
+
+  .redes-mobile{
+    display: none;
+  }
+
+
+@media only screen and (max-width: 767px) {
+  .btn-register {
+    width: 196px;
+    height: 54px;
+    font-size: 14px;
+  }
+
+  .col-recomendaciones {
+     display: none;
+  }
+
+  .text-tabs {
+    font-size: 11px!important;
+  }
+
+  .col-recprod {
+    display: none;
+  }
+
+  .redes-title {
+    display: none;
+  }
+
+  .redes-mobile {
+    display: flex!important;
+  }
+
+  .text-infoprod {
+    font-size: 12px!important;
+  }
+
+}
 
 </style>
