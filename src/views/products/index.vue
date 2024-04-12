@@ -52,15 +52,6 @@ const colors_chip = ref([
   { id: 17, color: "#C8A2C8" },
 ]);
 
-const formatTitle = (slug) => {
-  const words = slug.split("-");
-  const title = words
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-
-  return title;
-};
-
 const bread = ref([
   {
     title: "Home",
@@ -96,13 +87,13 @@ async function fetchData() {
   openedGroups.value = []
   openedSubGroups.value = []
   category.value = null 
-  
+
   isLoading.value = true;
 
   await homeStores.fetchData();
 
   categories.value = homeStores.getData.parentCategories;
-
+    console.log('categories.value', categories.value)
   let info = {
     orderByField: "id",
     orderBy: "desc",
