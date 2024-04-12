@@ -217,19 +217,37 @@ const tab = ref('0')
             </VRow>
           </VCol>
           <VCol cols="12" md="7" class="pslider4" :class="isMobile ? 'order-last order-md-first pslider5' : ''">
-            <router-link to="/services">
+            <router-link 
+              :to="{
+                name: 'categories',
+                params: {
+                  slug: 'renta-de-moviliario'
+                }
+              }">
               <VImg :src="Banner" class="img-galery" :class="isMobile ? 'slider5Img' : ''" height="auto" cover />
             </router-link>
           </VCol>
           <VCol cols="12" md="5" class="pslider4">
             <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent">
               <VCol cols="6" md="6" class="pslider2">
-                <router-link to="/services">
+                <router-link 
+                  :to="{
+                    name: 'categories',
+                    params: {
+                      slug: 'comida'
+                    }
+                  }">
                   <VImg :src="Plaza_4" class="img-galery"/>
                 </router-link>
               </VCol>
               <VCol cols="6" md="6" class="pslider2">
-                <router-link to="/services">
+                <router-link 
+                  :to="{
+                    name: 'categories',
+                    params: {
+                      slug: 'fotografia-y-video'
+                    }
+                  }">
                   <VImg :src="Plaza_5" class="border-bottom-right img-galery"/>
                 </router-link>
               </VCol>
