@@ -32,25 +32,7 @@ const rang_price = ref([0, 100000]);
 const min = ref(null);
 const max = ref(null);
 
-const colors_chip = ref([
-  { id: 1, color: "#0000FF" },
-  { id: 2, color: "#ffff00" },
-  { id: 3, color: "#FF0000" },
-  { id: 4, color: "#008000" },
-  { id: 5, color: "#515151" },
-  { id: 6, color: "#000000" },
-  { id: 7, color: "#ffffff" },
-  { id: 8, color: "#4A2364" },
-  { id: 9, color: "#FF0090" },
-  { id: 10, color: "#FF8000" },
-  { id: 11, color: "linear-gradient(to right, #FF0000, #ffff00, #FF0090, #FF8000, #0000FF)", isGradient: true },
-  { id: 12, color: "#e3e4e5" },
-  { id: 13, color: "#D4AF37" },
-  { id: 14, color: "#b76e79" },
-  { id: 15, color: "#2ef8a0" },
-  { id: 16, color: "#8b8b8e" },
-  { id: 17, color: "#C8A2C8" },
-]);
+const colors_chip = ref([]);
 
 const bread = ref([
   {
@@ -112,6 +94,8 @@ async function fetchData() {
   products.value = aux.products.data;
   totalPages.value = aux.products.last_page;
   totalProducts.value = aux.productsTotalCount;
+
+  colors_chip.value = aux.colors
 
   if (route.query.category) {
     panelCat.value = null
@@ -496,41 +480,59 @@ const toggleSubGroupFn = (index, subCat) => {
           </VCard>
 
           <VCard class="mt-7 sidebar-container">
-            <VCardItem class="p-0 text-left mt-6"> COLOR </VCardItem>
+            <VCardItem class="p-0 text-left mt-6"> COLOR {{toggle}}</VCardItem>
             <VCardText class="text-left align-left p-0 mt-4">
               <div class="d-flex align-center flex-column">
+          
                 <VBtnToggle
                   v-model="toggle"
-                  color="primary"
-                  class="d-flex align-center flex-wrap tw-bg-none"
-                  mandatory
-                  style="flex-wrap: wrap; height: auto"
+                  density="comfortable"
+                  multiple
+                  class="d-flex align-center flex-wrap tw-bg-none v-avatar-group h-auto"
                 >
-                  <router-link
-                    v-for="(color_, i) in colors_chip"
-                    :to="{
-                      name: 'products',
-                      query: {
-                        category: route.query.category,
-                        fathercategory: route.query.fathercategory,
-                        subcategory: route.query.subcategory,
-                        colorId: color_.id,
-                      },
-                    }"
-                  >
-                    <v-avatar 
-                      v-if="color_.isGradient" 
-                      size="40" 
-                      class="color-chip tw-cursor-pointer" 
-                      :style="{ backgroundImage: color_.color }"
-                    />
-                    <v-avatar 
-                      v-else 
-                      :color="color_.color" 
-                      size="40" 
-                      class="color-chip tw-cursor-pointer"
-                    />
-                  </router-link>
+                  <VBtn v-for="(color_, i) in colors_chip" variant="text">
+                    <router-link
+                      :to="{
+                        name: 'products',
+                        query: {
+                          category: route.query.category,
+                          fathercategory: route.query.fathercategory,
+                          subcategory: route.query.subcategory,
+                          colorId: color_.id,
+                        },
+                      }"
+                    >
+                      <VAvatar 
+                        v-if="color_.is_gradient" 
+                        size="30" 
+                        class="my-1 tw-cursor-pointer"
+                        :class="(Number(route.query.colorId) === Number(color_.id)) ? 'color-selected' : 'color-chip'"
+                        :style="{ backgroundImage: color_.color }"
+                      >
+                        <VTooltip
+                          location="top"
+                          activator="parent"
+                          transition="scroll-x-transition"
+                        >
+                          <span>{{ color_.name }}</span>
+                        </VTooltip>
+                      </VAvatar>
+                      <VAvatar 
+                        v-else 
+                        :color="color_.color" 
+                        size="30" 
+                        class="my-1 tw-cursor-pointer"
+                        :class="(Number(route.query.colorId) === Number(color_.id)) ? 'color-selected' : 'color-chip'"
+                      >
+                        <VTooltip
+                          location="top"
+                          activator="parent"
+                        >
+                          <span>{{ color_.name }}</span>
+                        </VTooltip>
+                      </VAvatar>
+                    </router-link>
+                  </VBtn>
                 </VBtnToggle>
               </div>
             </VCardText>
@@ -679,6 +681,37 @@ const toggleSubGroupFn = (index, subCat) => {
 
 <style scoped>
 
+.v-btn-group::v-deep(.v-btn--size-default) {
+  padding: 0 !important;
+  min-width: 40px !important;
+}
+
+.v-btn-toggle::v-deep(.v-btn.v-btn--active:not(.v-btn--disabled) > .v-btn__overlay) {
+   opacity: 0 !important;
+}
+
+.v-btn:hover::v-deep(.v-btn__overlay) {
+   opacity: 0 !important;
+}
+
+.v-avatar-group {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.color-chip {
+    border: 2px solid #F3FCFE;
+}
+
+.color-selected {
+    border: 2px solid #FF0090;
+}
+
+.v-avatar-group>*:hover {
+    transform: translateY(-5px) scale(1);
+    box-shadow: 0 3px 12px rgba(var(--v-shadow-key-umbra-color), var(--v-shadow-md-opacity)), 0 0 transparent, 0 0 transparent;
+}
+
 .v-select::v-deep(.v-field__input) {
   padding-top: 2%;
   padding-left: 8%;
@@ -758,14 +791,6 @@ const toggleSubGroupFn = (index, subCat) => {
   text-overflow: clip;
 }
 
-.color-chip {
-  width: 25px !important;
-  height: 25px !important;
-  border-radius: 50%;
-  opacity: 1 !important;
-  margin: 5px !important;
-}
-
 .button-chip {
   padding: 0;
   opacity: 1 !important;
@@ -836,11 +861,6 @@ const toggleSubGroupFn = (index, subCat) => {
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
-}
-
-.color-chip {
-  margin: 4px;
-  cursor: pointer;
 }
 
 @media only screen and (max-width: 767px) {
