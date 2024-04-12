@@ -102,7 +102,9 @@ async function fetchData() {
           class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary" v-if="!isMobile">Ver todos</router-link>
       </VCardTitle>
       <VDivider class="hr-primary"/>
-      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-center card-icons">
+      <VCardText 
+        class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch card-icons"
+        :class="icons_categories.length === 3 ? 'justify-content-between' : 'justify-content-center'">
         <template v-for="(i, index) in icons_categories">
           <router-link
             v-if="i.icon_subcategory !== null"
