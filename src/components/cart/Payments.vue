@@ -1,9 +1,9 @@
 <script setup>
 
 import { requiredValidator, phoneValidator, emailValidator } from '@validators'
+import { formatNumber } from '@formatters'
 import Product6 from '@/components/product/Product6.vue'
 import Payu from '@/assets/icons/payu.svg'
-import { formatNumber } from '@formatters'
 
 const props = defineProps({
     products: {

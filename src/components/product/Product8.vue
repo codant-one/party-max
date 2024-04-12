@@ -102,6 +102,9 @@ watchEffect(() => {
         border-radius: 16px !important;
         border: 1px solid #D9EEF2;
         padding: 10px !important;
+        text-align: center;
+        align-items: center;
+        display: flex;
     }
 
     .zoom-product  {

@@ -1,5 +1,7 @@
 <script setup>
+
 import { formatNumber } from '@formatters'
+
 const props = defineProps({
     product: {
         type: Object,
@@ -59,7 +61,7 @@ watchEffect(() => {
                             }"
                             class="tw-no-underline">
                             <VImg 
-                                :width="230"
+                                :width="177"
                                 :src="baseURL + image" 
                                 cover />
                         </router-link>
@@ -143,6 +145,7 @@ watchEffect(() => {
         background-color: #FF27B3 !important;
         box-shadow: 0px 0px 8px 0px #FF27B3;
     }
+    
     .v-card-text {
         padding: 0 10px;
     }
@@ -153,6 +156,9 @@ watchEffect(() => {
         border-radius: 16px !important;
         border: 1px solid #D9EEF2;
         padding: 10px !important;
+        text-align: center;
+        align-items: center;
+        display: flex;
     }
 
     .zoom-product  {

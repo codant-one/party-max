@@ -1,5 +1,7 @@
 <script setup>
+
 import { formatNumber } from '@formatters'
+
 const props = defineProps({
     product: {
         type: Object,
@@ -15,6 +17,8 @@ const props = defineProps({
     }
 })
 
+const route = useRoute()
+
 const image = ref(null)
 const wholesale_price = ref(null)
 const price_for_sale = ref(null)
@@ -26,6 +30,7 @@ const slug = ref(null)
 const stock = ref(null)
 const color = ref(null)
 const quantity = ref(null)
+const existence_whole = ref(false)
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
@@ -33,10 +38,10 @@ watchEffect(() => {
 
     if (!(Object.entries(props.product).length === 0) && props.product.constructor === Object) {
         image.value = (props.product.images.length === 0) ? props.product.product.image : props.product.images[0]?.image
-        wholesale_price.value = props.product.product.wholesale_price
+        wholesale_price.value = props.product.wholesale_price ?? '0.00'
         price_for_sale.value = props.product.product.price_for_sale
         name.value = props.product.product.name.toLowerCase().replace(/\b\w/g, (match) => match.toUpperCase())
-        store.value = props.product.product.user.name + ' ' + (props.product.product.user.last_name ?? '')
+        store.value = props.product.user.user_detail.store_name ?? (props.product.supplier?.company_name ?? (props.product.user.name + ' ' + (props.product.user.last_name ?? '')))
         rating.value = props.product.product.rating
         single_description.value = props.product.single_description
         slug.value = props.product.product.slug
@@ -44,6 +49,8 @@ watchEffect(() => {
         color.value = props.product.color.name
         quantity.value = props.product.quantity
     }
+
+    existence_whole.value = route.query.wholesalers ? true : false;
 })
 
 </script>
@@ -75,16 +82,17 @@ watchEffect(() => {
                 <VCol cols="12" md="3" class="d-flex justify-content-end align-center">
                     <div class="me-2">
                         <VCardText class="d-flex text-end align-end justify-content-end">
-                            <div class="d-flex text-center align-center justify-content-center">
+                            <!-- <div class="d-flex text-center align-center justify-content-center">
                                 <span class="tw-text-primary tw-font-medium me-1">(-%16)</span>
-                            </div>
-                            <div class="d-flex text-center align-center justify-content-center">
+                            </div> -->
+                            <!-- <div class="d-flex text-center align-center justify-content-center">
                                 <span class="tw-text-gray">${{ formatNumber(wholesale_price) }}</span>
-                            </div>
+                            </div> -->
                         </VCardText>
                         <VCardText class="mt-1">
                             <div class="d-flex text-center align-end justify-content-end">
-                                <span class="text_1 tw-text-tertiary">${{ formatNumber(price_for_sale) }}</span>
+                                <span v-if="existence_whole" class="text_1 tw-text-tertiary">${{ formatNumber(wholesale_price) }}</span>
+                                <span v-if="!existence_whole" class="text_1 tw-text-tertiary">${{ formatNumber(price_for_sale) }}</span>
                             </div>
                         </VCardText>
                     </div>
@@ -113,6 +121,7 @@ watchEffect(() => {
         background-color: #FF27B3 !important;
         box-shadow: 0px 0px 8px 0px #FF27B3;
     }
+    
     .v-card-text {
         padding: 0 10px;
     }
@@ -123,6 +132,9 @@ watchEffect(() => {
         border-radius: 16px !important;
         border: 1px solid #D9EEF2;
         padding: 10px !important;
+        text-align: center;
+        align-items: center;
+        display: flex;
     }
 
     .zoom-product  {

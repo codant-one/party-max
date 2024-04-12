@@ -1,5 +1,7 @@
 <script setup>
+
 import { formatNumber } from '@formatters'
+
 const props = defineProps({
     product: {
         type: Object,
@@ -14,6 +16,8 @@ const props = defineProps({
         required: true
     }
 })
+
+const route = useRoute()
 
 const emit = defineEmits([
     'delete', 
@@ -33,6 +37,7 @@ const stock = ref(null)
 const quantity = ref(null)
 const product_id = ref(null)
 const product_color_id = ref(null)
+const existence_whole = ref(false)
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
@@ -40,10 +45,10 @@ watchEffect(() => {
 
     if (!(Object.entries(props.product).length === 0) && props.product.constructor === Object) {
         image.value = (props.product.images.length === 0) ? props.product.product.image : props.product.images[0]?.image
-        wholesale_price.value = props.product.product.wholesale_price
+        wholesale_price.value = props.product.wholesale_price ?? '0.00'
         price_for_sale.value = props.product.product.price_for_sale
         name.value = props.product.product.name.toLowerCase().replace(/\b\w/g, (match) => match.toUpperCase())
-        store.value = props.product.product.user.name + ' ' + (props.product.product.user.last_name ?? '')
+        store.value = props.product.user.user_detail.store_name ?? (props.product.supplier?.company_name ?? (props.product.user.name + ' ' + (props.product.user.last_name ?? '')))
         rating.value = props.product.rating
         single_description.value = props.product.product.single_description
         slug.value = props.product.product.slug
@@ -53,9 +58,11 @@ watchEffect(() => {
         product_color_id.value = props.product.product_color_id
         color.value = props.product.color.name
     }
+
+    existence_whole.value = route.query.wholesalers ? true : false;
 })
 
-const onChange = ()=>{
+const onChange = () => {
 
     let data = {
         quantity: quantity.value,
@@ -65,15 +72,13 @@ const onChange = ()=>{
     emit('addCart',data)
 }
 
-const control_cant =()=>
-{
+const control_cant = () => {
    
-
     if (parseInt(quantity.value) > parseInt(stock.value)) { 
-        quantity.value = stock.value; 
-      } else if (parseInt(quantity.value) < 1) {
+       quantity.value = stock.value; 
+    } else if (parseInt(quantity.value) < 1) {
         quantity.value = 1;
-      }
+    }
 }
 
 </script>
@@ -104,8 +109,6 @@ const control_cant =()=>
                         >
                             Eliminar
                         </span>
-                        <!--<span class="d-flex tw-text-xs py-1 tw-text-primary title-product me-3">Guardar</span>
-                        <span class="d-flex tw-text-xs py-1 tw-text-primary title-product">Modificar</span>-->
                     </VCardText>
 
                 </VCol>
@@ -127,17 +130,15 @@ const control_cant =()=>
                     </VCardText>
                   </VCol>
                 <VCol cols="6" md="2" class="align-center text-center py-5 my-auto pe-4">
-                    <VCardText class="d-flex text-center align-center justify-content-center">
-                        <div class="d-flex text-center align-center justify-content-center">
-                            <span class="tw-text-primary tw-font-medium me-1">(-%16)</span>
-                        </div>
+                    <!-- <VCardText class="d-flex text-center align-center justify-content-center">
                         <div class="d-flex text-center align-center justify-content-center">
                             <span class="tw-text-gray">${{ formatNumber(wholesale_price) }}</span>
                         </div>
-                    </VCardText>
+                    </VCardText> -->
                     <VCardText class="mt-1">
                         <div class="d-flex text-center align-center justify-content-center">
-                            <span class="text_1 tw-text-tertiary">${{ formatNumber(price_for_sale) }}</span>
+                            <span v-if="existence_whole" class="text_1 tw-text-tertiary">${{ formatNumber(wholesale_price) }}</span>
+                            <span v-if="!existence_whole" class="text_1 tw-text-tertiary">${{ formatNumber(price_for_sale) }}</span>
                         </div>
                     </VCardText>
                 </VCol>
@@ -165,6 +166,7 @@ const control_cant =()=>
         background-color: #FF27B3 !important;
         box-shadow: 0px 0px 8px 0px #FF27B3;
     }
+    
     .v-card-text {
         padding: 0 10px;
     }
@@ -175,6 +177,9 @@ const control_cant =()=>
         border-radius: 16px !important;
         border: 1px solid #E1E1E1;
         padding: 10px !important;
+        text-align: center;
+        align-items: center;
+        display: flex;
     }
 
     .zoom-product  {

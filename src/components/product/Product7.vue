@@ -1,4 +1,5 @@
 <script setup>
+
 import { formatNumber } from '@formatters'
 
 const props = defineProps({
@@ -104,6 +105,9 @@ watchEffect(() => {
         border-radius: 16px !important;
         border: 1px solid #D9EEF2;
         padding: 10px !important;
+        text-align: center;
+        align-items: center;
+        display: flex;
     }
 
     .zoom-product  {
@@ -169,16 +173,14 @@ watchEffect(() => {
         padding: 0px !important;
     }
 
-    .price_prod
-    {
+    .price_prod {
         font-size: 24px;
         font-style: normal;
         font-weight: 600;
         line-height: 16px; /* 66.667% */
     }
 
-    .text-delete
-    {
+    .text-delete {
         font-size: 16px;
         font-style: normal;
         font-weight: 400;

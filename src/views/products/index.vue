@@ -77,8 +77,8 @@ async function fetchData() {
   categories.value = homeStores.getData.parentCategories;
 
   let info = {
-    orderByField: "pl.order_id",
-    orderBy: "asc",
+    orderByField: route.query.category ? 'pl.order_id' : 'products.id',
+    orderBy: 'asc',
     limit: rowPerPage.value,
     page: currentPage.value,
     category: route.query.category ?? null,
@@ -87,7 +87,7 @@ async function fetchData() {
     search: route.query.search ?? null,
     min: min.value ?? null,
     max: max.value ?? null,
-    wholesalers: route.query.wholesalers ? true : false,
+    wholesalers: route.query.wholesalers ? true : false
   };
 
   var aux = await miscellaneousStores.products(info);
