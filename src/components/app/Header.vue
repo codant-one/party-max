@@ -14,6 +14,7 @@
 
   const color = ref('#FF0090')
   
+  const route = useRoute();
   const homeStores = useHomeStores()
   const authStores = useAuthStores()
   const cartStores = useCartStores()
@@ -61,17 +62,30 @@
       cart_products.value = products
     });
 
+  watch(() => 
+    route.query,(newPath, oldPath) => {
+      fetchData()
+    }
+  );
+
   watchEffect(fetchData)
 
   async function fetchData() {
     await homeStores.fetchData()
     categories.value = homeStores.getData.parentCategories
     services.value = homeStores.getData.parentServices
-  
-    categoriesSearch.value = 0
+
+    categoriesSearch.value = route.query.category ? findCategory(route.query.category) : 0
+    textSearch.value = route.query.search ?? null
+
     categories_.value = [{ id: 0, name: 'Todos' }, ...categories.value];
 
     color.value = (isMobile.value) ? '#FFFFFF' : '#FF0090'
+  }
+
+  const findCategory = (category) => {
+    let index = categories.value.findIndex(element => element.slug === category)
+    return index === -1 ? 0 : index + 1
   }
 
   const logout = () => {

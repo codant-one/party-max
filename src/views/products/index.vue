@@ -77,14 +77,14 @@ async function fetchData() {
   categories.value = homeStores.getData.parentCategories;
 
   let info = {
-    orderByField: route.query.category ? 'pl.order_id' : 'products.id',
+    orderByField: (route.query.category && route.query.category !== 'all') ? 'pl.order_id' : 'products.id',
     orderBy: 'asc',
     limit: rowPerPage.value,
     page: currentPage.value,
     category: route.query.category ?? null,
     subcategory: route.query.subcategory ?? null,
     colorId: route.query.colorId ?? null,
-    search: route.query.search ?? null,
+    searchPublic: route.query.search ?? null,
     min: min.value ?? null,
     max: max.value ?? null,
     wholesalers: route.query.wholesalers ? true : false
@@ -97,7 +97,7 @@ async function fetchData() {
 
   colors_chip.value = aux.colors
 
-  if (route.query.category) {
+  if (route.query.category && route.query.category !== 'all') {
     panelCat.value = null
     category.value = {
       title: categories.value.filter(item => item.slug === route.query.category)[0].name,
@@ -211,7 +211,7 @@ const toggleSubGroupFn = (index, subCat) => {
           <VCard class="mt-7 sidebar-container">
             <VCardItem class="p-0 text-left mt-6"> CATEGORÍAS </VCardItem>
 
-            <VCardItem v-if="route.query.category" class="p-0 text-allcategories tw-font-bold mt-6">
+            <VCardItem v-if="route.query.category && route.query.category !== 'all'" class="p-0 text-allcategories tw-font-bold mt-6">
               <router-link
                 to="/products"
                 class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
@@ -594,12 +594,10 @@ const toggleSubGroupFn = (index, subCat) => {
                   menu-icon="mdi-chevron-down"
                   placeholder="Clasificación por defecto"
                   :items="[
-                    'producto 1',
-                    'producto 2',
-                    'producto 3',
-                    'producto 3',
-                    'producto 4',
-                    'producto 5',
+                    'Precio: Menor a mayor',
+                    'Precio: Mayor a menor',
+                    'Mejor Valorados',
+                    'Recientes'
                   ]"
                   variant="outlined"
                   rounded
@@ -718,7 +716,20 @@ const toggleSubGroupFn = (index, subCat) => {
 }
 
 .v-select::v-deep(.v-field__append-inner) {
-  padding-top: 20% !important;
+  padding-top: 15% !important;
+}
+
+.v-select::v-deep(.v-field__clearable) {
+  padding-top: 15% !important;
+  margin-inline: 0 !important;
+}
+
+.v-select::v-deep(.v-field__overlay:focus-visible) {
+  outline: -webkit-focus-ring-color auto 0px !important;
+}
+
+.v-select::v-deep(.v-field__clearable > .v-icon--size-default) {
+  font-size: 20px !important;
 }
 
 .v-select::v-deep(.v-field__append-inner > .v-icon) {
