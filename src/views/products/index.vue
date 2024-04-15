@@ -3,6 +3,7 @@
 import { ref } from "vue";
 import { useHomeStores } from "@/stores/home";
 import { useMiscellaneousStores } from "@/stores/miscellaneous";
+import router from '@/router'
 import Loader from "@/components/common/Loader.vue";
 import icon1 from "@/assets/icons/icon-menu-product.svg";
 import icon2 from "@/assets/icons/icon-menu-product2.svg";
@@ -21,18 +22,18 @@ const openedSubGroups = ref([]);
 const products = ref([]);
 const tab = ref("0");
 const category = ref(null);
-const toggle = ref(null);
+const toggle = ref([]);
 
 const rowPerPage = ref(12);
 const currentPage = ref(1);
 const totalPages = ref(1);
 const totalProducts = ref(0);
-const rang_price = ref([0, 100000]);
+const rangPrice = ref([0, 100000]);
 
 const min = ref(null);
 const max = ref(null);
 
-const colors_chip = ref([]);
+const colors = ref([]);
 
 const bread = ref([
   {
@@ -42,7 +43,7 @@ const bread = ref([
   }
 ]);
 
-const sort_by = ref(0)
+const sortBy = ref(0)
 
 const sortByItems = ref([
   { id: 0, name : 'Recomendados'},
@@ -97,7 +98,7 @@ async function fetchData() {
     searchPublic: route.query.search ?? null,
     min: min.value ?? null,
     max: max.value ?? null,
-    sortBy: sort_by.value,
+    sortBy: sortBy.value,
     wholesalers: route.query.wholesalers ? true : false
   };
 
@@ -106,7 +107,19 @@ async function fetchData() {
   totalPages.value = aux.products.last_page;
   totalProducts.value = aux.productsTotalCount;
 
-  colors_chip.value = aux.colors
+  colors.value = aux.colors
+
+  if(route.query.colorId) {
+    const colorsQuery = route.query.colorId.split(',').map(Number);
+
+    const positions = colors.value.map(obj => obj.id).reduce((acc, num, index) => {
+      if (colorsQuery.includes(num))
+        acc.push(index);
+      return acc;
+    }, []);
+
+    toggle.value = positions
+  }
 
   if (route.query.category && route.query.category !== 'all') {
     panelCat.value = null
@@ -176,9 +189,9 @@ const isLastItem = (index) => {
   return index === products.value.length - 1;
 };
 
-const change_price = () => {
-  min.value = rang_price.value[0];
-  max.value = rang_price.value[1];
+const priceAction = () => {
+  min.value = rangPrice.value[0];
+  max.value = rangPrice.value[1];
   fetchData();
 };
 
@@ -205,6 +218,24 @@ const toggleSubGroupFn = (index, subCat) => {
     panelCat.value[1] = subCat
   }
 };
+
+const colorAction = () => {
+  let colorsSelected = []
+
+  toggle.value.forEach(element => {
+    colorsSelected.push(colors.value[element].id)
+  });
+
+  router.push({ 
+    name: 'products', 
+    query: {
+      category: route.query.category,
+      fathercategory: route.query.fathercategory,
+      subcategory: route.query.subcategory,
+      colorId: colorsSelected.join(","),
+    }
+  })
+}
 
 </script>
 
@@ -491,7 +522,7 @@ const toggleSubGroupFn = (index, subCat) => {
           </VCard>
 
           <VCard class="mt-7 sidebar-container">
-            <VCardItem class="p-0 text-left mt-6"> COLOR {{toggle}}</VCardItem>
+            <VCardItem class="p-0 text-left mt-6"> COLOR </VCardItem>
             <VCardText class="text-left align-left p-0 mt-4">
               <div class="d-flex align-center flex-column">
           
@@ -501,48 +532,36 @@ const toggleSubGroupFn = (index, subCat) => {
                   multiple
                   class="d-flex align-center flex-wrap tw-bg-none v-avatar-group h-auto"
                 >
-                  <VBtn v-for="(color_, i) in colors_chip" variant="text">
-                    <router-link
-                      :to="{
-                        name: 'products',
-                        query: {
-                          category: route.query.category,
-                          fathercategory: route.query.fathercategory,
-                          subcategory: route.query.subcategory,
-                          colorId: color_.id,
-                        },
-                      }"
+                  <VBtn v-for="(color, index) in colors" variant="text" @click="colorAction">
+                    <VAvatar 
+                      v-if="color.is_gradient" 
+                      size="30" 
+                      class="my-1 tw-cursor-pointer"
+                      :class="(toggle.indexOf(index) !== -1) ? 'color-selected' : 'color-chip'"
+                      :style="{ backgroundImage: color.color }"
                     >
-                      <VAvatar 
-                        v-if="color_.is_gradient" 
-                        size="30" 
-                        class="my-1 tw-cursor-pointer"
-                        :class="(Number(route.query.colorId) === Number(color_.id)) ? 'color-selected' : 'color-chip'"
-                        :style="{ backgroundImage: color_.color }"
+                      <VTooltip
+                        location="top"
+                        activator="parent"
+                        transition="scroll-x-transition"
                       >
-                        <VTooltip
-                          location="top"
-                          activator="parent"
-                          transition="scroll-x-transition"
-                        >
-                          <span>{{ color_.name }}</span>
-                        </VTooltip>
-                      </VAvatar>
-                      <VAvatar 
-                        v-else 
-                        :color="color_.color" 
-                        size="30" 
-                        class="my-1 tw-cursor-pointer"
-                        :class="(Number(route.query.colorId) === Number(color_.id)) ? 'color-selected' : 'color-chip'"
+                        <span>{{ color.name }}</span>
+                      </VTooltip>
+                    </VAvatar>
+                    <VAvatar 
+                      v-else 
+                      :color="color.color" 
+                      size="30" 
+                      class="my-1 tw-cursor-pointer"
+                      :class="(toggle.indexOf(index) !== -1) ? 'color-selected' : 'color-chip'"
+                    >
+                      <VTooltip
+                        location="top"
+                        activator="parent"
                       >
-                        <VTooltip
-                          location="top"
-                          activator="parent"
-                        >
-                          <span>{{ color_.name }}</span>
-                        </VTooltip>
-                      </VAvatar>
-                    </router-link>
+                        <span>{{ color.name }}</span>
+                      </VTooltip>
+                    </VAvatar>
                   </VBtn>
                 </VBtnToggle>
               </div>
@@ -555,17 +574,17 @@ const toggleSubGroupFn = (index, subCat) => {
               <VRow class="align-center container-vslider">
                 <VCol cols="12">
                   <VRangeSlider
-                    v-model="rang_price"
+                    v-model="rangPrice"
                     :max="100000"
                     step="10"
                     thumb-label="always"
                     color="primary"
-                    @update:modelValue="change_price"
+                    @update:modelValue="priceAction"
                   />
                 </VCol>
               </VRow>
               <VCardItem class="p-0 text-left mt-5">
-                Precio: ${{ rang_price[0] }} - ${{ rang_price[1] }}
+                Precio: ${{ rangPrice[0] }} - ${{ rangPrice[1] }}
               </VCardItem>
             </VCardText>
            
@@ -599,7 +618,7 @@ const toggleSubGroupFn = (index, subCat) => {
 
               <VCol cols="6" md="4" class="pl-7 text-left">
                 <VSelect
-                  v-model="sort_by"
+                  v-model="sortBy"
                   :items="sortByItems"
                   item-title="name"
                   item-value="id"
@@ -698,7 +717,7 @@ const toggleSubGroupFn = (index, subCat) => {
 }
 
 .v-btn:hover::v-deep(.v-btn__overlay) {
-   opacity: 0 !important;
+  opacity: 0 !important;
 }
 
 .v-avatar-group {
@@ -707,16 +726,17 @@ const toggleSubGroupFn = (index, subCat) => {
 }
 
 .color-chip {
-    border: 2px solid #F3FCFE;
+  border: 2px solid #F3FCFE;
 }
 
 .color-selected {
-    border: 2px solid #FF0090;
+  border: 2px solid #E2F8FC;
+  box-shadow: 0 0 0 2px #0A1B33;
 }
 
 .v-avatar-group>*:hover {
-    transform: translateY(-5px) scale(1);
-    box-shadow: 0 3px 12px rgba(var(--v-shadow-key-umbra-color), var(--v-shadow-md-opacity)), 0 0 transparent, 0 0 transparent;
+  transform: translateY(-5px) scale(1);
+  box-shadow: 0 3px 12px rgba(var(--v-shadow-key-umbra-color), var(--v-shadow-md-opacity)), 0 0 transparent, 0 0 transparent;
 }
 
 .v-select::v-deep(.v-field__input) {
@@ -787,7 +807,7 @@ const toggleSubGroupFn = (index, subCat) => {
 }
 
 .v-list-group__items .v-list-item {
-    padding-inline-start: calc(5px + var(--indent-padding)) !important;
+  padding-inline-start: calc(5px + var(--indent-padding)) !important;
 }
 
 .v-list::v-deep(.v-list-item-title) {
