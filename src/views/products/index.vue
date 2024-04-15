@@ -3,6 +3,7 @@
 import { ref } from "vue";
 import { useHomeStores } from "@/stores/home";
 import { useMiscellaneousStores } from "@/stores/miscellaneous";
+import { formatNumber } from '@formatters'
 import router from '@/router'
 import Loader from "@/components/common/Loader.vue";
 import icon1 from "@/assets/icons/icon-menu-product.svg";
@@ -28,12 +29,13 @@ const rowPerPage = ref(12);
 const currentPage = ref(1);
 const totalPages = ref(1);
 const totalProducts = ref(0);
-const rangPrice = ref([0, 100000]);
+const rangPrice = ref([0, 50000]);
 
 const min = ref(null);
 const max = ref(null);
 
 const colors = ref([]);
+const colorsSelected = ref([]);
 
 const bread = ref([
   {
@@ -220,10 +222,11 @@ const toggleSubGroupFn = (index, subCat) => {
 };
 
 const colorAction = () => {
-  let colorsSelected = []
 
+  colorsSelected.value = []
+  
   toggle.value.forEach(element => {
-    colorsSelected.push(colors.value[element].id)
+    colorsSelected.value.push(colors.value[element].id)
   });
 
   router.push({ 
@@ -232,7 +235,7 @@ const colorAction = () => {
       category: route.query.category,
       fathercategory: route.query.fathercategory,
       subcategory: route.query.subcategory,
-      colorId: colorsSelected.join(","),
+      colorId: colorsSelected.value.join(",")
     }
   })
 }
@@ -273,7 +276,8 @@ const colorAction = () => {
                       :to="{
                         name: 'products',
                         query: {
-                          category: i.slug.split('/')[0]
+                          category: i.slug.split('/')[0],
+                          colorId: colorsSelected.join(',')
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ i.name }}
@@ -287,7 +291,8 @@ const colorAction = () => {
                         :to="{
                           name: 'products',
                           query: {
-                            category: i.slug.split('/')[0]
+                            category: i.slug.split('/')[0],
+                            colorId: colorsSelected.join(',')
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         <VListItemTitle>{{ i.name }}</VListItemTitle>
@@ -311,7 +316,8 @@ const colorAction = () => {
                           name: 'products',
                           query: {
                             category: i.slug.split('/')[0],
-                            subcategory: j.slug.split('/')[1]
+                            subcategory: j.slug.split('/')[1],
+                            colorId: colorsSelected.join(',')
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary">
                         <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -325,7 +331,8 @@ const colorAction = () => {
                               name: 'products',
                               query: {
                                 category: i.slug.split('/')[0],
-                                subcategory: j.slug.split('/')[1]
+                                subcategory: j.slug.split('/')[1],
+                                colorId: colorsSelected.join(',')
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                             <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -349,7 +356,8 @@ const colorAction = () => {
                               query: {
                                 category: i.slug.split('/')[0],
                                 fathercategory: j.slug.split('/')[1],
-                                subcategory: k.slug.split('/')[2]
+                                subcategory: k.slug.split('/')[2],
+                                colorId: colorsSelected.join(',')
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                             {{ k.name }}
@@ -371,7 +379,8 @@ const colorAction = () => {
                     :to="{
                       name: 'products',
                         query: {
-                          category: route.query.category
+                          category: route.query.category,
+                          colorId: colorsSelected.join(',')
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.title }}
@@ -387,7 +396,8 @@ const colorAction = () => {
                       name: 'products',
                         query: {
                           category: route.query.category,
-                          subcategory: route.query.fathercategory
+                          subcategory: route.query.fathercategory,
+                          colorId: colorsSelected.join(',')
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.fathercategory }}
@@ -416,7 +426,8 @@ const colorAction = () => {
                     :to="{
                       name: 'products',
                         query: {
-                          category: route.query.category
+                          category: route.query.category,
+                          colorId: colorsSelected.join(',')
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.title }}
@@ -441,7 +452,8 @@ const colorAction = () => {
                       query: {
                         category: route.query.category,
                         fathercategory: route.query.subcategory,
-                        subcategory: j.slug.split('/')[2]
+                        subcategory: j.slug.split('/')[2],
+                        colorId: colorsSelected.join(',')
                       },
                     }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ j.name }}
@@ -470,7 +482,8 @@ const colorAction = () => {
                         name: 'products',
                         query: {
                           category: route.query.category,
-                          subcategory: j.slug.split('/')[1]
+                          subcategory: j.slug.split('/')[1],
+                          colorId: colorsSelected.join(',')
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         {{ j.name }}
@@ -484,7 +497,8 @@ const colorAction = () => {
                             name: 'products',
                             query: {
                               category: route.query.category,
-                              subcategory: j.slug.split('/')[1]
+                              subcategory: j.slug.split('/')[1],
+                              colorId: colorsSelected.join(',')
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -508,7 +522,8 @@ const colorAction = () => {
                             query: {
                               category: route.query.category,
                               fathercategory: j.slug.split('/')[1],
-                              subcategory: k.slug.split('/')[2]
+                              subcategory: k.slug.split('/')[2],
+                              colorId: colorsSelected.join(',')
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           {{ k.name }}
@@ -575,16 +590,16 @@ const colorAction = () => {
                 <VCol cols="12">
                   <VRangeSlider
                     v-model="rangPrice"
-                    :max="100000"
+                    :max="50000"
                     step="10"
                     thumb-label="always"
                     color="primary"
-                    @update:modelValue="priceAction"
+                    @end="priceAction"
                   />
                 </VCol>
               </VRow>
               <VCardItem class="p-0 text-left mt-5">
-                Precio: ${{ rangPrice[0] }} - ${{ rangPrice[1] }}
+                ${{ formatNumber(rangPrice[0]) }} - ${{ formatNumber(rangPrice[1]) }}
               </VCardItem>
             </VCardText>
            
