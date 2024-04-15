@@ -96,9 +96,10 @@ watchEffect(() => {
 
 <style scoped>
 
-    .title-product {
-        min-height: 55px;
+    .card-information {
+        min-height: 100px;
     }
+    
     .v-card-text {
         padding: 0 10px;
     }
