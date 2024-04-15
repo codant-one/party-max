@@ -38,7 +38,7 @@ watchEffect(() => {
         slug.value = props.product.slug
     }
 
-    existence_whole.value = route.query.wholesalers ? true : false;
+    existence_whole.value = route.query.wholesalers === 'true' ? true : false;
 })
 
 </script>

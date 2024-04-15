@@ -59,7 +59,7 @@ watchEffect(() => {
         color.value = props.product.color.name
     }
 
-    existence_whole.value = route.query.wholesalers ? true : false;
+    existence_whole.value = route.query.wholesalers === 'true' ? true : false;
 })
 
 const onChange = () => {
