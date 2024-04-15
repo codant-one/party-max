@@ -42,6 +42,16 @@ const bread = ref([
   }
 ]);
 
+const sort_by = ref(0)
+
+const sortByItems = ref([
+  { id: 0, name : 'Recomendados'},
+  { id: 1, name : 'Precio: Menor a mayor'},
+  { id: 2, name : 'Precio: Mayor a menor'},
+  { id: 3, name : 'Mejor Valorados'},
+  { id: 4, name :  'Recientes'}
+])
+
 // 👉 watching current page
 watchEffect(() => {
   if (currentPage.value > totalPages.value)
@@ -87,6 +97,7 @@ async function fetchData() {
     searchPublic: route.query.search ?? null,
     min: min.value ?? null,
     max: max.value ?? null,
+    sortBy: sort_by.value,
     wholesalers: route.query.wholesalers ? true : false
   };
 
@@ -588,19 +599,17 @@ const toggleSubGroupFn = (index, subCat) => {
 
               <VCol cols="6" md="4" class="pl-7 text-left">
                 <VSelect
-                  class="my-custom-select"
-                  clearable
-                  clear-icon="mdi-close"
+                  v-model="sort_by"
+                  :items="sortByItems"
+                  item-title="name"
+                  item-value="id"
                   menu-icon="mdi-chevron-down"
-                  placeholder="Clasificación por defecto"
-                  :items="[
-                    'Precio: Menor a mayor',
-                    'Precio: Mayor a menor',
-                    'Mejor Valorados',
-                    'Recientes'
-                  ]"
+                  label="Ordenar:"
                   variant="outlined"
                   rounded
+                  class="my-custom-select"
+                  :menu-props="{ maxHeight: '1000px'}"
+                  @update:modelValue="fetchData"
                 />
               </VCol>
 
