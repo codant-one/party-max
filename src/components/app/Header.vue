@@ -702,7 +702,7 @@ const closeMenuOnMouseLeave = () => {
   }
 
   .w-15 {
-    width: 27%;
+    width: 30%;
   }
 
   .me-24 {
