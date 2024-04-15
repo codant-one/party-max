@@ -193,7 +193,16 @@ const closeMenuOnMouseLeave = () => {
 
 const toggleWholesalers = () => {
   if (route.query.wholesalers === 'true') {
-    router.push({ name: 'products' })
+    router.push({ 
+      name: 'products',
+      query: {
+        category: route.query.category,
+        fathercategory: route.query.fathercategory,
+        subcategory: route.query.subcategory,
+        colorId: route.query.colorId,
+        wholesalers: 'false'
+      }
+    })
   } else { 
     router.push({ 
       name: 'products',

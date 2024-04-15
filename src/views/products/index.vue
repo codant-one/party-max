@@ -101,7 +101,7 @@ async function fetchData() {
     min: min.value ?? null,
     max: max.value ?? null,
     sortBy: sortBy.value,
-    wholesalers: route.query.wholesalers ? true : false
+    wholesalers: route.query.wholesalers === 'true' ? true : false
   };
 
   var aux = await miscellaneousStores.products(info);
@@ -236,7 +236,7 @@ const colorAction = () => {
       fathercategory: route.query.fathercategory,
       subcategory: route.query.subcategory,
       colorId: colorsSelected.value.join(","),
-      wholesalers: route.query.wholesalers ? true : false
+      wholesalers: route.query.wholesalers === 'true' ? true : false
     }
   })
 }
@@ -262,7 +262,7 @@ const colorAction = () => {
                 :to="{
                   name: 'products',
                   query: {
-                    wholesalers: route.query.wholesalers ? true : false
+                    wholesalers: route.query.wholesalers === 'true' ? true : false
                   }
                 }"
                 class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
@@ -284,7 +284,7 @@ const colorAction = () => {
                         query: {
                           category: i.slug.split('/')[0],
                           colorId: colorsSelected.join(','),
-                          wholesalers: route.query.wholesalers ? true : false
+                          wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ i.name }}
@@ -300,7 +300,7 @@ const colorAction = () => {
                           query: {
                             category: i.slug.split('/')[0],
                             colorId: colorsSelected.join(','),
-                            wholesalers: route.query.wholesalers ? true : false
+                            wholesalers: route.query.wholesalers === 'true' ? true : false
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         <VListItemTitle>{{ i.name }}</VListItemTitle>
@@ -326,7 +326,7 @@ const colorAction = () => {
                             category: i.slug.split('/')[0],
                             subcategory: j.slug.split('/')[1],
                             colorId: colorsSelected.join(','),
-                            wholesalers: route.query.wholesalers ? true : false
+                            wholesalers: route.query.wholesalers === 'true' ? true : false
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary">
                         <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -342,7 +342,7 @@ const colorAction = () => {
                                 category: i.slug.split('/')[0],
                                 subcategory: j.slug.split('/')[1],
                                 colorId: colorsSelected.join(','),
-                                wholesalers: route.query.wholesalers ? true : false
+                                wholesalers: route.query.wholesalers === 'true' ? true : false
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                             <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -368,7 +368,7 @@ const colorAction = () => {
                                 fathercategory: j.slug.split('/')[1],
                                 subcategory: k.slug.split('/')[2],
                                 colorId: colorsSelected.join(','),
-                                wholesalers: route.query.wholesalers ? true : false
+                                wholesalers: route.query.wholesalers === 'true' ? true : false
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                             {{ k.name }}
@@ -392,7 +392,7 @@ const colorAction = () => {
                         query: {
                           category: route.query.category,
                           colorId: colorsSelected.join(','),
-                          wholesalers: route.query.wholesalers ? true : false
+                          wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.title }}
@@ -410,7 +410,7 @@ const colorAction = () => {
                           category: route.query.category,
                           subcategory: route.query.fathercategory,
                           colorId: colorsSelected.join(','),
-                          wholesalers: route.query.wholesalers ? true : false
+                          wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.fathercategory }}
@@ -441,7 +441,7 @@ const colorAction = () => {
                         query: {
                           category: route.query.category,
                           colorId: colorsSelected.join(','),
-                          wholesalers: route.query.wholesalers ? true : false
+                          wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.title }}
@@ -468,7 +468,7 @@ const colorAction = () => {
                         fathercategory: route.query.subcategory,
                         subcategory: j.slug.split('/')[2],
                         colorId: colorsSelected.join(','),
-                        wholesalers: route.query.wholesalers ? true : false
+                        wholesalers: route.query.wholesalers === 'true' ? true : false
                       },
                     }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ j.name }}
@@ -499,7 +499,7 @@ const colorAction = () => {
                           category: route.query.category,
                           subcategory: j.slug.split('/')[1],
                           colorId: colorsSelected.join(','),
-                          wholesalers: route.query.wholesalers ? true : false
+                          wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         {{ j.name }}
@@ -515,7 +515,7 @@ const colorAction = () => {
                               category: route.query.category,
                               subcategory: j.slug.split('/')[1],
                               colorId: colorsSelected.join(','),
-                              wholesalers: route.query.wholesalers ? true : false
+                              wholesalers: route.query.wholesalers === 'true' ? true : false
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -541,7 +541,7 @@ const colorAction = () => {
                               fathercategory: j.slug.split('/')[1],
                               subcategory: k.slug.split('/')[2],
                               colorId: colorsSelected.join(','),
-                              wholesalers: route.query.wholesalers ? true : false
+                              wholesalers: route.query.wholesalers === 'true' ? true : false
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           {{ k.name }}
