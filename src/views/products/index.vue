@@ -37,6 +37,9 @@ const max = ref(null);
 const colors = ref([]);
 const colorsSelected = ref([]);
 
+const rating = ref(5)
+const isMobile = /Mobi/i.test(navigator.userAgent);
+
 const bread = ref([
   {
     title: "Home",
@@ -101,7 +104,8 @@ async function fetchData() {
     min: min.value ?? null,
     max: max.value ?? null,
     sortBy: sortBy.value,
-    wholesalers: route.query.wholesalers === 'true' ? true : false
+    wholesalers: route.query.wholesalers === 'true' ? true : false,
+    rating: rating.value
   };
 
   var aux = await miscellaneousStores.products(info);
@@ -625,12 +629,15 @@ const colorAction = () => {
 
             <VCardItem class="p-0 text-left mb-6 mt-6"> REVIEW </VCardItem>
             <VCardText class="p-0 text-left mt-5 mb-6">
-              <v-rating
-                hover
+              <VRating
+                half-increments
                 :length="5"
-                :size="24"
-                :model-value="3"
-                active-color="yellow"
+                :size="isMobile ? 20 : 25"
+                v-model="rating"
+                hover
+                color="yellow-darken-2"
+                active-color="yellow-darken-2"
+                @update:modelValue="fetchData"
               />
             </VCardText>
           </VCard>
