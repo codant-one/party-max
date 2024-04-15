@@ -96,10 +96,6 @@ watchEffect(() => {
 
 <style scoped>
 
-    .card-information {
-        min-height: 100px;
-    }
-    
     .v-card-text {
         padding: 0 10px;
     }
@@ -144,6 +140,7 @@ watchEffect(() => {
 
     .card-information {
         width: 230px;
+        min-height: 100px;
     }
 
     .img-prod {
