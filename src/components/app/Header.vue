@@ -175,19 +175,33 @@
 }
 
 const redirect_ = (name, slug) =>{
- router.push({name: name, 
-              params: {slug: slug}
-              })
+  router.push({
+    name: name, 
+    params: {
+      slug: slug
+    }
+  })
 }
 
 const closeMenuOnMouseLeave = () => {
-
    if (menuOpen.value !== false) {
     closeMenu()
-  }else if (menuOpenS.value !== false) {
+  } else if (menuOpenS.value !== false) {
     closeMenuS()
   }
-  // console.log('menu ' + menuOpen.value, 'MenuS '+ menuOpenS.value)
+}
+
+const toggleWholesalers = () => {
+  if (route.query.wholesalers === 'true') {
+    router.push({ name: 'products' })
+  } else { 
+    router.push({ 
+      name: 'products',
+      query: {
+        wholesalers: 'true'
+      }
+    })
+  }
 }
   
 </script>
@@ -639,15 +653,12 @@ const closeMenuOnMouseLeave = () => {
             </VCard>
           </VMenu>
         </div>
-        <router-link 
-          :to="{
-            name: 'products',
-            query:{wholesalers:'true'}
-          }" 
-          class="tw-no-underline tw-text-white hover:tw-text-yellow d-flex align-center text-center hover-icon-arrow-right">
-            <span class="ms-2">Mayoristas</span>
-            <arrow_right class="ms-2 p-0 index"/>
-        </router-link>  
+        <span @click="toggleWholesalers"
+          class="tw-no-underline d-flex align-center text-center tw-cursor-pointer"
+          :class="route.query.wholesalers ? 'tw-text-yellow hover:tw-text-white hover-icon-arrow-right-white' : 'tw-text-white hover:tw-text-yellow hover-icon-arrow-right'">
+            <span class="ms-2"> Mayoristas </span>
+            <arrow_right class="ms-2 p-0 index" :class="route.query.wholesalers ? 'wholesalers' : ''"/>
+        </span>  
         <VSpacer />
 
         <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Quiénes somos</router-link>
@@ -813,6 +824,15 @@ const closeMenuOnMouseLeave = () => {
     color: #FF0090;
     cursor: pointer;
   }
+
+  .wholesalers::v-deep(path) {
+    fill: #FFC549;
+  }
+
+  .hover-icon-arrow-right-white:hover::v-deep(path) {
+    fill: #FFFFFF;
+  }
+
   .hover-icon-arrow-right:hover::v-deep(path) {
     fill: #FFC549;
   }

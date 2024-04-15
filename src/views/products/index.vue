@@ -224,7 +224,7 @@ const toggleSubGroupFn = (index, subCat) => {
 const colorAction = () => {
 
   colorsSelected.value = []
-  
+
   toggle.value.forEach(element => {
     colorsSelected.value.push(colors.value[element].id)
   });
@@ -235,7 +235,8 @@ const colorAction = () => {
       category: route.query.category,
       fathercategory: route.query.fathercategory,
       subcategory: route.query.subcategory,
-      colorId: colorsSelected.value.join(",")
+      colorId: colorsSelected.value.join(","),
+      wholesalers: route.query.wholesalers ? true : false
     }
   })
 }
@@ -258,7 +259,12 @@ const colorAction = () => {
 
             <VCardItem v-if="route.query.category && route.query.category !== 'all'" class="p-0 text-allcategories tw-font-bold mt-6">
               <router-link
-                to="/products"
+                :to="{
+                  name: 'products',
+                  query: {
+                    wholesalers: route.query.wholesalers ? true : false
+                  }
+                }"
                 class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
               >
                 <span>
@@ -277,7 +283,8 @@ const colorAction = () => {
                         name: 'products',
                         query: {
                           category: i.slug.split('/')[0],
-                          colorId: colorsSelected.join(',')
+                          colorId: colorsSelected.join(','),
+                          wholesalers: route.query.wholesalers ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ i.name }}
@@ -292,7 +299,8 @@ const colorAction = () => {
                           name: 'products',
                           query: {
                             category: i.slug.split('/')[0],
-                            colorId: colorsSelected.join(',')
+                            colorId: colorsSelected.join(','),
+                            wholesalers: route.query.wholesalers ? true : false
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         <VListItemTitle>{{ i.name }}</VListItemTitle>
@@ -317,7 +325,8 @@ const colorAction = () => {
                           query: {
                             category: i.slug.split('/')[0],
                             subcategory: j.slug.split('/')[1],
-                            colorId: colorsSelected.join(',')
+                            colorId: colorsSelected.join(','),
+                            wholesalers: route.query.wholesalers ? true : false
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary">
                         <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -332,7 +341,8 @@ const colorAction = () => {
                               query: {
                                 category: i.slug.split('/')[0],
                                 subcategory: j.slug.split('/')[1],
-                                colorId: colorsSelected.join(',')
+                                colorId: colorsSelected.join(','),
+                                wholesalers: route.query.wholesalers ? true : false
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                             <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -357,7 +367,8 @@ const colorAction = () => {
                                 category: i.slug.split('/')[0],
                                 fathercategory: j.slug.split('/')[1],
                                 subcategory: k.slug.split('/')[2],
-                                colorId: colorsSelected.join(',')
+                                colorId: colorsSelected.join(','),
+                                wholesalers: route.query.wholesalers ? true : false
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                             {{ k.name }}
@@ -380,7 +391,8 @@ const colorAction = () => {
                       name: 'products',
                         query: {
                           category: route.query.category,
-                          colorId: colorsSelected.join(',')
+                          colorId: colorsSelected.join(','),
+                          wholesalers: route.query.wholesalers ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.title }}
@@ -397,7 +409,8 @@ const colorAction = () => {
                         query: {
                           category: route.query.category,
                           subcategory: route.query.fathercategory,
-                          colorId: colorsSelected.join(',')
+                          colorId: colorsSelected.join(','),
+                          wholesalers: route.query.wholesalers ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.fathercategory }}
@@ -427,7 +440,8 @@ const colorAction = () => {
                       name: 'products',
                         query: {
                           category: route.query.category,
-                          colorId: colorsSelected.join(',')
+                          colorId: colorsSelected.join(','),
+                          wholesalers: route.query.wholesalers ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.title }}
@@ -453,7 +467,8 @@ const colorAction = () => {
                         category: route.query.category,
                         fathercategory: route.query.subcategory,
                         subcategory: j.slug.split('/')[2],
-                        colorId: colorsSelected.join(',')
+                        colorId: colorsSelected.join(','),
+                        wholesalers: route.query.wholesalers ? true : false
                       },
                     }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ j.name }}
@@ -483,7 +498,8 @@ const colorAction = () => {
                         query: {
                           category: route.query.category,
                           subcategory: j.slug.split('/')[1],
-                          colorId: colorsSelected.join(',')
+                          colorId: colorsSelected.join(','),
+                          wholesalers: route.query.wholesalers ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         {{ j.name }}
@@ -498,7 +514,8 @@ const colorAction = () => {
                             query: {
                               category: route.query.category,
                               subcategory: j.slug.split('/')[1],
-                              colorId: colorsSelected.join(',')
+                              colorId: colorsSelected.join(','),
+                              wholesalers: route.query.wholesalers ? true : false
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -523,7 +540,8 @@ const colorAction = () => {
                               category: route.query.category,
                               fathercategory: j.slug.split('/')[1],
                               subcategory: k.slug.split('/')[2],
-                              colorId: colorsSelected.join(',')
+                              colorId: colorsSelected.join(','),
+                              wholesalers: route.query.wholesalers ? true : false
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           {{ k.name }}
