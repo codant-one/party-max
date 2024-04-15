@@ -198,6 +198,10 @@ const toggleWholesalers = () => {
     router.push({ 
       name: 'products',
       query: {
+        category: route.query.category,
+        fathercategory: route.query.fathercategory,
+        subcategory: route.query.subcategory,
+        colorId: route.query.colorId,
         wholesalers: 'true'
       }
     })
@@ -655,9 +659,9 @@ const toggleWholesalers = () => {
         </div>
         <span @click="toggleWholesalers"
           class="tw-no-underline d-flex align-center text-center tw-cursor-pointer"
-          :class="route.query.wholesalers ? 'tw-text-yellow hover:tw-text-white hover-icon-arrow-right-white' : 'tw-text-white hover:tw-text-yellow hover-icon-arrow-right'">
+          :class="route.query.wholesalers === 'true' ? 'tw-text-yellow hover:tw-text-white hover-icon-arrow-right-white' : 'tw-text-white hover:tw-text-yellow hover-icon-arrow-right'">
             <span class="ms-2"> Mayoristas </span>
-            <arrow_right class="ms-2 p-0 index" :class="route.query.wholesalers ? 'wholesalers' : ''"/>
+            <arrow_right class="ms-2 p-0 index" :class="route.query.wholesalers === 'true' ? 'wholesalers' : ''"/>
         </span>  
         <VSpacer />
 
