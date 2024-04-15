@@ -131,7 +131,7 @@ watchEffect(() => {
         color: #FF0090 !important;
     }
 
-    .title-product {
+    .title-product, .store {
         min-height: 45px;
     }
 
