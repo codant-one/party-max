@@ -40,6 +40,7 @@ const store = ref(null)
 const rating = ref(null)
 const single_description = ref(null)
 const slug = ref(null)
+const in_stock = ref(null)
 
 const product_color_id = ref(null)
 const load = ref(props.loading)
@@ -71,6 +72,7 @@ watchEffect(() => {
         isFavoriteProduct.value = props.product.is_favorite
         id.value = props.product.id
         product_color_id.value =  props.product.colors[0]?.id
+        in_stock.value = props.product.in_stock
     }
 })
 
@@ -112,8 +114,11 @@ const addfavorite = () => {
                     </VCardText>
                 </VCol>
                 <VCol cols="12" md="6">
-                    <VCardText>
+                    <VCardText class="d-flex">
                         <span class="d-block text_2 py-1 tw-text-tertiary title-product">{{ name }}</span>
+                        <strong class="tw-text-gray tw-text-base ms-3">
+                            {{ (in_stock === 1) ? '' : 'AGOTADO' }}
+                        </strong>
                     </VCardText>
                     <VCardText class="px-1 pb-1">
                         <div class="d-flex">
@@ -149,7 +154,8 @@ const addfavorite = () => {
                             <VBtn
                                 variant="flat"
                                 @click="addCart"
-                                class="btn-register tw-text-white tw-bg-primary button-hover">
+                                class="btn-register tw-text-white tw-bg-primary button-hover"
+                                :disabled="(in_stock === 1) ? false : true">
                                 Agregar al carrito 
                                 <VProgressCircular
                                     v-if="load && (product_id === id)"

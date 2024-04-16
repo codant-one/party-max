@@ -130,11 +130,11 @@ const control_cant = () => {
                     </VCardText>
                   </VCol>
                 <VCol cols="6" md="2" class="align-center text-center py-5 my-auto pe-4">
-                    <!-- <VCardText class="d-flex text-center align-center justify-content-center">
+                    <VCardText class="d-flex text-center align-center justify-content-center">
                         <div class="d-flex text-center align-center justify-content-center">
                             <span class="tw-text-gray">${{ formatNumber(wholesale_price) }}</span>
                         </div>
-                    </VCardText> -->
+                    </VCardText>
                     <VCardText class="mt-1">
                         <div class="d-flex text-center align-center justify-content-center">
                             <span v-if="existence_whole" class="text_1 tw-text-tertiary">${{ formatNumber(wholesale_price) }}</span>

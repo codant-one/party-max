@@ -418,7 +418,7 @@ const wholesaleAction = () => {
                 </span>
                 <span class="d-block tw-text-tertiary ms-8 mb-2">Status: 
                   <strong class="tw-text-gray tw-text-base ms-1">
-                    {{ (in_stock === 1) ? 'En Stock' : 'Agotado' }}
+                    {{ (in_stock === 1) ? 'En Stock' : 'AGOTADO' }}
                   </strong>
                 </span>
               </VCardText>
@@ -471,6 +471,7 @@ const wholesaleAction = () => {
                     variant="flat"
                     @click="addCart"
                     class="btn-register tw-text-white tw-bg-primary button-hover" 
+                    :disabled="(in_stock === 1) ? false : true"
                     >
                       Agregar al carrito
                       <VProgressCircular
