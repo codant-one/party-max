@@ -8,6 +8,7 @@ import { useCartStores } from '@/stores/cart'
 import { useFavoritesStores } from '@/stores/favorites'
 import { FreeMode, Navigation, Thumbs, Scrollbar } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
+import router from '@/router'
 import CustomRadiosWithIcon from '@/components/app/CustomRadiosWithIcon.vue'
 import Loader from '@/components/common/Loader.vue'
 import Product1 from '@/components/product/Product1.vue'
@@ -15,7 +16,7 @@ import whatsapp from '@assets/icons/whatsapp.svg?inline';
 import facebook from '@assets/icons/facebook2.svg?inline';
 import instagram from '@assets/icons/instagram2.svg?inline';
 import threads from '@assets/icons/threads2.svg?inline';
-import iconmayorista from '@assets/icons/Union.svg';
+import iconmayorista from '@assets/icons/Union.svg?inline';
 import heart from '@assets/icons/heart.svg?inline';
 import default_review from '@assets/images/image-review.png';
 
@@ -38,6 +39,11 @@ const bread = ref([
     title: 'Home',
     disabled: false,
     href: '/',
+  },
+  {
+    title: 'Producto',
+    disabled: true,
+    href: '',
   }
 ])
 
@@ -52,6 +58,7 @@ const title = ref(null)
 const brand = ref(null)
 const rating = ref(null)
 const sku = ref(null)
+const wholesale = ref(false)
 const wholesale_price = ref(null)
 const price_for_sale = ref(null)
 const store = ref(null)
@@ -66,6 +73,8 @@ const deep = ref('')
 const weigth = ref('')
 const material = ref('')
 const cant_stock = ref(1)
+
+const existence_whole = ref(false)
 
 const radioContent = ref([])
 const selectedColor = ref(null)
@@ -92,6 +101,12 @@ watch(() =>
   }
 );
 
+watch(() => 
+  route.query,(newPath, oldPath) => {
+    thumbsSwiper.value.destroy(false, true)
+  }
+);
+
 watchEffect(fetchData)
 
 async function fetchData() {
@@ -104,24 +119,6 @@ async function fetchData() {
     user_id.value = userDataJ.id
   }
 
-  if(route.query.category) {
-    const category = {
-      title: formatTitle(route.query.category),
-      disabled: false,
-      href: 'categories/' + route.query.category,
-    }
-
-    bread.value.push(category)
-  }
-
-  const product_ = {
-    title: 'Producto',
-    disabled: true,
-    href: '',
-  }
-
-  bread.value.push(product_)
-
   isLoading.value = true
   
   radioContent.value = []
@@ -129,6 +126,8 @@ async function fetchData() {
   data.value = null
 
   if(route.params.slug) {
+    existence_whole.value = route.query.wholesale === 'true' ? true : false
+
     await miscellaneousStores.getProduct(route.params.slug)
     data.value = miscellaneousStores.getData
 
@@ -156,6 +155,7 @@ async function fetchData() {
     brand.value = data.value.product.brand.name
     rating.value = data.value.product.rating
     sku.value = data.value.product.colors[0].sku
+    wholesale.value = data.value.product.wholesale === 1 ? true : false
     wholesale_price.value = data.value.product.wholesale_price
     price_for_sale.value = data.value.product.price_for_sale
     store.value = data.value.product.user.name + ' ' + (data.value.product.user.last_name ?? '')
@@ -300,13 +300,28 @@ const controlCant = () => {
   }
 }
 
+const wholesaleAction = () => {
+  if (route.query.wholesale === 'true') {
+    router.push({ 
+      name: 'productDetail',
+      params: { slug: route.params.slug }
+    })
+  } else { 
+    router.push({ 
+      name: 'productDetail',
+      params: { slug: route.params.slug },
+      query: {  wholesale: 'true' }
+    })
+  }
+}
+
 </script>
 
 <template>
   <section>
     <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
-      <VContainer class="tw-text-tertiary d-flex align-center">
-        <v-breadcrumbs :items="bread" />
+      <VContainer class="tw-text-tertiary d-flex align-center px-0">
+        <v-breadcrumbs :items="bread" class="px-2" />
       </VContainer>
     </VAppBar>
     <VContainer class="pt-0">
@@ -393,7 +408,8 @@ const controlCant = () => {
             <VCol cols="12" md="7">
               <VCardText class="p-0">
                 <div class="d-flex py-2">
-                  <span class="text_1">$ {{ formatNumber(price_for_sale) }}</span>
+                  <span class="text_1" v-if="existence_whole">$ {{ formatNumber(wholesale_price) }}</span>
+                  <span class="text_1" v-else>$ {{ formatNumber(price_for_sale) }}</span>
                 </div>
               </VCardText>
               <VCardText class="p-0 d-flex border-title">
@@ -484,9 +500,14 @@ const controlCant = () => {
               </VCardText>
 
               <VCardText class="p-0 d-flex border-title pb-2">
-                <VBtn class="b-mayorista">
-                  <img :src="iconmayorista" alt="Icono Mayorista" style="width: 24px; height: 24px; margin-right: 8px;">
-                  Precio al mayor
+                <VBtn 
+                  v-if="wholesale"
+                  :class="route.query.wholesale === 'true' ? 'b-mayorista-active': 'b-mayorista'"
+                  @click="wholesaleAction">
+                  <iconmayorista />
+                  <span class="ms-1">
+                    {{ route.query.wholesale === 'true' ? 'Precio al detal' : 'Precio al mayor' }}
+                  </span>
                 </VBtn>
               </VCardText>
               <VCardText class="p-0 d-block mt-2">
@@ -706,8 +727,8 @@ const controlCant = () => {
     font-weight: 700;
     line-height: 14px;
     border-radius: 32px;
-    width: 288px;
-    height: 48px;
+    width: 260px;
+    height: 60px;
   }
 
   .button-hover:hover {
@@ -732,22 +753,50 @@ const controlCant = () => {
   }
 
   .b-mayorista {
-    display: inline-flex;
-    height: 38px;
-    padding: 24px;
+    display: flex;
+    padding: 0 20px;
     justify-content: center;
     align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
     border-radius: 32px;
     border: 1px solid  #0A1B33;
-    color:#0A1B33;
+    color: #0A1B33;
     font-weight: 700;
   }
 
+  .b-mayorista:hover::v-deep(path) {
+    fill: white;
+  }
+
   .b-mayorista:hover {
-    background-color:  #FFC549;
-    border: 1px solid #FFC549;
+    background-color:  #0A1B33;
+    border: 1px solid #0A1B33;
+    color: white;
+  }
+
+  .b-mayorista-active {
+    display: flex;
+    padding: 0 20px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 32px;
+    background-color:  #0A1B33;
+    border: 1px solid  #0A1B33;
+    color: white;
+    font-weight: 700;
+  }
+
+  .b-mayorista-active::v-deep(path) {
+    fill: white;
+  }
+
+  .b-mayorista-active:hover::v-deep(path) {
+    fill: #0A1B33;
+  }
+
+  .b-mayorista-active:hover {
+    background-color:  white;
+    border: 1px solid #0A1B33;
+    color: #0A1B33;
   }
 
   .description {

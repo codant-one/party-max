@@ -47,9 +47,8 @@ watchEffect(() => {
     <router-link
         :to="{
             name: 'productDetail',
-            params: {
-                slug: slug
-            }
+            params: { slug: slug },
+            query: {  wholesale: route.query.wholesalers }
         }"
         class="tw-no-underline zoom-product">
         <VCard class="no-shadown card-information p-0">
