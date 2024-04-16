@@ -3,6 +3,8 @@
 import { ref } from "vue";
 import { useHomeStores } from "@/stores/home";
 import { useMiscellaneousStores } from "@/stores/miscellaneous";
+import { useFavoritesStores } from '@/stores/favorites'
+import { useCartStores } from '@/stores/cart'
 import { formatNumber } from '@formatters'
 import router from '@/router'
 import Loader from "@/components/common/Loader.vue";
@@ -14,6 +16,8 @@ import Product4 from "@/components/product/Product4.vue";
 const route = useRoute();
 const homeStores = useHomeStores();
 const miscellaneousStores = useMiscellaneousStores();
+const cartStores = useCartStores()
+const favoritesStores = useFavoritesStores()
 
 const isLoading = ref(true);
 const categories = ref(null);
@@ -39,6 +43,15 @@ const colorsSelected = ref([]);
 
 const rating = ref(5)
 const isMobile = /Mobi/i.test(navigator.userAgent);
+
+const client_id = ref(null)
+const user_id = ref(null)
+const load = ref(false)
+const isSnackbarBottomStartVisible = ref(false)
+const variant = ref('tonal')
+const colorMessage = ref('')
+const message = ref('')
+const product_id = ref(0)
 
 const bread = ref([
   {
@@ -184,6 +197,14 @@ async function fetchData() {
     bread.value.push(product_);
   }
 
+  if(localStorage.getItem('user_data')){
+    const userData = localStorage.getItem('user_data')
+    const userDataJ = JSON.parse(userData)
+      
+    client_id.value = userDataJ.client.id
+    user_id.value = userDataJ.id
+  }
+
   isLoading.value = false;
 }
 
@@ -243,6 +264,90 @@ const colorAction = () => {
       wholesalers: route.query.wholesalers === 'true' ? true : false
     }
   })
+}
+
+const addCart = (value) => {
+  product_id.value = value.product_id
+
+  if(client_id.value) {
+    
+    let data = {
+      client_id: client_id.value,
+      product_color_id: value.product_color_id,
+      quantity: 1
+    }
+
+    load.value = true
+
+    cartStores.add(data)
+      .then(response => {
+
+        isSnackbarBottomStartVisible.value = true
+        message.value = 'Agregado al carrito'
+        colorMessage.value = 'primary'
+        variant.value = 'tonal'
+        load.value = false
+
+        setTimeout(() => {
+          isSnackbarBottomStartVisible.value = false
+          message.value = ''
+          colorMessage.value = ''
+        }, 3000)
+
+      }).catch(err => {
+        load.value = false
+        //console.error(err.message)
+      })
+  } else {
+    isSnackbarBottomStartVisible.value = true
+    message.value = 'Necesitas iniciar sesión antes de agregar un producto al carrito'
+    colorMessage.value = 'error'
+    variant.value = 'flat'
+                    
+    setTimeout(() => {
+      isSnackbarBottomStartVisible.value = false
+      message.value = ''
+      colorMessage.value = ''
+    }, 3000)
+  }
+}
+
+const addfavorite = (product_id) => {
+
+  if(client_id.value) {
+
+    favoritesStores.add({user_id: user_id.value, product_id: product_id })
+      .then(response => {
+
+        isSnackbarBottomStartVisible.value = true
+        message.value = 'Agregado a la lista de favoritos'
+        colorMessage.value = 'primary'
+        variant.value = 'tonal'
+                    
+        setTimeout(() => {
+          isSnackbarBottomStartVisible.value = false
+          message.value = ''
+          colorMessage.value = ''
+        }, 3000)
+
+        fetchData()
+    
+      }).catch(err => {
+        //console.error(err.message)
+      })
+
+    } else {
+      isSnackbarBottomStartVisible.value = true
+      message.value = 'Necesitas iniciar sesión antes de agregar un producto a la lista'
+      colorMessage.value = 'error'
+      variant.value = 'flat'
+
+      setTimeout(() => {
+        isSnackbarBottomStartVisible.value = false
+        message.value = ''
+        colorMessage.value = ''
+      }, 3000)
+  }
 }
 
 </script>
@@ -712,6 +817,10 @@ const colorAction = () => {
                         :product="product"
                         :readonly="true"
                         :isLastItem="isLastItem(i)"
+                        :loading="load"
+                        :productId="product_id"
+                        @addCart="addCart"
+                        @addfavorite="addfavorite"
                       />
                     </VCol>
                   </VRow>
@@ -742,6 +851,14 @@ const colorAction = () => {
         </VCol>
       </VRow>
     </VContainer>
+    <VSnackbar
+      v-model="isSnackbarBottomStartVisible"
+      location="bottom start"
+      :variant="variant"
+      :color="colorMessage"
+    >
+      {{ message }}
+    </VSnackbar>
   </section>
 </template>
 

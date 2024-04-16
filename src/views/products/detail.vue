@@ -250,7 +250,7 @@ const addCart = () => {
 
 }
 
-const addfavorite = () =>{
+const addfavorite = () => {
 
   if(client_id.value) {
     isFavorite.value = true
@@ -278,29 +278,26 @@ const addfavorite = () =>{
       })
 
     } else {
-    isSnackbarBottomStartVisible.value = true
-    message.value = 'Necesitas iniciar sesión antes de agregar un producto a la lista'
-    colorMessage.value = 'error'
-    variant.value = 'flat'
+      isSnackbarBottomStartVisible.value = true
+      message.value = 'Necesitas iniciar sesión antes de agregar un producto a la lista'
+      colorMessage.value = 'error'
+      variant.value = 'flat'
 
-    setTimeout(() => {
-      isSnackbarBottomStartVisible.value = false
-      message.value = ''
-      colorMessage.value = ''
-    }, 3000)
+      setTimeout(() => {
+        isSnackbarBottomStartVisible.value = false
+        message.value = ''
+        colorMessage.value = ''
+      }, 3000)
   }
 
 }
 
-const control_cant =()=>
-{
-   
-
-    if (parseInt(cant_prod.value) > parseInt(cant_stock.value)) { 
-        cant_prod.value = cant_stock.value; 
-      } else if (parseInt(cant_prod.value) < 1) {
-        cant_prod.value = 1;
-      }
+const controlCant = () => {
+  if (parseInt(cant_prod.value) > parseInt(cant_stock.value)) { 
+    cant_prod.value = cant_stock.value; 
+  } else if (parseInt(cant_prod.value) < 1) {
+    cant_prod.value = 1;
+  }
 }
 
 </script>
@@ -450,7 +447,7 @@ const control_cant =()=>
                     :min="1"
                     :max="cant_stock"
                     :rules="[requiredValidator]"
-                    @input="control_cant"
+                    @input="controlCant"
                    />
                 </div>
                 <div class="my-auto ms-5">
@@ -472,7 +469,7 @@ const control_cant =()=>
                     v-if="!isFavorite" 
                     class="me-4 index heart p-0 tw-cursor-pointer"
                     :class="(isFavoriteProduct) ? 'heart_fill' : ''" 
-                     @click="addfavorite">
+                    @click="addfavorite">
                   <heart />
                   </span>
                   <VProgressCircular

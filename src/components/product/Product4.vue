@@ -1,6 +1,7 @@
 <script setup>
 
 import { formatNumber } from '@formatters'
+import heart from '@assets/icons/heart_gray.svg?inline';
 
 const props = defineProps({
     product: {
@@ -14,9 +15,23 @@ const props = defineProps({
     isLastItem: {
         type: Boolean,
         required: true
+    },
+    loading: {
+        type: Boolean,
+        required: true
+    },
+    productId: {
+        type: Number,
+        required: true
     }
 })
 
+const emit = defineEmits([
+    'addCart',
+    'addfavorite'
+])
+
+const id = ref(null)
 const image = ref(null)
 const wholesale_price = ref(null)
 const price_for_sale = ref(null)
@@ -26,7 +41,21 @@ const rating = ref(null)
 const single_description = ref(null)
 const slug = ref(null)
 
+const product_color_id = ref(null)
+const load = ref(props.loading)
+const isFavoriteProduct = ref(null)
+const product_id = ref(props.productId)
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
+
+watch(() => 
+    props.loading, (data) => {
+      load.value = data
+    });
+
+watch(() => 
+    props.productId, (data) => {
+        product_id.value = data
+    });
 
 watchEffect(() => {
 
@@ -39,8 +68,23 @@ watchEffect(() => {
         rating.value = props.product.rating
         single_description.value = props.product.single_description
         slug.value = props.product.slug
+        isFavoriteProduct.value = props.product.is_favorite
+        id.value = props.product.id
+        product_color_id.value =  props.product.colors[0]?.id
     }
 })
+
+const addCart = () => {
+    let data = {
+        product_id: id.value,
+        product_color_id: product_color_id.value
+    }
+    emit('addCart',  data)
+}
+
+const addfavorite = () => {
+    emit('addfavorite', id.value)
+}
 
 </script>
 
@@ -104,19 +148,29 @@ watchEffect(() => {
                         <div class="d-flex text-center align-center justify-content-center">
                             <VBtn
                                 variant="flat"
+                                @click="addCart"
                                 class="btn-register tw-text-white tw-bg-primary button-hover">
-                                Agregar al carrito
+                                Agregar al carrito 
+                                <VProgressCircular
+                                    v-if="load && (product_id === id)"
+                                    indeterminate
+                                    color="#fff"
+                                />
                             </VBtn>
                         </div>
                     </VCardText>
                     <VCardText class="mt-3">
-                        <div class="d-flex text-center align-center justify-content-center">
-                            <span class="text_2">
-                                <VIcon
-                                    size="20" 
-                                    icon="mdi-heart-outline"
-                                />
-                                Guardar
+                        <div class="d-flex text-center align-center justify-content-center tw-cursor-pointer heart" @click="addfavorite">
+                            <span class="text_2 d-flex align-center">
+                                <span 
+                                    class="me-2 pt-1"
+                                    :class="(isFavoriteProduct) ? 'heart_fill' : ''" 
+                                    >
+                                <heart />
+                                </span>
+                                <span :class="(isFavoriteProduct) ? 'tw-text-primary' : ''">
+                                    Guardar
+                                </span>
                             </span>
                         </div>
                     </VCardText>
@@ -127,6 +181,27 @@ watchEffect(() => {
 </template>
 
 <style scoped>
+
+    .heart:hover::v-deep(path), .shoppinp_cart:hover::v-deep(path) {
+        fill: #FF0090;
+    }
+
+    .heart:hover::v-deep(span) {
+        color: #FF0090;
+    }
+
+
+    .heart_fill::v-deep(path) {
+        fill: #FF0090 !important;
+    }
+
+    .hearth-icon path {
+        fill:#0A1B33;
+    }
+
+    .hearth-icon path:hover {
+        fill: #FF0090;
+    }
 
     .card-information {
         border-bottom: 1px solid var(--Grey-2, #E1E1E1);
