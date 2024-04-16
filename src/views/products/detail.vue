@@ -32,7 +32,7 @@ const cartStores = useCartStores()
 const favoritesStores = useFavoritesStores()
 
 const isLoading = ref(true)
-const tab = ref('0')
+const tab = ref('1')
 
 const bread = ref([
   {
