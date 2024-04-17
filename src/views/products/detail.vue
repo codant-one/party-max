@@ -60,6 +60,7 @@ const rating = ref(null)
 const sku = ref(null)
 const wholesale = ref(false)
 const wholesale_price = ref(null)
+const wholesale_min = ref(null)
 const price_for_sale = ref(null)
 const store = ref(null)
 const in_stock = ref(null)
@@ -157,6 +158,8 @@ async function fetchData() {
     sku.value = data.value.product.colors[0].sku
     wholesale.value = data.value.product.wholesale === 1 ? true : false
     wholesale_price.value = data.value.product.wholesale_price
+    cant_prod.value = route.query.wholesale === 'true' ? data.value.product.wholesale_min : 1
+    wholesale_min.value = route.query.wholesale === 'true' ? data.value.product.wholesale_min : 1
     price_for_sale.value = data.value.product.price_for_sale
     store.value = data.value.product.user.name + ' ' + (data.value.product.user.last_name ?? '')
     in_stock.value = data.value.product.in_stock
@@ -418,7 +421,7 @@ const wholesaleAction = () => {
                 </span>
                 <span class="d-block tw-text-tertiary ms-8 mb-2">Status: 
                   <strong class="tw-text-gray tw-text-base ms-1">
-                    {{ (in_stock === 1) ? 'En Stock' : 'AGOTADO' }}
+                    {{ (in_stock === 1) ? 'En Stock (' + cant_stock + ')'  : 'AGOTADO' }}
                   </strong>
                 </span>
               </VCardText>
@@ -460,7 +463,7 @@ const wholesaleAction = () => {
                     v-model="cant_prod"
                     variant="solo"
                     type="number"
-                    :min="1"
+                    :min="wholesale_min"
                     :max="cant_stock"
                     :rules="[requiredValidator]"
                     @input="controlCant"
