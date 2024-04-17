@@ -495,7 +495,7 @@ const wholesaleAction = () => {
                     variant="flat"
                     @click="addCart"
                     class="btn-register tw-text-white tw-bg-primary button-hover" 
-                    :disabled="(in_stock === 1) ? false : true"
+                    :disabled="(in_stock === 0 || cant_prod > cant_stock) ? true : false"
                     >
                       Agregar al carrito
                       <VProgressCircular

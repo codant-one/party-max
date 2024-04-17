@@ -26,6 +26,8 @@ const props = defineProps({
     }
 })
 
+const route = useRoute()
+
 const emit = defineEmits([
     'addCart',
     'addfavorite'
@@ -41,6 +43,9 @@ const rating = ref(null)
 const single_description = ref(null)
 const slug = ref(null)
 const in_stock = ref(null)
+const cant_prod = ref(1)
+const cant_stock = ref(1)
+const existence_whole = ref(false)
 
 const product_color_id = ref(null)
 const load = ref(props.loading)
@@ -73,13 +78,18 @@ watchEffect(() => {
         id.value = props.product.id
         product_color_id.value =  props.product.colors[0]?.id
         in_stock.value = props.product.in_stock
+        cant_prod.value = route.query.wholesalers === 'true' ? props.product.wholesale_min : 1
+        cant_stock.value = parseInt(props.product.stock)
     }
+
+    existence_whole.value = route.query.wholesalers === 'true' ? true : false;
 })
 
 const addCart = () => {
     let data = {
         product_id: id.value,
-        product_color_id: product_color_id.value
+        product_color_id: product_color_id.value,
+        cant_prod: cant_prod.value
     }
     emit('addCart',  data)
 }
@@ -117,7 +127,7 @@ const addfavorite = () => {
                     <VCardText class="d-flex">
                         <span class="d-block text_2 py-1 tw-text-tertiary title-product">{{ name }}</span>
                         <strong class="tw-text-gray tw-text-base ms-3">
-                            {{ (in_stock === 1) ? '' : 'AGOTADO' }}
+                            {{ (in_stock === 1) ? '(' + cant_stock + ')'  : 'AGOTADO' }}
                         </strong>
                     </VCardText>
                     <VCardText class="px-1 pb-1">
@@ -146,7 +156,8 @@ const addfavorite = () => {
                 <VCol cols="12" md="3" class="align-center text-center">
                     <VCardText>
                         <div class="d-flex text-center align-center justify-content-center">
-                            <span class="text_1 tw-text-tertiary">${{formatNumber(price_for_sale) }}</span>
+                            <span v-if="!existence_whole" class="text_1 tw-text-tertiary">${{formatNumber(price_for_sale) }}</span>
+                            <span v-if="existence_whole" class="text_1 tw-text-tertiary">${{formatNumber(wholesale_price) }}</span>
                         </div>
                     </VCardText>
                     <VCardText class="mt-3">
@@ -155,7 +166,7 @@ const addfavorite = () => {
                                 variant="flat"
                                 @click="addCart"
                                 class="btn-register tw-text-white tw-bg-primary button-hover"
-                                :disabled="(in_stock === 1) ? false : true">
+                                :disabled="(in_stock === 0 || cant_prod > cant_stock) ? true : false">
                                 Agregar al carrito 
                                 <VProgressCircular
                                     v-if="load && (product_id === id)"

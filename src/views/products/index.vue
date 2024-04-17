@@ -40,6 +40,7 @@ const max = ref(null);
 
 const colors = ref([]);
 const colorsSelected = ref([]);
+const onlyWholesale = ref(false)
 
 const rating = ref(5)
 const isMobile = /Mobi/i.test(navigator.userAgent);
@@ -127,6 +128,7 @@ async function fetchData() {
   totalProducts.value = aux.productsTotalCount;
 
   colors.value = aux.colors
+  onlyWholesale.value = aux.wholesale
 
   if(route.query.colorId) {
     const colorsQuery = route.query.colorId.split(',').map(Number);
@@ -271,33 +273,50 @@ const addCart = (value) => {
 
   if(client_id.value) {
     
-    let data = {
-      client_id: client_id.value,
-      product_color_id: value.product_color_id,
-      quantity: 1
+    let isWholesale = route.query.wholesalers === 'true' ? 1 : 0
+
+    if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
+
+      let data = {
+        client_id: client_id.value,
+        product_color_id: value.product_color_id,
+        quantity: value.cant_prod,
+        wholesale: isWholesale
+      }
+
+      load.value = true
+
+      cartStores.add(data)
+        .then(response => {
+
+          isSnackbarBottomStartVisible.value = true
+          message.value = 'Agregado al carrito'
+          colorMessage.value = 'primary'
+          variant.value = 'tonal'
+          load.value = false
+
+          setTimeout(() => {
+            isSnackbarBottomStartVisible.value = false
+            message.value = ''
+            colorMessage.value = ''
+          }, 3000)
+
+        }).catch(err => {
+          load.value = false
+          //console.error(err.message)
+        })
+    } else {
+      isSnackbarBottomStartVisible.value = true
+      message.value = 'Debes agregar al carrito productos ' + (isWholesale ? 'al detal' : 'al mayor') + ' debido a tu selección anterior'
+      colorMessage.value = 'error'
+      variant.value = 'flat'
+                      
+      setTimeout(() => {
+        isSnackbarBottomStartVisible.value = false
+        message.value = ''
+        colorMessage.value = ''
+      }, 3000)
     }
-
-    load.value = true
-
-    cartStores.add(data)
-      .then(response => {
-
-        isSnackbarBottomStartVisible.value = true
-        message.value = 'Agregado al carrito'
-        colorMessage.value = 'primary'
-        variant.value = 'tonal'
-        load.value = false
-
-        setTimeout(() => {
-          isSnackbarBottomStartVisible.value = false
-          message.value = ''
-          colorMessage.value = ''
-        }, 3000)
-
-      }).catch(err => {
-        load.value = false
-        //console.error(err.message)
-      })
   } else {
     isSnackbarBottomStartVisible.value = true
     message.value = 'Necesitas iniciar sesión antes de agregar un producto al carrito'
