@@ -38,7 +38,7 @@ watchEffect(() => {
 
     if (!(Object.entries(props.product).length === 0) && props.product.constructor === Object) {
         image.value = (props.product.images.length === 0) ? props.product.product.image : props.product.images[0]?.image
-        wholesale_price.value = props.product.wholesale_price ?? '0.00'
+        wholesale_price.value = props.product.product.wholesale_price ?? '0.00'
         price_for_sale.value = props.product.product.price_for_sale
         name.value = props.product.product.name.toLowerCase().replace(/\b\w/g, (match) => match.toUpperCase())
         store.value = props.product.user.user_detail.store_name ?? (props.product.supplier?.company_name ?? (props.product.user.name + ' ' + (props.product.user.last_name ?? '')))
@@ -48,9 +48,9 @@ watchEffect(() => {
         stock.value = props.product.product.stock
         color.value = props.product.color.name
         quantity.value = props.product.quantity
-    }
 
-    existence_whole.value = route.query.wholesalers === 'true' ? true : false;
+        existence_whole.value = props.product.wholesale === 1 ? true : false;
+    }
 })
 
 </script>

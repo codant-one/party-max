@@ -121,6 +121,7 @@ const provinceOld_id = ref('')
 const currentStep = ref(0)
 const isLoading = ref(false)
 const isActiveStepValid = ref(false)
+const iswholesale = ref(false)
 
 const getProvinces = computed(() => {
   return listProvincesByCountry.value.map((province) => {
@@ -177,11 +178,12 @@ async function fetchData() {
             address_id.value = (index > -1) ? addresses.value[index].id : addresses.value[0].id 
 
         } 
-             
-        
+
         let sum = 0
         products.value.forEach(element => {
-            sum += (parseFloat(element.product.price_for_sale) * element.quantity)
+            let value = element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale
+            iswholesale.value = element.wholesale === 1 ? true : false
+            sum += (parseFloat(value) * element.quantity)
         });
 
         summary.value.subTotal = sum.toFixed(2)
@@ -508,6 +510,7 @@ const getFlagCountry = country => {
                         :summary="summary"
                         :countries="listCountries"
                         :provinces="listProvinces"
+                        :iswholesale="iswholesale"
                         @submit="sendPayU"/>
                 </VWindowItem>
                 <VWindowItem>
