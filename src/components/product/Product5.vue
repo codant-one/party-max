@@ -65,7 +65,8 @@ const onChange = () => {
 
     let data = {
         quantity: quantity.value,
-        product_color_id: product_color_id.value
+        product_color_id: product_color_id.value,
+        wholesale: existence_whole.value ? 1 : 0
     }
 
     emit('addCart',data)

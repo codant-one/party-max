@@ -239,7 +239,8 @@ const addCart = (data)=>{
     let data_ = {
         client_id: client_id.value,
         product_color_id: data.product_color_id,
-        quantity: data.quantity
+        quantity: data.quantity,
+        wholesale: data.wholesale
     }
 
     cartStores.add(data_)
