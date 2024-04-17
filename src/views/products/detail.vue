@@ -95,6 +95,7 @@ const isSnackbarBottomStartVisible = ref(false)
 const variant = ref('tonal')
 const colorMessage = ref('')
 const message = ref('')
+const onlyWholesale = ref(false)
 
 watch(() => 
   route.path,(newPath, oldPath) => {
@@ -140,6 +141,8 @@ async function fetchData() {
     selectedColor.value = data.value.product.colors[0]?.color.id.toString()
     selectedColorId.value = data.value.product.colors[0]?.id
 
+    onlyWholesale.value = data.value.wholesale
+
     data.value.product.colors.forEach(element => { 
       var aux = {
         value: element.color.id.toString(),
@@ -178,6 +181,7 @@ async function fetchData() {
       categories.value.push(element.category.name)
     });
 
+    tags.value = []
     data.value.product.tags.forEach(element => { 
       tags.value.push(element.tag.name)
     });
@@ -210,34 +214,51 @@ const setThumbsSwiper = (swiper) => {
 const addCart = () => {
 
   if(client_id.value) {
-    
-    let data = {
-      client_id: client_id.value,
-      product_color_id: selectedColorId.value,
-      quantity: cant_prod.value
+
+    let isWholesale = route.query.wholesale === 'true'
+
+    if(isWholesale === onlyWholesale.value) {
+      let data = {
+        client_id: client_id.value,
+        product_color_id: selectedColorId.value,
+        quantity: cant_prod.value,
+        wholesale: isWholesale
+      }
+
+      load.value = true
+
+      cartStores.add(data)
+        .then(response => {
+
+          isSnackbarBottomStartVisible.value = true
+          message.value = 'Agregado al carrito'
+          colorMessage.value = 'primary'
+          variant.value = 'tonal'
+          load.value = false
+
+          setTimeout(() => {
+            isSnackbarBottomStartVisible.value = false
+            message.value = ''
+            colorMessage.value = ''
+          }, 3000)
+
+        }).catch(err => {
+          load.value = false
+          //console.error(err.message)
+        })
+    } else {
+      isSnackbarBottomStartVisible.value = true
+      message.value = 'Debes agregar al carrito productos ' + (isWholesale ? 'al detal' : 'al mayor') + ' debido a tu selección anterior'
+      colorMessage.value = 'error'
+      variant.value = 'flat'
+                      
+      setTimeout(() => {
+        isSnackbarBottomStartVisible.value = false
+        message.value = ''
+        colorMessage.value = ''
+      }, 3000)
     }
 
-    load.value = true
-
-    cartStores.add(data)
-      .then(response => {
-
-        isSnackbarBottomStartVisible.value = true
-        message.value = 'Agregado al carrito'
-        colorMessage.value = 'primary'
-        variant.value = 'tonal'
-        load.value = false
-
-        setTimeout(() => {
-          isSnackbarBottomStartVisible.value = false
-          message.value = ''
-          colorMessage.value = ''
-        }, 3000)
-
-      }).catch(err => {
-        load.value = false
-        //console.error(err.message)
-      })
   } else {
     isSnackbarBottomStartVisible.value = true
     message.value = 'Necesitas iniciar sesión antes de agregar un producto al carrito'

@@ -29,7 +29,7 @@ export const useCartStores = defineStore('cart', {
         add(data: object) {
             return Cart.add(data)
                 .then((response: any) => {
-                    this.count++
+                    this.count = response.data.data.count
                     return Promise.resolve(response.data)
                 })
                 .catch(error => {
