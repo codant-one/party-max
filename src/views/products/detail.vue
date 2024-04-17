@@ -215,9 +215,9 @@ const addCart = () => {
 
   if(client_id.value) {
 
-    let isWholesale = route.query.wholesale === 'true'
+    let isWholesale = route.query.wholesale === 'true' ? 1 : 0
 
-    if(isWholesale === onlyWholesale.value) {
+    if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
       let data = {
         client_id: client_id.value,
         product_color_id: selectedColorId.value,
