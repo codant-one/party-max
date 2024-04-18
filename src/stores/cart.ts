@@ -58,7 +58,16 @@ export const useCartStores = defineStore('cart', {
         },
         refreshData() {
             this.count = 0
-        }
+        },
+        checkAvailability(params: object) {        
+            return Cart.checkAvailability(params)
+                .then((response) => {
+                    return Promise.resolve(response.data.data)
+                })
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
+        },
     
     }
 

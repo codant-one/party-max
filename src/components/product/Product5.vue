@@ -26,6 +26,7 @@ const emit = defineEmits([
 
 const image = ref(null)
 const wholesale_price = ref(null)
+const wholesale_min = ref(null)
 const price_for_sale = ref(null)
 const name = ref(null)
 const color = ref(null)
@@ -38,6 +39,7 @@ const quantity = ref(null)
 const product_id = ref(null)
 const product_color_id = ref(null)
 const existence_whole = ref(false)
+const in_stock = ref(null)
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
@@ -58,6 +60,8 @@ watchEffect(() => {
         product_color_id.value = props.product.product_color_id
         color.value = props.product.color.name
         existence_whole.value = props.product.wholesale === 1 ? true : false;
+        wholesale_min.value = props.product.wholesale === 1 ? props.product.product.wholesale_min : 1
+        in_stock.value = props.product.product.in_stock
     }
 })
 
@@ -113,20 +117,25 @@ const control_cant = () => {
 
                 </VCol>
                 <VCol cols="6" md="2" class="d-flex flex-column py-5 my-auto">
-                    <VCardText class="d-flex text-center align-center justify-content-center">  
+                    <VCardText 
+                        class="d-flex text-center align-center justify-content-center"
+                        :class="(quantity > stock) ? 'warning' : ''"> 
                         <VTextField
                             v-model="quantity"
                             placeholder="0"
                             variant="solo"
                             type="number"
-                            :min="1"
+                            :min="wholesale_min"
                             :max="stock"
                             @change="onChange"
                             @input="control_cant"
+                            :disabled="(quantity > stock)"
                         />
                     </VCardText>
                     <VCardText class="d-flex text-center align-center justify-content-center mt-2">
-                        <span class="te-text-gray tw-text-xs">{{ stock }} disponibles</span>
+                        <span class="tw-text-xs" :class="(quantity > stock) ? 'tw-text-yellow' : 'tw-text-gray'">
+                            {{ (in_stock === 1) ? stock + ' disponibles'  : 'AGOTADO' }}
+                        </span>
                     </VCardText>
                   </VCol>
                 <VCol cols="6" md="2" class="align-center text-center py-5 my-auto pe-4">
@@ -216,6 +225,10 @@ const control_cant = () => {
         font-style: normal;
         font-weight: 400;
         line-height: 8px; /* 80% */ 
+    }
+
+    .warning .v-text-field::v-deep(.v-field) {
+        border: 1.5px solid #FFC549 !important;
     }
 
     .v-text-field::v-deep(.v-field) { 

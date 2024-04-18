@@ -17,6 +17,10 @@ class Cart {
     deleteAll(data: object) {
         return axios.post('shopping-cart/deleteAll',data)
     }
+
+    checkAvailability(params: object) {
+        return axios.get('shopping-cart/checkAvailability', {params})
+    }
 }
 
 const cart = new Cart();
