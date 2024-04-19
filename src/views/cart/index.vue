@@ -358,13 +358,14 @@ const sendPayU = async (billingDetail) => {
             street: billingDetail.street,
             city: billingDetail.city,
             postal_code: billingDetail.postal_code,
-            note: billingDetail.note
+            note: billingDetail.note,
+            wholesale: iswholesale.value === true ? 1 : 0
         }
 
         isLoading.value = true 
 
         let order = await ordersStores.addOrder(data)
-        let payment = await paymentsStores.signature({referenceCode: order.id, client_id: client_id.value, amount: summary.value.total})
+        let payment = await paymentsStores.signature({referenceCode: order.reference_code, amount: summary.value.total})
         
         localStorage.setItem('order_id', order.id)
 

@@ -164,7 +164,7 @@ async function fetchData() {
     cant_prod.value = route.query.wholesale === 'true' ? data.value.product.wholesale_min : 1
     wholesale_min.value = route.query.wholesale === 'true' ? data.value.product.wholesale_min : 1
     price_for_sale.value = data.value.product.price_for_sale
-    store.value = data.value.product.user.name + ' ' + (data.value.product.user.last_name ?? '')
+    store.value = data.value.product.user.user_detail.store_name ?? (data.value.product.user.supplier?.company_name ?? (data.value.product.user.name + ' ' + (data.value.product.user.last_name ?? '')))
     in_stock.value = data.value.product.in_stock
     color.value = data.value.product.colors[0].color.name
     single_description.value = data.value.product.single_description
