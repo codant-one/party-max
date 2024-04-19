@@ -312,7 +312,7 @@ const sendPayU = async (billingDetail) => {
 
     products.value.forEach(element => {
         product_color_id.push(element.product_color_id)
-        price.push(element.product.price_for_sale)
+        price.push(iswholesale.value === true ? element.product.wholesale_price : element.product.price_for_sale)
         quantity.push(element.quantity)
     });
 
