@@ -40,12 +40,14 @@ watchEffect(fetchData)
 
 async function fetchData() {
 
+  if(route.params.slug) {
     isLoading.value = true
 
     await miscellaneousStores.getCategory(route.params.slug)
     data.value = miscellaneousStores.getData
+    
     isLoading.value = false
-
+  }
 }
 
 </script>

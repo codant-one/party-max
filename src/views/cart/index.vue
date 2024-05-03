@@ -121,6 +121,7 @@ const provinceOld_id = ref('')
 const currentStep = ref(0)
 const isLoading = ref(false)
 const isActiveStepValid = ref(false)
+const iswholesale = ref(false)
 
 const getProvinces = computed(() => {
   return listProvincesByCountry.value.map((province) => {
@@ -177,11 +178,12 @@ async function fetchData() {
             address_id.value = (index > -1) ? addresses.value[index].id : addresses.value[0].id 
 
         } 
-             
-        
+
         let sum = 0
         products.value.forEach(element => {
-            sum += (parseFloat(element.product.price_for_sale) * element.quantity)
+            let value = element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale
+            iswholesale.value = element.wholesale === 1 ? true : false
+            sum += (parseFloat(value) * element.quantity)
         });
 
         summary.value.subTotal = sum.toFixed(2)
@@ -215,7 +217,6 @@ const selectCountry = country => {
   }
 }
 
-
 const changeAddreess = (id) => {
     address_id.value = id
 }
@@ -237,7 +238,8 @@ const addCart = (data)=>{
     let data_ = {
         client_id: client_id.value,
         product_color_id: data.product_color_id,
-        quantity: data.quantity
+        quantity: data.quantity,
+        wholesale: data.wholesale
     }
 
     cartStores.add(data_)
@@ -310,83 +312,107 @@ const sendPayU = async (billingDetail) => {
 
     products.value.forEach(element => {
         product_color_id.push(element.product_color_id)
-        price.push(element.product.price_for_sale)
+        price.push(iswholesale.value === true ? element.product.wholesale_price : element.product.price_for_sale)
         quantity.push(element.quantity)
     });
 
-    let data = {
-        client_id:  client_id.value,
-        address_id: address_id.value,
-        sub_total: summary.value.subTotal,
-        shipping_total: summary.value.send,
-        tax: 0,
-        total: summary.value.total,
-        product_color_id: product_color_id,
-        price: price,
-        quantity: quantity,
-        province_id: billingDetail.province_id,
-        name: billingDetail.name,
-        last_name: billingDetail.last_name,
-        company: billingDetail.company,
-        email: billingDetail.email,
-        phone: billingDetail.phone,
-        address: billingDetail.address,
-        street: billingDetail.street,
-        city: billingDetail.city,
-        postal_code: billingDetail.postal_code,
-        note: billingDetail.note
-    }
+    isLoading.value = true
 
-    isLoading.value = true 
-
-    let order = await ordersStores.addOrder(data)
-    let payment = await paymentsStores.signature({referenceCode: order.id, client_id: client_id.value, amount: summary.value.total})
+    let response = await cartStores.checkAvailability({client_id: client_id.value})
     
-    localStorage.setItem('order_id', order.id)
+    if(response.allAvailable === false) {
 
-    const formData = new URLSearchParams();
+        currentStep.value = 0
+        await fetchData()
 
-    formData.append('merchantId', payment.merchantId);
-    formData.append('accountId', payment.accountId);
-    formData.append('description', 'Order #'+ order.id);
-    formData.append('referenceCode', payment.referenceCode);
-    formData.append('amount', summary.value.total);
-    formData.append('tax', '0');
-    formData.append('taxReturnBase', '0');
-    formData.append('currency', 'COP');
-    formData.append('signature', payment.signature);
-    formData.append('test', (payment.test) ? '1' : '0');
-    formData.append('buyerEmail', billingDetail.email);
-    formData.append('buyerFullName', billingDetail.name + ' ' + billingDetail.last_name);
-    formData.append('mobilePhone', billingDetail.phone);
-    formData.append('telephone', billingDetail.phone);
-    formData.append('logoUrl', import.meta.env.VITE_APP_DOMAIN_API_URL + '/logos/slogan.png');
-    formData.append('shippingAddress', billingDetail.address);
-    formData.append('shippingCity', billingDetail.city);
-    formData.append('shippingCountry', 'CO');
-    formData.append('responseUrl', payment.responseUrl);
-    formData.append('confirmationUrl', payment.confirmationUrl);
+        message.value = "Todos los productos no estan disponibles"
+        isDialogVisible.value = true
+        isError.value = true
 
-    paymentsStores.redirectToPayU(formData)
-        .then(response => {
-            // console.log('response:', response);
-            isLoading.value = false
-            window.location.href = response.url;
-        })
-        .catch(error => {
-            
-            isLoading.value = false
-            isDialogVisible.value = true
-            message.value = error
-            isError.value = true             
+        setTimeout(() => {
+            isDialogVisible.value = false
+            message.value = ''
+            isError.value = false
+        }, 5000)
 
-            setTimeout(() => {
-                isDialogVisible.value = false
-                message.value = ''
-                isError.value = false
-            }, 3000)
-            // console.error('Error:', error);
-        });
+        isLoading.value = false
+    } else {
+
+        let data = {
+            client_id:  client_id.value,
+            address_id: address_id.value,
+            sub_total: summary.value.subTotal,
+            shipping_total: summary.value.send,
+            tax: 0,
+            total: summary.value.total,
+            product_color_id: product_color_id,
+            price: price,
+            quantity: quantity,
+            province_id: billingDetail.province_id,
+            name: billingDetail.name,
+            last_name: billingDetail.last_name,
+            company: billingDetail.company,
+            email: billingDetail.email,
+            phone: billingDetail.phone,
+            address: billingDetail.address,
+            street: billingDetail.street,
+            city: billingDetail.city,
+            postal_code: billingDetail.postal_code,
+            note: billingDetail.note,
+            wholesale: iswholesale.value === true ? 1 : 0
+        }
+
+        isLoading.value = true 
+
+        let order = await ordersStores.addOrder(data)
+        let payment = await paymentsStores.signature({referenceCode: order.reference_code, amount: summary.value.total})
+        
+        localStorage.setItem('order_id', order.id)
+
+        const formData = new URLSearchParams();
+
+        formData.append('merchantId', payment.merchantId);
+        formData.append('accountId', payment.accountId);
+        formData.append('description', 'Order #'+ order.id);
+        formData.append('referenceCode', payment.referenceCode);
+        formData.append('amount', summary.value.total);
+        formData.append('tax', '0');
+        formData.append('taxReturnBase', '0');
+        formData.append('currency', 'COP');
+        formData.append('signature', payment.signature);
+        formData.append('test', (payment.test) ? '1' : '0');
+        formData.append('buyerEmail', billingDetail.email);
+        formData.append('buyerFullName', billingDetail.name + ' ' + billingDetail.last_name);
+        formData.append('mobilePhone', billingDetail.phone);
+        formData.append('telephone', billingDetail.phone);
+        formData.append('logoUrl', import.meta.env.VITE_APP_DOMAIN_API_URL + '/logos/slogan.png');
+        formData.append('shippingAddress', billingDetail.address);
+        formData.append('shippingCity', billingDetail.city);
+        formData.append('shippingCountry', 'CO');
+        formData.append('responseUrl', payment.responseUrl);
+        formData.append('confirmationUrl', payment.confirmationUrl);
+
+        paymentsStores.redirectToPayU(formData)
+            .then(response => {
+                // console.log('response:', response);
+                isLoading.value = false
+                window.location.href = response.url;
+            })
+            .catch(error => {
+                
+                isLoading.value = false
+                isDialogVisible.value = true
+                message.value = error
+                isError.value = true             
+
+                setTimeout(() => {
+                    isDialogVisible.value = false
+                    message.value = ''
+                    isError.value = false
+                }, 3000)
+                // console.error('Error:', error);
+            });
+    }
 }
 
 const deleteAll = async () => {
@@ -424,17 +450,16 @@ const closeDialog = () => {
     }
 }
 
-const dialog_error = ()=>
-{
+const dialog_error = ()=> {
     message.value = "Debes agregar una dirección de envío"
     isDialogVisible.value = true
     isError.value = true
 
     setTimeout(() => {
-                isDialogVisible.value = false
-                message.value = ''
-                isError.value = false
-            }, 3000)
+        isDialogVisible.value = false
+        message.value = ''
+        isError.value = false
+    }, 3000)
 }
 
 const getFlagCountry = country => {
@@ -508,6 +533,7 @@ const getFlagCountry = country => {
                         :summary="summary"
                         :countries="listCountries"
                         :provinces="listProvinces"
+                        :iswholesale="iswholesale"
                         @submit="sendPayU"/>
                 </VWindowItem>
                 <VWindowItem>

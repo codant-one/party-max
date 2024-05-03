@@ -17,6 +17,7 @@ const isLoading = ref(true)
 watchEffect(fetchData)
 
 async function fetchData() {
+  
   isLoading.value = true
 
   let data = {

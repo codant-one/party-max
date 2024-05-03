@@ -15,7 +15,6 @@ const props = defineProps({
 
 const route = useRoute()
 
-
 const image = ref(null)
 const wholesale_price = ref(null)
 const price_for_sale = ref(null)
@@ -34,12 +33,12 @@ watchEffect(() => {
         wholesale_price.value = props.product.wholesale_price
         price_for_sale.value = props.product.price_for_sale
         name.value = props.product.name.toLowerCase().replace(/\b\w/g, (match) => match.toUpperCase())
-        store.value = props.product.user.name + ' ' + (props.product.user.last_name ?? '')
+        store.value = props.product.user.user_detail.store_name ?? (props.product.user.supplier?.company_name ?? (props.product.user.name + ' ' + (props.product.user.last_name ?? '')))
         rating.value = props.product.rating
         slug.value = props.product.slug
     }
 
-    existence_whole.value = route.query.wholesalers ? true : false;
+    existence_whole.value = route.query.wholesalers === 'true' ? true : false;
 })
 
 </script>
@@ -48,9 +47,8 @@ watchEffect(() => {
     <router-link
         :to="{
             name: 'productDetail',
-            params: {
-                slug: slug
-            }
+            params: { slug: slug },
+            query: {  wholesale: route.query.wholesalers }
         }"
         class="tw-no-underline zoom-product">
         <VCard class="no-shadown card-information p-0">
@@ -69,7 +67,7 @@ watchEffect(() => {
                 </span>
             </VCardText>
             <VCardText>
-                <span class="d-block text_2">Store: <strong>{{ store }}</strong></span>
+                <span class="d-block text_2">Tienda: <strong>{{ store }}</strong></span>
             </VCardText>
             <VCardText class="px-1 mt-1">
                 <div class="d-flex">
@@ -97,9 +95,6 @@ watchEffect(() => {
 
 <style scoped>
 
-    .title-product {
-        min-height: 55px;
-    }
     .v-card-text {
         padding: 0 10px;
     }
@@ -110,6 +105,9 @@ watchEffect(() => {
         border-radius: 16px !important;
         border: 1px solid #D9EEF2;
         padding: 10px !important;
+        text-align: center;
+        align-items: center;
+        display: flex;
     }
 
     .zoom-product  {
@@ -139,34 +137,28 @@ watchEffect(() => {
         line-height: 19.6px;
     }
 
-    .card-information
-    {
+    .card-information {
         width: 230px;
+        min-height: 100px;
     }
 
-    .img-prod
-    {
+    .img-prod {
         width:230px;
     }
     
 
-@media only screen and (max-width: 767px)
-  {
-    .card-information
-    {
+@media only screen and (max-width: 767px) {
+    .card-information {
         width: 171px;
     }
 
-    .img-prod
-    {
+    .img-prod {
         width:171px;
     }
 
-    .border-img
-    {
+    .border-img {
         width: 171px;
         height: 171px;
-
     }
   }
 </style>

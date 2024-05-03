@@ -49,7 +49,7 @@ const addCart = (data) => {
                 <VCardText class="d-flex row-cardp3">
                     <span>Envío</span>
                     <VSpacer />
-                    <h4>${{ props.summary.send }}</h4> 
+                    <h4>${{ formatNumber(props.summary.send) }}</h4> 
                 </VCardText>
             </VCard>
         </VCol>

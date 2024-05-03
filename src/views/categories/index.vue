@@ -13,6 +13,7 @@ import banner1 from '@assets/images/banner1.png';
 import banner2 from '@assets/images/banner2.png';
 import banner3 from '@assets/images/banner3.png';
 import banner4 from '@assets/images/banner4.png';
+import t_6 from '@assets/images/t_6.jpg';
 
 const route = useRoute()
 const miscellaneousStores = useMiscellaneousStores()
@@ -32,7 +33,6 @@ const slug4 = ref(null)
 
 const icons_categories = ref([])
 
-
 const isMobile = /Mobi/i.test(navigator.userAgent);
 
 const thumbsSwiper = ref(null);
@@ -46,23 +46,24 @@ watchEffect(fetchData)
 
 async function fetchData() {
 
-  isLoading.value = true
+  if(route.params.slug) {
+    isLoading.value = true
 
-  await miscellaneousStores.getCategory(route.params.slug)
-  data.value = miscellaneousStores.getData
-  icons_categories.value = data.value.category.children
-  console.log('subcategorias: ',icons_categories.value)
+    await miscellaneousStores.getCategory(route.params.slug)
+    data.value = miscellaneousStores.getData
+    icons_categories.value = data.value.category.children
 
-  image1.value = (data.value.category.banner === null) ? banner1 : baseURL.value + data.value.category.banner
-  slug1.value = data.value.category.banner1.slug.split('/')[1]
-  image2.value = (data.value.category.banner_2 === null) ? banner2 : baseURL.value + data.value.category.banner_2
-  slug2.value = data.value.category.banner2.slug.split('/')[1]
-  image3.value = (data.value.category.banner_3 === null) ? banner3 : baseURL.value + data.value.category.banner_3
-  slug3.value = data.value.category.banner3.slug.split('/')[1]
-  image4.value = (data.value.category.banner_4 === null) ? banner4 : baseURL.value + data.value.category.banner_4
-  slug4.value = data.value.category.banner4.slug.split('/')[1]
+    image1.value = (data.value.category.banner === null) ? banner1 : baseURL.value + data.value.category.banner
+    slug1.value = data.value.category.banner1?.slug.split('/')[1]
+    image2.value = (data.value.category.banner_2 === null) ? banner2 : baseURL.value + data.value.category.banner_2
+    slug2.value = data.value.category.banner2?.slug.split('/')[1]
+    image3.value = (data.value.category.banner_3 === null) ? banner3 : baseURL.value + data.value.category.banner_3
+    slug3.value = data.value.category.banner3?.slug.split('/')[1]
+    image4.value = (data.value.category.banner_4 === null) ? banner4 : baseURL.value + data.value.category.banner_4
+    slug4.value = data.value.category.banner4?.slug.split('/')[1]
 
-  isLoading.value = false
+    isLoading.value = false
+  }
 }
 </script>
 
@@ -92,26 +93,45 @@ async function fetchData() {
       <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center cardtitles">
         <span>¡Encuentra exactamente lo que necesitas!</span>
         <VSpacer />
-        <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary" v-if="!isMobile">Ver todos</router-link>
+        <router-link
+          :to="{
+            name: 'products',
+            query: {
+              category: route.params.slug
+            }
+          }"
+          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary" v-if="!isMobile">Ver todos</router-link>
       </VCardTitle>
       <VDivider class="hr-primary"/>
-      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between card-icons">
-        
-          
-            <router-link v-for="(i, index2) in icons_categories"
-                  :to="{
-                        name: 'products',
-                        query: {
-                          category: route.params.slug,
-                          subcategory: i.slug.split('/')[1]
-                        }
-                      }" class="tw-no-underline d-block text-center justify-content-center zoom router-icons">
-              <img :src="baseURL + i.icon_subcategory" class="border-theme d-block" v-if="i.icon_subcategory !== null"/>
-              <span class="d-block size-theme tw-text-tertiary mt-5 mb-5" v-if="i.icon_subcategory !== null">{{i.name}}</span>
-            </router-link>
-          
-        
-          
+      <VCardText 
+        class="px-4 px-md-7 pb-0 mt-5 d-flex align-items-stretch card-icons"
+        :class="icons_categories.length === 3 ? 'justify-content-between' : 'justify-content-center'">
+        <template v-for="(i, index) in icons_categories">
+          <router-link
+            v-if="i.icon_subcategory !== null"
+            :to="{
+              name: 'products',
+              query: {
+                category: route.params.slug,
+                subcategory: i.slug.split('/')[1]
+              }
+            }" class="tw-no-underline d-block text-center justify-content-center zoom router-icons">
+            <img :src="baseURL + i.icon_subcategory" class="border-theme d-block" v-if="i.icon_subcategory !== null"/>
+            <span class="d-block size-theme tw-text-tertiary mt-5 mb-5" v-if="i.icon_subcategory !== null">{{i.name}}</span>
+          </router-link>      
+        </template>
+        <router-link
+          v-if="isMobile"
+          :to="{
+            name: 'products',
+            query: {
+              category: route.params.slug
+            }
+          }" 
+          class="tw-no-underline d-block text-center justify-content-center zoom router-icons">
+          <img :src="t_6" class="border-theme d-block"/>
+          <span class="d-block size-theme tw-text-tertiary mt-5 mb-5 transparentColor">.</span>
+        </router-link>
       </VCardText>      
     </VCard>
 
@@ -229,42 +249,45 @@ async function fetchData() {
 
 <style scoped>
 
-.card-icons
-{
-  flex-wrap: wrap;
+  .transparentColor {
+    color: transparent !important;
+  }
+  .card-icons  {
+    flex-wrap: wrap;
 
-}
-    .transparent {
-        background: transparent !important;
-    }
+  }
+    
+  .transparent {
+    background: transparent !important;
+  }
 
-    .button-product {
-        font-size: 16px!important;
-        font-weight: 700;
-        padding: 24px!important;
-    }
+  .button-product {
+    font-size: 16px!important;
+    font-weight: 700;
+    padding: 24px!important;
+  }
 
-    .button-product:hover {
-        background-color: #FF27B3 !important;
-        box-shadow: 0px 0px 24px 0px #FF27B3;
-    }
+  .button-product:hover {
+    background-color: #FF27B3 !important;
+    box-shadow: 0px 0px 24px 0px #FF27B3;
+  }
 
-    .img-style {
-        border-radius: 16px;
-        border: 1px solid #000;
-        background: #D9D9D9;
-    }
+  .img-style {
+    border-radius: 16px;
+    border: 1px solid #000;
+    background: #D9D9D9;
+  }
 
-    .card-information {
-        padding: 32px;
-        border-radius: 16px;
-    }
+  .card-information {
+    padding: 32px;
+    border-radius: 16px;
+  }
 
-    .link-button {
-      text-decoration: none;
-    }
+  .link-button {
+    text-decoration: none;
+  }
 
-    .border-theme {
+  .border-theme {
     border-radius: 192px;
     border: 1px solid var(--Maastricht-Blue, #0A1B33);
     background: url(<path-to-image>), lightgray 50% / cover no-repeat;
@@ -288,44 +311,40 @@ async function fetchData() {
     width: 20%;
   }
 
-
-
-    @media only screen and (max-width: 767px) {
-      .img-style {
-          height: 140px;
-      }
-
-      .swiper::v-deep(.swiper-pagination-bullet-active) {
-        background: #FF0090 !important;
-      }
-
-      .swiper::v-deep(.swiper-pagination-horizontal ) {
-        top: 90%
-      }
-
-      .cardtitles {
-        white-space: pre-wrap;
-        font-size: 17px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-      }
-
-      .button-product {
-        font-size: 14px !important;
-        line-height: 14px; 
-      }
-
-      .router-icons
-      {
-        width: 50%;
-        padding: 0px 10px;
-      }
-
-      .border-theme
-      {
-        width: 100%;
-      }
-
+  @media only screen and (max-width: 767px) {
+    .img-style {
+      height: 140px;
     }
+
+    .swiper::v-deep(.swiper-pagination-bullet-active) {
+      background: #FF0090 !important;
+    }
+
+    .swiper::v-deep(.swiper-pagination-horizontal ) {
+      top: 90%
+    }
+
+    .cardtitles {
+      white-space: pre-wrap;
+      font-size: 17px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+
+    .button-product {
+      font-size: 14px !important;
+      line-height: 14px; 
+    }
+
+    .router-icons {
+      width: 50%;
+      padding: 0px 10px;
+    }
+
+    .border-theme {
+      width: 100%;
+    }
+
+  }
 </style>

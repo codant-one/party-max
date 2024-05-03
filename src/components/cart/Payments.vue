@@ -1,9 +1,9 @@
 <script setup>
 
 import { requiredValidator, phoneValidator, emailValidator } from '@validators'
+import { formatNumber } from '@formatters'
 import Product6 from '@/components/product/Product6.vue'
 import Payu from '@/assets/icons/payu.svg'
-import { formatNumber } from '@formatters'
 
 const props = defineProps({
     products: {
@@ -28,6 +28,10 @@ const props = defineProps({
     },
     provinces: {
         type: Object,
+        required: true
+    },
+    iswholesale: {
+        type: Boolean,
         required: true
     },
 })
@@ -255,7 +259,7 @@ const getFlagCountry = country => {
 
                 <VCard class="card-products mx-auto px-0">
                     <h1 class="title-summary border-title pb-4">Resumen de compra</h1>
-                    <h2 class="title-card px-16 my-3">Productos</h2>
+                    <h2 class="title-card px-16 my-3">Productos {{ props.iswholesale ? '(al mayor)' : ''}}</h2>
                     <VCardText class="row-cardp p-0">
                         <Product6
                             v-for="(product, i) in props.products"

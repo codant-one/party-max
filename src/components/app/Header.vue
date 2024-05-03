@@ -14,6 +14,7 @@
 
   const color = ref('#FF0090')
   
+  const route = useRoute();
   const homeStores = useHomeStores()
   const authStores = useAuthStores()
   const cartStores = useCartStores()
@@ -61,16 +62,30 @@
       cart_products.value = products
     });
 
+  watch(() => 
+    route.query,(newPath, oldPath) => {
+      fetchData()
+    }
+  );
+
   watchEffect(fetchData)
 
   async function fetchData() {
     await homeStores.fetchData()
     categories.value = homeStores.getData.parentCategories
     services.value = homeStores.getData.parentServices
-    categoriesSearch.value = 0
+
+    categoriesSearch.value = route.query.category ? findCategory(route.query.category) : 0
+    textSearch.value = route.query.search ?? null
+
     categories_.value = [{ id: 0, name: 'Todos' }, ...categories.value];
 
     color.value = (isMobile.value) ? '#FFFFFF' : '#FF0090'
+  }
+
+  const findCategory = (category) => {
+    let index = categories.value.findIndex(element => element.slug === category)
+    return index === -1 ? 0 : index + 1
   }
 
   const logout = () => {
@@ -160,9 +175,46 @@
 }
 
 const redirect_ = (name, slug) =>{
- router.push({name: name, 
-              params: {slug: slug}
-              })
+  router.push({
+    name: name, 
+    params: {
+      slug: slug
+    }
+  })
+}
+
+const closeMenuOnMouseLeave = () => {
+   if (menuOpen.value !== false) {
+    closeMenu()
+  } else if (menuOpenS.value !== false) {
+    closeMenuS()
+  }
+}
+
+const toggleWholesalers = () => {
+  if (route.query.wholesalers === 'true') {
+    router.push({ 
+      name: 'products',
+      query: {
+        category: route.query.category,
+        fathercategory: route.query.fathercategory,
+        subcategory: route.query.subcategory,
+        colorId: route.query.colorId,
+        wholesalers: 'false'
+      }
+    })
+  } else { 
+    router.push({ 
+      name: 'products',
+      query: {
+        category: route.query.category,
+        fathercategory: route.query.fathercategory,
+        subcategory: route.query.subcategory,
+        colorId: route.query.colorId,
+        wholesalers: 'true'
+      }
+    })
+  }
 }
   
 </script>
@@ -186,7 +238,7 @@ const redirect_ = (name, slug) =>{
           </VListItemTitle>          
           <VListItemTitle class="d-block lineheight borderList py-2">
             <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-              <span class="d-block title-menu">Blogs</span>
+              <span class="d-block title-menu">Blog</span>
             </router-link>
           </VListItemTitle>
           <VListItemTitle class="d-block lineheight borderList py-2">
@@ -458,12 +510,14 @@ const redirect_ = (name, slug) =>{
             :close-on-content-click="false"
             @update:modelValue="chanceMenu">
             <template  v-slot:activator="{ props }">
-              <div v-bind="props">
+              <div v-bind="props" class="d-flex">
                 <VAppBarNavIcon variant="text" />
-                <span class="font-size-16 me-7 tw-cursor-pointer">Productos</span>
+                <div class="pt-3">
+                  <span class="font-size-16 me-7 tw-cursor-pointer">Productos</span>
+                </div>
               </div>
             </template>
-            <VCard class="style-menu" :width="width">
+            <VCard class="style-menu" :width="width"  @mouseleave="closeMenuOnMouseLeave">
               <VRow no-gutters>
                 <VCol cols="12" :md="cols" class="py-5 pr-3">
                   <VList class="pb-0">
@@ -539,12 +593,14 @@ const redirect_ = (name, slug) =>{
             :close-on-content-click="false"
             @update:modelValue="chanceMenuS">
             <template  v-slot:activator="{ props }">
-              <div v-bind="props">
+              <div v-bind="props" class="d-flex">
                 <VAppBarNavIcon variant="text" />
-                <span class="font-size-16 me-7 tw-cursor-pointer">Servicios</span>
+                <div class="pt-3">
+                  <span class="font-size-16 me-7 tw-cursor-pointer">Servicios</span>
+                </div>
               </div>
             </template>
-            <VCard class="style-menu" :width="widths">
+            <VCard class="style-menu" :width="widths" @mouseleave="closeMenuOnMouseLeave">
               <VRow no-gutters>
                 <VCol cols="12" :md="colse" class="py-5 pr-3">
                   <VList class="pb-0">
@@ -610,20 +666,17 @@ const redirect_ = (name, slug) =>{
             </VCard>
           </VMenu>
         </div>-->
-        <router-link 
-        :to="{
-                name: 'products',
-                query:{wholesalers:'true'}
-              }" 
-        class="tw-no-underline tw-text-white hover:tw-text-yellow d-flex align-center text-center hover-icon-arrow-right">
-          <span class="ms-8">Mayoristas</span>
-          <arrow_right class="ms-2 p-0 index"/>
-        </router-link>  
+        <span @click="toggleWholesalers"
+          class="tw-no-underline d-flex align-center text-center tw-cursor-pointer"
+          :class="route.query.wholesalers === 'true' ? 'tw-text-yellow hover:tw-text-white hover-icon-arrow-right-white' : 'tw-text-white hover:tw-text-yellow hover-icon-arrow-right'">
+            <span class="ms-2"> Mayoristas </span>
+            <arrow_right class="ms-2 p-0 index" :class="route.query.wholesalers === 'true' ? 'wholesalers' : ''"/>
+        </span>  
         <VSpacer />
 
         <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Quiénes somos</router-link>
         <VDivider class="hr" vertical/>
-        <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Blogs</router-link>
+        <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Blog</router-link>
         <VDivider class="hr" vertical/>
         <router-link to="/help" class="ms-5 tw-no-underline tw-text-white me-3 hover:tw-text-yellow">Ayuda</router-link>
 
@@ -673,7 +726,7 @@ const redirect_ = (name, slug) =>{
   }
 
   .w-15 {
-    width: 27%;
+    width: 30%;
   }
 
   .me-24 {
@@ -686,7 +739,7 @@ const redirect_ = (name, slug) =>{
 
   .hr {
     width: 2px;
-    margin: 15px 0 15px 15px;
+    margin: 15px 0 15px 20px;
     background-color: white;
     opacity: 1 !important;
   }
@@ -748,10 +801,11 @@ const redirect_ = (name, slug) =>{
     padding-left: 8%;
    }
 
-   .v-select::v-deep(.v-field__append-inner) {
+  .v-select::v-deep(.v-field__append-inner) {
     padding-top: 30% !important;
     padding-right: 10% !important;
-   }
+  }
+
   .v-select::v-deep(.v-field) { 
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -783,6 +837,15 @@ const redirect_ = (name, slug) =>{
     color: #FF0090;
     cursor: pointer;
   }
+
+  .wholesalers::v-deep(path) {
+    fill: #FFC549;
+  }
+
+  .hover-icon-arrow-right-white:hover::v-deep(path) {
+    fill: #FFFFFF;
+  }
+
   .hover-icon-arrow-right:hover::v-deep(path) {
     fill: #FFC549;
   }

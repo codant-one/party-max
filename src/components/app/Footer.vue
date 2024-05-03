@@ -16,9 +16,10 @@
 
   import festinfooter from '@assets/images/festin-footer.png';
 
+
+  const currentYear = ref(new Date().getFullYear());
   const route = useRoute()
   const isProduct = ref(false)
-
 
   watchEffect(fetchData)
 
@@ -36,42 +37,40 @@
 
 <template>
   <VFooter class="text-center d-flex flex-column bg p-0">
-    <div class="container-footer" :class="isProduct ? 'tw-bg-primary text-colorfooter' : ''">
-        <VContainer class="my-10">
-            <VRow no-gutters class="tw-text-tertiary">
-              <VCol cols="12" md="5" class="d-flex xs:tw-text-center md:tw-text-left mb-4 mb-md-0">
-                <p class="line-p"><span class="text-footer">Conoce todas nuestras ofertas</span> <br>
-                <span class="subtext-footer">Regístrate ahora a nuestro newsletter.</span></p>
-              </VCol> 
-              <VCol cols="12" md="7" class="d-flex align-center dark" v-if="isProduct">  
-                <VTextField
-                  class="me-24"
-                  placeholder="Email"
-                  flat
-                  variant="solo">
-                  <template v-slot:append-inner>
-                    <VBtn class="tw-bg-white tw-text-primary h-100 search-button button-hover">Suscríbete</VBtn>
-                  </template>
-                </VTextField>
-              </VCol> 
-              <VCol cols="12" md="7" class="d-flex align-center" v-else>
-                <VTextField
-                  class="me-24"
-                  placeholder="Email"
-                  flat
-                  variant="solo">
-                  <template v-slot:append-inner>
-                    <VBtn class="tw-bg-primary tw-text-white h-100 search-button button-hover">Suscríbete</VBtn>
-                  </template>
-                </VTextField>
-              </VCol>  
-            </VRow>  
-
-        </VContainer>
-
-      </div>
+    <div class="container-footer d-none" :class="isProduct ? 'tw-bg-primary text-colorfooter' : ''">
+      <VContainer class="my-10">
+        <VRow no-gutters class="tw-text-tertiary">
+          <VCol cols="12" md="5" class="d-flex xs:tw-text-center md:tw-text-left mb-4 mb-md-0">
+            <p class="line-p"><span class="text-footer">Conoce todas nuestras ofertas</span> <br>
+            <span class="subtext-footer">Regístrate ahora a nuestro newsletter.</span></p>
+          </VCol> 
+          <VCol cols="12" md="7" class="d-flex align-center dark" v-if="isProduct">  
+            <VTextField
+              class="me-24"
+              placeholder="Email"
+              flat
+              variant="solo">
+              <template v-slot:append-inner>
+                <VBtn class="tw-bg-white tw-text-primary h-100 search-button button-hover">Suscríbete</VBtn>
+              </template>
+            </VTextField>
+          </VCol> 
+          <VCol cols="12" md="7" class="d-flex align-center" v-else>
+            <VTextField
+              class="me-24"
+              placeholder="Email"
+              flat
+              variant="solo">
+              <template v-slot:append-inner>
+                <VBtn class="tw-bg-primary tw-text-white h-100 search-button button-hover">Suscríbete</VBtn>
+              </template>
+            </VTextField>
+          </VCol>  
+        </VRow>  
+      </VContainer>
+    </div>
     
-    <VDivider class="hr" />
+    <VDivider class="hr d-none" />
 
     <VContainer class="mt-5 mt-md-16 borderBottom">
       <VRow no-gutters class="tw-text-tertiary">
@@ -204,7 +203,7 @@
     <VContainer class="mt-2">
       <VRow no-gutters class="tw-text-tertiary">
         <VCol cols="12" md="6" class="d-block align-center text-left col-copy">
-          <p class="copyright">© 2023 PartyMax. All Rights Reserved</p>
+          <p class="copyright">©{{currentYear}} PartyMax. All Rights Reserved</p>
         </VCol>
         <VCol cols="12" md="6" class="d-flex align-center text-right col-mobile">
           <VSpacer />

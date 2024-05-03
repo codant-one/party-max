@@ -8,6 +8,7 @@ import { useCartStores } from '@/stores/cart'
 import { useFavoritesStores } from '@/stores/favorites'
 import { FreeMode, Navigation, Thumbs, Scrollbar } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
+import router from '@/router'
 import CustomRadiosWithIcon from '@/components/app/CustomRadiosWithIcon.vue'
 import Loader from '@/components/common/Loader.vue'
 import Product1 from '@/components/product/Product1.vue'
@@ -15,7 +16,7 @@ import whatsapp from '@assets/icons/whatsapp.svg?inline';
 import facebook from '@assets/icons/facebook2.svg?inline';
 import instagram from '@assets/icons/instagram2.svg?inline';
 import threads from '@assets/icons/threads2.svg?inline';
-import iconmayorista from '@assets/icons/Union.svg';
+import iconmayorista from '@assets/icons/Union.svg?inline';
 import heart from '@assets/icons/heart.svg?inline';
 import default_review from '@assets/images/image-review.png';
 
@@ -25,20 +26,24 @@ import 'swiper/css/free-mode';
 import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar'
 
-const swiper_ = ref(null)
 const route = useRoute()
 const miscellaneousStores = useMiscellaneousStores()
 const cartStores = useCartStores()
 const favoritesStores = useFavoritesStores()
 
 const isLoading = ref(true)
-const tab = ref('0')
+const tab = ref('1')
 
 const bread = ref([
   {
     title: 'Home',
     disabled: false,
     href: '/',
+  },
+  {
+    title: 'Producto',
+    disabled: true,
+    href: '',
   }
 ])
 
@@ -53,7 +58,9 @@ const title = ref(null)
 const brand = ref(null)
 const rating = ref(null)
 const sku = ref(null)
+const wholesale = ref(false)
 const wholesale_price = ref(null)
+const wholesale_min = ref(null)
 const price_for_sale = ref(null)
 const store = ref(null)
 const in_stock = ref(null)
@@ -68,6 +75,7 @@ const weigth = ref('')
 const material = ref('')
 const cant_stock = ref(1)
 
+const existence_whole = ref(false)
 
 const radioContent = ref([])
 const selectedColor = ref(null)
@@ -87,9 +95,16 @@ const isSnackbarBottomStartVisible = ref(false)
 const variant = ref('tonal')
 const colorMessage = ref('')
 const message = ref('')
+const onlyWholesale = ref(false)
 
 watch(() => 
   route.path,(newPath, oldPath) => {
+    thumbsSwiper.value.destroy(false, true)
+  }
+);
+
+watch(() => 
+  route.query,(newPath, oldPath) => {
     thumbsSwiper.value.destroy(false, true)
   }
 );
@@ -106,24 +121,6 @@ async function fetchData() {
     user_id.value = userDataJ.id
   }
 
-  if(route.query.category) {
-    const category = {
-      title: formatTitle(route.query.category),
-      disabled: false,
-      href: 'categories/' + route.query.category,
-    }
-
-    bread.value.push(category)
-  }
-
-  const product_ = {
-    title: 'Producto',
-    disabled: true,
-    href: '',
-  }
-
-  bread.value.push(product_)
-
   isLoading.value = true
   
   radioContent.value = []
@@ -131,6 +128,8 @@ async function fetchData() {
   data.value = null
 
   if(route.params.slug) {
+    existence_whole.value = route.query.wholesale === 'true' ? true : false
+
     await miscellaneousStores.getProduct(route.params.slug)
     data.value = miscellaneousStores.getData
 
@@ -141,6 +140,8 @@ async function fetchData() {
     color.value = data.value.product.colors[0]?.color.name
     selectedColor.value = data.value.product.colors[0]?.color.id.toString()
     selectedColorId.value = data.value.product.colors[0]?.id
+
+    onlyWholesale.value = data.value.wholesale
 
     data.value.product.colors.forEach(element => { 
       var aux = {
@@ -158,16 +159,17 @@ async function fetchData() {
     brand.value = data.value.product.brand.name
     rating.value = data.value.product.rating
     sku.value = data.value.product.colors[0].sku
+    wholesale.value = data.value.product.wholesale === 1 ? true : false
     wholesale_price.value = data.value.product.wholesale_price
+    cant_prod.value = route.query.wholesale === 'true' ? data.value.product.wholesale_min : 1
+    wholesale_min.value = route.query.wholesale === 'true' ? data.value.product.wholesale_min : 1
     price_for_sale.value = data.value.product.price_for_sale
-    store.value = data.value.product.user.name + ' ' + (data.value.product.user.last_name ?? '')
+    store.value = data.value.product.user.user_detail.store_name ?? (data.value.product.user.supplier?.company_name ?? (data.value.product.user.name + ' ' + (data.value.product.user.last_name ?? '')))
     in_stock.value = data.value.product.in_stock
     color.value = data.value.product.colors[0].color.name
     single_description.value = data.value.product.single_description
     description.value = data.value.product.description
     cant_stock.value = parseInt(data.value.product.stock)
-
-    console.log('el numero de unidades que hay del articulo es:', cant_stock.value)
 
     width.value = data.value.product.detail.width
     weigth.value = data.value.product.detail.weigth
@@ -179,6 +181,7 @@ async function fetchData() {
       categories.value.push(element.category.name)
     });
 
+    tags.value = []
     data.value.product.tags.forEach(element => { 
       tags.value.push(element.tag.name)
     });
@@ -211,34 +214,51 @@ const setThumbsSwiper = (swiper) => {
 const addCart = () => {
 
   if(client_id.value) {
-    
-    let data = {
-      client_id: client_id.value,
-      product_color_id: selectedColorId.value,
-      quantity: cant_prod.value
+
+    let isWholesale = route.query.wholesale === 'true' ? 1 : 0
+
+    if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
+      let data = {
+        client_id: client_id.value,
+        product_color_id: selectedColorId.value,
+        quantity: cant_prod.value,
+        wholesale: isWholesale
+      }
+
+      load.value = true
+
+      cartStores.add(data)
+        .then(response => {
+
+          isSnackbarBottomStartVisible.value = true
+          message.value = 'Agregado al carrito'
+          colorMessage.value = 'primary'
+          variant.value = 'tonal'
+          load.value = false
+
+          setTimeout(() => {
+            isSnackbarBottomStartVisible.value = false
+            message.value = ''
+            colorMessage.value = ''
+          }, 3000)
+
+        }).catch(err => {
+          load.value = false
+          //console.error(err.message)
+        })
+    } else {
+      isSnackbarBottomStartVisible.value = true
+      message.value = 'Debes agregar al carrito productos ' + (isWholesale ? 'al detal' : 'al mayor') + ' debido a tu selección anterior'
+      colorMessage.value = 'error'
+      variant.value = 'flat'
+                      
+      setTimeout(() => {
+        isSnackbarBottomStartVisible.value = false
+        message.value = ''
+        colorMessage.value = ''
+      }, 3000)
     }
 
-    load.value = true
-
-    cartStores.add(data)
-      .then(response => {
-
-        isSnackbarBottomStartVisible.value = true
-        message.value = 'Agregado al carrito'
-        colorMessage.value = 'primary'
-        variant.value = 'tonal'
-        load.value = false
-
-        setTimeout(() => {
-          isSnackbarBottomStartVisible.value = false
-          message.value = ''
-          colorMessage.value = ''
-        }, 3000)
-
-      }).catch(err => {
-        load.value = false
-        //console.error(err.message)
-      })
   } else {
     isSnackbarBottomStartVisible.value = true
     message.value = 'Necesitas iniciar sesión antes de agregar un producto al carrito'
@@ -254,7 +274,7 @@ const addCart = () => {
 
 }
 
-const addfavorite = () =>{
+const addfavorite = () => {
 
   if(client_id.value) {
     isFavorite.value = true
@@ -282,29 +302,41 @@ const addfavorite = () =>{
       })
 
     } else {
-    isSnackbarBottomStartVisible.value = true
-    message.value = 'Necesitas iniciar sesión antes de agregar un producto a la lista'
-    colorMessage.value = 'error'
-    variant.value = 'flat'
+      isSnackbarBottomStartVisible.value = true
+      message.value = 'Necesitas iniciar sesión antes de agregar un producto a la lista'
+      colorMessage.value = 'error'
+      variant.value = 'flat'
 
-    setTimeout(() => {
-      isSnackbarBottomStartVisible.value = false
-      message.value = ''
-      colorMessage.value = ''
-    }, 3000)
+      setTimeout(() => {
+        isSnackbarBottomStartVisible.value = false
+        message.value = ''
+        colorMessage.value = ''
+      }, 3000)
   }
 
 }
 
-const control_cant =()=>
-{
-   
+const controlCant = () => {
+  if (parseInt(cant_prod.value) > parseInt(cant_stock.value)) { 
+    cant_prod.value = cant_stock.value; 
+  } else if (parseInt(cant_prod.value) < 1) {
+    cant_prod.value = 1;
+  }
+}
 
-    if (parseInt(cant_prod.value) > parseInt(cant_stock.value)) { 
-        cant_prod.value = cant_stock.value; 
-      } else if (parseInt(cant_prod.value) < 1) {
-        cant_prod.value = 1;
-      }
+const wholesaleAction = () => {
+  if (route.query.wholesale === 'true') {
+    router.push({ 
+      name: 'productDetail',
+      params: { slug: route.params.slug }
+    })
+  } else { 
+    router.push({ 
+      name: 'productDetail',
+      params: { slug: route.params.slug },
+      query: {  wholesale: 'true' }
+    })
+  }
 }
 
 </script>
@@ -312,8 +344,8 @@ const control_cant =()=>
 <template>
   <section>
     <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
-      <VContainer class="tw-text-tertiary d-flex align-center">
-        <v-breadcrumbs :items="bread" />
+      <VContainer class="tw-text-tertiary d-flex align-center px-0">
+        <v-breadcrumbs :items="bread" class="px-2" />
       </VContainer>
     </VAppBar>
     <VContainer class="pt-0">
@@ -378,7 +410,7 @@ const control_cant =()=>
                 class="mySwiper"
               >
                 <swiper-slide v-for="(picture, index) in productImages" :key="index">
-                  <img :src="baseURL + picture.image" />
+                  <img width="60" :src="baseURL + picture.image" />
                 </swiper-slide>
               </swiper>
             </VCol>
@@ -390,7 +422,7 @@ const control_cant =()=>
                 :spaceBetween="10"
                 :thumbs="{ swiper: thumbsSwiper }"
                 :modules="modules"
-                class="mySwiper2"
+                class="mySwiper2 border-img"
                 >
                 <swiper-slide v-for="(picture, index) in productImages" :key="index">
                   <img :src="baseURL + picture.image" />
@@ -400,7 +432,8 @@ const control_cant =()=>
             <VCol cols="12" md="7">
               <VCardText class="p-0">
                 <div class="d-flex py-2">
-                  <span class="text_1">$ {{ formatNumber(price_for_sale) }}</span>
+                  <span class="text_1" v-if="existence_whole">$ {{ formatNumber(wholesale_price) }}</span>
+                  <span class="text_1" v-else>$ {{ formatNumber(price_for_sale) }}</span>
                 </div>
               </VCardText>
               <VCardText class="p-0 d-flex border-title">
@@ -409,7 +442,7 @@ const control_cant =()=>
                 </span>
                 <span class="d-block tw-text-tertiary ms-8 mb-2">Status: 
                   <strong class="tw-text-gray tw-text-base ms-1">
-                    {{ (in_stock === 1) ? 'En Stock' : 'Agotado' }}
+                    {{ (in_stock === 1) ? 'En Stock (' + cant_stock + ')'  : 'AGOTADO' }}
                   </strong>
                 </span>
               </VCardText>
@@ -451,10 +484,10 @@ const control_cant =()=>
                     v-model="cant_prod"
                     variant="solo"
                     type="number"
-                    :min="1"
+                    :min="wholesale_min"
                     :max="cant_stock"
                     :rules="[requiredValidator]"
-                    @input="control_cant"
+                    @input="controlCant"
                    />
                 </div>
                 <div class="my-auto ms-5">
@@ -462,6 +495,7 @@ const control_cant =()=>
                     variant="flat"
                     @click="addCart"
                     class="btn-register tw-text-white tw-bg-primary button-hover" 
+                    :disabled="(in_stock === 0 || cant_prod > cant_stock) ? true : false"
                     >
                       Agregar al carrito
                       <VProgressCircular
@@ -476,7 +510,7 @@ const control_cant =()=>
                     v-if="!isFavorite" 
                     class="me-4 index heart p-0 tw-cursor-pointer"
                     :class="(isFavoriteProduct) ? 'heart_fill' : ''" 
-                     @click="addfavorite">
+                    @click="addfavorite">
                   <heart />
                   </span>
                   <VProgressCircular
@@ -491,9 +525,14 @@ const control_cant =()=>
               </VCardText>
 
               <VCardText class="p-0 d-flex border-title pb-2">
-                <VBtn class="b-mayorista">
-                  <img :src="iconmayorista" alt="Icono Mayorista" style="width: 24px; height: 24px; margin-right: 8px;">
-                  Precio al mayor
+                <VBtn 
+                  v-if="wholesale"
+                  :class="route.query.wholesale === 'true' ? 'b-mayorista-active': 'b-mayorista'"
+                  @click="wholesaleAction">
+                  <iconmayorista />
+                  <span class="ms-1">
+                    {{ route.query.wholesale === 'true' ? 'Precio al detal' : 'Precio al mayor' }}
+                  </span>
                 </VBtn>
               </VCardText>
               <VCardText class="p-0 d-block mt-2">
@@ -612,6 +651,7 @@ const control_cant =()=>
   .text-pink-accent-3 {
     color: #FF0090 !important;
   }
+
   .v-text-field::v-deep(.v-field) { 
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
@@ -666,6 +706,7 @@ const control_cant =()=>
   .border-title {
     border-bottom: 1px solid #D9EEF2;
   }
+
   .border-title2 {
     border-bottom: 1px solid #D9EEF2;
     border-top: 1px solid #D9EEF2;
@@ -688,6 +729,7 @@ const control_cant =()=>
     font-weight: 400;
     line-height: 22.4px; 
   }
+
   .border-title2 span {
     color: #0A1B33;
     text-align: center;
@@ -703,49 +745,83 @@ const control_cant =()=>
     text-decoration: underline #FF0090;
     cursor: pointer;
   }
+
   .btn-register {
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
     line-height: 14px;
     border-radius: 32px;
-    width: 288px;
-    height: 48px;
+    width: 260px;
+    height: 60px;
   }
 
   .button-hover:hover {
     background-color: #FF27B3 !important;
     box-shadow: 0px 0px 24px 0px #FF27B3;
   }
+
   .breadcumb {
     height: 55px !important;
   }
+
   .hearth-icon path {
     fill:#0A1B33;
   }
+
   .hearth-icon path:hover {
     fill: #FF0090;
   }
+
   .row-add {
     width: 100%;
   }
+
   .b-mayorista {
-    display: inline-flex;
-    height: 38px;
-    padding: 24px;
+    display: flex;
+    padding: 0 20px;
     justify-content: center;
     align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
     border-radius: 32px;
     border: 1px solid  #0A1B33;
-    color:#0A1B33;
+    color: #0A1B33;
     font-weight: 700;
   }
 
+  .b-mayorista:hover::v-deep(path) {
+    fill: white;
+  }
+
   .b-mayorista:hover {
-    background-color:  #FFC549;
-    border: 1px solid #FFC549;
+    background-color:  #0A1B33;
+    border: 1px solid #0A1B33;
+    color: white;
+  }
+
+  .b-mayorista-active {
+    display: flex;
+    padding: 0 20px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 32px;
+    background-color:  #0A1B33;
+    border: 1px solid  #0A1B33;
+    color: white;
+    font-weight: 700;
+  }
+
+  .b-mayorista-active::v-deep(path) {
+    fill: white;
+  }
+
+  .b-mayorista-active:hover::v-deep(path) {
+    fill: #0A1B33;
+  }
+
+  .b-mayorista-active:hover {
+    background-color:  white;
+    border: 1px solid #0A1B33;
+    color: #0A1B33;
   }
 
   .description {
@@ -762,9 +838,11 @@ const control_cant =()=>
     margin-top: 16px;
     color:  #0A1B33;
   }
+  
   .col-recomendaciones p {
     font-size:24px;
   }
+
   .col-recomendaciones span {
     font-size:14px;
   }
@@ -772,160 +850,182 @@ const control_cant =()=>
 </style>
 
 <style scoped>
-    .carousel__item img {
-        width: 60%;
-    }
-    .swiper-vertical > .swiper-pagination-bullets .swiper-pagination-bullet, .swiper-pagination-vertical.swiper-pagination-bullets .swiper-pagination-bullet {
-        display: none !important;
-    }
-    .swiper {
-        width: 100%;
-        height: 100%;
-    }
-    .swiper-slide {
-        text-align: center;
-        font-size: 18px;
-        background: #fff;
 
-        /* Center slide text vertically */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .swiper {
-        width: 100%;
-        height: 350px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .swiper-slide {
-        background-size: cover;
-        background-position: center;
-    }
-    .mySwiper2 {
-        height: 350px;
-        width: 100%;
-    }
-    .mySwiper {
-        box-sizing: border-box;
-        padding: 10px 5px;
-    }
-    .mySwiper .swiper-slide {
-        opacity: 0.4;
-        border-style: solid;
-        border-width: 1px;
-        border-radius: 8px;
-    }
-    .mySwiper .swiper-slide-thumb-active {
-        opacity: 1;
-    }
-
-    .swiper-slide img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        border-radius: 8px;
-    }
-    .col-item {
-      padding: 16px 32px;
-      border: 1px solid  #E1E1E1;
-      background-color: #E2F8FC;
-    }
-    .col-value {
-      padding: 16px 32px;
-      border: 1px solid #E1E1E1;
-      background-color: #FFF;
-    }
-
-    .col-item span {
-      color: #999;
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 16px; /* 100% */
-    }
-    .col-value span {
-      color: #999;
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 16px; /* 100% */
-    }
-    .row-reviews {
-      padding: 32px;
-    }
-    .image-review {
-      width: 70px;
-      border-radius: 70px;
-      border: 1px solid var(--Grey-2, #E1E1E1);
-    }
-    .row-reviews p {
-      color: #999;
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 16px; /* 114.286% */
-    }
-    .row-reviews span {
-      color: #FF0090;
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 16px; /* 114.286% */
-    }
-
-    .redes-title
-    {
-      display: flex;
-    }
-
-    .redes-mobile
-    {
-      display: none;
-    }
-
-
-@media only screen and (max-width: 767px)
-  {
-
-    .btn-register
-    {
-      width: 196px;
-      height: 54px;
-      font-size: 14px;
-    }
-
-    .col-recomendaciones
-    {
-      display: none;
-    }
-
-    .text-tabs
-    {
-      font-size: 11px!important;
-    }
-
-    .col-recprod
-    {
-      display: none;
-    }
-
-    .redes-title
-    {
-      display: none;
-    }
-
-    .redes-mobile
-    {
-      display: flex!important;
-    }
-
-    .text-infoprod
-    {
-      font-size: 12px!important;
-    }
-
+  .carousel__item img {
+    width: 60%;
   }
+    
+  .swiper-vertical > .swiper-pagination-bullets .swiper-pagination-bullet, .swiper-pagination-vertical.swiper-pagination-bullets .swiper-pagination-bullet {
+    display: none !important;
+  }
+
+  .swiper {
+    width: 100%;
+    height: 100%;
+  }
+    
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+
+    /* Center slide text vertically */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .swiper {
+    width: 100%;
+    height: 350px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+    
+  .swiper-slide {
+    background-size: cover;
+    background-position: center;
+  }
+
+  .mySwiper2 {
+    height: 350px;
+    width: 100%;
+  }
+
+  .border-img {
+    border-radius: 16px !important;
+    border: 1px solid #D9EEF2;
+    padding: 10px !important;
+    background-color: white;
+    text-align: center;
+    align-items: center;
+    display: flex;
+  }
+
+  .mySwiper {
+    box-sizing: border-box;
+    padding: 10px 5px;
+  }
+    
+  .mySwiper .swiper-slide {
+    opacity: 0.4;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+    width: 60px;
+  }
+    
+  .mySwiper .swiper-slide-thumb-active {
+    opacity: 1;
+  }
+
+  .swiper::v-deep(.swiper-wrapper)  {
+    width: 60px !important;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+    
+  .col-item {
+    padding: 16px 32px;
+    border: 1px solid  #E1E1E1;
+    background-color: #E2F8FC;
+  }
+    
+  .col-value {
+    padding: 16px 32px;
+    border: 1px solid #E1E1E1;
+    background-color: #FFF;
+  }
+
+  .col-item span {
+    color: #999;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 16px; /* 100% */
+    
+  }
+    
+  .col-value span {
+    color: #999;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px; /* 100% */
+  }
+
+  .row-reviews {
+    padding: 32px;
+  }
+    
+  .image-review {
+    width: 70px;
+    border-radius: 70px;
+    border: 1px solid var(--Grey-2, #E1E1E1);
+  }
+    
+  .row-reviews p {
+    color: #999;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px; /* 114.286% */
+  }
+    
+  .row-reviews span {
+    color: #FF0090;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px; /* 114.286% */
+  }
+
+  .redes-title {
+    display: flex;
+  }
+
+  .redes-mobile{
+    display: none;
+  }
+
+
+@media only screen and (max-width: 767px) {
+  .btn-register {
+    width: 196px;
+    height: 54px;
+    font-size: 14px;
+  }
+
+  .col-recomendaciones {
+     display: none;
+  }
+
+  .text-tabs {
+    font-size: 11px!important;
+  }
+
+  .col-recprod {
+    display: none;
+  }
+
+  .redes-title {
+    display: none;
+  }
+
+  .redes-mobile {
+    display: flex!important;
+  }
+
+  .text-infoprod {
+    font-size: 12px!important;
+  }
+
+}
 
 </style>
