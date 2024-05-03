@@ -506,7 +506,7 @@ const tab = ref('0')
         </VCard>
     </VCard>
 
-    <!-- suppliers -->
+    <!-- suppliers 
     <VCard class="mt-3 mt-md-7 no-shadown card-information p-0">
       <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center cardtitles">
         <span>Top proveedores mayoristas</span>
@@ -571,7 +571,7 @@ const tab = ref('0')
           </swiper-slide>
         </swiper>
       </VCardText>
-    </VCard>
+    </VCard>-->
 
     <!-- theme parties -->
     <VCard class="mt-7 no-shadown card-information transparent p-0">

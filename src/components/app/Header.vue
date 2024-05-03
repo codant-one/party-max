@@ -67,7 +67,6 @@
     await homeStores.fetchData()
     categories.value = homeStores.getData.parentCategories
     services.value = homeStores.getData.parentServices
-  
     categoriesSearch.value = 0
     categories_.value = [{ id: 0, name: 'Todos' }, ...categories.value];
 
@@ -247,7 +246,7 @@ const redirect_ = (name, slug) =>{
             </VExpansionPanel>
           </VExpansionPanels>
         </VListItem>
-        <VListItem>
+        <!--<VListItem>
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
             <span class="d-block title-menu">SERVICIOS</span>
             <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -287,7 +286,7 @@ const redirect_ = (name, slug) =>{
               </VExpansionPanelText>
             </VExpansionPanel>
           </VExpansionPanels>
-        </VListItem>
+        </VListItem>-->
       </VList>
     </VNavigationDrawer>
     <VAppBar flat class="header">
@@ -532,7 +531,7 @@ const redirect_ = (name, slug) =>{
             </VCard>
           </VMenu>
           </div>
-        <div class="hover:tw-text-yellow">
+        <!--<div class="hover:tw-text-yellow">
           <VMenu 
             v-model="menuOpenS"
             transition="slide-x-transition" 
@@ -610,7 +609,7 @@ const redirect_ = (name, slug) =>{
               </VRow>
             </VCard>
           </VMenu>
-        </div>
+        </div>-->
         <router-link 
         :to="{
                 name: 'products',
