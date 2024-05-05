@@ -69,7 +69,7 @@ backgroundStyle.value = {
     
   </VContainer>
 
-  <VRow :style="backgroundStyle" class="row-section" no-gutters>
+  <VRow :style="backgroundStyle" class="row-section d-none" no-gutters>
 
   <VContainer>
     <h2 class="tw-text-primary subtitle-about">Nuestros clientes</h2>

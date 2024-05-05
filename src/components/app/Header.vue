@@ -243,7 +243,7 @@ const toggleWholesalers = () => {
           </VListItemTitle>
           <VListItemTitle class="d-block lineheight borderList py-2">
             <router-link to="/wholesalers" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-              <span class="d-block title-menu">Mayoristas</span>
+              <span class="d-block title-menu">Precios Mayoristas</span>
             </router-link>
           </VListItemTitle>
 
@@ -576,9 +576,9 @@ const toggleWholesalers = () => {
                         <span class="subtitle-menu">{{ i.name }}</span>
                       </router-link>
                     </VListItem>
-                    <VListItem>
+                    <!--<VListItem>
                       <VImg :src="default_item" class="image-item"></VImg>
-                    </VListItem>
+                    </VListItem>-->
                   </VList>
                 </VCol>
               </VRow>
@@ -669,7 +669,7 @@ const toggleWholesalers = () => {
         <span @click="toggleWholesalers"
           class="tw-no-underline d-flex align-center text-center tw-cursor-pointer"
           :class="route.query.wholesalers === 'true' ? 'tw-text-yellow hover:tw-text-white hover-icon-arrow-right-white' : 'tw-text-white hover:tw-text-yellow hover-icon-arrow-right'">
-            <span class="ms-2"> Mayoristas </span>
+            <span class="ms-2"> Precios Mayoristas </span>
             <arrow_right class="ms-2 p-0 index" :class="route.query.wholesalers === 'true' ? 'wholesalers' : ''"/>
         </span>  
         <VSpacer />

@@ -552,7 +552,7 @@ const wholesaleAction = () => {
               <VTabs v-model="tab" color="pink-accent-3"  align-tabs="center">
                 <VTab value="0" class="text-tabs">Descripción</VTab>
                 <VTab value="1" class="text-tabs">Especificaciones</VTab>
-                <VTab value="2" class="text-tabs">Reviews (3)</VTab>
+                <VTab value="2" class="text-tabs">Reviews</VTab>
               </VTabs>
             </VCol>
 
@@ -579,7 +579,7 @@ const wholesaleAction = () => {
                 </v-window-item>
                 <v-window-item value="2">
                   <VCardText class="mb-10 py-0">
-                    <VRow class="row-reviews border-title" v-for="n in 3">
+                    <VRow class="row-reviews border-title d-none" v-for="n in 3">
                       <VCol cols="1">
                         <VImg :src="default_review" class="image-review"/>
                       </VCol>

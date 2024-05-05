@@ -81,7 +81,7 @@ watchEffect(() => {
 <template>
     <VCard class="text-justify card-header mb-6 pb-2 card-information no-shadown">
         <VCardItem class="p-0">
-            <VImg class="img-style" :src="baseURL + image" />
+                <img class="img-style" :src="baseURL + image" />
         </VCardItem>
 
         <VCardSubtitle class="text-justify subtitle-text my-6 px-0 d-block d-md-flex">
@@ -213,6 +213,9 @@ watchEffect(() => {
 
     .img-style {
         border-radius: 16px;
+        width: 100%;
+        max-height: 360px!important;
+        object-fit: cover;
     }
 
     .foot-data-text {
