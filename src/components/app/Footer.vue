@@ -16,7 +16,7 @@
 
   import festinfooter from '@assets/images/festin-footer.png';
 
-
+  const backgroundTemp = ref('tw-bg-white')
   const currentYear = ref(new Date().getFullYear());
   const route = useRoute()
   const isProduct = ref(false)
@@ -26,17 +26,21 @@
   async function fetchData() {
 
     if(route.name === 'products' || route.name === 'about' || route.name === 'help' ||
-       route.name === 'cart' || route.name === 'productDetail'||route.name==='suppliers_wholesalers'||route.name==='detail_wholesalers')
+       route.name === 'cart' || route.name === 'productDetail'|| route.name === 'suppliers_wholesalers' ||
+       route.name === 'detail_wholesalers') {
       isProduct.value = true
-    else 
+      backgroundTemp.value = route.name === 'cart' ? 'tw-bg-white' : 'tw-bg-green'
+    } else {
       isProduct.value = false
+      backgroundTemp.value = 'tw-bg-white'
+    }
 
   }
 
 </script>
 
 <template>
-  <VFooter class="text-center d-flex flex-column bg p-0">
+  <VFooter class="text-center d-flex flex-column bg p-0" :class="backgroundTemp">
     <div class="container-footer d-none" :class="isProduct ? 'tw-bg-primary text-colorfooter' : ''">
       <VContainer class="my-10">
         <VRow no-gutters class="tw-text-tertiary">
