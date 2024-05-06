@@ -90,13 +90,13 @@ const search = () => {
         
         <VList 
             base-color="#999999"
-            class="px-41 items"
+            class="px-41 items mb-5"
         >
             <VListItem
                 v-for="category in categories"
                 :key="category.id"
                 base-color="#999999"
-                class="hover:tw-bg-yellow px-2"
+                class="hover:tw-bg-yellow"
                 :link="true"
                 rounded
             >
@@ -108,10 +108,10 @@ const search = () => {
                         }
                         }"
                     class="tw-no-underline tw-text-tertiary">
-                    <div class="d-flex align-center">
-                        <book class="w-10"/>
-                        <span class="subtitle-text me-auto w-80">{{ category.name }}</span>
-                        <span class="subtitle-text py-0 tw-text-right w-10 me-1">
+                    <div class="d-flex align-center align-items-stretch flex-shrink-0">
+                        <book class="me-5"/>
+                        <span class="subtitle-text me-auto">{{ category.name }}</span>
+                        <span class="subtitle-text py-0 tw-text-left">
                             {{ category.blogs_count }}
                         </span>
                     </div>
@@ -122,14 +122,6 @@ const search = () => {
 </template>
 
 <style scoped>
-
-    .w-10 {
-        width: 10%
-    }
-
-    .w-80 {
-        width: 80%
-    }
 
     .color {
         color: #D9EEF2 !important;
@@ -154,7 +146,7 @@ const search = () => {
 
     .subtitle-text {
         color: var(--Grey-1, #999) !important;
-        font-size: 15px;
+        font-size: 16px;
         font-style: normal;
         font-weight: 400;
         line-height: 26px;
@@ -179,6 +171,7 @@ const search = () => {
     .items .v-list-item--variant-text .v-list-item__overlay {
         background-color: #FFC549 !important;
     }
+
     .icons{
       color:  #FF0090!important;
     }
@@ -208,6 +201,5 @@ const search = () => {
             font-weight: 700;
             line-height: 20px;
         }
-
     }
 </style>
