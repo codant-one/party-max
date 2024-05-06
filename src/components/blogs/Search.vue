@@ -15,7 +15,14 @@ const props = defineProps({
 });
 
 const route = useRoute()
-const textSearch = ref(route.query.search ?? null)
+const textSearch = ref(null)
+
+watchEffect(fetchData)
+
+async function fetchData() {
+    if(route.query.search)
+        textSearch.value = route.query.search
+}
 
 const search = () => {
   router.push({ 
