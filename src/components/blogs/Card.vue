@@ -133,8 +133,8 @@ watchEffect(() => {
 
         <VRow v-if="props.type === 2" class="mb-6">
             <hr class="col-12 v-divider v-theme--myCustomLightTheme mb-2 mt-4" />
-            <VCol cols="12" md="6" class="d-flex flex-row align-center px-1 py-1">
-                <VCol cols="3" class="px-1 py-1 foot-data-text">
+            <VCol cols="12" md="12" class="d-flex flex-row align-center px-1 py-1">
+                <VCol cols="2" class="px-1 py-1 foot-data-text">
                     Tags:
                 </VCol>
                 <VCol cols="9" class="d-flex flex-wrap justify-space-around px-1 py-2 ga-2">
@@ -146,11 +146,11 @@ watchEffect(() => {
                 </VCol>
             </VCol>
 
-            <VCol cols="12" md="6" class="d-flex flex-row align-center px-1 py-1">
-                <VCol cols="3" class="px-1 py-1 foot-data-text">
+            <VCol cols="12" md="12" class="d-flex flex-row align-center px-1 py-1">
+                <VCol cols="2" class="px-1 py-1 foot-data-text">
                     Share:
                 </VCol>
-                <VCol cols="9" class="d-flex flex-wrap justify-space-around px-1 py-2 ga-2">
+                <VCol cols="9" class="d-flex flex-wrap px-1 py-2 ga-4">
                     <VCard class="px-1 py-1" variant="flat">
                         <VCardText class="px-1 py-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="9" height="16" viewBox="0 0 9 16" fill="none">

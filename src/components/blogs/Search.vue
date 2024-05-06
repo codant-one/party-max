@@ -70,6 +70,7 @@ const search = () => {
                 :title="blog.title"
                 base-color="#999999"
                 class="hover:tw-bg-yellow"
+                rounded
                 :link="true"
                 :to="{
                         name: 'blogDetail',
@@ -97,6 +98,7 @@ const search = () => {
                 base-color="#999999"
                 class="hover:tw-bg-yellow"
                 :link="true"
+                rounded
             >
                 <router-link
                     :to="{
@@ -141,7 +143,7 @@ const search = () => {
         line-height: 28px;
     }
 
-    .subtitle-text{
+    .subtitle-text {
         color: var(--Grey-1, #999) !important;
         font-size: 16px;
         font-style: normal;
