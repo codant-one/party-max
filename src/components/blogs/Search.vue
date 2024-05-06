@@ -96,7 +96,7 @@ const search = () => {
                 v-for="category in categories"
                 :key="category.id"
                 base-color="#999999"
-                class="hover:tw-bg-yellow"
+                class="hover:tw-bg-yellow px-2"
                 :link="true"
                 rounded
             >
@@ -108,10 +108,10 @@ const search = () => {
                         }
                         }"
                     class="tw-no-underline tw-text-tertiary">
-                    <div class="d-flex align-center align-items-stretch flex-shrink-0">
-                        <book class="me-5"/>
-                        <span class="subtitle-text me-auto">{{ category.name }}</span>
-                        <span class="subtitle-text py-0 tw-text-left">
+                    <div class="d-flex align-center">
+                        <book class="w-10"/>
+                        <span class="subtitle-text me-auto w-80">{{ category.name }}</span>
+                        <span class="subtitle-text py-0 tw-text-right w-10 me-1">
                             {{ category.blogs_count }}
                         </span>
                     </div>
@@ -123,10 +123,19 @@ const search = () => {
 
 <style scoped>
 
+    .w-10 {
+        width: 10%
+    }
+
+    .w-80 {
+        width: 80%
+    }
+
     .color {
         color: #D9EEF2 !important;
         opacity: 1 !important;
     }
+
     .title-text {
         color: var(--Maastricht-Blue, #0A1B33);
         font-size: 24px;
@@ -145,7 +154,7 @@ const search = () => {
 
     .subtitle-text {
         color: var(--Grey-1, #999) !important;
-        font-size: 16px;
+        font-size: 15px;
         font-style: normal;
         font-weight: 400;
         line-height: 26px;
