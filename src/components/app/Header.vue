@@ -551,10 +551,9 @@ const toggleWholesalers = () => {
                     <VListItem  
                       v-for="(item, index) in categories"
                       :key="index">
-                        <div class="d-flex align-center hover-icon-right tw-cursor-pointer" >
+                        <div class="d-flex align-center hover-icon-right tw-cursor-pointer" @mouseover="openCategory(item.id)">
                           <span v-if="item.children.length > 0"
-                            class="subtitle-menu d-flex align-center" 
-                            @mouseover="openCategory(item.id)"
+                            class="subtitle-menu d-flex align-center"
                             @click="redirect_('categories', item.slug)">
                               <component v-if="items.filter(e => e.slug === item.slug)[0]" :is="items.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                               {{ item.name }} 
