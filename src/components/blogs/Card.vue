@@ -108,7 +108,7 @@ watchEffect(() => {
             <span v-else class="text-justify tw-text-primary"> {{ title }} </span>
         </VCardTitle>
 
-        <VCardText class="text-justify description-text px-0">
+        <VCardText class="text-justify description-text px-0 content-blog">
             <div v-html="paragraphs"></div>
         </VCardText>
 
@@ -189,6 +189,69 @@ watchEffect(() => {
 </template>
 
 <style scoped>
+
+    .content-blog {
+        position: relative;
+        padding: 20px 70px;
+
+        :deep(img)  {
+            max-width: 100%;
+            cursor: pointer;
+        }
+
+        :deep(ul)  {
+            list-style: disc;
+            padding-left: 1.5em;
+        }
+
+        :deep(li .ql-indent-1) {
+            padding-left: 1em;
+        }
+
+        :deep(.zoomed)  {
+            position: fixed;
+            top: 15%;
+            left: 18%;
+            width: 59%;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            border: 3px solid #000;
+
+            @media (max-width: 767px) {
+                top: 15%;
+                left: 2%;
+                width: 95%;
+            }
+        }
+
+        :deep(.ql-video) {
+            padding: 0 15% !important;
+            width: 100% !important;
+            height: 400px !important;
+
+            @media (max-width: 767px) {
+                height: 200px !important;
+                padding: 0 10% !important;
+            }
+        }
+
+        :deep(p br) {
+            display: none;
+        }
+
+        :deep(.ql-align-center) {
+            text-align: center !important;
+        }
+
+        :deep(.ql-align-right){
+            text-align: right !important;
+        }
+
+    }
+
     .title-text {
         font-size: 36px;
         font-style: normal;
