@@ -17,12 +17,11 @@ const props = defineProps({
 const route = useRoute()
 const textSearch = ref(null)
 
-watchEffect(fetchData)
-
-async function fetchData() {
-    if(route.query.search)
-        textSearch.value = route.query.search
-}
+watch(() => 
+    route.query,(newPath, oldPath) => {
+        textSearch.value = route.query.search ?? null
+    }
+);
 
 const search = () => {
   router.push({ 
