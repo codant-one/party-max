@@ -199,6 +199,11 @@ watchEffect(() => {
             cursor: pointer;
         }
 
+        :deep(a){
+            color: rgb(var(--v-theme-primary)) !important;
+            text-decoration: none;
+        }
+
         :deep(ul)  {
             list-style: disc;
             padding-left: 1.5em;
