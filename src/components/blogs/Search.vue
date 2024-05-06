@@ -8,7 +8,7 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    tags: {
+    categories: {
         type: Object,
         required: true
     }
@@ -21,7 +21,7 @@ const search = () => {
   router.push({ 
     name: 'blogs',
     query: {
-        tag: route.query.tag ?? null,
+        category: route.query.category ?? null,
         search: textSearch.value
     }         
   })
@@ -93,8 +93,8 @@ const search = () => {
             class="px-41 items"
         >
             <VListItem
-                v-for="tag in tags"
-                :key="tag.id"
+                v-for="category in categories"
+                :key="category.id"
                 base-color="#999999"
                 class="hover:tw-bg-yellow"
                 :link="true"
@@ -104,15 +104,15 @@ const search = () => {
                     :to="{
                         name: 'blogs',
                         query: {
-                            tag: tag.slug
+                            category: category.slug
                         }
                         }"
                     class="tw-no-underline tw-text-tertiary">
                     <div class="d-flex align-center align-items-stretch flex-shrink-0">
                         <book class="me-5"/>
-                        <span class="subtitle-text me-auto">{{ tag.name }}</span>
+                        <span class="subtitle-text me-auto">{{ category.name }}</span>
                         <span class="subtitle-text py-0 tw-text-left">
-                            {{ tag.blog_tags_count }}
+                            {{ category.blogs_count }}
                         </span>
                     </div>
                 </router-link>

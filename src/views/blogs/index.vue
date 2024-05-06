@@ -10,7 +10,7 @@ const blogsStores = useMiscellaneousStores()
 const route = useRoute()
 
 const blogs = ref([])
-const tags = ref([])
+const categories = ref([])
 const latestBlogs = ref([])
 const isLoading = ref(true)
 
@@ -21,14 +21,14 @@ async function fetchData() {
   isLoading.value = true
 
   let data = {
-    tag: route.query.tag ?? null,
+    category: route.query.category ?? null,
     search: route.query.search ?? null,
   }
   
   let response = await blogsStores.blogs(data)
     
   blogs.value = response.blogs
-  tags.value = response.tags
+  categories.value = response.categories
   latestBlogs.value = response.latestBlogs
   
   isLoading.value = false  
@@ -54,7 +54,7 @@ async function fetchData() {
       <VCol cols="12" md="4">
         <Search
           :blogs="latestBlogs"
-          :tags="tags"
+          :categories="categories"
         />   
       </VCol>
     </VRow> 
