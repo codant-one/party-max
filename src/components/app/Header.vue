@@ -10,7 +10,15 @@
   import user from '@assets/icons/user.svg?inline';
   import arrow_right from '@assets/icons/arrow_right.svg?inline';
   import icon_right from '@assets/icons/right-icon.svg?inline';
-  import default_item from '@assets/images/subitem-menu-default.png'
+
+  import icon1 from '@assets/icons/fiestas-infantiles.svg?inline';
+  import icon2 from '@assets/icons/fiestas-tematicas.svg?inline';
+  import icon3 from '@assets/icons/fechas-especiales.svg?inline';
+  import icon4 from '@assets/icons/globos.svg?inline';
+  import icon5 from '@assets/icons/decoracion.svg?inline';
+  import icon6 from '@assets/icons/hora-loca.svg?inline';
+  import icon7 from '@assets/icons/desechables.svg?inline';
+  import icon8 from '@assets/icons/sorpresas.svg?inline';
 
   const color = ref('#FF0090')
   
@@ -32,8 +40,8 @@
   const colse = ref(12)
   const category = ref(1)
   const service = ref(1)
-  const width = ref(260)
-  const widths = ref(260)
+  const width = ref(300)
+  const widths = ref(300)
   const openMenu = ref(false)
   const menuOpen = ref(false)
 
@@ -49,6 +57,17 @@
     { id: 1, name: 'item 1', children: [{ id: 1, name: 'item 1 (1)' }, { id: 2, name: 'item 1 (2)' }] },
     { id: 2, name: 'item 2', children: [{ id: 1, name: 'item 2 (1)' }, { id: 2, name: 'item 2 (2)' }] },
     { id: 3, name: 'item 3', children: [{ id: 1, name: 'item 3 (1)' }, { id: 2, name: 'item 3 (2)' }] }
+  ])
+
+  const items = ref([
+    { text: 'Fiestas infantiles', icon: icon1, slug: 'fiestas-infantiles' },
+    { text: 'Fiestas temáticas', icon: icon2, slug: 'fiestas-tematicas' },
+    { text: 'Fechas especiales', icon: icon3, slug: 'fechas-especiales' },
+    { text: 'Globos', icon: icon4, slug: 'globos' },
+    { text: 'Decoración', icon: icon5, slug: 'decoracion' },
+    { text: 'Hora loca', icon: icon6, slug: 'hora-loca' },
+    { text: 'Desechables', icon: icon7, slug: 'desechables' },
+    { text: 'Sorpresas', icon: icon8, slug: 'sorpresas' }
   ])
 
   watch(() => 
@@ -104,19 +123,19 @@
   const openCategory = (id) => {
     cols.value = 6
     category.value = id - 1
-    width.value = 750
+    width.value = 650
   }
 
   const openService = (id) => {
     colse.value = 6
     service.value = id - 161
-    widths.value = 750
+    widths.value = 650
   }
 
   const chanceMenu = () => {
     cols.value = (openMenu.value === true) ? 6 : 12
     category.value = 0
-    width.value = (openMenu.value === true) ? 750 : 260
+    width.value = (openMenu.value === true) ? 650 : 300
     openMenu.value = (openMenu.value === true) ? false : true
   }
 
@@ -128,7 +147,7 @@
   const chanceMenuS = () => {
     colse.value = (openMenuS.value === true) ? 6 : 12
     service.value = 0
-    widths.value = (openMenuS.value === true) ? 750 : 260
+    widths.value = (openMenuS.value === true) ? 650 : 300
     openMenuS.value = (openMenuS.value === true) ? false : true
   }
 
@@ -532,28 +551,26 @@ const toggleWholesalers = () => {
                     <VListItem  
                       v-for="(item, index) in categories"
                       :key="index">
-                        <div class="d-flex hover-icon-right tw-cursor-pointer" >
-                           
-                            <span v-if="item.children.length>0"
-                              class="subtitle-menu" 
-                              @mouseover="openCategory(item.id)"
-                              @click="redirect_('categories', item.slug)">
-                              {{ item.name }}
-                            </span>
-                          
+                        <div class="d-flex align-center hover-icon-right tw-cursor-pointer" >
+                          <span v-if="item.children.length > 0"
+                            class="subtitle-menu d-flex align-center" 
+                            @mouseover="openCategory(item.id)"
+                            @click="redirect_('categories', item.slug)">
+                              <component v-if="items.filter(e => e.slug === item.slug)[0]" :is="items.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
+                              {{ item.name }} 
+                          </span>
                           <router-link 
                             :to="{
-                                  name: 'categories',
-                                  params: {
-                                  slug: item.slug
-                                  }
-                                }" 
-                            class="subtitle-menu tw-no-underline"   
-                            v-else>{{ item.name }}
+                              name: 'categories',
+                              params: {
+                                slug: item.slug
+                                }
+                            }" 
+                            class="subtitle-menu tw-no-underline" v-else>
+                            {{ item.name }}
                           </router-link> 
                           <VSpacer />
-                          <icon_right v-if="item.children.length>0"/> 
-                           
+                          <icon_right v-if="item.children.length > 0"/>  
                         </div>
                     </VListItem>
                   </VList>
@@ -576,9 +593,6 @@ const toggleWholesalers = () => {
                         <span class="subtitle-menu">{{ i.name }}</span>
                       </router-link>
                     </VListItem>
-                    <!--<VListItem>
-                      <VImg :src="default_item" class="image-item"></VImg>
-                    </VListItem>-->
                   </VList>
                 </VCol>
               </VRow>
@@ -656,9 +670,6 @@ const toggleWholesalers = () => {
                         class="tw-no-underline tw-text-tertiary">
                         <span class="subtitle-menu">{{ i.name }}</span>
                       </router-link>
-                    </VListItem>
-                    <VListItem>
-                      <VImg :src="default_item" class="image-item"></VImg>
                     </VListItem>
                   </VList>
                 </VCol>
@@ -907,11 +918,10 @@ const toggleWholesalers = () => {
   }
 
   .style-submenu .v-list-item--density-default.v-list-item--one-line {
-    min-height: 20px !important;
+    min-height: 35px !important;
   }
 
-  .line-div
-  {
+  .line-div {
     border-bottom: 1px solid var(--Light-Cyan-3, #D9EEF2)!important;
   }
 

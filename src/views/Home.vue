@@ -25,12 +25,12 @@ import Slider1 from '@assets/images/Slider_1.jpg';
 import Slider2 from '@assets/images/Slider_2.jpg';
 import Slider3 from '@assets/images/Slider_3.jpg';
 
-import icon1 from '@assets/icons/fiestas_infantiles.svg';
-import icon2 from '@assets/icons/fiestas_tematicas.svg';
-import icon3 from '@assets/icons/fechas_especiales.svg';
-import icon4 from '@assets/icons/hora_loca.svg';
+import icon1 from '@assets/icons/fiestas-infantiles.svg';
+import icon2 from '@assets/icons/fiestas-tematicas.svg';
+import icon3 from '@assets/icons/fechas-especiales.svg';
+import icon4 from '@assets/icons/hora-loca.svg';
 import icon5 from '@assets/icons/desechables.svg';
-import icon6 from '@assets/icons/decoración.svg';
+import icon6 from '@assets/icons/decoracion.svg';
 import icon7 from '@assets/icons/sorpresas.svg';
 import icon8 from '@assets/icons/mobiliario.svg';
 import icon9 from '@assets/icons/dulces.svg';
