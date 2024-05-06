@@ -208,6 +208,10 @@ watchEffect(() => {
             color: rgb(var(--v-theme-secondary)) !important;
         }
 
+        :deep(p) {
+            margin-block-end: 1rem;
+        }
+
         :deep(ul)  {
             list-style: disc;
             padding-left: 1.5em;
