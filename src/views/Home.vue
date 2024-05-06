@@ -589,7 +589,7 @@ const tab = ref('0')
           </swiper-slide>
         </swiper>
       </VCardText>
-    </VCard>-->
+    </VCard>
 
     <!-- theme parties -->
     <VCard class="mt-7 no-shadown card-information transparent p-0">
