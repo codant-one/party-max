@@ -15,7 +15,7 @@ const props = defineProps({
 });
 
 const route = useRoute()
-const textSearch = ref(null)
+const textSearch = ref(route.query.search ?? null)
 
 const search = () => {
   router.push({ 
