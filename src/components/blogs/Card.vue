@@ -43,9 +43,8 @@ watchEffect(() => {
 
         var blogContent = description.value; 
 
-        if (props.type == 1 && typeof blogContent == 'string' )
-        {
-            if ( blogContent.includes("<p>") ){
+        if (props.type == 1 && typeof blogContent == 'string' ) {
+            if ( blogContent.includes("<p>") ) {
                 blogContent = blogContent.replace(/<p>/g, "");
                 blogContent = blogContent.split("</p>");
             } else if( blogContent.includes('\n') ) {
@@ -60,28 +59,25 @@ watchEffect(() => {
     }
 })
 
-// const firstParagraph = async() => {
-//   const blogContent = description.value;
-//   if (typeof blogContent == 'string' )
-//   {
-//     if ( blogContent.includes("<p>") ){
-//         blogContent = blogContent.replace(/<p>/g, "");
-//         blogContent.value = blogContent.split("</p>");
-//     } else if( blogContent.includes("\n") ) {
-//         blogContent.value = blogContent.split("\n");
-//     } else {
-//         blogContent.value = blogContent.split(".");
-//     }
-//     paragraphs.value = blogContent.value[0];
-//   }
-// }
-
 </script>
 
 <template>
     <VCard class="text-justify card-header mb-6 pb-2 card-information no-shadown">
         <VCardItem class="p-0">
+            <router-link
+                v-if="props.type == 1"
+                :to="{
+                    name: 'blogDetail',
+                    params: {
+                        slug: slug                    
+                    },
+                    replace:true
+                }"
+                class="tw-no-underline"
+            >
                 <img class="img-style" :src="baseURL + image" />
+            </router-link>
+            <img v-else class="img-style" :src="baseURL + image" />
         </VCardItem>
 
         <VCardSubtitle class="text-justify subtitle-text my-6 px-0 d-block d-md-flex">
@@ -95,8 +91,21 @@ watchEffect(() => {
             </div>
         </VCardSubtitle>
 
-        <VCardTitle class="text-justify title-text px-0 pt-0">
-            {{ title }}
+        <VCardTitle class="px-0 pt-0">
+            <router-link 
+                v-if="props.type == 1"
+                :to="{
+                    name: 'blogDetail',
+                    params: {
+                        slug: slug                    
+                    },
+                    replace:true
+                }"
+                class="tw-no-underline"
+            >
+                <span class="text-justify title-text tw-text-primary hover:tw-text-secondary"> {{ title }} </span>
+            </router-link>
+            <span v-else class="text-justify title-text tw-text-primary"> {{ title }} </span>
         </VCardTitle>
 
         <VCardText class="text-justify description-text px-0">
@@ -104,7 +113,7 @@ watchEffect(() => {
         </VCardText>
 
         <router-link 
-            v-if="props.type==1"
+            v-if="props.type == 1"
             :to="{
                 name: 'blogDetail',
                 params: {
@@ -181,7 +190,6 @@ watchEffect(() => {
 
 <style scoped>
     .title-text {
-        color:  #FF0090!important;
         font-size: 36px;
         font-style: normal;
         font-weight: 600;
