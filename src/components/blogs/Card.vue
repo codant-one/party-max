@@ -204,6 +204,10 @@ watchEffect(() => {
             text-decoration: none;
         }
 
+        :deep(a:hover){
+            color: rgb(var(--v-theme-secondary)) !important;
+        }
+
         :deep(ul)  {
             list-style: disc;
             padding-left: 1.5em;
