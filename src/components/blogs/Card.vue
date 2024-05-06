@@ -91,7 +91,7 @@ watchEffect(() => {
             </div>
         </VCardSubtitle>
 
-        <VCardTitle class="px-0 pt-0">
+        <VCardTitle class="px-0 pt-0 title-text">
             <router-link 
                 v-if="props.type == 1"
                 :to="{
@@ -101,11 +101,11 @@ watchEffect(() => {
                     },
                     replace:true
                 }"
-                class="text-justify title-text tw-no-underline"
+                class="text-justify tw-no-underline"
             >
                 <span class="tw-text-primary hover:tw-text-secondary"> {{ title }} </span>
             </router-link>
-            <span v-else class="text-justify title-text tw-text-primary"> {{ title }} </span>
+            <span v-else class="text-justify tw-text-primary"> {{ title }} </span>
         </VCardTitle>
 
         <VCardText class="text-justify description-text px-0">
