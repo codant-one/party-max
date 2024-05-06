@@ -67,18 +67,27 @@ const search = () => {
         >
             <VListItem
                 v-for="blog in blogs"
-                :title="blog.title"
                 base-color="#999999"
                 class="hover:tw-bg-yellow"
                 rounded
                 :link="true"
                 :to="{
-                        name: 'blogDetail',
-                        params: {
-                            slug: blog.slug                    
-                        }
-                    }"
+                    name: 'blogDetail',
+                    params: {
+                        slug: blog.slug                    
+                    }
+                }"
             >
+                <VListItemTitle>
+                    <span>{{ blog.title }}</span>
+                    <VTooltip
+                        location="top"
+                        activator="parent"
+                        transition="scroll-x-transition"
+                        >
+                        <span>{{ blog.title }}</span>
+                    </VTooltip>
+                </VListItemTitle>
             </VListItem>
         </VList>
 
