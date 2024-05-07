@@ -885,6 +885,16 @@ const addfavorite = (product_id) => {
 
 <style scoped>
 
+.v-pagination::v-deep(.v-pagination__item--is-active .v-btn__overlay), .v-pagination::v-deep(.v-pagination__item--is-active .v-btn) {
+  opacity: 1 !important;
+}
+
+.v-pagination::v-deep(.v-pagination__item--is-active .v-btn__content) {
+  color: white;
+  caret-color: white;
+  z-index: 999;
+}
+
 .pagination-custom {
   background-color: #E2F8FC;
   border-radius: 16px;
