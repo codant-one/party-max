@@ -826,7 +826,7 @@ const addfavorite = (product_id) => {
             </VRow>
           </VCard>
           <VRow class="align-center row-products pb-0" no-gutters>
-            <VCol cols="12">
+            <VCol cols="12" class="testing">
               <v-window v-model="tab">
                 <v-window-item value="0">
                   <VRow no-gutters class="ms-3">
@@ -1135,6 +1135,11 @@ const addfavorite = (product_id) => {
   border-radius: 48px !important;
   font-size: 12px !important;
   max-height: 33px !important;
+}
+
+.testing {
+  top: -7%;
+  position: relative;
 }
 
 .row-products {
