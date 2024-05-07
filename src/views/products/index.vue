@@ -889,6 +889,12 @@ const addfavorite = (product_id) => {
   opacity: 1 !important;
 }
 
+.v-pagination::v-deep(.v-btn__content) {
+  color: #0A1B33;
+  caret-color: #0A1B33;
+  z-index: 999;
+}
+
 .v-pagination::v-deep(.v-pagination__item--is-active .v-btn__content) {
   color: white;
   caret-color: white;
