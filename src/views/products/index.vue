@@ -392,7 +392,7 @@ const addfavorite = (product_id) => {
     </VAppBar>
     <VContainer class="pt-0">
       <Loader :isLoading="isLoading" />
-      <VRow no-gutters v-if="categories">
+      <VRow no-gutters v-if="categories" class="products-structure">
         <VCol cols="12" md="3">
           <VCard class="mt-7 sidebar-container">
             <VCardItem class="p-0 text-left mt-6"> CATEGORÍAS </VCardItem>
@@ -779,7 +779,7 @@ const addfavorite = (product_id) => {
           </VCard>
         </VCol>
 
-        <VCol cols="12" md="9" class="col-menuproduct">
+        <VCol cols="12" md="9" class="col-menuproduct d-flex flex-column">
           <VCard class="mt-7 menu-prod">
             <VRow no-gutters class="align-center">
               <VCol
@@ -825,9 +825,9 @@ const addfavorite = (product_id) => {
               </VCol>
             </VRow>
           </VCard>
-          <VRow class="align-center row-products" no-gutters>
+          <VRow class="align-center row-products pb-0" no-gutters>
             <VCol cols="12">
-              <v-window v-model="tab" style="min-height: 800px">
+              <v-window v-model="tab">
                 <v-window-item value="0">
                   <VRow no-gutters class="ms-3">
                     <VCol
@@ -858,7 +858,7 @@ const addfavorite = (product_id) => {
                 </v-window-item>
               </v-window>
             </VCol>
-            <VCol cols="12">
+            <VCol cols="12" class="mt-auto">
               <VCardText
                 v-if="totalProducts === 0"
                 class="d-flex align-center justify-content-center py-3 px-5"
@@ -866,7 +866,7 @@ const addfavorite = (product_id) => {
                 Datos no disponibles
               </VCardText>
               <VCardText
-                class="d-flex align-center justify-content-center py-3 px-5"
+                class="d-flex align-center justify-content-center py-3 px-5 pb-0"
               >
                 <VPagination
                   v-model="currentPage"
@@ -909,6 +909,11 @@ const addfavorite = (product_id) => {
 </template>
 
 <style scoped>
+
+.products-structure {
+  display: flex;
+  flex-wrap: wrap;
+}
 
 .icon-left::v-deep(path), .icon-right::v-deep(path) {
   fill: #0A1B33;
