@@ -212,6 +212,16 @@ async function fetchData() {
   isLoading.value = false;
 }
 
+const changePage = (value) => {
+  if(value === 'prev' && currentPage.value !== 1) {
+    currentPage.value--
+    fetchData()
+  }  else if (value === 'next' && currentPage.value !== totalPages.value) {
+    currentPage.value++
+    fetchData()
+  }
+}
+
 const chancePagination = () => {
   fetchData();
 };
@@ -869,13 +879,13 @@ const addfavorite = (product_id) => {
                   @update:modelValue="chancePagination"
                 >
                   <template v-slot:prev="{ attrs }">
-                    <v-btn variant="plain" icon v-bind="attrs" class="icon-left" @click="currentPage--">
+                    <v-btn variant="plain" icon v-bind="attrs" class="icon-left" @click="changePage('prev')">
                       <arrow_left class="me-2"/>
                       Anterior
                     </v-btn>
                   </template>
                   <template v-slot:next="{ attrs }">
-                    <v-btn variant="plain" icon v-bind="attrs" class="icon-right" @click="currentPage++">
+                    <v-btn variant="plain" icon v-bind="attrs" class="icon-right" @click="changePage('next')">
                       Siguiente
                       <arrow_right class="ms-1"/>
                     </v-btn>

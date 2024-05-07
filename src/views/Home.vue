@@ -885,6 +885,11 @@ const tab = ref('0')
 </template>
 
 <style scoped>
+
+  .v-list-item--variant-plain {
+    opacity: 1 !important;
+  }
+
   .pslider {
     padding: 3px 1px !important;
   }
