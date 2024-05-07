@@ -858,10 +858,12 @@ const addfavorite = (product_id) => {
               >
                 <VPagination
                   v-model="currentPage"
-                  size="small"
                   :total-visible="5"
                   :length="totalPages"
                   rounded="circle"
+                  active-color="#FF0090"
+                  class="pagination-custom"
+                  size="small"
                   @update:modelValue="chancePagination"
                 />
               </VCardText>
@@ -882,6 +884,11 @@ const addfavorite = (product_id) => {
 </template>
 
 <style scoped>
+
+.pagination-custom {
+  background-color: #E2F8FC;
+  border-radius: 16px;
+}
 
 .v-btn-group::v-deep(.v-btn--size-default) {
   padding: 0 !important;
