@@ -12,6 +12,8 @@ import icon1 from "@/assets/icons/icon-menu-product.svg";
 import icon2 from "@/assets/icons/icon-menu-product2.svg";
 import Product3 from "@/components/product/Product3.vue";
 import Product4 from "@/components/product/Product4.vue";
+import arrow_right from '@assets/icons/arrow_right.svg?inline';
+import arrow_left from '@assets/icons/Arrow_left.svg?inline';
 
 const route = useRoute();
 const homeStores = useHomeStores();
@@ -865,7 +867,20 @@ const addfavorite = (product_id) => {
                   class="pagination-custom"
                   size="small"
                   @update:modelValue="chancePagination"
-                />
+                >
+                  <template v-slot:prev="{ attrs }">
+                    <v-btn variant="plain" icon v-bind="attrs" class="icon">
+                      <arrow_left class="me-1"/>
+                      Anterior
+                    </v-btn>
+                  </template>
+                  <template v-slot:next="{ attrs }">
+                    <v-btn variant="plain" icon v-bind="attrs" class="icon">
+                      Siguiente
+                      <arrow_right class="ms-1 me-3"/>
+                    </v-btn>
+                  </template>
+                </VPagination>
               </VCardText>
             </VCol>
           </VRow>
@@ -885,6 +900,10 @@ const addfavorite = (product_id) => {
 
 <style scoped>
 
+.icon::v-deep(path) {
+  fill: #0A1B33;
+}
+
 .v-pagination::v-deep(.v-pagination__item--is-active .v-btn__overlay), .v-pagination::v-deep(.v-pagination__item--is-active .v-btn) {
   opacity: 1 !important;
 }
@@ -893,6 +912,23 @@ const addfavorite = (product_id) => {
   color: #0A1B33;
   caret-color: #0A1B33;
   z-index: 999;
+  text-transform: capitalize;
+}
+
+.v-pagination::v-deep(.v-pagination__prev button) {
+  padding-right: 15px !important;
+}
+
+.v-pagination::v-deep(.v-pagination__next button) {
+  padding-left: 35px !important;
+}
+
+.v-pagination::v-deep(.v-pagination__prev), .v-pagination::v-deep(.v-pagination__prev button),
+.v-pagination::v-deep(.v-pagination__next), .v-pagination::v-deep(.v-pagination__next button) {
+  background-color: #E2F8FC; 
+  width: 130px;
+  color: #0A1B33;
+  caret-color: #0A1B33;
 }
 
 .v-pagination::v-deep(.v-pagination__item--is-active .v-btn__content) {
