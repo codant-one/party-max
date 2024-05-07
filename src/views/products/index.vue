@@ -924,6 +924,10 @@ const addfavorite = (product_id) => {
   padding-right: 0 !important;
 }
 
+.v-pagination::v-deep(.v-pagination__item) {
+  margin-top: 8px;
+}
+
 .v-pagination::v-deep(.v-pagination__prev:hover .v-btn__content), .v-pagination::v-deep(.v-pagination__next:hover .v-btn__content) {
   color: #FF0090 !important;
   caret-color: #FF0090 !important;
@@ -939,6 +943,7 @@ const addfavorite = (product_id) => {
   width: 130px;
   color: #0A1B33;
   caret-color: #0A1B33;
+  opacity: 1;
 }
 
 .v-pagination::v-deep(.v-pagination__item--is-active .v-btn__content) {
