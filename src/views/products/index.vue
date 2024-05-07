@@ -817,7 +817,7 @@ const addfavorite = (product_id) => {
           </VCard>
           <VRow class="align-center row-products" no-gutters>
             <VCol cols="12">
-              <v-window v-model="tab">
+              <v-window v-model="tab" style="min-height: 800px">
                 <v-window-item value="0">
                   <VRow no-gutters class="ms-3">
                     <VCol
@@ -869,13 +869,13 @@ const addfavorite = (product_id) => {
                   @update:modelValue="chancePagination"
                 >
                   <template v-slot:prev="{ attrs }">
-                    <v-btn variant="plain" icon v-bind="attrs" class="icon-left">
+                    <v-btn variant="plain" icon v-bind="attrs" class="icon-left" @click="currentPage--">
                       <arrow_left class="me-2"/>
                       Anterior
                     </v-btn>
                   </template>
                   <template v-slot:next="{ attrs }">
-                    <v-btn variant="plain" icon v-bind="attrs" class="icon-right">
+                    <v-btn variant="plain" icon v-bind="attrs" class="icon-right" @click="currentPage++">
                       Siguiente
                       <arrow_right class="ms-1"/>
                     </v-btn>
