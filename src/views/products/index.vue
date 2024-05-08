@@ -861,7 +861,7 @@ const addfavorite = (product_id) => {
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
                   <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="border-theme d-block"/>
                   <img v-else :src="t_7" class="border-theme d-block"/>
-                  <span class="d-block size-theme tw-text-tertiary mt-2">{{i.name}}  no joda</span>
+                  <span class="d-block size-theme tw-text-tertiary mt-2">{{i.name}}</span>
                 </router-link>
               </template>
             </VCardText> 
