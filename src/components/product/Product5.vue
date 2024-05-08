@@ -85,6 +85,21 @@ const control_cant = () => {
     }
 }
 
+const increment = () => {
+    if (quantity.value < stock.value) {
+        quantity.value++
+        onChange()
+    }
+}
+    
+const decrement = () => {
+    if (quantity.value > wholesale_min.value) {
+        quantity.value--
+        onChange()
+    }
+}
+
+
 </script>
 
 <template>
@@ -117,10 +132,23 @@ const control_cant = () => {
 
                 </VCol>
                 <VCol cols="6" md="2" class="d-flex flex-column py-5 my-auto">
-                    <VCardText 
-                        class="d-flex text-center align-center justify-content-center"
-                        :class="(quantity > stock) ? 'warning' : ''"> 
-                        <VTextField
+                    <VCardText class="d-flex text-center align-center justify-content-center"> 
+                        <div class="number-input-wrapper" :class="(quantity > stock) ? 'warning' : ''">
+                            <VBtn icon size="x-small" @click="decrement" variant="plain" color="#0A1B33">
+                                <VIcon>mdi-minus</VIcon>
+                            </VBtn>
+                            <VTextField
+                                v-model="quantity"
+                                variant="solo"
+                                type="text"
+                                readonly
+                                style="height: 30px;"
+                            />
+                            <VBtn icon size="x-small" @click="increment" variant="plain" color="#0A1B33">
+                                <VIcon>mdi-plus</VIcon>
+                            </VBtn>
+                        </div>
+                        <!-- <VTextField
                             v-model="quantity"
                             placeholder="0"
                             variant="solo"
@@ -130,7 +158,7 @@ const control_cant = () => {
                             @change="onChange"
                             @input="control_cant"
                             :disabled="(quantity > stock)"
-                        />
+                        /> -->
                     </VCardText>
                     <VCardText class="d-flex text-center align-center justify-content-center mt-2">
                         <span class="tw-text-xs" :class="(quantity > stock) ? 'tw-text-yellow' : 'tw-text-gray'">
@@ -157,6 +185,54 @@ const control_cant = () => {
 </template>
 
 <style scoped>
+
+    .warning {
+        border: 2px solid #FFC549 !important;
+    }
+
+    .number-input-wrapper {
+        display: flex;
+        align-items: center;
+        border-radius: 8px;
+        border: 2px solid #E1E1E1;
+        height: 40px;
+    }
+
+    .text-pink-accent-3 {
+        color: #FF0090 !important;
+    }
+
+    .v-text-field::v-deep(.v-field) { 
+        border: 0 !important;
+        height: 30px;
+        box-shadow: none;
+    } 
+
+    .v-text-field::v-deep(.v-field__input){
+        min-height: 30px;
+        padding: 0 !important;
+        width: 20px;
+        text-align: center;
+    }
+    
+    .v-text-field::v-deep(.v-field__field) { 
+        height: 30px;
+    }
+
+    .v-text-field::v-deep(::placeholder) { 
+        color: #0A1B33 !important;
+        opacity: inherit;
+    }
+
+    .v-text-field::v-deep(input) { 
+        padding: 0 0 0 5px !important;
+        color: #0A1B33 !important;
+    }
+    
+    .v-text-field::v-deep(.v-input__details){
+        padding: 0;
+        min-height: 0;
+    }
 
     .card-information {
         border-bottom: 1px solid var(--Grey-2, #D9EEF2);
@@ -225,37 +301,6 @@ const control_cant = () => {
         font-style: normal;
         font-weight: 400;
         line-height: 8px; /* 80% */ 
-    }
-
-    .warning .v-text-field::v-deep(.v-field) {
-        border: 1.5px solid #FFC549 !important;
-    }
-
-    .v-text-field::v-deep(.v-field) { 
-        border-top-right-radius: 8px;
-        border-bottom-right-radius: 8px;
-        border-top-left-radius: 8px;
-        border-bottom-left-radius: 8px;
-        border: 1.5px solid #E1E1E1 !important;
-        height: 45px;
-        width: 50px;
-        box-shadow: none;
-    } 
-
-    .v-text-field::v-deep(::placeholder) { 
-        color: #0A1B33 !important;
-        opacity: inherit;
-    }
-
-    .v-text-field::v-deep(input) { 
-        padding-top: 0 !important;
-        color: #0A1B33 !important;
-    }
-
-    .v-text-field::v-deep(.v-input__details) {
-        height: 0px !important;
-        min-height: 0px !important;
-        padding: 0px !important;
     }
     
 </style>
