@@ -842,7 +842,8 @@ const addfavorite = (product_id) => {
             class="no-shadown mt-5 card-icons tw-bg-green" 
             v-if="typeof route.query.fathercategory === 'undefined' && 
             typeof route.query.subcategory !== 'undefined' 
-            && route.query.category && category">
+            && route.query.category && category
+            && categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length > 0">
             <VCardText 
               v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length < 6"
               class="px-4 px-md-7 d-flex align-items-stretch justify-content-between">        
@@ -900,7 +901,8 @@ const addfavorite = (product_id) => {
             class="no-shadown mt-5 card-icons tw-bg-green" 
             v-if="typeof route.query.fathercategory === 'undefined' && 
             typeof route.query.subcategory === 'undefined' 
-            && route.query.category && category">
+            && route.query.category && category
+            && categories.filter(item =>item.slug === route.query.category)[0].children.length > 0">
             <VCardText 
               v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 6"
               class="px-4 px-md-7 d-flex align-items-stretch justify-content-between">        
