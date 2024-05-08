@@ -570,7 +570,7 @@ const addfavorite = (product_id) => {
 
               <VListItem class="px-2">
                 <VListItemTitle class="tw-uppercase tw-font-bold tw-text-primary px-0 list-text">
-                  {{  category.subcategory }} sss
+                  {{  category.subcategory }}
                 </VListItemTitle>
               </VListItem>
             </VList>
@@ -852,7 +852,8 @@ const addfavorite = (product_id) => {
                     name: 'products',
                     query: {
                       category: route.query.category,
-                      subcategory: i.slug.split('/')[1],
+                      fathercategory: route.query.subcategory,
+                      subcategory: i.slug.split('/')[2],
                       colorId: colorsSelected.join(','),
                       wholesalers: route.query.wholesalers === 'true' ? true : false
                     }
@@ -879,7 +880,8 @@ const addfavorite = (product_id) => {
                       name: 'products',
                       query: {
                         category: route.query.category,
-                        subcategory: i.slug.split('/')[1],
+                        fathercategory: route.query.subcategory,
+                        subcategory: i.slug.split('/')[2],
                         colorId: colorsSelected.join(','),
                         wholesalers: route.query.wholesalers === 'true' ? true : false
                       }
