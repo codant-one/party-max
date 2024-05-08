@@ -837,7 +837,7 @@ const addfavorite = (product_id) => {
             </VRow>
           </VCard>
 
-          <!-- solo padres e hijos-->
+          <!-- solo padres e hijos -->
           <VCard 
             class="no-shadown mt-5 card-icons tw-bg-green" 
             v-if="typeof route.query.fathercategory === 'undefined' && 
@@ -846,7 +846,8 @@ const addfavorite = (product_id) => {
             && categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length > 0">
             <VCardText 
               v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length < 6"
-              class="px-4 px-md-7 d-flex align-items-stretch justify-content-between">        
+              class="px-4 px-md-7 d-flex align-items-stretch justify-content-between"
+              :class="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
               <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren">
                 <router-link
                   :to="{
@@ -905,7 +906,8 @@ const addfavorite = (product_id) => {
             && categories.filter(item =>item.slug === route.query.category)[0].children.length > 0">
             <VCardText 
               v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 6"
-              class="px-4 px-md-7 d-flex align-items-stretch justify-content-between">        
+              class="px-4 px-md-7 d-flex align-items-stretch"
+              :class="categories.filter(item =>item.slug === route.query.category)[0].children.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
               <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
                 <router-link
                   :to="{
