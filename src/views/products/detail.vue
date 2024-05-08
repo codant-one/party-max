@@ -339,6 +339,16 @@ const wholesaleAction = () => {
   }
 }
 
+const increment = () => {
+  if (cant_prod.value < cant_stock.value)
+    cant_prod.value++
+}
+    
+const decrement = () => {
+  if (cant_prod.value > wholesale_min.value)
+    cant_prod.value--
+}
+
 </script>
 
 <template>
@@ -480,7 +490,22 @@ const wholesaleAction = () => {
               <VCardText class="p-0 d-flex my-2">
                 <div class="d-flex flex-column">
                   <span>Cantidad:</span>
-                  <VTextField
+                  <div class="number-input-wrapper">
+                    <VBtn icon size="x-small" @click="decrement" variant="plain" color="#0A1B33">
+                      <VIcon>mdi-minus</VIcon>
+                    </VBtn>
+                    <VTextField
+                      v-model="cant_prod"
+                      variant="solo"
+                      type="text"
+                      readonly
+                      style="height: 30px;"
+                    />
+                    <VBtn icon size="x-small" @click="increment" variant="plain" color="#0A1B33">
+                      <VIcon>mdi-plus</VIcon>
+                    </VBtn>
+                  </div>
+                  <!-- <VTextField
                     v-model="cant_prod"
                     variant="solo"
                     type="number"
@@ -488,7 +513,7 @@ const wholesaleAction = () => {
                     :max="cant_stock"
                     :rules="[requiredValidator]"
                     @input="controlCant"
-                   />
+                   /> -->
                 </div>
                 <div class="my-auto ms-5">
                   <VBtn 
@@ -524,7 +549,7 @@ const wholesaleAction = () => {
                 <VSpacer />  
               </VCardText>
 
-              <VCardText class="p-0 d-flex border-title pb-2">
+              <VCardText class="p-0 d-flex border-title pb-2 mt-5">
                 <VBtn 
                   v-if="wholesale"
                   :class="route.query.wholesale === 'true' ? 'b-mayorista-active': 'b-mayorista'"
@@ -648,21 +673,34 @@ const wholesaleAction = () => {
 
 <style scoped>
 
+  .number-input-wrapper {
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    border: 2px solid #E1E1E1;
+    height: 40px;
+  }
+
   .text-pink-accent-3 {
     color: #FF0090 !important;
   }
 
   .v-text-field::v-deep(.v-field) { 
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-    border: 1.5px solid #E1E1E1 !important;
-    height: 45px;
-    width: 88px;
-    margin-top: 10px;
+    border: 0 !important;
+    height: 30px;
     box-shadow: none;
   } 
+
+  .v-text-field::v-deep(.v-field__input){
+    min-height: 30px;
+    padding: 0 !important;
+    width: 20px;
+    text-align: center;
+  }
+  
+  .v-text-field::v-deep(.v-field__field) { 
+    height: 30px;
+  }
 
   .v-text-field::v-deep(::placeholder) { 
     color: #0A1B33 !important;
@@ -670,10 +708,15 @@ const wholesaleAction = () => {
   }
 
   .v-text-field::v-deep(input) { 
-    padding-top: 0 !important;
+    padding: 0 0 0 5px !important;
     color: #0A1B33 !important;
   }
   
+  .v-text-field::v-deep(.v-input__details){
+    padding: 0;
+    min-height: 0;
+  }
+
   .heart:hover::v-deep(path), .shoppinp_cart:hover::v-deep(path) {
     fill: #FF0090;
   }
