@@ -1,5 +1,7 @@
 <script setup>
 
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Navigation, Pagination } from 'swiper/modules';
 import { ref } from "vue";
 import { useHomeStores } from "@/stores/home";
 import { useMiscellaneousStores } from "@/stores/miscellaneous";
@@ -14,6 +16,13 @@ import Product3 from "@/components/product/Product3.vue";
 import Product4 from "@/components/product/Product4.vue";
 import arrow_right from '@assets/icons/arrow_right.svg?inline';
 import arrow_left from '@assets/icons/Arrow_left.svg?inline';
+import t_7 from '@assets/images/t_7.jpg';
+
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
+const modules = ref([Navigation, Pagination])
 
 const route = useRoute();
 const homeStores = useHomeStores();
@@ -46,6 +55,7 @@ const onlyWholesale = ref(false)
 
 const rating = ref(5)
 const isMobile = /Mobi/i.test(navigator.userAgent);
+const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
 const client_id = ref(null)
 const user_id = ref(null)
@@ -560,7 +570,7 @@ const addfavorite = (product_id) => {
 
               <VListItem class="px-2">
                 <VListItemTitle class="tw-uppercase tw-font-bold tw-text-primary px-0 list-text">
-                  {{  category.subcategory }}
+                  {{  category.subcategory }} sss
                 </VListItemTitle>
               </VListItem>
             </VList>
@@ -780,6 +790,7 @@ const addfavorite = (product_id) => {
         </VCol>
 
         <VCol cols="12" md="9" class="col-menuproduct d-flex flex-column">
+          <!-- filters -->
           <VCard class="mt-7 menu-prod">
             <VRow no-gutters class="align-center">
               <VCol
@@ -825,75 +836,179 @@ const addfavorite = (product_id) => {
               </VCol>
             </VRow>
           </VCard>
-          <VRow class="align-center row-products pb-0" no-gutters>
-            <VCol cols="12">
-              <v-window v-model="tab">
-                <v-window-item value="0">
-                  <VRow no-gutters class="ms-3">
-                    <VCol
-                      cols="6"
-                      md="3"
-                      v-for="(product, i) in products"
-                      class="mb-7"
-                    >
-                      <Product3 :key="i" :product="product" :readonly="true" />
-                    </VCol>
-                  </VRow>
-                </v-window-item>
-                <v-window-item value="1">
-                  <VRow no-gutters class="ms-3">
-                    <VCol cols="12" v-for="(product, i) in products">
-                      <Product4
-                        :key="i"
-                        :product="product"
-                        :readonly="true"
-                        :isLastItem="isLastItem(i)"
-                        :loading="load"
-                        :productId="product_id"
-                        @addCart="addCart"
-                        @addfavorite="addfavorite"
-                      />
-                    </VCol>
-                  </VRow>
-                </v-window-item>
-              </v-window>
-            </VCol>
-            <VCol cols="12" class="mt-auto">
-              <VCardText
-                v-if="totalProducts === 0"
-                class="d-flex align-center justify-content-center py-3 px-5"
-              >
-                Datos no disponibles
-              </VCardText>
-              <VCardText
-                class="d-flex align-center justify-content-center py-3 px-5 pb-0"
-              >
-                <VPagination
-                  v-model="currentPage"
-                  :total-visible="5"
-                  :length="totalPages"
-                  rounded="circle"
-                  active-color="#FF0090"
-                  class="pagination-custom"
-                  size="small"
-                  @update:modelValue="chancePagination"
-                >
-                  <template v-slot:prev="{ attrs }">
-                    <v-btn variant="plain" icon v-bind="attrs" class="icon-left" @click="changePage('prev')">
-                      <arrow_left class="me-2"/>
-                      Anterior
-                    </v-btn>
-                  </template>
-                  <template v-slot:next="{ attrs }">
-                    <v-btn variant="plain" icon v-bind="attrs" class="icon-right" @click="changePage('next')">
-                      Siguiente
-                      <arrow_right class="ms-1"/>
-                    </v-btn>
-                  </template>
-                </VPagination>
-              </VCardText>
-            </VCol>
-          </VRow>
+
+          <!-- solo padres e hijos-->
+          <VCard 
+            class="no-shadown mt-5 card-icons tw-bg-green" 
+            v-if="typeof route.query.fathercategory === 'undefined' && 
+            typeof route.query.subcategory !== 'undefined' 
+            && route.query.category && category">
+            <VCardText 
+              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length < 6"
+              class="px-4 px-md-7 d-flex align-items-stretch justify-content-between">        
+              <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren">
+                <router-link
+                  :to="{
+                    name: 'products',
+                    query: {
+                      category: route.query.category,
+                      subcategory: i.slug.split('/')[1],
+                      colorId: colorsSelected.join(','),
+                      wholesalers: route.query.wholesalers === 'true' ? true : false
+                    }
+                  }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="border-theme d-block"/>
+                  <img v-else :src="t_7" class="border-theme d-block"/>
+                  <span class="d-block size-theme tw-text-tertiary mt-2">{{i.name}}  no joda</span>
+                </router-link>
+              </template>
+            </VCardText> 
+            <VCardText 
+              v-else
+              class="px-4 d-flex align-items-stretch justify-content-center">
+              <swiper
+                :slidesPerView="5"
+                :spaceBetween="5"
+                :navigation="true"
+                :loop="true"
+                :modules="modules"
+                class="mySwiper">
+                <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren" class="py-2">
+                  <router-link
+                    :to="{
+                      name: 'products',
+                      query: {
+                        category: route.query.category,
+                        subcategory: i.slug.split('/')[1],
+                        colorId: colorsSelected.join(','),
+                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                      }
+                    }" class="tw-no-underline d-block text-center justify-content-center zoom">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="border-theme d-block"/>
+                    <img v-else :src="t_7" class="border-theme d-block"/>
+                    <span class="d-block size-theme tw-text-tertiary mt-2">{{i.name}}</span>
+                  </router-link>
+                </swiper-slide>
+              </swiper>
+            </VCardText> 
+          </VCard>
+
+          <!-- solo padres -->
+          <VCard 
+            class="no-shadown mt-5 card-icons tw-bg-green" 
+            v-if="typeof route.query.fathercategory === 'undefined' && 
+            typeof route.query.subcategory === 'undefined' 
+            && route.query.category && category">
+            <VCardText 
+              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 6"
+              class="px-4 px-md-7 d-flex align-items-stretch justify-content-between">        
+              <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
+                <router-link
+                  :to="{
+                    name: 'products',
+                    query: {
+                      category: route.query.category,
+                      subcategory: i.slug.split('/')[1],
+                      colorId: colorsSelected.join(','),
+                      wholesalers: route.query.wholesalers === 'true' ? true : false
+                    }
+                  }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="border-theme d-block"/>
+                  <img v-else :src="t_7" class="border-theme d-block"/>
+                  <span class="d-block size-theme tw-text-tertiary mt-2">{{i.name}}</span>
+                </router-link>
+              </template>
+            </VCardText> 
+            <VCardText 
+              v-else
+              class="px-4 d-flex align-items-stretch justify-content-center">
+              <swiper
+                :slidesPerView="5"
+                :spaceBetween="5"
+                :navigation="true"
+                :loop="true"
+                :modules="modules"
+                class="mySwiper">
+                <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children" class="py-2">
+                  <router-link
+                    :to="{
+                      name: 'products',
+                      query: {
+                        category: route.query.category,
+                        subcategory: i.slug.split('/')[1],
+                        colorId: colorsSelected.join(','),
+                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                      }
+                    }" class="tw-no-underline d-block text-center justify-content-center zoom">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="border-theme d-block"/>
+                    <img v-else :src="t_7" class="border-theme d-block"/>
+                    <span class="d-block size-theme tw-text-tertiary mt-2">{{i.name}}</span>
+                  </router-link>
+                </swiper-slide>
+              </swiper>
+            </VCardText> 
+          </VCard>
+
+          <!-- products -->
+          <div class="align-center row-products pb-0">
+            <v-window v-model="tab">
+              <v-window-item value="0">
+                <VRow no-gutters class="ms-3">
+                  <VCol cols="6" md="3" v-for="(product, i) in products" class="mb-7">
+                    <Product3 :key="i" :product="product" :readonly="true" />
+                  </VCol>
+                </VRow>
+              </v-window-item>
+              <v-window-item value="1">
+                <VRow no-gutters class="ms-3">
+                  <VCol cols="12" v-for="(product, i) in products">
+                    <Product4
+                      :key="i"
+                      :product="product"
+                      :readonly="true"
+                      :isLastItem="isLastItem(i)"
+                      :loading="load"
+                      :productId="product_id"
+                      @addCart="addCart"
+                      @addfavorite="addfavorite"
+                     />
+                  </VCol>
+                </VRow>
+              </v-window-item>
+            </v-window>
+          </div>
+
+          <!-- pagination -->
+          <div class="mt-auto">
+            <VCardText v-if="totalProducts === 0" class="d-flex align-center justify-content-center py-3 px-5">
+              Datos no disponibles
+            </VCardText>
+            <VCardText class="d-flex align-center justify-content-center py-3 px-5 pb-0">
+              <VPagination
+                v-model="currentPage"
+                :total-visible="5"
+                :length="totalPages"
+                rounded="circle"
+                active-color="#FF0090"
+                class="pagination-custom"
+                size="small"
+                @update:modelValue="chancePagination">
+                <template v-slot:prev="{ attrs }">
+                  <VBtn variant="plain" icon v-bind="attrs" class="icon-left" @click="changePage('prev')">
+                    <arrow_left class="me-2"/>
+                    Anterior
+                  </VBtn>
+                </template>
+                <template v-slot:next="{ attrs }">
+                  <VBtn variant="plain" icon v-bind="attrs" class="icon-right" @click="changePage('next')">
+                    Siguiente
+                    <arrow_right class="ms-1"/>
+                  </VBtn>
+                </template>
+              </VPagination>
+            </VCardText>
+          </div>
+          
         </VCol>
       </VRow>
     </VContainer>
@@ -910,279 +1025,343 @@ const addfavorite = (product_id) => {
 
 <style scoped>
 
-.products-structure {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.icon-left::v-deep(path), .icon-right::v-deep(path) {
-  fill: #0A1B33;
-}
-
-.v-pagination::v-deep(.v-pagination__item--is-active .v-btn__overlay), .v-pagination::v-deep(.v-pagination__item--is-active .v-btn) {
-  opacity: 1 !important;
-}
-
-.v-pagination::v-deep(.v-btn__content) {
-  color: #0A1B33;
-  caret-color: #0A1B33;
-  z-index: 999;
-  text-transform: capitalize;
-}
-
-.v-pagination::v-deep(.v-pagination__prev button) {
-  padding: 0 !important;
-}
-
-.v-pagination::v-deep(.v-pagination__next button) {
-  padding-left: 10px !important;
-  padding-right: 0 !important;
-}
-
-.v-pagination::v-deep(.v-pagination__item) {
-  margin-top: 8px;
-}
-
-.v-pagination::v-deep(.v-pagination__prev:hover .v-btn__content), .v-pagination::v-deep(.v-pagination__next:hover .v-btn__content) {
-  color: #FF0090 !important;
-  caret-color: #FF0090 !important;
-}
-
-.icon-left:hover::v-deep(path), .icon-right:hover::v-deep(path) {
-  fill: #FF0090;
-}
-
-.v-pagination::v-deep(.v-pagination__prev .v-btn__content), .v-pagination::v-deep(.v-pagination__prev button),
-.v-pagination::v-deep(.v-pagination__next .v-btn__content), .v-pagination::v-deep(.v-pagination__next button) {
-  background-color: #E2F8FC; 
-  width: 130px;
-  color: #0A1B33;
-  caret-color: #0A1B33;
-  opacity: 1;
-}
-
-.v-pagination::v-deep(.v-pagination__item--is-active .v-btn__content) {
-  color: white;
-  caret-color: white;
-  z-index: 999;
-}
-
-.pagination-custom {
-  background-color: #E2F8FC;
-  border-radius: 16px;
-}
-
-.v-btn-group::v-deep(.v-btn--size-default) {
-  padding: 0 !important;
-  min-width: 40px !important;
-}
-
-.v-btn-toggle::v-deep(.v-btn.v-btn--active:not(.v-btn--disabled) > .v-btn__overlay) {
-   opacity: 0 !important;
-}
-
-.v-btn:hover::v-deep(.v-btn__overlay) {
-  opacity: 0 !important;
-}
-
-.v-avatar-group {
-  display: flex !important;
-  align-items: center !important;
-}
-
-.color-chip {
-  border: 2px solid #F3FCFE;
-}
-
-.color-selected {
-  border: 2px solid #E2F8FC;
-  box-shadow: 0 0 0 2px #0A1B33;
-}
-
-.v-avatar-group>*:hover {
-  transform: translateY(-5px) scale(1);
-  box-shadow: 0 3px 12px rgba(var(--v-shadow-key-umbra-color), var(--v-shadow-md-opacity)), 0 0 transparent, 0 0 transparent;
-}
-
-.v-select::v-deep(.v-field__input) {
-  padding-top: 2%;
-  padding-left: 8%;
-}
-
-.v-select::v-deep(.v-field__append-inner) {
-  padding-top: 15% !important;
-}
-
-.v-select::v-deep(.v-field__clearable) {
-  padding-top: 15% !important;
-  margin-inline: 0 !important;
-}
-
-.v-select::v-deep(.v-field__overlay:focus-visible) {
-  outline: -webkit-focus-ring-color auto 0px !important;
-}
-
-.v-select::v-deep(.v-field__clearable > .v-icon--size-default) {
-  font-size: 20px !important;
-}
-
-.v-select::v-deep(.v-field__append-inner > .v-icon) {
-  padding-right: 20% !important;
-}
-
-.v-select::v-deep(.v-field) {
-  padding: 0 !important;
-}
-
-.v-select::v-deep(.v-label) {
-  font-size: 14px !important;
-}
-
-.v-select::v-deep(.v-field__field) {
-  height: 33px !important;
-  border-radius: 48px !important;
-}
-
-.v-select::v-deep(.v-input__details) {
-  height: 0px !important;
-}
-
-.v-select::v-deep(.v-field--appended) {
-  background-color: #ffffff;
-}
-
-.v-select::v-deep(.v-field__outline__start) {
-  flex-basis: 20px !important;
-}
-
-.v-select::v-deep(.v-select__selection) {
-  margin-top: -12px !important;
-}
-
-.v-list {
-  background-color: #e2f8fc;
-}
-
-.v-list::v-deep(.v-list-item:hover > .v-list-item__overlay) {
-  opacity: 0 !important;
-}
-
-.v-list::v-deep(.v-list-item__overlay) {
-  background-color: #e2f8fc;
-}
-
-.v-list-group__items .v-list-item {
-  padding-inline-start: calc(5px + var(--indent-padding)) !important;
-}
-
-.v-list::v-deep(.v-list-item-title) {
-  font-size: 15px !important;
-}
-
-.v-list-item--density-default.v-list-item--one-line {
-  min-height: 40px !important;
-}
-
-.v-list::v-deep(.v-list-item__content) {
-  font-size: 14px !important;
-}
-
-.v-list::v-deep(.v-list-item--active) {
-  background-color: #F3FCFE !important;
-}
-
-.list-text {
-  white-space: normal;
-  text-overflow: clip;
-}
-
-.button-chip {
-  padding: 0;
-  opacity: 1 !important;
-}
-
-.breadcumb {
-  height: 55px !important;
-}
-
-.v-btn--size-default {
-  padding: 0 10px !important;
-}
-
-.v-tab.v-tab {
-  min-width: 15px !important;
-}
-
-.sidebar-container {
-  padding: 0 20px 15px 20px;
-  background-color: #e2f8fc;
-  border-radius: 16px;
-  box-shadow: none !important;
-}
-
-.col-menuproduct {
-  padding-left: 20px !important;
-}
-
-.menu-prod {
-  padding: 8px 16px;
-  border-radius: 32px;
-  background-color: #e2f8fc;
-  box-shadow: none !important;
-}
-
-.my-custom-select {
-  border-radius: 48px !important;
-  font-size: 12px !important;
-  max-height: 33px !important;
-}
-
-.row-products {
-  padding: 50px 0;
-}
-
-.custom-check {
-  max-height: 50px !important;
-}
-
-.container-vslider {
-  max-height: 40px !important;
-  margin-top: 24px;
-}
-
-.custom-check::deep(.v-label) {
-  margin-left: 10px !important;
-}
-
-.text-left {
-  font-size: 18px;
-}
-
-.text-allcategories {
-  font-size: 14px;
-}
-
-.text-subitem {
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-}
-
-@media only screen and (max-width: 767px) {
-  .text-left {
-    color: var(--Maastricht-Blue, #0a1b33);
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 16px; /* 114.286% */
+  .swiper {
+    width: 100%;
+    height: 100%;
   }
 
-  .menu-prod {
+  .swiper::v-deep(.swiper-wrapper)  {
+    align-items: center !important;
+  }
+
+  .swiper::v-deep(.swiper-slide) {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+  }
+
+  .swiper {
+    width: 100%;
+  }
+
+  .swiper::v-deep(.swiper-button-prev), .swiper::v-deep(.swiper-button-next) {
+    color: #0A1B33 !important;
+    width: 6px !important;
+  }
+  .swiper::v-deep(.swiper-button-prev:after), .swiper::v-deep(.swiper-button-next:after) {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .card-icons {
     border-radius: 16px;
   }
 
-  .col-menuproduct {
-    padding-left: 0px !important;
+  .border-theme {
+    width: 120px;
+    border-radius: 192px;
+    border: 1px solid var(--Maastricht-Blue, #0A1B33);
+    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
+    margin: auto;
   }
-}
+
+  .zoom {
+    transition: transform ease-in-out 0.3s;
+  }
+
+  .zoom:hover {
+    transform: scale(1.1);
+  }
+
+  .zoom:hover span{
+    color: #FF0090!important;
+  }
+
+  .w-50 {
+    width: 50%;
+  }
+
+  .products-structure {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .icon-left::v-deep(path), .icon-right::v-deep(path) {
+    fill: #0A1B33;
+  }
+
+  .v-pagination::v-deep(.v-pagination__item--is-active .v-btn__overlay), .v-pagination::v-deep(.v-pagination__item--is-active .v-btn) {
+    opacity: 1 !important;
+  }
+
+  .v-pagination::v-deep(.v-btn__content) {
+    color: #0A1B33;
+    caret-color: #0A1B33;
+    z-index: 999;
+    text-transform: capitalize;
+  }
+
+  .v-pagination::v-deep(.v-pagination__prev button) {
+    padding: 0 !important;
+  }
+
+  .v-pagination::v-deep(.v-pagination__next button) {
+    padding-left: 10px !important;
+    padding-right: 0 !important;
+  }
+
+  .v-pagination::v-deep(.v-pagination__item) {
+    margin-top: 8px;
+  }
+
+  .v-pagination::v-deep(.v-pagination__prev:hover .v-btn__content), .v-pagination::v-deep(.v-pagination__next:hover .v-btn__content) {
+    color: #FF0090 !important;
+    caret-color: #FF0090 !important;
+  }
+
+  .icon-left:hover::v-deep(path), .icon-right:hover::v-deep(path) {
+    fill: #FF0090;
+  }
+
+  .v-pagination::v-deep(.v-pagination__prev .v-btn__content), .v-pagination::v-deep(.v-pagination__prev button),
+  .v-pagination::v-deep(.v-pagination__next .v-btn__content), .v-pagination::v-deep(.v-pagination__next button) {
+    background-color: #E2F8FC; 
+    width: 130px;
+    color: #0A1B33;
+    caret-color: #0A1B33;
+    opacity: 1;
+  }
+
+  .v-pagination::v-deep(.v-pagination__item--is-active .v-btn__content) {
+    color: white;
+    caret-color: white;
+    z-index: 999;
+  }
+
+  .pagination-custom {
+    background-color: #E2F8FC;
+    border-radius: 16px;
+  }
+
+  .v-btn-group::v-deep(.v-btn--size-default) {
+    padding: 0 !important;
+    min-width: 40px !important;
+  }
+
+  .v-btn-toggle::v-deep(.v-btn.v-btn--active:not(.v-btn--disabled) > .v-btn__overlay) {
+    opacity: 0 !important;
+  }
+
+  .v-btn:hover::v-deep(.v-btn__overlay) {
+    opacity: 0 !important;
+  }
+
+  .v-avatar-group {
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .color-chip {
+    border: 2px solid #F3FCFE;
+  }
+
+  .color-selected {
+    border: 2px solid #E2F8FC;
+    box-shadow: 0 0 0 2px #0A1B33;
+  }
+
+  .v-avatar-group>*:hover {
+    transform: translateY(-5px) scale(1);
+    box-shadow: 0 3px 12px rgba(var(--v-shadow-key-umbra-color), var(--v-shadow-md-opacity)), 0 0 transparent, 0 0 transparent;
+  }
+
+  .v-select::v-deep(.v-field__input) {
+    padding-top: 2%;
+    padding-left: 8%;
+  }
+
+  .v-select::v-deep(.v-field__append-inner) {
+    padding-top: 15% !important;
+  }
+
+  .v-select::v-deep(.v-field__clearable) {
+    padding-top: 15% !important;
+    margin-inline: 0 !important;
+  }
+
+  .v-select::v-deep(.v-field__overlay:focus-visible) {
+    outline: -webkit-focus-ring-color auto 0px !important;
+  }
+
+  .v-select::v-deep(.v-field__clearable > .v-icon--size-default) {
+    font-size: 20px !important;
+  }
+
+  .v-select::v-deep(.v-field__append-inner > .v-icon) {
+    padding-right: 20% !important;
+  }
+
+  .v-select::v-deep(.v-field) {
+    padding: 0 !important;
+  }
+
+  .v-select::v-deep(.v-label) {
+    font-size: 14px !important;
+  }
+
+  .v-select::v-deep(.v-field__field) {
+    height: 33px !important;
+    border-radius: 48px !important;
+  }
+
+  .v-select::v-deep(.v-input__details) {
+    height: 0px !important;
+  }
+
+  .v-select::v-deep(.v-field--appended) {
+    background-color: #ffffff;
+  }
+
+  .v-select::v-deep(.v-field__outline__start) {
+    flex-basis: 20px !important;
+  }
+
+  .v-select::v-deep(.v-select__selection) {
+    margin-top: -12px !important;
+  }
+
+  .v-list {
+    background-color: #e2f8fc;
+  }
+
+  .v-list::v-deep(.v-list-item:hover > .v-list-item__overlay) {
+    opacity: 0 !important;
+  }
+
+  .v-list::v-deep(.v-list-item__overlay) {
+    background-color: #e2f8fc;
+  }
+
+  .v-list-group__items .v-list-item {
+    padding-inline-start: calc(5px + var(--indent-padding)) !important;
+  }
+
+  .v-list::v-deep(.v-list-item-title) {
+    font-size: 15px !important;
+  }
+
+  .v-list-item--density-default.v-list-item--one-line {
+    min-height: 40px !important;
+  }
+
+  .v-list::v-deep(.v-list-item__content) {
+    font-size: 14px !important;
+  }
+
+  .v-list::v-deep(.v-list-item--active) {
+    background-color: #F3FCFE !important;
+  }
+
+  .list-text {
+    white-space: normal;
+    text-overflow: clip;
+  }
+
+  .button-chip {
+    padding: 0;
+    opacity: 1 !important;
+  }
+
+  .breadcumb {
+    height: 55px !important;
+  }
+
+  .v-btn--size-default {
+    padding: 0 10px !important;
+  }
+
+  .v-tab.v-tab {
+    min-width: 15px !important;
+  }
+
+  .sidebar-container {
+    padding: 0 20px 15px 20px;
+    background-color: #e2f8fc;
+    border-radius: 16px;
+    box-shadow: none !important;
+  }
+
+  .col-menuproduct {
+    padding-left: 20px !important;
+  }
+
+  .menu-prod {
+    padding: 8px 16px;
+    border-radius: 32px;
+    background-color: #e2f8fc;
+    box-shadow: none !important;
+  }
+
+  .my-custom-select {
+    border-radius: 48px !important;
+    font-size: 12px !important;
+    max-height: 33px !important;
+  }
+
+  .row-products {
+    padding: 20px 0;
+  }
+
+  .custom-check {
+    max-height: 50px !important;
+  }
+
+  .container-vslider {
+    max-height: 40px !important;
+    margin-top: 24px;
+  }
+
+  .custom-check::deep(.v-label) {
+    margin-left: 10px !important;
+  }
+
+  .text-left {
+    font-size: 18px;
+  }
+
+  .text-allcategories {
+    font-size: 14px;
+  }
+
+  .text-subitem {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  @media only screen and (max-width: 767px) {
+    .text-left {
+      color: var(--Maastricht-Blue, #0a1b33);
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 16px; /* 114.286% */
+    }
+
+    .menu-prod {
+      border-radius: 16px;
+    }
+
+    .col-menuproduct {
+      padding-left: 0px !important;
+    }
+  }
 </style>
