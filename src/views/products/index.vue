@@ -846,7 +846,7 @@ const addfavorite = (product_id) => {
             && categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length > 0">
             <VCardText 
               v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length < 6"
-              class="px-4 px-md-7 d-flex align-items-stretch justify-content-between"
+              class="px-4 px-md-7 d-flex align-items-stretch"
               :class="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
               <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren">
                 <router-link
