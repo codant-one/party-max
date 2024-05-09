@@ -837,6 +837,64 @@ const addfavorite = (product_id) => {
             </VRow>
           </VCard>
 
+          <!-- padres, hijos y nietos -->
+          <VCard 
+            class="no-shadown mt-5 card-icons tw-bg-green" 
+            v-if="route.query.fathercategory && category
+            && categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.length > 0">
+            <VCardText 
+              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.length < 6"
+              class="px-4 px-md-7 d-flex align-items-stretch"
+              :class="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
+              <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren">
+                <router-link
+                  :to="{
+                    name: 'products',
+                    query: {
+                      category: route.query.category,
+                      fathercategory: route.query.fathercategory,
+                      subcategory: i.slug.split('/')[2],
+                      colorId: colorsSelected.join(','),
+                      wholesalers: route.query.wholesalers === 'true' ? true : false
+                    }
+                  }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                   <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                  <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                </router-link>
+              </template>
+            </VCardText> 
+            <VCardText 
+              v-else
+              class="px-4 d-flex align-items-stretch justify-content-center">
+              <swiper
+                :slidesPerView="5"
+                :spaceBetween="5"
+                :navigation="true"
+                :loop="true"
+                :modules="modules"
+                class="mySwiper">
+                <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren" class="py-2">
+                  <router-link
+                    :to="{
+                      name: 'products',
+                      query: {
+                        category: route.query.category,
+                        fathercategory: route.query.fathercategory,
+                        subcategory: i.slug.split('/')[2],
+                        colorId: colorsSelected.join(','),
+                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                      }
+                    }" class="tw-no-underline d-block text-center justify-content-center zoom">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                  </router-link>
+                </swiper-slide>
+              </swiper>
+            </VCardText> 
+          </VCard>
+
           <!-- solo padres e hijos -->
           <VCard 
             class="no-shadown mt-5 card-icons tw-bg-green" 
@@ -1075,6 +1133,14 @@ const addfavorite = (product_id) => {
     width: 120px;
     border-radius: 192px;
     border: 1px solid var(--Maastricht-Blue, #0A1B33);
+    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
+    margin: auto;
+  }
+
+  .border-theme-active {
+    width: 120px;
+    border-radius: 192px;
+    border: 3px solid #FF0090;
     background: url(<path-to-image>), lightgray 50% / cover no-repeat;
     margin: auto;
   }
