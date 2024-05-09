@@ -132,29 +132,42 @@ const tab = ref('0')
       <VCol cols="12" md="3" class="col-mobile">
         <VSheet class="border">
           <VList class="p-0 border">
-            <router-link
-              v-for="(item, i) in items"
-              :key="i"
-              :value="item"
-              :to="{
-                name: 'categories',
-                params: {
-                  slug: item.slug
-                }
-              }"
-              class="tw-no-underline tw-text-tertiary"
-            >
+            <template v-for="(item, i) in items" :key="i" :value="item">
+              <router-link         
+                v-if="i < 7"
+                :to="{
+                  name: 'categories',
+                  params: {
+                    slug: item.slug
+                  }
+                }"
+                class="tw-no-underline tw-text-tertiary"
+              >
+                <VListItem
+                  color="primary"
+                  variant="plain"
+                  class="list py-0  tw-text-tertiary hover:tw-bg-yellow"
+                >
+                  <template v-slot:prepend>
+                    <img :src="item.icon" class="me-3 ms-4"/>
+                  </template>
+                  <VListItemTitle v-text="item.text" class="tw-text-tertiary"></VListItemTitle>
+                </VListItem>
+              </router-link>
               <VListItem
+                v-else
                 color="primary"
                 variant="plain"
-                class="list py-0  tw-text-tertiary hover:tw-bg-yellow"
-              >
+                class="list py-0 tw-text-tertiary tw-cursor-pointer">
                 <template v-slot:prepend>
-                  <img :src="item.icon" class="me-3 ms-4"/>
+                  <img :src="item.icon" class="me-3 ms-4 soon-img"/>
                 </template>
-                <VListItemTitle v-text="item.text" class="tw-text-tertiary"></VListItemTitle>
+                <VListItemTitle class="tw-text-tertiary d-flex align-center">
+                  <span class="soon-items">{{ item.text }}</span>
+                  <span class="soon-text d-none"> Próximamente </span>
+                </VListItemTitle>
               </VListItem>
-            </router-link>
+            </template>
           </VList>
         </VSheet>
       </VCol>
@@ -217,39 +230,39 @@ const tab = ref('0')
             </VRow>
           </VCol>
           <VCol cols="12" md="7" class="pslider4" :class="isMobile ? 'order-last order-md-first pslider5' : ''">
-            <router-link 
+            <!-- <router-link 
               :to="{
                 name: 'categories',
                 params: {
                   slug: 'renta-de-moviliario'
                 }
-              }">
+              }"> -->
               <VImg :src="Banner" class="img-galery" :class="isMobile ? 'slider5Img' : ''" height="auto" cover />
-            </router-link>
+            <!-- </router-link> -->
           </VCol>
           <VCol cols="12" md="5" class="pslider4">
             <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent">
               <VCol cols="6" md="6" class="pslider2">
-                <router-link 
+                <!-- <router-link 
                   :to="{
                     name: 'categories',
                     params: {
                       slug: 'comida'
                     }
-                  }">
+                  }"> -->
                   <VImg :src="Plaza_4" class="img-galery"/>
-                </router-link>
+                <!-- </router-link> -->
               </VCol>
               <VCol cols="6" md="6" class="pslider2">
-                <router-link 
+                <!-- <router-link 
                   :to="{
                     name: 'categories',
                     params: {
                       slug: 'fotografia-y-video'
                     }
-                  }">
+                  }"> -->
                   <VImg :src="Plaza_5" class="border-bottom-right img-galery"/>
-                </router-link>
+                <!-- </router-link> -->
               </VCol>
             </VRow>
           </VCol>
@@ -885,6 +898,28 @@ const tab = ref('0')
 </template>
 
 <style scoped>
+
+  .soon-text {
+    color: #FF0090;
+    border: 1px solid #FF0090;
+    padding: 5px;
+    font-size: 13px;
+    margin: 10px 10px 10px auto;
+    border-radius: 5px;
+  }
+  .v-list::v-deep(.v-list-item:hover .soon-text) {
+    display: block !important;
+  }
+
+  .v-list::v-deep(.v-list-item:hover .soon-items) {
+    color: #E1E1E1 !important;
+    width: 120px;
+    white-space: pre-wrap;
+  }
+
+  .v-list::v-deep(.v-list-item:hover .soon-img) {
+    opacity: 0.2 !important;
+  }
 
   .v-list-item--variant-plain {
     opacity: 1 !important;
