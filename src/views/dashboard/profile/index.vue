@@ -200,7 +200,7 @@ me()
                                 <VAvatar
                                     :size="isMobile ? '80': '100'"
                                     :color="avatar ? 'default' : 'primary'"
-                                    variant="tonal"
+                                    :variant="avatar ? 'flat' : 'tonal'"
                                 >
                                     <VImg
                                         v-if="avatar"
@@ -241,7 +241,7 @@ me()
         </VCard>
 
         <VCard class="card-profile px-0 py-5">
-            <VCardText class="py-0 px-7 px-md-12 border_line mb-2">
+            <VCardText class="py-0 px-7 px-md-12 border_line mb-2 cardtext-profile">
                 <router-link 
                     to="/mydata"
                     class="tw-no-underline d-flex align-center mb-md-0"
@@ -256,7 +256,7 @@ me()
                     <icon_right class="icon-right"/>
                 </router-link>
             </VCardText>
-            <VCardText class="py-0 px-7 px-md-12 border_line my-0 my-md-3">
+            <VCardText class="py-0 px-7 px-md-12 border_line my-0 my-md-3 cardtext-profile">
                 <router-link 
                     to="/security"
                     class="tw-no-underline d-flex align-center">
@@ -269,7 +269,7 @@ me()
                     <icon_right class="icon-right"/>
                 </router-link>
             </VCardText>
-            <VCardText class="py-0 px-7 px-md-12 mt-1 mb-1 mt-md-2">
+            <VCardText class="py-0 px-7 px-md-12 mt-1 mb-1 mt-md-2 cardtext-profile">
                 <router-link
                     to="/address"
                     class="tw-no-underline d-flex align-center">
@@ -296,6 +296,18 @@ me()
 </template>
 
 <style scoped>
+    .cardtext-profile:hover .text-titles, .cardtext-profile:hover .text-subtitles {
+        color: #FF0090;
+    }
+
+    .cardtext-profile:hover::v-deep(path) {
+        fill: #FF0090;
+    }
+
+    .cardtext-profile:hover::v-deep(rect:nth-of-type(2)) {
+        stroke: #FF0090;
+    }
+
     .border_line {
         border-bottom: 1px solid #E1E1E1;
     }

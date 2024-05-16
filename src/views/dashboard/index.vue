@@ -91,7 +91,7 @@ me()
                 </router-link>
             </VList>
         </VNavigationDrawer>
-        <VMain style="min-height: 750px; background-color: #E2F8FC;" class="pt-30">
+        <VMain style="min-height: 700px; background-color: #E2F8FC;" class="pt-30">
             <div class="mt-0 p-0 mt-md-10 container-dashboard d-block d-md-none">
                 <VCard class="no-shadown card-information p-2 transparent box-bottom" :class="classFixedd" ref="fixedSectionRefd">
                     <VCardTitle class="p-0 d-flex align-center justify-content-center">

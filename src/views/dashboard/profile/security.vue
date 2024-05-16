@@ -212,32 +212,36 @@ async function fetchData() {
             <VSpacer />
             <v-icon color="primary" icon="mdi-check-bold"></v-icon>
         </VCardText>
-        <VCardText class="d-flex align-center py-0 px-7 px-md-12 border_line tw-cursor-pointer" @click="dialog = true">       
+        <VCardText class="d-flex align-center py-0 px-7 px-md-12 border_line tw-cursor-pointer cardtext-profile password" @click="dialog = true">       
             <icon_candado class="mt-4 mb-5 mt-md-3 mb-md-5"/>
             <div class="d-block ms-2 ms-md-5 mb-md-4 mt-md-2">
-                <span class="d-block labels tw-text-tertiary">Contraseña</span>
+                <span class="d-block labels tw-text-tertiary text-titles">Contraseña</span>
                 <span class="d-block text-subtitles tw-text-gray">Puedes actualizar tu contraseña.</span>
             </div>
             <VSpacer />
             <icon_right class="icon-right"/>  
         </VCardText>
-        <VCardText class="d-flex align-center py-0 px-7 px-md-12 border_line tw-cursor-pointer" @click="dialog_phone = true">
+        <VCardText class="d-flex align-center py-0 px-7 px-md-12 border_line tw-cursor-pointer cardtext-profile phone" @click="dialog_phone = true">
             <icon_phone class="mt-5 mb-5 mt-md-6 mb-md-5"/>
             <div class="d-block ms-2 ms-md-5 mb-md-4 mt-md-4">
-                <span class="d-block labels tw-text-tertiary">Teléfono</span>
+                <span class="d-block labels tw-text-tertiary text-titles">Teléfono</span>
                 <span class="d-block text-subtitles tw-text-gray">{{ phone }}</span>
             </div>
             <VSpacer />
-            <icon_right class="icon-right"/>
+            <span class="svg-icon-right">
+                <icon_right class="icon-right"/>
+            </span>
         </VCardText>
-        <VCardText class="d-flex align-center py-0 px-7 px-md-12 tw-cursor-pointer">  
+        <VCardText class="d-flex align-center py-0 px-7 px-md-12 tw-cursor-pointer cardtext-profile authenticator">  
             <icon_auth class="mt-5 mb-6 mt-md-5 mb-md-6"/>
             <div class="d-block ms-2 ms-md-5 mb-md-0 mt-md-0"> 
-                <span class="d-block labels tw-text-tertiary">Google Authenticator </span>
+                <span class="d-block labels tw-text-tertiary text-titles">Google Authenticator </span>
                 <span class="d-block text-subtitles tw-text-gray">Actívalo para usar 2FA.</span>
             </div>
             <VSpacer />
-            <icon_right class="icon-right"/>
+            <div class="svg-icon-right">
+                <icon_right class="icon-right"/>
+            </div>
         </VCardText>
     </VCard>
 
@@ -373,6 +377,31 @@ async function fetchData() {
 </template>
 
 <style scoped>
+
+    .cardtext-profile:hover .text-titles, .cardtext-profile:hover .text-subtitles {
+        color: #FF0090 !important;
+    }
+
+    .cardtext-profile:hover.password::v-deep(path) {
+        fill: #FF0090;
+    }
+
+    .cardtext-profile:hover > .svg-icon-right::v-deep(path) {
+        fill: #FF0090;
+    }
+
+    .cardtext-profile:hover.phone::v-deep(path:nth-of-type(2)), 
+    .cardtext-profile:hover.phone::v-deep(path:nth-of-type(3)),
+    .cardtext-profile:hover.authenticator::v-deep(path:nth-of-type(2)), 
+    .cardtext-profile:hover.authenticator::v-deep(path:nth-of-type(3)), 
+    .cardtext-profile:hover.authenticator::v-deep(path:nth-of-type(4)) {
+        fill: #FF0090;
+    }
+
+    .cardtext-profile:hover::v-deep(rect:nth-of-type(2)) {
+        stroke: #FF0090;
+    }
+
     .text-message {
         color:  #FF0090;
         text-align: center;
@@ -429,6 +458,7 @@ async function fetchData() {
         margin: auto;
       
     }
+
     .icons {
         width: 56px;
         height: 56px;

@@ -1,6 +1,5 @@
 <script setup>
 
-import router from '@/router'
 import festin_success from '@assets/icons/festin_success.svg';
 import festin_error from '@assets/icons/festin_error.svg';
 import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';

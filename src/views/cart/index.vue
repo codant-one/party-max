@@ -169,14 +169,12 @@ async function fetchData() {
         await addressesStores.fetchAddresses(data_)
         addresses.value = addressesStores.getAddresses
 
-
         await cartStores.fetchCart({client_id: client_id.value})
         products.value = cartStores.getData
 
         let index = addresses.value.findIndex((item) => item.default === 1) 
         if (addresses.value.length > 0) {
             address_id.value = (index > -1) ? addresses.value[index].id : addresses.value[0].id 
-
         } 
 
         let sum = 0
@@ -188,6 +186,8 @@ async function fetchData() {
 
         summary.value.subTotal = sum.toFixed(2)
         summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
+
+        isActiveStepValid.value = (address_id.value === 0 ) ? true : false
 
         isLoading.value = false
     }

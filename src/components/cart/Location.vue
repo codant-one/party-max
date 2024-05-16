@@ -1,4 +1,5 @@
 <script setup>
+
 import { formatNumber } from '@formatters'
 
 const props = defineProps({
@@ -26,6 +27,11 @@ const emit = defineEmits([
 ])
 
 const id = ref(props.address_id)
+
+watch(() => 
+    props.address_id, (data) => {
+        id.value = data
+    });
 
 const next = () => {
 

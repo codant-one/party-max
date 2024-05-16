@@ -119,7 +119,7 @@ async function fetchData() {
   categories.value = homeStores.getData.parentCategories;
 
   let info = {
-    orderByField: (route.query.category && route.query.category !== 'all') ? 'pl.order_id' : 'products.id',
+    orderByField: (route.query.category && route.query.category !== 'all') ? 'pl.order_id' : 'products.order_id',
     orderBy: 'asc',
     limit: rowPerPage.value,
     page: currentPage.value,

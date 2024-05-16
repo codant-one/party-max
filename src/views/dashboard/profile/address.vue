@@ -152,7 +152,7 @@ const edit = (addressData) => {
         address: addressData.address,
         phone: addressData.phone,
         postal_code: addressData.postal_code,
-        default: (addressData.default === 0) ? false : 1,
+        default: (addressData.default === 0) ? false : true,
         client_id: addressData.client_id
     }
 
@@ -369,7 +369,7 @@ const getFlagCountry = country => {
                 <VSpacer />
                 <VMenu >
                     <template v-slot:activator="{ props }">
-                    <VBtn variant="plain" icon class="pb-2 user" v-bind="props">
+                    <VBtn variant="plain" icon class="pb-2 user more" v-bind="props">
                         <icon_more class="mt-3 mt-md-2"/>
                     </VBtn>
                     </template>
@@ -393,7 +393,7 @@ const getFlagCountry = country => {
              </VCardText>       
              <VCardText 
                 :class="(addresses.length > 0) ? 'border_line' : ''"
-                class="d-flex align-center py-0 px-7 px-md-12 mb-2" 
+                class="d-flex align-center py-0 px-7 px-md-12 mb-2 tw-cursor-pointer" 
                 @click="dialog=true">
                 <span class="labels tw-text-primary mt-3 mb-1 mt-md-3 mb-md-2">Agregar domicilio</span>
                 <VSpacer />
@@ -560,6 +560,10 @@ const getFlagCountry = country => {
 </template>
 
 <style scoped>
+
+    .more:hover::v-deep(path){
+        stroke: #FF0090;
+    }
 
     .text-message {
         color:  #FF0090;
