@@ -26,6 +26,7 @@ import address_client from '@/views/dashboard/profile/address.vue'
 import Purchases from '@/views/dashboard/purchases.vue'
 import Favorites from '@/views/dashboard/favorites.vue'
 import Detail_pusher from '@/views/dashboard/details_purchases.vue'
+import Rating_products from '@/views/dashboard/rating_products.vue'
 import success_registerp from '@/views/clients/success_registerper.vue'
 import success_registerc from '@/views/clients/success_registercom.vue'
 import forgot_password from '@/views/clients/forgot_password.vue'
@@ -172,7 +173,12 @@ const router = createRouter({
           path: '/detail-purchases/:id',
           name: 'detail_pusher',
           component: Detail_pusher,
-        }
+        },
+        {
+          path: '/rating-products/:id',
+          name: 'rating_products',
+          component: Rating_products
+        }        
       ],
     },
     {

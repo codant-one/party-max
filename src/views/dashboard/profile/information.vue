@@ -265,7 +265,7 @@ const getFlagCountry = country => {
     <Loader :isLoading="isLoading"/>
     <VContainer class="mt-1 mt-md-10 container-dashboard" v-if="listCountries.length > 0">
 
-        <h2 class="data-title mt-5">Mis datos</h2>
+        <h2 class="data-title mt-5 pt-md-7">Mis datos</h2>
         <h6 class="data-subtitle tw-text-tertiary">Datos de cuenta</h6>
 
         <VCard class="card-profile">
@@ -517,6 +517,7 @@ const getFlagCountry = country => {
 </template>
 
 <style scoped>
+
     .subtitle-register {
         color: #FF0090;
         text-align: center;
@@ -525,13 +526,15 @@ const getFlagCountry = country => {
         font-weight: 600;
         line-height: 30px;  
     }
+
     .container-dashboard {
-        padding: 10px 200px;
+        padding: 0 15%;
     }
 
     .border_text {
         border-bottom: 1px solid #E1E1E1;
     }   
+
     .data-title {
         color: #0A1B33;
         font-size: 24px;
@@ -555,6 +558,7 @@ const getFlagCountry = country => {
         border-radius: 16px;
         box-shadow: none;
     }
+
     .labels {
         font-size: 15px;
         font-style: normal;
@@ -583,6 +587,7 @@ const getFlagCountry = country => {
         font-size:18px;
         font-weight: 700;
     }
+
     .row-form {
         padding: 0px 32px;
     }
@@ -610,6 +615,7 @@ const getFlagCountry = country => {
     .v-text-field::v-deep(.v-input__details) {
         min-height: 15px !important;
     }
+
     .textinput .v-text-field::v-deep(.v-field-label) {
         top: 33% !important;
         font-size: 14px !important;
@@ -671,7 +677,7 @@ const getFlagCountry = country => {
 
     @media only screen and (max-width: 767px) {
         .container-dashboard {
-            padding: 0px 20px;
+            padding: 0 5%;
         }
 
         .labels {
@@ -681,6 +687,7 @@ const getFlagCountry = country => {
         .col-info {
             padding-left: 0 !important;
         }
+
         .card-form {
             width: 350px;
         }
@@ -694,6 +701,5 @@ const getFlagCountry = country => {
             padding: 0 30px !important;
             font-size: 18px;
         }
-    }    
-
+    }
 </style>

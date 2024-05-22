@@ -59,11 +59,11 @@ export const useOrdersStores = defineStore('orders',{
                     return Promise.reject(error)
                 }) 
         },
-        show_by_client(id: Number) {
-            return Orders.show_by_client(id)
+        show_by_client(data: object, id: Number) {
+            return Orders.show_by_client(data, id)
                 .then((response) => {
                     this.data = response.data.data.orders
-                    return Promise.resolve(response.data.data.orders)
+                    return Promise.resolve(response.data.data)
                 })
                 .catch(error => {
                     return Promise.reject(error)

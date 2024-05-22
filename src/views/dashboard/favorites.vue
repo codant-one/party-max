@@ -49,8 +49,8 @@ const deleteFavorite = async (product_id) => {
 
 <template>
     <Loader :isLoading="isLoading"/>
-    <VContainer class="mt-1 mt-md-10 container-dashboard">
-        <h2 class="data-title mt-5">Favoritos</h2>
+    <VContainer class="my-1 my-md-10 container-dashboard">
+        <h2 class="data-title mt-5 pt-md-7">Favoritos</h2>
         <VCard class="card-profile px-0 py-0" v-if="products.length > 0">
             {{  }}
             <Product7
@@ -66,8 +66,9 @@ const deleteFavorite = async (product_id) => {
 
 <style scoped>
     .container-dashboard {
-        padding: 10px 200px;
+        padding: 0 15%;
     }
+
     .data-title {
         color: #0A1B33;
         font-size: 24px;
@@ -76,6 +77,7 @@ const deleteFavorite = async (product_id) => {
         line-height: normal;
         text-align: left;
     }
+
     .card-profile {
         padding: 16px 32px;
         margin-top: 24px;
@@ -89,8 +91,8 @@ const deleteFavorite = async (product_id) => {
         max-width: 173.96px;
         border-radius: 16px;
         border: 1px solid var(--Light-Cyan-1, #E2F8FC);
-        background: lightgray 0px 0px / 100% 100% no-repeat;
     }
+
     .row-summary {
         padding: 24px;
         justify-content: space-between;
@@ -103,6 +105,7 @@ const deleteFavorite = async (product_id) => {
         font-weight: 700;
         line-height: 16px;
     }
+    
     .text-price {
         font-size: 24px;
         font-style: normal;
@@ -112,7 +115,7 @@ const deleteFavorite = async (product_id) => {
 
     @media only screen and (max-width: 767px) {
         .container-dashboard {
-            padding: 0px 20px;
+            padding: 0 5%;
         }
     }
 </style>

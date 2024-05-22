@@ -19,7 +19,7 @@ const isLoading = ref(true)
 const subtotal = ref(null)
 const shipping_cost = ref(null)
 const total = ref(null)
-const rating = ref(0)
+const rating = ref(5)
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 const isMobile = /Mobi/i.test(navigator.userAgent);
@@ -117,19 +117,10 @@ const resolveStatusPayment = payment_state_id => {
                     />
                 </VCol>
                 <VCol cols="12" md="2" class="col-editar d-flex justify-content-end align-center icon-right">
-                    <router-link
-                        :to="{
-                            name: 'rating_products',
-                            params: {
-                                id: orders.id
-                            }
-                        }"
-                        class="tw-no-underline">
-                        <span class="tw-cursor-pointer text-editar tw-text-tertiary hover:tw-text-primary d-flex justify-content-end align-center">
-                            Editar opinión
-                            <arrow_right class="ms-1"/>
-                        </span>
-                    </router-link>
+                    <span class="tw-cursor-pointer text-editar tw-text-tertiary hover:tw-text-primary d-flex justify-content-end align-center">
+                        Editar opinión
+                        <arrow_right class="ms-1"/>
+                    </span>
                 </VCol>
             </VRow>
         </VCard>

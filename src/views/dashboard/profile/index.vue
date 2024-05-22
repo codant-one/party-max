@@ -332,7 +332,7 @@ me()
         background: transparent !important;
     }
     .container-dashboard {
-        padding: 0 200px;
+        padding: 0 15%;
     }
 
     .profile-image {
@@ -347,6 +347,7 @@ me()
         font-style: normal;
         font-weight: 600;
         line-height: 25px; /* 147.059% */
+        text-wrap: wrap;
     }
 
     .text-titles {
@@ -413,7 +414,7 @@ me()
 
     @media only screen and (max-width: 767px) {
         .container-dashboard {
-            padding: 0px 20px;
+            padding: 0 5%;
         }
 
         .name-client {

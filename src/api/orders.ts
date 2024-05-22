@@ -22,8 +22,8 @@ class Orders {
         return axios.put(`/orders/updatePaymentState/${id}`, data)
     }
 
-    show_by_client(id: Number) {
-        return axios.get(`orders/show/${id}`)
+    show_by_client(params: object, id: Number) {
+        return axios.get(`orders/show/${id}`, {params})
     }
 
     show_by_id(id: Number) {

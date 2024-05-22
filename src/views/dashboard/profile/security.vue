@@ -199,7 +199,7 @@ async function fetchData() {
 <template>
   <VContainer class="mt-1 mt-md-10 container-dashboard"> 
 
-    <h2 class="data-title mt-5">Métodos de verificación</h2>
+    <h2 class="data-title mt-5 pt-md-7">Métodos de verificación</h2>
     <h6 class="data-subtitle tw-text-tertiary">Los métodos de verificación sirven para confirmar que eres tú cuando inicias sesión.</h6>
 
     <VCard class="card-profile px-0 py-0">
@@ -411,9 +411,11 @@ async function fetchData() {
         line-height: 30px; 
         padding: 0 80px !important;
     }
+
     .border_line {
         border-bottom: 1px solid #E1E1E1;
     }
+
     .subtitle-register {
         color: #FF0090;
         text-align: center;
@@ -422,9 +424,11 @@ async function fetchData() {
         font-weight: 600;
         line-height: 30px;  
     }
+
     .container-dashboard {
-        padding: 10px 200px;
+        padding: 0 15%;
     }
+    
     .data-title {
         color: #0A1B33;
         font-size: 24px;
@@ -440,12 +444,14 @@ async function fetchData() {
         font-weight: 400;
         line-height: normal;
     }
+
     .card-profile {
         padding: 16px 32px;
         margin-top: 24px;
         border-radius: 16px;
         box-shadow: none;
     }
+
     .labels , .text-subtitles {
         font-size: 15px;
         font-style: normal;
@@ -456,7 +462,6 @@ async function fetchData() {
     .icon-right {
         width: 20px;
         margin: auto;
-      
     }
 
     .icons {
@@ -466,6 +471,7 @@ async function fetchData() {
         border: 1px solid var(--Grey-2, #E1E1E1);
         background: var(--White, #FFF);
     }
+
     .v-text-field::v-deep(.v-field) { 
         border-radius: 24px;
         height: 35px;
@@ -537,20 +543,21 @@ async function fetchData() {
         }
 
         .container-dashboard {
-            padding: 0px 20px;
+            padding: 0 5%;
         }
 
         .card-form {
             width: 350px;
         }
+
         .card-register, .card-password {
             width: auto !important;
             padding: 40px 20px !important;
         }
+
         .text-message {
             padding: 0 30px !important;
             font-size: 18px;
         }
-
     }
 </style>

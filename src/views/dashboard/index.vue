@@ -13,7 +13,7 @@ const isMobile = /Mobi/i.test(navigator.userAgent)
 const drawer = ref(isMobile ? false : true)
 
 const fixedSectionRefd = ref(null)
-const classFixedd = ref('second-headerd')
+const classFixed = ref('second-header-dashboard')
 
 const me = async () => {
     if(localStorage.getItem('user_data')){
@@ -27,17 +27,16 @@ const me = async () => {
 
 onMounted(() => {
     window.addEventListener('scroll', handleScroll);
-  });
+});
 
-  const handleScroll = () => {
+const handleScroll = () => {
 
     if (fixedSectionRefd.value && isMobile) {
       const scrollY = window.scrollY || window.pageYOffset;
     
-      classFixedd.value = (scrollY === 0 ) ? 'second-headerd' : 'topFixedd';
+      classFixed.value = (scrollY === 0 ) ? 'second-header-dashboard' : 'topFixedDashboard';
     }
-  };
-
+};
 
 me()
 
@@ -93,7 +92,7 @@ me()
         </VNavigationDrawer>
         <VMain style="min-height: 700px; background-color: #E2F8FC;" class="pt-30">
             <div class="mt-0 p-0 mt-md-10 container-dashboard d-block d-md-none">
-                <VCard class="no-shadown card-information p-2 transparent box-bottom" :class="classFixedd" ref="fixedSectionRefd">
+                <VCard class="no-shadown card-information p-2 transparent box-bottom" :class="classFixed" ref="fixedSectionRefd">
                     <VCardTitle class="p-0 d-flex align-center justify-content-center">
                         <div class="d-block text-center box-iconmob">
                             <router-link :to="{ name: 'profile' }" class="link-menumob tw-text-tertiary tw-no-underline" exact>
@@ -126,17 +125,14 @@ me()
 
 <style scoped>
 
-
-
     .card-information {
         padding: 24px 32px;
         margin-top: 24px;
         border-radius: 16px;
     }
 
-
     .container-dashboard {
-        padding: 10px 200px;
+        padding: 3% 10%;
     }
 
     .profile-image {
@@ -190,7 +186,6 @@ me()
     .custom-background {
         background-color: #0A1B33;
         color: #FFFFFF;
-        
     }
 
     .custom-background .VListItem-title {
@@ -237,45 +232,39 @@ me()
 
     @media (max-width: 768px) {
 
-        .second-headerd {
+        .second-header-dashboard {
             top: 120px !important;
             position: fixed !important;
             width: 100%;
             z-index: 1000;
-            }
+        }
             
-        .topFixedd {
-            top: 45px !important;
+        .topFixedDashboard {
+            top: 44px !important;
             position: fixed !important;
             width: 100%;
             z-index: 1000;
-            
-            }
+        }
 
         .dashboard {
             margin-top: -10px;
         }
 
         .container-dashboard {
-            padding: 0px 20px;
+            padding: 0 5%;
         }
 
-        .card-information
-        {
+        .card-information {
             border-radius: 0px;
             margin-top: 0px;
             padding: 24px 0px;
-            margin-bottom: 50px;
-            
-
         }
-        .icon-menumob
-        {
+
+        .icon-menumob {
             stroke: #0A1B33;
         }
 
-        .text-menumob
-        {
+        .text-menumob {
             font-size: 14px;
             font-style: normal;
             font-weight: 400;
@@ -287,19 +276,16 @@ me()
         }
 
         .router-link-exact-active::v-deep(path) {
-        stroke: #FF0090 !important;
+            stroke: #FF0090 !important;
         }
 
-        .box-iconmob
-        {
+        .box-iconmob {
             width: 33%;
         }
 
-        .box-comp
-        {
+        .box-comp {
             border-left: 1px solid #E2F8FC;
             border-right: 1px solid #E2F8FC;
-
         }
 
         .box-bottom {
@@ -309,6 +295,5 @@ me()
         .pt-30 {
             padding-top: 30%;
         }
-      
     }
 </style>

@@ -353,7 +353,7 @@ const getFlagCountry = country => {
     <Loader :isLoading="isLoading"/>
     <VContainer class="mt-1 mt-md-10 container-dashboard" v-if="addresses">
    
-        <h2 class="data-title">Domicilios</h2>
+        <h2 class="data-title mt-5 pt-md-7">Domicilios</h2>
 
         <VCard class="card-profile px-0 py-0">
             <VCardText class="d-flex align-center py-0 px-7 px-md-12 mb-2" 
@@ -583,32 +583,36 @@ const getFlagCountry = country => {
         font-weight: 600;
         line-height: 30px;  
     }
+
     .circle {
         margin-top: 6%;
         margin-left: -2%;
     }
+
     .border_line {
         border-top: 1px solid #E1E1E1;
     }
-    .container-dashboard {
-        padding: 10px 200px;
-    }
-    .data-title {
 
+    .container-dashboard {
+        padding: 0 15%;
+    }
+
+    .data-title {
         color: #0A1B33;
         font-size: 24px;
         font-style: normal;
         font-weight: 600;
         line-height: normal;
         text-align: left;
-
     }
+
     .card-profile {
         padding: 16px 32px;
         margin-top: 24px;
         border-radius: 16px;
         box-shadow: none;
     }
+
     .labels {
         font-size: 15px;
         font-style: normal;
@@ -619,11 +623,13 @@ const getFlagCountry = country => {
     .icon-right {
         cursor: pointer;
     }
+
     .icon-more {
         width: 24px;
         height: 24px;
         margin: auto;
     }
+
     .icons {
         width: 56px;
         height: 56px;
@@ -636,6 +642,7 @@ const getFlagCountry = country => {
         padding: 24px;
         border-top: 1px solid var(--Grey-2, #E1E1E1);
     }
+
     .row-form {
         padding: 0px 32px;
     }
@@ -685,6 +692,7 @@ const getFlagCountry = country => {
     .v-text-field::v-deep(.v-input__details) {
         min-height: 15px !important;
     }
+
     .textinput .v-text-field::v-deep(.v-field-label) {
         top: 33% !important;
         font-size: 14px !important;
@@ -727,7 +735,6 @@ const getFlagCountry = country => {
         margin-left: 10px;
     }
 
-
     @media only screen and (max-width: 767px) {
 
         .v-checkbox::v-deep(.v-selection-control) {
@@ -740,8 +747,9 @@ const getFlagCountry = country => {
         .labels {
             font-size: 11px;
         }
+
         .container-dashboard {
-            padding: 0px 20px;
+            padding: 0 5%;
         }
 
         .card-form {
