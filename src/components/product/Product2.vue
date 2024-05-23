@@ -60,7 +60,7 @@ watchEffect(() => {
                         :width="61" />
                 </VCardText>
                 
-                <VCardText class="w-75">
+                <VCardText class="w-75 d-flex flex-column justify-content-between mb-1">
                     <span v-if="name.length > 40" class="d-block text_2 tw-text-tertiary title-product">
                         {{ name.slice(0, 30) + '...'}}
                     </span>

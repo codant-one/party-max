@@ -127,7 +127,7 @@ const addfavorite = () => {
                     <VCardText class="d-flex">
                         <span class="d-block text_2 py-1 tw-text-tertiary title-product">{{ name }}</span>
                         <strong class="tw-text-gray tw-text-base ms-3">
-                            {{ (in_stock === 1) ? '(' + cant_stock + ')'  : 'AGOTADO' }}
+                            {{ (in_stock === 1) ? ''  : 'AGOTADO' }}
                         </strong>
                     </VCardText>
                     <VCardText class="px-1 pb-1">
@@ -141,7 +141,7 @@ const addfavorite = () => {
                                 color="yellow-darken-2"
                                 active-color="yellow-darken-2"
                                 />
-                            <span class="text_2 ms-2 mt-1">02</span>
+                            <span class="text_2 ms-2 mt-1">({{ cant_stock }})</span>
                         </div>
                     </VCardText>
                     <VCardText>

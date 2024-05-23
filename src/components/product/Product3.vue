@@ -15,6 +15,7 @@ const props = defineProps({
 
 const route = useRoute()
 
+const isMobile = /Mobi/i.test(navigator.userAgent);
 const image = ref(null)
 const wholesale_price = ref(null)
 const price_for_sale = ref(null)
@@ -23,6 +24,7 @@ const store = ref(null)
 const rating = ref(null)
 const slug = ref(null)
 const existence_whole = ref(false)
+const stock = ref(null)
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
@@ -36,6 +38,7 @@ watchEffect(() => {
         store.value = props.product.user.user_detail.store_name ?? (props.product.user.supplier?.company_name ?? (props.product.user.name + ' ' + (props.product.user.last_name ?? '')))
         rating.value = props.product.rating
         slug.value = props.product.slug
+        stock.value = props.product.stock
     }
 
     existence_whole.value = route.query.wholesalers === 'true' ? true : false;
@@ -59,15 +62,16 @@ watchEffect(() => {
                     cover />
             </VCardText>
             <VCardText>
-                <span v-if="name.length > 40" class="d-block text_2 py-2 tw-text-tertiary title-product">
-                    {{ name.slice(0, 30) + '...'}}
+                <span v-if="name.length > 50 && !isMobile" class="d-block text_2 py-2 tw-text-tertiary title-product">
+                    {{ name.slice(0, 50) + '...'}}
                 </span>
                 <span v-else class="d-block text_2 py-2 tw-text-tertiary title-product">
-                    {{ name }}
+                    <span v-if="isMobile"> {{ name.slice(0, 25) + '...'}}</span>
+                    <span v-else> {{ name }}</span>
                 </span>
             </VCardText>
             <VCardText>
-                <span class="d-block text_2">Tienda: <strong>{{ store }}</strong></span>
+                <span class="d-block text_2 store">Tienda: <strong>{{ store }}</strong></span>
             </VCardText>
             <VCardText class="px-1 mt-1">
                 <div class="d-flex">
@@ -80,7 +84,7 @@ watchEffect(() => {
                         color="yellow-darken-2"
                         active-color="yellow-darken-2"
                         />
-                    <span class="text_2 ms-2 mt-1">02</span>
+                    <span class="text_2 ms-2 mt-1">({{ stock }})</span>
                 </div>
             </VCardText>
             <VCardText class="mt-1">
@@ -122,6 +126,14 @@ watchEffect(() => {
         color: #FF0090 !important;
     }
 
+    .title-product {
+        min-height: 55px;
+    }
+
+    .store {
+        min-height: 45px;
+    }
+
     .text_1 {
         font-size: 18px;
         font-style: normal;
@@ -159,6 +171,14 @@ watchEffect(() => {
     .border-img {
         width: 171px;
         height: 171px;
+    }
+
+    .title-product {
+         min-height: 40px;
+    }
+
+    .store {
+        min-height: 40px;
     }
   }
 </style>

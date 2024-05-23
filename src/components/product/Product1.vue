@@ -29,6 +29,7 @@ const store = ref(null)
 const rating = ref(null)
 const slug = ref(null)
 const existence_whole = ref(false)
+const stock = ref(null)
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
@@ -42,6 +43,7 @@ watchEffect(() => {
         store.value = props.product.user.user_detail.store_name ?? (props.product.user.supplier?.company_name ?? (props.product.user.name + ' ' + (props.product.user.last_name ?? '')))
         rating.value = props.product.rating
         slug.value = props.product.slug
+        stock.value = props.product.stock
     }
 
     existence_whole.value = route.query.wholesalers === 'true' ? true : false;
@@ -94,7 +96,7 @@ watchEffect(() => {
                         color="yellow-darken-2"
                         active-color="yellow-darken-2"
                         />
-                    <span class="text_2 ms-2 mt-1">02</span>
+                    <span class="text_2 ms-2 mt-1">({{ stock }})</span>
                 </div>
             </VCardText>
         </VCard>
