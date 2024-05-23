@@ -175,7 +175,7 @@ const resolveStatusPayment = payment_state_id => {
                 <span v-if="orders.payment.id === 4 && orders.shipping.id === 4" class="text-date tw-text-tertiary">El paquete llegará de 3 a 5 días hábiles.</span>
             </VCardText>
             <VCardText class="d-flex px-10 py-3">
-                <span class="text-editar tw-text-tertiary" v-if="orders.payment.id !== 2 && orders.payment.id !== 3">
+                <span v-if="orders.payment.id !== 2 && orders.payment.id !== 3" class="text-editar tw-text-tertiary">
                     {{ orders.payment.id === 4 && orders.shipping.id === 3 ? 'Entregamos' : 'Entregaremos' }} 
                         tu paquete en 
                     {{ orders.address.address }} ,
@@ -184,8 +184,8 @@ const resolveStatusPayment = payment_state_id => {
                     {{ orders.address.postal_code }},
                     {{ orders.address.province.name }}. 
                 </span>
-                <span v-else>
-                    NO SE PUDO PROCESAR EL PAGO.
+                <span v-else class="text-editar tw-text-tertiary">
+                    No se pudo procesar el pago.
                 </span>
             </VCardText>
         </VCard>
