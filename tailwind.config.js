@@ -24,7 +24,10 @@ module.exports = {
       cyan: '#F3FCFE',
       gray: '#999999',
       green: '#E2F8FC',
-      lightCyan: '#D9EEF2'
+      lightCyan: '#D9EEF2',
+      cancel: '#EA3829',
+      info: '#EF9C1D',
+      positive: '#008F5D'
     },
     fill: {
       primary: '#FF0090',
