@@ -179,11 +179,13 @@ const resolveStatusPayment = payment_state_id => {
                     {{ orders.payment.id === 4 && orders.shipping.id === 3 ? 'Entregamos' : 'Entregaremos' }} 
                         tu paquete en 
                     {{ orders.address.address }} ,
-                    {{ orders.address.street }} ,
+                    {{ orders.address.street }} <span v-if="orders.address.street !== null">,</span>
                     {{ orders.address.city }} ,
-                    {{ orders.address.postal_code }},
-                    {{ orders.address.province.name }}. 
-                    ({{ orders.billing.note }}). 
+                    {{ orders.address.province.name }}.
+                    Código Postal: {{ orders.address.postal_code }}. 
+                    <span v-if="orders.billing.note !== null">
+                        ({{ orders.billing.note }}).
+                    </span>
                 </span>
                 <span v-else class="text-editar tw-text-tertiary">
                     No se pudo procesar el pago.

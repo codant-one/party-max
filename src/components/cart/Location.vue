@@ -69,8 +69,14 @@ const next = () => {
                             <template v-slot:label>
                                 <VCardText class="d-flex my-1">
                                     <div class="d-block">
-                                        <span class="d-block text-address ms-7 me-auto tw-font-semibold">{{ address.title }}</span>
-                                        <span class="d-block text-address ms-7 me-auto">{{ address.address }}</span>
+                                        <span class="d-block text-address ms-1 me-auto tw-font-semibold">{{ address.title }}</span>
+                                        <span class="d-block text-address ms-1 me-auto">
+                                            {{ address.address }} ,
+                                            {{ address.street }} <span v-if="address.street !== null">,</span>
+                                            {{ address.city }} ,
+                                            {{ address.province.name }}.
+                                            Código Postal: {{ address.postal_code }}. 
+                                        </span>
                                     </div>
                                     <VSpacer />
                                     <span class="text-address my-auto">$0.000</span>

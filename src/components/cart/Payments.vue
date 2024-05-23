@@ -282,11 +282,17 @@ const getFlagCountry = country => {
                 <VCard class="card-products mx-auto px-0">
                     <h2 class="title-card px-16 my-3">Forma de entrega</h2>
                     <VRow class="row-cardelivery3 px-16">
-                        <VCol cols="12" md="6" class="text-left">
-                            <h4>{{ address.address }}</h4>
+                        <VCol cols="12" md="10" class="text-left">
+                            <h4>
+                                {{ address.address }} ,
+                                {{ address.street }} <span v-if="address.street !== null">,</span>
+                                {{ address.city }} ,
+                                {{ address.province.name }}.<br>
+                                Código Postal: {{ address.postal_code }}. 
+                            </h4>
                         </VCol>
 
-                        <VCol cols="12" md="6" class="text-right">
+                        <VCol cols="12" md="2" class="text-right">
                             <h4>${{ formatNumber(props.summary.send) }}</h4> 
                         </VCol>
                     </VRow>
