@@ -183,6 +183,7 @@ const resolveStatusPayment = payment_state_id => {
                     {{ orders.address.city }} ,
                     {{ orders.address.postal_code }},
                     {{ orders.address.province.name }}. 
+                    ({{ orders.billing.note }}). 
                 </span>
                 <span v-else class="text-editar tw-text-tertiary">
                     No se pudo procesar el pago.
