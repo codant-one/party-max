@@ -53,24 +53,24 @@ me()
 
 const resolveStatusShipping = shipping_state_id => {
   if (shipping_state_id === 1)
-    return { color: 'primary' }
+    return { color: 'info' }
   if (shipping_state_id === 2)
-    return { color: 'yellow' }
+    return { color: 'cancel' }
   if (shipping_state_id === 3)
-    return { color: 'secondary' }
+    return { color: 'positive' }
   if (shipping_state_id === 4)
-    return { color: 'tertiary' }
+    return { color: 'info' }
 }
 
 const resolveStatusPayment = payment_state_id => {
   if (payment_state_id === 1)
-    return { color: 'tertiary' }
+    return { color: 'cancel' }
   if (payment_state_id === 2)
-    return { color: 'secondary' }
+    return { color: 'cancel' }
   if (payment_state_id === 3)
-    return { color: 'yellow' }
+    return { color: 'cancel' }
   if (payment_state_id === 4)
-    return { color: 'primary' }
+    return { color: 'info' }
 }
 
 </script>
