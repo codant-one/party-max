@@ -14,8 +14,8 @@ export const useFavoritesStores = defineStore('favorites',{
         fetchFavorites(params: object) {
             return Favorites.get(params)
                 .then((response) => {
-                    this.data = response.data.data.favorites
-                    return Promise.resolve(response.data.data.favorites)
+                    this.data = response.data.data.favorites.data[0]
+                    return Promise.resolve(response.data.data)
                 })
                 .catch(error => {
                     return Promise.reject(error)
