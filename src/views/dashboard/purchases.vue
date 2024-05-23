@@ -90,7 +90,6 @@ async function fetchData() {
     totalPages.value = aux.ordersAll.last_page;
     totalOrders.value = aux.ordersTotalCount;
 
-    console.log('orders', orders.value)
     isLoading.value = false
 
 }
