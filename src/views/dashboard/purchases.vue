@@ -90,6 +90,7 @@ async function fetchData() {
     totalPages.value = aux.ordersAll.last_page;
     totalOrders.value = aux.ordersTotalCount;
 
+    console.log('orders', orders.value)
     isLoading.value = false
 
 }
@@ -136,6 +137,9 @@ const redirect = (name) => {
                     </span> 
                     <br>
                     <span class="name-product tw-text-tertiary">{{ order.products[0].product_name}}</span> <br>
+                    <span class="text-status tw-text-gray">
+                        Color: {{ order.products[0].color }}
+                    </span> <br>
                     <span class="text-status tw-text-gray">
                         {{ order.products[0].quantity }} {{ Number(order.products[0].quantity) === 1 ? 'Unidad' : 'Unidades' }}
                     </span>

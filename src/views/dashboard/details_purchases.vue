@@ -86,6 +86,9 @@ const resolveStatusPayment = payment_state_id => {
                 <VCol cols="12" md="6" class="d-flex justify-content-center align-center">
                     <VCardText>
                         <span class="d-block name-product tw-text-tertiary">{{ product.product_name}}</span>
+                        <span class="text-status tw-text-gray">
+                            Color: {{ product.color }}
+                        </span> <br>
                         <span class="d-block text-status tw-text-gray">{{ product.quantity }} {{ Number(product.quantity) === 1 ? 'Unidad' : 'Unidades' }}</span>
                     </VCardText>
                 </VCol>
