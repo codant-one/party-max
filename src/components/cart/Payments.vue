@@ -36,7 +36,7 @@ const props = defineProps({
     },
 })
 
-const emit = defineEmits(['submit'])
+const emit = defineEmits(['submit', 'send'])
 
 const refVForm = ref()
 const isMobile = /Mobi/i.test(navigator.userAgent)
@@ -59,6 +59,9 @@ const billingDetail = ref({
     email: '',
     note: null
 })
+
+const sendToBogota = ref(false)
+const shipping_express = ref(false)
 
 const isLastItem = (index) => {
   return index === props.products.length - 1;
@@ -116,6 +119,24 @@ const getFlagCountry = country => {
     return ''
 }
 
+const chanceSend = () => {
+    billingDetail.value.city = sendToBogota.value ? 'Bogota' : ''
+    billingDetail.value.province_id = sendToBogota.value ? 292 : ''
+
+    if(sendToBogota.value)
+        emit('send', 'sendToBogota')
+    else
+        emit('send', 'send')
+
+}
+
+const chanceExpress = () => {
+
+    if(shipping_express.value)
+        emit('send', 'shipping_express')
+    else
+        emit('send', 'sendToBogota')
+}
 </script>
 
 <template>
@@ -162,6 +183,25 @@ const getFlagCountry = country => {
                                         :rules="[requiredValidator, emailValidator]"
                                     />    
                                 </VCol>
+                                <VCol cols="12" md="3" class="textinput mb-0 mb-md-7">
+                                    <VCheckbox
+                                        v-model="sendToBogota" 
+                                        label="Envío a Bogota"
+                                        true-icon="mdi-check-bold"
+                                        color="primary"
+                                        @update:modelValue="chanceSend"
+                                    />
+                                </VCol>
+                                <VCol cols="12" md="9" class="textinput mb-0 mb-md-7">
+                                    <VCheckbox
+                                        v-if="sendToBogota"
+                                        v-model="shipping_express" 
+                                        label="Envío express"
+                                        true-icon="mdi-check-bold"
+                                        color="primary"
+                                        @update:modelValue="chanceExpress"
+                                    />
+                                </VCol>
                                 <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
                                     <VAutocomplete
                                         variant="outlined"
@@ -196,8 +236,9 @@ const getFlagCountry = country => {
                                         :rules="[requiredValidator]"
                                         :items="getProvinces"
                                         :menu-props="{ maxHeight: '200px' }"
+                                        :readonly="sendToBogota"
                                     />    
-                                </VCol> 
+                                </VCol>
                                 <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
                                     <VTextField
                                         label="Ciudad"
@@ -205,7 +246,8 @@ const getFlagCountry = country => {
                                         variant="outlined"
                                         :rules="[requiredValidator]"
                                         class="me-0 me-md-2"
-                                        />
+                                        :readonly="sendToBogota"
+                                    />
                                 </VCol>  
                                 <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
                                     <VTextField
@@ -399,19 +441,23 @@ const getFlagCountry = country => {
         border-radius: 24px !important;
     }
 
-    .v-checkbox::v-deep(.v-input__details) { 
-        min-height: 0 !important;
-        padding: 0 !important;
-        height: 0 !important;
+    .v-checkbox::v-deep(.v-selection-control) {
+        min-height: 15px;
     }
-
+    
     .v-checkbox::v-deep(.v-label) {
         color:#0A1B33;
-        font-size: 13px;
+        font-size: 15px;
         font-style: normal;
         font-weight: 400;
         line-height: 18px; /* 138.462% */
         margin-left: 10px;
+    }
+
+    .v-checkbox::v-deep(.v-input__details) { 
+        min-height: 0 !important;
+        padding: 0 !important;
+        height: 0 !important;
     }
 
     .border-title {

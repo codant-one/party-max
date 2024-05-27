@@ -1,5 +1,6 @@
 
 <script setup>
+    import { emailValidator, requiredValidator } from '@validators'
     import icon1 from '@assets/icons/Mail.svg';
     import icon2 from '@assets/icons/input-user.svg';
     import icon3 from '@assets/icons/Phone.svg';
@@ -78,7 +79,7 @@
                         />
                     </VCol>
                     <VCol cols="12" class="d-flex text-start p-0 mt-5">
-                        <VCheckbox />
+                        <VCheckbox :rules="[requiredValidator]"/>
                         <div class="text1 ms-5 mt-2">
                             Acepto los 
                             <router-link

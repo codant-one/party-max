@@ -54,7 +54,8 @@ const address_id = ref(0)
 
 const summary = ref({
     subTotal: 0,
-    send: '2000.00',
+    send: '19000.00',
+    shipping_express: 0,
     total: 0
 })
 
@@ -343,6 +344,7 @@ const sendPayU = async (billingDetail) => {
             address_id: address_id.value,
             sub_total: summary.value.subTotal,
             shipping_total: summary.value.send,
+            shipping_express: summary.value.shipping_express,
             tax: 0,
             total: summary.value.total,
             product_color_id: product_color_id,
@@ -473,6 +475,38 @@ const getFlagCountry = country => {
     return ''
 }
 
+const chanceSend = value => {
+    switch (value) {
+        case 'send':
+            summary.value.shipping_express = 0
+            summary.value.send = '19000.00'
+        break;
+        case 'sendToBogota':
+            summary.value.shipping_express = 0
+            summary.value.send = '10500.00'
+        break;
+        case 'shipping_express':
+            summary.value.shipping_express = 1
+            summary.value.send = '17000.00'
+        break;
+        case 'default':
+            summary.value.shipping_express = 0
+            summary.value.send = '10500.00'
+    }
+
+    let sum = 0
+    
+    products.value.forEach(element => {
+        let value = element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale
+        iswholesale.value = element.wholesale === 1 ? true : false
+        sum += (parseFloat(value) * element.quantity)
+    });
+
+    summary.value.subTotal = sum.toFixed(2)
+    summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
+
+}
+
 </script>
 
 
@@ -534,7 +568,9 @@ const getFlagCountry = country => {
                         :countries="listCountries"
                         :provinces="listProvinces"
                         :iswholesale="iswholesale"
-                        @submit="sendPayU"/>
+                        @submit="sendPayU"
+                        @send="chanceSend"
+                    />
                 </VWindowItem>
                 <VWindowItem>
                    <Confirmation 
@@ -697,7 +733,7 @@ const getFlagCountry = country => {
                                     label="Dir. por Defecto"
                                     true-icon="mdi-check-bold"
                                     false-icon="mdi-window-close"
-                                    />
+                                />
                             </VCol>
                         </VRow>
                     </VCardItem>

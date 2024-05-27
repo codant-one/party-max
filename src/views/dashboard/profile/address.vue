@@ -515,7 +515,7 @@ const getFlagCountry = country => {
                                 label="Dir. por Defecto"
                                 true-icon="mdi-check-bold"
                                 false-icon="mdi-window-close"
-                                />
+                            />
                         </VCol>
                     </VRow>
                 </VCardItem>

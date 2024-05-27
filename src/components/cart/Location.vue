@@ -79,7 +79,7 @@ const next = () => {
                                         </span>
                                     </div>
                                     <VSpacer />
-                                    <span class="text-address my-auto">$0.000</span>
+                                    <!-- <span class="text-address my-auto">${{ formatNumber(props.summary.send) }}</span> -->
                                 </VCardText>
                             </template>
                         </VRadio>

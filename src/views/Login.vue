@@ -213,15 +213,10 @@ const onSubmit = () => {
 
 <style scoped>
 
-    .v-checkbox::v-deep(.v-input__details) { 
-        min-height: 0 !important;
-        padding: 0 !important;
-        height: 0 !important;
-    }
-
     .letter {
         text-decoration: none;
     }
+
     .more {
         text-align: end;
         display: contents;
@@ -251,15 +246,6 @@ const onSubmit = () => {
         line-height: 20px; /* 133.333% */
     }
 
-    .v-checkbox::v-deep(.v-label) {
-        color:#0A1B33;
-        font-size: 13px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 18px; /* 138.462% */
-        margin-left: 10px;
-    }
-
     .btn-register {
         font-size: 16px;
         font-style: normal;
@@ -277,6 +263,7 @@ const onSubmit = () => {
         background-color: #FF27B3 !important;
         box-shadow: 0px 0px 24px 0px #FF27B3;
     }
+
     .card-register {
         padding: 48px;
         border-radius: 32px;
@@ -315,13 +302,7 @@ const onSubmit = () => {
         font-weight: 400;
         line-height: 20px; /* 133.333% */
     }
-    .v-checkbox::v-deep(.v-label){
-        color:#0A1B33;
-        font-size: 13px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 18px; /* 138.462% */
-    }
+
     .text-client {
         color: #0A1B33;
         font-size: 16px;
@@ -344,6 +325,7 @@ const onSubmit = () => {
         padding: 16px 16px 0 16px;
         margin: auto;
     }
+
     .btn-register {
         font-size: 16px;
         font-style: normal;
@@ -403,6 +385,29 @@ const onSubmit = () => {
         box-shadow: 0px 0px 24px 0px #FF27B3;
     }
 
+    .v-checkbox::v-deep(.v-label){
+        color:#0A1B33;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 18px; /* 138.462% */
+    }
+    
+    .v-checkbox::v-deep(.v-label) {
+        color:#0A1B33;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 18px; /* 138.462% */
+        margin-left: 10px;
+    }
+
+    .v-checkbox::v-deep(.v-input__details) { 
+        min-height: 0 !important;
+        padding: 0 !important;
+        height: 0 !important;
+    }
+    
     @media only screen and (max-width: 767px) {
 
         .card-dialog {
