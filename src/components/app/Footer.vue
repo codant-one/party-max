@@ -80,7 +80,7 @@
       <VRow no-gutters class="tw-text-tertiary">
         <VCol cols="7" md="3" class="d-block align-center text-left">
           <span class="contact-text">Contactanos</span>
-          <div class="d-flex text-left mt-12 mb-5">
+          <div class="d-flex text-left mt-3 mt-md-12 mb-1 mb-md-5">
             <icophone class="mt-1 me-2"/>
               <span class="d-flex align-center tw-text-tertiary font-size-16 pb-2 phone-text">
                 +57 310 4870 310           
@@ -90,11 +90,15 @@
           <span class="item-footer-text">Calle 13 # 69 - 06 , Bogotá</span> <br>
           <span class="item-footer-text">fiesta@partymax.co</span>
 
-          <div class="d-flex align-center text-right mt-10">
-            <instagram class="mt-1 me-2"/>
-            <threads class="mt-1 me-2"/>
-            <subtract class="mt-1 me-2"/>
-            <facebook class="mt-1 me-2"/>
+          <div class="d-flex align-center text-right mt-3 mt-md-8">
+            <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="m-0">
+              <instagram class="mt-1 me-2"/>
+            </a>
+            <!-- <threads class="mt-1 me-2"/> -->
+            <!-- <subtract class="mt-1 me-2"/> -->
+            <a href="https://www.facebook.com/PartymaxCo/?locale=es_LA" target="_blank" class="m-0">
+              <facebook class="mt-1 me-2"/>
+            </a>
           </div>
         </VCol>
 
