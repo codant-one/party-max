@@ -27,7 +27,7 @@
 
     if(route.name === 'products' || route.name === 'about' || route.name === 'help' ||
        route.name === 'cart' || route.name === 'productDetail'|| route.name === 'suppliers_wholesalers' ||
-       route.name === 'detail_wholesalers') {
+       route.name === 'detail_wholesalers' || route.name === 'terms_and_conditions' || route.name === 'privacy_statement') {
       isProduct.value = true
       backgroundTemp.value = route.name === 'cart' ? 'tw-bg-white' : 'tw-bg-green'
     } else {

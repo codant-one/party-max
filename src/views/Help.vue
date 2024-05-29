@@ -113,62 +113,59 @@ const setFocus = async(category) => {
 
 
 <style scoped>
+
   .title-text {
-      color:  #FF0090!important;
-      font-size: 60px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: normal; 
-    }
+    color:  #FF0090!important;
+    font-size: 60px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal; 
+  }
 
   .subtitle-text {
-      font-size: 18px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 30px; 
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 30px; 
+  }
+
+  .icons {
+    color:  #FF0090!important;
+    font-size: 35px!important;
+  }
+
+  .icons-text {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .selected-class{
+    background-color: var(--Light-Cyan-1, #E2F8FC);
+    margin: 0.25rem !important;
+    padding: 0.25rem 0 !important;
+    width: 20%;
+  }
+
+  .v-btn.v-btn--density-default{
+    height: 100px !important;
+  }
+
+  @media only screen and (max-width: 767px) {
+    .title-text {
+      text-align: center;
+      font-size: 24px;
+      line-height: 24px; /* 100% */
+      white-space: pre-wrap;
     }
 
-    .icons{
-      color:  #FF0090!important;
-      font-size: 35px!important;
+    .subtitle-text {
+      text-align: center;
+      line-height: 24px; /* 133.333% */
     }
 
-    .icons-text{
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 600;
-    }
-
-    .selected-class{
-      background-color: var(--Light-Cyan-1, #E2F8FC);
-      margin: 0.25rem !important;
-      padding: 0.25rem 0 !important;
-      width: 20%;
-    }
-
-    .v-btn.v-btn--density-default{
-      height: 100px !important;
-    }
-
-    @media only screen and (max-width: 767px)
-    {
-      .title-text
-      {
-        text-align: center;
-        font-size: 24px;
-        line-height: 24px; /* 100% */
-        white-space: pre-wrap;
-      }
-
-      .subtitle-text
-    {
-        text-align: center;
-        line-height: 24px; /* 133.333% */
-    }
-
-    .selected-class
-    {
+    .selected-class {
       width: 40%;
     }
-    }
+  }
 </style>

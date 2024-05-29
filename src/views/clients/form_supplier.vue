@@ -83,14 +83,14 @@
                         <div class="text1 ms-5 mt-2">
                             Acepto los 
                             <router-link
-                                :to="{ name: 'home' }"
+                                :to="{ name: 'terms_and_conditions' }"
                                 class="text2"
                             >
                                 Términos y condiciones
                             </router-link>
                             y autorizo el uso de mis datos de acuerdo a la 
                             <router-link
-                                :to="{ name: 'home' }"
+                                :to="{ name: 'privacy_statement' }"
                                 class="text2"
                             >
                                 Declaración de Privacidad.

@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/Home.vue'
 import Testing from '@/views/Testing.vue'
+import Terms_and_conditions from '@/views/Terms_and_conditions.vue'
+import Privacy_statement from '@/views/Privacy_statement.vue'
 import Blogs from '@/views/blogs/index.vue'
 import BlogDetail from '@/views/blogs/detail.vue'
 import About from '@/views/About.vue'
@@ -47,6 +49,16 @@ const router = createRouter({
       path: '/testing',
       name: 'testing',
       component: Testing
+    },
+    {
+      path: '/terms-and-conditions',
+      name: 'terms_and_conditions',
+      component: Terms_and_conditions
+    },
+    {
+      path: '/privacy-statement',
+      name: 'privacy_statement',
+      component: Privacy_statement
     },
     {
       path: '/blogs',
