@@ -179,22 +179,16 @@ const onSubmit = () => {
                             />
                         </VCol>
                         <VCol cols="12" class="d-flex text-start p-0">
-                            <VCheckbox :rules="[requiredValidator]"/>
+                            <VCheckbox color="primary" :rules="[requiredValidator]"/>
                             <div class="text1 ms-5 mt-2 mb-3 mb-md-0">
                                 Acepto los 
-                                <router-link
-                                    :to="{ name: 'terms_and_conditions' }"
-                                    class="text2"
-                                >
+                                <a href="/terms-and-conditions" target="_blank" class="text2">
                                     Términos y condiciones
-                                </router-link>
+                                </a>
                                 y autorizo el uso de mis datos de acuerdo a la 
-                                <router-link
-                                    :to="{ name: 'privacy_statement' }"
-                                    class="text2"
-                                >
+                                <a href="/privacy-statement" target="_blank" class="text2">
                                     Declaración de Privacidad.
-                                </router-link>
+                                </a>
                             </div>
                         </VCol>
                     </VRow>
@@ -240,6 +234,10 @@ const onSubmit = () => {
         text-decoration: none; 
     }
 
+    .text2:hover {
+        color: #FF0090;
+    }
+
     .button-hover:hover {
         background-color: #FF27B3 !important;
         box-shadow: 0px 0px 24px 0px #FF27B3;
@@ -267,6 +265,7 @@ const onSubmit = () => {
         font-weight: 400;
         line-height: 20px; /* 133.333% */
     }
+    
     .v-checkbox::v-deep(.v-label){
         color:#0A1B33;
         font-size: 13px;
@@ -274,6 +273,7 @@ const onSubmit = () => {
         font-weight: 400;
         line-height: 18px; /* 138.462% */
     }
+
     .text-client {
         color: #0A1B33;
         font-size: 16px;

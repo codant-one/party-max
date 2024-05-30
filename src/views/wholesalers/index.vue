@@ -236,13 +236,9 @@ async function fetchData() {
       text-decoration: none;
     }
 
-
-
-
-
- .border-img {
-    border-radius: 16px !important;
-  }
+  .border-img {
+      border-radius: 16px !important;
+    }
 
   .cardtitles {
       white-space: pre-wrap;
