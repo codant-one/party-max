@@ -32,7 +32,7 @@ watchEffect(() => {
     if (!(Object.entries(props.product).length === 0) && props.product.constructor === Object) {
         image.value = props.product.image
         price_for_sale.value = props.product.price_for_sale
-        name.value = props.product.name.toLowerCase().replace(/\b\w/g, (match) => match.toUpperCase())
+        name.value = props.product.name.toLowerCase().replace(/(^|\s)\p{L}/gu, (match) => match.toUpperCase());
         slug.value = props.product.slug
         product_id.value = props.product.id
     }
