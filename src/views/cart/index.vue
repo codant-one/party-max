@@ -833,6 +833,7 @@ const chanceSend = value => {
         line-height: 14px;
         border-radius: 32px;
     }
+
     .card-register {
         width: 500px;
         border-radius: 32px!important;
@@ -926,8 +927,7 @@ const chanceSend = value => {
             width: auto;
         }
 
-        .w-60
-        {
+        .w-60 {
             width: 100%;
         }
 

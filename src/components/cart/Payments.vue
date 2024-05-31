@@ -120,9 +120,6 @@ const getFlagCountry = country => {
 }
 
 const chanceSend = () => {
-    billingDetail.value.city = sendToBogota.value ? 'Bogota' : ''
-    billingDetail.value.province_id = sendToBogota.value ? 292 : ''
-
     if(sendToBogota.value)
         emit('send', 'sendToBogota')
     else
@@ -131,7 +128,6 @@ const chanceSend = () => {
 }
 
 const chanceExpress = () => {
-
     if(shipping_express.value)
         emit('send', 'shipping_express')
     else
@@ -182,25 +178,6 @@ const chanceExpress = () => {
                                         variant="outlined"
                                         :rules="[requiredValidator, emailValidator]"
                                     />    
-                                </VCol>
-                                <VCol cols="12" md="3" class="textinput mb-0 mb-md-7">
-                                    <VCheckbox
-                                        v-model="sendToBogota" 
-                                        label="Envío a Bogota"
-                                        true-icon="mdi-check-bold"
-                                        color="primary"
-                                        @update:modelValue="chanceSend"
-                                    />
-                                </VCol>
-                                <VCol cols="12" md="9" class="textinput mb-0 mb-md-7">
-                                    <VCheckbox
-                                        v-if="sendToBogota"
-                                        v-model="shipping_express" 
-                                        label="Envío express"
-                                        true-icon="mdi-check-bold"
-                                        color="primary"
-                                        @update:modelValue="chanceExpress"
-                                    />
                                 </VCol>
                                 <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
                                     <VAutocomplete
@@ -293,7 +270,7 @@ const chanceExpress = () => {
                                         placeholder="Notas sobre tu pedido, por ejemplo, notas especiales para la entrega."
                                         variant="outlined"
                                     />
-                                </VCol>  
+                                </VCol>
                             </VRow>
                         </VCardItem>
                     </VCardText>
@@ -324,6 +301,23 @@ const chanceExpress = () => {
                 <VCard class="card-products mx-auto px-0">
                     <h2 class="title-card px-16 my-3">Forma de entrega</h2>
                     <VRow class="row-cardelivery3 px-16">
+                        <VCol cols="12" md="3" class="textinput mb-0 mb-md-7">
+                            <VCheckbox
+                                v-model="sendToBogota" 
+                                label="Envío a Bogota"
+                                color="primary"
+                                @update:modelValue="chanceSend"
+                            />
+                        </VCol>
+                        <VCol cols="12" md="9" class="textinput mb-0 mb-md-7">
+                            <VCheckbox
+                                v-if="sendToBogota"
+                                v-model="shipping_express" 
+                                label="Envío express"
+                                color="primary"
+                                @update:modelValue="chanceExpress"
+                            />
+                        </VCol>
                         <VCol cols="12" md="10" class="text-left">
                             <h4>
                                 {{ address.address }} ,
@@ -333,7 +327,6 @@ const chanceExpress = () => {
                                 Código Postal: {{ address.postal_code }}. 
                             </h4>
                         </VCol>
-
                         <VCol cols="12" md="2" class="text-right">
                             <h4>${{ formatNumber(props.summary.send) }}</h4> 
                         </VCol>

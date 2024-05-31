@@ -1,6 +1,9 @@
 <script setup>
 
 import { formatNumber } from '@formatters'
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
+import { avatarText} from '@formatters'
 import { ref } from 'vue'
 import { requiredValidator } from '@validators'
 import { useMiscellaneousStores } from '@/stores/miscellaneous'
@@ -18,7 +21,6 @@ import instagram from '@assets/icons/instagram2.svg?inline';
 import threads from '@assets/icons/threads2.svg?inline';
 import iconmayorista from '@assets/icons/Union.svg?inline';
 import heart from '@assets/icons/heart.svg?inline';
-import default_review from '@assets/images/image-review.png';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -30,6 +32,8 @@ const route = useRoute()
 const miscellaneousStores = useMiscellaneousStores()
 const cartStores = useCartStores()
 const favoritesStores = useFavoritesStores()
+
+const isMobile = /Mobi/i.test(navigator.userAgent);
 
 const isLoading = ref(true)
 const tab = ref('1')
@@ -57,6 +61,7 @@ const data = ref(null)
 const title = ref(null)
 const brand = ref(null)
 const rating = ref(null)
+const reviews = ref(null)
 const sku = ref(null)
 const wholesale = ref(false)
 const wholesale_price = ref(null)
@@ -158,6 +163,7 @@ async function fetchData() {
     title.value = data.value.product.name
     brand.value = data.value.product.brand.name
     rating.value = data.value.product.rating
+    reviews.value = data.value.product.reviews
     sku.value = data.value.product.colors[0].sku
     wholesale.value = data.value.product.wholesale === 1 ? true : false
     wholesale_price.value = data.value.product.wholesale_price
@@ -387,7 +393,7 @@ const decrement = () => {
                 active-color="yellow-darken-2"
               />
 
-              (1 Review)
+              ({{ reviews.length }} {{ reviews.length > 1 ? 'Reviews' : 'Review' }})
 
               <VDivider :thickness="2" color="#999" class="hr" vertical />
               SKU: {{ sku }}
@@ -577,7 +583,7 @@ const decrement = () => {
               <VTabs v-model="tab" color="pink-accent-3"  align-tabs="center">
                 <VTab value="0" class="text-tabs">Descripción</VTab>
                 <VTab value="1" class="text-tabs">Especificaciones</VTab>
-                <VTab value="2" class="text-tabs">Reviews</VTab>
+                <VTab value="2" class="text-tabs">Reviews ({{reviews.length}})</VTab>
               </VTabs>
             </VCol>
 
@@ -604,22 +610,41 @@ const decrement = () => {
                 </v-window-item>
                 <v-window-item value="2">
                   <VCardText class="mb-10 py-0">
-                    <VRow class="row-reviews border-title d-none" v-for="n in 3">
+                    <VRow class="row-reviews border-title" v-for="review in reviews">
                       <VCol cols="1">
-                        <VImg :src="default_review" class="image-review"/>
+                        <VAvatar
+                          :size="isMobile ? '50': '80'"
+                          :color="review.client.user.avatar ? 'default' : 'primary'"
+                          :variant="review.client.user.avatar ? 'flat' : 'tonal'"
+                        >
+                          <VImg
+                            v-if="review.client.user.avatar"
+                            style="border-radius: 6px;"
+                            :src="baseURL + review.client.user.avatar"
+                            cover
+                          />
+                          <span
+                            v-else
+                            class="text-5xl font-weight-semibold"
+                            >
+                            {{ avatarText(review.client.user.name) }}
+                          </span>
+                        </VAvatar>
                       </VCol>
                       <VCol cols="11">
                         <v-rating
                           hover
                           :length="5"
                           :size="32"
-                          :model-value="3"
+                          :model-value="review.rating"
                           style="margin-left:-10px;"
-                          active-color="#FFC549"
+                          color="yellow-darken-2"
+                          active-color="yellow-darken-2"
+                          readonly
                         />
 
-                        <p>De <span>Diego Bolivar</span> | 26 de Octubre, 2023</p> <br>
-                        <p>Lorem ipsum dolor sit amet consectetur. Lorem nunc scelerisque consequat quis adipiscing. Dui vulputate lacus tellus consectetur auctor.</p> 
+                        <p>De <span>{{ review.client.user.name }} {{ review.client.user.last_name }}</span> | {{ format(review.date, 'd').concat(' de ') }} {{ format(review.date, 'MMMM, y', { locale: es }).replace(/(^|\s)\S/g, (char) => char.toUpperCase()) }}</p> <br>
+                        <p>{{ review.comments }}</p> 
                       </VCol>
                     </VRow>
                   </VCardText>
@@ -1005,12 +1030,6 @@ const decrement = () => {
 
   .row-reviews {
     padding: 32px;
-  }
-    
-  .image-review {
-    width: 70px;
-    border-radius: 70px;
-    border: 1px solid var(--Grey-2, #E1E1E1);
   }
     
   .row-reviews p {

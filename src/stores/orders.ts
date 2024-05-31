@@ -78,10 +78,6 @@ export const useOrdersStores = defineStore('orders',{
                 .catch(error => {
                     return Promise.reject(error)
                 }) 
-        },
-
-    
+        }
     }
-
-
 })

@@ -9,9 +9,6 @@ import Loader from '@/components/common/Loader.vue'
 import arrow_right from '@assets/icons/arrow_right.svg?inline';
 import arrow_left from '@assets/icons/Arrow_left.svg?inline';
 
-const name = ref(null)
-const usermail= ref(null)
-const phone= ref(null)
 const client_id = ref(null)
 const isLoading = ref(true)
 
@@ -69,9 +66,6 @@ async function fetchData() {
         const userData = localStorage.getItem('user_data')
         const userDataJ = JSON.parse(userData)
 
-        name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
-        usermail.value = userDataJ.email
-        phone.value = userDataJ.user_details.phone
         client_id.value = userDataJ.client.id
     }
 
@@ -152,12 +146,12 @@ const redirect = (name) => {
                             }
                         }"
                         class="tw-no-underline">
-                        <VBtn class="btn-compra tw-text-tertiary">
+                        <VBtn class="btn-order tw-text-tertiary">
                             Ver pedido
                         </VBtn>       
                     </router-link>
                     <VBtn
-                        class="btn-comprar tw-bg-primary tw-text-white"
+                        class="btn-buy tw-bg-primary tw-text-white"
                         @click="redirect('products')">
                             Volver a comprar
                     </VBtn>
@@ -277,32 +271,6 @@ const redirect = (name) => {
         box-shadow: none;
     }
 
-    .labels {
-        font-size: 15px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 20px; /* 133.333% */
-    }
-
-    .icon-more {
-        width: 24px;
-        height: 24px;
-        margin: auto;
-    }
-
-    .icons {
-        width: 56px;
-        height: 56px;
-        border-radius: 27px;
-        border: 1px solid var(--Grey-2, #E1E1E1);
-        background: var(--White, #FFF);
-    }
-
-    .address-add {
-        padding: 24px;
-        border-top: 1px solid var(--Grey-2, #E1E1E1);
-    }
-
     .text-date {
         font-size: 16px;
         font-style: normal;
@@ -342,7 +310,7 @@ const redirect = (name) => {
         line-height: 16px;
     }
 
-    .btn-compra {
+    .btn-order {
         border-radius: 32px;
         border: 1px solid var(--Maastricht-Blue, #0A1B33);
         width: 177px;
@@ -353,7 +321,7 @@ const redirect = (name) => {
         box-shadow: none;
     }
 
-    .btn-comprar {
+    .btn-buy {
         border-radius: 32px;
         border: none;
         font-size: 14px;
@@ -364,12 +332,12 @@ const redirect = (name) => {
         margin-top: 16px;
     }
 
-    .btn-comprar:hover {
+    .btn-buy:hover {
         background: var(--Magenta-Party-500, #FF27B3);
         box-shadow: 0px 0px 24px 0px #FF27B3;
     }
 
-    .btn-compra:hover   {
+    .btn-order:hover   {
         border: 1px solid var(--Maastricht-Blue, #0A1B33);
         background: var(--Maastricht-Blue, #0A1B33);
         color: #FFFFFF!important;
@@ -380,11 +348,11 @@ const redirect = (name) => {
             padding: 0 5%;
         }
 
-        .btn-compra {
+        .btn-order {
             width: 100%;
         }
 
-        .btn-comprar {
+        .btn-buy {
             width: 100%;
         }
 

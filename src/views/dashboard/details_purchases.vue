@@ -10,16 +10,12 @@ import arrow_right from '@assets/icons/arrow_right.svg?inline';
 const ordersStores = useOrdersStores()
 const route = useRoute()
 
-const name = ref(null)
-const usermail= ref(null)
-const phone= ref(null)
 const orders = ref(null)
 const products = ref(null)
 const isLoading = ref(true)
 const subtotal = ref(null)
 const shipping_cost = ref(null)
 const total = ref(null)
-const rating = ref(0)
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 const isMobile = /Mobi/i.test(navigator.userAgent);
@@ -28,28 +24,23 @@ const redirect = (name) => {
     router.push({ name : name})
 }
 
-const me = async () => {
-    if(localStorage.getItem('user_data')){
-      const userData = localStorage.getItem('user_data')
-      const userDataJ = JSON.parse(userData)
+watchEffect(fetchData)
 
-      name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
-      usermail.value = userDataJ.email
-      phone.value = userDataJ.user_details.phone
+async function fetchData() {
 
-      isLoading.value = true
-      await ordersStores.show_by_id(route.params.id)
-      orders.value = ordersStores.getData[0]
-      products.value = orders.value.products
-      subtotal.value = orders.value.subtotal
-      shipping_cost.value = orders.value.shipping_cost
-      total.value = orders.value.total
+    isLoading.value = true
+      
+    await ordersStores.show_by_id(route.params.id)
+      
+    orders.value = ordersStores.getData[0]
+    products.value = orders.value.products
+    subtotal.value = orders.value.subtotal
+    shipping_cost.value = orders.value.shipping_cost
+    total.value = orders.value.total
 
-      isLoading.value = false
-    }
+    isLoading.value = false
+    
 }
-
-me()
 
 const resolveStatusShipping = shipping_state_id => {
   if (shipping_state_id === 1)
@@ -78,64 +69,55 @@ const resolveStatusPayment = payment_state_id => {
 <template>
     <Loader :isLoading="isLoading"/>
     <VContainer class="my-1 my-md-10 container-dashboard" v-if="orders">
-        <VCard class="card-profile mt-5 p-0 pt-5">
-            <VRow no-gutters class="px-10 pb-5" v-for="(product, i) in products">
-                <VCol cols="12" md="3">
-                    <VImg :src="baseURL + product.product_image" class="image-product"/>
-                </VCol>
-                <VCol cols="12" md="6" class="d-flex justify-content-center align-center">
-                    <VCardText>
-                        <span class="d-block name-product tw-text-tertiary">{{ product.product_name}}</span>
-                        <span class="text-status tw-text-gray">
-                            Color: {{ product.color }}
-                        </span> <br>
-                        <span class="d-block text-status tw-text-gray">{{ product.quantity }} {{ Number(product.quantity) === 1 ? 'Unidad' : 'Unidades' }}</span>
-                    </VCardText>
-                </VCol>
-                <VCol cols="12" md="3" class="d-flex justify-content-end align-center">
-                    <VBtn
-                        class="btn-comprar tw-bg-primary tw-text-white"
-                        @click="redirect('products')">
-                        Volver a comprar
-                    </VBtn>
-                </VCol>
-            </VRow>
-        </VCard>
-        
-        <VCard class="card-profile p-0" v-if="orders.payment.id === 4">
-            <VRow no-gutters class="px-10 py-5">
-                <VCol cols="12" md="6" class="d-flex justify-content-start align-center">
-                    <span class="text-opinion tw-text-primary">Tu opinión es importante</span>
-                </VCol>
-                <VCol cols="12" md="4" class="text-center d-flex justify-content-start align-center">
-                    <VRating
-                        half-increments
-                        :length="5"
-                        :size="isMobile ? 20 : 40"
-                        v-model="rating"
-                        hover
-                        color="yellow-darken-2"
-                        active-color="yellow-darken-2"
-                        readonly
-                    />
-                </VCol>
-                <VCol cols="12" md="2" class="col-editar d-flex justify-content-end align-center icon-right">
-                    <router-link
-                        :to="{
-                            name: 'rating_products',
-                            params: {
-                                id: orders.id
-                            }
-                        }"
-                        class="tw-no-underline">
-                        <span class="tw-cursor-pointer text-editar tw-text-tertiary hover:tw-text-primary d-flex justify-content-end align-center">
-                            Editar opinión
-                            <arrow_right class="ms-1"/>
-                        </span>
-                    </router-link>
-                </VCol>
-            </VRow>
-        </VCard>
+
+        <div v-for="(product, i) in products">
+            <VCard class="card-profile mt-5 p-0 pt-5">
+                <VRow no-gutters class="px-10 pb-5" >
+                    <VCol cols="12" md="3">
+                        <VImg :src="baseURL + product.product_image" class="image-product"/>
+                    </VCol>
+                    <VCol cols="12" md="6" class="d-flex justify-content-center align-center">
+                        <VCardText class="pl-0">
+                            <VRating
+                                v-if="orders.shipping.id === 3"
+                                half-increments
+                                :length="5"
+                                :size="isMobile ? 20 : 40"
+                                v-model="product.rating"
+                                hover
+                                color="yellow-darken-2"
+                                active-color="yellow-darken-2"
+                                readonly
+                            />
+                            <span class="d-block name-product tw-text-tertiary ml-3">{{ product.product_name}}</span>
+                            <span class="text-status tw-text-gray ml-3">
+                                Color: {{ product.color }}
+                            </span> <br>
+                            <span class="d-block text-status tw-text-gray ml-3">{{ product.quantity }} {{ Number(product.quantity) === 1 ? 'Unidad' : 'Unidades' }}</span>
+                        </VCardText>
+                    </VCol>
+                    <VCol cols="12" md="3" class="d-flex flex-column justify-content-center align-center">
+                        <router-link
+                            :to="{
+                                name: 'rating_products',
+                                params: {
+                                    id: product.product_id
+                                }
+                            }"
+                            class="tw-no-underline">
+                            <VBtn class="btn-opinion tw-text-tertiary" v-if="orders.shipping.id === 3">
+                                Editar opinión
+                            </VBtn>
+                        </router-link> 
+                        <VBtn
+                            class="btn-buy tw-bg-primary tw-text-white"
+                            @click="redirect('products')">
+                                Volver a comprar
+                        </VBtn>
+                    </VCol>
+                </VRow>
+            </VCard>
+        </div>           
 
         <!--DETALLES DE LA COMPRA-->
         <VCard class="card-profile p-0 pb-3">
@@ -196,12 +178,26 @@ const resolveStatusPayment = payment_state_id => {
 </template>
 
 <style scoped>
-    .icon-right::v-deep(path) {
-        fill: #0A1B33;
+
+    .v-rating::v-deep(.v-icon--size-default) {
+        font-size: 35px;
     }
 
-    .icon-right:hover::v-deep(path) {
-        fill: #FF0090;
+    .btn-opinion {
+        border-radius: 32px;
+        border: 1px solid var(--Maastricht-Blue, #0A1B33);
+        width: 177px;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 14px;
+        box-shadow: none;
+    }
+
+    .btn-opinion:hover   {
+        border: 1px solid var(--Maastricht-Blue, #0A1B33);
+        background: var(--Maastricht-Blue, #0A1B33);
+        color: #FFFFFF!important;
     }
 
     .container-dashboard {
@@ -214,13 +210,6 @@ const resolveStatusPayment = payment_state_id => {
         border-radius: 16px;
         box-shadow: none;
     }
-
-    .text-opinion {
-        font-size: 20px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 16px;
-    } 
 
     .text-editar {
         font-size: 16px;
@@ -237,12 +226,6 @@ const resolveStatusPayment = payment_state_id => {
         border: 1px solid var(--Light-Cyan-1, #E2F8FC);
     }
 
-    .row-summary {
-        padding: 24px;
-        justify-content: space-between;
-        align-items: center;
-    }
-
     .text-status {
         font-size: 14px;
         font-style: normal;
@@ -257,7 +240,7 @@ const resolveStatusPayment = payment_state_id => {
         line-height: 16px;
     }
 
-    .btn-comprar {
+    .btn-buy {
         border-radius: 32px;
         border: none;
         font-size: 14px;
@@ -268,7 +251,7 @@ const resolveStatusPayment = payment_state_id => {
         margin-top: 16px;
     }
 
-    .btn-comprar:hover {
+    .btn-buy:hover {
         background: var(--Magenta-Party-500, #FF27B3);
         box-shadow: 0px 0px 24px 0px #FF27B3;
     }
@@ -296,7 +279,7 @@ const resolveStatusPayment = payment_state_id => {
             padding: 0 5%;
         }
 
-        .btn-comprar {
+        .btn-buy {
             width: 100%;
         }
 
