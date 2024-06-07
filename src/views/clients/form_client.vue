@@ -242,10 +242,11 @@ const onSubmit = () => {
         background-color: #FF27B3 !important;
         box-shadow: 0px 0px 24px 0px #FF27B3;
     }
+
     .card-register {
         padding: 28px 48px;
         border-radius: 32px;
-        width:536px; 
+        width: 536px; 
     }
 
     .subtitle-register {
@@ -274,6 +275,11 @@ const onSubmit = () => {
         line-height: 18px; /* 138.462% */
     }
 
+    .v-checkbox::v-deep(.v-messages__message) { 
+        margin-top: -10px;
+        width: 130px !important;
+    }
+
     .text-client {
         color: #0A1B33;
         font-size: 16px;
@@ -296,6 +302,7 @@ const onSubmit = () => {
         padding: 16px 16px 0 16px;
         margin: auto;
     }
+
     .btn-register {
         font-size: 16px;
         font-style: normal;
@@ -326,6 +333,7 @@ const onSubmit = () => {
     .v-text-field::v-deep(.v-field__outline__start) {
         flex: 0 0 17px !important;
     }
+
     .v-text-field::v-deep(input) { 
         padding-top: 0 !important;
         padding-left: 20px !important;
@@ -354,6 +362,11 @@ const onSubmit = () => {
 
         .v-row.v-row--no-gutters > .v-col, .v-row.v-row--no-gutters > [class*=v-col-] {
             line-height: 20px;
+        }
+
+        .v-checkbox::v-deep(.v-messages__message) { 
+            margin-top: -15px;
+            width: 210px !important;
         }
     }
 

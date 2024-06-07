@@ -232,7 +232,7 @@ async function fetchData() {
                 <icon_right class="icon-right"/>
             </span>
         </VCardText>
-        <VCardText class="d-flex align-center py-0 px-7 px-md-12 tw-cursor-pointer cardtext-profile authenticator">  
+        <VCardText class="d-none align-center py-0 px-7 px-md-12 tw-cursor-pointer cardtext-profile authenticator">  
             <icon_auth class="mt-5 mb-6 mt-md-5 mb-md-6"/>
             <div class="d-block ms-2 ms-md-5 mb-md-0 mt-md-0"> 
                 <span class="d-block labels tw-text-tertiary text-titles">Google Authenticator </span>

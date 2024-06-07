@@ -512,6 +512,7 @@ const getFlagCountry = country => {
                         <VCol cols="12" md="4" class="mb-3 mb-md-0">
                             <VCheckbox
                                 v-model="selectedAddress.default"
+                                color="primary"
                                 label="Dir. por Defecto"
                                 true-icon="mdi-check-bold"
                                 false-icon="mdi-window-close"

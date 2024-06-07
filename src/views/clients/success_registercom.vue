@@ -24,6 +24,7 @@ import festin_image from '@assets/images/festin-aboutus.jpg';
     .hover-icon-arrow-right:hover::v-deep(path) {
         fill: #FF0090;
     }
+
     .text1 {
         color: #0A1B33 !important;
         font-size: 13px;
@@ -40,6 +41,7 @@ import festin_image from '@assets/images/festin-aboutus.jpg';
         line-height: 18px;
         text-decoration: none; 
     }
+    
     .more {
         text-align: end;
         display: contents;

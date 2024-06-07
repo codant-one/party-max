@@ -38,6 +38,10 @@ class Auth {
         return axios.post('auth/register', data)
     }
 
+    sendInfo(data: object) {
+        return axios.post('auth/sendInfo', data)
+    }
+
     findToken(token: string) {
         return axios.get(`auth/find/${token}`)
     }

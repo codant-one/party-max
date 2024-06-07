@@ -170,6 +170,7 @@ const onSubmit = () => {
                     <VCardText class="d-block d-md-flex text-center align-center flex-wrap justify-space-between pb-0">
                         <VCheckbox
                             v-model="remember_me" 
+                            color="primary"
                             label="Recordar mi cuenta"/>
                         <router-link
                             class="letter hover:tw-text-primary"
