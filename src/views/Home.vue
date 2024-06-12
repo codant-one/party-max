@@ -402,11 +402,11 @@ const tab = ref('0')
                   />
               </VCardText>
               <VCardText class="p-0">
-                <VTabs v-model="tab" class="mt-3 mt-md-7"  color="pink-accent-3">
+                <VTabs v-model="tab" class="mt-3 mt-md-7" color="pink-accent-3">
                   <VTab value="0">Agregados recientemente</VTab>
                   <VTab value="1">Lo  mejor de lo mejor</VTab>
                 </VTabs>
-                <v-window v-model="tab">
+                <v-window v-model="tab" disabled>
                   <v-window-item value="0">
                     <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
                       <Product1 
@@ -427,7 +427,6 @@ const tab = ref('0')
                         :slidesPerView="2"
                         :freeMode="true"
                         :watchSlidesProgress="true"
-                        :allowTouchMove="true"
                         @swiper="setThumbsSwiper"
                         :style="{ height: isMobile ? '330px' : '370px' }"
                         >
@@ -460,7 +459,6 @@ const tab = ref('0')
                         :slidesPerView="2"
                         :freeMode="true"
                         :watchSlidesProgress="true"
-                        :allowTouchMove="true"
                         @swiper="setThumbsSwiper"
                         :style="{ height: isMobile ? '330px' : '370px' }"
                         >
@@ -958,7 +956,7 @@ const tab = ref('0')
   }
 
   .hr-cyan {
-    border-bottom: 0.5px solid #D9EEF2;
+    border-bottom: 1px solid #D9EEF2;
     opacity: 1;
   }
 
@@ -1213,6 +1211,7 @@ const tab = ref('0')
 
     .swiper::v-deep(.swiper-pagination-horizontal ) {
       top: 90%;
+      left: 45%;
     }    
 
     .mostSoldMobile {
