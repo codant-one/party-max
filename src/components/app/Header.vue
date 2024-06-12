@@ -53,11 +53,8 @@
   const fixedSectionRef = ref(null)
   const classFixed = ref('second-header')
 
-  const items_check = ref([
-    { id: 1, name: 'item 1', children: [{ id: 1, name: 'item 1 (1)' }, { id: 2, name: 'item 1 (2)' }] },
-    { id: 2, name: 'item 2', children: [{ id: 1, name: 'item 2 (1)' }, { id: 2, name: 'item 2 (2)' }] },
-    { id: 3, name: 'item 3', children: [{ id: 1, name: 'item 3 (1)' }, { id: 2, name: 'item 3 (2)' }] }
-  ])
+  const openedGroups = ref([]);
+  const panelCat = ref(null);
 
   const items = ref([
     { text: 'Fiestas infantiles', icon: icon1, slug: 'fiestas-infantiles' },
@@ -79,18 +76,30 @@
   watch(() => 
     cartStores.getCount, (products) => {
       cart_products.value = products
-    });
+    }
+  );
 
   watch(() => 
     route.query,(newPath, oldPath) => {
       fetchData()
     }
   );
+  
+  watch(() => 
+    drawer.value, (value) => {
+      panelCat.value = null 
+      openedGroups.value = []
+    }
+  );
 
   watchEffect(fetchData)
 
   async function fetchData() {
+
+    openedGroups.value = []
+
     await homeStores.fetchData()
+    
     categories.value = homeStores.getData.parentCategories
     services.value = homeStores.getData.parentServices
 
@@ -101,6 +110,21 @@
 
     color.value = (isMobile.value) ? '#FFFFFF' : '#FF0090'
   }
+
+  const toggleGroupFn = (index, cat) => {
+    if (openedGroups.value.includes(index)) {
+      openedGroups.value = [];
+    } else {
+      openedGroups.value = [index];
+      panelCat.value = [cat]
+      // Cambiar el icono de todos los demás elementos a mdi-chevron-down
+      for (let i = 0; i < categories.length; i++) {
+        if (i !== index) {
+          openedGroups.value.push(i);
+        }
+      }
+    }
+  };
 
   const findCategory = (category) => {
     let index = categories.value.findIndex(element => element.slug === category)
@@ -191,50 +215,50 @@
 
   const redirect = (name) => {
     router.push({ name : name})
-}
+  }
 
-const redirect_ = (name, slug) =>{
-  router.push({
-    name: name, 
-    params: {
-      slug: slug
+  const redirect_ = (name, slug) =>{
+    router.push({
+      name: name, 
+      params: {
+        slug: slug
+      }
+    })
+  }
+
+  const closeMenuOnMouseLeave = () => {
+    if (menuOpen.value !== false) {
+      closeMenu()
+    } else if (menuOpenS.value !== false) {
+      closeMenuS()
     }
-  })
-}
-
-const closeMenuOnMouseLeave = () => {
-   if (menuOpen.value !== false) {
-    closeMenu()
-  } else if (menuOpenS.value !== false) {
-    closeMenuS()
   }
-}
 
-const toggleWholesalers = () => {
-  if (route.query.wholesalers === 'true') {
-    router.push({ 
-      name: 'products',
-      query: {
-        category: route.query.category,
-        fathercategory: route.query.fathercategory,
-        subcategory: route.query.subcategory,
-        colorId: route.query.colorId,
-        wholesalers: 'false'
-      }
-    })
-  } else { 
-    router.push({ 
-      name: 'products',
-      query: {
-        category: route.query.category,
-        fathercategory: route.query.fathercategory,
-        subcategory: route.query.subcategory,
-        colorId: route.query.colorId,
-        wholesalers: 'true'
-      }
-    })
+  const toggleWholesalers = () => {
+    if (route.query.wholesalers === 'true') {
+      router.push({ 
+        name: 'products',
+        query: {
+          category: route.query.category,
+          fathercategory: route.query.fathercategory,
+          subcategory: route.query.subcategory,
+          colorId: route.query.colorId,
+          wholesalers: 'false'
+        }
+      })
+    } else { 
+      router.push({ 
+        name: 'products',
+        query: {
+          category: route.query.category,
+          fathercategory: route.query.fathercategory,
+          subcategory: route.query.subcategory,
+          colorId: route.query.colorId,
+          wholesalers: 'true'
+        }
+      })
+    }
   }
-}
   
 </script>
 
@@ -243,30 +267,36 @@ const toggleWholesalers = () => {
     <VNavigationDrawer
       v-model="drawer"
       temporary>
-      <VList>
+      <VList v-model:opened="panelCat">
         <VListItem>
-          <VListItemTitle class="d-block lineheight borderList py-2">
+          <VListItemTitle class="d-block lineheight borderList pb-2">
             <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Quiénes somos</span>
             </router-link>
           </VListItemTitle>
-          <VListItemTitle class="d-block lineheight borderList py-2">
+        </VListItem>
+        <VListItem>
+          <VListItemTitle class="d-block lineheight borderList pb-2">
             <router-link to="/help" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Ayuda</span>
             </router-link>
-          </VListItemTitle>          
-          <VListItemTitle class="d-block lineheight borderList py-2">
+          </VListItemTitle>  
+        </VListItem>
+        <VListItem>        
+          <VListItemTitle class="d-block lineheight borderList pb-2">
             <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Blog</span>
             </router-link>
           </VListItemTitle>
-          <VListItemTitle class="d-block lineheight borderList py-2">
-            <router-link to="/wholesalers" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+        </VListItem>
+        <VListItem>
+          <VListItemTitle class="d-block lineheight borderList pb-2">
+            <span @click="toggleWholesalers" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Precios Mayoristas</span>
-            </router-link>
+            </span>
           </VListItemTitle>
-
-
+        </VListItem>
+        <VListItem>
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
             <span class="d-block title-menu">PRODUCTOS</span>
             <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -274,90 +304,70 @@ const toggleWholesalers = () => {
             </svg>
           </VListItemTitle>
         </VListItem>
-        <VListItem>
-          <VExpansionPanels
-            variant="inset"
-            class="text-center item borderList"
-            v-for="item in categories"
-            :key="item.id"
-            :value="item.name">
-            <VExpansionPanel                         
-              elevation="0"
-              rounded="rounded-0">
-              <VExpansionPanelTitle
-                class="font-weight-medium title-text px-0 hover:tw-bg-yellow"
-              >
-                {{ item.name }}
-                <template v-slot:actions="{ expanded }">
+        <div v-for="(item, index) in categories">
+          <VListItem v-if="categories[index]?.children.length === 0">
+            <VListItemTitle class="d-block lineheight borderList pb-2">
+            <router-link 
+              :to="{
+                name: 'categories',
+                params: {
+                  slug: item.slug
+                }
+              }"  
+              class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+              <span class="d-block title-menu">{{ item.name }}</span>
+            </router-link>
+          </VListItemTitle> 
+          </VListItem>
+          <VListGroup v-else :value="item.name">
+            <template #activator="{ props }">
+              <VListItem class="items-list">
+                <VListItemTitle class="d-block lineheight borderList pb-2">
+                  <router-link
+                    :to="{
+                      name: 'categories',
+                      params: {
+                        slug: item.slug
+                      }
+                    }"  
+                    class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+                    <span class="d-block title-menu">{{ item.name }}</span>
+                  </router-link>
+                </VListItemTitle> 
+                <template #append>
                   <VIcon
-                    size="20" 
-                    :icon="expanded ? 'mdi-minus' : 'mdi-plus'"
+                    v-bind="props"
+                    :icon="openedGroups.includes(index) 
+                    ? 'mdi-minus' 
+                    : 'mdi-plus'"
+                    size="20"
+                    @click="toggleGroupFn(index, item.name)"
                   />
                 </template>
-              </VExpansionPanelTitle>
-              <VExpansionPanelText
-                class="text-justify description-text"
-              >
-                <VListItem 
-                  v-for="(i, index2) in categories[item.id - 1].children"
-                  :key="index2">
-                  <router-link
+              </VListItem>
+            </template>
+            <div 
+              v-for="(k, index2) in categories[index].children"
+              :key="index2"
+              class="style-menu-mobile">
+              <VListItem class="subtitle-menu">
+                <router-link
                     :to="{
                       name: 'products',
                       query: {
-                        category: i.slug.split('/')[0],
-                        subcategory: i.slug.split('/')[1]
+                        category: item.slug,
+                        subcategory: k.slug.split('/')[1]
                       }
-                    }"
-                    class="tw-no-underline tw-text-tertiary">
-                    <span class="subtitle-menu">{{ i.name }}</span>
+                    }"  
+                    class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+                    <span class="d-block title-menu">
+                    {{ k.name }}
+                    </span>
                   </router-link>
-                </VListItem>
-              </VExpansionPanelText>
-            </VExpansionPanel>
-          </VExpansionPanels>
-        </VListItem>
-        <!--<VListItem>
-          <VListItemTitle class="d-block lineheight pt-6 pb-2">
-            <span class="d-block title-menu">SERVICIOS</span>
-            <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
-            </svg>
-          </VListItemTitle>
-        </VListItem>
-        <VListItem>
-          <VExpansionPanels
-            variant="inset"
-            class="text-center item borderList"
-            v-for="item in services"
-            :key="item.id"
-            :value="item.name">
-            <VExpansionPanel                         
-              elevation="0"
-              rounded="rounded-0">
-              <VExpansionPanelTitle
-                class="font-weight-medium title-text px-0 hover:tw-bg-yellow"
-              >
-                {{ item.name }}
-                <template v-slot:actions="{ expanded }">
-                  <VIcon
-                    size="20" 
-                    :icon="expanded ? 'mdi-minus' : 'mdi-plus'"
-                  />
-                </template>
-              </VExpansionPanelTitle>
-              <VExpansionPanelText
-                class="text-justify description-text"
-              >
-                <VListItem 
-                  v-for="(i, index2) in items_check[item.id - 1].children"
-                  :key="index2">
-                  <span class="subtitle-menu">{{ i.name }}</span>
-                </VListItem>
-              </VExpansionPanelText>
-            </VExpansionPanel>
-          </VExpansionPanels>
-        </VListItem>-->
+              </VListItem>
+            </div>
+          </VListGroup>
+        </div>
       </VList>
     </VNavigationDrawer>
     <VAppBar flat class="header">
@@ -555,7 +565,7 @@ const toggleWholesalers = () => {
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
                             @click="redirect_('categories', item.slug)">
-                              <component v-if="items.filter(e => e.slug === item.slug)[0]" :is="items.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
+                              <!-- <component v-if="items.filter(e => e.slug === item.slug)[0]" :is="items.filter(e => e.slug === item.slug)[0].icon" class="me-3" /> -->
                               {{ item.name }} 
                           </span>
                           <router-link 
@@ -731,6 +741,7 @@ const toggleWholesalers = () => {
   .lineheight {
     line-height: 0;
   }
+
   .w-100x {
     width: 73%;
   }
@@ -883,6 +894,7 @@ const toggleWholesalers = () => {
     font-weight: 700;
     line-height: 16px; /* 80% */
   }
+
   .subtitle-menu {
     color:#0A1B33;
     font-size: 16px;
@@ -935,6 +947,11 @@ const toggleWholesalers = () => {
       position: fixed !important;
     }
 
+    .items-list::v-deep(.v-list-item__append) {
+      border-bottom: 1px solid #D9EEF2 !important;
+      padding-bottom: 4px !important;
+    }
+
     .v-text-field::v-deep(.v-field) { 
       border-top-right-radius: 100px;
       border-bottom-right-radius: 100px;
@@ -960,6 +977,7 @@ const toggleWholesalers = () => {
       color: #FFFFFF !important;
       font-size: 8px;
     }
+
     .v-select::v-deep(.v-field__input) {
       padding-top: 6%;
       padding-left: 10%;
@@ -972,6 +990,7 @@ const toggleWholesalers = () => {
       padding-top: 30% !important;
       padding-right: 10% !important;
     }
+
     .v-select::v-deep(.v-field) { 
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
@@ -988,6 +1007,7 @@ const toggleWholesalers = () => {
     .v-select::v-deep(.v-icon--size-default) {
       font-size: calc(var(--v-icon-size-multiplier) * 1em);
     }
+
     .w-100x {
       width: 68%;
     }
@@ -1035,17 +1055,18 @@ const toggleWholesalers = () => {
       padding: 10px;
     }
 
-    .item .v-list-item--density-default.v-list-item--one-line {
-      min-height: 20px !important;
-      padding-inline: 0 !important;
-    }
-
     .subtitle-menu {
       font-size: 14px;
       font-style: normal;
       font-weight: 400;
-      line-height: 16px
+      line-height: 16px;
+      padding-inline: 25px !important;
     }
+
+    .style-menu-mobile .v-list-item--density-default.v-list-item--one-line {
+      min-height: 35px !important;
+    }
+
   }
 </style>
 

@@ -308,8 +308,7 @@ const tab = ref('0')
 
     <!-- recommendations -->
     <VCard class="mt-7 no-shadown card-information p-0">
-      <VCardTitle class="px-4 px-md-7 py-3 cardtitles"> Recomendaciones según tus búsquedas</VCardTitle>
-      <VDivider />
+      <VCardTitle class="px-4 px-md-7 py-3 cardtitles hr-cyan">Recomendaciones según tus búsquedas</VCardTitle>
       <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
         <Product1 
           v-for="(product, i) in data.recommendations"
@@ -348,7 +347,7 @@ const tab = ref('0')
     
     <!-- the most sold -->
     <VCard class="mt-7 no-shadown card-information p-0">
-      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center card-vendido cardtitles">
+      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center card-vendido cardtitles hr-cyan">
         <span>Lo más vendido</span>
         <VSpacer />
         <router-link 
@@ -358,8 +357,7 @@ const tab = ref('0')
               slug: 'globos'
             }
           }"
-          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-1 me-md-3 hover:tw-text-primary vendido-globos">
-          Globos
+          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-1 me-md-3 hover:tw-text-primary vendido-globos">Globos
         </router-link>
         <router-link 
           :to="{
@@ -392,7 +390,6 @@ const tab = ref('0')
           Decoración
         </router-link>
       </VCardTitle>
-      <VDivider />
       <VCardText class="px-4 px-md-7 mt-2 mt-md-5 mb-2 mb-md-5 d-flex align-items-stretch justify-content-between card-banner5" v-if="data">
         <VRow no-gutters class="transparent mostSoldMobile">
           <VCol cols="12" md="9">
@@ -430,6 +427,7 @@ const tab = ref('0')
                         :slidesPerView="2"
                         :freeMode="true"
                         :watchSlidesProgress="true"
+                        :allowTouchMove="true"
                         @swiper="setThumbsSwiper"
                         :style="{ height: isMobile ? '330px' : '370px' }"
                         >
@@ -462,6 +460,7 @@ const tab = ref('0')
                         :slidesPerView="2"
                         :freeMode="true"
                         :watchSlidesProgress="true"
+                        :allowTouchMove="true"
                         @swiper="setThumbsSwiper"
                         :style="{ height: isMobile ? '330px' : '370px' }"
                         >
@@ -510,26 +509,28 @@ const tab = ref('0')
     <!-- banner 2 , banner 3-->
     <VCard class="mt-7 no-shadown card-information p-0 d-flex transparent card-banner34">
         <VCard class="no-shadown card-information p-0 w-50 grid-item w-100">
-          <router-link :to="{
-                      name: 'products',
-                      query: {
-                        category: 'decoracion',
-                        subcategory: 'velas'
-                      }
-                    }" class="tw-no-underline">
+          <router-link 
+            :to="{
+              name: 'products',
+              query: {
+                category: 'decoracion',
+                subcategory: 'velas'
+              }
+            }" class="tw-no-underline">
             <VCardItem class="p-0">
               <VImg :src="isMobile ? banner_3_mobile : banner_3" cover/>
             </VCardItem>  
           </router-link>
         </VCard>
         <VCard class="no-shadown card-information p-0 w-50 ms-5 grid-item w-100">
-          <router-link :to="{
-                      name: 'products',
-                      query: {
-                        category: 'globos',
-                        subcategory: 'globos-metalizados'
-                      }
-                    }" class="tw-no-underline">
+          <router-link 
+            :to="{
+              name: 'products',
+              query: {
+                category: 'globos',
+                subcategory: 'globos-metalizados'
+              }
+            }" class="tw-no-underline">
             <VCardItem class="p-0">
               <VImg :src="isMobile ? banner_4_mobile : banner_4" cover/>
             </VCardItem>  
@@ -953,6 +954,11 @@ const tab = ref('0')
 
   .hr-primary {
     border-bottom: 1px solid #0A1B33;
+    opacity: 1;
+  }
+
+  .hr-cyan {
+    border-bottom: 0.5px solid #D9EEF2;
     opacity: 1;
   }
 

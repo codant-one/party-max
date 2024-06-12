@@ -14,6 +14,7 @@ import banner2 from '@assets/images/banner2.png';
 import banner3 from '@assets/images/banner3.png';
 import banner4 from '@assets/images/banner4.png';
 import t_6 from '@assets/images/t_6.jpg';
+import t_7 from '@assets/images/t_7.jpg';
 
 const route = useRoute()
 const miscellaneousStores = useMiscellaneousStores()
@@ -30,6 +31,7 @@ const slug1 = ref(null)
 const slug2 = ref(null)
 const slug3 = ref(null)
 const slug4 = ref(null)
+const band = ref(0)
 
 const icons_categories = ref([])
 
@@ -41,13 +43,23 @@ const modules = ref([Pagination])
 const setThumbsSwiper = (swiper) => {
     thumbsSwiper.value = swiper;
 }
+
+watch(() => 
+    route.params,(newParams, oldParams) => {
+      band.value = 0
+      data.value = null
+
+      fetchData()
+    }, { immediate: true }
+  );
  
 watchEffect(fetchData)
 
 async function fetchData() {
 
-  if(route.params.slug) {
+  if(route.params.slug && band.value === 0) {
     isLoading.value = true
+    band.value = 1
 
     await miscellaneousStores.getCategory(route.params.slug)
     data.value = miscellaneousStores.getData
@@ -108,7 +120,7 @@ async function fetchData() {
         :class="icons_categories.length === 3 ? 'justify-content-between' : 'justify-content-center'">
         <template v-for="(i, index) in icons_categories">
           <router-link
-            v-if="i.icon_subcategory !== null"
+            
             :to="{
               name: 'products',
               query: {
@@ -116,8 +128,9 @@ async function fetchData() {
                 subcategory: i.slug.split('/')[1]
               }
             }" class="tw-no-underline d-block text-center justify-content-center zoom router-icons">
-            <img :src="baseURL + i.icon_subcategory" class="border-theme d-block" v-if="i.icon_subcategory !== null"/>
-            <span class="d-block size-theme tw-text-tertiary mt-5 mb-5" v-if="i.icon_subcategory !== null">{{i.name}}</span>
+            <img :src="baseURL + i.icon_subcategory" width="192" class="border-theme d-block" v-if="i.icon_subcategory !== null"/>
+            <img :src="t_7" width="192" class="border-theme d-block" v-else/>
+            <span class="d-block size-theme tw-text-tertiary mt-5 mb-5">{{i.name}}</span>
           </router-link>      
         </template>
         <router-link
@@ -136,7 +149,7 @@ async function fetchData() {
     </VCard>
 
     <!-- novedades -->
-    <VCard class="mt-7 no-shadown card-information p-0">
+    <VCard class="mt-7 no-shadown card-information p-0" v-if="data.products.length > 0">
       <VCardTitle class="px-7 py-3 d-flex align-center cardtitles">
         <span>Novedades</span>
         <VSpacer />
@@ -252,6 +265,7 @@ async function fetchData() {
   .transparentColor {
     color: transparent !important;
   }
+
   .card-icons  {
     flex-wrap: wrap;
 
@@ -306,8 +320,7 @@ async function fetchData() {
     color: #FF0090!important;
   }
 
-  .router-icons
-  {
+  .router-icons {
     width: 20%;
   }
 
