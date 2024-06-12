@@ -84,7 +84,7 @@ watchEffect(() => {
             </VCardText>
             <VCardText>
                 <span class="d-block text_2 store">Tienda:
-                    <strong v-if="name.length > 50 && !isMobile">{{ store.slice(0, 50) + '...' }}</strong>
+                    <strong v-if="store.length > 15 && isMobile">{{ store.slice(0, 15) + '...' }}</strong>
                     <strong v-else>{{ store }}</strong>
                 </span>
             </VCardText>
