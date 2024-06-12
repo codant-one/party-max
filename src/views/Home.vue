@@ -1211,7 +1211,6 @@ const tab = ref('0')
 
     .swiper::v-deep(.swiper-pagination-horizontal ) {
       top: 90%;
-      left: 45%;
     }    
 
     .mostSoldMobile {
