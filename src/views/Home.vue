@@ -390,7 +390,7 @@ const tab = ref('0')
           Decoración
         </router-link>
       </VCardTitle>
-      <VCardText class="px-4 px-md-7 mt-2 mt-md-5 mb-2 mb-md-5 d-flex align-items-stretch justify-content-between card-banner5" v-if="data">
+      <VCardText class="px-4 px-md-7 pb-0 mt-2 mt-md-5 mb-2 mb-md-5 d-flex align-items-stretch justify-content-between card-banner5" v-if="data">
         <VRow no-gutters class="transparent mostSoldMobile">
           <VCol cols="12" md="9">
             <VCard class="no-shadown">
@@ -1210,7 +1210,7 @@ const tab = ref('0')
     }
 
     .swiper::v-deep(.swiper-pagination-horizontal ) {
-      top: 90%;
+      top: 92%;
     }    
 
     .mostSoldMobile {
