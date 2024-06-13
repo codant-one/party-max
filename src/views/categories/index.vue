@@ -150,7 +150,7 @@ async function fetchData() {
 
     <!-- novedades -->
     <VCard class="mt-7 no-shadown card-information p-0" v-if="data.products.length > 0">
-      <VCardTitle class="px-7 py-3 d-flex align-center cardtitles">
+      <VCardTitle class="px-7 py-3 d-flex align-center cardtitles hr-cyan">
         <span>Novedades</span>
         <VSpacer />
         <router-link
@@ -162,7 +162,6 @@ async function fetchData() {
           }"
           class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
       </VCardTitle>
-      <VDivider />
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
         <Product1 
           v-for="(product, i) in data.products"
@@ -170,7 +169,7 @@ async function fetchData() {
           :product="product"
           :readonly="true"/>
       </VCardText>
-      <VCardText class="pb-0 px-3 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && isMobile">
+      <VCardText class="pb-0 px-3 mt-5 mb-0 d-flex align-items-stretch justify-content-between" v-if="data && isMobile">
         <swiper
           :pagination="{
             dynamicBullets: true,
@@ -261,6 +260,11 @@ async function fetchData() {
 </template>
 
 <style scoped>
+
+  .hr-cyan {
+    border-bottom: 1px solid #D9EEF2;
+    opacity: 1;
+  }
 
   .transparentColor {
     color: transparent !important;
