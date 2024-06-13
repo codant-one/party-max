@@ -947,6 +947,14 @@
       position: fixed !important;
     }
 
+    .v-list::v-deep(.v-list-item--active .v-list-item__overlay) {
+      background-color: #D9EEF2 !important;
+    }
+
+    .v-list::v-deep(.v-list-item--variant-text .v-list-item__overlay) {
+      background-color: transparent;
+    }
+
     .items-list::v-deep(.v-list-item__append) {
       border-bottom: 1px solid #D9EEF2 !important;
       padding-bottom: 4px !important;
