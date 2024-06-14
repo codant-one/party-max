@@ -80,7 +80,7 @@ watchEffect(() => {
             <img v-else class="img-style" :src="baseURL + image" />
         </VCardItem>
 
-        <VCardSubtitle class="text-justify subtitle-text my-6 px-0 d-block d-md-flex">
+        <VCardSubtitle class="text-justify subtitle-text my-2 my-md-6 px-0 d-block d-md-flex">
             <div>
                 <VIcon size="20px" icon="mdi-account-outline" class="subtitle-text" /> 
                 by {{ user }} 
@@ -108,7 +108,7 @@ watchEffect(() => {
             <span v-else class="text-justify tw-text-primary"> {{ title }} </span>
         </VCardTitle>
 
-        <VCardText class="text-justify description-text px-0 content-blog">
+        <VCardText class="text-justify description-text py-1 py-md-5 px-0 content-blog">
             <div v-html="paragraphs"></div>
         </VCardText>
 
@@ -321,6 +321,7 @@ watchEffect(() => {
         .title-text {
             font-size: 20px;
             line-height: 24px;
+            margin-top: 15px;
         }
         .description-text {        
             font-size: 14px;
