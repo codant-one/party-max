@@ -3,6 +3,7 @@
   import { useCartStores } from '@/stores/cart'
   import { useHomeStores } from '@/stores/home'
   import { useAuthStores } from '@/stores/auth'
+  import { markRaw } from 'vue';
   import router from '@/router'
   import logo from '@assets/images/logo.svg';
   import heart from '@assets/icons/heart.svg?inline';
@@ -57,14 +58,14 @@
   const panelCat = ref(null);
 
   const items = ref([
-    { text: 'Fiestas infantiles', icon: icon1, slug: 'fiestas-infantiles' },
-    { text: 'Fiestas temáticas', icon: icon2, slug: 'fiestas-tematicas' },
-    { text: 'Fechas especiales', icon: icon3, slug: 'fechas-especiales' },
-    { text: 'Globos', icon: icon4, slug: 'globos' },
-    { text: 'Decoración', icon: icon5, slug: 'decoracion' },
-    { text: 'Hora loca', icon: icon6, slug: 'hora-loca' },
-    { text: 'Desechables', icon: icon7, slug: 'desechables' },
-    { text: 'Sorpresas', icon: icon8, slug: 'sorpresas' }
+    { text: 'Fiestas infantiles', icon: markRaw(icon1), slug: 'fiestas-infantiles' },
+    { text: 'Fiestas temáticas', icon: markRaw(icon2), slug: 'fiestas-tematicas' },
+    { text: 'Fechas especiales', icon: markRaw(icon3), slug: 'fechas-especiales' },
+    { text: 'Globos', icon: markRaw(icon4), slug: 'globos' },
+    { text: 'Decoración', icon: markRaw(icon5), slug: 'decoracion' },
+    { text: 'Hora loca', icon: markRaw(icon6), slug: 'hora-loca' },
+    { text: 'Desechables', icon: markRaw(icon7), slug: 'desechables' },
+    { text: 'Sorpresas', icon: markRaw(icon8), slug: 'sorpresas' }
   ])
 
   watch(() => 
@@ -145,9 +146,15 @@
   }
 
   const openCategory = (index) => {
-    cols.value = 6
     category.value = index
-    width.value = 650
+    
+    if(categories.value[index].children.length > 0) {
+      cols.value = 6
+      width.value = 650
+    } else {
+      cols.value = 12
+      width.value = 300
+    }
   }
 
   const openService = (id) => {
@@ -565,7 +572,7 @@
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
                             @click="redirect_('categories', item.slug)">
-                              <!-- <component v-if="items.filter(e => e.slug === item.slug)[0]" :is="items.filter(e => e.slug === item.slug)[0].icon" class="me-3" /> -->
+                              <component v-if="items.filter(e => e.slug === item.slug).length === 1" :is="items.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                               {{ item.name }} 
                           </span>
                           <router-link 
