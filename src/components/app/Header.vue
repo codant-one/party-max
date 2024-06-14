@@ -144,9 +144,9 @@
     })
   }
 
-  const openCategory = (id) => {
+  const openCategory = (index) => {
     cols.value = 6
-    category.value = id - 1
+    category.value = index
     width.value = 650
   }
 
@@ -561,7 +561,7 @@
                     <VListItem  
                       v-for="(item, index) in categories"
                       :key="index">
-                        <div class="d-flex align-center hover-icon-right tw-cursor-pointer" @mouseover="openCategory(item.id)">
+                        <div class="d-flex align-center hover-icon-right tw-cursor-pointer" @mouseover="openCategory(index)">
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
                             @click="redirect_('categories', item.slug)">
