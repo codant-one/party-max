@@ -573,16 +573,19 @@
                             class="subtitle-menu d-flex align-center"
                             @click="redirect_('categories', item.slug)">
                               <component v-if="items.filter(e => e.slug === item.slug).length === 1" :is="items.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
+                              <component v-else :is="icon5" class="me-3" />
                               {{ item.name }} 
                           </span>
                           <router-link 
                             :to="{
-                              name: 'categories',
-                              params: {
-                                slug: item.slug
-                                }
+                              name: 'products',
+                              query: {
+                                category: item.slug
+                              }
                             }" 
                             class="subtitle-menu tw-no-underline" v-else>
+                            <component v-if="items.filter(e => e.slug === item.slug).length === 1" :is="items.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
+                            <component v-else :is="icon5" class="me-3" />
                             {{ item.name }}
                           </router-link> 
                           <VSpacer />

@@ -318,7 +318,7 @@ const getFlagCountry = country => {
                             size="25"
                             :image="getFlagCountry(country)"
                             />
-                        <span class="labels tw-text-gray">
+                        <span class="labels tw-text-gray ms-2">
                             {{ country }}
                         </span>
                     </VCol>

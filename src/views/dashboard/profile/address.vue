@@ -508,14 +508,15 @@ const getFlagCountry = country => {
                                 :rules="[requiredValidator, phoneValidator]"
                             />    
                         </VCol> 
-                        <VCol cols="12" md="8"></VCol>
-                        <VCol cols="12" md="4" class="mb-3 mb-md-0">
+                        <VCol cols="12" md="7"></VCol>
+                        <VCol cols="12" md="5" class="mb-3 mb-md-0">
                             <VCheckbox
                                 v-model="selectedAddress.default"
                                 color="primary"
-                                label="Dir. por Defecto"
+                                label="Dirección por defecto"
                                 true-icon="mdi-check-bold"
                                 false-icon="mdi-window-close"
+                                class="ms-md-3"
                             />
                         </VCol>
                     </VRow>
