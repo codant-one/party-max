@@ -103,7 +103,8 @@ const backgroundStyle = ref({
 </template>
 
 <style scoped>
-  .title-about{
+
+  .title-about {
     font-size: 60px;
     font-style: normal;
     font-weight: 700;
@@ -171,6 +172,10 @@ const backgroundStyle = ref({
   }
 
   @media only screen and (max-width: 767px) {
+    .second-row {
+      margin-top: 50px;
+    }
+
     .title-about {
       font-size: 24px;
       line-height: 32px;

@@ -28,19 +28,17 @@ const setFocus = async(category) => {
 </script>
 
 <template>
-  <VContainer class="mt-1 mt-md-10 text-center">
+  <VContainer class="mt-0 mt-md-10 text-center">
     <Loader :isLoading="isLoading"/>
-    <VCard flat class="text-center card-header">
-      <VCardText>
-        <VCardTitle class="font-weight-semibold title-text">
-          Hola, ¿cómo podemos ayudar?
-        </VCardTitle>
-        <p class="subtitle-text mb-0 mt-3">
-          Elija una categoría para encontrar rápidamente la ayuda que necesita
-        </p>
+    <VCard flat class="text-center card-header p-0">
+      <VCardTitle class="font-weight-semibold title-text px-0">
+        Hola, ¿cómo podemos ayudar?
+      </VCardTitle>
+      <VCardText class="subtitle-text mb-0 pb-0 pb-md-7">
+        Elija una categoría para encontrar rápidamente la ayuda que necesita
       </VCardText>
     </VCard>
-    <VRow style="margin-top: 10px">
+    <VRow no-gutters style="margin-top: 10px">
       <VCol
         v-show="categories.length"
         cols="12"
@@ -48,6 +46,7 @@ const setFocus = async(category) => {
         lg="12"
         align-self="center"
         id="faqsCategoriesDiv"
+        class="mb-5 mb-md-10"
       >
         <VBtn
           v-for="category in categories"
@@ -140,21 +139,21 @@ const setFocus = async(category) => {
     font-weight: 600;
   }
 
-  .selected-class{
+  .selected-class {
     background-color: var(--Light-Cyan-1, #E2F8FC);
     margin: 0.25rem !important;
     padding: 0.25rem 0 !important;
     width: 20%;
   }
 
-  .v-btn.v-btn--density-default{
+  .v-btn.v-btn--density-default {
     height: 100px !important;
   }
 
   @media only screen and (max-width: 767px) {
     .title-text {
       text-align: center;
-      font-size: 24px;
+      font-size: 23px;
       line-height: 24px; /* 100% */
       white-space: pre-wrap;
     }
@@ -165,7 +164,7 @@ const setFocus = async(category) => {
     }
 
     .selected-class {
-      width: 40%;
+      width: 47%;
     }
   }
 </style>
