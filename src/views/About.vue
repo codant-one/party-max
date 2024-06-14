@@ -5,6 +5,7 @@ import festinabout from '@/assets/images/festin-aboutus.jpg'
 import aboutimage from '@/assets/images/aboutus1.jpg'
 import bg_clients from '@/assets/images/register.jpg'
 import client_about from '@/assets/images/client-about.png'
+import Loader from '@/components/common/Loader.vue'
 
 const repeat = ref('repeat')
 const size = ref('cover')
@@ -14,10 +15,23 @@ const backgroundStyle = ref({
   backgroundRepeat: repeat
 })
 
+const isLoading = ref(true)
+
+const fetchData = async () => {
+  isLoading.value = true
+
+  setTimeout(() => {
+    isLoading.value = false   
+  }, 2000)  
+}
+
+fetchData()
+
 </script>
 
 <template>
   <VContainer class="content py-13 text-center w-100">
+    <Loader :isLoading="isLoading"/>
     <VRow align="center" no-gutters>
       <VCol cols="12" md="6" class="order-last order-md-first align-left">
         <h1  class="tw-text-primary title-about">Donde la magia de las celebraciones crea momentos inolvidables</h1>
