@@ -11,6 +11,7 @@ import arrow_left from '@assets/icons/Arrow_left.svg?inline';
 
 const client_id = ref(null)
 const isLoading = ref(true)
+const isMobile = /Mobi/i.test(navigator.userAgent);
 
 const ordersStores = useOrdersStores()
 
@@ -167,7 +168,7 @@ const redirect = (name) => {
             <VCardText class="d-flex align-center justify-content-center py-3 px-5 pb-0">
                 <VPagination
                     v-model="currentPage"
-                    :total-visible="5"
+                    :total-visible="isMobile ? 4 : 5"
                     :length="totalPages"
                     rounded="circle"
                     active-color="#FF0090"
@@ -177,12 +178,12 @@ const redirect = (name) => {
                     <template v-slot:prev="{ attrs }">
                         <VBtn variant="plain" icon v-bind="attrs" class="icon-left" @click="changePage('prev')">
                             <arrow_left class="me-2"/>
-                            Anterior
+                            <span class="d-none d-md-block">Anterior</span>
                         </VBtn>
                     </template>
                     <template v-slot:next="{ attrs }">
                         <VBtn variant="plain" icon v-bind="attrs" class="icon-right" @click="changePage('next')">
-                            Siguiente
+                            <span class="d-none d-md-block">Siguiente</span>
                             <arrow_right class="ms-1"/>
                         </VBtn>
                     </template>
@@ -350,10 +351,21 @@ const redirect = (name) => {
 
         .btn-order {
             width: 100%;
+            height: 40px;
         }
 
         .btn-buy {
             width: 100%;
+            height: 40px;
+        }
+
+        .v-pagination::v-deep(.v-pagination__next button) {
+            padding-left: 0 !important;
+        }
+
+        .v-pagination::v-deep(.v-pagination__prev .v-btn__content), .v-pagination::v-deep(.v-pagination__prev button),
+        .v-pagination::v-deep(.v-pagination__next .v-btn__content), .v-pagination::v-deep(.v-pagination__next button) {
+            width: 30px !important;
         }
 
     }

@@ -5,7 +5,6 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import Loader from '@/components/common/Loader.vue'
 import router from '@/router'
-import arrow_right from '@assets/icons/arrow_right.svg?inline';
 
 const ordersStores = useOrdersStores()
 const route = useRoute()
@@ -69,20 +68,19 @@ const resolveStatusPayment = payment_state_id => {
 <template>
     <Loader :isLoading="isLoading"/>
     <VContainer class="my-1 my-md-10 container-dashboard" v-if="orders">
-
         <div v-for="(product, i) in products">
             <VCard class="card-profile mt-5 p-0 pt-5">
-                <VRow no-gutters class="px-10 pb-5" >
-                    <VCol cols="12" md="3">
+                <VRow no-gutters class="px-10 pb-5">
+                    <VCol cols="12" md="3" class="d-flex justify-center">
                         <VImg :src="baseURL + product.product_image" class="image-product"/>
                     </VCol>
                     <VCol cols="12" md="6" class="d-flex justify-content-center align-center">
-                        <VCardText class="pl-0">
+                        <VCardText class="pl-md-0">
                             <VRating
                                 v-if="orders.shipping.id === 3"
                                 half-increments
                                 :length="5"
-                                :size="isMobile ? 20 : 40"
+                                :size="isMobile ? 50 : 40"
                                 v-model="product.rating"
                                 hover
                                 color="yellow-darken-2"
@@ -104,7 +102,7 @@ const resolveStatusPayment = payment_state_id => {
                                     id: product.product_id
                                 }
                             }"
-                            class="tw-no-underline">
+                            class="tw-no-underline btn-opinion-100">
                             <VBtn class="btn-opinion tw-text-tertiary" v-if="orders.shipping.id === 3">
                                 Editar opinión
                             </VBtn>
@@ -142,7 +140,7 @@ const resolveStatusPayment = payment_state_id => {
         </VCard>
 
         <!--DATOS DE ENTREGA-->
-        <VCard class="card-profile p-0 pb-3">
+        <VCard class="card-profile p-0 pb-3 mb-7 mb-md-0">
             <VCardTitle class="px-10 pt-5 pb-0">
                 <span v-if="orders.payment.id === 4" class="text-editar" :class="'tw-text-'+resolveStatusShipping(orders.shipping.id)?.color">
                     {{ orders.shipping.name }}
@@ -151,7 +149,7 @@ const resolveStatusPayment = payment_state_id => {
                     {{ orders.payment.name }}
                 </span> 
             </VCardTitle>
-            <VCardText class="d-flex px-10 py-3 pb-0" v-if="orders.payment.id !== 2 && orders.payment.id !== 3">
+            <VCardText class="d-flex px-10 py-3 pb-0" v-if="orders.payment.id === 4 && orders.shipping.id !== 2">
                 <span v-if="orders.payment.id === 4 && orders.shipping.id === 3" class="text-date tw-text-tertiary">Llegó el {{ format(orders.updated_at, 'd').concat(' de ') }} {{ format(orders.updated_at, 'MMMM, y', { locale: es }).replace(/(^|\s)\S/g, (char) => char.toUpperCase()) }}.</span>
                 <span v-if="orders.payment.id === 4 && orders.shipping.id === 1" class="text-date tw-text-tertiary">El pedido está en el almacén, listo para enviar.</span>
                 <span v-if="orders.payment.id === 4 && orders.shipping.id === 4" class="text-date tw-text-tertiary">El paquete llegará de 3 a 5 días hábiles.</span>
@@ -280,6 +278,16 @@ const resolveStatusPayment = payment_state_id => {
         }
 
         .btn-buy {
+            width: 100%;
+            height: 40px;
+        }
+
+        .btn-opinion {
+            width: 100%;
+            height: 40px;
+        }
+
+        .btn-opinion-100 {
             width: 100%;
         }
 

@@ -13,6 +13,7 @@ const route = useRoute();
 const products = ref([])
 const user_id = ref(null)
 const isLoading = ref(true)
+const isMobile = /Mobi/i.test(navigator.userAgent);
 
 const rowPerPage = ref(5);
 const currentPage = ref(1);
@@ -97,7 +98,6 @@ const deleteFavorite = async (product_id) => {
     <VContainer class="my-1 my-md-10 container-dashboard d-flex flex-column" v-if="products">
         <h2 class="data-title mt-5 pt-md-7">Favoritos</h2>
         <VCard class="card-profile px-0 py-0" v-if="products.length > 0">
-            {{  }}
             <Product7
                 v-for="(product, i) in products"
                 :key="i"
@@ -115,7 +115,7 @@ const deleteFavorite = async (product_id) => {
             <VCardText class="d-flex align-center justify-content-center py-3 px-5 pb-0">
                 <VPagination
                     v-model="currentPage"
-                    :total-visible="5"
+                    :total-visible="isMobile ? 4 : 5"
                     :length="totalPages"
                     rounded="circle"
                     active-color="#FF0090"
@@ -125,12 +125,12 @@ const deleteFavorite = async (product_id) => {
                     <template v-slot:prev="{ attrs }">
                         <VBtn variant="plain" icon v-bind="attrs" class="icon-left" @click="changePage('prev')">
                             <arrow_left class="me-2"/>
-                            Anterior
+                            <span class="d-none d-md-block">Anterior</span>
                         </VBtn>
                     </template>
                     <template v-slot:next="{ attrs }">
                         <VBtn variant="plain" icon v-bind="attrs" class="icon-right" @click="changePage('next')">
-                            Siguiente
+                            <span class="d-none d-md-block">Siguiente</span>
                             <arrow_right class="ms-1"/>
                         </VBtn>
                     </template>
@@ -251,6 +251,15 @@ const deleteFavorite = async (product_id) => {
     @media only screen and (max-width: 767px) {
         .container-dashboard {
             padding: 0 5%;
+        }
+
+        .v-pagination::v-deep(.v-pagination__next button) {
+            padding-left: 0 !important;
+        }
+
+        .v-pagination::v-deep(.v-pagination__prev .v-btn__content), .v-pagination::v-deep(.v-pagination__prev button),
+        .v-pagination::v-deep(.v-pagination__next .v-btn__content), .v-pagination::v-deep(.v-pagination__next button) {
+            width: 30px !important;
         }
     }
 </style>

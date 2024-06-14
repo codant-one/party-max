@@ -204,7 +204,7 @@ const remove = () => {
             @submit.prevent="save"
             > 
             <VCard class="card-profile mb-5 p-0 pt-5 mx-auto">
-                <VCardText class="px-10 d-flex flex-column justify-content-center align-center text-center">
+                <VCardText class="px-5 px-md-10 d-flex flex-column justify-content-center align-center text-center">
                     <VImg :src="baseURL + product.image" class="image-product"/>
                     <span class="text-question tw-text-primary my-5">¿Qué te pareció tu producto?</span>
                     <span class="name-product tw-text-tertiary">{{ product.name}}</span>
@@ -213,7 +213,7 @@ const remove = () => {
                     <VRating
                         half-increments
                         :length="5"
-                        :size="isMobile ? 20 : 'x-large'"
+                        :size="isMobile ? 50 : 'x-large'"
                         v-model="rating"
                         hover
                         color="yellow-darken-2"
@@ -228,7 +228,7 @@ const remove = () => {
             </VCard>
 
             <VCard class="card-profile my-5 p-0 pt-5 mx-auto">
-                <VCardText class="px-10 d-flex flex-column justify-content-center align-center text-center">
+                <VCardText class="px-5 px-md-10 d-flex flex-column justify-content-center align-center text-center">
                     <span class="text-question tw-text-primary my-3">Cuéntanos más acerca de tu producto</span>
                     <span class="text-status mb-3">Opcional</span>
                     <VTextarea
@@ -243,7 +243,7 @@ const remove = () => {
                     />
                 </VCardText>
             </VCard>
-            <VCardText class="px-10 d-flex flex-column justify-content-center align-center text-center pt-0">
+            <VCardText class="px-5 px-md-10 d-flex flex-column justify-content-center align-center text-center pt-0">
                 <VBtn class="btn-save tw-bg-primary tw-text-white" type="submit">
                     Guardar
                 </VBtn>
@@ -374,6 +374,24 @@ const remove = () => {
         .text-message {
             padding: 0 30px !important;
             font-size: 18px;
+        }
+
+        .card-profile {
+            width: 340px;
+        }
+
+        .text-question {
+            font-size: 30px;
+            line-height: 30px;
+        }
+
+        .name-product {
+            font-size: 24px;
+            line-height: 30px;
+        }
+
+        .p-rating {
+            padding: 0 35px !important;
         }
     }
 </style>

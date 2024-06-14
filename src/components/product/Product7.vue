@@ -186,4 +186,10 @@ watchEffect(() => {
         font-weight: 400;
         line-height: 16px; /* 100% */
     }
+    
+    @media only screen and (max-width: 767px) {
+        .title-product {
+            line-height: 20px;
+        }
+    }
 </style>
