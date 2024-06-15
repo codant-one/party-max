@@ -51,9 +51,9 @@ const next = () => {
     <VRow>
         <VCol cols="12" md="8">
             <VCard class="card-products p-0">
-                <VCardTitle class="title-card border-line mt-4 ps-10">Elige la forma de entrega</VCardTitle>
-                <VCardText class="home px-10 pb-0 my-3">Enviar a domicilio</VCardText>
-                <VCardText class="row-cardp p-0">
+                <VCardTitle class="title-card border-line mt-4 px-5 px-md-10">Elige la forma de entrega</VCardTitle>
+                <VCardText class="home pb-0 mt-3 mb-0 my-md-3 px-5 px-md-10">Enviar a domicilio</VCardText>
+                <VCardText class="p-0">
                     <VRadioGroup
                         v-model="id"
                         false-icon="mdi-circle-off-outline"
@@ -64,7 +64,7 @@ const next = () => {
                             :key="i"
                             :value="address.id"
                             color="primary"
-                            class="ps-10 border-line"
+                            class="ps-5 ps-md-10 border-line"
                         >
                             <template v-slot:label>
                                 <VCardText class="d-flex my-1">
@@ -138,20 +138,20 @@ const next = () => {
                 </VCardText>
             </VCard>
             
-            <VCardText class="d-flex">
+            <VCardText class="d-flex pt-5 pb-0">
                 <VSpacer />
                 <VBtn
                     variant="flat"
                     style="border-radius:32px;"
-                    class="btn-register tw-text-white tw-bg-primary button-hover my-5"
+                    class="btn-register tw-text-white tw-bg-primary button-hover my-2 mt-md-5"
                     @click="next">
                     Continuar
                 </VBtn>
             </VCardText>
         </VCol>
         <VCol cols="12" md="4">
-            <VCard class="card-products p-0">
-                <VCardTitle class="subtitle-card row-buy mt-4 ps-10 pt-4 pb-5">Resumen de compra</VCardTitle>
+            <VCard class="card-products p-0 tw-bg-cyan">
+                <VCardTitle class="subtitle-card row-buy mt-4 ps-10 pt-0 pt-md-4 pb-5">Resumen de compra</VCardTitle>
                 <VCardText class="px-10 mt-5 mb-2">
                     <VRow align="center">
                         <VCol cols="7" md="6" class="text-left">

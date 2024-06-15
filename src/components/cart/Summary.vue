@@ -34,7 +34,7 @@ const addCart = (data) => {
    <VRow>
         <VCol cols="12" md="8">
             <VCard class="card-products p-0">
-                <VCardTitle class="title-card mt-4 ms-4">Productos</VCardTitle>
+                <VCardTitle class="title-card mt-4 ms-4 px-2 px-md-5">Productos</VCardTitle>
                 <VCardText class="row-cardp p-0">
                     <Product5
                         v-for="(product, i) in props.products"
@@ -55,8 +55,8 @@ const addCart = (data) => {
         </VCol>
         <VCol cols="12" md="4">
             <VCard class="card-products p-0">
-                <VCardTitle class="subtitle-card row-buy mt-4 ps-10 pt-4 pb-8">Resumen de compra</VCardTitle>
-                <VCardText class="px-10 mt-5">
+                <VCardTitle class="subtitle-card row-buy mt-4 px-5 px-md-10 pt-4 pb-8">Resumen de compra</VCardTitle>
+                <VCardText class="px-5 px-md-10 mt-5">
                     <VRow>
                         <VCol cols="7" md="6" class="text-left">
                             <span>Productos</span>
@@ -224,4 +224,10 @@ const addCart = (data) => {
         box-shadow: none;
     }
 
+
+    @media only screen and (max-width: 767px) {
+        .title-card {
+            font-size: 20px !important;
+        }
+    }
 </style>

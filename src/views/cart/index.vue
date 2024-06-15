@@ -9,6 +9,12 @@ import { useCountriesStores } from '@/stores/countries'
 import { useProvincesStores } from '@/stores/provinces'
 import { useOrdersStores } from '@/stores/orders'
 import { usePaymentsStores } from '@/stores/payments'
+import { Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+
+import 'swiper/css';
+import 'swiper/css/pagination';
+
 import router from '@/router'
 
 import Stepper from '@/components/cart/Stepper.vue'
@@ -28,6 +34,11 @@ import cart from '@assets/icons/cart.svg?inline'
 import address from '@assets/icons/address.svg?inline'
 import payment from '@assets/icons/payment.svg?inline'
 import confirmation from '@assets/icons/confirmation.svg?inline'
+
+import cart_mobile from '@assets/icons/cart_mobile.svg?inline'
+import address_mobile from '@assets/icons/address_mobile.svg?inline'
+import payment_mobile from '@assets/icons/payment_mobile.svg?inline'
+import confirmation_mobile from '@assets/icons/confirmation_mobile.svg?inline'
 
 const homeStores = useHomeStores()
 const cartStores = useCartStores()
@@ -98,18 +109,26 @@ const checkoutSteps = [
   {
     title: 'Carrito',
     icon: cart,
+    icon_mobile: cart_mobile,
+    size: 25
   },
   {
     title: 'Dirección',
     icon: address,
+    icon_mobile: address_mobile,
+    size: 25
   },
   {
     title: 'Pago',
     icon: payment,
+    icon_mobile: payment_mobile,
+    size: 25
   },
   {
     title: 'Confirmación',
     icon: confirmation,
+    icon_mobile: confirmation_mobile,
+    size: 25
   },
 ]
 
@@ -132,6 +151,13 @@ const getProvinces = computed(() => {
     }
   })
 })
+
+const thumbsSwiper = ref(null);
+const modules = ref([Pagination])
+
+const setThumbsSwiper = (swiper) => {
+    thumbsSwiper.value = swiper;
+}
 
 onMounted(async () => {
 
@@ -513,19 +539,18 @@ const chanceSend = value => {
 <template>
    <div class="checkout-page">
         <VContainer 
-            class="mt-10 checkout-card"
+            class="mt-2 mt-md-10 checkout-card"
             :class="currentStep === 2 ? 'w-60': ''">
             <Loader :isLoading="isLoading"/>
 
-            <VCard class="mb-10 card-timeline px-0">
-                <VCardText>
+            <VCard class="mb-5 mb-md-10 card-timeline px-0">
+                <VCardText class="px-0">
                     <!-- 👉 Stepper -->
                     <Stepper
                         v-model:current-step="currentStep"
                         class="checkout-stepper"
                         :isActiveStepValid="(products.length === 0 || isActiveStepValid) ? true : undefined"
                         :items="checkoutSteps"
-                        :direction="$vuetify.display.mdAndUp ? 'horizontal' : 'vertical'"
                     />
                 </VCardText>
                
@@ -593,21 +618,21 @@ const chanceSend = value => {
             </VCard>
 
             <!--SECCIÓN PRODUCTOS RECOMENDADOS-->
-            <VRow class="mt-5" v-if="currentStep === 0 && products.length > 0">
+            <VRow class="px-3 px-md-5 mt-5" v-if="currentStep === 0 && products.length > 0">
                 <VCol cols="12" style="border-bottom: 1px solid #0A1B33;">
-                    <VRow style="padding:16px 0px;">
-                        <VCol cols="12" md="6" class="text-left">
+                    <VRow>
+                        <VCol cols="8" md="6" class="text-left">
                             <h3>Recomendaciones que te pueden interesar</h3>
                         </VCol>
-                        <VCol cols="12" md="6" class="text-right">
-                            <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
+                        <VCol cols="4" md="6" class="text-right d-flex align-center justify-content-end">
+                            <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-0 me-md-3 hover:tw-text-primary">Ver todos</router-link>
                         </VCol>
                     </VRow>
                 </VCol>
             
                 <VCol cols="12">
                         <VCard class="mt-1 no-shadown card-information p-0" style="background:none;">
-                            <VCardText class="px-0 mt-3 mb-3 d-flex align-items-stretch justify-content-between" v-if="data">
+                            <VCardText class="px-0 mt-3 mb-3 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
                                 <Product1 
                                     v-for="(product, i) in data.recommendations"
                                     :key="i"
@@ -615,6 +640,28 @@ const chanceSend = value => {
                                     :readonly="true"
                                     :bg="bg"/>
                             </VCardText> 
+
+                            <VCardText class="px-0 mt-3 mb-3 d-flex align-items-stretch justify-content-between" v-if="data && isMobile">
+                                <swiper
+                                    :pagination="{
+                                        dynamicBullets: true,
+                                    }"
+                                    :modules="modules"
+                                    :spaceBetween="5"
+                                    :slidesPerView="2"
+                                    :freeMode="true"
+                                    :watchSlidesProgress="true"
+                                    @swiper="setThumbsSwiper"
+                                    :style="{ height: isMobile ? '340px' : '370px' }"
+                                    >
+                                    <swiper-slide v-for="(product, i) in data.recommendations" :key="i">
+                                        <Product1 
+                                            :product="product"
+                                            :readonly="true"
+                                            :bg="bg"/>
+                                    </swiper-slide>
+                                </swiper>
+                            </VCardText>
                         </VCard> 
                 </VCol>
             </VRow>
@@ -726,14 +773,15 @@ const chanceSend = value => {
                                     :rules="[requiredValidator, phoneValidator]"
                                 />    
                             </VCol> 
-                            <VCol cols="12" md="8"></VCol>
-                            <VCol cols="12" md="4" class="mb-3 mb-md-0">
+                            <VCol cols="12" md="7"></VCol>
+                            <VCol cols="12" md="5" class="mb-3 mb-md-0">
                                 <VCheckbox
                                     v-model="selectedAddress.default"
                                     color="primary"
-                                    label="Dir. por Defecto"
+                                    label="Dirección por Defecto"
                                     true-icon="mdi-check-bold"
                                     false-icon="mdi-window-close"
+                                    class="ms-md-3"
                                 />
                             </VCol>
                         </VRow>
@@ -807,7 +855,7 @@ const chanceSend = value => {
     }
 
     .checkout-card {
-        margin-block-end: 6.25rem;
+        margin-block-end: 2rem;
         margin-block-start: 9.75rem;
     }
 
@@ -822,10 +870,19 @@ const chanceSend = value => {
     @media (max-width: 600px){
         .checkout-card {
             margin-block-start: 6rem;
+            margin-block-end: 0 !important;
         }
     }
 </style>
 <style scoped>
+
+    .swiper::v-deep(.swiper-pagination-bullet-active) {
+      background: #FF0090 !important;
+    }
+
+    .swiper::v-deep(.swiper-pagination-horizontal ) {
+      top: 92%;
+    }    
 
     .btn-register {
         font-size: 14px;
@@ -917,6 +974,13 @@ const chanceSend = value => {
     }
 
     @media only screen and (max-width: 767px) {
+
+        .v-checkbox::v-deep(.v-selection-control) {
+            text-align: center;
+            align-items: center; 
+            justify-content: center; 
+            min-height: 35px;
+        }
 
         .text-message {
             padding: 0 30px !important;

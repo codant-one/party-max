@@ -2,6 +2,7 @@
 
 import separator from '@assets/icons/separator.svg?inline'
 import festin from '@assets/icons/festin.svg'
+import festin_mobile from '@assets/icons/festin_mobile.svg'
 
 const props = defineProps({
   items: {
@@ -40,6 +41,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:currentStep'])
 
+const isMobile = /Mobi/i.test(navigator.userAgent)
 const currentStep = ref(props.currentStep || 0)
 const activeOrCompletedStepsClasses = computed(() => index => index < currentStep.value ? 'stepper-steps-completed' : index === currentStep.value ? 'stepper-steps-active' : '')
 const isHorizontalAndNotLastStep = computed(() => index => props.direction === 'horizontal' && props.items.length - 1 !== index)
@@ -70,7 +72,7 @@ watchEffect(() => {
       :value="index"
     >
       <div
-        class="cursor-pointer mx-1 tw-text-gray"
+        class="cursor-pointer mx-1 tw-text-gray w-slide-group"
         :class="[
           (!props.isActiveStepValid && (isValidationEnabled)) && 'stepper-steps-invalid',
           activeOrCompletedStepsClasses(index),
@@ -82,15 +84,15 @@ watchEffect(() => {
           <div class="stepper-icon-step d-flex align-center gap-2">
             <!-- 👉 icon and title -->
             <div
-              class="d-flex align-center gap-4 step-wrapper"
+              class="d-flex align-center text-center gap-4 step-wrapper"
               :class="[props.direction === 'horizontal' && 'flex-column']"
             >
               <div class="stepper-icon">
-                <img :src="festin" v-if="currentStep === index" />
+                <img :src="isMobile ? festin_mobile : festin" v-if="currentStep === index" />
                 <component 
                     v-else
                     class="stepper-component"
-                    v-bind:is="item.icon" 
+                    v-bind:is="isMobile ? item.icon_mobile : item.icon"
                     :size="item.size || props.iconSize"/>
               </div>
 
@@ -110,7 +112,7 @@ watchEffect(() => {
             <!-- 👉 append chevron -->
             <separator
               v-if="isHorizontalAndNotLastStep(index)"
-              class="flip-in-rtl stepper-chevron-indicator mx-6"
+              class="flip-in-rtl stepper-chevron-indicator mx-6 d-none d-md-block"
               size="24"
             />
           </div>
@@ -337,6 +339,24 @@ watchEffect(() => {
     .v-slide-group__content {
       justify-content: end;
     }
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .stepper-title {
+    font-size: 12px !important;
+  }
+
+  .stepper-steps-completed path {
+    fill: rgb(var(--v-theme-primary)) !important;
+  }
+
+  .w-slide-group {
+    min-width: 60px !important;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
   }
 }
 </style>

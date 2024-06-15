@@ -17,8 +17,6 @@ const props = defineProps({
     }
 })
 
-const route = useRoute()
-
 const emit = defineEmits([
     'delete', 
     'addCart'
@@ -76,15 +74,6 @@ const onChange = () => {
     emit('addCart',data)
 }
 
-const control_cant = () => {
-   
-    if (parseInt(quantity.value) > parseInt(stock.value)) { 
-       quantity.value = stock.value; 
-    } else if (parseInt(quantity.value) < 1) {
-        quantity.value = 1;
-    }
-}
-
 const increment = () => {
     if (quantity.value < stock.value) {
         quantity.value++
@@ -104,18 +93,18 @@ const decrement = () => {
 <template>
     <div class="tw-no-underline zoom-product">
         <VCard 
-            class="no-shadown p-0 w-100 py-7" 
+            class="no-shadown p-0 w-100 py-5 py-md-7" 
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow no-gutters>
                 <VCol cols="6" md="2" class="d-flex justify-content-center align-center">
-                    <VCardText class="border-img ms-10">
+                    <VCardText class="border-img ms-5 ms-md-10">
                         <VImg 
                             :width="100"
                             :src="baseURL + image" 
                             cover />
                     </VCardText>
                 </VCol>
-                <VCol cols="12" md="6" class="d-flex flex-column py-5 ps-7 my-auto">
+                <VCol cols="12" md="6" class="d-flex flex-column py-3 py-md-5 ps-4 ps-md-7 my-auto">
                     <VCardText>
                         <span class="d-block text_2 py-1 tw-text-tertiary title-product">{{ name }}</span>
                         <span class="d-block py-0 tw-text-gray">Color: {{ color }}</span>
@@ -130,8 +119,8 @@ const decrement = () => {
                     </VCardText>
 
                 </VCol>
-                <VCol cols="6" md="2" class="d-flex flex-column py-5 my-auto">
-                    <VCardText class="d-flex text-center align-center justify-content-center"> 
+                <VCol cols="6" md="2" class="d-flex flex-column py-md-5 my-auto">
+                    <VCardText class="d-flex text-center align-center ps-7 ps-md-2 tw-justify-start md:tw-justify-center"> 
                         <div class="number-input-wrapper" :class="(quantity > stock) ? 'warning' : ''">
                             <VBtn icon size="x-small" @click="decrement" variant="plain" color="#0A1B33">
                                 <VIcon>mdi-minus</VIcon>
@@ -147,32 +136,16 @@ const decrement = () => {
                                 <VIcon>mdi-plus</VIcon>
                             </VBtn>
                         </div>
-                        <!-- <VTextField
-                            v-model="quantity"
-                            placeholder="0"
-                            variant="solo"
-                            type="number"
-                            :min="wholesale_min"
-                            :max="stock"
-                            @change="onChange"
-                            @input="control_cant"
-                            :disabled="(quantity > stock)"
-                        /> -->
                     </VCardText>
-                    <VCardText class="d-flex text-center align-center justify-content-center mt-2">
+                    <VCardText class="d-flex text-center align-center mt-2 ps-8 ps-md-2 tw-justify-start md:tw-justify-center">
                         <span class="tw-text-xs" :class="(quantity > stock) ? 'tw-text-yellow' : 'tw-text-gray'">
-                            {{ (in_stock === 1) ? stock + ' disponibles'  : 'AGOTADO' }}
+                            {{ (in_stock === 1) ? stock + ( stock > 1 ? ' disponibles' : ' disponible')  : 'AGOTADO' }}
                         </span>
                     </VCardText>
                   </VCol>
-                <VCol cols="6" md="2" class="align-center text-center py-5 my-auto pe-4">
-                    <!-- <VCardText class="d-flex text-center align-center justify-content-center">
-                        <div class="d-flex text-center align-center justify-content-center">
-                            <span class="tw-text-gray">${{ formatNumber(wholesale_price) }}</span>
-                        </div>
-                    </VCardText> -->
+                <VCol cols="6" md="2" class="align-center text-center pb-0 py-md-5 mt-auto my-md-auto pe-4">
                     <VCardText class="mt-1">
-                        <div class="d-flex text-center align-center justify-content-center">
+                        <div class="d-flex text-center align-center tw-justify-end md:tw-justify-center">
                             <span v-if="existence_whole" class="text_1 tw-text-tertiary">${{ formatNumber(wholesale_price) }}</span>
                             <span v-if="!existence_whole" class="text_1 tw-text-tertiary">${{ formatNumber(price_for_sale) }}</span>
                         </div>

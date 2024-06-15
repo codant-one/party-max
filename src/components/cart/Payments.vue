@@ -141,12 +141,12 @@ const chanceExpress = () => {
         @submit.prevent="onSubmit"> 
         <VRow>
             <VCol cols="12">
-                <VCard class="card-products mx-auto px-0">
+                <VCard class="card-products mt-0 px-0">
                     <h1 class="title-summary border-title pb-4">Detalles de Facturación</h1>
                     <VCardText class="p-0 mt-3 px-2 px-md-15">
                         <VCardItem class="pb-0 px-2 px-md-10">
                             <VRow no-gutters class="text-left align-center px-2 px-md-15">
-                                <VCol cols="12" md="6" class="textinput mb-2 mb-md-2 pt-3">
+                                <VCol cols="12" md="6" class="textinput mb-0 mb-md-2 pt-md-3">
                                     <VTextField
                                         label="Nombre"
                                         v-model="billingDetail.name"
@@ -155,7 +155,7 @@ const chanceExpress = () => {
                                         class="me-0 me-md-2"
                                         />
                                 </VCol>
-                                <VCol cols="12" md="6" class="textinput mb-2 mb-md-2 pt-3">
+                                <VCol cols="12" md="6" class="textinput mb-0 mb-md-2 pt-md-3">
                                     <VTextField
                                         label="Apellido"
                                         v-model="billingDetail.last_name"
@@ -163,7 +163,7 @@ const chanceExpress = () => {
                                         :rules="[requiredValidator]"
                                         />
                                 </VCol>
-                                <VCol cols="12" md="6" class="textinput mb-2 mb-md-2">
+                                <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
                                     <VTextField
                                         label="Nombre de la empresa (opcional)"
                                         v-model="billingDetail.company"
@@ -278,7 +278,7 @@ const chanceExpress = () => {
 
                 <VCard class="card-products mx-auto px-0">
                     <h1 class="title-summary border-title pb-4">Resumen de compra</h1>
-                    <h2 class="title-card px-16 my-3">Productos {{ props.iswholesale ? '(al mayor)' : ''}}</h2>
+                    <h2 class="title-card px-5 px-md-16 my-3">Productos {{ props.iswholesale ? '(al mayor)' : ''}}</h2>
                     <VCardText class="row-cardp p-0">
                         <Product6
                             v-for="(product, i) in props.products"
@@ -287,21 +287,21 @@ const chanceExpress = () => {
                             :readonly="true"
                             :isLastItem="isLastItem(i)"/>
                     </VCardText>
-                    <VRow class="row-cardp3 pb-0 px-16">
-                        <VCol cols="12" md="6" class="text-left">
+                    <VRow class="row-cardp3 pb-0 px-5 px-md-16">
+                        <VCol cols="6" md="6" class="text-left">
                             <span>Subtotal</span>
                         </VCol>
 
-                        <VCol cols="12" md="6" class="text-right">
+                        <VCol cols="6" md="6" class="text-right pe-6 pe-md-3">
                             <h4>${{ formatNumber(props.summary.subTotal) }}</h4> 
                         </VCol>
                     </VRow>
                 </VCard>
 
                 <VCard class="card-products mx-auto px-0">
-                    <h2 class="title-card px-16 my-3">Forma de entrega</h2>
-                    <VRow class="row-cardelivery3 px-16">
-                        <VCol cols="12" md="3" class="textinput mb-0 mb-md-7">
+                    <h2 class="title-card px-5 px-md-16 my-3">Forma de entrega</h2>
+                    <VRow class="row-cardelivery3 px-5 px-md-16">
+                        <VCol cols="6" md="3" class="textinput">
                             <VCheckbox
                                 v-model="sendToBogota" 
                                 label="Envío a Bogota"
@@ -309,9 +309,8 @@ const chanceExpress = () => {
                                 @update:modelValue="chanceSend"
                             />
                         </VCol>
-                        <VCol cols="12" md="9" class="textinput mb-0 mb-md-7">
+                        <VCol cols="6" md="9" class="textinput" v-if="sendToBogota">
                             <VCheckbox
-                                v-if="sendToBogota"
                                 v-model="shipping_express" 
                                 label="Envío express"
                                 color="primary"
@@ -327,7 +326,7 @@ const chanceExpress = () => {
                                 Código Postal: {{ address.postal_code }}. 
                             </h4>
                         </VCol>
-                        <VCol cols="12" md="2" class="text-right">
+                        <VCol cols="12" md="2" class="text-right pe-6 pe-md-3">
                             <h4>${{ formatNumber(props.summary.send) }}</h4> 
                         </VCol>
                     </VRow>
@@ -341,18 +340,18 @@ const chanceExpress = () => {
                     </VCardTitle>
 
                     <VRow class="text-center d-flex" style="width:70%; margin-top:16px;">
-                        <v-text-field label="" variant="outlined"></v-text-field>
+                        <VTextField label="" variant="outlined"></VTextField>
                         <button class="button-bono">Aplicar</button>
                     </VRow>
                 </VCard>
 
                 <VCard class="card-bono mx-auto p-0">
-                    <VCardTitle class="d-flex row-total title-card px-16">
+                    <VCardTitle class="d-flex row-total title-card px-5 px-md-16">
                         <h4>Total</h4>     
                         <VSpacer />
                         <h5 class="tw-font-semibold">${{ formatNumber(props.summary.total) }}</h5>
                     </VCardTitle>
-                    <VCardText class="d-flex row-realizar title-card w-100 px-16">
+                    <VCardText class="d-flex row-realizar title-card w-100 px-5 px-md-16 pb-0">
                         <VBtn
                             block
                             variant="flat"
@@ -361,12 +360,12 @@ const chanceExpress = () => {
                                 Realizar pedido
                         </VBtn>
                     </VCardText>
-                    <VCardText class="d-block row-payu align-center text-center p-0 px-8 px-md-16 pb-5">
-                        <div class="d-flex align-center text-center justify-content-center">
-                            <span class="me-5">PayU Latam Online Payments</span>
+                    <VCardText class="d-block row-payu align-center text-center p-0 px-5 px-md-16 pb-5">
+                        <div class="d-flex align-center tw-text-left md:tw-text-center justify-content-center">
+                            <span class="tw-text-left me-2 me-md-5">PayU Latam Online Payments</span>
                             <img :src="Payu"/>
                         </div>
-                        <VCardItem class="align-center text-center py-5 py-md-0 px-2 px-md-15">
+                        <VCardItem class="align-center text-center py-2 py-md-0 px-2 px-md-15">
                             <span>
                                 Pague con tarjeta de crédito, debito o transacción bancaria de forma segura a través de los
                                 servidores seguros de PayU Latinoamérica.
@@ -388,8 +387,13 @@ const chanceExpress = () => {
         font-size: 14px;
     }
 
+    .v-text-field::v-deep(.v-field__outline) {
+        border-radius: 24px;
+    }
+
     .v-text-field::v-deep(.v-field__outline__start) {
         flex: 0 0 17px !important;
+        border-start-start-radius: 24px;
     }
 
     .v-text-field::v-deep(::placeholder) { 
@@ -403,9 +407,10 @@ const chanceExpress = () => {
         padding-left: 20px !important;
     }
 
-    .v-text-field::v-deep(.v-input__details) {
+    .textinput .v-text-field::v-deep(.v-input__details) {
         min-height: 15px !important;
     }
+
 
     .textinput .v-text-field::v-deep(.v-field-label) {
         top: 33% !important;
@@ -625,14 +630,20 @@ const chanceExpress = () => {
 
     @media only screen and (max-width: 767px)
     {
-        .card-products
-        {
+        .card-products {
             padding: 16px 10px;
         }
 
-        .form-facturacion
-        {
+        .form-facturacion {
             width: 100%!important;
+        }
+
+        .title-summary, .title-card {
+            font-size: 20px !important;
+        }
+
+        .row-payu span, p {
+            font-size: 14px !important;
         }
     }
 
