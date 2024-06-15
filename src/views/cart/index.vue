@@ -610,8 +610,9 @@ const chanceSend = value => {
                 v-if="products.length === 0 && (typeof route.query.merchantId === 'undefined')"
                 class="mb-10 card-timeline px-0">
                 <VCardText class="d-flex flex-colum align-center text-center justify-content-center">
-                    <VCardItem class="d-block align-center text-center justify-content-center">
-                        <cart class="d-block mx-auto mb-5"/>
+                    <VCardItem class="d-block align-center text-center justify-content-center cart-svg">
+                        <cart v-if="!isMobile" class="d-block mx-auto mb-5"/>
+                        <cart_mobile v-else class="d-block mx-auto mb-5"/>
                         <span class="d-block cart-empty">Tu carrito esta vacio.</span>
                     </VCardItem>
                </VCardText>
@@ -974,6 +975,10 @@ const chanceSend = value => {
     }
 
     @media only screen and (max-width: 767px) {
+
+        .cart-svg::v-deep(path) {
+            fill: #FF0090 !important;
+        }
 
         .v-checkbox::v-deep(.v-selection-control) {
             text-align: center;
