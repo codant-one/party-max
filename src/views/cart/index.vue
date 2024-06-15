@@ -622,10 +622,10 @@ const chanceSend = value => {
             <VRow class="px-3 px-md-5 mt-5" v-if="currentStep === 0 && products.length > 0">
                 <VCol cols="12" style="border-bottom: 1px solid #0A1B33;">
                     <VRow>
-                        <VCol cols="8" md="6" class="text-left">
+                        <VCol cols="9" md="6" class="text-left">
                             <h3>Recomendaciones que te pueden interesar</h3>
                         </VCol>
-                        <VCol cols="4" md="6" class="text-right d-flex align-center justify-content-end">
+                        <VCol cols="3" md="6" class="text-right d-flex align-center justify-content-end pl-0 pr-1 pr-md-5">
                             <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-0 me-md-3 hover:tw-text-primary">Ver todos</router-link>
                         </VCol>
                     </VRow>
