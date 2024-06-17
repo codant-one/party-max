@@ -12,6 +12,7 @@ import router from '@/router'
 import Loader from "@/components/common/Loader.vue";
 import icon1 from "@/assets/icons/icon-menu-product.svg";
 import icon2 from "@/assets/icons/icon-menu-product2.svg";
+import icon3 from "@/assets/icons/icon-menu-product3.svg";
 import Product3 from "@/components/product/Product3.vue";
 import Product4 from "@/components/product/Product4.vue";
 import arrow_right from '@assets/icons/arrow_right.svg?inline';
@@ -400,10 +401,10 @@ const addfavorite = (product_id) => {
         <v-breadcrumbs :items="bread" class="px-2"/>
       </VContainer>
     </VAppBar>
-    <VContainer class="pt-0">
+    <VContainer class="pt-0 container-mobile">
       <Loader :isLoading="isLoading" />
       <VRow no-gutters v-if="categories" class="products-structure">
-        <VCol cols="12" md="3">
+        <VCol cols="12" md="3" class="d-none d-md-block">
           <VCard class="mt-7 sidebar-container">
             <VCardItem class="p-0 text-left mt-6"> CATEGORÍAS </VCardItem>
 
@@ -791,19 +792,20 @@ const addfavorite = (product_id) => {
 
         <VCol cols="12" md="9" class="col-menuproduct d-flex flex-column">
           <!-- filters -->
-          <VCard class="mt-7 menu-prod">
+          <VCard class="mt-7 menu-prod pt-0 pt-md-2 px-0 px-md-5">
             <VRow no-gutters class="align-center">
               <VCol
                 cols="6"
                 md="6"
-                class="text-left order-first order-md-first"
+                lg="6"
+                class="text-left order-first order-md-first pb-7 pb-md-0 pl-4 pl-md-0 border-mobile"
               >
-                <span>{{ totalProducts }} </span>
-                <span v-if="totalProducts === 1"> Producto </span>
-                <span v-else> Productos </span>
+                <span class="text-products">{{ totalProducts }} </span>
+                <span class="text-products pl-3 pl-md-0" v-if="totalProducts === 1"> Producto </span>
+                <span class="text-products pl-3 pl-md-0" v-else> Productos </span>
               </VCol>
 
-              <VCol cols="6" md="4" class="pl-7 text-left">
+              <VCol cols="7" md="7" lg="4" class="text-left pl-4 pl-lg-0">
                 <VSelect
                   v-model="sortBy"
                   :items="sortByItems"
@@ -819,10 +821,16 @@ const addfavorite = (product_id) => {
                 />
               </VCol>
 
+              <VCol cols="5" md="5" lg="5" class="filter-mobile d-flex justify-content-end align-center d-lg-none tw-text-right pr-5">
+                <img :src="icon3" />
+                <span class="pl-2">Filtros</span>
+              </VCol>
+
               <VCol
                 cols="6"
-                md="2"
-                class="pl-7 d-flex align-center justify-content-between order-first order-md-last"
+                md="6"
+                lg="2"
+                class="pr-4 pr-md-0 pl-10 pl-md-16 pl-lg-7 d-flex align-center justify-content-between order-first order-lg-last mb-5 mb-md-0 border-mobile"
               >
                 <span>Vista</span>
                 <VTabs v-model="tab">
@@ -838,10 +846,10 @@ const addfavorite = (product_id) => {
           </VCard>
 
           <!-- padres, hijos y nietos -->
-          <VCard  class="no-shadown mt-5 card-icons tw-bg-green" v-if="route.query.fathercategory && category">
+          <VCard class="no-shadown mt-5 card-icons tw-bg-green" v-if="route.query.fathercategory && category">
             <VCardText 
-              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.length < 6"
-              class="px-4 px-md-7 d-flex align-items-stretch"
+              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.length < 6 && !isMobile"
+              class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
               :class="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
               <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren">
                 <router-link
@@ -863,11 +871,11 @@ const addfavorite = (product_id) => {
             </VCardText>
             <VCardText 
               v-else
-              class="px-4 d-flex align-items-stretch justify-content-center">
+              class="py-2 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
               <swiper
                 :initialSlide="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.findIndex(item =>item.slug === route.query.category + '/' + route.query.fathercategory + '/' + route.query.subcategory)"
-                :slidesPerView="5"
-                :spaceBetween="5"
+                :slidesPerView="isMobile ? 3 : 5"
+                :spaceBetween="isMobile ? 1 : 5"
                 :navigation="true"
                 :loop="true"
                 :modules="modules"
@@ -901,8 +909,8 @@ const addfavorite = (product_id) => {
             && route.query.category && category
             && categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length > 0">
             <VCardText 
-              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length < 6"
-              class="px-4 px-md-7 d-flex align-items-stretch"
+              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length < 6 && !isMobile"
+              class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
               :class="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
               <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren">
                 <router-link
@@ -924,10 +932,10 @@ const addfavorite = (product_id) => {
             </VCardText> 
             <VCardText 
               v-else
-              class="px-4 d-flex align-items-stretch justify-content-center">
+              class="py-2 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
               <swiper
-                :slidesPerView="5"
-                :spaceBetween="5"
+                :slidesPerView="isMobile ? 3 : 5"
+                :spaceBetween="isMobile ? 1 : 5"
                 :navigation="true"
                 :loop="true"
                 :modules="modules"
@@ -961,8 +969,8 @@ const addfavorite = (product_id) => {
             && route.query.category && category
             && categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length === 0">
             <VCardText 
-              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 6"
-              class="px-4 px-md-7 d-flex align-items-stretch"
+              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 6 && !isMobile"
+              class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
               :class="categories.filter(item =>item.slug === route.query.category)[0].children.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
               <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
                 <router-link
@@ -983,11 +991,11 @@ const addfavorite = (product_id) => {
             </VCardText> 
             <VCardText 
               v-else
-              class="px-4 d-flex align-items-stretch justify-content-center">
+              class="py-2 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
               <swiper
                 :initialSlide="categories.filter(item =>item.slug === route.query.category)[0].children.findIndex(item =>item.slug === route.query.category + '/' + route.query.subcategory)"
-                :slidesPerView="5"
-                :spaceBetween="5"
+                :slidesPerView="isMobile ? 3 : 5"
+                :spaceBetween="isMobile ? 1 : 5"
                 :navigation="true"
                 :loop="true"
                 :modules="modules"
@@ -1020,8 +1028,8 @@ const addfavorite = (product_id) => {
             && route.query.category && category
             && categories.filter(item =>item.slug === route.query.category)[0].children.length > 0">
             <VCardText 
-              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 6"
-              class="px-4 px-md-7 d-flex align-items-stretch"
+              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 6 && !isMobile"
+              class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
               :class="categories.filter(item =>item.slug === route.query.category)[0].children.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
               <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
                 <router-link
@@ -1042,10 +1050,10 @@ const addfavorite = (product_id) => {
             </VCardText> 
             <VCardText 
               v-else
-              class="px-4 d-flex align-items-stretch justify-content-center">
+              class="py-2 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
               <swiper
-                :slidesPerView="5"
-                :spaceBetween="5"
+                :slidesPerView="isMobile ? 3 : 5"
+                :spaceBetween="isMobile ? 1 : 5"
                 :navigation="true"
                 :loop="true"
                 :modules="modules"
@@ -1074,8 +1082,8 @@ const addfavorite = (product_id) => {
           <div class="align-center row-products pb-0">
             <v-window v-model="tab">
               <v-window-item value="0">
-                <VRow no-gutters class="ms-3">
-                  <VCol cols="6" md="3" v-for="(product, i) in products" class="mb-7">
+                <VRow no-gutters class="ms-1 ms-md-3">
+                  <VCol cols="6" sm="4" md="4" lg="3" v-for="(product, i) in products" class="mb-3 mb-md-7">
                     <Product3 :key="i" :product="product" :readonly="true" />
                   </VCol>
                 </VRow>
@@ -1177,6 +1185,7 @@ const addfavorite = (product_id) => {
     color: #0A1B33 !important;
     width: 6px !important;
   }
+
   .swiper::v-deep(.swiper-button-prev:after), .swiper::v-deep(.swiper-button-next:after) {
     font-size: 20px;
     font-weight: bold;
@@ -1492,5 +1501,63 @@ const addfavorite = (product_id) => {
     .col-menuproduct {
       padding-left: 0px !important;
     }
+
+    .breadcumb {
+      height: 50px !important;
+      margin-top: -5px !important;
+    }
+    
+    .v-breadcrumbs {
+      padding-top: 0 !important;
+      margin-top: -5px !important;
+    }
+
+    .v-breadcrumbs::v-deep(.v-breadcrumbs-item) {
+      font-size: 13px;
+    }
+
+    .v-breadcrumbs::v-deep(.v-breadcrumbs-divider){
+      padding: 0 2px !important;
+    }
+
+    .container-mobile {
+      margin-top: -25px !important;
+    }
+
+    .border-mobile {
+      border-bottom: 1px solid #D9EEF2 !important; 
+    }
+
+    .my-custom-select {
+      margin-top: -10px !important;
+    }
+
+    .text-products {
+      margin-top: -3px !important;
+      position: absolute;
+    }
+
+    .filter-mobile {
+      margin-top: -15px !important;
+    }
+
+    .border-theme {
+      width: 70px !important;
+    }
+
+    .border-theme-active {
+      width: 70px !important;
+    }
+
+    .size-theme {
+      font-size: 10px !important;
+      height: 30px !important;
+    }
+
+    .swiper-slide img {
+      width: 70px !important;
+      height: 70px !important;
+    }
+
   }
 </style>

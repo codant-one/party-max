@@ -55,25 +55,28 @@ watchEffect(() => {
         }"
         class="tw-no-underline zoom-product">
         <VCard class="no-shadown card-information p-0">
-            <VCardText class="border-img ms-1">
+            <VCardText class="border-img ms-1 mb-2">
                 <VImg 
                     class="img-prod"
                     :src="baseURL + image" 
                     cover />
             </VCardText>
             <VCardText>
-                <span v-if="name.length > 50 && !isMobile" class="d-block text_2 py-2 tw-text-tertiary title-product">
+                <span v-if="name.length > 50 && !isMobile" class="d-block text_2 tw-text-tertiary title-product">
                     {{ name.slice(0, 50) + '...'}}
                 </span>
-                <span v-else class="d-block text_2 py-2 tw-text-tertiary title-product">
+                <span v-else class="d-block text_2 tw-text-tertiary title-product">
                     <span v-if="isMobile"> {{ name.slice(0, 25) + '...'}}</span>
                     <span v-else> {{ name }}</span>
                 </span>
             </VCardText>
             <VCardText>
-                <span class="d-block text_2 store">Tienda: <strong>{{ store }}</strong></span>
+                <span class="d-block text_2 store">Tienda:
+                    <strong v-if="store.length > 15 && isMobile">{{ store.slice(0, 15) + '...' }}</strong>
+                    <strong v-else>{{ store }}</strong>
+                </span>
             </VCardText>
-            <VCardText class="px-1 mt-1">
+            <VCardText class="px-1">
                 <div class="d-flex">
                     <VRating
                         half-increments
@@ -109,6 +112,7 @@ watchEffect(() => {
         border-radius: 16px !important;
         border: 1px solid #D9EEF2;
         padding: 10px !important;
+        background-color: white;
         text-align: center;
         align-items: center;
         display: flex;
@@ -127,7 +131,7 @@ watchEffect(() => {
     }
 
     .title-product {
-        min-height: 55px;
+        min-height: 45px;
     }
 
     .store {
@@ -161,17 +165,22 @@ watchEffect(() => {
 
 @media only screen and (max-width: 767px) {
     .card-information {
-        width: 171px;
-    }
-
-    .img-prod {
-        width:171px;
+        width: 95%;
     }
 
     .border-img {
-        width: 171px;
-        height: 171px;
+        width: auto;
+        height: 150px;
     }
+
+    .text_1 {
+        font-size: 16px;
+    }
+
+    .text_2 {
+        font-size: 13px;
+    }
+
 
     .title-product {
          min-height: 40px;
