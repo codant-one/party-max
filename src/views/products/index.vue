@@ -122,7 +122,7 @@ async function fetchData() {
   let info = {
     orderByField: (route.query.category && route.query.category !== 'all') ? 'pl.order_id' : 'products.order_id',
     orderBy: 'asc',
-    limit: (isMobile.value) ? 6 : rowPerPage.value,
+    limit: isMobile ? 6 : rowPerPage.value,
     page: currentPage.value,
     category: route.query.category ?? null,
     subcategory: route.query.subcategory ?? null,
@@ -203,13 +203,15 @@ async function fetchData() {
     }
 
 
-    const product_ = {
-      title: "Productos",
-      disabled: true,
-      href: "",
-    };
+    if(!isMobile) {
+      const product_ = {
+        title: "Productos",
+        disabled: true,
+        href: "",
+      };
 
-    bread.value.push(product_);
+      bread.value.push(product_);
+    }
   }
 
   if(localStorage.getItem('user_data')){
