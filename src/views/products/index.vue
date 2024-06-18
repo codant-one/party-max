@@ -122,7 +122,7 @@ async function fetchData() {
   let info = {
     orderByField: (route.query.category && route.query.category !== 'all') ? 'pl.order_id' : 'products.order_id',
     orderBy: 'asc',
-    limit: isMobile.value ? 6 : rowPerPage.value,
+    limit: (isMobile.value) ? 6 : rowPerPage.value,
     page: currentPage.value,
     category: route.query.category ?? null,
     subcategory: route.query.subcategory ?? null,
