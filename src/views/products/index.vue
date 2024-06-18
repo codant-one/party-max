@@ -122,7 +122,7 @@ async function fetchData() {
   let info = {
     orderByField: (route.query.category && route.query.category !== 'all') ? 'pl.order_id' : 'products.order_id',
     orderBy: 'asc',
-    limit: rowPerPage.value,
+    limit: isMobile.value ? 6 : rowPerPage.value,
     page: currentPage.value,
     category: route.query.category ?? null,
     subcategory: route.query.subcategory ?? null,
@@ -798,11 +798,11 @@ const addfavorite = (product_id) => {
                 cols="6"
                 md="6"
                 lg="6"
-                class="text-left order-first order-md-first pb-7 pb-md-0 pl-4 pl-md-0 border-mobile"
+                class="text-left order-first order-md-first pb-4 pb-md-0 pl-4 pl-md-0 border-mobile d-flex"
               >
-                <span class="text-products">{{ totalProducts }} </span>
-                <span class="text-products pl-3 pl-md-0" v-if="totalProducts === 1"> Producto </span>
-                <span class="text-products pl-3 pl-md-0" v-else> Productos </span>
+                <span class="text-products pr-1">{{ totalProducts }} </span>
+                <span class="text-products" v-if="totalProducts === 1"> Producto </span>
+                <span class="text-products" v-else> Productos </span>
               </VCol>
 
               <VCol cols="7" md="7" lg="4" class="text-left pl-4 pl-lg-0">
@@ -1115,7 +1115,7 @@ const addfavorite = (product_id) => {
             <VCardText class="d-flex align-center justify-content-center py-3 px-5 pb-0">
               <VPagination
                 v-model="currentPage"
-                :total-visible="5"
+                :total-visible="isMobile ? 4 : 5"
                 :length="totalPages"
                 rounded="circle"
                 active-color="#FF0090"
@@ -1125,12 +1125,12 @@ const addfavorite = (product_id) => {
                 <template v-slot:prev="{ attrs }">
                   <VBtn variant="plain" icon v-bind="attrs" class="icon-left" @click="changePage('prev')">
                     <arrow_left class="me-2"/>
-                    Anterior
+                    <span class="d-none d-md-block">Anterior</span>
                   </VBtn>
                 </template>
                 <template v-slot:next="{ attrs }">
                   <VBtn variant="plain" icon v-bind="attrs" class="icon-right" @click="changePage('next')">
-                    Siguiente
+                    <span class="d-none d-md-block">Siguiente</span>
                     <arrow_right class="ms-1"/>
                   </VBtn>
                 </template>
@@ -1513,7 +1513,7 @@ const addfavorite = (product_id) => {
     }
 
     .v-breadcrumbs::v-deep(.v-breadcrumbs-item) {
-      font-size: 13px;
+      font-size: 11px;
     }
 
     .v-breadcrumbs::v-deep(.v-breadcrumbs-divider){
@@ -1533,8 +1533,7 @@ const addfavorite = (product_id) => {
     }
 
     .text-products {
-      margin-top: -3px !important;
-      position: absolute;
+      margin-top: -5px !important;
     }
 
     .filter-mobile {
