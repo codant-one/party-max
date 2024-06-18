@@ -151,6 +151,7 @@ const deleteFavorite = async (product_id) => {
         caret-color: #0A1B33;
         z-index: 999;
         text-transform: capitalize;
+        z-index: 0;
     }
 
     .v-pagination::v-deep(.v-pagination__prev button) {
@@ -186,6 +187,7 @@ const deleteFavorite = async (product_id) => {
         color: #0A1B33;
         caret-color: #0A1B33;
         opacity: 1;
+        z-index: 0;
     }
 
     .v-pagination::v-deep(.v-pagination__item--is-active .v-btn__content) {
