@@ -1513,7 +1513,7 @@ const addfavorite = (product_id) => {
     }
 
     .v-breadcrumbs::v-deep(.v-breadcrumbs-item) {
-      font-size: 11px;
+      font-size: 10px;
     }
 
     .v-breadcrumbs::v-deep(.v-breadcrumbs-divider){
@@ -1556,6 +1556,15 @@ const addfavorite = (product_id) => {
     .swiper-slide img {
       width: 70px !important;
       height: 70px !important;
+    }
+
+    .v-pagination::v-deep(.v-pagination__next button) {
+      padding-left: 0 !important;
+    }
+
+    .v-pagination::v-deep(.v-pagination__prev .v-btn__content), .v-pagination::v-deep(.v-pagination__prev button),
+    .v-pagination::v-deep(.v-pagination__next .v-btn__content), .v-pagination::v-deep(.v-pagination__next button) {
+      width: 30px !important;
     }
 
   }
