@@ -879,7 +879,7 @@ const addfavorite = (product_id) => {
             </VCardText>
             <VCardText 
               v-else
-              class="py-2 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
+              class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
               <swiper
                 :initialSlide="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.findIndex(item =>item.slug === route.query.category + '/' + route.query.fathercategory + '/' + route.query.subcategory)"
                 :slidesPerView="isMobile ? 3 : 5"
@@ -940,7 +940,7 @@ const addfavorite = (product_id) => {
             </VCardText> 
             <VCardText 
               v-else
-              class="py-2 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
+              class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
               <swiper
                 :slidesPerView="isMobile ? 3 : 5"
                 :spaceBetween="isMobile ? 1 : 5"
@@ -999,7 +999,7 @@ const addfavorite = (product_id) => {
             </VCardText> 
             <VCardText 
               v-else
-              class="py-2 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
+              class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
               <swiper
                 :initialSlide="categories.filter(item =>item.slug === route.query.category)[0].children.findIndex(item =>item.slug === route.query.category + '/' + route.query.subcategory)"
                 :slidesPerView="isMobile ? 3 : 5"
@@ -1058,7 +1058,7 @@ const addfavorite = (product_id) => {
             </VCardText> 
             <VCardText 
               v-else
-              class="py-2 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
+              class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
               <swiper
                 :slidesPerView="isMobile ? 3 : 5"
                 :spaceBetween="isMobile ? 1 : 5"
@@ -1560,7 +1560,9 @@ const addfavorite = (product_id) => {
 
     .size-theme {
       font-size: 10px !important;
-      height: 30px !important;
+      max-height: 12px !important;
+      line-height: 12px !important;
+      margin-bottom: 4px;
     }
 
     .swiper-slide img {
