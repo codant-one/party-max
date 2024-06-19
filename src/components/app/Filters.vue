@@ -167,8 +167,7 @@ const toggleSubGroupFn = (index, subCat) => {
                 class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
               >
                 <span>
-                  <VIcon icon="mdi-chevron-left" />
-                  TODAS LAS CATEGORIAS
+                  <VIcon icon="mdi-chevron-left" />TODAS LAS CATEGORIAS
                 </span>
               </router-link>
             </VCardItem>
@@ -281,7 +280,7 @@ const toggleSubGroupFn = (index, subCat) => {
             </VList>
 
             <!-- padres, hijos y nietos -->
-            <VList v-if="route.query.fathercategory && category" v-model:opened="panelCat">
+            <VList v-if="route.query.fathercategory && category" v-model:opened="panelCat" class="pt-1">
               <VListItem class="tw-font-bold hover:tw-text-primary tw-uppercase px-0">
                 <span>
                   <VIcon icon="mdi-chevron-left" />
@@ -599,6 +598,10 @@ const toggleSubGroupFn = (index, subCat) => {
 
     .v-list::v-deep(.v-list-item--active) {
         background-color: #F3FCFE !important;
+    }
+
+    .text-allcategories {
+        font-size: 12px;
     }
 
     .transparent {
