@@ -38,6 +38,7 @@ const onlyWholesale = ref(false)
 watch(() => 
     props.drawer, (data) => {
         drawer_.value = data
+        fetchData()
     }
 );
 
