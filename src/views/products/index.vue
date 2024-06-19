@@ -832,7 +832,7 @@ const addfavorite = (product_id) => {
                 cols="6"
                 md="6"
                 lg="2"
-                class="pr-4 pr-md-0 pl-10 pl-md-16 pl-lg-7 d-flex align-center justify-content-between order-first order-lg-last mb-5 mb-md-0 border-mobile"
+                class="pr-4 pr-md-0 pl-5 pl-md-16 pl-lg-7 d-flex align-center justify-content-between order-first order-lg-last mb-5 mb-md-0 border-mobile"
               >
                 <span>Vista</span>
                 <VTabs v-model="tab">
@@ -1091,7 +1091,7 @@ const addfavorite = (product_id) => {
                 </VRow>
               </v-window-item>
               <v-window-item value="1">
-                <VRow no-gutters class="ms-3">
+                <VRow no-gutters class="ms-md-3">
                   <VCol cols="12" v-for="(product, i) in products">
                     <Product4
                       :key="i"

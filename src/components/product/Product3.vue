@@ -181,9 +181,8 @@ watchEffect(() => {
         font-size: 13px;
     }
 
-
     .title-product {
-         min-height: 40px;
+        min-height: 40px;
     }
 
     .store {

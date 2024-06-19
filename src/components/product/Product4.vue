@@ -52,6 +52,7 @@ const load = ref(props.loading)
 const isFavoriteProduct = ref(null)
 const product_id = ref(props.productId)
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
+const isMobile = /Mobi/i.test(navigator.userAgent);
 
 watch(() => 
     props.loading, (data) => {
@@ -106,8 +107,8 @@ const addfavorite = () => {
             class="no-shadown p-0 pb-5 w-100 mb-5" 
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow>
-                <VCol cols="12" md="3">
-                    <VCardText class="border-img ms-5">
+                <VCol cols="6" md="3">
+                    <VCardText class="border-img ms-md-5">
                         <router-link
                             :to="{
                                 name: 'productDetail',
@@ -117,25 +118,25 @@ const addfavorite = () => {
                             }"
                             class="tw-no-underline">
                             <VImg 
-                                :width="177"
+                                :width="isMobile ? 120 : 177"
                                 :src="baseURL + image" 
                                 cover />
                         </router-link>
                     </VCardText>
                 </VCol>
-                <VCol cols="12" md="6">
-                    <VCardText class="d-flex">
-                        <span class="d-block text_2 py-1 tw-text-tertiary title-product">{{ name }}</span>
+                <VCol cols="12" md="6" class="py-0 py-md-3">
+                    <VCardText class="d-flex px-1 px-md-2">
+                        <span class="d-block text_2 py-md-1 tw-text-tertiary title-product">{{ name }}</span>
                         <strong class="tw-text-gray tw-text-base ms-3">
                             {{ (in_stock === 1) ? ''  : 'AGOTADO' }}
                         </strong>
                     </VCardText>
-                    <VCardText class="px-1 pb-1">
+                    <VCardText class="px-0 px-md-1 pb-1">
                         <div class="d-flex">
                             <VRating
                                 half-increments
                                 :length="5"
-                                :size="25"
+                                :size="isMobile ? 20 : 25"
                                 :model-value="rating"
                                 :readonly="readonly"
                                 color="yellow-darken-2"
@@ -144,24 +145,22 @@ const addfavorite = () => {
                             <span class="text_2 ms-2 mt-1">({{ cant_stock }})</span>
                         </div>
                     </VCardText>
-                    <VCardText>
+                    <VCardText class="px-1 px-md-2">
                         <span class="d-block store tw-text-tertiary">Tienda: {{ store }}</span>
+                    </VCardText>          
+                    <VCardText class="px-1 px-md-2">
+                        <span class="d-block text_2 mt-3 mt-md-5" v-html="single_description"></span>
                     </VCardText>
-                    
-                    <VCardText>
-                        <span class="d-block text_2 mt-5" v-html="single_description"></span>
-                    </VCardText>
-
                 </VCol>
                 <VCol cols="12" md="3" class="align-center text-center">
-                    <VCardText>
-                        <div class="d-flex text-center align-center justify-content-center">
+                    <VCardText class="px-1 px-md-2">
+                        <div class="d-flex text-center align-center tw-justify-start md:tw-justify-center">
                             <span v-if="!existence_whole" class="text_1 tw-text-tertiary">${{formatNumber(price_for_sale) }}</span>
                             <span v-if="existence_whole" class="text_1 tw-text-tertiary">${{formatNumber(wholesale_price) }}</span>
                         </div>
                     </VCardText>
-                    <VCardText class="mt-3">
-                        <div class="d-flex text-center align-center justify-content-center">
+                    <VCardText class="mt-3 px-1 px-md-2">
+                        <div class="d-flex text-center align-center tw-justify-start md:tw-justify-center">
                             <VBtn
                                 variant="flat"
                                 @click="addCart"
@@ -176,8 +175,8 @@ const addfavorite = () => {
                             </VBtn>
                         </div>
                     </VCardText>
-                    <VCardText class="mt-3">
-                        <div class="d-flex text-center align-center justify-content-center tw-cursor-pointer heart" @click="addfavorite">
+                    <VCardText class="mt-3 px-1 px-md-2">
+                        <div class="d-flex text-center align-center tw-justify-start md:tw-justify-center tw-cursor-pointer heart" @click="addfavorite">
                             <span class="text_2 d-flex align-center">
                                 <span 
                                     class="me-2 pt-1"
@@ -206,7 +205,6 @@ const addfavorite = () => {
     .heart:hover::v-deep(span) {
         color: #FF0090;
     }
-
 
     .heart_fill::v-deep(path) {
         fill: #FF0090 !important;
@@ -292,6 +290,14 @@ const addfavorite = () => {
         font-style: normal;
         font-weight: 400;
         line-height: 8px; /* 80% */ 
+    }
+
+    @media only screen and (max-width: 767px) {
+    
+        .border-img {
+            width: auto;
+            height: 140px;
+        }
     }
     
 </style>
