@@ -1088,7 +1088,7 @@ const addfavorite = (product_id) => {
 
           <!-- products -->
           <div class="align-center row-products pb-0">
-            <v-window v-model="tab">
+            <v-window v-model="tab" disabled>
               <v-window-item value="0">
                 <VRow no-gutters class="ms-1 ms-md-3">
                   <VCol cols="6" sm="4" md="4" lg="3" v-for="(product, i) in products" class="mb-3 mb-md-7">

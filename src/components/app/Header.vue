@@ -316,11 +316,11 @@
             <VListItemTitle class="d-block lineheight borderList pb-2">
             <router-link 
               :to="{
-                name: 'categories',
-                params: {
-                  slug: item.slug
+                name: 'products',
+                query: {
+                  category: item.slug
                 }
-              }"  
+              }" 
               class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">{{ item.name }}</span>
             </router-link>
@@ -617,85 +617,7 @@
               </VRow>
             </VCard>
           </VMenu>
-          </div>
-        <!--<div class="hover:tw-text-yellow">
-          <VMenu 
-            v-model="menuOpenS"
-            transition="slide-x-transition" 
-            location="bottom"
-            :close-on-content-click="false"
-            @update:modelValue="chanceMenuS">
-            <template  v-slot:activator="{ props }">
-              <div v-bind="props" class="d-flex">
-                <VAppBarNavIcon variant="text" />
-                <div class="pt-3">
-                  <span class="font-size-16 me-7 tw-cursor-pointer">Servicios</span>
-                </div>
-              </div>
-            </template>
-            <VCard class="style-menu" :width="widths" @mouseleave="closeMenuOnMouseLeave">
-              <VRow no-gutters>
-                <VCol cols="12" :md="colse" class="py-5 pr-3">
-                  <VList class="pb-0">
-                    <VListItem>
-                      <VListItemTitle class="d-block lineheight">
-                        <span class="d-block title-menu">SERVICIOS</span>
-                        <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
-                        </svg>
-                      </VListItemTitle>
-                    </VListItem>
-                    <VListItem  
-                      v-for="(item, index) in services"
-                      :key="index">
-                        <div class="d-flex hover-icon-right tw-cursor-pointer" >
-                          <span v-if="item.children.length>0"
-                            class="subtitle-menu" 
-                            @mouseover="openService(item.id)">
-                            {{ item.name }}
-                          </span>
-
-                          <router-link 
-                            :to="{
-                                  name: 'categories',
-                                  params: {
-                                  slug: item.slug
-                                  }
-                                }" 
-                            class="subtitle-menu tw-no-underline"   
-                            v-else>{{ item.name }}
-                          </router-link> 
-                          <VSpacer />
-                          <icon_right v-if="item.children.length>0"/> 
-                           
-                        </div>
-                    </VListItem>
-                  </VList>
-                </VCol>
-                <VCol cols="12" :md="colse" v-show="colse === 6" class="borderCol py-5">
-                  <VList class="style-submenu mt-8">
-                    <VListItem 
-                      v-for="(i, index2) in services[service].children"
-                      :key="index2"
-                      @click="closeMenuS">
-                      <router-link
-                        :to="{
-                          name: 'products',
-                          query: {
-                            category: i.slug.split('/')[0],
-                            subcategory: i.slug.split('/')[1]
-                          }
-                        }"
-                        class="tw-no-underline tw-text-tertiary">
-                        <span class="subtitle-menu">{{ i.name }}</span>
-                      </router-link>
-                    </VListItem>
-                  </VList>
-                </VCol>
-              </VRow>
-            </VCard>
-          </VMenu>
-        </div>-->
+        </div>
         <span @click="toggleWholesalers"
           class="tw-no-underline d-flex align-center text-center tw-cursor-pointer"
           :class="route.query.wholesalers === 'true' ? 'tw-text-yellow hover:tw-text-white hover-icon-arrow-right-white' : 'tw-text-white hover:tw-text-yellow hover-icon-arrow-right'">
