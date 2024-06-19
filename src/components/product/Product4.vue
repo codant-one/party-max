@@ -108,7 +108,7 @@ const addfavorite = () => {
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow>
                 <VCol cols="6" md="3">
-                    <VCardText class="border-img ms-md-5">
+                    <VCardText class="border-img ms-md-5 text-center justify-content-center align-center d-flex">
                         <router-link
                             :to="{
                                 name: 'productDetail',
@@ -118,7 +118,7 @@ const addfavorite = () => {
                             }"
                             class="tw-no-underline">
                             <VImg 
-                                :width="isMobile ? 120 : 177"
+                                :width="isMobile ? 135 : 177"
                                 :src="baseURL + image" 
                                 cover />
                         </router-link>
@@ -296,7 +296,11 @@ const addfavorite = () => {
     
         .border-img {
             width: auto;
-            height: 140px;
+            height: 160px;
+        }
+
+        .btn-register {
+            font-size: 10px;
         }
     }
     
