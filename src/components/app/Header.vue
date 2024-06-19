@@ -968,6 +968,10 @@
       color: #FFFFFF !important;
     }
 
+    .v-navigation-drawer {
+      position: fixed !important;
+    }
+
     .v-navigation-drawer::v-deep(.v-navigation-drawer__content) {
       padding: 10px;
     }

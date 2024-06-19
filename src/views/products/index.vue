@@ -118,7 +118,8 @@ async function fetchData() {
   openedGroups.value = []
   openedSubGroups.value = []
   category.value = null 
-
+  currentPage.value = 1
+  
   isLoading.value = true;
 
   await homeStores.fetchData();
