@@ -1218,6 +1218,14 @@ const addfavorite = (product_id) => {
     width: 6px !important;
   }
 
+  .swiper::v-deep(.swiper-button-prev) {
+    left: 5px;
+  }
+
+  .swiper::v-deep(.swiper-button-next) {
+    right: 5px;
+  }
+
   .swiper::v-deep(.swiper-button-prev:after), .swiper::v-deep(.swiper-button-next:after) {
     font-size: 20px;
     font-weight: bold;
@@ -1596,6 +1604,10 @@ const addfavorite = (product_id) => {
     .swiper-slide img {
       width: 70px !important;
       height: 70px !important;
+    }
+
+    .swiper::v-deep(.swiper-button-prev:after), .swiper::v-deep(.swiper-button-next:after) {
+      font-size: 15px !important;
     }
 
     .v-pagination::v-deep(.v-pagination__next button) {
