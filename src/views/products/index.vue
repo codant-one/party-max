@@ -101,6 +101,7 @@ watch(() =>
 
 watch(() => 
   tab.value,(value) => {
+    currentPage.value = 1
     fetchData()
   }
 );
@@ -136,8 +137,7 @@ async function fetchData() {
 
   openedGroups.value = []
   openedSubGroups.value = []
-  category.value = null 
-  currentPage.value = 1
+  category.value = null
   
   isLoading.value = true;
 
