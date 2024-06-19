@@ -81,7 +81,7 @@ watchEffect(() => {
                     <VRating
                         half-increments
                         :length="5"
-                        :size="25"
+                        :size="isMobile ? 20 : 25"
                         :model-value="rating"
                         :readonly="readonly"
                         color="yellow-darken-2"

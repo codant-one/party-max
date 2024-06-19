@@ -37,7 +37,7 @@ const panelCat = ref(null);
 const openedGroups = ref([]);
 const openedSubGroups = ref([]);
 const products = ref([]);
-const tab = ref("0");
+const tab = ref('0');
 const category = ref(null);
 const toggle = ref([]);
 
@@ -71,7 +71,7 @@ const bread = ref([
   {
     title: "Home",
     disabled: false,
-    href: "/",
+    href: "/products"
   }
 ]);
 
@@ -97,6 +97,12 @@ watch(() =>
   }
 );
 
+watch(() => 
+  tab.value,(value) => {
+    fetchData()
+  }
+);
+
 watchEffect(fetchData);
 
 async function fetchData() {
@@ -105,7 +111,7 @@ async function fetchData() {
     {
       title: "Home",
       disabled: false,
-      href: "/",
+      href: "/products"
     }
   ]
 
@@ -122,7 +128,7 @@ async function fetchData() {
   let info = {
     orderByField: (route.query.category && route.query.category !== 'all') ? 'pl.order_id' : 'products.order_id',
     orderBy: 'asc',
-    limit: isMobile ? 6 : rowPerPage.value,
+    limit: isMobile ? ( tab.value === '1' ? 3 : 6) : rowPerPage.value,
     page: currentPage.value,
     category: route.query.category ?? null,
     subcategory: route.query.subcategory ?? null,
@@ -160,7 +166,7 @@ async function fetchData() {
     category.value = {
       title: categories.value.filter(item => item.slug === route.query.category)[0].name,
       disabled: false,
-      href: "categories/" + route.query.category
+      href: "products?category=" + route.query.category + '&wholesalers=' + route.query.wholesalers ?? 'false'
     };
 
     bread.value.push(category.value);

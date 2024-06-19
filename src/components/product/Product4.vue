@@ -104,7 +104,7 @@ const addfavorite = () => {
 <template>
     <div class="zoom-product">
         <VCard 
-            class="no-shadown p-0 pb-5 w-100 mb-5" 
+            class="no-shadown p-0 pb-5 w-100 mb-3 mb-md-5" 
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow>
                 <VCol cols="6" md="3">
@@ -152,7 +152,7 @@ const addfavorite = () => {
                         <span class="d-block text_2 mt-3 mt-md-5" v-html="single_description"></span>
                     </VCardText>
                 </VCol>
-                <VCol cols="12" md="3" class="align-center text-center">
+                <VCol cols="12" md="3" class="align-center text-center pb-0">
                     <VCardText class="px-1 px-md-2">
                         <div class="d-flex text-center align-center tw-justify-start md:tw-justify-center">
                             <span v-if="!existence_whole" class="text_1 tw-text-tertiary">${{formatNumber(price_for_sale) }}</span>
