@@ -3,21 +3,33 @@
 import { ref } from 'vue'
 import { useCartStores } from '@/stores/cart'
 import { useAuthStores } from '@/stores/auth'
+import { useFiltersStores } from '@/stores/filters'
 import platform from 'platform';
 import Header from '@/components/app/Header.vue'
 import Footer from '@/components/app/Footer.vue'
+import Filters from '@/components/app/Filters.vue'
 import home from '@assets/images/home.jpg';
 import categories from '@assets/images/categories.jpg';
 import register from '@assets/images/register.jpg';
 import blogs from '@assets/images/blogs.jpg';
+import { FALSE } from 'sass';
 
 const authStores = useAuthStores()
 const cartStores = useCartStores()
+const filtersStores = useFiltersStores()
 const route = useRoute()
 
 const backgroundStyle = ref({})
 const background = ref('tw-bg-white')
 const isMobile = /Mobi/i.test(navigator.userAgent);
+const drawer = ref(false)
+
+watch(() => 
+  filtersStores.getDrawer, (data) => {
+    drawer.value = data
+  }
+);
+
 
 watchEffect(fetchData)
 
@@ -89,9 +101,10 @@ async function fetchData() {
 <template>
   <VApp> 
     <VLayout >
+      <Filters :drawer="drawer"/>
       <Header />
       <VMain :style="backgroundStyle" :class="background">
-        <router-view/>
+        <router-view />
       </VMain>
     </VLayout>
     <Footer />

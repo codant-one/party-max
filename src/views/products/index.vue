@@ -7,6 +7,7 @@ import { useHomeStores } from "@/stores/home";
 import { useMiscellaneousStores } from "@/stores/miscellaneous";
 import { useFavoritesStores } from '@/stores/favorites'
 import { useCartStores } from '@/stores/cart'
+import { useFiltersStores } from '@/stores/filters'
 import { formatNumber } from '@formatters'
 import router from '@/router'
 import Loader from "@/components/common/Loader.vue";
@@ -30,6 +31,7 @@ const homeStores = useHomeStores();
 const miscellaneousStores = useMiscellaneousStores();
 const cartStores = useCartStores()
 const favoritesStores = useFavoritesStores()
+const filtersStores = useFiltersStores()
 
 const isLoading = ref(true);
 const categories = ref(null);
@@ -99,6 +101,23 @@ watch(() =>
 
 watch(() => 
   tab.value,(value) => {
+    fetchData()
+  }
+);
+
+watch(() => 
+  filtersStores.getPrices, (data) => {
+    min.value = data.min
+    max.value = data.max
+
+    fetchData()
+  }
+);
+
+watch(() => 
+  filtersStores.getRating, (value) => {
+    rating.value = value
+
     fetchData()
   }
 );
@@ -830,7 +849,11 @@ const addfavorite = (product_id) => {
                 />
               </VCol>
 
-              <VCol cols="5" md="5" lg="5" class="filter-mobile d-flex justify-content-end align-center d-lg-none tw-text-right pr-5">
+              <VCol 
+                cols="5" md="5" lg="5" 
+                class="filter-mobile d-flex justify-content-end align-center d-lg-none tw-text-right pr-5"
+                @click="filtersStores.changeDrawer"
+              >
                 <img :src="icon3" />
                 <span class="pl-2">Filtros</span>
               </VCol>
@@ -1247,6 +1270,10 @@ const addfavorite = (product_id) => {
 
   .v-pagination::v-deep(.v-pagination__item--is-active .v-btn__overlay), .v-pagination::v-deep(.v-pagination__item--is-active .v-btn) {
     opacity: 1 !important;
+  }
+
+  .v-pagination::v-deep(.v-pagination__item--is-active) {
+    z-index: 0;
   }
 
   .v-pagination::v-deep(.v-btn__content) {

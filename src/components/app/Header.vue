@@ -274,7 +274,7 @@
     <VNavigationDrawer
       v-model="drawer"
       temporary>
-      <VList v-model:opened="panelCat">
+      <VList v-model:opened="panelCat" class="pb-0">
         <VListItem>
           <VListItemTitle class="d-block lineheight borderList pb-2">
             <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
@@ -553,7 +553,7 @@
                 </div>
               </div>
             </template>
-            <VCard class="style-menu" :width="width"  @mouseleave="closeMenuOnMouseLeave">
+            <VCard class="style-menu" :width="width" @mouseleave="closeMenuOnMouseLeave">
               <VRow no-gutters>
                 <VCol cols="12" :md="cols" class="py-5 pr-3">
                   <VList class="pb-0">
@@ -973,6 +973,10 @@
     }
 
     .v-navigation-drawer::v-deep(.v-navigation-drawer__content) {
+      padding: 10px 10px 0 10px;
+    }
+
+    .v-navigation-drawer::v-deep(.v-expansion-panel-text__wrapper) {
       padding: 10px;
     }
 
@@ -993,10 +997,6 @@
 
     .v-expansion-panels--variant-inset > .v-expansion-panel--active {
       max-width: 100%;
-    }
-
-    .v-navigation-drawer::v-deep(.v-expansion-panel-text__wrapper) {
-      padding: 10px;
     }
 
     .subtitle-menu {

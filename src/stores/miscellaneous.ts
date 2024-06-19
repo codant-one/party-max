@@ -76,6 +76,15 @@ export const useMiscellaneousStores = defineStore('miscellaneous', {
                 }) 
             
         },
+        colors() {
+            return Miscellaneous.colors()
+                .then((response) => {
+                    return Promise.resolve(response.data.data)
+                })
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
+        },
     }
 })
 
