@@ -41,6 +41,10 @@ const isMobile = /Mobi/i.test(navigator.userAgent);
 
 const isLoading = ref(true)
 const tab = ref('1')
+const searchWhatsapp = ref(null)
+const searchFacebook = ref(null)
+const searchTwitter = ref(null)
+const searchPinterest = ref(null)
 
 const bread = ref([
   {
@@ -164,6 +168,11 @@ async function fetchData() {
     });
 
     product_id.value = data.value.product.id
+
+    searchWhatsapp.value = `https://wa.me/?text=${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
+    searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
+    searchTwitter.value = `https://twitter.com/intent/tweet?text=https%3A//${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
+    searchPinterest.value = `https://pinterest.com/pin/create/button/?url=&media=https%3A//${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
 
     title.value = data.value.product.name
     brand.value = data.value.product.brand.name
@@ -377,10 +386,18 @@ const decrement = () => {
           {{ title }}
           <VSpacer />
           <div class="align-end redes-title">
-            <whatsapp class="me-2" />
-            <instagram class="me-2"/>
-            <threads class="me-2"/>               
-            <facebook class="me-2"/>
+            <a :href="searchWhatsapp" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+              <whatsapp class="me-2" />
+            </a>   
+            <a :href="searchTwitter" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+              <instagram class="me-2"/>
+            </a>
+            <a :href="searchPinterest" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+              <threads class="me-2"/>               
+            </a>
+            <a :href="searchFacebook" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+              <facebook class="me-2"/>
+            </a>
           </div>
         </VCardTitle>
         <VCardSubtitle class="px-0 d-flex flex-column align-start border-title">
@@ -408,10 +425,18 @@ const decrement = () => {
             <VCol cols="12" md="6" class="align-right"></VCol>
           </VRow>
           <div class="my-1 align-end redes-mobile">
-            <whatsapp_mobile class="me-2" />
-            <instagram_mobile class="me-2"/>
-            <threads_mobile class="me-2"/>               
-            <facebook_mobile class="me-2"/>
+            <a :href="searchWhatsapp" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
+              <whatsapp_mobile class="me-2" />
+            </a>   
+            <a :href="searchTwitter" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
+              <instagram_mobile class="me-2"/>
+            </a>
+            <a :href="searchPinterest" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
+              <threads_mobile class="me-2"/>               
+            </a>
+            <a :href="searchFacebook" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
+              <facebook_mobile class="me-2"/>
+            </a>
           </div>
         </VCardSubtitle>
         <!-- BODY -->
@@ -1067,6 +1092,10 @@ const decrement = () => {
     display: flex;
   }
 
+  .redes-title a {
+    height: 41px;
+  }
+
   .redes-mobile {
     display: none;
   }
@@ -1134,6 +1163,10 @@ const decrement = () => {
 
     .redes-mobile {
       display: flex!important;
+    }
+
+    .redes-mobile a {
+      height: 32px;
     }
 
     .text-infoprod {
