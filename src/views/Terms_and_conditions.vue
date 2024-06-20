@@ -2,6 +2,8 @@
 
 import festin_2 from '@/assets/images/festin_2.png'
 
+const isMobile = /Mobi/i.test(navigator.userAgent);
+
 const items = [
   'Ha leído y comprendido estos términos y acepta cumplir con ellos.',
   'Es mayor de edad y tiene capacidad legal para celebrar contratos vinculantes.',
@@ -12,7 +14,7 @@ const items = [
 </script>
 
 <template>
-  <VContainer class="content py-13 w-100">
+  <VContainer class="content py-md-13 w-100">
     <VRow align="center" no-gutters>
       <VCol cols="12" md="12">
         <h1 class="tw-text-primary title text-center">
@@ -20,14 +22,14 @@ const items = [
         </h1>
         <h2 class="tw-text-primary text-center">¡Todo lo que necesitas saber sobre la letra pequeña!</h2>
       </VCol>
-      <VCol cols="12" md="2" class="align-right mt-10">
-        <v-img
+      <VCol cols="12" md="2" class="d-flex align-center justify-content-center align-md-right mt-2 mt-md-10">
+        <img
           class="bg-white align-imagel"
-          width="auto"
+          :width="isMobile ? '100' : '150'"
           :src="festin_2"
         />
       </VCol>
-      <VCol cols="12" md="10" class="align-left text pl-5">
+      <VCol cols="12" md="10" class="align-left text pl-md-5 mt-5 mt-md-10">
         <span class="mb-2">Bienvenido a <strong class="tw-text-primary">Partymax</strong> Marketplace!.</span><br>
         <span>
             el espacio ideal para amantes de las fiestas que buscan la máxima variedad y 
@@ -36,7 +38,7 @@ const items = [
             realizar transacciones. <br>        
         </span>
         </VCol>
-        <VCol cols="12" md="12" class="align-left text pl-5">
+        <VCol cols="12" md="12" class="align-left text pl-md-5 mt-5 mt-md-10">
         <span class="mb-2">
             <strong>1. Aceptación de los términos</strong><br>
             Al utilizar los servicios de <strong class="tw-text-primary">Partymax</strong> Marketplace, 
@@ -100,51 +102,54 @@ const items = [
 </template>
 
 <style scoped>
-    .title {
-        font-size: 60px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 63px;
-        text-align: center;
-    }
+  .title {
+    font-size: 60px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 63px;
+    text-align: center;
+  }
 
-    .text {
-        font-size: 20px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 38px;
-        text-align: left;
-        color: #0A1B33;
-        margin-top: 40px;
+  .text {
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 38px;
+    text-align: left;
+    color: #0A1B33;
+  }
+
+  .items-list::v-deep(.v-list-item-title) {
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 38px;
+    text-align: left;
+    color: #0A1B33;
+    white-space: pre-wrap;
+  }
+
+  .align-imagel {
+    float: left;
+  }
+
+  @media only screen and (max-width: 767px) {
+    .title {
+      font-size: 24px;
+      line-height: 32px;
+      text-align: center;
     }
 
     .items-list::v-deep(.v-list-item-title) {
-        font-size: 20px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 38px;
-        text-align: left;
-        color: #0A1B33;
-        white-space: pre-wrap;
+      font-size: 16px;
+      line-height: 20px;
     }
 
-    .align-imagel {
-        float: left;
+    .text {
+      text-align: center;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px; /* 150% */
     }
-
-    @media only screen and (max-width: 767px) {
-        .title {
-            font-size: 24px;
-            line-height: 32px;
-            text-align: center;
-            margin-top: 24px;
-        }
-
-        .text {
-        text-align: center;
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 24px; /* 150% */
-        }
-    }
+  }
 </style>

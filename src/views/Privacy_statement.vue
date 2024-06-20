@@ -1,12 +1,12 @@
 <template>
-    <VContainer class="content py-13 w-100">
+    <VContainer class="content py-md-13 w-100">
         <VRow align="center" no-gutters>
             <VCol cols="12" md="12">
                 <h1 class="tw-text-primary title text-center">
                     Políticas de privacidad y tratamiento de datos personales web DIEXCOM SAS
                 </h1>
             </VCol>
-            <VCol cols="12" md="12" class="align-left text pl-5">
+            <VCol cols="12" md="12" class="align-left text pl-md-5 mt-5 mt-md-10">
                 <span class="mb-2">
                     <strong>I. INTRODUCCIÓN.</strong><br>
                     Al ingresar, revisar, navegar y comprar bienes o servicios a través la página de comercio electrónico 
@@ -830,7 +830,6 @@
         line-height: 38px;
         text-align: left;
         color: #0A1B33;
-        margin-top: 40px;
     }
 
     .items-list::v-deep(.v-list-item-title),  .list-1::v-deep(.v-list-item-title){
@@ -861,14 +860,22 @@
             font-size: 24px;
             line-height: 32px;
             text-align: center;
-            margin-top: 24px;
         }
 
         .text {
-        text-align: center;
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 24px; /* 150% */
+            text-align: center;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 24px; /* 150% */
+        }
+
+        .v-list::v-deep(.v-list-item-title) {
+            font-size: 16px;
+            line-height: 20px;
+        }
+
+        .v-list::v-deep(.v-list-item-subtitle) {
+            text-align: justify;
         }
     }
 </style>
