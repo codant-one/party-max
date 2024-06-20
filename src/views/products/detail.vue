@@ -171,8 +171,8 @@ async function fetchData() {
 
     searchWhatsapp.value = `https://wa.me/?text=${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
     searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
-    searchTwitter.value = `https://twitter.com/intent/tweet?text=https%3A//${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
-    searchPinterest.value = `https://pinterest.com/pin/create/button/?url=&media=https%3A//${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
+    searchTwitter.value = `https://twitter.com/intent/tweet?text=https://${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
+    searchPinterest.value = `https://pinterest.com/pin/create/button/?url=&media=https://${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
 
     title.value = data.value.product.name
     brand.value = data.value.product.brand.name
