@@ -394,7 +394,7 @@ const decrement = () => {
                   half-increments
                   readonly
                   :length="5"
-                  :size="isMobile ? 15 : 20"
+                  :size="isMobile ? 14 : 20"
                   :model-value="rating"
                   color="yellow-darken-2"
                   active-color="yellow-darken-2"
@@ -403,10 +403,9 @@ const decrement = () => {
                 <span class="ms-1">({{ reviews.length }} {{ reviews.length > 1 ? 'Reviews' : 'Review' }})</span>
               </div>
               <VDivider :thickness="2" color="#999" class="hr" vertical />
-              SKU: {{ sku }}
+              <span class="d-block">SKU: {{ sku }}</span>
             </VCol>
-            <VCol cols="12" md="6" class="align-right">
-            </VCol>
+            <VCol cols="12" md="6" class="align-right"></VCol>
           </VRow>
           <div class="my-1 align-end redes-mobile">
             <whatsapp_mobile class="me-2" />
@@ -418,7 +417,7 @@ const decrement = () => {
         <!-- BODY -->
         <VCardText class="px-0 pb-0 mt-5 d-flex align-items-stretch justify-content-between">
           <VRow class="border-title pb-2 pb-md-5">
-            <VCol cols="3" md="1">
+            <VCol cols="3" md="1" class="px-1 p-md-2">
               <swiper
                 :direction="'vertical'"
                 :pagination="{ clickable: true}"
@@ -427,14 +426,14 @@ const decrement = () => {
                 :freeMode="true"
                 :watchSlidesProgress="true"
                 @swiper="setThumbsSwiper"
-                class="mySwiper"
+                class="mySwiper pt-0 d-flex align-center justify-content-center"
               >
                 <swiper-slide v-for="(picture, index) in productImages" :key="index">
                   <img width="60" :src="baseURL + picture.image" />
                 </swiper-slide>
               </swiper>
             </VCol>
-            <VCol cols="9" md="4">
+            <VCol cols="9" md="4" class="d-flex justify-content-center">
               <swiper
                 :scrollbar="{
                   hide: true,
@@ -442,7 +441,7 @@ const decrement = () => {
                 :spaceBetween="isMobile ? 5 : 10"
                 :thumbs="{ swiper: thumbsSwiper }"
                 :modules="modules"
-                class="mySwiper2 border-img"
+                class="mySwiper2 border-img mx-0 mx-md-auto"
                 >
                 <swiper-slide v-for="(picture, index) in productImages" :key="index">
                   <img :src="baseURL + picture.image" />
@@ -480,7 +479,7 @@ const decrement = () => {
                   >
                     <template #default="{ item }">
                       <div class="text-center">
-                        <span class="font-weight-semibold text-uppercase tw-text-sm">
+                        <span class="font-weight-semibold text-uppercase tw-text-xs">
                           {{ item.title }}
                         </span>
                         <div class="d-flex align-center justify-center">
@@ -549,7 +548,7 @@ const decrement = () => {
                 </div> 
               </VCardText>
 
-              <VCardText class="p-0 d-flex border-title pb-2 mt-1 mt-md-0">
+              <VCardText class="p-0 d-flex border-title pb-2 mt-0">
                 <VBtn 
                   v-if="wholesale"
                   :class="route.query.wholesale === 'true' ? 'b-mayorista-active': 'b-mayorista'"
@@ -1110,15 +1109,19 @@ const decrement = () => {
       padding: 0 5px 10px 5px;
     }
 
+    .mySwiper .swiper-slide {
+      width: 57px;
+    }
+
     .mySwiper2 {
       max-height: 200px;
-      width: 90%;
+      width: 87%;
     }
     
     .btn-register {
       width: auto;
       height: 50px;
-      font-size: 12px;
+      font-size: 10px;
     }
 
     .text-tabs {
@@ -1134,7 +1137,7 @@ const decrement = () => {
     }
 
     .text-infoprod {
-      font-size: 12px!important;
+      font-size: 10px !important;
     }
 
     .breadcumb {
@@ -1162,7 +1165,7 @@ const decrement = () => {
     }
 
     .hr {
-      margin: 3px 5px;
+      margin: 3px;
     }
 
     .v-rating::v-deep(.v-icon--size-default) {
