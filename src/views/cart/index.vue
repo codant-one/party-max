@@ -170,6 +170,17 @@ onMounted(async () => {
     selectCountry(selectedAddress.value.country_id)
 })
 
+watch(() => 
+  route.path,(newPath, oldPath) => {
+    thumbsSwiper.value.destroy(false, true)
+  }
+);
+
+watch(() => 
+  route.query,(newPath, oldPath) => {
+    thumbsSwiper.value.destroy(false, true)
+  }
+);
 watchEffect(fetchData)
 
 async function fetchData() {
@@ -642,7 +653,7 @@ const chanceSend = value => {
                                     :bg="bg"/>
                             </VCardText> 
 
-                            <VCardText class="px-0 mt-3 mb-3 d-flex align-items-stretch justify-content-between" v-if="data && isMobile">
+                            <VCardText class="px-0 mt-3 mb-3 d-md-flex align-items-stretch justify-content-between" v-if="data && isMobile">
                                 <swiper
                                     :pagination="{
                                         dynamicBullets: true,

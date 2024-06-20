@@ -45,6 +45,18 @@ const setThumbsSwiper = (swiper) => {
 }
 
 watch(() => 
+  route.path,(newPath, oldPath) => {
+    thumbsSwiper.value.destroy(false, true)
+  }
+);
+
+watch(() => 
+  route.query,(newPath, oldPath) => {
+    thumbsSwiper.value.destroy(false, true)
+  }
+);
+
+watch(() => 
     route.params,(newParams, oldParams) => {
       band.value = 0
       data.value = null
@@ -169,7 +181,7 @@ async function fetchData() {
           :product="product"
           :readonly="true"/>
       </VCardText>
-      <VCardText class="pb-0 px-3 mt-5 mb-0 d-flex align-items-stretch justify-content-between" v-if="data && isMobile">
+      <VCardText class="pb-0 px-3 mt-5 mb-0 d-md-flex align-items-stretch justify-content-between" v-if="data && isMobile">
         <swiper
           :pagination="{
             dynamicBullets: true,

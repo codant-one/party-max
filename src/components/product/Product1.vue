@@ -74,16 +74,16 @@ watchEffect(() => {
                 </div>
             </VCardText>
             <VCardText>
-                <span v-if="name.length > 50 && !isMobile" class="d-block text_2 tw-text-tertiary title-product">
+                <span v-if="name.length > 50 && !isMobile" class="text-start d-block text_2 tw-text-tertiary title-product">
                     {{ name.slice(0, 50) + '...'}}
                 </span>
-                <span v-else class="d-block text_2 tw-text-tertiary title-product">
+                <span v-else class="text-start d-block text_2 tw-text-tertiary title-product">
                     <span v-if="isMobile"> {{ name.slice(0, 25) + '...'}}</span>
                     <span v-else> {{ name }}</span>
                 </span>
             </VCardText>
             <VCardText>
-                <span class="d-block text_2 store">Tienda:
+                <span class="text-start d-block text_2 store">Tienda:
                     <strong v-if="store.length > 15 && isMobile">{{ store.slice(0, 15) + '...' }}</strong>
                     <strong v-else>{{ store }}</strong>
                 </span>

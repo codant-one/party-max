@@ -73,7 +73,7 @@ const bread = ref([
   {
     title: "Home",
     disabled: false,
-    href: "/products"
+    href: "/"
   }
 ]);
 
@@ -131,7 +131,7 @@ async function fetchData() {
     {
       title: "Home",
       disabled: false,
-      href: "/products"
+      href: "/"
     }
   ]
 

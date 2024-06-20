@@ -5,11 +5,10 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { avatarText} from '@formatters'
 import { ref } from 'vue'
-import { requiredValidator } from '@validators'
 import { useMiscellaneousStores } from '@/stores/miscellaneous'
 import { useCartStores } from '@/stores/cart'
 import { useFavoritesStores } from '@/stores/favorites'
-import { FreeMode, Navigation, Thumbs, Scrollbar } from 'swiper/modules';
+import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import router from '@/router'
 import CustomRadiosWithIcon from '@/components/app/CustomRadiosWithIcon.vue'
@@ -19,6 +18,10 @@ import whatsapp from '@assets/icons/whatsapp.svg?inline';
 import facebook from '@assets/icons/facebook2.svg?inline';
 import instagram from '@assets/icons/instagram2.svg?inline';
 import threads from '@assets/icons/threads2.svg?inline';
+import whatsapp_mobile from '@assets/icons/whatsapp_mobile.svg?inline';
+import facebook_mobile from '@assets/icons/facebook_mobile.svg?inline';
+import instagram_mobile from '@assets/icons/instagram_mobile.svg?inline';
+import threads_mobile from '@assets/icons/threads_mobile.svg?inline';
 import iconmayorista from '@assets/icons/Union.svg?inline';
 import heart from '@assets/icons/heart.svg?inline';
 
@@ -27,6 +30,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/free-mode';
 import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar'
+import 'swiper/css/pagination';
 
 const route = useRoute()
 const miscellaneousStores = useMiscellaneousStores()
@@ -53,6 +57,7 @@ const bread = ref([
 
 const productImages = ref([])
 const modules = ref([FreeMode, Navigation, Thumbs, Scrollbar])
+const modules2 = ref([Pagination])
 const thumbsSwiper = ref(null);
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
@@ -367,7 +372,7 @@ const decrement = () => {
     <VContainer class="pt-0">
       <Loader :isLoading="isLoading"/>
       <!-- HEADER -->
-      <VCard class="mt-7 no-shadown card-information p-0" v-if="!isLoading">
+      <VCard class="mt-md-7 no-shadown card-information p-0" v-if="!isLoading">
         <VCardTitle class="d-flex p-0 align-end">
           {{ title }}
           <VSpacer />
@@ -378,48 +383,47 @@ const decrement = () => {
             <facebook class="me-2"/>
           </div>
         </VCardTitle>
-        <VCardSubtitle class="px-0 d-flex align-center border-title">
+        <VCardSubtitle class="px-0 d-flex flex-column align-start border-title">
           <VRow no-gutters>
-            <VCol cols="12" md="6" class="text-infoprod">
+            <VCol cols="12" md="6" class="text-infoprod d-flex align-center mt-1">
               Marca: {{ brand }}
               <VDivider :thickness="2" color="#999" class="hr" vertical />
-              <VRating
-                half-increments
-                readonly
-                :length="5"
-                :size="15"
-                :model-value="rating"
-                color="yellow-darken-2"
-                active-color="yellow-darken-2"
-              />
 
-              ({{ reviews.length }} {{ reviews.length > 1 ? 'Reviews' : 'Review' }})
+              <div class="d-flex align-center">
+                <VRating
+                  half-increments
+                  readonly
+                  :length="5"
+                  :size="isMobile ? 15 : 20"
+                  :model-value="rating"
+                  color="yellow-darken-2"
+                  active-color="yellow-darken-2"
+                />
 
+                <span class="ms-1">({{ reviews.length }} {{ reviews.length > 1 ? 'Reviews' : 'Review' }})</span>
+              </div>
               <VDivider :thickness="2" color="#999" class="hr" vertical />
               SKU: {{ sku }}
             </VCol>
             <VCol cols="12" md="6" class="align-right">
             </VCol>
           </VRow>
-          
-        </VCardSubtitle>
-        <VSpacer />
-
-          <div class="mt-4 align-end redes-mobile">
-            <whatsapp class="me-2" />
-            <instagram class="me-2"/>
-            <threads class="me-2"/>               
-            <facebook class="me-2"/>
+          <div class="my-1 align-end redes-mobile">
+            <whatsapp_mobile class="me-2" />
+            <instagram_mobile class="me-2"/>
+            <threads_mobile class="me-2"/>               
+            <facebook_mobile class="me-2"/>
           </div>
+        </VCardSubtitle>
         <!-- BODY -->
         <VCardText class="px-0 pb-0 mt-5 d-flex align-items-stretch justify-content-between">
-          <VRow class="border-title pb-5">
+          <VRow class="border-title pb-2 pb-md-5">
             <VCol cols="3" md="1">
               <swiper
                 :direction="'vertical'"
                 :pagination="{ clickable: true}"
-                :spaceBetween="5"
-                :slidesPerView="6"
+                :spaceBetween="isMobile ? 3 : 5"
+                :slidesPerView="isMobile ? 3 : 6"
                 :freeMode="true"
                 :watchSlidesProgress="true"
                 @swiper="setThumbsSwiper"
@@ -435,7 +439,7 @@ const decrement = () => {
                 :scrollbar="{
                   hide: true,
                 }"
-                :spaceBetween="10"
+                :spaceBetween="isMobile ? 5 : 10"
                 :thumbs="{ swiper: thumbsSwiper }"
                 :modules="modules"
                 class="mySwiper2 border-img"
@@ -470,7 +474,7 @@ const decrement = () => {
                   <CustomRadiosWithIcon
                     v-model:selected-radio="selectedColor"
                     :radio-content="radioContent"
-                    :grid-column="{ sm: '2', cols: '3' }"
+                    :grid-column="{ sm: '2', cols: '4' }"
                     class="custom-input-setting"
                     @change="chanceRadio"
                   >
@@ -489,11 +493,11 @@ const decrement = () => {
                   </CustomRadiosWithIcon>
                 </span>
               </VCardText>
-              <VCardText class="p-0 d-block border-title mt-2" v-if="single_description !== null">
+              <VCardText class="p-0 d-block border-title mt-2" v-if="single_description !== null && single_description.length > 10">
                 <span class="d-block tw-text-tertiary ms-5 mb-2 tw-leading-5" v-html="single_description" />
               </VCardText>
 
-              <VCardText class="p-0 d-flex my-2">
+              <VCardText class="p-0 d-flex mt-2 mt-md-4 mb-md-2">
                 <div class="d-flex flex-column">
                   <span>Cantidad:</span>
                   <div class="number-input-wrapper">
@@ -511,15 +515,6 @@ const decrement = () => {
                       <VIcon>mdi-plus</VIcon>
                     </VBtn>
                   </div>
-                  <!-- <VTextField
-                    v-model="cant_prod"
-                    variant="solo"
-                    type="number"
-                    :min="wholesale_min"
-                    :max="cant_stock"
-                    :rules="[requiredValidator]"
-                    @input="controlCant"
-                   /> -->
                 </div>
                 <div class="my-auto ms-5">
                   <VBtn 
@@ -539,7 +534,7 @@ const decrement = () => {
                 <div class="my-auto ms-5">
                   <span 
                     v-if="!isFavorite" 
-                    class="me-4 index heart p-0 tw-cursor-pointer"
+                    class="me-4 index heart p-0 tw-cursor-pointer d-flex justify-content-center align-center"
                     :class="(isFavoriteProduct) ? 'heart_fill' : ''" 
                     @click="addfavorite">
                   <heart />
@@ -551,11 +546,10 @@ const decrement = () => {
                     indeterminate
                     color="primary"
                   />
-                </div>
-                <VSpacer />  
+                </div> 
               </VCardText>
 
-              <VCardText class="p-0 d-flex border-title pb-2 mt-5">
+              <VCardText class="p-0 d-flex border-title pb-2 mt-1 mt-md-0">
                 <VBtn 
                   v-if="wholesale"
                   :class="route.query.wholesale === 'true' ? 'b-mayorista-active': 'b-mayorista'"
@@ -577,10 +571,10 @@ const decrement = () => {
             </VCol>
           </VRow>
           </VCardText>
-          <VCardText class="px-0 mb-5 d-flex align-items-stretch justify-content-between">
+          <VCardText class="px-0 pb-0 d-flex align-items-stretch justify-content-between">
           <VRow no-gutters>
             <VCol cols="12" class="text-center">
-              <VTabs v-model="tab" color="pink-accent-3"  align-tabs="center">
+              <VTabs v-model="tab" color="pink-accent-3" align-tabs="center" class="px-0">
                 <VTab value="0" class="text-tabs">Descripción</VTab>
                 <VTab value="1" class="text-tabs">Especificaciones</VTab>
                 <VTab value="2" class="text-tabs">Reviews ({{reviews.length}})</VTab>
@@ -593,25 +587,25 @@ const decrement = () => {
                   <span v-html="description" class="content"></span>
                 </v-window-item>
                 <v-window-item value="1">
-                  <VCardText class="mb-10">
+                  <VCardText>
                     <VRow>
-                      <VCol cols="12" md="2" class="col-item"><span>Alto</span></VCol>
-                      <VCol cols="12" md="10" class="col-value"><span>{{ height }}cm</span></VCol>
-                      <VCol cols="12" md="2" class="col-item"><span>Ancho</span></VCol>
-                      <VCol cols="12" md="10" class="col-value"><span>{{ width }}cm</span></VCol>
-                      <VCol cols="12" md="2" class="col-item"><span>Peso</span></VCol>
-                      <VCol cols="12" md="10" class="col-value"><span>{{ weigth }}g</span></VCol>
-                      <VCol cols="12" md="2" class="col-item"><span>Profundo</span></VCol>
-                      <VCol cols="12" md="10" class="col-value"><span>{{ deep }}cm</span></VCol>
-                      <VCol cols="12" md="2" class="col-item"><span>Material</span></VCol>
-                      <VCol cols="12" md="10" class="col-value"><span>{{ material }}</span></VCol>
+                      <VCol cols="6" md="2" class="col-item"><span>Alto</span></VCol>
+                      <VCol cols="6" md="10" class="col-value"><span>{{ height }}cm</span></VCol>
+                      <VCol cols="6" md="2" class="col-item"><span>Ancho</span></VCol>
+                      <VCol cols="6" md="10" class="col-value"><span>{{ width }}cm</span></VCol>
+                      <VCol cols="6" md="2" class="col-item"><span>Peso</span></VCol>
+                      <VCol cols="6" md="10" class="col-value"><span>{{ weigth }}g</span></VCol>
+                      <VCol cols="6" md="2" class="col-item"><span>Profundo</span></VCol>
+                      <VCol cols="6" md="10" class="col-value"><span>{{ deep }}cm</span></VCol>
+                      <VCol cols="6" md="2" class="col-item"><span>Material</span></VCol>
+                      <VCol cols="6" md="10" class="col-value"><span>{{ material }}</span></VCol>
                     </VRow>
                   </VCardText>
                 </v-window-item>
                 <v-window-item value="2">
-                  <VCardText class="mb-10 py-0">
+                  <VCardText class="py-0">
                     <VRow class="row-reviews border-title" v-for="review in reviews">
-                      <VCol cols="1">
+                      <VCol cols="3" md="1">
                         <VAvatar
                           :size="isMobile ? '50': '80'"
                           :color="review.client.user.avatar ? 'default' : 'primary'"
@@ -631,19 +625,23 @@ const decrement = () => {
                           </span>
                         </VAvatar>
                       </VCol>
-                      <VCol cols="11">
-                        <v-rating
+                      <VCol cols="9" md="11">
+                        <VRating
                           hover
                           :length="5"
-                          :size="32"
+                          :size="isMobile ? 25 : 32"
                           :model-value="review.rating"
-                          style="margin-left:-10px;"
+                          :style="isMobile ? {marginLeft: '-5px'} : {marginLeft: '-10px'}"
                           color="yellow-darken-2"
                           active-color="yellow-darken-2"
                           readonly
                         />
 
-                        <p>De <span>{{ review.client.user.name }} {{ review.client.user.last_name }}</span> | {{ format(review.date, 'd').concat(' de ') }} {{ format(review.date, 'MMMM, y', { locale: es }).replace(/(^|\s)\S/g, (char) => char.toUpperCase()) }}</p> <br>
+                        <p class="d-flex tw-flex-col md:tw-flex-row">
+                          De<span class="ms-md-1">{{ review.client.user.name }} {{ review.client.user.last_name }}</span>
+                          <div class="d-none d-md-block ms-1 me-1">|</div>
+                          <div>{{ format(review.date, 'd').concat(' de ') }} {{ format(review.date, 'MMMM, y', { locale: es }).replace(/(^|\s)\S/g, (char) => char.toUpperCase()) }}</div>
+                        </p> <br>
                         <p>{{ review.comments }}</p> 
                       </VCol>
                     </VRow>
@@ -651,31 +649,49 @@ const decrement = () => {
                 </v-window-item>
               </v-window>
             </VCol>
-
-            <VCol cols="12" class="col-recomendaciones">
-              <VRow align="center">
-                <VCol cols="6" class="text-left">
-                  <p class="text-lef">Recomendaciones que te pueden interesar</p>
-                </VCol>
-                <VCol cols="6" class="text-right">
-                  <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
-                </VCol>
-                
-              </VRow>
-            </VCol>
-
-            <VCol cols="12" class="col-recprod">
-              <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data">
-                <Product1 
-                  v-for="(product, i) in data.recommendations"
-                  :key="i"
-                  :product="product"
-                  :readonly="true"/>
-              </VCardText>
-            </VCol>
           </VRow>
         </VCardText>  
-      </VCard>     
+      </VCard> 
+
+      <!-- recommendations -->
+      <VCard class="no-shadown card-information p-0" v-if="data">
+        <VCardTitle class="px-4 px-md-7 py-3 col-recomendaciones">
+          <VRow align="center">
+            <VCol cols="8" md="6" class="text-left">
+              <p class="text-lef">Recomendaciones que te pueden interesar</p>
+            </VCol>
+            <VCol cols="4" md="6" class="text-right">
+              <router-link to="/products" class="ms-md-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
+            </VCol> 
+          </VRow>
+        </VCardTitle>
+        <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
+          <Product1 
+            v-for="(product, i) in data.recommendations"
+            :key="i"
+            :product="product"
+            :readonly="true"/>
+        </VCardText>  
+        <VCardText class="pb-0 px-4 px-md-7 mt-0 mt-md-5 mb-2 swiper-recomendations" v-if="data && isMobile">  
+          <swiper
+            :pagination="{
+              dynamicBullets: true,
+            }"
+            :modules="modules2"
+            :spaceBetween="5"
+            :slidesPerView="2"
+            :freeMode="true"
+            :watchSlidesProgress="true"
+            :style="{ height: isMobile ? '340px' : '370px' }"
+            >
+            <swiper-slide v-for="(product, i) in data.recommendations" :key="i">
+              <Product1 
+                :product="product"
+                :readonly="true"/>
+            </swiper-slide>
+          </swiper>
+        </VCardText> 
+      </VCard>
     </VContainer>
     <VSnackbar
       v-model="isSnackbarBottomStartVisible"
@@ -697,6 +713,10 @@ const decrement = () => {
 </style>
 
 <style scoped>
+
+  .v-rating::v-deep(.v-icon--size-default) {
+    font-size: 20px;
+  }
 
   .number-input-wrapper {
     display: flex;
@@ -768,7 +788,7 @@ const decrement = () => {
   .hr {
     height: 15px; 
     opacity: 1;
-    margin: 0 10px;
+    margin: 3px 10px;
   }
 
   .border-title {
@@ -902,17 +922,15 @@ const decrement = () => {
     background-color: #E2F8FC;
     border-radius: 32px;
     align-items: center;
-    padding: 16px 48px !important;
-    margin-top: 16px;
     color:  #0A1B33;
   }
   
   .col-recomendaciones p {
-    font-size:24px;
+    font-size: 24px;
   }
 
   .col-recomendaciones span {
-    font-size:14px;
+    font-size: 14px;
   }
  
 </style>
@@ -921,43 +939,6 @@ const decrement = () => {
 
   .carousel__item img {
     width: 60%;
-  }
-    
-  .swiper-vertical > .swiper-pagination-bullets .swiper-pagination-bullet, .swiper-pagination-vertical.swiper-pagination-bullets .swiper-pagination-bullet {
-    display: none !important;
-  }
-
-  .swiper {
-    width: 100%;
-    height: 100%;
-  }
-    
-  .swiper-slide {
-    text-align: center;
-    font-size: 18px;
-    background: #fff;
-
-    /* Center slide text vertically */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .swiper {
-    width: 100%;
-    height: 350px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-    
-  .swiper-slide {
-    background-size: cover;
-    background-position: center;
-  }
-
-  .mySwiper2 {
-    height: 350px;
-    width: 100%;
   }
 
   .border-img {
@@ -969,26 +950,31 @@ const decrement = () => {
     align-items: center;
     display: flex;
   }
-
-  .mySwiper {
-    box-sizing: border-box;
-    padding: 10px 5px;
-  }
     
-  .mySwiper .swiper-slide {
-    opacity: 0.4;
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 8px;
-    width: 60px;
-  }
-    
-  .mySwiper .swiper-slide-thumb-active {
-    opacity: 1;
+  .swiper-vertical > .swiper-pagination-bullets .swiper-pagination-bullet, .swiper-pagination-vertical.swiper-pagination-bullets .swiper-pagination-bullet {
+    display: none !important;
   }
 
   .swiper::v-deep(.swiper-wrapper)  {
     width: 60px !important;
+  }
+
+  .swiper {
+    width: 100%;
+    height: 350px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+    
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
   }
 
   .swiper-slide img {
@@ -997,6 +983,37 @@ const decrement = () => {
     height: 100%;
     object-fit: contain;
     border-radius: 8px;
+  }
+
+  .mySwiper {
+    box-sizing: border-box;
+    padding: 10px 5px;
+  }
+      
+  .mySwiper .swiper-slide {
+    opacity: 0.4;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+    width: 60px;
+    height: 60px !important;
+  }
+    
+  .mySwiper .swiper-slide-thumb-active {
+    opacity: 1;
+  }
+
+  .mySwiper2 {
+    height: 350px;
+    width: 100%;
+  }
+
+  .swiper-recomendations .swiper::v-deep(.swiper-pagination-bullet-active) {
+    background: #FF0090 !important;
+  }
+
+  .swiper-recomendations .swiper::v-deep(.swiper-pagination-horizontal ) {
+    top: 95% !important;
   }
     
   .col-item {
@@ -1017,7 +1034,6 @@ const decrement = () => {
     font-style: normal;
     font-weight: 600;
     line-height: 16px; /* 100% */
-    
   }
     
   .col-value span {
@@ -1052,42 +1068,109 @@ const decrement = () => {
     display: flex;
   }
 
-  .redes-mobile{
-    display: none;
-  }
-
-
-@media only screen and (max-width: 767px) {
-  .btn-register {
-    width: 196px;
-    height: 54px;
-    font-size: 14px;
-  }
-
-  .col-recomendaciones {
-     display: none;
-  }
-
-  .text-tabs {
-    font-size: 11px!important;
-  }
-
-  .col-recprod {
-    display: none;
-  }
-
-  .redes-title {
-    display: none;
-  }
-
   .redes-mobile {
-    display: flex!important;
+    display: none;
   }
 
-  .text-infoprod {
-    font-size: 12px!important;
+  @media only screen and (max-width: 767px) {
+
+    .col-recomendaciones p {
+      font-size: 16px;
+    }
+
+    .row-reviews .v-rating::v-deep(.v-icon--size-default) {
+      font-size: 25px;
+    }
+
+    .row-reviews {
+      padding: 0 !important;
+    }
+
+    .row-reviews div {
+      font-size: 10px;
+    }
+
+    .v-tabs::v-deep(.v-btn--size-default) { 
+      padding: 0 5px !important;
+    }
+
+    .v-text-field::v-deep(input) { 
+      font-size: 11px;
+    }
+
+    .swiper {
+      height: 200px;
+    }
+
+    .swiper-recomendations .swiper {
+      height: 360px !important;
+    }
+
+    .mySwiper {
+      padding: 0 5px 10px 5px;
+    }
+
+    .mySwiper2 {
+      max-height: 200px;
+      width: 90%;
+    }
+    
+    .btn-register {
+      width: auto;
+      height: 50px;
+      font-size: 12px;
+    }
+
+    .text-tabs {
+      font-size: 11px!important;
+    }
+
+    .redes-title {
+      display: none;
+    }
+
+    .redes-mobile {
+      display: flex!important;
+    }
+
+    .text-infoprod {
+      font-size: 12px!important;
+    }
+
+    .breadcumb {
+      height: 50px !important;
+      margin-top: -5px !important;
+    }
+      
+    .v-breadcrumbs {
+      padding-top: 0 !important;
+      margin-top: -5px !important;
+    }
+
+    .v-breadcrumbs::v-deep(.v-breadcrumbs-item) {
+      font-size: 10px;
+    }
+
+    .v-breadcrumbs::v-deep(.v-breadcrumbs-divider){
+      padding: 0 2px !important;
+    }
+
+    .v-card-title {
+      white-space: pre-wrap;
+      line-height: 24px;
+      font-size: 24px;
+    }
+
+    .hr {
+      margin: 3px 5px;
+    }
+
+    .v-rating::v-deep(.v-icon--size-default) {
+      font-size: 15px;
+    }
+
+    .col-item, .col-value  {
+      padding: 8px 16px;
+    }
   }
-
-}
-
 </style>
