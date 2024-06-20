@@ -459,7 +459,7 @@ const decrement = () => {
                 <span class="d-block tw-text-tertiary">Tienda: 
                   <strong class="tw-text-gray tw-text-base ms-1">{{ store }}</strong>
                 </span>
-                <span class="d-block tw-text-tertiary ms-8 mb-2">Status: 
+                <span class="d-block tw-text-tertiary ms-md-8 mb-2">Status: 
                   <strong class="tw-text-gray tw-text-base ms-1">
                     {{ (in_stock === 1) ? 'En Stock (' + cant_stock + ')'  : 'AGOTADO' }}
                   </strong>
@@ -548,7 +548,7 @@ const decrement = () => {
                 </div> 
               </VCardText>
 
-              <VCardText class="p-0 d-flex border-title pb-2 mt-0">
+              <VCardText class="p-0 d-flex border-title pb-2 mt-2 mt-md-0">
                 <VBtn 
                   v-if="wholesale"
                   :class="route.query.wholesale === 'true' ? 'b-mayorista-active': 'b-mayorista'"
