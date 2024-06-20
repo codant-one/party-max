@@ -46,10 +46,10 @@ watchEffect(() => {
         dateBlog.value = props.blog.date
         tags.value = props.blog.tags
 
-        searchWhatsapp.value = `https://wa.me/?text=${import.meta.env.VITE_MY_DOMAIN}/products/${props.blog.slug}`
-        searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${import.meta.env.VITE_MY_DOMAIN}/products/${props.blog.slug}`
-        searchTwitter.value = `https://twitter.com/intent/tweet?text=https://${import.meta.env.VITE_MY_DOMAIN}/products/${props.blog.slug}`
-        searchPinterest.value = `https://pinterest.com/pin/create/button/?url=&media=https://${import.meta.env.VITE_MY_DOMAIN}/products/${props.blog.slug}`
+        searchWhatsapp.value = `https://wa.me/?text=${import.meta.env.VITE_MY_DOMAIN}/blogs/${props.blog.slug}`
+        searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${import.meta.env.VITE_MY_DOMAIN}/blogs/${props.blog.slug}`
+        searchTwitter.value = `https://twitter.com/intent/tweet?text=https://${import.meta.env.VITE_MY_DOMAIN}/blogs/${props.blog.slug}`
+        searchPinterest.value = `https://pinterest.com/pin/create/button/?url=&media=https://${import.meta.env.VITE_MY_DOMAIN}/blogs/${props.blog.slug}`
 
         var blogContent = description.value; 
 
