@@ -484,7 +484,7 @@ const decrement = () => {
                 <span class="d-block tw-text-tertiary">Tienda: 
                   <strong class="tw-text-gray tw-text-base ms-1">{{ store }}</strong>
                 </span>
-                <span class="d-block tw-text-tertiary ms-md-8 mb-2">Status: 
+                <span class="d-block tw-text-tertiary ms-1 ms-md-8 mb-2">Status: 
                   <strong class="tw-text-gray tw-text-base ms-1">
                     {{ (in_stock === 1) ? 'En Stock (' + cant_stock + ')'  : 'AGOTADO' }}
                   </strong>
