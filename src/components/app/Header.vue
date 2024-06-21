@@ -128,8 +128,8 @@
   };
 
   const findCategory = (category) => {
-    let index = categories.value.findIndex(element => element.slug === category)
-    return index === -1 ? 0 : index + 1
+    let id = categories.value.filter(element => element.slug === category)[0].id
+    return id === -1 ? 0 : id
   }
 
   const logout = () => {
