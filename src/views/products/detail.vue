@@ -45,6 +45,7 @@ const searchWhatsapp = ref(null)
 const searchFacebook = ref(null)
 const searchTwitter = ref(null)
 const searchPinterest = ref(null)
+const searchLinkendin = ref(null)
 
 const bread = ref([
   {
@@ -175,10 +176,11 @@ async function fetchData() {
     const descriptionText = 'Mira este increíble producto en nuestra tienda.'
 
     searchWhatsapp.value = `https://wa.me/?text={productUrl}`
-    searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${productUrl}`
-    searchTwitter.value = `https://twitter.com/intent/tweet?text=https://${productUrl}`
-    searchPinterest.value = `https://www.pinterest.com/pin/create/button/?url=${encodeURIComponent(productUrl)}&media=${encodeURIComponent(imageUrl)}&description=${(descriptionText)}`
-
+    searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}`
+    searchTwitter.value = `https://twitter.com/intent/tweet?url=${encodeURIComponent(productUrl)}&text=${encodeURIComponent(descriptionText)}`;
+    searchPinterest.value = `https://www.pinterest.com/pin/create/button/?url=${encodeURIComponent(productUrl)}&media=${encodeURIComponent(imageUrl)}&description=${encodeURIComponent(descriptionText)}`
+    searchLinkendin.value = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(productUrl)}`;
+     
     title.value = data.value.product.name
     brand.value = data.value.product.brand.name
     rating.value = data.value.product.rating
@@ -401,6 +403,9 @@ const decrement = () => {
               <threads class="me-2"/>               
             </a>
             <a :href="searchFacebook" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+              <facebook class="me-2"/>
+            </a>
+            <a :href="searchLinkendin" target="_blank" class="tw-no-underline hover:tw-text-secondary">
               <facebook class="me-2"/>
             </a>
           </div>
