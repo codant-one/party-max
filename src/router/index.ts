@@ -46,6 +46,10 @@ const router = createRouter({
       component: Home
     },
     {
+      path: '/:catchAll(.*)',
+      redirect: { name: 'home' }
+    },
+    {
       path: '/testing',
       name: 'testing',
       component: Testing
