@@ -176,7 +176,7 @@ async function fetchData() {
     productUrl.value = `https://${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
     const imageUrl = `${import.meta.env.VITE_APP_DOMAIN_API_URL}/storage/${data.value.product.image}`
     const descriptionText = 'Mira este increíble producto.'
-    const twitterText = `${descriptionText} ${productUrl.value} ${imageUrl}`;
+    const twitterText = `${descriptionText} ${productUrl.value} `;
 
     searchWhatsapp.value = `https://wa.me/?text=${productUrl.value}`
     searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl.value)}`
