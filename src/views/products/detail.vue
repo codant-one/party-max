@@ -169,13 +169,12 @@ async function fetchData() {
 
     product_id.value = data.value.product.id
 
-   
     const productUrl = `https://${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
     const imageUrl = `${import.meta.env.VITE_APP_DOMAIN_API_URL}/storage/${data.value.product.image}`
-    const descriptionText = 'Mira este increíble producto en nuestra tienda.'
+    const descriptionText = 'Mira este increíble producto.'
     const twitterText = `${descriptionText} ${productUrl} ${imageUrl}`;
 
-    searchWhatsapp.value = `https://wa.me/?text={productUrl}`
+    searchWhatsapp.value = `https://wa.me/?text=${productUrl}`
     searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}`
     searchTwitter.value = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}`;
     searchLinkendin.value = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(productUrl)}`;
