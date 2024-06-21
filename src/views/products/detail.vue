@@ -44,7 +44,6 @@ const tab = ref('1')
 const searchWhatsapp = ref(null)
 const searchFacebook = ref(null)
 const searchTwitter = ref(null)
-const searchPinterest = ref(null)
 const searchLinkendin = ref(null)
 
 const bread = ref([
@@ -171,14 +170,14 @@ async function fetchData() {
     product_id.value = data.value.product.id
 
    
-    const productUrl = `${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
+    const productUrl = `https://${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
     const imageUrl = `${import.meta.env.VITE_APP_DOMAIN_API_URL}/storage/${data.value.product.image}`
     const descriptionText = 'Mira este increíble producto en nuestra tienda.'
+    const twitterText = `${descriptionText} ${productUrl} ${imageUrl}`;
 
     searchWhatsapp.value = `https://wa.me/?text={productUrl}`
     searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}`
-    searchTwitter.value = `https://twitter.com/intent/tweet?url=${encodeURIComponent(productUrl)}&text=${encodeURIComponent(descriptionText)}`;
-    searchPinterest.value = `https://www.pinterest.com/pin/create/button/?url=${encodeURIComponent(productUrl)}&media=${encodeURIComponent(imageUrl)}&description=${encodeURIComponent(descriptionText)}`
+    searchTwitter.value = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}`;
     searchLinkendin.value = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(productUrl)}`;
      
     title.value = data.value.product.name
@@ -399,13 +398,10 @@ const decrement = () => {
             <a :href="searchTwitter" target="_blank" class="tw-no-underline hover:tw-text-secondary">
               <instagram class="me-2"/>
             </a>
-            <a :href="searchPinterest" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+            <a :href="searchLinkendin" target="_blank" class="tw-no-underline hover:tw-text-secondary">
               <threads class="me-2"/>               
             </a>
             <a :href="searchFacebook" target="_blank" class="tw-no-underline hover:tw-text-secondary">
-              <facebook class="me-2"/>
-            </a>
-            <a :href="searchLinkendin" target="_blank" class="tw-no-underline hover:tw-text-secondary">
               <facebook class="me-2"/>
             </a>
           </div>
@@ -441,7 +437,7 @@ const decrement = () => {
             <a :href="searchTwitter" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
               <instagram_mobile class="me-2"/>
             </a>
-            <a :href="searchPinterest" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
+            <a :href="searchLinkendin" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
               <threads_mobile class="me-2"/>               
             </a>
             <a :href="searchFacebook" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
