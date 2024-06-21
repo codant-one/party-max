@@ -10,7 +10,7 @@ import { useCartStores } from '@/stores/cart'
 import { useFavoritesStores } from '@/stores/favorites'
 import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Head } from '@vueuse/head';
+import { useHead } from '@vueuse/head';
 import router from '@/router'
 import CustomRadiosWithIcon from '@/components/app/CustomRadiosWithIcon.vue'
 import Loader from '@/components/common/Loader.vue'
@@ -182,7 +182,7 @@ async function fetchData() {
     searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl.value)}`
     searchTwitter.value = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}`;
     searchLinkendin.value = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(productUrl.value)}`;
-     
+    
     title.value = data.value.product.name
     brand.value = data.value.product.brand.name
     rating.value = data.value.product.rating
@@ -217,6 +217,26 @@ async function fetchData() {
 
     if(client_id.value)
       isFavoriteProduct.value = await favoritesStores.show({user_id: user_id.value, product_id: product_id.value })
+      
+    useHead({
+      title: title.value,
+      meta: [
+        // Open Graph / Facebook / LinkedIn / Pinterest / WhatsApp
+        { property: 'og:type', content: 'website' },
+        { property: 'og:title', content: title.value },
+        { property: 'og:description', content: `Producto publicado en PARTYMAX como: ${title.value}` },
+        { property: 'og:image', content: imageMeta.value },
+        { property: 'og:url', content: productUrl.value },
+        { property: 'og:site_name', content: 'PARTYMAX' },
+        // Twitter
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: title.value },
+        { name: 'twitter:description', content: `Producto publicado en PARTYMAX como: ${title.value}` },
+        { name: 'twitter:image', content: imageMeta.value },
+        { name: 'twitter:site', content: '@SteffaniiPaola' },
+      ],
+    });
+
   }
   
   isLoading.value = false
@@ -382,26 +402,26 @@ const decrement = () => {
 
 <template>
   <section>
-    <Head>
+    <!-- <Head>
       <title>{{ title }}</title>
-      <meta name="description" :content="'Producto publicado en PARTYMAX como: '+title">
+      <meta name="description" :content="'Producto publicado en PARTYMAX como: '+title"> -->
 
       <!-- Open Graph / Facebook / LinkedIn / Pinterest / Whatsapp -->
-      <meta property="og:type" content="website">
+      <!-- <meta property="og:type" content="website">
       <meta property="og:title" :content="title">
       <meta property="og:description" :content="'Producto publicado en PARTYMAX como: '+title">
       <meta property="og:image" :content="imageMeta">
       <meta property="og:url" :content="productUrl">
-      <meta property="og:site_name" content="PARTYMAX">
+      <meta property="og:site_name" content="PARTYMAX"> -->
 
       <!-- Twitter -->
-      <meta name="twitter:card" content="summary_large_image">
+      <!-- <meta name="twitter:card" content="summary_large_image">
       <meta name="twitter:title" :content="title">
       <meta name="twitter:description" :content="'Producto publicado en PARTYMAX como: '+title">
       <meta name="twitter:image" :content="imageMeta">
       <meta name="twitter:site" content="@SteffaniiPaola">
 
-    </Head>
+    </Head> -->
    <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
       <VContainer class="tw-text-tertiary d-flex align-center px-0">
         <v-breadcrumbs :items="bread" class="px-2" />
