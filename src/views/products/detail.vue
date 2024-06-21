@@ -10,6 +10,7 @@ import { useCartStores } from '@/stores/cart'
 import { useFavoritesStores } from '@/stores/favorites'
 import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Head } from '@vueuse/head';
 import router from '@/router'
 import CustomRadiosWithIcon from '@/components/app/CustomRadiosWithIcon.vue'
 import Loader from '@/components/common/Loader.vue'
@@ -97,6 +98,7 @@ const selectedColorId = ref(null)
 const load = ref(false)
 const color = ref('')
 const imageAux = ref('')
+const imageMeta = ref('')
 
 const cant_prod = ref(1)
 const client_id = ref(null)
@@ -148,6 +150,7 @@ async function fetchData() {
     data.value = miscellaneousStores.getData
 
     imageAux.value = [{ image : data.value.product.image }]
+    imageMeta.value = baseURL.value + data.value.product.image
 
     categories.value = data.value.product.colors[0]?.categories.map(item => item.category.name)
     productImages.value = (data.value.product.colors[0]?.images.length === 0) ? imageAux.value : data.value.product.colors[0]?.images
@@ -193,7 +196,7 @@ async function fetchData() {
     in_stock.value = data.value.product.in_stock
     color.value = data.value.product.colors[0].color.name
     single_description.value = data.value.product.single_description
-    description.value = data.value.product.description
+    description.value = data.value.product.description ?? ''
     cant_stock.value = parseInt(data.value.product.stock)
 
     width.value = data.value.product.detail.width
@@ -378,7 +381,16 @@ const decrement = () => {
 
 <template>
   <section>
-    <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
+    <Head>
+      <title>{{ title }}</title>
+      <meta name="description" :content="description" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@tu_twitter" />
+      <meta name="twitter:title" :content="title" />
+      <meta name="twitter:description" :content="description" />
+      <meta name="twitter:image" :content="imageMeta" />
+    </Head>
+   <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
       <VContainer class="tw-text-tertiary d-flex align-center px-0">
         <v-breadcrumbs :items="bread" class="px-2" />
       </VContainer>
