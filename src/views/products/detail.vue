@@ -384,6 +384,8 @@ const decrement = () => {
   <section>
     <Head>
       <title>{{ title }}</title>
+      <meta name="description" :content="'testing: '+title">
+
       <!-- Open Graph / Facebook / LinkedIn / Pinterest / Whatsapp -->
       <meta property="og:type" content="website">
       <meta property="og:title" :content="title">
