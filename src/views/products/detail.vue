@@ -384,22 +384,18 @@ const decrement = () => {
   <section>
     <Head>
       <title>{{ title }}</title>
-      <meta name="description" content="Producto publicado en PARTYMAX" />
-
       <!-- Open Graph / Facebook / LinkedIn / Pinterest / Whatsapp -->
       <meta property="og:type" content="website">
       <meta property="og:title" :content="title">
-      <meta property="og:description" :content="description">
+      <meta property="og:description" :content="'Producto publicado en PARTYMAX como: '+title">
       <meta property="og:image" :content="imageMeta">
-      <meta property="og:image:width" content="400" />
-      <meta property="og:image:height" content="400" />
       <meta property="og:url" :content="productUrl">
       <meta property="og:site_name" content="PARTYMAX">
 
       <!-- Twitter -->
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" :content="title" />
-      <meta name="twitter:description" :content="description" />
+      <meta name="twitter:description" :content="'Producto publicado en PARTYMAX como: '+title">
       <meta name="twitter:image" :content="imageMeta" />
       <meta name="twitter:site" content="@SteffaniiPaola" />
 
