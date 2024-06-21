@@ -42,6 +42,7 @@ const isMobile = /Mobi/i.test(navigator.userAgent);
 
 const isLoading = ref(true)
 const tab = ref('1')
+const productUrl = ref(null)
 const searchWhatsapp = ref(null)
 const searchFacebook = ref(null)
 const searchTwitter = ref(null)
@@ -172,15 +173,15 @@ async function fetchData() {
 
     product_id.value = data.value.product.id
 
-    const productUrl = `https://${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
+    productUrl.value = `https://${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
     const imageUrl = `${import.meta.env.VITE_APP_DOMAIN_API_URL}/storage/${data.value.product.image}`
     const descriptionText = 'Mira este increíble producto.'
-    const twitterText = `${descriptionText} ${productUrl} ${imageUrl}`;
+    const twitterText = `${descriptionText} ${productUrl.value} ${imageUrl}`;
 
-    searchWhatsapp.value = `https://wa.me/?text=${productUrl}`
-    searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}`
+    searchWhatsapp.value = `https://wa.me/?text=${productUrl.value}`
+    searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl.value)}`
     searchTwitter.value = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}`;
-    searchLinkendin.value = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(productUrl)}`;
+    searchLinkendin.value = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(productUrl.value)}`;
      
     title.value = data.value.product.name
     brand.value = data.value.product.brand.name
@@ -383,15 +384,24 @@ const decrement = () => {
   <section>
     <Head>
       <title>{{ title }}</title>
-      <meta name="description" :content="description" />
+      <meta name="description" content="Producto publicado en PARTYMAX" />
+
+      <!-- Open Graph / Facebook / LinkedIn / Pinterest / Whatsapp -->
+      <meta property="og:type" content="website">
+      <meta property="og:title" :content="title">
+      <meta property="og:description" :content="description">
+      <meta property="og:image" :content="imageMeta">
+      <meta property="og:image:width" content="400" />
+      <meta property="og:image:height" content="400" />
+      <meta property="og:url" :content="productUrl">
+      <meta property="og:site_name" content="PARTYMAX">
+
+      <!-- Twitter -->
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:site" content="@SteffaniiPaola" />
       <meta name="twitter:title" :content="title" />
-      <!-- <meta name="twitter:description" :content="description" />
-      <meta name="twitter:image" :content="imageMeta" /> -->
-      <meta name="og:image" :content="imageMeta" />
-      <meta name="og:image:width" content="400" />
-      <meta name="og:image:height" content="400" />
+      <meta name="twitter:description" :content="description" />
+      <meta name="twitter:image" :content="imageMeta" />
+      <meta name="twitter:site" content="@SteffaniiPaola" />
 
     </Head>
    <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
