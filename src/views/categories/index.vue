@@ -45,18 +45,6 @@ const setThumbsSwiper = (swiper) => {
 }
 
 watch(() => 
-  route.path,(newPath, oldPath) => {
-    thumbsSwiper.value.destroy(false, true)
-  }
-);
-
-watch(() => 
-  route.query,(newPath, oldPath) => {
-    thumbsSwiper.value.destroy(false, true)
-  }
-);
-
-watch(() => 
     route.params,(newParams, oldParams) => {
       band.value = 0
       data.value = null

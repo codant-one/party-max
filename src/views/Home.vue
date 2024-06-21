@@ -109,18 +109,6 @@ const route = useRoute();
 const data = ref(null)
 const isLoading = ref(true)
 
-watch(() => 
-  route.path,(newPath, oldPath) => {
-    thumbsSwiper.value.destroy(false, true)
-  }
-);
-
-watch(() => 
-  route.query,(newPath, oldPath) => {
-    thumbsSwiper.value.destroy(false, true)
-  }
-);
-
 watchEffect(fetchData)
 
 async function fetchData() {

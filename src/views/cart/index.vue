@@ -170,17 +170,6 @@ onMounted(async () => {
     selectCountry(selectedAddress.value.country_id)
 })
 
-watch(() => 
-  route.path,(newPath, oldPath) => {
-    thumbsSwiper.value.destroy(false, true)
-  }
-);
-
-watch(() => 
-  route.query,(newPath, oldPath) => {
-    thumbsSwiper.value.destroy(false, true)
-  }
-);
 watchEffect(fetchData)
 
 async function fetchData() {
