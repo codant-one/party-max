@@ -399,8 +399,8 @@ const decrement = () => {
       <meta name="twitter:title" :content="title">
       <meta name="twitter:description" :content="'Producto publicado en PARTYMAX como: '+title">
       <meta name="twitter:image" :content="imageMeta">
-      <meta name="twitter:site" content="@SteffaniiPaola"/>
-      
+      <meta name="twitter:site" content="@SteffaniiPaola">
+
     </Head>
    <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
       <VContainer class="tw-text-tertiary d-flex align-center px-0">
