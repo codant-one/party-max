@@ -169,10 +169,15 @@ async function fetchData() {
 
     product_id.value = data.value.product.id
 
-    searchWhatsapp.value = `https://wa.me/?text=${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
-    searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
-    searchTwitter.value = `https://twitter.com/intent/tweet?text=https://${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
-    searchPinterest.value = `https://pinterest.com/pin/create/button/?url=&media=https://${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
+   
+    const productUrl = `${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
+    const imageUrl = `import.meta.env.VITE_APP_DOMAIN_API_URL}/storage/${data.value.product.image}`
+    const descriptionText = 'Mira este increíble producto en nuestra tienda.'
+
+    searchWhatsapp.value = `https://wa.me/?text={productUrl}`
+    searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${productUrl}`
+    searchTwitter.value = `https://twitter.com/intent/tweet?text=https://${productUrl}`
+    searchPinterest.value = `https://www.pinterest.com/pin/create/button/?url=${encodeURIComponent(productUrl)}&media=${encodeURIComponent(imageUrl)}&description=${(descriptionText)}`
 
     title.value = data.value.product.name
     brand.value = data.value.product.brand.name
