@@ -387,8 +387,12 @@ const decrement = () => {
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@SteffaniiPaola" />
       <meta name="twitter:title" :content="title" />
-      <meta name="twitter:description" :content="description" />
-      <meta name="twitter:image" :content="imageMeta" />
+      <!-- <meta name="twitter:description" :content="description" />
+      <meta name="twitter:image" :content="imageMeta" /> -->
+      <meta name="og:image" :content="imageMeta" />
+      <meta name="og:image:width" content="400" />
+      <meta name="og:image:height" content="400" />
+
     </Head>
    <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
       <VContainer class="tw-text-tertiary d-flex align-center px-0">
