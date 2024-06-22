@@ -10,7 +10,6 @@ import { useCartStores } from '@/stores/cart'
 import { useFavoritesStores } from '@/stores/favorites'
 import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { useHead } from '@vueuse/head';
 import router from '@/router'
 import CustomRadiosWithIcon from '@/components/app/CustomRadiosWithIcon.vue'
 import Loader from '@/components/common/Loader.vue'
@@ -217,29 +216,51 @@ async function fetchData() {
 
     if(client_id.value)
       isFavoriteProduct.value = await favoritesStores.show({user_id: user_id.value, product_id: product_id.value })
-      
-    useHead({
-      title: title.value,
-      meta: [
-        // Open Graph / Facebook / LinkedIn / Pinterest / WhatsApp
-        { property: 'og:type', content: 'website' },
-        { property: 'og:title', content: title.value },
-        { property: 'og:description', content: `Producto publicado en PARTYMAX como: ${title.value}` },
-        { property: 'og:image', content: imageMeta.value },
-        { property: 'og:url', content: productUrl.value },
-        { property: 'og:site_name', content: 'PARTYMAX' },
-        // Twitter
-        { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: title.value },
-        { name: 'twitter:description', content: `Producto publicado en PARTYMAX como: ${title.value}` },
-        { name: 'twitter:image', content: imageMeta.value },
-        { name: 'twitter:site', content: '@SteffaniiPaola' },
-      ],
-    });
 
+    setMetaTags({
+      title: title.value,
+      description: `Producto publicado en PARTYMAX como: ${title.value}`,
+      image:  imageMeta.value,
+      url: productUrl.value ,
+    });
   }
   
   isLoading.value = false
+}
+
+const setMetaTags = ({ title, description, image, url }) => {
+  document.title = title;
+
+  const setMetaTag = (name, content) => {
+    let element = document.querySelector(`meta[name="${name}"]`) || document.createElement('meta');
+    element.setAttribute('name', name);
+    element.setAttribute('content', content);
+    document.head.appendChild(element);
+  };
+
+  const setPropertyMetaTag = (property, content) => {
+    let element = document.querySelector(`meta[property="${property}"]`) || document.createElement('meta');
+    element.setAttribute('property', property);
+    element.setAttribute('content', content);
+    document.head.appendChild(element);
+  };
+
+  setMetaTag('description', description);
+
+  // Open Graph / Facebook / LinkedIn / Pinterest / WhatsApp
+  setPropertyMetaTag('og:type', 'website');
+  setPropertyMetaTag('og:title', title);
+  setPropertyMetaTag('og:description', description);
+  setPropertyMetaTag('og:image', image);
+  setPropertyMetaTag('og:url', url);
+  setPropertyMetaTag('og:site_name', 'PARTYMAX');
+
+  // Twitter
+  setMetaTag('twitter:card', 'summary_large_image');
+  setMetaTag('twitter:title', title);
+  setMetaTag('twitter:description', description);
+  setMetaTag('twitter:image', image);
+  setMetaTag('twitter:site', '@SteffaniiPaola');
 }
 
 const chanceRadio = (value) => {
@@ -402,26 +423,6 @@ const decrement = () => {
 
 <template>
   <section>
-    <!-- <Head>
-      <title>{{ title }}</title>
-      <meta name="description" :content="'Producto publicado en PARTYMAX como: '+title"> -->
-
-      <!-- Open Graph / Facebook / LinkedIn / Pinterest / Whatsapp -->
-      <!-- <meta property="og:type" content="website">
-      <meta property="og:title" :content="title">
-      <meta property="og:description" :content="'Producto publicado en PARTYMAX como: '+title">
-      <meta property="og:image" :content="imageMeta">
-      <meta property="og:url" :content="productUrl">
-      <meta property="og:site_name" content="PARTYMAX"> -->
-
-      <!-- Twitter -->
-      <!-- <meta name="twitter:card" content="summary_large_image">
-      <meta name="twitter:title" :content="title">
-      <meta name="twitter:description" :content="'Producto publicado en PARTYMAX como: '+title">
-      <meta name="twitter:image" :content="imageMeta">
-      <meta name="twitter:site" content="@SteffaniiPaola">
-
-    </Head> -->
    <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
       <VContainer class="tw-text-tertiary d-flex align-center px-0">
         <v-breadcrumbs :items="bread" class="px-2" />
