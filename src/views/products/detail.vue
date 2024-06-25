@@ -143,7 +143,7 @@ async function fetchData() {
   productImages.value = []
   data.value = null
 
-  if(route.params.slug) {
+  if(route.params.slug && route.path.startsWith('/products/')) {
     existence_whole.value = route.query.wholesale === 'true' ? true : false
 
     await miscellaneousStores.getProduct(route.params.slug)

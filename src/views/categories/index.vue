@@ -57,7 +57,7 @@ watchEffect(fetchData)
 
 async function fetchData() {
 
-  if(route.params.slug && band.value === 0) {
+  if(route.params.slug && route.path.startsWith('/categories/') && band.value === 0) {
     isLoading.value = true
     band.value = 1
 
