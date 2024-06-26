@@ -78,10 +78,21 @@ const getProvinces = computed(() => {
 
 onMounted(async () => {
     selectCountry(billingDetail.value.country_id)
+
+    if(localStorage.getItem('user_data')){
+        const userData = localStorage.getItem('user_data')
+        const userDataJ = JSON.parse(userData)
+        
+        billingDetail.value.name = userDataJ.name
+        billingDetail.value.last_name = userDataJ.last_name
+        billingDetail.value.province_id = userDataJ.user_details.province.name
+        billingDetail.value.address  = userDataJ.user_details.address
+        billingDetail.value.phone = userDataJ.user_details.phone
+        billingDetail.value.email = userDataJ.email
+    }
 })
 
 watchEffect(() => {
-
     if (!(Object.entries(props.addresses).length === 0)) {
         let index = props.addresses.findIndex((item) => item.id === props.address_id)
         address.value = props.addresses[index]
@@ -228,7 +239,7 @@ const chanceExpress = () => {
                                 </VCol>  
                                 <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
                                     <VTextField
-                                        label="Calle"
+                                        label="Calle / Carrera / Avenida"
                                         v-model="billingDetail.street"
                                         variant="outlined"
                                         /> 
