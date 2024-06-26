@@ -32,7 +32,7 @@ const isError = ref(false)
 
 
 watchEffect(() => {
-
+    console.log('ojo', route.query)
     merchant_id.value = route.query.merchantId
     referenceCode.value = route.query.referenceCode
     TX_VALUE.value = route.query.TX_VALUE

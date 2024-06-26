@@ -340,7 +340,7 @@ const redirect = (name) => {
         box-shadow: 0px 0px 24px 0px #FF27B3;
     }
 
-    .btn-order:hover   {
+    .btn-order:hover {
         border: 1px solid var(--Maastricht-Blue, #0A1B33);
         background: var(--Maastricht-Blue, #0A1B33);
         color: #FFFFFF!important;

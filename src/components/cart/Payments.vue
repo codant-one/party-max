@@ -36,7 +36,7 @@ const props = defineProps({
     },
 })
 
-const emit = defineEmits(['submit', 'send'])
+const emit = defineEmits(['submit', 'send', 'update:currentStep',])
 
 const refVForm = ref()
 const isMobile = /Mobi/i.test(navigator.userAgent)
@@ -139,7 +139,7 @@ const chanceExpress = () => {
     <VForm
         ref="refVForm" class="form-facturacion"
         @submit.prevent="onSubmit"> 
-        <VRow>
+        <VRow no-gutters>
             <VCol cols="12">
                 <VCard class="card-products mt-0 px-0">
                     <h1 class="title-summary border-title pb-4">Detalles de Facturación</h1>
@@ -360,7 +360,7 @@ const chanceExpress = () => {
                                 Realizar pedido
                         </VBtn>
                     </VCardText>
-                    <VCardText class="d-block row-payu align-center text-center p-0 px-5 px-md-16 pb-5">
+                    <VCardText class="d-block row-payu align-center text-center p-0 px-5 px-md-16">
                         <div class="d-flex align-center tw-text-left md:tw-text-center justify-content-center">
                             <span class="tw-text-left me-2 me-md-5">PayU Latam Online Payments</span>
                             <img :src="Payu"/>
@@ -374,13 +374,39 @@ const chanceExpress = () => {
                     </VCardText>
                 </VCard>
             </VCol>
+            <VCol cols="12" md="4">
+                <VBtn
+                    variant="flat"
+                    class="btn-order tw-bg-green tw-text-tertiary my-2 mt-md-5 me-2"
+                    @click="emit('update:currentStep', 1)">
+                    Atrás
+                </VBtn>
+            </VCol>
+            <VCol cols="12" md="8"></VCol>
         </VRow>
     </VForm>
 </template>
 
 <style scoped>
     
-    
+    .btn-order {
+        border-radius: 32px;
+        border: 1px solid var(--Maastricht-Blue, #0A1B33);
+        height: 54px;
+        width: 177px;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 14px;
+        box-shadow: none;
+    }
+
+    .btn-order:hover {
+        border: 1px solid var(--Maastricht-Blue, #0A1B33) !important;
+        background: var(--Maastricht-Blue, #0A1B33) !important;
+        color: #FFFFFF!important;
+    }
+
     .textinput .v-text-field::v-deep(.v-field) { 
         border-radius: 24px;
         height: 35px;
@@ -524,6 +550,7 @@ const chanceExpress = () => {
         border-top: 1px solid #E2F8FC;
 
     }
+
     .row-cardelivery3 h4 {
         color:#0A1B33;
         font-size: 16px;
@@ -628,8 +655,7 @@ const chanceExpress = () => {
         line-height: 14px;
     }
 
-    @media only screen and (max-width: 767px)
-    {
+    @media only screen and (max-width: 767px) {
         .card-products {
             padding: 16px 10px;
         }
@@ -644,6 +670,10 @@ const chanceExpress = () => {
 
         .row-payu span, p {
             font-size: 14px !important;
+        }
+
+        .btn-register, .btn-order {
+            width: 100%;
         }
     }
 

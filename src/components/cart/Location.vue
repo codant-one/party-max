@@ -138,11 +138,16 @@ const next = () => {
                 </VCardText>
             </VCard>
             
-            <VCardText class="d-flex pt-5 pb-0">
+            <VCardText class="d-md-flex pt-5 pb-0 px-0">
                 <VSpacer />
                 <VBtn
                     variant="flat"
-                    style="border-radius:32px;"
+                    class="btn-order tw-bg-green tw-text-tertiary my-2 mt-md-5 me-2"
+                    @click="emit('update:currentStep', 0)">
+                    Atrás
+                </VBtn>
+                <VBtn
+                    variant="flat"
                     class="btn-register tw-text-white tw-bg-primary button-hover my-2 mt-md-5"
                     @click="next">
                     Continuar
@@ -231,9 +236,28 @@ const next = () => {
         height: 54px;
         width: 25%;
     }
+
     .button-hover:hover {
         background-color: #FF27B3 !important;
         box-shadow: 0px 0px 24px 0px #FF27B3;
+    }
+
+    .btn-order {
+        border-radius: 32px;
+        border: 1px solid var(--Maastricht-Blue, #0A1B33);
+        height: 54px;
+        width: 177px;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 14px;
+        box-shadow: none;
+    }
+
+    .btn-order:hover {
+        border: 1px solid var(--Maastricht-Blue, #0A1B33) !important;
+        background: var(--Maastricht-Blue, #0A1B33) !important;
+        color: #FFFFFF!important;
     }
 
     .card-products {
@@ -322,14 +346,12 @@ const next = () => {
         line-height: normal;
     }
 
-    @media only screen and (max-width: 767px)
-    {
-        .title-card
-        {
+    @media only screen and (max-width: 767px) {
+        .title-card {
             font-size: 20px;
         }
-        .btn-register
-        {
+
+        .btn-register, .btn-order {
             width: 100%;
         }
     }
