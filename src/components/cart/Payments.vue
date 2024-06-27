@@ -85,7 +85,7 @@ onMounted(async () => {
         
         billingDetail.value.name = userDataJ.name
         billingDetail.value.last_name = userDataJ.last_name
-        billingDetail.value.province_id = userDataJ.user_details.province.name
+        billingDetail.value.province_id = userDataJ.user_details.province.id
         billingDetail.value.address  = userDataJ.user_details.address
         billingDetail.value.phone = userDataJ.user_details.phone
         billingDetail.value.email = userDataJ.email
@@ -218,13 +218,14 @@ const chanceExpress = () => {
                                 </VCol>  
                                 <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
                                     <VAutocomplete
-                                        variant="outlined"
                                         v-model="billingDetail.province_id"
+                                        item-title="title"
+                                        item-value="value"
+                                        variant="outlined"
                                         label="Estado"
-                                        :rules="[requiredValidator]"
                                         :items="getProvinces"
+                                        :rules="[requiredValidator]"
                                         :menu-props="{ maxHeight: '200px' }"
-                                        :readonly="sendToBogota"
                                     />    
                                 </VCol>
                                 <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
@@ -234,7 +235,6 @@ const chanceExpress = () => {
                                         variant="outlined"
                                         :rules="[requiredValidator]"
                                         class="me-0 me-md-2"
-                                        :readonly="sendToBogota"
                                     />
                                 </VCol>  
                                 <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
