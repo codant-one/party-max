@@ -24,6 +24,8 @@ import instagram_mobile from '@assets/icons/instagram_mobile.svg?inline';
 import threads_mobile from '@assets/icons/threads_mobile.svg?inline';
 import iconmayorista from '@assets/icons/Union.svg?inline';
 import heart from '@assets/icons/heart.svg?inline';
+import check_circle from '@assets/icons/check-circle.svg';
+import error_circle from '@assets/icons/error-circle.svg';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -107,11 +109,11 @@ const user_id = ref(null)
 
 const isFavorite = ref(null)
 const isFavoriteProduct = ref(null)
-const isSnackbarBottomStartVisible = ref(false)
-const variant = ref('tonal')
-const colorMessage = ref('')
 const message = ref('')
 const onlyWholesale = ref(false)
+
+const isDialogVisible = ref(false)
+const isError = ref(false)
 
 watch(() => 
   route.path,(newPath, oldPath) => {
@@ -300,16 +302,14 @@ const addCart = () => {
       cartStores.add(data)
         .then(response => {
 
-          isSnackbarBottomStartVisible.value = true
+          isDialogVisible.value = true
           message.value = 'Agregado al carrito'
-          colorMessage.value = 'primary'
-          variant.value = 'tonal'
           load.value = false
 
           setTimeout(() => {
-            isSnackbarBottomStartVisible.value = false
+            isDialogVisible.value = false
+            isError.value = false
             message.value = ''
-            colorMessage.value = ''
           }, 3000)
 
         }).catch(err => {
@@ -317,28 +317,26 @@ const addCart = () => {
           //console.error(err.message)
         })
     } else {
-      isSnackbarBottomStartVisible.value = true
+      isDialogVisible.value = true
       message.value = 'Debes agregar al carrito productos ' + (isWholesale ? 'al detal' : 'al mayor') + ' debido a tu selección anterior'
-      colorMessage.value = 'error'
-      variant.value = 'flat'
-                      
+      isError.value = true
+
       setTimeout(() => {
-        isSnackbarBottomStartVisible.value = false
+        isDialogVisible.value = false
+        isError.value = false
         message.value = ''
-        colorMessage.value = ''
       }, 3000)
     }
 
   } else {
-    isSnackbarBottomStartVisible.value = true
-    message.value = 'Necesitas iniciar sesión antes de agregar un producto al carrito'
-    colorMessage.value = 'error'
-    variant.value = 'flat'
-                    
+    isDialogVisible.value = true
+    message.value = 'Regístrate o inicia sesión para agregar productos al carrito y realizar tus compras.'
+    isError.value = true
+
     setTimeout(() => {
-      isSnackbarBottomStartVisible.value = false
+      isDialogVisible.value = false
+      isError.value = false
       message.value = ''
-      colorMessage.value = ''
     }, 3000)
   }
 
@@ -353,16 +351,14 @@ const addfavorite = () => {
       .then(response => {
 
         isFavorite.value = false
-        isSnackbarBottomStartVisible.value = true
+        isDialogVisible.value = true
         message.value = 'Agregado a la lista de favoritos'
         isFavoriteProduct.value = true
-        colorMessage.value = 'primary'
-        variant.value = 'tonal'
                     
         setTimeout(() => {
-          isSnackbarBottomStartVisible.value = false
+          isDialogVisible.value = false
+          isError.value = false
           message.value = ''
-          colorMessage.value = ''
         }, 3000)
     
       }).catch(err => {
@@ -372,15 +368,14 @@ const addfavorite = () => {
       })
 
     } else {
-      isSnackbarBottomStartVisible.value = true
-      message.value = 'Necesitas iniciar sesión antes de agregar un producto a la lista'
-      colorMessage.value = 'error'
-      variant.value = 'flat'
+      isDialogVisible.value = true
+      message.value = 'Regístrate o inicia sesión para agregar productos al carrito y realizar tus compras.'
+      isError.value = true
 
       setTimeout(() => {
-        isSnackbarBottomStartVisible.value = false
+        isDialogVisible.value = false
         message.value = ''
-        colorMessage.value = ''
+        isError.value = false
       }, 3000)
   }
 
@@ -767,14 +762,15 @@ const decrement = () => {
         </VCardText> 
       </VCard>
     </VContainer>
-    <VSnackbar
-      v-model="isSnackbarBottomStartVisible"
-      location="bottom start"
-      :variant="variant"
-      :color="colorMessage"
-    >
-      {{ message }}
-    </VSnackbar>
+    <VDialog v-model="isDialogVisible" >
+      <VCard
+        class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
+        <VImg width="100" :src="isError ? error_circle : check_circle" class="mx-auto"/>
+        <VCardText class="text-message mt-10 mb-5">
+          {{ message }}
+        </VCardText>
+      </VCard>
+    </VDialog>
   </section>
 </template>
 
@@ -787,6 +783,21 @@ const decrement = () => {
 </style>
 
 <style scoped>
+
+  .text-message {
+    color:  #FF0090;
+    text-align: center;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 30px; 
+    padding: 0 80px !important;
+  }
+
+  .card-register {
+    width: 500px;
+    border-radius: 32px!important;
+  }
 
   .v-rating::v-deep(.v-icon--size-default) {
     font-size: 20px;
@@ -1257,6 +1268,16 @@ const decrement = () => {
 
     .col-item, .col-value  {
       padding: 8px 16px;
+    }
+
+    .card-register {
+      padding: 20px;
+      width: auto;
+    }
+
+    .text-message {
+      padding: 0 30px !important;
+      font-size: 18px;
     }
   }
 </style>

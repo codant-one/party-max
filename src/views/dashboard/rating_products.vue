@@ -2,11 +2,7 @@
 
 import { useReviewsStores } from '@/stores/reviews'
 import { requiredValidator } from '@validators'
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
 import Loader from '@/components/common/Loader.vue'
-import router from '@/router'
-import arrow_right from '@assets/icons/arrow_right.svg?inline';
 import check_circle from '@assets/icons/check-circle.svg';
 import error_circle from '@assets/icons/error-circle.svg';
 
