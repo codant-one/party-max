@@ -201,7 +201,7 @@ watchEffect(() => {
 
                 <VCardText class="px-0 more" v-if="!isError">
                     <div 
-                        class="d-flex tw-no-underline tw-text-tertiary hover:tw-text-primary hover-icon-arrow-right justify-content-center"
+                        class="tw-cursor-pointer d-flex tw-no-underline tw-text-tertiary hover:tw-text-primary hover-icon-arrow-right justify-content-center"
                         @click="emit('completed')">
                         <span class="ms-5">Seguir comprando</span>
                         <arrow_right class="ms-2" />
