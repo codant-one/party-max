@@ -239,7 +239,7 @@ const chanceExpress = () => {
                                 </VCol>  
                                 <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
                                     <VTextField
-                                        label="Calle / Carrera / Avenida"
+                                        label="Localidad / Barrio"
                                         v-model="billingDetail.street"
                                         variant="outlined"
                                         /> 
@@ -270,7 +270,7 @@ const chanceExpress = () => {
                                         label="Código Postal"
                                         variant="outlined"
                                         type="tel"
-                                        :rules="[requiredValidator, phoneValidator]"
+                                        :rules="[phoneValidator]"
                                     />    
                                 </VCol>
                                 <VCol cols="12">

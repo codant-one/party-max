@@ -2,6 +2,7 @@
 
 import festin_success from '@assets/icons/festin_success.svg';
 import festin_error from '@assets/icons/festin_error.svg';
+import festin_pending from '@assets/icons/festin_pending.svg';
 import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
 
 const route = useRoute()
@@ -31,7 +32,7 @@ const referenceCode = ref(null)
 const message = ref()
 const subMessage = ref()
 const isError = ref(false)
-
+const isPending = ref(false)
 
 watchEffect(() => {
     console.log('route.query', route.query)
@@ -173,38 +174,38 @@ watchEffect(() => {
             break;
         case '15':
             message.value = 'Pago pendiente'
-            subMessage.value = 'Transacción pendiente de aprobación.'
-            isError.value = true
+            subMessage.value = 'Transacción pendiente de aprobación. Su pago está en proceso. Una vez confirmado, se le enviará un correo electrónico con el resumen de su compra.'
+            isPending.value = true
             emit('updatePaymentState', 1)
             break;
         case '25':
             message.value = 'Pago pendiente'
-            subMessage.value = 'Recibo de pago generado. En espera de pago.'
-            isError.value = true
+            subMessage.value = 'Recibo de pago generado. En espera de pago. Su pago está en proceso. Una vez confirmado, se le enviará un correo electrónico con el resumen de su compra.'
+            isPending.value = true
             emit('updatePaymentState', 1)
             break;
         case '26':
             message.value = 'Pago pendiente'
-            subMessage.value = 'Recibo de pago generado. En espera de pago.'
-            isError.value = true
+            subMessage.value = 'Recibo de pago generado. En espera de pago. Su pago está en proceso. Una vez confirmado, se le enviará un correo electrónico con el resumen de su compra.'
+            isPending.value = true
             emit('updatePaymentState', 1)
             break;
         case '29':
             message.value = 'Pago pendiente'
-            subMessage.value = 'Recibo de pago generado. En espera de pago.'
-            isError.value = true
+            subMessage.value = 'Recibo de pago generado. En espera de pago. Su pago está en proceso. Una vez confirmado, se le enviará un correo electrónico con el resumen de su compra.'
+            isPending.value = true
             emit('updatePaymentState', 1)
             break;
         case '9994':
             message.value = 'Pago pendiente'
-            subMessage.value = '	En espera de confirmación de PSE.'
-            isError.value = true
+            subMessage.value = '	En espera de confirmación de PSE. Su pago está en proceso. Una vez confirmado, se le enviará un correo electrónico con el resumen de su compra.'
+            isPending.value = true
             emit('updatePaymentState', 1)
             break;
         default:
             message.value = 'Pago pendiente'
-            subMessage.value = 'Lamentamos que no pudieses finalizar tu compra, te invitamos a que lo vuelvas a intentar con otro método de pago.'
-            isError.value = true
+            subMessage.value = 'Lamentamos que no pudieses finalizar tu compra, te invitamos a que lo vuelvas a intentar con otro método de pago. Su pago está en proceso. Una vez confirmado, se le enviará un correo electrónico con el resumen de su compra.'
+            isPending.value = true
             emit('updatePaymentState', 1)
     }
     // switch (transactionState.value) {
@@ -244,12 +245,12 @@ watchEffect(() => {
         <VCol cols="12">
             <VCard
                 class="px-10 py-10 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-                <VImg width="200" :src="isError ? festin_error : festin_success" class="mx-auto"/>
+                <VImg width="200" :src="isError ? festin_error : (isPending ? festin_pending : festin_success)" class="mx-auto"/>
                 <VCardText class="text-message border-line">
                     {{ message }}
                 </VCardText>
 
-                <VCardText class="text-submessage my-5 pb-5 border-line">
+                <VCardText class="text-submessage pb-5 border-line">
                     {{ subMessage }}
                 </VCardText>
 
@@ -264,7 +265,7 @@ watchEffect(() => {
 
                 <VCardText class="px-0 more" v-else>
                     <div
-                        class="d-flex tw-no-underline tw-text-tertiary hover:tw-text-primary hover-icon-arrow-right justify-content-center" 
+                        class="tw-cursor-pointer d-flex tw-no-underline tw-text-tertiary hover:tw-text-primary hover-icon-arrow-right justify-content-center" 
                         @click="emit('refresh')">
                         <span class="ms-5">Volver a intentar</span>
                         <arrow_right class="ms-2" />
