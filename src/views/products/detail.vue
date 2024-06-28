@@ -26,6 +26,7 @@ import iconmayorista from '@assets/icons/Union.svg?inline';
 import heart from '@assets/icons/heart.svg?inline';
 import check_circle from '@assets/icons/check-circle.svg';
 import error_circle from '@assets/icons/error-circle.svg';
+import festin_pending from '@assets/icons/festin_pending.svg';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -114,6 +115,7 @@ const onlyWholesale = ref(false)
 
 const isDialogVisible = ref(false)
 const isError = ref(false)
+const isPending = ref(false)
 
 watch(() => 
   route.path,(newPath, oldPath) => {
@@ -330,12 +332,12 @@ const addCart = () => {
 
   } else {
     isDialogVisible.value = true
-    message.value = 'Regístrate o inicia sesión para agregar productos al carrito y realizar tus compras.'
-    isError.value = true
+    message.value = 'Para continuar con tu compra, por favor regístrate o inicia sesión. ¡Únete ahora y disfruta de bonos de descuento exclusivos y promociones especiales!.'
+    isPending.value = true
 
     setTimeout(() => {
       isDialogVisible.value = false
-      isError.value = false
+      isPending.value = false
       message.value = ''
     }, 3000)
   }
@@ -369,13 +371,13 @@ const addfavorite = () => {
 
     } else {
       isDialogVisible.value = true
-      message.value = 'Regístrate o inicia sesión para agregar productos al carrito y realizar tus compras.'
-      isError.value = true
+      message.value = 'Para continuar con tu compra, por favor regístrate o inicia sesión. ¡Únete ahora y disfruta de bonos de descuento exclusivos y promociones especiales!.'
+      isPending.value = true
 
       setTimeout(() => {
         isDialogVisible.value = false
         message.value = ''
-        isError.value = false
+        isPending.value = false
       }, 3000)
   }
 
@@ -765,8 +767,8 @@ const decrement = () => {
     <VDialog v-model="isDialogVisible" >
       <VCard
         class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-        <VImg width="100" :src="isError ? error_circle : check_circle" class="mx-auto"/>
-        <VCardText class="text-message mt-10 mb-5">
+        <VImg :width="isMobile ? '80' : '100'" :src="isError ? error_circle : (isPending ? festin_pending : check_circle)" class="mx-auto"/>
+        <VCardText class="text-message mb-5 px-0 px-md-5">
           {{ message }}
         </VCardText>
       </VCard>
@@ -790,8 +792,7 @@ const decrement = () => {
     font-size: 24px;
     font-style: normal;
     font-weight: 600;
-    line-height: 30px; 
-    padding: 0 80px !important;
+    line-height: 30px;
   }
 
   .card-register {
@@ -1276,7 +1277,6 @@ const decrement = () => {
     }
 
     .text-message {
-      padding: 0 30px !important;
       font-size: 18px;
     }
   }
