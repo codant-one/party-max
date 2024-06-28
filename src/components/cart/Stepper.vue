@@ -340,6 +340,10 @@ watchEffect(() => {
       justify-content: end;
     }
   }
+
+  .stepper-icon img  {
+    width: 120px;
+  }
 }
 
 @media only screen and (max-width: 767px) {
@@ -352,11 +356,15 @@ watchEffect(() => {
   }
 
   .w-slide-group {
-    min-width: 60px !important;
+    min-width: 70px !important;
     text-align: center;
     justify-content: center;
     align-items: center;
     display: flex;
+  }
+
+  .stepper-icon img  {
+    width: 70px !important;
   }
 }
 </style>

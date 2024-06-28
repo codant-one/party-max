@@ -33,6 +33,8 @@ const subMessage = ref()
 const isError = ref(false)
 const isPending = ref(false)
 
+const isMobile = /Mobi/i.test(navigator.userAgent)
+
 watchEffect(() => {
     console.log('route.query', route.query)
     merchant_id.value = route.query.merchantId
@@ -190,7 +192,7 @@ watchEffect(() => {
         <VCol cols="12">
             <VCard
                 class="px-10 py-10 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-                <VImg width="200" :src="isError ? festin_error : (isPending ? festin_pending : festin_success)" class="mx-auto"/>
+                <VImg :width="isMobile ? '150' : '200'" :src="isError ? festin_error : (isPending ? festin_pending : festin_success)" class="mx-auto"/>
                 <VCardText class="text-message border-line">
                     {{ message }}
                 </VCardText>

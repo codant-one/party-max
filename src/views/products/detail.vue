@@ -16,12 +16,12 @@ import Loader from '@/components/common/Loader.vue'
 import Product1 from '@/components/product/Product1.vue'
 import whatsapp from '@assets/icons/whatsapp.svg?inline';
 import facebook from '@assets/icons/facebook2.svg?inline';
-import instagram from '@assets/icons/instagram2.svg?inline';
-import threads from '@assets/icons/threads2.svg?inline';
+import twitter from '@assets/icons/twitter.svg?inline';
+import linkendin from '@assets/icons/linkendin.svg?inline';
 import whatsapp_mobile from '@assets/icons/whatsapp_mobile.svg?inline';
 import facebook_mobile from '@assets/icons/facebook_mobile.svg?inline';
-import instagram_mobile from '@assets/icons/instagram_mobile.svg?inline';
-import threads_mobile from '@assets/icons/threads_mobile.svg?inline';
+import twitter_mobile from '@assets/icons/twitter_mobile.svg?inline';
+import linkendin_mobile from '@assets/icons/linkendin_mobile.svg?inline';
 import iconmayorista from '@assets/icons/Union.svg?inline';
 import heart from '@assets/icons/heart.svg?inline';
 import check_circle from '@assets/icons/check-circle.svg';
@@ -177,7 +177,7 @@ async function fetchData() {
     productUrl.value = `https://${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
     const imageUrl = `${import.meta.env.VITE_APP_DOMAIN_API_URL}/storage/${data.value.product.image}`
     const descriptionText = 'Mira este increíble producto.'
-    const twitterText = `${descriptionText} ${productUrl.value} `;
+    const twitterText = `${descriptionText} ${productUrl.value} ${imageUrl}`;
 
     searchWhatsapp.value = `https://wa.me/?text=${productUrl.value}`
     searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl.value)}`
@@ -434,14 +434,14 @@ const decrement = () => {
             <a :href="searchWhatsapp" target="_blank" class="tw-no-underline hover:tw-text-secondary">
               <whatsapp class="me-2" />
             </a>   
-            <a :href="searchTwitter" target="_blank" class="tw-no-underline hover:tw-text-secondary">
-              <instagram class="me-2"/>
-            </a>
-            <a :href="searchLinkendin" target="_blank" class="tw-no-underline hover:tw-text-secondary">
-              <threads class="me-2"/>               
-            </a>
             <a :href="searchFacebook" target="_blank" class="tw-no-underline hover:tw-text-secondary">
               <facebook class="me-2"/>
+            </a>
+            <a :href="searchTwitter" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+              <twitter class="me-2"/>
+            </a>
+            <a :href="searchLinkendin" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+              <linkendin class="me-2"/>               
             </a>
           </div>
         </VCardTitle>
@@ -473,14 +473,14 @@ const decrement = () => {
             <a :href="searchWhatsapp" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
               <whatsapp_mobile class="me-2" />
             </a>   
-            <a :href="searchTwitter" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
-              <instagram_mobile class="me-2"/>
-            </a>
-            <a :href="searchLinkendin" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
-              <threads_mobile class="me-2"/>               
-            </a>
             <a :href="searchFacebook" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
               <facebook_mobile class="me-2"/>
+            </a>
+            <a :href="searchTwitter" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
+              <twitter_mobile class="me-2"/>
+            </a>
+            <a :href="searchLinkendin" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
+              <linkendin_mobile class="me-2"/>               
             </a>
           </div>
         </VCardSubtitle>

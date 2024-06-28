@@ -1,6 +1,7 @@
 <script setup>
 
 import { formatNumber } from '@formatters'
+import arrow_left from '@assets/icons/Arrow_left.svg?inline';
 
 const props = defineProps({
     addresses: {
@@ -144,7 +145,8 @@ const next = () => {
                     variant="flat"
                     class="btn-order tw-bg-green tw-text-tertiary my-2 mt-md-5 me-2"
                     @click="emit('update:currentStep', 0)">
-                    Atrás
+                    <arrow_left class="me-2" />
+                    Regresar
                 </VBtn>
                 <VBtn
                     variant="flat"

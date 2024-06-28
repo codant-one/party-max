@@ -544,7 +544,7 @@ const chanceSend = value => {
             <Loader :isLoading="isLoading"/>
 
             <VCard class="mb-5 mb-md-10 card-timeline px-0">
-                <VCardText class="px-0">
+                <VCardText class="px-0 py-0 py-md-5">
                     <!-- 👉 Stepper -->
                     <Stepper
                         v-model:current-step="currentStep"

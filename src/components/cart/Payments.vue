@@ -2,6 +2,7 @@
 
 import { requiredValidator, phoneValidator, emailValidator } from '@validators'
 import { formatNumber } from '@formatters'
+import arrow_left from '@assets/icons/Arrow_left.svg?inline';
 import Product6 from '@/components/product/Product6.vue'
 import Payu from '@/assets/icons/payu.svg'
 
@@ -151,13 +152,23 @@ const chanceExpress = () => {
         ref="refVForm" class="form-facturacion"
         @submit.prevent="onSubmit"> 
         <VRow no-gutters>
-            <VCol cols="12">
+            <VCol cols="12" md="4">
+                <VBtn
+                    variant="flat"
+                    class="btn-order tw-bg-green tw-text-tertiary mb-5 mb-md-10 me-2"
+                    @click="emit('update:currentStep', 1)">
+                    <arrow_left class="me-2" />
+                    Regresar
+                </VBtn>
+            </VCol>
+            <VCol cols="12" md="8"></VCol>
+            <VCol cols="12" md="12">
                 <VCard class="card-products mt-0 px-0">
                     <h1 class="title-summary border-title pb-4">Detalles de Facturación</h1>
                     <VCardText class="p-0 mt-3 px-2 px-md-15">
                         <VCardItem class="pb-0 px-2 px-md-10">
                             <VRow no-gutters class="text-left align-center px-2 px-md-15">
-                                <VCol cols="12" md="6" class="textinput mb-0 mb-md-2 pt-md-3">
+                                <VCol cols="12" md="6" class="textinput mb-0 mb-md-2 pt-2 pt-md-3">
                                     <VTextField
                                         label="Nombre"
                                         v-model="billingDetail.name"
@@ -385,15 +396,6 @@ const chanceExpress = () => {
                     </VCardText>
                 </VCard>
             </VCol>
-            <VCol cols="12" md="4">
-                <VBtn
-                    variant="flat"
-                    class="btn-order tw-bg-green tw-text-tertiary my-2 mt-md-5 me-2"
-                    @click="emit('update:currentStep', 1)">
-                    Atrás
-                </VBtn>
-            </VCol>
-            <VCol cols="12" md="8"></VCol>
         </VRow>
     </VForm>
 </template>
