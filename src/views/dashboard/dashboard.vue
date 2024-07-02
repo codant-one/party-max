@@ -1,5 +1,5 @@
 <template>
-    <div>
-        aaa
-    </div>
+    <VContainer>
+        <!-- DASHBOARD -->
+    </VContainer>
 </template>

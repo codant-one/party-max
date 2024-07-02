@@ -52,10 +52,10 @@ me()
             permanent
         >
             <VList density="compact" nav class="mt-5">
-                <router-link :to="{ name: 'dashboard' }" class="link-menu" exact>
+                <router-link :to="{ name: 'dashboardHome' }" class="link-menu" exact>
                     <VListItem 
-                        :class="{ 'v-list-item--active': ($route.name === 'dashboard') }"
-                        class="items-list" title="Home" value="dashboard" >
+                        :class="{ 'v-list-item--active': ($route.name === 'dashboardHome') }"
+                        class="items-list" title="Home" value="dashboardHome" >
                         <template v-slot:prepend>
                             <home style="width: 24px; height: 24px;"></home>
                         </template>
