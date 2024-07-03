@@ -212,8 +212,7 @@ async function fetchData() {
         });
 
         summary.value.subTotal = sum.toFixed(2)
-        // summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
-        summary.value.total = parseFloat(summary.value.subTotal).toFixed(2)
+        summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
         isActiveStepValid.value = (address_id.value === 0 ) ? true : false
 
         isLoading.value = false
@@ -529,8 +528,7 @@ const chanceSend = value => {
     });
 
     summary.value.subTotal = sum.toFixed(2)
-    // summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
-    summary.value.total = parseFloat(summary.value.subTotal).toFixed(2)
+    summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
 }
 
 </script>
