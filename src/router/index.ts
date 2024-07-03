@@ -148,11 +148,12 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'dashboard',
+      redirect: { name: 'dashboardHome' },
       component: Dashboard,
       children: [
         {
-          path: '/',
-          name: 'dashboard',
+          path: '',
+          name: 'dashboardHome',
           component: DashboardHome,
         },
         {
