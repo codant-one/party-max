@@ -429,7 +429,7 @@
     <VNavigationDrawer
       :model-value="isDrawerOpen"
       :width="isMobile ? 280 : 350"
-      height="100vh"
+      :height="isMobile ? '80vh' : '100vh'"
       location="end"
       class="scrollable-content drawer"
       temporary
@@ -1033,6 +1033,10 @@
   }
 
   @media only screen and (max-width: 767px) {
+
+    .drawer {
+      height: auto !important; /* Ocupa el 100% de la altura de la ventana */
+    }
 
     .drawer::v-deep(.v-navigation-drawer__content) {
       padding: 0 !important;
