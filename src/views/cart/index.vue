@@ -62,6 +62,8 @@ const addresses = ref(null)
 const products = ref([])
 const client_id = ref(null)
 const address_id = ref(0)
+const send_id = ref(0)
+const province_id = ref(0)
 
 const summary = ref({
     subTotal: 0,
@@ -202,6 +204,12 @@ async function fetchData() {
         let index = addresses.value.findIndex((item) => item.default === 1) 
         if (addresses.value.length > 0) {
             address_id.value = (index > -1) ? addresses.value[index].id : addresses.value[0].id 
+            province_id.value = addresses.value.filter(address => address.id === address_id.value)[0].province_id
+            if(province_id.value === 293) {
+                chanceSend('sendToBogota')
+                send_id.value = 1
+            } else
+                chanceSend('send')
         } 
 
         let sum = 0
@@ -573,6 +581,8 @@ const chanceSend = value => {
                     <Location 
                         v-model:current-step="currentStep"
                         :address_id="address_id"
+                        :province_id="province_id"
+                        :send_id="send_id"
                         :addresses="addresses"
                         :summary="summary"
                         @changeAddreess="changeAddreess"
@@ -685,14 +695,6 @@ const chanceSend = value => {
                                     :grid-column="{ sm: '6', cols: '6' }"
                                 />
                             </VCol>  
-                            <VCol cols="12" md="12" class="textinput mb-2 mb-md-2">
-                                <VTextField
-                                    label="Descripción"
-                                    v-model="selectedAddress.title"
-                                    variant="outlined"
-                                    :rules="[requiredValidator]"
-                                    />
-                            </VCol>
                             <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
                                 <VAutocomplete
                                     variant="outlined"
@@ -740,7 +742,7 @@ const chanceSend = value => {
                             </VCol>  
                             <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
                                 <VTextField
-                                    label="Calle"
+                                    label="Localidad / Barrio"
                                     v-model="selectedAddress.street"
                                     variant="outlined"
                                     /> 
@@ -772,6 +774,14 @@ const chanceSend = value => {
                                     :rules="[requiredValidator, phoneValidator]"
                                 />    
                             </VCol> 
+                            <VCol cols="12" md="12" class="textinput mb-2 mb-md-2">
+                                <VTextField
+                                    label="Descripción (Ejemplo: CASA)"
+                                    v-model="selectedAddress.title"
+                                    variant="outlined"
+                                    :rules="[requiredValidator]"
+                                    />
+                            </VCol>
                             <VCol cols="12" md="7"></VCol>
                             <VCol cols="12" md="5" class="mb-3 mb-md-0">
                                 <VCheckbox

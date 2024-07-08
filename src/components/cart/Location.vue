@@ -12,14 +12,20 @@ const props = defineProps({
         type: Object,
         required: true
     },
+    province_id: {
+        type: Number,
+        required: true
+    },
     address_id: {
         type: Number,
         required: true
-    }
+    },
+    send_id: {
+        type: Number,
+        required: true
+    },
 })
-const error_address = ref('Debes agregar una dirección de envio')
-const shipping_express = ref(false)
-const province_send = ref(false)
+
 const emit = defineEmits([
     'update:currentStep',
     'changeAddreess',
@@ -28,31 +34,18 @@ const emit = defineEmits([
     'send',
 ])
 
+const error_address = ref('Debes agregar una dirección de envio')
+const province = ref(props.province_id)
 const id = ref(props.address_id)
+
+const send_array = ref(['Envío Nacional: $19.000.00', 'Envío Bogotá: $10.500.00 '])
+const sendId = ref(props.send_id)
 
 watch(() => 
     props.address_id, (data) => {
         id.value = data
     });
-
-
-const chanceSend = () => {
-    if ( id.value !=0) 
-    {
-        if(props.addresses.filter(address => address.id ===  id.value)[0].province_id ==293)
-        {
-                emit('send', 'sendToBogota')
-                province_send.value = 1;
-        }
-        else
-        {
-                emit('send', 'send')
-                province_send.value = 2;
-        }
-        
-    }
-
-}    
+ 
 const next = () => {
 
     if (id.value > 0) {
@@ -65,12 +58,39 @@ const next = () => {
     
 }
 
+const chanceSend = () => {
+    if (id.value !== 0)  {
+        province.value = props.addresses.filter(address => address.id === id.value)[0].province_id
+
+        if(province.value === 293) {
+            emit('send', 'sendToBogota')
+            sendId.value = 1
+        } else {
+            emit('send', 'send')
+            sendId.value = 0
+        }
+    }
+}   
 
 const chanceExpress = () => {
-    if(shipping_express.value)
+    if(sendId.value === 2)
         emit('send', 'shipping_express')
     else
         emit('send', 'sendToBogota')
+}
+
+const isDisabled = (i) => {
+    if(i === 0) { //nacional
+        if(sendId.value === 0)
+            return false
+        else 
+            return true
+    } else if (i === 1) { //bogota
+        if(sendId.value === 0)
+            return true
+        else 
+            return false
+    }
 }
 
 </script>
@@ -93,9 +113,7 @@ const chanceExpress = () => {
                             :key="i"
                             :value="address.id"
                             color="primary"
-                            class="ps-5 ps-md-10 border-line"
-                           
-                        >
+                            class="ps-5 ps-md-10 border-line">
                             <template v-slot:label>
                                 <VCardText class="d-flex my-1">
                                     <div class="d-block">
@@ -123,51 +141,6 @@ const chanceExpress = () => {
                     </span>
                 </VCardText>
             </VCard>
-
-            <VCard class="card-products px-0 mt-5" v-if="false">
-                <VCardTitle class="home">Retirar en un punto físico </VCardTitle>
-                <VCardText class="row-cardp_ px-0 pt-2">
-                    <VRow class="row-card px-5 mt-2">
-                        <VCol cols="8" md="7">
-                            <VRow>
-                                <VCol cols="2" class="text-center">    
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
-                                        <circle cx="7.5" cy="8.25" r="6.5" stroke="#FF0090" stroke-width="2"/>
-                                    </svg>
-                                </VCol>
-                                <VCol cols="9">
-                                    <span>Calle 000 #000-00</span>
-                                </VCol>
-                            </VRow>
-                        </VCol>
-
-                        <VCol cols="4" md="5" class="text-right">
-                            <span class="free-text">Gratis</span>
-                        </VCol>
-                    </VRow>
-
-                    <!--item 2-->
-                    <VRow class="row-card2 px-5">
-                        <VCol cols="8" md="7">
-                            <VRow>
-                                <VCol cols="2" class="text-center">    
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
-                                        <circle cx="7.5" cy="8.25" r="6.5" stroke="#FF0090" stroke-width="2"/>
-                                    </svg>
-                                </VCol>
-                                <VCol cols="9">
-                                    <span>Calle 000 #000-00</span>
-                                </VCol>
-                            </VRow>
-                        </VCol>
-
-                        <VCol cols="4" md="5" class="text-right">
-                            <span class="free-text">Gratis</span>
-                        </VCol>
-                    </VRow>
-                </VCardText>
-            </VCard>
-            
             <VCardText class="d-md-flex pt-5 pb-0 px-0">
                 <VSpacer />
                 <VBtn
@@ -196,26 +169,44 @@ const chanceExpress = () => {
                         <VCol cols="5" md="6" class="text-right">
                             <span>${{ formatNumber(props.summary.subTotal) }}</span>
                         </VCol>
-                        <VCol cols="7" md="6" class="text-left">
+                        <VCol cols="3" md="4" class="text-left py-0">
                             <span>Envío</span>
                         </VCol>
-                        <VCol cols="5" md="6" class="text-right">
-                            <span>${{ formatNumber(props.summary.send) }}</span>
-                        </VCol>
-                        <!--Campo condicionado a si el envío es en Bogotá-->
-                        <VCol cols="7" md="6" class="text-left" v-if="province_send===1">
-                            <span>Envio Express (entrega en menos de 8 horas)</span>
-                        </VCol>
-                        <VCol cols="5" md="6" class="text-right" v-if="province_send===1">
-                            <VCheckbox
-                                v-model="shipping_express" 
-                                label="$17.000"
-                                color="primary"
-                                style="float: right;"
+                        <VCol cols="9" md="8" class="text-right py-0">
+                            <VRadioGroup
+                                v-model="sendId"
+                                false-icon="mdi-circle-off-outline"
+                                true-icon="mdi-circle-slice-8"
                                 @update:modelValue="chanceExpress"
-                            />
+                            >
+                                <VRadio
+                                    v-for="(item, i) in send_array"
+                                    color="primary"
+                                    :key="i"
+                                    :value="i"
+                                    :disabled="isDisabled(i)"
+                                    :class="(send_array.length - 1 === i && province !== 293) ? '' : 'border-line'"
+                                    class="custom-radio">
+                                    <template v-slot:label>
+                                        <span class="d-flex pl-1 pr-0 text-right text-send tw-font-semibold py-2 me-2">
+                                            {{ item }}
+                                        </span>
+                                    </template>
+                                </VRadio>
+                                <VRadio
+                                    v-show="province === 293"
+                                    color="primary"
+                                    :key="2"
+                                    :value="2"
+                                    class="custom-radio">
+                                    <template v-slot:label>
+                                        <span class="d-flex pl-1 pr-0 text-right text-send tw-font-semibold py-2 me-2">
+                                            Envío Express: $17.000.00
+                                        </span>
+                                    </template>
+                                </VRadio>
+                            </VRadioGroup>
                         </VCol>
-                        <!--Fin campo condicionado-->
                         <VCol cols="7" md="6" class="text-left">
                             <h4>Total</h4>
                         </VCol>
@@ -236,11 +227,21 @@ const chanceExpress = () => {
         height: 0;
         min-height: 0;
     }
-
-    ::v-deep(.v-label) {
-        width: 100% !important;
-    }
     
+    .custom-radio {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+    }
+
+    .text-send {
+        color: #0A1B33;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+    }
+
     .text-address {
         color: #0A1B33;
         font-size: 14px;
@@ -398,6 +399,10 @@ const chanceExpress = () => {
 
         .btn-register, .btn-order {
             width: 100%;
+        }
+
+        .text-send {
+            font-size: 12px !important;
         }
     }
 

@@ -61,9 +61,6 @@ const billingDetail = ref({
     note: null
 })
 
-const sendToBogota = ref(false)
-const shipping_express = ref(false)
-
 const isLastItem = (index) => {
   return index === props.products.length - 1;
 }
@@ -117,7 +114,6 @@ const onSubmit = () => {
             emit('submit', billingDetail.value)
         }
     })
-
 }
 
 const getFlagCountry = country => {

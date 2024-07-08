@@ -314,7 +314,6 @@
   }
 
   const handleDrawerModelValueUpdate = val => {
-    console.log('aaa', val)
     isDrawerOpen.value = val
   }
 </script>

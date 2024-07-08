@@ -476,7 +476,7 @@ const getFlagCountry = country => {
                         </VCol>  
                         <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
                             <VTextField
-                                label="Calle"
+                                label="Localidad / Barrio"
                                 v-model="selectedAddress.street"
                                 variant="outlined"
                                 /> 
