@@ -46,11 +46,11 @@ const addCart = (data) => {
                         @addCart="addCart"
                         />
                 </VCardText>
-                <VCardText class="d-flex row-cardp3">
+                <!--<VCardText class="d-flex row-cardp3">
                     <span>Envío</span>
                     <VSpacer />
                     <h4>${{ formatNumber(props.summary.send) }}</h4> 
-                </VCardText>
+                </VCardText>-->
             </VCard>
         </VCol>
         <VCol cols="12" md="4">
@@ -64,17 +64,17 @@ const addCart = (data) => {
                         <VCol cols="5" md="6" class="text-right">
                             <span>${{ formatNumber(props.summary.subTotal) }}</span>
                         </VCol>
-                        <VCol cols="7" md="6" class="text-left">
+                        <!--<VCol cols="7" md="6" class="text-left">
                             <span>Envío</span>
                         </VCol>
                         <VCol cols="5" md="6" class="text-right">
                             <span>${{ formatNumber(props.summary.send) }}</span>
-                        </VCol>
+                        </VCol>-->
                         <VCol cols="7" md="6" class="text-left">
-                            <h4>Total</h4>
+                            <h4>Subtotal</h4>
                         </VCol>
                         <VCol cols="5" md="6" class="text-right">
-                            <h4>${{ formatNumber(props.summary.total) }}</h4>
+                            <h4>${{ formatNumber(props.summary.subTotal) }}</h4><!--Cambie total por subtotal-->
                         </VCol>
                         <VCol cols="12" style="padding:24px 0px;">
                             <VBtn

@@ -17,14 +17,15 @@ const props = defineProps({
         required: true
     }
 })
-
 const error_address = ref('Debes agregar una dirección de envio')
-
+const shipping_express = ref(false)
+const province_send = ref(false)
 const emit = defineEmits([
     'update:currentStep',
     'changeAddreess',
     'dialog',
-    'dialog_error'
+    'dialog_error',
+    'send',
 ])
 
 const id = ref(props.address_id)
@@ -34,6 +35,24 @@ watch(() =>
         id.value = data
     });
 
+
+const chanceSend = () => {
+    if ( id.value !=0) 
+    {
+        if(props.addresses.filter(address => address.id ===  id.value)[0].province_id ==293)
+        {
+                emit('send', 'sendToBogota')
+                province_send.value = 1;
+        }
+        else
+        {
+                emit('send', 'send')
+                province_send.value = 2;
+        }
+        
+    }
+
+}    
 const next = () => {
 
     if (id.value > 0) {
@@ -44,6 +63,14 @@ const next = () => {
         emit('dialog_error', error_address.value)
     }
     
+}
+
+
+const chanceExpress = () => {
+    if(shipping_express.value)
+        emit('send', 'shipping_express')
+    else
+        emit('send', 'sendToBogota')
 }
 
 </script>
@@ -59,6 +86,7 @@ const next = () => {
                         v-model="id"
                         false-icon="mdi-circle-off-outline"
                         true-icon="mdi-circle-slice-8"
+                        @update:modelValue="chanceSend"
                     >
                         <VRadio
                             v-for="(address, i) in props.addresses"
@@ -66,6 +94,7 @@ const next = () => {
                             :value="address.id"
                             color="primary"
                             class="ps-5 ps-md-10 border-line"
+                           
                         >
                             <template v-slot:label>
                                 <VCardText class="d-flex my-1">
@@ -173,6 +202,20 @@ const next = () => {
                         <VCol cols="5" md="6" class="text-right">
                             <span>${{ formatNumber(props.summary.send) }}</span>
                         </VCol>
+                        <!--Campo condicionado a si el envío es en Bogotá-->
+                        <VCol cols="7" md="6" class="text-left" v-if="province_send===1">
+                            <span>Envio Express (entrega en menos de 8 horas)</span>
+                        </VCol>
+                        <VCol cols="5" md="6" class="text-right" v-if="province_send===1">
+                            <VCheckbox
+                                v-model="shipping_express" 
+                                label="$17.000"
+                                color="primary"
+                                style="float: right;"
+                                @update:modelValue="chanceExpress"
+                            />
+                        </VCol>
+                        <!--Fin campo condicionado-->
                         <VCol cols="7" md="6" class="text-left">
                             <h4>Total</h4>
                         </VCol>
