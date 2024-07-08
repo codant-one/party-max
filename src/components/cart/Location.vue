@@ -188,7 +188,7 @@ const isDisabled = (i) => {
                                     :class="(send_array.length - 1 === i && province !== 293) ? '' : 'border-line'"
                                     class="custom-radio">
                                     <template v-slot:label>
-                                        <span class="d-flex pl-1 pr-0 text-right text-send tw-font-semibold py-2 me-2">
+                                        <span class="d-flex pl-1 pr-0 text-right text-send tw-font-semibold py-2 me-1 me-md-2">
                                             {{ item }}
                                         </span>
                                     </template>
@@ -200,7 +200,7 @@ const isDisabled = (i) => {
                                     :value="2"
                                     class="custom-radio">
                                     <template v-slot:label>
-                                        <span class="d-flex pl-1 pr-0 text-right text-send tw-font-semibold py-2 me-2">
+                                        <span class="d-flex pl-1 pr-0 text-right text-send tw-font-semibold py-2 me-1 me-md-2">
                                             Envío Express: $17.000.00
                                         </span>
                                     </template>
