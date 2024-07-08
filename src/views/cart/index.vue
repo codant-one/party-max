@@ -210,7 +210,6 @@ async function fetchData() {
             iswholesale.value = element.wholesale === 1 ? true : false
             sum += (parseFloat(value) * element.quantity)
         });
-
         summary.value.subTotal = sum.toFixed(2)
         summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
         isActiveStepValid.value = (address_id.value === 0 ) ? true : false
@@ -579,6 +578,7 @@ const chanceSend = value => {
                         @changeAddreess="changeAddreess"
                         @dialog="dialog = true"
                         @dialog_error = "dialog_error"
+                        @send="chanceSend"
                         />
                 </VWindowItem>
                 <VWindowItem>

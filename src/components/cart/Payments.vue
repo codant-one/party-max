@@ -130,21 +130,6 @@ const getFlagCountry = country => {
   else
     return ''
 }
-
-const chanceSend = () => {
-    if(sendToBogota.value)
-        emit('send', 'sendToBogota')
-    else
-        emit('send', 'send')
-
-}
-
-const chanceExpress = () => {
-    if(shipping_express.value)
-        emit('send', 'shipping_express')
-    else
-        emit('send', 'sendToBogota')
-}
 </script>
 
 <template>
@@ -323,22 +308,6 @@ const chanceExpress = () => {
                 <VCard class="card-products mx-auto px-0">
                     <h2 class="title-card px-5 px-md-16 my-3">Forma de entrega</h2>
                     <VRow class="row-cardelivery3 px-5 px-md-16">
-                        <VCol cols="6" md="3" class="textinput">
-                            <VCheckbox
-                                v-model="sendToBogota" 
-                                label="Envío a Bogota"
-                                color="primary"
-                                @update:modelValue="chanceSend"
-                            />
-                        </VCol>
-                        <VCol cols="6" md="9" class="textinput" v-if="sendToBogota">
-                            <VCheckbox
-                                v-model="shipping_express" 
-                                label="Envío express"
-                                color="primary"
-                                @update:modelValue="chanceExpress"
-                            />
-                        </VCol>
                         <VCol cols="12" md="10" class="text-left">
                             <h4>
                                 {{ address.address }} ,
