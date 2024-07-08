@@ -4,6 +4,8 @@
   import { useHomeStores } from '@/stores/home'
   import { useAuthStores } from '@/stores/auth'
   import { markRaw } from 'vue';
+  import { formatNumber } from '@formatters'
+  import Product8 from '@/components/product/Product8.vue'
   import router from '@/router'
   import logo from '@assets/images/logo.svg';
   import heart from '@assets/icons/heart.svg?inline';
@@ -11,6 +13,9 @@
   import user from '@assets/icons/user.svg?inline';
   import arrow_right from '@assets/icons/arrow_right.svg?inline';
   import icon_right from '@assets/icons/right-icon.svg?inline';
+
+  import cart from '@assets/icons/cart.svg?inline'
+  import cart_mobile from '@assets/icons/cart_mobile.svg?inline'
 
   import icon1 from '@assets/icons/fiestas-infantiles.svg?inline';
   import icon2 from '@assets/icons/fiestas-tematicas.svg?inline';
@@ -35,6 +40,9 @@
   const textSearch = ref(null)
   const user_data = ref(authStores.getUser)
   const cart_products = ref(null)
+  const products = ref([])
+  const subTotal = ref('0.00')
+  const client_id = ref(null)
   const name = ref(null)
 
   const cols = ref(12)
@@ -48,6 +56,7 @@
 
   const openMenuS = ref(false)
   const menuOpenS = ref(false)
+  const isDrawerOpen = ref(false)
 
   const isMobile = /Mobi/i.test(navigator.userAgent);
   const drawer = ref(false)
@@ -75,14 +84,35 @@
     });
 
   watch(() => 
-    cartStores.getCount, (products) => {
-      cart_products.value = products
+    cartStores.getCount, async (value) => {
+      cart_products.value = value
+
+      if(localStorage.getItem('user_data')){
+        const userData = localStorage.getItem('user_data')
+        const userDataJ = JSON.parse(userData)
+
+        client_id.value = userDataJ.client.id
+      }
+
+      if(cart_products.value > 0) {
+        await cartStores.fetchCart({client_id: client_id.value})
+        products.value = cartStores.getData
+
+        let sum = 0
+        products.value.forEach(element => {
+          let value = element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale
+          sum += (parseFloat(value) * element.quantity)
+        });
+
+        subTotal.value = sum.toFixed(2)
+      }
     }
   );
 
   watch(() => 
     route.query,(newPath, oldPath) => {
       fetchData()
+      isDrawerOpen.value = false
     }
   );
   
@@ -266,7 +296,27 @@
       })
     }
   }
-  
+
+  const isLastItem = (index) => {
+    return index === products.value.length - 1;
+  }
+
+  const deleteProduct = (product_color_id) => {
+
+    let data = {
+        client_id: client_id.value,
+        product_color_id: product_color_id,
+    }
+
+    cartStores.delete(data)
+    fetchData()   
+
+  }
+
+  const handleDrawerModelValueUpdate = val => {
+    console.log('aaa', val)
+    isDrawerOpen.value = val
+  }
 </script>
 
 <template>
@@ -377,6 +427,74 @@
         </div>
       </VList>
     </VNavigationDrawer>
+    <VNavigationDrawer
+      :model-value="isDrawerOpen"
+      :width="isMobile ? 280 : 350"
+      height="100vh"
+      location="end"
+      class="scrollable-content drawer"
+      temporary
+      @update:model-value="handleDrawerModelValueUpdate"
+    >
+      <!-- 👉 Title -->
+      <div class="d-flex align-center pa-4 pa-md-6 pb-1 pb-md-1">
+        <h6 class="text-h6">
+          Shopping Cart
+        </h6>
+
+        <VSpacer />
+
+        <!-- 👉 Close btn -->
+        <VBtn
+          icon="mdi-close-circle-outline"
+          variant="text"
+          color="primary"
+          @click="isDrawerOpen = false"
+        />
+      </div>
+      <VDivider class="mt-2 mt-md-4"/>
+      <PerfectScrollbar :options="{ wheelPropagation: false }">
+        <VCard 
+          v-if="products.length === 0 && (typeof route.query.merchantId === 'undefined')"
+          class="mb-10 card-timeline px-0">
+          <VCardText class="d-flex flex-column align-center text-center justify-content-center">
+            <VCardItem class="d-block align-center text-center justify-content-center cart-svg">
+              <cart v-if="!isMobile" class="d-block mx-auto mb-5"/>
+              <cart_mobile v-else class="d-block mx-auto mb-5"/>
+              <span class="d-block cart-empty">Tu carrito esta vacio.</span>
+            </VCardItem>
+          </VCardText>
+        </VCard>
+        <div v-else>
+          <Product8
+            v-for="(product, i) in products"
+            :key="i"
+            :product="product"
+            :readonly="true"
+            :isLastItem="isLastItem(i)"
+            @delete="deleteProduct(product.product_color_id)"
+          />
+        </div>
+        
+      </PerfectScrollbar>
+      <template v-slot:append>
+        <VDivider class="mt-4"/>
+        <div class="pa-2">
+          <div class="d-flex px-3">
+            <span class="subtotal">SUBTOTAL</span>
+            <VSpacer />
+            <span>${{ formatNumber(subTotal) }}</span>
+          </div>
+          <VBtn
+            variant="flat"
+            block
+            class="btn-register tw-text-white tw-bg-primary button-hover my-2 mt-md-5"
+            @click="redirect('cart')">
+            ver carrito
+          </VBtn>
+        </div>
+      </template>
+    </VNavigationDrawer>
     <VAppBar flat class="header">
       <VContainer class="tw-bg-white">
         <VRow no-gutters v-if="!isMobile">
@@ -414,7 +532,7 @@
                 :class="(name === null) ? 'ms-n70 me-5': 'me-5'" @click="redirect('favorites')">
                 <heart />
             </span>
-            <span icon class="me-3 shoppinp_cart tw-cursor-pointer" @click="redirect('cart')">
+            <span icon class="me-3 shoppinp_cart tw-cursor-pointer" @click="isDrawerOpen = true">
               <VBadge
                 color="primary"
                 :content="cart_products"
@@ -481,7 +599,7 @@
             <span class="index heart me-3" @click="redirect('favorites')">
               <heart />
             </span>
-            <span icon class="shoppinp_cart me-3" @click="redirect('cart')">
+            <span icon class="shoppinp_cart me-3" @click="isDrawerOpen = true">
               <VBadge
                 color="primary"
                 :content="cart_products"
@@ -664,7 +782,54 @@
   </section>
 </template>
 
+<style lang="scss">
+  .scrollable-content {
+      &.v-navigation-drawer {
+        .v-navigation-drawer__content {
+          display: flex;
+          overflow: hidden;
+          flex-direction: column;
+        }
+      }
+    }
+</style>
+
 <style scoped>
+
+  .subtotal {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0A1B33;
+  }
+
+  .btn-register {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 14px;
+    border-radius: 32px;
+  }
+
+  .cart-empty {
+    color: #FF0090;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 30px;
+  }
+
+  .card-timeline {
+    padding: 16px 0px;
+    border-radius: 24px;
+    box-shadow: none;
+  }
+
+  .drawer {
+    position: fixed !important;
+    display: flex;
+    flex-direction: column;
+    height: 100vh !important; /* Ocupa el 100% de la altura de la ventana */
+  }
 
   .borderCol {
     border-left: 1px solid #E1E1E1; 
@@ -868,7 +1033,16 @@
     border-bottom: 1px solid var(--Light-Cyan-3, #D9EEF2)!important;
   }
 
-  @media (max-width: 768px) {
+  @media only screen and (max-width: 767px) {
+
+    .drawer::v-deep(.v-navigation-drawer__content) {
+      padding: 0 !important;
+    }
+
+    .cart-svg::v-deep(path) {
+        fill: #FF0090 !important;
+    }
+
     .second-header {
       top: 80px !important;
       position: fixed !important;

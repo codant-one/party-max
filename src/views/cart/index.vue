@@ -174,6 +174,8 @@ watchEffect(fetchData)
 
 async function fetchData() {
 
+    isLoading.value = true
+
     if(localStorage.getItem('user_data')){
         const userData = localStorage.getItem('user_data')
         const userDataJ = JSON.parse(userData)
@@ -183,8 +185,6 @@ async function fetchData() {
     }
 
     if(cartStores.getCount > 0) {
-        isLoading.value = true
-        
         await homeStores.fetchData()
         data.value = homeStores.getData
 
@@ -214,14 +214,14 @@ async function fetchData() {
         summary.value.subTotal = sum.toFixed(2)
         summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
         isActiveStepValid.value = (address_id.value === 0 ) ? true : false
-
-        isLoading.value = false
     }
 
     if(route.query.merchantId) {
         currentStep.value = 3
         isActiveStepValid.value = true
     }
+
+    isLoading.value = false
 }
 
 const loadCountries = () => {
@@ -607,7 +607,7 @@ const chanceSend = value => {
             <VCard 
                 v-if="products.length === 0 && (typeof route.query.merchantId === 'undefined')"
                 class="mb-10 card-timeline px-0">
-                <VCardText class="d-flex flex-colum align-center text-center justify-content-center">
+                <VCardText class="d-flex flex-column align-center text-center justify-content-center">
                     <VCardItem class="d-block align-center text-center justify-content-center cart-svg">
                         <cart v-if="!isMobile" class="d-block mx-auto mb-5"/>
                         <cart_mobile v-else class="d-block mx-auto mb-5"/>
