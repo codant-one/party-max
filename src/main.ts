@@ -6,10 +6,19 @@ import App from './App.vue'
 import router from './router'
 import vuetify from './plugins/vuetify'
 import 'vue3-perfect-scrollbar/style.css';
+import VueGtag from 'vue-gtag-next';
 
 loadFonts()
 
 createApp(App)
+  .use(VueGtag, {
+      property: {
+        id: 'G-LTJQR9W7TJ', 
+      },
+      appName: 'PartyMax', 
+      enabled: true,
+      pageTrackerScreenviewEnabled: true,
+    }, router)
   .use(router)
   .use(vuetify)
   .use(PerfectScrollbarPlugin)
