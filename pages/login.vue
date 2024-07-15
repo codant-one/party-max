@@ -31,10 +31,11 @@ watchEffect(fetchData)
 
 async function fetchData() {
 
-  remember_me.value = (localStorage.getItem('remember_me') === 'true') ? true : false
-  email.value = localStorage.getItem('email') ?? ''
-  password.value = localStorage.getItem('password') ?? ''
-  
+    if(process.client) {
+        remember_me.value = (localStorage.getItem('remember_me') === 'true') ? true : false
+        email.value = localStorage.getItem('email') ?? ''
+        password.value = localStorage.getItem('password') ?? ''
+    }
 }
 
 const inputChange = () => {
@@ -60,21 +61,23 @@ const login = () => {
         const { qr, token, accessToken, user_data, userAbilities } = response.data     
         const two_factor = { generate_qr: (response.message === '2fa-generate') ? true : false }       
 
-        localStorage.setItem('userAbilities', JSON.stringify(userAbilities))      
-        localStorage.setItem('user_data', JSON.stringify(user_data))
-        localStorage.setItem('accessToken', accessToken)     
-        localStorage.setItem('qr', qr)
-        localStorage.setItem('token', token)
-        localStorage.setItem('two_factor', JSON.stringify(two_factor)) 
+        if(process.client) {
+            localStorage.setItem('userAbilities', JSON.stringify(userAbilities))      
+            localStorage.setItem('user_data', JSON.stringify(user_data))
+            localStorage.setItem('accessToken', accessToken)     
+            localStorage.setItem('qr', qr)
+            localStorage.setItem('token', token)
+            localStorage.setItem('two_factor', JSON.stringify(two_factor)) 
 
-        localStorage.setItem('remember_me', remember_me.value);
+            localStorage.setItem('remember_me', remember_me.value);
 
-        if(remember_me.value){
-            localStorage.setItem('email', email.value);
-            localStorage.setItem('password', password.value);
-        } else {
-            localStorage.setItem('email', '');
-            localStorage.setItem('password', ''); 
+            if(remember_me.value){
+                localStorage.setItem('email', email.value);
+                localStorage.setItem('password', password.value);
+            } else {
+                localStorage.setItem('email', '');
+                localStorage.setItem('password', ''); 
+            }
         }
 
         await cartStores.fetchCart({client_id: user_data.client.id})

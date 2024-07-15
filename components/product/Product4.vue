@@ -54,7 +54,7 @@ const load = ref(props.loading)
 const isFavoriteProduct = ref(null)
 const product_id = ref(props.productId)
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
-const isMobile = process.client && /Mobi/i.test(navigator.userAgent);
+const { isMobile } = useDevice();
 
 watch(() => 
     props.loading, (data) => {

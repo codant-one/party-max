@@ -59,7 +59,7 @@
   const menuOpenS = ref(false)
   const isDrawerOpen = ref(false)
 
-  const isMobile = process.client && /Mobi/i.test(navigator.userAgent);
+  const { isMobile } = useDevice();
   const drawer = ref(false)
   const fixedSectionRef = ref(null)
   const classFixed = ref('second-header')
@@ -168,9 +168,9 @@
       .then(async response => {
 
         if(process.client) {
-          localStorage.removeItem('user_data')// Remove "user_data" from localStorage
-          localStorage.removeItem('accessToken')// Remove "accessToken" from localStorage
-          localStorage.removeItem('userAbilities')// Remove "userAbilities" from localStorage
+          localStorage.removeItem('user_data')
+          localStorage.removeItem('accessToken')
+          localStorage.removeItem('userAbilities')
         }
 
         await cartStores.refreshData()

@@ -29,7 +29,7 @@ const paragraphs = ref(null)
 const tags = ref(null)
 
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
-const isMobile = process.client && /Mobi/i.test(navigator.userAgent);
+const { isMobile } = useDevice();
 
 const searchWhatsapp = ref(null)
 const searchFacebook = ref(null)

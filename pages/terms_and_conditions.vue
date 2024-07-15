@@ -2,7 +2,7 @@
 
 import festin_2 from '@/assets/images/festin_2.png'
 
-const isMobile = /Mobi/i.test(navigator.userAgent);
+const { isMobile } = useDevice();
 
 const items = [
   'Ha leído y comprendido estos términos y acepta cumplir con ellos.',

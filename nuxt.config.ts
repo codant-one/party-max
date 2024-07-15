@@ -6,9 +6,8 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 export default defineNuxtConfig({
   ssr: true,
   nitro: {
-    prerender: {
-      routes: ['/', '/products/[slug]']
-    }
+    preset: 'node-server',
+    static: true
   },
   app: {
     head: {
@@ -25,6 +24,7 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     '@davestewart/nuxt-scrollbar',
+    '@nuxtjs/device',
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
         // @ts-expect-error
@@ -32,6 +32,10 @@ export default defineNuxtConfig({
       });
     },
   ],
+
+  device: {
+    refreshOnResize: true
+  },
 
   build: {
     transpile: ['vuetify']

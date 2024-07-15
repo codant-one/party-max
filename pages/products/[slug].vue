@@ -44,7 +44,7 @@ const cartStores = useCartStores()
 const favoritesStores = useFavoritesStores()
 const config = useRuntimeConfig()
 
-const isMobile = /Mobi/i.test(navigator.userAgent);
+const { isMobile } = useDevice();
 
 const isLoading = ref(true)
 const tab = ref('1')
@@ -73,7 +73,7 @@ const modules2 = ref([Pagination])
 const thumbsSwiper = ref(null);
 
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
-const data = ref(null)
+const dataFetch = ref(null)
 
 const title = ref(null)
 const brand = ref(null)
@@ -105,7 +105,6 @@ const selectedColorId = ref(null)
 const load = ref(false)
 const color = ref('')
 const imageAux = ref('')
-const imageMeta = ref('')
 
 const cant_prod = ref(1)
 const client_id = ref(null)
@@ -133,33 +132,21 @@ watch(() =>
   }
 );
 
-const computedPageMeta = computed(() => {
-  return {
-    title: title.value,
-    meta: [
-      { name: 'description', content: `Producto publicado en PARTYMAX como: ${title.value}` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:title', content: title.value },
-      { property: 'og:description', content: `Producto publicado en PARTYMAX como: ${title.value}` },
-      { property: 'og:image', content: imageMeta.value },
-      { property: 'og:url', content: productUrl.value },
-      { property: 'og:site_name', content: 'PARTYMAX' },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: title.value },
-      { name: 'twitter:description', content: `Producto publicado en PARTYMAX como: ${title.value}` },
-      { name: 'twitter:image', content: imageMeta.value },
-      { name: 'twitter:site', content: '@SteffaniiPaola' }
-    ]
+const { status, data } = await useLazyAsyncData('miscellaneousStores', async () => {
+  if(route.params.slug && route.path.startsWith('/products/')) {
+    await miscellaneousStores.getProduct(route.params.slug)
+    return miscellaneousStores.getData
   }
 })
 
-useHead(computedPageMeta);
-
-watchEffect(fetchData)
+watch(data, (value) => {
+  dataFetch.value = value
+  fetchData()
+})
 
 async function fetchData() {
 
-  if(localStorage.getItem('user_data')){
+  if(process.client && localStorage.getItem('user_data')){
     const userData = localStorage.getItem('user_data')
     const userDataJ = JSON.parse(userData)
       
@@ -171,39 +158,34 @@ async function fetchData() {
   
   radioContent.value = []
   productImages.value = []
-  data.value = null
 
   if(route.params.slug && route.path.startsWith('/products/')) {
     existence_whole.value = route.query.wholesale === 'true' ? true : false
 
-    await miscellaneousStores.getProduct(route.params.slug)
-    data.value = miscellaneousStores.getData
+    imageAux.value = [{ image : dataFetch.value.product.image }]
 
-    imageAux.value = [{ image : data.value.product.image }]
-    imageMeta.value = baseURL.value + data.value.product.image
+    categories.value = dataFetch.value.product.colors[0]?.categories.map(item => item.category.name)
+    productImages.value = (dataFetch.value.product.colors[0]?.images.length === 0) ? imageAux.value : dataFetch.value.product.colors[0]?.images
+    color.value = dataFetch.value.product.colors[0]?.color.name
+    selectedColor.value = dataFetch.value.product.colors[0]?.color.id.toString()
+    selectedColorId.value = dataFetch.value.product.colors[0]?.id
 
-    categories.value = data.value.product.colors[0]?.categories.map(item => item.category.name)
-    productImages.value = (data.value.product.colors[0]?.images.length === 0) ? imageAux.value : data.value.product.colors[0]?.images
-    color.value = data.value.product.colors[0]?.color.name
-    selectedColor.value = data.value.product.colors[0]?.color.id.toString()
-    selectedColorId.value = data.value.product.colors[0]?.id
+    onlyWholesale.value = dataFetch.value.wholesale
 
-    onlyWholesale.value = data.value.wholesale
-
-    data.value.product.colors.forEach(element => { 
+    dataFetch.value.product.colors.forEach(element => { 
       var aux = {
         value: element.color.id.toString(),
         title: element.color.name,
-        image:  (element.images.length === 0) ? data.value.product.image : element.images[0].image
+        image:  (element.images.length === 0) ? dataFetch.value.product.image : element.images[0].image
       }
 
       radioContent.value.push(aux)
     });
 
-    product_id.value = data.value.product.id
+    product_id.value = dataFetch.value.product.id
 
-    productUrl.value = `https://${config.public.MY_DOMAIN}/products/${data.value.product.slug}`
-    const imageUrl = `${config.public.APP_DOMAIN_API_URL}/storage/${data.value.product.image}`
+    productUrl.value = `https://${config.public.MY_DOMAIN}/products/${dataFetch.value.product.slug}`
+    const imageUrl = `${config.public.APP_DOMAIN_API_URL}/storage/${dataFetch.value.product.image}`
     const descriptionText = 'Mira este increíble producto.'
     const twitterText = `${descriptionText} ${productUrl.value} ${imageUrl}`;
 
@@ -212,35 +194,35 @@ async function fetchData() {
     searchTwitter.value = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}`;
     searchLinkendin.value = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(productUrl.value)}`;
     
-    title.value = data.value.product.name
-    brand.value = data.value.product.brand.name
-    rating.value = data.value.product.rating
-    reviews.value = data.value.product.reviews
-    sku.value = data.value.product.colors[0].sku
-    wholesale.value = data.value.product.wholesale === 1 ? true : false
-    wholesale_price.value = data.value.product.wholesale_price
-    cant_prod.value = route.query.wholesale === 'true' ? data.value.product.wholesale_min : 1
-    wholesale_min.value = route.query.wholesale === 'true' ? data.value.product.wholesale_min : 1
-    price_for_sale.value = data.value.product.price_for_sale
-    store.value = data.value.product.user.user_detail.store_name ?? (data.value.product.user.supplier?.company_name ?? (data.value.product.user.name + ' ' + (data.value.product.user.last_name ?? '')))
-    in_stock.value = data.value.product.in_stock
-    color.value = data.value.product.colors[0].color.name
-    single_description.value = data.value.product.single_description
-    description.value = data.value.product.description ?? ''
-    cant_stock.value = parseInt(data.value.product.stock)
+    title.value = dataFetch.value.product.name
+    brand.value = dataFetch.value.product.brand.name
+    rating.value = dataFetch.value.product.rating
+    reviews.value = dataFetch.value.product.reviews
+    sku.value = dataFetch.value.product.colors[0].sku
+    wholesale.value = dataFetch.value.product.wholesale === 1 ? true : false
+    wholesale_price.value = dataFetch.value.product.wholesale_price
+    cant_prod.value = route.query.wholesale === 'true' ? dataFetch.value.product.wholesale_min : 1
+    wholesale_min.value = route.query.wholesale === 'true' ? dataFetch.value.product.wholesale_min : 1
+    price_for_sale.value = dataFetch.value.product.price_for_sale
+    store.value = dataFetch.value.product.user.user_detail.store_name ?? (dataFetch.value.product.user.supplier?.company_name ?? (dataFetch.value.product.user.name + ' ' + (dataFetch.value.product.user.last_name ?? '')))
+    in_stock.value = dataFetch.value.product.in_stock
+    color.value = dataFetch.value.product.colors[0].color.name
+    single_description.value = dataFetch.value.product.single_description
+    description.value = dataFetch.value.product.description ?? ''
+    cant_stock.value = parseInt(dataFetch.value.product.stock)
 
-    width.value = data.value.product.detail.width
-    weigth.value = data.value.product.detail.weigth
-    height.value = data.value.product.detail.height
-    deep.value = data.value.product.detail.deep
-    material.value = data.value.product.detail.material
+    width.value = dataFetch.value.product.detail.width
+    weigth.value = dataFetch.value.product.detail.weigth
+    height.value = dataFetch.value.product.detail.height
+    deep.value = dataFetch.value.product.detail.deep
+    material.value = dataFetch.value.product.detail.material
 
-    data.value.product.colors[0].categories.forEach(element => { 
+    dataFetch.value.product.colors[0].categories.forEach(element => { 
       categories.value.push(element.category.name)
     });
 
     tags.value = []
-    data.value.product.tags.forEach(element => { 
+    dataFetch.value.product.tags.forEach(element => { 
       tags.value.push(element.tag.name)
     });
 
@@ -254,7 +236,7 @@ async function fetchData() {
 const chanceRadio = (value) => {
 
   if (Number.isInteger(Number(value.id))) {        
-      var seleted =  data.value.product.colors.filter(item => item.color_id === Number(value.id))[0]
+      var seleted =  dataFetch.value.product.colors.filter(item => item.color_id === Number(value.id))[0]
       
       categories.value = seleted.categories.map(item => item.category.name)
       productImages.value = (seleted?.images.length === 0) ? imageAux.value : seleted?.images
@@ -367,14 +349,6 @@ const addfavorite = () => {
 
 }
 
-const controlCant = () => {
-  if (parseInt(cant_prod.value) > parseInt(cant_stock.value)) { 
-    cant_prod.value = cant_stock.value; 
-  } else if (parseInt(cant_prod.value) < 1) {
-    cant_prod.value = 1;
-  }
-}
-
 const wholesaleAction = () => {
   if (route.query.wholesale === 'true') {
     router.push({ 
@@ -404,6 +378,26 @@ const decrement = () => {
 
 <template>
   <section>
+    <Head>
+      <Title>{{ data.product.name }}</Title>
+      <Meta name="description" :content="'Producto publicado en PARTYMAX como: ' + data.product.name" />
+
+      <!-- Open Graph / Facebook / LinkedIn / Pinterest / Whatsapp -->
+      <Meta property="og:type" content="website" />
+      <Meta property="og:title" :content="data.product.name" />
+      <Meta property="og:description" :content="'Producto publicado en PARTYMAX como: ' + data.product.name" />
+      <Meta property="og:image" :content="baseURL + data.product.image" />
+      <Meta property="og:url" :content="'https://' + config.public.MY_DOMAIN + '/products/' + data.product.slug" />
+      <Meta property="og:site_name" content="PARTYMAX" />
+
+      <!-- Twitter -->
+      <Meta name="twitter:card" content="summary_large_image" />
+      <Meta name="twitter:title" :content="data.product.name" />
+      <Meta name="twitter:description" :content="'Producto publicado en PARTYMAX como: ' + data.product.name" />
+      <Meta name="twitter:image" :content="baseURL + data.product.image" />
+      <Meta name="twitter:site" content="@SteffaniiPaola" />
+
+    </Head>
     <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
       <VContainer class="tw-text-tertiary d-flex align-center px-0">
         <v-breadcrumbs :items="bread" class="px-2" />
@@ -709,7 +703,7 @@ const decrement = () => {
       </VCard> 
 
       <!-- recommendations -->
-      <VCard class="no-shadown card-information p-0" v-if="data">
+      <VCard class="no-shadown card-information p-0" v-if="dataFetch">
         <VCardTitle class="px-4 px-md-7 py-3 col-recomendaciones">
           <VRow align="center">
             <VCol cols="8" md="6" class="text-left">
@@ -720,14 +714,14 @@ const decrement = () => {
             </VCol> 
           </VRow>
         </VCardTitle>
-        <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
+        <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="dataFetch && !isMobile">
           <Product1 
-            v-for="(product, i) in data.recommendations"
+            v-for="(product, i) in dataFetch.recommendations"
             :key="i"
             :product="product"
             :readonly="true"/>
         </VCardText>  
-        <VCardText class="pb-0 px-4 px-md-7 mt-0 mt-md-5 mb-2 swiper-recomendations" v-if="data && isMobile">  
+        <VCardText class="pb-0 px-4 px-md-7 mt-0 mt-md-5 mb-2 swiper-recomendations" v-if="dataFetch && isMobile">  
           <swiper
             :pagination="{
               dynamicBullets: true,
@@ -739,7 +733,7 @@ const decrement = () => {
             :watchSlidesProgress="true"
             :style="{ height: isMobile ? '340px' : '370px' }"
             >
-            <swiper-slide v-for="(product, i) in data.recommendations" :key="i">
+            <swiper-slide v-for="(product, i) in dataFetch.recommendations" :key="i">
               <Product1 
                 :product="product"
                 :readonly="true"/>

@@ -82,7 +82,7 @@ const backgroundStyle = {
   backgroundSize: 'cover'
 }
 
-const isMobile = /Mobi/i.test(navigator.userAgent);
+const { isMobile } = useDevice();
 
 const items = ref([
   { text: 'Fiestas infantiles', icon: icon1, slug: 'fiestas-infantiles' },
@@ -123,14 +123,9 @@ async function fetchData() {
 
 const tab = ref('0')
 
-useSeoMeta({
-  title: 'My Amazing Site',
-  ogTitle: 'My Amazing Site',
-  description: 'This is my amazing site, let me tell you all about it.',
-  ogDescription: 'This is my amazing site, let me tell you all about it.',
-  ogImage: 'https://example.com/image.png',
-  twitterCard: 'summary_large_image',
-})
+useHead({
+  title: 'Inicio'
+});
 
 </script>
 

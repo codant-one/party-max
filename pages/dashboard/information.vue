@@ -22,7 +22,7 @@ const authStores = useAuthStores()
 const load = ref(false)
 const refVForm = ref()
 const isLoading = ref(true)
-const isMobile = /Mobi/i.test(navigator.userAgent)
+const { isMobile } = useDevice();
 
 const name = ref(null)
 const usermail = ref(null)
@@ -122,7 +122,7 @@ onMounted(async () => {
 watchEffect(fetchData)
 
 async function fetchData() { 
-    if(localStorage.getItem('user_data')){
+    if(process.client && localStorage.getItem('user_data')){
         const userData = localStorage.getItem('user_data')
         const userDataJ = JSON.parse(userData)
         name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
@@ -239,7 +239,7 @@ const onSubmit = () => {
 }
 
 const refresh = async () => {
-    if(localStorage.getItem('user_data')){
+    if(process.client && localStorage.getItem('user_data')){
         const userData = localStorage.getItem('user_data')
         const userDataJ = JSON.parse(userData)
 

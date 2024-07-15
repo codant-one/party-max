@@ -52,7 +52,7 @@ const route = useRoute()
 const router = useRouter()
 const config = useRuntimeConfig()
 
-const isMobile = /Mobi/i.test(navigator.userAgent)
+const { isMobile } = useDevice();
 const refVForm = ref()
 const load = ref(false)
 const dialog = ref(false)
@@ -181,7 +181,7 @@ async function fetchData() {
 
     isLoading.value = true
 
-    if(localStorage.getItem('user_data')){
+    if(process.client && localStorage.getItem('user_data')){
         const userData = localStorage.getItem('user_data')
         const userDataJ = JSON.parse(userData)
 
@@ -404,7 +404,8 @@ const sendPayU = async (billingDetail) => {
         let order = await ordersStores.addOrder(data)
         let payment = await paymentsStores.signature({referenceCode: order.reference_code, amount: summary.value.total})
         
-        localStorage.setItem('order_id', order.id)
+        if(process.client)
+            localStorage.setItem('order_id', order.id)
 
         const formData = new URLSearchParams();
 
@@ -457,9 +458,10 @@ const deleteAll = async () => {
 }
 
 const updatePaymentState = async (payment_state_id) => {
-    await ordersStores.updatePaymentState({ 
-        payment_state_id: payment_state_id
-    }, localStorage.getItem('order_id'))
+    if(process.client)
+        await ordersStores.updatePaymentState({ 
+            payment_state_id: payment_state_id
+        }, localStorage.getItem('order_id'))
 }
 
 const completed = () => {

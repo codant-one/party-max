@@ -26,7 +26,7 @@ const fileInput = ref()
 const full_profile = ref(null)
 const text = ref('')
 
-const isMobile = /Mobi/i.test(navigator.userAgent);
+const { isMobile } = useDevice();
 const isDialogVisible = ref(false)
 const message = ref()
 const isError = ref(false)
@@ -148,7 +148,7 @@ const triggerFileInput = () => {
 }
 
 const refresh = async () => {
-    if(localStorage.getItem('user_data')){
+    if(process.client && localStorage.getItem('user_data')){
         const userData = localStorage.getItem('user_data')
         const userDataJ = JSON.parse(userData)
 
@@ -163,7 +163,7 @@ const me = async () => {
 
     isLoading.value = true
 
-    if(localStorage.getItem('user_data')){
+    if(process.client && localStorage.getItem('user_data')){
         const userData = localStorage.getItem('user_data')
         const userDataJ = JSON.parse(userData)
 

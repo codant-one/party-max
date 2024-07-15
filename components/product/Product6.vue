@@ -34,7 +34,7 @@ const quantity = ref(null)
 const existence_whole = ref(false)
 
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
-const isMobile = process.client && /Mobi/i.test(navigator.userAgent)
+const { isMobile } = useDevice();
 
 watchEffect(() => {
 

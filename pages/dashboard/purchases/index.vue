@@ -12,7 +12,7 @@ import arrow_left from '@assets/icons/Arrow_left.svg?inline';
 
 const client_id = ref(null)
 const isLoading = ref(true)
-const isMobile = /Mobi/i.test(navigator.userAgent);
+const { isMobile } = useDevice();
 
 const ordersStores = useOrdersStores()
 
@@ -66,7 +66,7 @@ watchEffect(fetchData)
 
 async function fetchData() {
     
-    if(localStorage.getItem('user_data')){
+    if(process.client && localStorage.getItem('user_data')){
         const userData = localStorage.getItem('user_data')
         const userDataJ = JSON.parse(userData)
 

@@ -60,7 +60,7 @@ const colorsSelected = ref([]);
 const onlyWholesale = ref(false)
 
 const rating = ref(5)
-const isMobile = /Mobi/i.test(navigator.userAgent);
+const { isMobile } = useDevice();
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
 
 const client_id = ref(null)
@@ -243,7 +243,7 @@ async function fetchData() {
     }
   }
 
-  if(localStorage.getItem('user_data')){
+  if(process.client && localStorage.getItem('user_data')){
     const userData = localStorage.getItem('user_data')
     const userDataJ = JSON.parse(userData)
       

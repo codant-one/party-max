@@ -17,7 +17,7 @@ const props = defineProps({
 const route = useRoute()
 const config = useRuntimeConfig()
 
-const isMobile = process.client && /Mobi/i.test(navigator.userAgent);
+const { isMobile } = useDevice();
 const image = ref(null)
 const wholesale_price = ref(null)
 const price_for_sale = ref(null)

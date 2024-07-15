@@ -21,7 +21,7 @@ const route = useRoute()
 
 const backgroundStyle = ref({})
 const background = ref('tw-bg-white')
-const isMobile = process.client && /Mobi/i.test(navigator.userAgent);
+const { isMobile } = useDevice();
 const drawer = ref(false)
 
 watch(() => 
@@ -99,7 +99,7 @@ async function fetchData() {
 </script>
 
 <template>
-  <client-only>
+  <!-- <client-only> -->
     <NuxtLayout>
       <VApp> 
         <VLayout >
@@ -112,5 +112,5 @@ async function fetchData() {
         <Footer />
       </VApp>
     </NuxtLayout>
-  </client-only>
+  <!-- </client-only> -->
 </template>

@@ -21,7 +21,7 @@ const countriesStores = useCountriesStores()
 const load = ref(false)
 const refVForm = ref()
 const isLoading = ref(true)
-const isMobile = /Mobi/i.test(navigator.userAgent)
+const { isMobile } = useDevice();
 const isEdit = ref(false)
 
 const selectedAddress = ref({
@@ -102,7 +102,7 @@ async function fetchData() {
     
     isLoading.value = true
 
-    if(localStorage.getItem('user_data')){
+    if(process.client && localStorage.getItem('user_data')){
       const userData = localStorage.getItem('user_data')
       userDataJ.value = JSON.parse(userData)
 

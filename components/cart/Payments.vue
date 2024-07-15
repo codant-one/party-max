@@ -40,7 +40,7 @@ const props = defineProps({
 const emit = defineEmits(['submit', 'send', 'update:currentStep',])
 
 const refVForm = ref()
-const isMobile = process.client && /Mobi/i.test(navigator.userAgent)
+const { isMobile } = useDevice();
 const address = ref(null)
 const listCountries = ref(props.countries)
 const listProvinces = ref(props.provinces)

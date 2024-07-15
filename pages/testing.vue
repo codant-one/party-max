@@ -4,20 +4,26 @@
 
     const testingStores = useTestingStores()
 
-
     const permissions = ref([])
 
-    watchEffect(fetchData)
+    const { status, data } = await useLazyAsyncData('testingStores', async () => {
+      await testingStores.fetchPermissions()
 
-    async function fetchData() {
+      return testingStores.getPermissions
+    })
 
-        await testingStores.fetchPermissions()
-        permissions.value = testingStores.getPermissions
-    
-    }
+    watch(data, (value) => {
+      permissions.value = value
+      console.log('permissions', value)
+    })
 
 </script>
 
 <template>
-  {{ permissions }}
+  <div>
+    <Head>
+      <Title>{{ data[0].name }}</Title>
+    </Head>
+    <div>{{ permissions }}</div>
+  </div>
 </template>

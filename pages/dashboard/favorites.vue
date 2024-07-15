@@ -13,7 +13,7 @@ const route = useRoute();
 const products = ref([])
 const user_id = ref(null)
 const isLoading = ref(true)
-const isMobile = /Mobi/i.test(navigator.userAgent);
+const { isMobile } = useDevice();
 
 const rowPerPage = ref(5);
 const currentPage = ref(1);
@@ -38,7 +38,7 @@ async function fetchData() {
 
   isLoading.value = true
 
-   if(localStorage.getItem('user_data')) {
+   if(process.client && localStorage.getItem('user_data')) {
         const userData = localStorage.getItem('user_data')
         const userDataJ = JSON.parse(userData)
 

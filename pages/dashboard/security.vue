@@ -57,7 +57,7 @@ const inputChangeP = () =>{
 watchEffect(fetchData)
 
 async function fetchData() { 
-    if(localStorage.getItem('user_data')){
+    if(process.client && localStorage.getItem('user_data')){
       const userData = localStorage.getItem('user_data')
       const userDataJ = JSON.parse(userData)
 
@@ -178,12 +178,12 @@ async function fetchData() {
 
   const refresh = async (hash) => {
 
-    if(hash) {
+    if(process.client && hash) {
         const { user_data, userAbilities } = await authStores.me(hash)
 
         localStorage.setItem('userAbilities', JSON.stringify(userAbilities))
         localStorage.setItem('user_data', JSON.stringify(user_data))
-    } else if(localStorage.getItem('user_data')){
+    } else if(process.client && localStorage.getItem('user_data')){
         const userData = localStorage.getItem('user_data')
         const userDataJ = JSON.parse(userData)
 

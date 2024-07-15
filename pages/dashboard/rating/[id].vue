@@ -26,13 +26,13 @@ const comments = ref(null)
 const review_id = ref(null)
 
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
-const isMobile = /Mobi/i.test(navigator.userAgent);
+const { isMobile } = useDevice();
 
 watchEffect(fetchData)
 
 async function fetchData() {
     
-    if(localStorage.getItem('user_data')){
+    if(process.client && localStorage.getItem('user_data')){
         const userData = localStorage.getItem('user_data')
         const userDataJ = JSON.parse(userData)
 

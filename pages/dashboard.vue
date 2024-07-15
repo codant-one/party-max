@@ -9,14 +9,14 @@ import purchases from '@assets/icons/icon-compras.svg?inline';
 const name = ref(null)
 const usermail = ref(null)
    
-const isMobile = /Mobi/i.test(navigator.userAgent)
+const { isMobile } = useDevice();
 const drawer = ref(isMobile ? false : true)
 
 const fixedSectionRefd = ref(null)
 const classFixed = ref('second-header-dashboard')
 
 const me = async () => {
-    if(localStorage.getItem('user_data')){
+    if(process.client && localStorage.getItem('user_data')){
       const userData = localStorage.getItem('user_data')
       const userDataJ = JSON.parse(userData)
 

@@ -37,7 +37,7 @@ const band = ref(0)
 
 const icons_categories = ref([])
 
-const isMobile = /Mobi/i.test(navigator.userAgent);
+const { isMobile } = useDevice();
 
 const thumbsSwiper = ref(null);
 const modules = ref([Pagination])

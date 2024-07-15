@@ -33,7 +33,7 @@ const subMessage = ref()
 const isError = ref(false)
 const isPending = ref(false)
 
-const isMobile = process.client && /Mobi/i.test(navigator.userAgent)
+const { isMobile } = useDevice();
 
 watchEffect(() => {
     merchant_id.value = route.query.merchantId
