@@ -6,7 +6,7 @@
 
     const permissions = ref([])
 
-    const { status, data } = await useLazyAsyncData('testingStores', async () => {
+    const { status, data } = await useAsyncData('testingStores', async () => {
       await testingStores.fetchPermissions()
 
       return testingStores.getPermissions

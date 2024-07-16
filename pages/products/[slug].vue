@@ -132,11 +132,18 @@ watch(() =>
   }
 );
 
-const { status, data } = await useLazyAsyncData('miscellaneousStores', async () => {
+const { status, data } = await useAsyncData('miscellaneousStores', async () => {
   if(route.params.slug && route.path.startsWith('/products/')) {
     await miscellaneousStores.getProduct(route.params.slug)
     return miscellaneousStores.getData
   }
+})
+
+useHead({
+  title: data.value.title,
+  meta: [
+    { name: 'description', content: 'probando' }
+  ]
 })
 
 watch(data, (value) => {
@@ -378,26 +385,26 @@ const decrement = () => {
 
 <template>
   <section>
-    <Head>
+    <!-- <Head>
       <Title>{{ status === 'success' ? data.product.name : '' }}</Title>
-      <Meta name="description" :content="'Producto publicado en PARTYMAX como: ' + status === 'success' ? data.product.name : '' " />
+      <Meta name="description" :content="'Producto publicado en PARTYMAX como: ' + status === 'success' ? data.product.name : '' " /> -->
 
       <!-- Open Graph / Facebook / LinkedIn / Pinterest / Whatsapp -->
-      <Meta property="og:type" content="website" />
+      <!-- <Meta property="og:type" content="website" />
       <Meta property="og:title" :content="status === 'success' ? data.product.name : '' " />
       <Meta property="og:description" :content="'Producto publicado en PARTYMAX como: ' + status === 'success' ? data.product.name : ''" />
       <Meta property="og:image" :content="status === 'success' ? baseURL + data.product.image : '' " />
       <Meta property="og:url" :content="status === 'success' ? 'https://' + config.public.MY_DOMAIN + '/products/' + data.product.slug : '' " />
-      <Meta property="og:site_name" content="PARTYMAX" />
+      <Meta property="og:site_name" content="PARTYMAX" /> -->
 
       <!-- Twitter -->
-      <Meta name="twitter:card" content="summary_large_image" />
+      <!-- <Meta name="twitter:card" content="summary_large_image" />
       <Meta name="twitter:title" :content="status === 'success' ? data.product.name : '' " />
       <Meta name="twitter:description" :content="status === 'success' ? 'Producto publicado en PARTYMAX como: ' + data.product.name : ''" />
       <Meta name="twitter:image" :content="status === 'success' ? baseURL + data.product.image : '' " />
       <Meta name="twitter:site" content="@SteffaniiPaola" />
 
-    </Head>
+    </Head> -->
     <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
       <VContainer class="tw-text-tertiary d-flex align-center px-0">
         <v-breadcrumbs :items="bread" class="px-2" />
