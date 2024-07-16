@@ -22,7 +22,7 @@
 <template>
   <div>
     <Head>
-      <Title>{{ data[0].name }}</Title>
+      <Title>{{ status === 'success' ? data[0].name : '' }}</Title>
     </Head>
     <div>{{ permissions }}</div>
   </div>

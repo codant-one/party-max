@@ -6,8 +6,7 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 export default defineNuxtConfig({
   ssr: true,
   nitro: {
-    preset: 'node-server',
-    static: true
+    preset: 'static'
   },
   app: {
     head: {

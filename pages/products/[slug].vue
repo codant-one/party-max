@@ -379,22 +379,22 @@ const decrement = () => {
 <template>
   <section>
     <Head>
-      <Title>{{ data.product.name }}</Title>
-      <Meta name="description" :content="'Producto publicado en PARTYMAX como: ' + data.product.name" />
+      <Title>{{ status === 'success' ? data.product.name : '' }}</Title>
+      <Meta name="description" :content="'Producto publicado en PARTYMAX como: ' + status === 'success' ? data.product.name : '' " />
 
       <!-- Open Graph / Facebook / LinkedIn / Pinterest / Whatsapp -->
       <Meta property="og:type" content="website" />
-      <Meta property="og:title" :content="data.product.name" />
-      <Meta property="og:description" :content="'Producto publicado en PARTYMAX como: ' + data.product.name" />
-      <Meta property="og:image" :content="baseURL + data.product.image" />
-      <Meta property="og:url" :content="'https://' + config.public.MY_DOMAIN + '/products/' + data.product.slug" />
+      <Meta property="og:title" :content="status === 'success' ? data.product.name : '' " />
+      <Meta property="og:description" :content="'Producto publicado en PARTYMAX como: ' + status === 'success' ? data.product.name : ''" />
+      <Meta property="og:image" :content="status === 'success' ? baseURL + data.product.image : '' " />
+      <Meta property="og:url" :content="status === 'success' ? 'https://' + config.public.MY_DOMAIN + '/products/' + data.product.slug : '' " />
       <Meta property="og:site_name" content="PARTYMAX" />
 
       <!-- Twitter -->
       <Meta name="twitter:card" content="summary_large_image" />
-      <Meta name="twitter:title" :content="data.product.name" />
-      <Meta name="twitter:description" :content="'Producto publicado en PARTYMAX como: ' + data.product.name" />
-      <Meta name="twitter:image" :content="baseURL + data.product.image" />
+      <Meta name="twitter:title" :content="status === 'success' ? data.product.name : '' " />
+      <Meta name="twitter:description" :content="status === 'success' ? 'Producto publicado en PARTYMAX como: ' + data.product.name : ''" />
+      <Meta name="twitter:image" :content="status === 'success' ? baseURL + data.product.image : '' " />
       <Meta name="twitter:site" content="@SteffaniiPaola" />
 
     </Head>
