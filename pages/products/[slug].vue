@@ -73,7 +73,6 @@ const modules2 = ref([Pagination])
 const thumbsSwiper = ref(null);
 
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
-const dataFetch = ref(null)
 
 const title = ref(null)
 const brand = ref(null)
@@ -132,27 +131,17 @@ watch(() =>
   }
 );
 
-const { status, data } = await useAsyncData('miscellaneousStores', async () => {
+const { data: dataFetch } = await useAsyncData(`product-${route.params.slug}`, async () => {
   if(route.params.slug && route.path.startsWith('/products/')) {
     await miscellaneousStores.getProduct(route.params.slug)
     return miscellaneousStores.getData
   }
 })
 
-useHead({
-  title: data.value.title,
-  meta: [
-    { name: 'description', content: 'probando' }
-  ]
-})
-
-watch(data, (value) => {
-  dataFetch.value = value
-  fetchData()
-})
+watchEffect(fetchData);
 
 async function fetchData() {
-
+  console.log('entra')
   if(process.client && localStorage.getItem('user_data')){
     const userData = localStorage.getItem('user_data')
     const userDataJ = JSON.parse(userData)
@@ -380,6 +369,14 @@ const decrement = () => {
   if (cant_prod.value > wholesale_min.value)
     cant_prod.value--
 }
+
+
+useHead({
+  title: dataFetch.value?.product.name || 'Producto',
+  meta: [
+    { name: 'description', content: 'Producto description' }
+  ]
+})
 
 </script>
 

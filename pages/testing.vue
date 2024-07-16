@@ -4,26 +4,23 @@
 
     const testingStores = useTestingStores()
 
-    const permissions = ref([])
-
-    const { status, data } = await useAsyncData('testingStores', async () => {
+    const { data: permissions } = await useAsyncData('testingStores', async () => {
       await testingStores.fetchPermissions()
 
       return testingStores.getPermissions
     })
 
-    watch(data, (value) => {
-      permissions.value = value
-      console.log('permissions', value)
+    useHead({
+      title: permissions.value[0]?.name || 'Testing',
+      meta: [
+        { name: 'description', content: 'Testing description' }
+      ]
     })
 
 </script>
 
 <template>
   <div>
-    <Head>
-      <Title>{{ status === 'success' ? data[0].name : '' }}</Title>
-    </Head>
     <div>{{ permissions }}</div>
   </div>
 </template>
