@@ -104,7 +104,6 @@ const sliders = ref( [
 ])
 
 const homeStores = useHomeStores()
-const route = useRoute();
 
 const data = ref(null)
 const isLoading = ref(true)

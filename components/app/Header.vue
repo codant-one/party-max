@@ -95,6 +95,9 @@
         client_id.value = userDataJ.client.id
       }
 
+      products.value = []
+      subTotal.value = '0.00'
+      
       if(cart_products.value > 0) {
         await cartStores.fetchCart({client_id: client_id.value})
         products.value = cartStores.getData

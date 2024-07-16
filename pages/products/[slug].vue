@@ -12,7 +12,6 @@ import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination } from 'swiper/modu
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useRouter, useRoute } from 'vue-router'
 import { useRuntimeConfig } from '#app'
-import { onServerPrefetch } from 'vue'
 import CustomRadiosWithIcon from '@/components/app/CustomRadiosWithIcon.vue'
 import Loader from '@/components/common/Loader.vue'
 import Product1 from '@/components/product/Product1.vue'
@@ -134,14 +133,19 @@ watch(() =>
 const { data: dataFetch } = await useAsyncData(`product-${route.params.slug}`, async () => {
   if(route.params.slug && route.path.startsWith('/products/')) {
     await miscellaneousStores.getProduct(route.params.slug)
-    return miscellaneousStores.getData
+
+    let response = miscellaneousStores.getData
+
+    response.baseUrl = config.public.APP_DOMAIN_API_URL + '/storage/'
+
+    return response 
   }
 })
 
 watchEffect(fetchData);
 
 async function fetchData() {
-  console.log('entra')
+
   if(process.client && localStorage.getItem('user_data')){
     const userData = localStorage.getItem('user_data')
     const userDataJ = JSON.parse(userData)
@@ -155,7 +159,7 @@ async function fetchData() {
   radioContent.value = []
   productImages.value = []
 
-  if(route.params.slug && route.path.startsWith('/products/')) {
+  if(route.params.slug && route.path.startsWith('/products/') && dataFetch.value) {
     existence_whole.value = route.query.wholesale === 'true' ? true : false
 
     imageAux.value = [{ image : dataFetch.value.product.image }]
@@ -370,11 +374,23 @@ const decrement = () => {
     cant_prod.value--
 }
 
-
 useHead({
   title: dataFetch.value?.product.name || 'Producto',
   meta: [
-    { name: 'description', content: 'Producto description' }
+    { name: 'description', content: 'Producto publicado en PARTYMAX como: ' + (dataFetch.value?.product.name || 'Producto') },
+    // Open Graph / Facebook / LinkedIn / Pinterest / WhatsApp
+    { property: 'og:type', content: 'website' },
+    { property: 'og:title', content: dataFetch.value?.product.name || 'Producto' },
+    { property: 'og:description', content: `Producto publicado en PARTYMAX como: ${dataFetch.value?.product.name || 'Producto'}` },
+    { property: 'og:image', content: (dataFetch.value?.baseUrl || '') + (dataFetch.value?.product.image || '') },
+    { property: 'og:url', content: 'https://' + config.public.MY_DOMAIN + '/products/' + (dataFetch.value?.product.slug || '') },
+    { property: 'og:site_name', content: 'PARTYMAX' },
+    // Twitter
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: dataFetch.value?.product.name || 'Producto' },
+    { name: 'twitter:description', content: `Producto publicado en PARTYMAX como: ${dataFetch.value?.product.name || 'Producto'}` },
+    { name: 'twitter:image', content: (dataFetch.value?.baseUrl || '') + (dataFetch.value?.product.image || '') },
+    { name: 'twitter:site', content: '@SteffaniiPaola' },
   ]
 })
 
@@ -382,26 +398,6 @@ useHead({
 
 <template>
   <section>
-    <!-- <Head>
-      <Title>{{ status === 'success' ? data.product.name : '' }}</Title>
-      <Meta name="description" :content="'Producto publicado en PARTYMAX como: ' + status === 'success' ? data.product.name : '' " /> -->
-
-      <!-- Open Graph / Facebook / LinkedIn / Pinterest / Whatsapp -->
-      <!-- <Meta property="og:type" content="website" />
-      <Meta property="og:title" :content="status === 'success' ? data.product.name : '' " />
-      <Meta property="og:description" :content="'Producto publicado en PARTYMAX como: ' + status === 'success' ? data.product.name : ''" />
-      <Meta property="og:image" :content="status === 'success' ? baseURL + data.product.image : '' " />
-      <Meta property="og:url" :content="status === 'success' ? 'https://' + config.public.MY_DOMAIN + '/products/' + data.product.slug : '' " />
-      <Meta property="og:site_name" content="PARTYMAX" /> -->
-
-      <!-- Twitter -->
-      <!-- <Meta name="twitter:card" content="summary_large_image" />
-      <Meta name="twitter:title" :content="status === 'success' ? data.product.name : '' " />
-      <Meta name="twitter:description" :content="status === 'success' ? 'Producto publicado en PARTYMAX como: ' + data.product.name : ''" />
-      <Meta name="twitter:image" :content="status === 'success' ? baseURL + data.product.image : '' " />
-      <Meta name="twitter:site" content="@SteffaniiPaola" />
-
-    </Head> -->
     <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
       <VContainer class="tw-text-tertiary d-flex align-center px-0">
         <v-breadcrumbs :items="bread" class="px-2" />
@@ -584,7 +580,7 @@ useHead({
                       />
                   </VBtn>
                 </div>
-                <div class="my-auto ms-5">
+                <div class="my-auto ms-5" v-if="client_id">
                   <span 
                     v-if="!isFavorite" 
                     class="me-4 index heart p-0 tw-cursor-pointer d-flex justify-content-center align-center"

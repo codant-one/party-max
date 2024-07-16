@@ -3,6 +3,7 @@
 import { useAuthStores } from '@/stores/auth'
 import { confirmedValidator, passwordValidator, requiredValidator } from '@validators'
 import { useRouter, useRoute } from 'vue-router'
+import Loader from '@/components/common/Loader.vue'
 import festin_image from '@assets/images/festin-register.jpg';
 import icon4 from '@assets/icons/icon-password.svg';
 import check_circle from '@assets/icons/check-circle.svg';
@@ -15,6 +16,7 @@ const authStores = useAuthStores()
 const user = route.query.user
 
 const load = ref(false)
+const isLoading = ref(true)
 
 const refVForm = ref()
 const password = ref()
@@ -41,9 +43,15 @@ watchEffect(fetchData)
 
 async function fetchData() {
 
+    isLoading.value = true
+
     authStores.find(route.query.token)
         .then(response => {
+            isLoading.value = false
         }).catch(err => {
+
+            isLoading.value = false
+            
             if(err.response.data.message === 'not_found'){
                 isDialogVisible.value = true
                 message.value = err.response.data.errors
@@ -117,6 +125,7 @@ const onSubmit = () => {
 
 <template>
     <VContainer class="mt-1 mt-md-10">
+        <Loader :isLoading="isLoading"/>
         <VForm 
               ref="refVForm"
               @submit.prevent="onSubmit">

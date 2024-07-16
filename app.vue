@@ -50,7 +50,7 @@ async function fetchData() {
     bg = categories
   else if(route.name === 'register' || route.name === 'type_client' || route.name === 'clients-form_client' || 
           route.name === 'clients-form_supplier' || route.name === 'login' || route.name === 'clients-success_register_person' || 
-          route.name === 'clients-success_register_company' || route.name === 'clients-forgot_password' || route.name === 'reset_password') {
+          route.name === 'clients-success_register_company' || route.name === 'clients-forgot_password' || route.name === 'clients-reset_password') {
     bg = register
     repeat = 'no-repeat'
     size = 'cover'
@@ -99,18 +99,16 @@ async function fetchData() {
 </script>
 
 <template>
-  <!-- <client-only> -->
-    <NuxtLayout>
-      <VApp> 
-        <VLayout >
-          <Filters v-if="route.name === 'products'" :drawer="drawer"/>
-          <Header />
-          <VMain :style="backgroundStyle" :class="background">
-            <NuxtPage />
-          </VMain>
-        </VLayout>
-        <Footer />
-      </VApp>
-    </NuxtLayout>
-  <!-- </client-only> -->
+  <NuxtLayout>
+    <VApp> 
+      <VLayout >
+        <Filters v-if="route.name === 'products'" :drawer="drawer"/>
+        <Header />
+        <VMain :style="backgroundStyle" :class="background">
+          <NuxtPage />
+        </VMain>
+      </VLayout>
+      <Footer />
+    </VApp>
+  </NuxtLayout>
 </template>
