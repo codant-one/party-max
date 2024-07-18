@@ -11,8 +11,6 @@
 
   import instagram from '@assets/icons/instagram.svg?inline';
   import facebook from '@assets/icons/facebook.svg?inline';
-  import subtract from '@assets/icons/subtract.svg?inline';
-  import threads from '@assets/icons/threads.svg?inline';
 
   import festinfooter from '@assets/images/festin-footer.png';
 
@@ -26,8 +24,8 @@
   async function fetchData() {
 
     if(route.name === 'products' || route.name === 'about' || route.name === 'help' ||
-       route.name === 'cart' || route.name === 'products-slug'|| route.name === 'suppliers_wholesalers' ||
-       route.name === 'detail_wholesalers' || route.name === 'terms_and_conditions' || route.name === 'privacy_statement') {
+       route.name === 'cart' || route.name === 'products-slug' ||
+       route.name === 'terms_and_conditions' || route.name === 'privacy_statement') {
       isProduct.value = true
       backgroundTemp.value = route.name === 'cart' ? 'tw-bg-white' : 'tw-bg-green'
     } else {
@@ -94,8 +92,6 @@
             <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="m-0">
               <instagram class="mt-1 me-2"/>
             </a>
-            <!-- <threads class="mt-1 me-2"/> -->
-            <!-- <subtract class="mt-1 me-2"/> -->
             <a href="https://www.facebook.com/PartymaxCo/?locale=es_LA" target="_blank" class="m-0">
               <facebook class="mt-1 me-2"/>
             </a>

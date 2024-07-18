@@ -130,6 +130,12 @@ watch(() =>
   }
 );
 
+watch(() => 
+  cartStores.getWholesale, async (value) => {
+    onlyWholesale.value = value
+    }
+  );
+
 const { data: dataFetch } = await useAsyncData(`product-${route.params.slug}`, async () => {
   if(route.params.slug && route.path.startsWith('/products/')) {
     await miscellaneousStores.getProduct(route.params.slug)
@@ -170,7 +176,7 @@ async function fetchData() {
     selectedColor.value = dataFetch.value.product.colors[0]?.color.id.toString()
     selectedColorId.value = dataFetch.value.product.colors[0]?.id
 
-    onlyWholesale.value = dataFetch.value.wholesale
+    onlyWholesale.value = cartStores.getWholesale
 
     dataFetch.value.product.colors.forEach(element => { 
       var aux = {
@@ -253,57 +259,42 @@ const setThumbsSwiper = (swiper) => {
 
 const addCart = () => {
 
-  if(client_id.value) {
+  let isWholesale = route.query.wholesale === 'true' ? 1 : 0
 
-    let isWholesale = route.query.wholesale === 'true' ? 1 : 0
-
-    if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
-      let data = {
-        client_id: client_id.value,
-        product_color_id: selectedColorId.value,
-        quantity: cant_prod.value,
-        wholesale: isWholesale
-      }
-
-      load.value = true
-
-      cartStores.add(data)
-        .then(response => {
-
-          isDialogVisible.value = true
-          message.value = 'Agregado al carrito'
-          load.value = false
-
-          setTimeout(() => {
-            isDialogVisible.value = false
-            isError.value = false
-            message.value = ''
-          }, 3000)
-
-        }).catch(err => {
-          load.value = false
-          //console.error(err.message)
-        })
-    } else {
-      isDialogVisible.value = true
-      message.value = 'Debes agregar al carrito productos ' + (isWholesale ? 'al detal' : 'al mayor') + ' debido a tu selección anterior'
-      isError.value = true
-
-      setTimeout(() => {
-        isDialogVisible.value = false
-        isError.value = false
-        message.value = ''
-      }, 3000)
+  if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
+    let data = {
+      product_color_id: selectedColorId.value,
+      quantity: cant_prod.value,
+      wholesale: isWholesale
     }
 
+    load.value = true
+
+    cartStores.add(data)
+      .then(async response => {
+
+        isDialogVisible.value = true
+        message.value = 'Agregado al carrito'
+        load.value = false
+
+        setTimeout(() => {
+          isDialogVisible.value = false
+          isError.value = false
+          message.value = ''
+        }, 3000)
+
+      }).catch(err => {
+        load.value = false
+        //console.error(err.message)
+      })
   } else {
     isDialogVisible.value = true
-    message.value = 'Para continuar con tu compra, por favor regístrate o inicia sesión. ¡Únete ahora y disfruta de bonos de descuento exclusivos y promociones especiales!.'
-    isPending.value = true
+    message.value = 'Debes agregar al carrito productos ' + (isWholesale ? 'al detal' : 'al mayor') + ' debido a tu selección anterior'
+    isError.value = true
 
     setTimeout(() => {
       isDialogVisible.value = false
-      isPending.value = false
+      isError.value = false
       message.value = ''
     }, 3000)
   }
@@ -312,40 +303,27 @@ const addCart = () => {
 
 const addfavorite = () => {
 
-  if(client_id.value) {
-    isFavorite.value = true
+  isFavorite.value = true
 
-    favoritesStores.add({user_id: user_id.value, product_id: product_id.value })
-      .then(response => {
+  favoritesStores.add({user_id: user_id.value, product_id: product_id.value })
+    .then(response => {
 
-        isFavorite.value = false
-        isDialogVisible.value = true
-        message.value = 'Agregado a la lista de favoritos'
-        isFavoriteProduct.value = true
-                    
-        setTimeout(() => {
-          isDialogVisible.value = false
-          isError.value = false
-          message.value = ''
-        }, 3000)
-    
-      }).catch(err => {
-        isFavorite.value = false
-
-        //console.error(err.message)
-      })
-
-    } else {
+      isFavorite.value = false
       isDialogVisible.value = true
-      message.value = 'Para continuar con tu compra, por favor regístrate o inicia sesión. ¡Únete ahora y disfruta de bonos de descuento exclusivos y promociones especiales!.'
-      isPending.value = true
-
+      message.value = 'Agregado a la lista de favoritos'
+      isFavoriteProduct.value = true
+                    
       setTimeout(() => {
         isDialogVisible.value = false
+        isError.value = false
         message.value = ''
-        isPending.value = false
       }, 3000)
-  }
+    
+    }).catch(err => {
+      isFavorite.value = false
+
+      //console.error(err.message)
+    })
 
 }
 
@@ -375,7 +353,7 @@ const decrement = () => {
 }
 
 useHead({
-  title: dataFetch.value?.product.name || 'Producto',
+  title: dataFetch.value?.product.name + ' - ' || 'Producto',
   meta: [
     { name: 'description', content: 'Producto publicado en PARTYMAX como: ' + (dataFetch.value?.product.name || 'Producto') },
     // Open Graph / Facebook / LinkedIn / Pinterest / WhatsApp

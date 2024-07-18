@@ -5,7 +5,6 @@ import { useCartStores } from '~/stores/cart'
 import { useAuthStores } from '~/stores/auth'
 import { useFiltersStores } from '~/stores/filters'
 import { useRoute } from 'vue-router'
-// import platform from 'platform';
 import Header from '@/components/app/Header.vue'
 import Footer from '@/components/app/Footer.vue'
 import Filters from '@/components/app/Filters.vue'
@@ -76,12 +75,6 @@ async function fetchData() {
     backgroundRepeat: repeat
   }
 
-  // console.log(`Navegador: ${platform.name}`);
-  // console.log(`Versión del navegador: ${platform.version}`);
-  // console.log(`Sistema operativo: ${platform.os.family}`)
-  // console.log(isMobile ? 'Dispositivo móvil' : 'Dispositivo de escritorio');
-  // console.log(`Tipo de dispositivo: ${navigator.userAgent}`);
-
   if(process.client && localStorage.getItem('user_data')){
     const userData = localStorage.getItem('user_data')
     const userDataJ = JSON.parse(userData)
@@ -90,10 +83,9 @@ async function fetchData() {
 
     localStorage.setItem('userAbilities', JSON.stringify(userAbilities))
     localStorage.setItem('user_data', JSON.stringify(user_data))
-
-    await cartStores.fetchCart({client_id: userDataJ.client.id})
-
   }
+
+  await cartStores.fetchCart()
 }
 
 </script>

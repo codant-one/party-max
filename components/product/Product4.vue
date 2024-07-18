@@ -49,6 +49,7 @@ const cant_prod = ref(1)
 const cant_stock = ref(1)
 const existence_whole = ref(false)
 
+const client_id = ref(null)
 const product_color_id = ref(null)
 const load = ref(props.loading)
 const isFavoriteProduct = ref(null)
@@ -83,6 +84,13 @@ watchEffect(() => {
         in_stock.value = props.product.in_stock
         cant_prod.value = route.query.wholesalers === 'true' ? props.product.wholesale_min : 1
         cant_stock.value = parseInt(props.product.stock)
+
+        if(process.client && localStorage.getItem('user_data')){
+            const userData = localStorage.getItem('user_data')
+            const userDataJ = JSON.parse(userData)
+            
+            client_id.value = userDataJ.client.id
+        }
     }
 
     existence_whole.value = route.query.wholesalers === 'true' ? true : false;
@@ -178,7 +186,7 @@ const addfavorite = () => {
                         </div>
                     </VCardText>
                     <VCardText class="mt-3 px-1 px-md-2">
-                        <div class="d-flex text-center align-center tw-justify-start md:tw-justify-center tw-cursor-pointer heart" @click="addfavorite">
+                        <div v-if="client_id" class="d-flex text-center align-center tw-justify-start md:tw-justify-center tw-cursor-pointer heart" @click="addfavorite">
                             <span class="text_2 d-flex align-center">
                                 <span 
                                     class="me-2 pt-1"

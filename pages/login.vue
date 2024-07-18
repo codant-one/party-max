@@ -80,8 +80,6 @@ const login = () => {
             }
         }
 
-        await cartStores.fetchCart({client_id: user_data.client.id})
-
         router.push({ name: 'dashboard-profile' });
     }).catch(err => {
 

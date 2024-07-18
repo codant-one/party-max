@@ -201,7 +201,7 @@ const getFlagCountry = country => {
                                             >
                                             <VAvatar
                                                 start
-                                                style="margin-top: -8px;"
+                                                style="margin-top: -20px;"
                                                 :size="isMobile ? '30' : '36'"
                                                 :image="getFlagCountry(billingDetail.country_id)"
                                             />
@@ -437,6 +437,10 @@ const getFlagCountry = country => {
 
     .v-autocomplete::v-deep(.v-field__input) { 
         padding-top: 0 !important;
+    }
+
+    .v-autocomplete::v-deep(.v-input__prepend) {
+        margin-inline-end: 0 !important;
     }
 
     .v-textarea::v-deep(.v-field) { 

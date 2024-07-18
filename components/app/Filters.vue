@@ -34,7 +34,6 @@ const category = ref(null);
 
 const colors = ref([]);
 const colorsSelected = ref([]);
-const onlyWholesale = ref(false)
 
 watch(() => 
     props.drawer, (data) => {
@@ -54,8 +53,7 @@ async function fetchData() {
     var aux = await miscellaneousStores.colors();
 
     colors.value = aux.colors
-    onlyWholesale.value = aux.wholesale
-
+  
     openedGroups.value = []
     openedSubGroups.value = []
     category.value = null 

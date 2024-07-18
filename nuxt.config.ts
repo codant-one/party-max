@@ -9,7 +9,7 @@ export default defineNuxtConfig({
       bodyAttrs: {
         class: 'tw-font-switzer_regular'
       },
-      titleTemplate: '%s - PARTYMAX',
+      titleTemplate: '%s PARTYMAX',
       link: [
         { rel: 'icon', type: 'image/png', href: '/favicon.png' }
       ]
@@ -86,20 +86,20 @@ export default defineNuxtConfig({
     ]
   },
 
-  routeRules: {
-    '/': { prerender: true },
-    '/blogs': { static: true },
-    '/blogs/*': { static: true },
-    '/cart': { static: true },
-    '/categories': { static: true },
-    '/categories/*': { static: true },
-    '/clients/*': { static: true },
-    '/dashboard/*': { ssr: false },
-    '/products': { static: true },
-    '/testing': { ssr: true },
-    '/products/*': { ssr: true, swr: 3600 },
-    '/*': { static: true } 
-  },
+  // routeRules: {
+  //   '/': { prerender: true },
+  //   '/blogs': { static: true },
+  //   '/blogs/*': { static: true },
+  //   '/cart': { static: true },
+  //   '/categories': { static: true },
+  //   '/categories/*': { static: true },
+  //   '/clients/*': { static: true },
+  //   '/dashboard/*': { ssr: false },
+  //   '/products': { static: true },
+  //   '/testing': { ssr: true },
+  //   '/products/*': { ssr: true, swr: 3600 },
+  //   '/*': { static: true } 
+  // },
 
   compatibilityDate: '2024-07-14'
 })

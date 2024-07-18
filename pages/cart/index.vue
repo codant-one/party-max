@@ -61,7 +61,7 @@ const message = ref()
 const isError = ref(false)
 const data = ref(null)
 const bg = ref('tw-bg-green')
-const addresses = ref(null)
+const addresses = ref([])
 const products = ref([])
 const client_id = ref(null)
 const address_id = ref(0)
@@ -75,7 +75,7 @@ const summary = ref({
     total: 0
 })
 
-const addressTypes = [
+const addressTypes = ref([
   {
     icon: {
       icon: 'mdi-home-city',
@@ -94,7 +94,7 @@ const addressTypes = [
     desc: 'Hora de entrega </br>(10 a.m. - 6 p.m.)',
     value: '2',
   },
-]
+])
 
 const selectedAddress = ref({
     id: 0,
@@ -198,22 +198,8 @@ async function fetchData() {
             client_id: client_id.value
         }
 
-        await addressesStores.fetchAddresses(data_)
-        addresses.value = addressesStores.getAddresses
-
-        await cartStores.fetchCart({client_id: client_id.value})
+        await cartStores.fetchCart()
         products.value = cartStores.getData
-
-        let index = addresses.value.findIndex((item) => item.default === 1) 
-        if (addresses.value.length > 0) {
-            address_id.value = (index > -1) ? addresses.value[index].id : addresses.value[0].id 
-            province_id.value = addresses.value.filter(address => address.id === address_id.value)[0].province_id
-            if(province_id.value === 293) {
-                chanceSend('sendToBogota')
-                send_id.value = 1
-            } else
-                chanceSend('send')
-        } 
 
         let sum = 0
         products.value.forEach(element => {
@@ -223,7 +209,24 @@ async function fetchData() {
         });
         summary.value.subTotal = sum.toFixed(2)
         summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
-        isActiveStepValid.value = (address_id.value === 0 ) ? true : false
+
+        if(client_id.value) {
+            await addressesStores.fetchAddresses(data_)
+            addresses.value = addressesStores.getAddresses
+
+            let index = addresses.value.findIndex((item) => item.default === 1) 
+            if (addresses.value.length > 0) {
+                address_id.value = (index > -1) ? addresses.value[index].id : addresses.value[0].id 
+                province_id.value = addresses.value.filter(address => address.id === address_id.value)[0].province_id
+                if(province_id.value === 293) {
+                    chanceSend('sendToBogota')
+                    send_id.value = 1
+                } else
+                    chanceSend('send')
+            } 
+
+            isActiveStepValid.value = (address_id.value === 0 ) ? true : false
+        }
     }
 
     if(route.query.merchantId) {
@@ -259,12 +262,7 @@ const changeAddreess = (id) => {
 
 const deleteProduct = (product_color_id) => {
 
-    let data = {
-        client_id: client_id.value,
-        product_color_id: product_color_id,
-    }
-
-    cartStores.delete(data)
+    cartStores.delete({product_color_id: product_color_id})
     fetchData()   
 
 }
@@ -272,7 +270,6 @@ const deleteProduct = (product_color_id) => {
 const addCart = (data)=>{
 
     let data_ = {
-        client_id: client_id.value,
         product_color_id: data.product_color_id,
         quantity: data.quantity,
         wholesale: data.wholesale
@@ -286,7 +283,52 @@ const addCart = (data)=>{
 const onSubmit = () => {
     refVForm.value?.validate().then(({ valid: isValid }) => {
         if (isValid) {
-            addAddress()
+            if(client_id.value) {
+                addAddress()
+            } else {
+                address_id.value++
+                selectedAddress.value.default = (selectedAddress.value.default === false) ? 0 : 1
+                selectedAddress.value.province_id = (Number.isInteger(selectedAddress.value.province_id)) ? selectedAddress.value.province_id : provinceOld_id.value
+                selectedAddress.value.province = listProvincesByCountry.value.filter(item => item.id === selectedAddress.value.province_id)[0]
+                selectedAddress.value.id = address_id.value
+                addresses.value.push(selectedAddress.value)
+                
+                province_id.value = selectedAddress.value.province_id
+
+                if(province_id.value === 293) {
+                    chanceSend('sendToBogota')
+                    send_id.value = 1
+                } else
+                    chanceSend('send')
+
+                isDialogVisible.value = true
+                message.value = 'Dirección agregada exitosamente'
+                closeDialog()
+
+                setTimeout(() => {
+                    isDialogVisible.value = false
+                    message.value = ''
+                    isError.value = false
+                }, 3000)
+
+                load.value = false  
+                
+                // address: "Cra. 104"
+                // addresses_type_id: 1
+                // city: "Bogota"
+                // client_id: 79
+                // default: 0
+                // id: 142
+                // phone: "3042603376"
+                // postal_code: "21312"
+                // province: {id: 293, country_id: 47, name: 'Distrito Capital', created_at: '2023-09-23T13:50:40.000000Z', updated_at: '2023-09-23T13:50:40.000000Z', …}
+                // province_id: 293
+                // street: "Fontibon"
+                // title: "CASA"
+                // type: {id: 1, name: 'Hogar', description: 'Hora de entrega (7 a.m. - 9 p.m.)', created_at: '2024-01-09T01:29:27.000000Z', updated_at: '2024-01-09T01:29:27.000000Z'}
+               
+
+            }
         }
     })
 
@@ -352,9 +394,9 @@ const sendPayU = async (billingDetail) => {
         quantity.push(element.quantity)
     });
 
-    isLoading.value = true
+    // isLoading.value = true
 
-    let response = await cartStores.checkAvailability({client_id: client_id.value})
+    let response = await cartStores.checkAvailability()
     
     if(response.allAvailable === false) {
 
@@ -377,6 +419,7 @@ const sendPayU = async (billingDetail) => {
         let data = {
             client_id:  client_id.value,
             address_id: address_id.value,
+            addresses: addresses.value,
             sub_total: summary.value.subTotal,
             shipping_total: summary.value.send,
             shipping_express: summary.value.shipping_express,
@@ -432,7 +475,6 @@ const sendPayU = async (billingDetail) => {
 
         paymentsStores.redirectToPayU(formData)
             .then(response => {
-                // console.log('response:', response);
                 isLoading.value = false
                 window.location.href = response.url;
             })
@@ -454,7 +496,10 @@ const sendPayU = async (billingDetail) => {
 }
 
 const deleteAll = async () => {
-    await cartStores.deleteAll({client_id: client_id.value})
+    if(process.client) {
+        localStorage.removeItem('shoppingCart') 
+        cartStores.setWholesale(-1)
+    }
 }
 
 const updatePaymentState = async (payment_state_id) => {
@@ -719,7 +764,7 @@ const chanceSend = value => {
                                         >
                                         <VAvatar
                                             start
-                                            style="margin-top: -8px;"
+                                            style="margin-top: -20px;"
                                             :size="isMobile ? '30' : '36'"
                                             :image="getFlagCountry(selectedAddress.country_id)"
                                         />
@@ -788,7 +833,7 @@ const chanceSend = value => {
                                     />
                             </VCol>
                             <VCol cols="12" md="7"></VCol>
-                            <VCol cols="12" md="5" class="mb-3 mb-md-0">
+                            <VCol cols="12" md="5" class="mb-3 mb-md-0" v-if="client_id">
                                 <VCheckbox
                                     v-model="selectedAddress.default"
                                     color="primary"
@@ -956,6 +1001,10 @@ const chanceSend = value => {
 
     .v-autocomplete::v-deep(.v-field__input) { 
         padding-top: 0 !important;
+    }
+
+    .v-autocomplete::v-deep(.v-input__prepend) {
+        margin-inline-end: 0 !important;
     }
 
     .v-textarea::v-deep(.v-field) { 

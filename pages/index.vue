@@ -50,12 +50,6 @@ import banner_2_mobile from '@assets/images/Banner_2_mobile.jpg';
 import banner_3_mobile from '@assets/images/Banner_3_mobile.jpg';
 import banner_4_mobile from '@assets/images/Banner_4_mobile.jpg';
 
-import p_1 from '@assets/images/p_1.jpg';
-import p_2 from '@assets/images/p_2.jpg';
-import p_3 from '@assets/images/p_3.jpg';
-import p_4 from '@assets/images/p_4.jpg';
-import p_5 from '@assets/images/p_5.jpg';
-
 import t_1 from '@assets/images/t_1.jpg';
 import t_2 from '@assets/images/t_2.jpg';
 import t_3 from '@assets/images/t_3.jpg';
@@ -123,7 +117,7 @@ async function fetchData() {
 const tab = ref('0')
 
 useHead({
-  title: 'Inicio'
+  title: 'Inicio - '
 });
 
 </script>
@@ -538,73 +532,6 @@ useHead({
             </VCardItem>  
           </NuxtLink>
         </VCard>
-    </VCard>
-
-    <!-- suppliers -->
-    <VCard class="mt-3 mt-md-7 no-shadown card-information p-0 d-none">
-      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center cardtitles">
-        <span>Top proveedores mayoristas</span>
-        <VSpacer />
-        <NuxtLink to="/suppliers" class="ms-0 ms-md-5 tw-no-underline tw-text-tertiary font-size-16 me-0 me-md-3 hover:tw-text-primary">Ver todos</NuxtLink>
-      </VCardTitle>
-      <VDivider />
-      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
-        <NuxtLink to="/suppliers" class="tw-no-underline">
-          <img :src="p_1" class="border-img"/>
-        </NuxtLink>
-        <NuxtLink to="/suppliers" class="tw-no-underline">
-          <img :src="p_2" class="border-img"/>
-        </NuxtLink>
-        <NuxtLink to="/suppliers" class="tw-no-underline">
-          <img :src="p_3" class="border-img"/>
-        </NuxtLink>
-        <NuxtLink to="/suppliers" class="tw-no-underline">
-          <img :src="p_4" class="border-img"/>
-        </NuxtLink>
-        <NuxtLink to="/suppliers" class="tw-no-underline">
-          <img :src="p_5" class="border-img"/>
-        </NuxtLink>
-      </VCardText>  
-      <VCardText class="pb-0 px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-else>
-        <swiper
-          :pagination="{
-            dynamicBullets: true,
-          }"
-          :modules="modules"
-          :spaceBetween="5"
-          :slidesPerView="2"
-          :freeMode="true"
-          :watchSlidesProgress="true"
-          @swiper="setThumbsSwiper"
-          :style="{ height: isMobile ? '180px' : '370px' }"
-          >
-          <swiper-slide>
-            <NuxtLink to="/suppliers" class="tw-no-underline">
-              <img width="144" :src="p_1" class="border-img"/>
-            </NuxtLink>
-          </swiper-slide>
-          <swiper-slide>
-            <NuxtLink to="/suppliers" class="tw-no-underline">
-              <img width="144" :src="p_2" class="border-img"/>
-            </NuxtLink>
-          </swiper-slide>
-          <swiper-slide>
-            <NuxtLink to="/suppliers" class="tw-no-underline">
-              <img width="144" :src="p_3" class="border-img"/>
-            </NuxtLink>
-          </swiper-slide>
-          <swiper-slide>
-            <NuxtLink to="/suppliers" class="tw-no-underline">
-              <img width="144" :src="p_4" class="border-img"/>
-            </NuxtLink>
-          </swiper-slide>
-          <swiper-slide>
-            <NuxtLink to="/suppliers" class="tw-no-underline">
-              <img width="144" :src="p_5" class="border-img"/>
-            </NuxtLink>
-          </swiper-slide>
-        </swiper>
-      </VCardText>
     </VCard>
 
     <!-- theme parties -->
