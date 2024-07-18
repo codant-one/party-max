@@ -100,6 +100,12 @@ export default defineNuxtConfig({
   //   '/products/*': { ssr: true, swr: 3600 },
   //   '/*': { static: true } 
   // },
+  nitro: {
+    prerender: {
+      concurrency: 250,
+      interval: 1200
+    }
+  },
 
   compatibilityDate: '2024-07-14'
 })

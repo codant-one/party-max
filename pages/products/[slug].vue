@@ -688,7 +688,7 @@ useHead({
               <p class="text-lef">Recomendaciones que te pueden interesar</p>
             </VCol>
             <VCol cols="4" md="6" class="text-right">
-              <router-link to="/products" class="ms-md-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
+              <NuxtLink :to="{ name: 'products' }" class="ms-md-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</NuxtLink>
             </VCol> 
           </VRow>
         </VCardTitle>

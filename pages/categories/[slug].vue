@@ -85,16 +85,16 @@ async function fetchData() {
   <VContainer class="mt-1 mt-md-10" v-if="data">
     <VCard class="no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
-        <router-link 
+        <NuxtLink
           :to="{
-            name:'products',
+            name: 'products',
             query: {
                 category: route.params.slug,
                 subcategory: slug1
             }
           }">
           <VImg :src="image1" cover class="img-style"/>
-        </router-link>
+        </NuxtLink>
       </VCardItem>  
     </VCard>
 
@@ -107,22 +107,21 @@ async function fetchData() {
       <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center cardtitles">
         <span>¡Encuentra exactamente lo que necesitas!</span>
         <VSpacer />
-        <router-link
+        <NuxtLink
           :to="{
             name: 'products',
             query: {
               category: route.params.slug
             }
           }"
-          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary" v-if="!isMobile">Ver todos</router-link>
+          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary" v-if="!isMobile">Ver todos</NuxtLink>
       </VCardTitle>
       <VDivider class="hr-primary"/>
       <VCardText 
         class="px-4 px-md-7 pb-0 mt-5 d-flex align-items-stretch card-icons"
         :class="icons_categories.length === 3 ? 'justify-content-between' : 'justify-content-center'">
         <template v-for="(i, index) in icons_categories">
-          <router-link
-            
+          <NuxtLink            
             :to="{
               name: 'products',
               query: {
@@ -133,9 +132,9 @@ async function fetchData() {
             <img :src="baseURL + i.icon_subcategory" width="192" class="border-theme d-block" v-if="i.icon_subcategory !== null"/>
             <img :src="t_7" width="192" class="border-theme d-block" v-else/>
             <span class="d-block size-theme tw-text-tertiary mt-5 mb-5">{{i.name}}</span>
-          </router-link>      
+          </NuxtLink>      
         </template>
-        <router-link
+        <NuxtLink
           v-if="isMobile"
           :to="{
             name: 'products',
@@ -146,7 +145,7 @@ async function fetchData() {
           class="tw-no-underline d-block text-center justify-content-center zoom router-icons">
           <img :src="t_6" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5 mb-5 transparentColor">.</span>
-        </router-link>
+        </NuxtLink>
       </VCardText>      
     </VCard>
 
@@ -155,14 +154,14 @@ async function fetchData() {
       <VCardTitle class="px-7 py-3 d-flex align-center cardtitles hr-cyan">
         <span>Novedades</span>
         <VSpacer />
-        <router-link
+        <NuxtLink
           :to="{
-            name:'products',
+            name: 'products',
             query: {
               category: route.params.slug
             }
           }"
-          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
+          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</NuxtLink>
       </VCardTitle>
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
         <Product1 
@@ -197,9 +196,9 @@ async function fetchData() {
     <!-- banner 2 , banner 3-->
     <VCard class="mt-7 no-shadown card-information p-0 d-block d-md-flex transparent">
         <VCard class="no-shadown card-information p-0 w-100 w-md-50">
-          <router-link
+          <NuxtLink
             :to="{
-              name:'products',
+              name: 'products',
               query: {
                 category: route.params.slug,
                 subcategory: slug2
@@ -209,12 +208,12 @@ async function fetchData() {
             <VCardItem class="p-0">
               <VImg :src="image2" cover class="img-style"/>
             </VCardItem>  
-          </router-link>
+          </NuxtLink>
         </VCard>
         <VCard class="no-shadown card-information p-0 w-100 w-md-50 ms-0 ms-md-5 mt-7 mt-md-0">
-          <router-link
+          <NuxtLink
             :to="{
-              name:'products',
+              name: 'products',
               query: {
                 category: route.params.slug,
                 subcategory: slug3
@@ -224,38 +223,36 @@ async function fetchData() {
             <VCardItem class="p-0">
               <VImg :src="image3" cover class="img-style"/>
             </VCardItem>  
-          </router-link>
+          </NuxtLink>
         </VCard>
     </VCard>
 
       <!--Banner 4-->
     <VCard class="mt-7 no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
-        <router-link
+        <NuxtLink
           :to="{
-            name:'products',
+            name: 'products',
             query: {
               category: route.params.slug,
               subcategory: slug4
             }
           }">
           <VImg :src="image4" cover class="img-style"/>
-        </router-link>
+        </NuxtLink>
       </VCardItem>  
     </VCard>
 
-    
-    
-    <router-link 
+    <NuxtLink 
       :to="{
-        name:'products',
+        name: 'products',
           query: {
             category: route.params.slug
           }
       }"
-      class="link-button"  >
+      class="link-button">
       <VBtn class="mt-7 mb-5 tw-bg-primary tw-text-white button-product" rounded="xl" block>Ver todos los productos</VBtn>
-    </router-link>
+    </NuxtLink>
   </VContainer>
 
   <Loader :isLoading="isLoading" v-else/>

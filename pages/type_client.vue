@@ -22,7 +22,7 @@ const baseAdmin = ref(config.public.APP_DOMAIN_ADMIN_URL + '/login')
             </VCardItem>
 
             <VCardItem class="d-flex client-card mt-4">
-                <router-link to="/login" class="tw-no-underline hover:tw-text-primary link-type-client">
+                <NuxtLink :to="{ name: 'login' }" class="tw-no-underline hover:tw-text-primary link-type-client">
                     <VRow class="text-center d-flex align-center">
                         <VCol cols="4" class="hover-client">
                             <clients class="me-3 ms-4"/>
@@ -34,7 +34,7 @@ const baseAdmin = ref(config.public.APP_DOMAIN_ADMIN_URL + '/login')
                             <arrow_right class="me-3 ms-4"/>    
                         </VCol>  
                     </VRow>
-                </router-link>
+                </NuxtLink>
             </VCardItem> 
                 
             <VCardItem class="d-flex client-card mt-4">

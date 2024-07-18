@@ -129,10 +129,10 @@ const onSubmit = () => {
                     </VBtn>
                 </VCardText>
                 <VCardText class="px-0 more">
-                    <router-link to="/login" class="d-flex my-6 tw-no-underline tw-text-tertiary hover:tw-text-primary hover-icon-arrow-right justify-content-center align-center" style="margin: auto;">
+                    <NuxtLink :to="{ name: 'login'}" class="d-flex my-6 tw-no-underline tw-text-tertiary hover:tw-text-primary hover-icon-arrow-right justify-content-center align-center" style="margin: auto;">
                         <arrow_left class="ms-2" />
                         <span class="ms-5">Volver a inicio de sesión</span>
-                    </router-link>
+                    </NuxtLink>
                 </VCardText>    
             </VCard>
         </VForm>
