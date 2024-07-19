@@ -1,19 +1,8 @@
-import { useNuxtApp } from '#app'
 import axios from 'axios'
 
 export async function loadCategories() {
-  const { $axios } = useNuxtApp()
+  const response = await axios.get(process.env.NUXT_APP_DOMAIN_API_URL+ '/api/' +' home');
 
-  const home = async () => {
-      return await $axios.get('home')
-  }
-
-  return home()
-  .then((response) => {
-    return Promise.resolve(response.data.data)
-  })
-  .catch(error => {
-      return Promise.reject(error)
-  }) 
+  return response?.data?.data;
 
 }
