@@ -2,8 +2,7 @@
 import path from 'path'
 import pluginSvgVue from '@vuetter/vite-plugin-vue-svg';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
-
-import { useHomeStores } from './stores/home'
+import { loadCategories } from './utils/loadCategories'
 
 export default defineNuxtConfig({
   app: {
@@ -110,11 +109,7 @@ export default defineNuxtConfig({
     async 'nitro:config'(nitroConfig) {
       if (!nitroConfig.dev) {
 
-        const homeStores = useHomeStores()
-
-        await homeStores.fetchData()
-
-        const categories_data = homeStores.getData.parentCategories
+        const categories_data = await loadCategories()
         const categoriesRoutes = categories_data.map((category: { slug: string }) => `/products/${category.slug}`)
 
         nitroConfig.prerender = nitroConfig.prerender || {}
