@@ -101,10 +101,16 @@ export default defineNuxtConfig({
   //   '/*': { static: true } 
   // },
 
-  generate: {
-    routes: [
-      '/help'
-    ]
+  hooks: {
+    async 'nitro:config' (nitroConfig) {
+      if (nitroConfig.dev) { return }
+      // Asegurarse de que nitroConfig.prerender y nitroConfig.prerender.routes estén definidos
+      nitroConfig.prerender = nitroConfig.prerender || { routes: [] }
+      nitroConfig.prerender.routes = nitroConfig.prerender.routes || []
+
+      // Agregar ruta personalizada
+      nitroConfig.prerender.routes.push('/help')
+    }
   },
 
   nitro: {
