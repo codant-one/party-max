@@ -3,6 +3,8 @@ import path from 'path'
 import pluginSvgVue from '@vuetter/vite-plugin-vue-svg';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import { loadCategories } from './utils/loadCategories'
+import { loadBlogs } from './utils/loadBlogs'
+import { loadProducts } from './utils/loadProducts'
 
 export default defineNuxtConfig({
   app: {
@@ -111,9 +113,19 @@ export default defineNuxtConfig({
 
         const categoriesRoutes = await loadCategories()
         console.log('categoriesRoutes', categoriesRoutes)
+        
+        const blogsRoutes = await loadBlogs()
+        console.log('blogsRoutes', blogsRoutes)
+
+        const productsRoutes = await loadProducts()
+        console.log('productsRoutes', productsRoutes)
+
         nitroConfig.prerender = nitroConfig.prerender || {}
         nitroConfig.prerender.routes = nitroConfig.prerender.routes || []
+        
         nitroConfig.prerender.routes.push(...categoriesRoutes)
+        nitroConfig.prerender.routes.push(...blogsRoutes)
+        nitroConfig.prerender.routes.push(...productsRoutes)
       }
     }
   },
