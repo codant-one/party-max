@@ -3,6 +3,8 @@ import path from 'path'
 import pluginSvgVue from '@vuetter/vite-plugin-vue-svg';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
+import { useHomeStores } from '~/stores/home'
+
 export default defineNuxtConfig({
   app: {
     head: {
@@ -105,11 +107,19 @@ export default defineNuxtConfig({
   ssr: true,
 
   hooks: {
-    'nitro:config'(nitroConfig) {
+    async 'nitro:config'(nitroConfig) {
       if (!nitroConfig.dev) {
+
+        const homeStores = useHomeStores()
+
+        await homeStores.fetchData()
+
+        const categories_data = homeStores.getData.parentCategories
+        const categoriesRoutes = categories_data.map((category: { slug: string }) => `/products/${category.slug}`)
+
         nitroConfig.prerender = nitroConfig.prerender || {}
         nitroConfig.prerender.routes = nitroConfig.prerender.routes || []
-        nitroConfig.prerender.routes.push('/products/servilleta-hb-destellos-negro20-unidades-jo')
+        nitroConfig.prerender.routes.push(...categoriesRoutes)
       }
     }
   },
