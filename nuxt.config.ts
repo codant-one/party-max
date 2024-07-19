@@ -103,7 +103,8 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       concurrency: 250,
-      interval: 1200
+      interval: 1200,
+      failOnError: false
     }
   },
 
