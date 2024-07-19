@@ -5,7 +5,7 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 export default defineNuxtConfig({
   ssr: false, 
-  
+
   app: {
     head: {
       bodyAttrs: {
@@ -89,19 +89,19 @@ export default defineNuxtConfig({
     ]
   },
 
-  routeRules: {
-    '/': { prerender: true },
-    '/blogs': { prerender: true, static: true },
-    '/blogs/*': { prerender: true, static: true },
-    '/cart': { prerender: true, static: true },
-    '/categories/*': { prerender: true, static: true },
-    '/clients/*': { prerender: true, static: true },
-    '/dashboard/*': { prerender: true, ssr: false },
-    '/testing': { prerender: true, ssr: false },
-    '/products': { prerender: true, static: true },
-    '/products/*': { prerender: true, ssr: false, swr: 3600 },
-    '/*': { prerender: true, static: true } 
-  },
+  // routeRules: {
+  //   '/': { prerender: true },
+  //   '/blogs': { prerender: true, static: true },
+  //   '/blogs/*': { prerender: true, static: true },
+  //   '/cart': { prerender: true, static: true },
+  //   '/categories/*': { prerender: true, static: true },
+  //   '/clients/*': { prerender: true, static: true },
+  //   '/dashboard/*': { prerender: true, ssr: false },
+  //   '/testing': { prerender: true, ssr: false },
+  //   '/products': { prerender: true, static: true },
+  //   '/products/*': { prerender: true, ssr: false, swr: 3600 },
+  //   '/*': { prerender: true, static: true } 
+  // },
 
   nitro: {
     prerender: {
