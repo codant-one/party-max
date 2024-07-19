@@ -3,7 +3,7 @@ import path from 'path'
 import pluginSvgVue from '@vuetter/vite-plugin-vue-svg';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
-import { useHomeStores } from '~/stores/home'
+import { useHomeStores } from './stores/home'
 
 export default defineNuxtConfig({
   app: {
