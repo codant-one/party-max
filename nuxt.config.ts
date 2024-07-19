@@ -101,14 +101,7 @@ export default defineNuxtConfig({
   //   '/*': { static: true } 
   // },
 
-  ssr: false, // Desactiva el SSR
-  hooks: {
-    'nitro:config'(nitroConfig) {
-      nitroConfig.prerender = nitroConfig.prerender || {}
-      nitroConfig.prerender.routes = nitroConfig.prerender.routes || []
-      nitroConfig.prerender.routes.push('/')
-    }
-  },
+
   nitro: {
     prerender: {
       concurrency: 250,
