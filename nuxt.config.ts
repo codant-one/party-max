@@ -109,5 +109,9 @@ export default defineNuxtConfig({
     }
   },
 
+  generate: {
+    routes: ['/products']
+  },
+
   compatibilityDate: '2024-07-14'
 })
