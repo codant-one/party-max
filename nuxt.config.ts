@@ -91,44 +91,45 @@ export default defineNuxtConfig({
     ]
   },
 
-  // routeRules: {
-  //   '/': { prerender: true },
-  //   '/blogs': { static: true },
-  //   '/cart': { static: true },
-  //   '/categories': { static: true },
-  //   '/categories/*': { static: true },
-  //   '/clients/*': { static: true },
-  //   '/dashboard/*': { ssr: false },
-  //   '/testing': { ssr: false },
-  //   '/products': { static: true },
-  //   '/products/*': { ssr: false, swr: 3600 },
-  //   '/*': { static: true } 
-  // },
-
-  ssr: true,
-
-  hooks: {
-    async 'nitro:config'(nitroConfig) {
-      if (!nitroConfig.dev) {
-
-        const categoriesRoutes = await loadCategories()
-        console.log('categoriesRoutes', categoriesRoutes)
-        
-        const blogsRoutes = await loadBlogs()
-        console.log('blogsRoutes', blogsRoutes)
-
-        const productsRoutes = await loadProducts()
-        console.log('productsRoutes', productsRoutes)
-
-        nitroConfig.prerender = nitroConfig.prerender || {}
-        nitroConfig.prerender.routes = nitroConfig.prerender.routes || []
-        
-        nitroConfig.prerender.routes.push(...categoriesRoutes)
-        nitroConfig.prerender.routes.push(...blogsRoutes)
-        nitroConfig.prerender.routes.push(...productsRoutes)
-      }
-    }
+  routeRules: {
+    '/**': { isr: 60 },
+    // '/': { prerender: true },
+    // '/blogs': { static: true },
+    // '/cart': { static: true },
+    // '/categories': { static: true },
+    // '/categories/*': { static: true },
+    // '/clients/*': { static: true },
+    // '/dashboard/*': { ssr: false },
+    // '/testing': { ssr: false },
+    // '/products': { static: true },
+    // '/products/*': { ssr: false, swr: 3600 },
+    // '/*': { static: true } 
   },
+
+  // ssr: true,
+
+  // hooks: {
+  //   async 'nitro:config'(nitroConfig) {
+  //     if (!nitroConfig.dev) {
+
+  //       const categoriesRoutes = await loadCategories()
+  //       console.log('categoriesRoutes', categoriesRoutes)
+        
+  //       const blogsRoutes = await loadBlogs()
+  //       console.log('blogsRoutes', blogsRoutes)
+
+  //       const productsRoutes = await loadProducts()
+  //       console.log('productsRoutes', productsRoutes)
+
+  //       nitroConfig.prerender = nitroConfig.prerender || {}
+  //       nitroConfig.prerender.routes = nitroConfig.prerender.routes || []
+        
+  //       nitroConfig.prerender.routes.push(...categoriesRoutes)
+  //       nitroConfig.prerender.routes.push(...blogsRoutes)
+  //       nitroConfig.prerender.routes.push(...productsRoutes)
+  //     }
+  //   }
+  // },
 
   nitro: {
     prerender: {
