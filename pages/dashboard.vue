@@ -57,8 +57,8 @@ definePageMeta({
       <VList density="compact" nav class="mt-5">
         <NuxtLink :to="{ name: 'dashboard' }" class="link-menu" exact>
           <VListItem 
-            :class="{ 'v-list-item--active': ($route.path === '/dashboard') }"
-            class="items-list" title="Home" value="dashboard" >
+            :class="{ 'v-list-item--active': ($route.name === 'dashboard') }"
+            class="items-list" title="Home" value="dashboard">
             <template v-slot:prepend>
               <home style="width: 24px; height: 24px;"></home>
             </template>
@@ -66,7 +66,7 @@ definePageMeta({
         </NuxtLink>
         <NuxtLink :to="{ name: 'dashboard-profile' }" class="link-menu" exact>
           <VListItem 
-            :class="{ 'v-list-item--active': $route.path === '/dashboard/profile' }"
+            :class="{ 'v-list-item--active': $route.name === 'dashboard-profile' }"
             class="items-list" style="margin-top: 40px;" title="Mi perfil" value="profile">
             <template v-slot:prepend>
               <profile class="icon-profile"></profile>
@@ -75,7 +75,7 @@ definePageMeta({
         </NuxtLink>
         <NuxtLink :to=" { name: 'dashboard-purchases' }" class="link-menu" exact>
           <VListItem 
-            :class="{ 'v-list-item--active': $route.path === '/dashboard/purchases' }"
+            :class="{ 'v-list-item--active': $route.name === 'dashboard-purchases' }"
             class="items-list" style="margin-top: 16px;" title="Compras" value="purchases">
             <template v-slot:prepend>
               <purchases style="width: 24px; height: 24px;"></purchases>
@@ -84,7 +84,7 @@ definePageMeta({
         </NuxtLink>
         <NuxtLink :to="{ name: 'dashboard-favorites' } " class="link-menu" exact>
           <VListItem 
-            :class="{ 'v-list-item--active': $route.path === '/dashboard/favorites' }"
+            :class="{ 'v-list-item--active': $route.name === 'dashboard-favorites' }"
             class="items-list" style="margin-top: 16px;" title="Mis Favoritos" value="favorites">
             <template v-slot:prepend>
               <favorites></favorites>
