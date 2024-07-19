@@ -60,7 +60,8 @@ export default defineNuxtConfig({
       APP_VERBOSE: process.env.NUXT_APP_VERBOSE,
       APP_DOMAIN_API_URL: process.env.NUXT_APP_DOMAIN_API_URL,
       APP_DOMAIN_ADMIN_URL: process.env.NUXT_APP_DOMAIN_ADMIN_URL,
-      MY_DOMAIN: process.env.NUXT_MY_DOMAIN
+      MY_DOMAIN: process.env.NUXT_MY_DOMAIN,
+      NODE_ENV: process.env.NODE_ENV
     },
   },
 
