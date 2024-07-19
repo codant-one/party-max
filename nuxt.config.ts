@@ -92,7 +92,7 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/**': { isr: 60 },
+    '/**': { isr: true  },
     // '/': { prerender: true },
     // '/blogs': { static: true },
     // '/cart': { static: true },
