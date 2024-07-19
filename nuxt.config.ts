@@ -4,8 +4,6 @@ import pluginSvgVue from '@vuetter/vite-plugin-vue-svg';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 export default defineNuxtConfig({
-  ssr: false, 
-
   app: {
     head: {
       bodyAttrs: {
@@ -89,7 +87,28 @@ export default defineNuxtConfig({
     ]
   },
 
+  // routeRules: {
+  //   '/': { prerender: true },
+  //   '/blogs': { static: true },
+  //   '/cart': { static: true },
+  //   '/categories': { static: true },
+  //   '/categories/*': { static: true },
+  //   '/clients/*': { static: true },
+  //   '/dashboard/*': { ssr: false },
+  //   '/testing': { ssr: false },
+  //   '/products': { static: true },
+  //   '/products/*': { ssr: false, swr: 3600 },
+  //   '/*': { static: true } 
+  // },
 
+  ssr: false, // Desactiva el SSR
+  hooks: {
+    'nitro:config'(nitroConfig) {
+      nitroConfig.prerender = nitroConfig.prerender || {}
+      nitroConfig.prerender.routes = nitroConfig.prerender.routes || []
+      nitroConfig.prerender.routes.push('/')
+    }
+  },
   nitro: {
     prerender: {
       concurrency: 250,
