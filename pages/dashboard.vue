@@ -55,7 +55,7 @@ definePageMeta({
       floating
       permanent>
       <VList density="compact" nav class="mt-5">
-        <NuxtLink to="/dashboard" class="link-menu" exact>
+        <NuxtLink :to="{ name: 'dashboard' }" class="link-menu" exact>
           <VListItem 
             :class="{ 'v-list-item--active': ($route.path === '/dashboard') }"
             class="items-list" title="Home" value="dashboard" >
@@ -64,7 +64,7 @@ definePageMeta({
             </template>
           </VListItem>
         </NuxtLink>
-        <NuxtLink to="/dashboard/profile" class="link-menu" exact>
+        <NuxtLink :to="{ name: 'dashboard-profile' }" class="link-menu" exact>
           <VListItem 
             :class="{ 'v-list-item--active': $route.path === '/dashboard/profile' }"
             class="items-list" style="margin-top: 40px;" title="Mi perfil" value="profile">
@@ -73,7 +73,7 @@ definePageMeta({
             </template>
           </VListItem>
         </NuxtLink>
-        <NuxtLink to="/dashboard/purchases" class="link-menu" exact>
+        <NuxtLink :to=" { name: 'dashboard-purchases' }" class="link-menu" exact>
           <VListItem 
             :class="{ 'v-list-item--active': $route.path === '/dashboard/purchases' }"
             class="items-list" style="margin-top: 16px;" title="Compras" value="purchases">
@@ -82,7 +82,7 @@ definePageMeta({
             </template>
           </VListItem>
         </NuxtLink>
-        <NuxtLink to="/dashboard/favorites" class="link-menu" exact>
+        <NuxtLink :to="{ name: 'dashboard-favorites' } " class="link-menu" exact>
           <VListItem 
             :class="{ 'v-list-item--active': $route.path === '/dashboard/favorites' }"
             class="items-list" style="margin-top: 16px;" title="Mis Favoritos" value="favorites">
