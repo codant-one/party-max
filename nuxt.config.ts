@@ -87,30 +87,27 @@ export default defineNuxtConfig({
     ]
   },
 
-  // routeRules: {
-  //   '/': { prerender: true },
-  //   '/blogs': { static: true },
-  //   '/blogs/*': { static: true },
-  //   '/cart': { static: true },
-  //   '/categories': { static: true },
-  //   '/categories/*': { static: true },
-  //   '/clients/*': { static: true },
-  //   '/dashboard/*': { ssr: false },
-  //   '/products': { static: true },
-  //   '/testing': { ssr: true },
-  //   '/products/*': { ssr: true, swr: 3600 },
-  //   '/*': { static: true } 
-  // },
+  routeRules: {
+    '/': { prerender: true },
+    '/blogs': { static: true },
+    '/blogs/*': { static: true },
+    '/cart': { static: true },
+    '/categories': { static: true },
+    '/categories/*': { static: true },
+    '/clients/*': { static: true },
+    '/dashboard/*': { ssr: false },
+    '/testing': { ssr: false },
+    '/products': { static: true },
+    '/products/*': { ssr: false, swr: 3600 },
+    '/*': { static: true } 
+  },
+
   nitro: {
     prerender: {
       concurrency: 250,
       interval: 1200,
       failOnError: false
     }
-  },
-
-  generate: {
-    routes: ['/products']
   },
 
   compatibilityDate: '2024-07-14'
