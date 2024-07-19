@@ -164,22 +164,12 @@
             Sorpresas
           </NuxtLink>
           <NuxtLink 
-            :to="{
-              name: 'categories-slug',
-              params: {
-                slug: 'mobiliario'
-              }
-            }" 
+            to="/"
             class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Mobiliario
           </NuxtLink>
           <NuxtLink 
-            :to="{
-              name: 'categories-slug',
-              params: {
-                slug: 'animacion-y-entretenimiento'
-              }
-            }" 
+            to="/"
             class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Animación y entrenimiento
           </NuxtLink>
