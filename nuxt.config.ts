@@ -92,7 +92,6 @@ export default defineNuxtConfig({
     '/blogs': { prerender: true, static: true },
     '/blogs/*': { prerender: true, static: true },
     '/cart': { prerender: true, static: true },
-    '/categories': { prerender: true, static: true },
     '/categories/*': { prerender: true, static: true },
     '/clients/*': { prerender: true, static: true },
     '/dashboard/*': { prerender: true, ssr: false },
