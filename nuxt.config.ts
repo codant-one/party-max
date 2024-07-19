@@ -4,8 +4,6 @@ import pluginSvgVue from '@vuetter/vite-plugin-vue-svg';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 export default defineNuxtConfig({
-  ssr: false, 
-
   app: {
     head: {
       bodyAttrs: {
@@ -91,17 +89,23 @@ export default defineNuxtConfig({
 
   // routeRules: {
   //   '/': { prerender: true },
-  //   '/blogs': { prerender: true, static: true },
-  //   '/blogs/*': { prerender: true, static: true },
-  //   '/cart': { prerender: true, static: true },
-  //   '/categories/*': { prerender: true, static: true },
-  //   '/clients/*': { prerender: true, static: true },
-  //   '/dashboard/*': { prerender: true, ssr: false },
-  //   '/testing': { prerender: true, ssr: false },
-  //   '/products': { prerender: true, static: true },
-  //   '/products/*': { prerender: true, ssr: false, swr: 3600 },
-  //   '/*': { prerender: true, static: true } 
+  //   '/blogs': { static: true },
+  //   '/cart': { static: true },
+  //   '/categories': { static: true },
+  //   '/categories/*': { static: true },
+  //   '/clients/*': { static: true },
+  //   '/dashboard/*': { ssr: false },
+  //   '/testing': { ssr: false },
+  //   '/products': { static: true },
+  //   '/products/*': { ssr: false, swr: 3600 },
+  //   '/*': { static: true } 
   // },
+
+  generate: {
+    routes: [
+      '/help'
+    ]
+  },
 
   nitro: {
     prerender: {
