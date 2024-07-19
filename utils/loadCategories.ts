@@ -1,10 +1,8 @@
-import { createPinia, setActivePinia } from 'pinia'
-import { useHomeStores } from './../stores/home'
+import axios from 'axios'
 
 export async function loadCategories() {
-  const pinia = createPinia()
-  setActivePinia(pinia)
-  const homeStores = useHomeStores()
-  await homeStores.fetchData()
-  return homeStores.getData.parentCategories
+  const response = await axios.get('home');
+
+  return response?.data?.data
+
 }

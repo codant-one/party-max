@@ -110,7 +110,7 @@ export default defineNuxtConfig({
       if (!nitroConfig.dev) {
 
         const categories_data = await loadCategories()
-        const categoriesRoutes = categories_data.map((category: { slug: string }) => `/products/${category.slug}`)
+        const categoriesRoutes = categories_data.parentCategories.map((category: { slug: string }) => `/products/${category.slug}`)
 
         nitroConfig.prerender = nitroConfig.prerender || {}
         nitroConfig.prerender.routes = nitroConfig.prerender.routes || []
