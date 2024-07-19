@@ -25,10 +25,6 @@ const setFocus = async(category) => {
   window.location.hash = "#"+category;
 }
 
-definePageMeta({
-  middleware: 'verify'
-});
-
 </script>
 
 <template>
