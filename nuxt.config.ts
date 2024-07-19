@@ -102,6 +102,8 @@ export default defineNuxtConfig({
   //   '/*': { static: true } 
   // },
 
+  ssr: true,
+
   hooks: {
     'nitro:config'(nitroConfig) {
       if (!nitroConfig.dev) {
