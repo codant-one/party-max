@@ -138,11 +138,17 @@ watch(() =>
 
 const { data: dataFetch } = await useAsyncData(`product-${route.params.slug}`, async () => {
   if(route.params.slug && route.path.startsWith('/products/')) {
+    isLoading.value = true
+
     await miscellaneousStores.getProduct(route.params.slug)
 
     let response = miscellaneousStores.getData
 
     response.baseUrl = config.public.APP_DOMAIN_API_URL + '/storage/'
+
+    setTimeout(() => {
+      isLoading.value = false   
+    }, 2000)  
 
     return response 
   }
@@ -159,8 +165,6 @@ async function fetchData() {
     client_id.value = userDataJ.client.id
     user_id.value = userDataJ.id
   }
-
-  isLoading.value = true
   
   radioContent.value = []
   productImages.value = []
@@ -235,8 +239,6 @@ async function fetchData() {
     if(client_id.value)
       isFavoriteProduct.value = await favoritesStores.show({user_id: user_id.value, product_id: product_id.value })
   }
-
-  isLoading.value = false
 }
 
 const chanceRadio = (value) => {
