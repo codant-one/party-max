@@ -88,26 +88,26 @@ export default defineNuxtConfig({
     ]
   },
 
-  routeRules: {
-    '/': { prerender: true },
-    '/blogs': { static: true },
-    '/cart': { static: true },
-    '/categories': { static: true },
-    '/categories/*': { static: true },
-    '/clients/*': { static: true },
-    '/dashboard/*': { ssr: false },
-    '/testing': { ssr: false },
-    '/products': { static: true },
-    '/products/*': { ssr: false, swr: 3600 },
-    '/*': { static: true } 
-  },
+  // routeRules: {
+  //   '/': { prerender: true },
+  //   '/blogs': { static: true },
+  //   '/cart': { static: true },
+  //   '/categories': { static: true },
+  //   '/categories/*': { static: true },
+  //   '/clients/*': { static: true },
+  //   '/dashboard/*': { ssr: false },
+  //   '/testing': { ssr: false },
+  //   '/products': { static: true },
+  //   '/products/*': { ssr: false, swr: 3600 },
+  //   '/*': { static: true } 
+  // },
 
   hooks: {
     'nitro:config'(nitroConfig) {
       if (!nitroConfig.dev) {
         nitroConfig.prerender = nitroConfig.prerender || {}
         nitroConfig.prerender.routes = nitroConfig.prerender.routes || []
-        nitroConfig.prerender.routes.push('/testing')
+        nitroConfig.prerender.routes.push('/products/servilleta-hb-destellos-negro20-unidades-jo')
       }
     }
   },
