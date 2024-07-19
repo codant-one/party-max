@@ -4,6 +4,8 @@ import pluginSvgVue from '@vuetter/vite-plugin-vue-svg';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 export default defineNuxtConfig({
+  ssr: false, 
+  
   app: {
     head: {
       bodyAttrs: {
