@@ -89,17 +89,17 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/': { prerender: true },
-    '/blogs': { static: true },
-    '/blogs/*': { static: true },
-    '/cart': { static: true },
-    '/categories': { static: true },
-    '/categories/*': { static: true },
-    '/clients/*': { static: true },
-    '/dashboard/*': { ssr: false },
-    '/testing': { ssr: false },
-    '/products': { static: true },
-    '/products/*': { ssr: false, swr: 3600 },
-    '/*': { static: true } 
+    '/blogs': { prerender: true, static: true },
+    '/blogs/*': { prerender: true, static: true },
+    '/cart': { prerender: true, static: true },
+    '/categories': { prerender: true, static: true },
+    '/categories/*': { prerender: true, static: true },
+    '/clients/*': { prerender: true, static: true },
+    '/dashboard/*': { prerender: true, ssr: false },
+    '/testing': { prerender: true, ssr: false },
+    '/products': { prerender: true, static: true },
+    '/products/*': { prerender: true, ssr: false, swr: 3600 },
+    '/*': { prerender: true, static: true } 
   },
 
   nitro: {
