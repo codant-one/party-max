@@ -4,6 +4,8 @@ import pluginSvgVue from '@vuetter/vite-plugin-vue-svg';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 export default defineNuxtConfig({
+  ssr: false, 
+
   app: {
     head: {
       bodyAttrs: {
@@ -87,38 +89,12 @@ export default defineNuxtConfig({
     ]
   },
 
-  // routeRules: {
-  //   '/': { prerender: true },
-  //   '/blogs': { static: true },
-  //   '/cart': { static: true },
-  //   '/categories': { static: true },
-  //   '/categories/*': { static: true },
-  //   '/clients/*': { static: true },
-  //   '/dashboard/*': { ssr: false },
-  //   '/testing': { ssr: false },
-  //   '/products': { static: true },
-  //   '/products/*': { ssr: false, swr: 3600 },
-  //   '/*': { static: true } 
-  // },
-
-  hooks: {
-    async 'nitro:config' (nitroConfig) {
-      if (nitroConfig.dev) { return }
-      // Asegurarse de que nitroConfig.prerender y nitroConfig.prerender.routes estén definidos
-      nitroConfig.prerender = nitroConfig.prerender || { routes: [] }
-      nitroConfig.prerender.routes = nitroConfig.prerender.routes || []
-
-      // Agregar ruta personalizada
-      nitroConfig.prerender.routes.push('/help')
-    }
-  },
 
   nitro: {
     prerender: {
       concurrency: 250,
       interval: 1200,
-      failOnError: false,
-      routes: ['/help']
+      failOnError: false
     }
   },
 
