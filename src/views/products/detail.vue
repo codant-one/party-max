@@ -10,6 +10,7 @@ import { useCartStores } from '@/stores/cart'
 import { useFavoritesStores } from '@/stores/favorites'
 import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
+import { VueImageZoomer } from 'vue-image-zoomer'
 import router from '@/router'
 import CustomRadiosWithIcon from '@/components/app/CustomRadiosWithIcon.vue'
 import Loader from '@/components/common/Loader.vue'
@@ -34,6 +35,7 @@ import 'swiper/css/free-mode';
 import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar'
 import 'swiper/css/pagination';
+import 'vue-image-zoomer/dist/style.css';
 
 const route = useRoute()
 const miscellaneousStores = useMiscellaneousStores()
@@ -491,9 +493,13 @@ const decrement = () => {
                 :thumbs="{ swiper: thumbsSwiper }"
                 :modules="modules"
                 class="mySwiper2 border-img mx-0 mx-md-auto"
+                v-if="productImages.length > 0"
                 >
                 <swiper-slide v-for="(picture, index) in productImages" :key="index">
-                  <img :src="baseURL + picture.image" />
+                  <vue-image-zoomer
+                    :regular="baseURL + picture.image"
+                    :zoom-amount="3" 
+                  />
                 </swiper-slide>
               </swiper>
             </VCol>
@@ -1007,7 +1013,7 @@ const decrement = () => {
   .border-img {
     border-radius: 16px !important;
     border: 1px solid #D9EEF2;
-    padding: 10px !important;
+    padding: 10px  10px 40px 10px !important;
     background-color: white;
     text-align: center;
     align-items: center;
