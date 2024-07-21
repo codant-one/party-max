@@ -5,6 +5,7 @@
   import { useAuthStores } from '@/stores/auth'
   import { markRaw } from 'vue';
   import { formatNumber } from '@formatters'
+  import Loader from '@/components/common/Loader.vue'
   import Product8 from '@/components/product/Product8.vue'
   import router from '@/router'
   import logo from '@assets/images/logo.svg';
@@ -42,7 +43,6 @@
   const cart_products = ref(null)
   const products = ref([])
   const subTotal = ref('0.00')
-  const client_id = ref(null)
   const name = ref(null)
 
   const cols = ref(12)
@@ -58,6 +58,7 @@
   const menuOpenS = ref(false)
   const isDrawerOpen = ref(false)
 
+  const isLoading = ref(false)
   const isMobile = /Mobi/i.test(navigator.userAgent);
   const drawer = ref(false)
   const fixedSectionRef = ref(null)
@@ -86,16 +87,12 @@
   watch(() => 
     cartStores.getCount, async (value) => {
       cart_products.value = value
-
-      if(localStorage.getItem('user_data')){
-        const userData = localStorage.getItem('user_data')
-        const userDataJ = JSON.parse(userData)
-
-        client_id.value = userDataJ.client.id
-      }
+      products.value = []
+      subTotal.value = '0.00'
 
       if(cart_products.value > 0) {
-        await cartStores.fetchCart({client_id: client_id.value})
+        isLoading.value = true
+        await cartStores.fetchCart()
         products.value = cartStores.getData
 
         let sum = 0
@@ -105,6 +102,7 @@
         });
 
         subTotal.value = sum.toFixed(2)
+        isLoading.value = false
       }
     }
   );
@@ -301,15 +299,12 @@
     return index === products.value.length - 1;
   }
 
-  const deleteProduct = (product_color_id) => {
+  const deleteProduct = async (product_color_id) => {
 
-    let data = {
-        client_id: client_id.value,
-        product_color_id: product_color_id,
-    }
-
-    cartStores.delete(data)
+    isLoading.value = true
+    await cartStores.delete({ product_color_id: product_color_id })
     fetchData()   
+    isLoading.value = false
 
   }
 
@@ -435,6 +430,7 @@
       temporary
       @update:model-value="handleDrawerModelValueUpdate"
     >
+      <Loader :isLoading="isLoading"/>
       <!-- 👉 Title -->
       <div class="d-flex align-center pa-4 pa-md-6 pb-1 pb-md-1">
         <h6 class="text-h6">

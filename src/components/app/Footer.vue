@@ -11,8 +11,6 @@
 
   import instagram from '@assets/icons/instagram.svg?inline';
   import facebook from '@assets/icons/facebook.svg?inline';
-  import subtract from '@assets/icons/subtract.svg?inline';
-  import threads from '@assets/icons/threads.svg?inline';
 
   import festinfooter from '@assets/images/festin-footer.png';
 
@@ -94,8 +92,6 @@
             <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="m-0">
               <instagram class="mt-1 me-2"/>
             </a>
-            <!-- <threads class="mt-1 me-2"/> -->
-            <!-- <subtract class="mt-1 me-2"/> -->
             <a href="https://www.facebook.com/PartymaxCo/?locale=es_LA" target="_blank" class="m-0">
               <facebook class="mt-1 me-2"/>
             </a>

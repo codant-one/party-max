@@ -45,6 +45,16 @@ watch(() =>
     props.address_id, (data) => {
         id.value = data
     });
+
+watch(() => 
+    props.send_id, (data) => {
+        sendId.value = data
+    });
+
+watch(() => 
+    props.province_id, (data) => {
+        province.value = data
+    });
  
 const next = () => {
 

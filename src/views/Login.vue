@@ -76,8 +76,6 @@ const login = () => {
             localStorage.setItem('password', ''); 
         }
 
-        await cartStores.fetchCart({client_id: user_data.client.id})
-
         router.push({ name: 'profile' });
     }).catch(err => {
 

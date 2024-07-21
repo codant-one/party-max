@@ -352,7 +352,7 @@ const getFlagCountry = country => {
                             <span class="tw-text-left me-2 me-md-5">PayU Latam Online Payments</span>
                             <img :src="Payu"/>
                         </div>
-                        <VCardItem class="align-center text-center py-2 py-md-0 px-2 px-md-15">
+                        <VCardItem class="align-center text-center py-2 pt-md-0 mb-7 px-2 px-md-15">
                             <span>
                                 Pague con tarjeta de crédito, debito o transacción bancaria de forma segura a través de los
                                 servidores seguros de PayU Latinoamérica.
@@ -437,6 +437,10 @@ const getFlagCountry = country => {
 
     .v-autocomplete::v-deep(.v-field__input) { 
         padding-top: 0 !important;
+    }
+
+    .v-autocomplete::v-deep(.v-input__prepend) {
+        margin-inline-end: 0 !important;
     }
 
     .v-textarea::v-deep(.v-field) { 

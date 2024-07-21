@@ -19,6 +19,9 @@ import Product4 from "@/components/product/Product4.vue";
 import arrow_right from '@assets/icons/arrow_right.svg?inline';
 import arrow_left from '@assets/icons/Arrow_left.svg?inline';
 import t_7 from '@assets/images/t_7.jpg';
+import check_circle from '@assets/icons/check-circle.svg';
+import error_circle from '@assets/icons/error-circle.svg';
+import festin_pending from '@assets/icons/festin_pending.svg';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -60,12 +63,12 @@ const rating = ref(5)
 const isMobile = /Mobi/i.test(navigator.userAgent);
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
-const client_id = ref(null)
+const isDialogVisible = ref(false)
+const isError = ref(false)
+const isPending = ref(false)
+
 const user_id = ref(null)
 const load = ref(false)
-const isSnackbarBottomStartVisible = ref(false)
-const variant = ref('tonal')
-const colorMessage = ref('')
 const message = ref('')
 const product_id = ref(0)
 
@@ -167,7 +170,7 @@ async function fetchData() {
   totalProducts.value = aux.productsTotalCount;
 
   colors.value = aux.colors
-  onlyWholesale.value = aux.wholesale
+  onlyWholesale.value = cartStores.getWholesale
 
   if(route.query.colorId) {
     const colorsQuery = route.query.colorId.split(',').map(Number);
@@ -243,8 +246,7 @@ async function fetchData() {
   if(localStorage.getItem('user_data')){
     const userData = localStorage.getItem('user_data')
     const userDataJ = JSON.parse(userData)
-      
-    client_id.value = userDataJ.client.id
+
     user_id.value = userDataJ.id
   }
 
@@ -321,103 +323,68 @@ const colorAction = () => {
 
 const addCart = (value) => {
   product_id.value = value.product_id
-
-  if(client_id.value) {
     
-    let isWholesale = route.query.wholesalers === 'true' ? 1 : 0
+  let isWholesale = route.query.wholesalers === 'true' ? 1 : 0
 
-    if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
+  if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
 
-      let data = {
-        client_id: client_id.value,
-        product_color_id: value.product_color_id,
-        quantity: value.cant_prod,
-        wholesale: isWholesale
-      }
-
-      load.value = true
-
-      cartStores.add(data)
-        .then(response => {
-
-          isSnackbarBottomStartVisible.value = true
-          message.value = 'Agregado al carrito'
-          colorMessage.value = 'primary'
-          variant.value = 'tonal'
-          load.value = false
-
-          setTimeout(() => {
-            isSnackbarBottomStartVisible.value = false
-            message.value = ''
-            colorMessage.value = ''
-          }, 3000)
-
-        }).catch(err => {
-          load.value = false
-          //console.error(err.message)
-        })
-    } else {
-      isSnackbarBottomStartVisible.value = true
-      message.value = 'Debes agregar al carrito productos ' + (isWholesale ? 'al detal' : 'al mayor') + ' debido a tu selección anterior'
-      colorMessage.value = 'error'
-      variant.value = 'flat'
-                      
-      setTimeout(() => {
-        isSnackbarBottomStartVisible.value = false
-        message.value = ''
-        colorMessage.value = ''
-      }, 3000)
+    let data = {
+      product_color_id: value.product_color_id,
+      quantity: value.cant_prod,
+      wholesale: isWholesale
     }
+
+    load.value = true
+
+    cartStores.add(data)
+      .then(response => {
+
+        isDialogVisible.value = true
+        message.value = 'Agregado al carrito'
+        load.value = false
+
+        setTimeout(() => {
+          isDialogVisible.value = false
+          isError.value = false
+          message.value = ''
+        }, 3000)
+
+      }).catch(err => {
+        load.value = false
+        //console.error(err.message)
+      })
   } else {
-    isSnackbarBottomStartVisible.value = true
-    message.value = 'Necesitas iniciar sesión antes de agregar un producto al carrito'
-    colorMessage.value = 'error'
-    variant.value = 'flat'
-                    
+    isDialogVisible.value = true
+    message.value = 'Debes agregar al carrito productos ' + (isWholesale ? 'al detal' : 'al mayor') + ' debido a tu selección anterior'
+    isError.value = true
+
     setTimeout(() => {
-      isSnackbarBottomStartVisible.value = false
+      isDialogVisible.value = false
+      isError.value = false
       message.value = ''
-      colorMessage.value = ''
     }, 3000)
   }
 }
 
 const addfavorite = (product_id) => {
 
-  if(client_id.value) {
+  favoritesStores.add({user_id: user_id.value, product_id: product_id })
+    .then(response => {
 
-    favoritesStores.add({user_id: user_id.value, product_id: product_id })
-      .then(response => {
-
-        isSnackbarBottomStartVisible.value = true
-        message.value = 'Agregado a la lista de favoritos'
-        colorMessage.value = 'primary'
-        variant.value = 'tonal'
+      isDialogVisible.value = true
+      message.value = 'Agregado a la lista de favoritos'
                     
-        setTimeout(() => {
-          isSnackbarBottomStartVisible.value = false
-          message.value = ''
-          colorMessage.value = ''
-        }, 3000)
-
-        fetchData()
-    
-      }).catch(err => {
-        //console.error(err.message)
-      })
-
-    } else {
-      isSnackbarBottomStartVisible.value = true
-      message.value = 'Necesitas iniciar sesión antes de agregar un producto a la lista'
-      colorMessage.value = 'error'
-      variant.value = 'flat'
-
       setTimeout(() => {
-        isSnackbarBottomStartVisible.value = false
+        isDialogVisible.value = false
+        isError.value = false
         message.value = ''
-        colorMessage.value = ''
       }, 3000)
-  }
+
+      fetchData()
+    
+    }).catch(err => {
+      //console.error(err.message)
+    })
 }
 
 </script>
@@ -1173,18 +1140,33 @@ const addfavorite = (product_id) => {
         </VCol>
       </VRow>
     </VContainer>
-    <VSnackbar
-      v-model="isSnackbarBottomStartVisible"
-      location="bottom start"
-      :variant="variant"
-      :color="colorMessage"
-    >
-      {{ message }}
-    </VSnackbar>
+    <VDialog v-model="isDialogVisible" >
+      <VCard
+        class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
+        <VImg :width="isMobile ? '80' : '100'" :src="isError ? error_circle : (isPending ? festin_pending : check_circle)" class="mx-auto"/>
+        <VCardText class="text-message mb-5 px-0 px-md-5">
+          {{ message }}
+        </VCardText>
+      </VCard>
+    </VDialog>
   </section>
 </template>
 
 <style scoped>
+
+  .text-message {
+    color:  #FF0090;
+    text-align: center;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 30px;
+  }
+
+  .card-register {
+    width: 500px;
+    border-radius: 32px!important;
+  }
 
   .swiper {
     width: 100%;
@@ -1619,5 +1601,13 @@ const addfavorite = (product_id) => {
       width: 30px !important;
     }
 
+    .card-register {
+      padding: 20px;
+      width: auto;
+    }
+
+    .text-message {
+      font-size: 18px;
+    }
   }
 </style>

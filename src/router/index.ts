@@ -10,8 +10,6 @@ import Help from '@/views/Help.vue'
 import Categories from '@/views/categories/index.vue'
 import Products from '@/views/products/index.vue'
 import ProductDetail from '@/views/products/detail.vue'
-import Suppliers from '@/views/Suppliers.vue'
-import Services from '@/views/Services.vue'
 import Register from '@/views/clients/register.vue'
 import RegisterConfirm from '@/views/clients/register_confirm.vue'
 import TypeClient from '@/views/clients/type_client.vue'
@@ -33,9 +31,6 @@ import success_registerp from '@/views/clients/success_registerper.vue'
 import success_registerc from '@/views/clients/success_registercom.vue'
 import forgot_password from '@/views/clients/forgot_password.vue'
 import reset_password from '@/views/clients/reset_password.vue'
-import wholesalers from '@/views/wholesalers/index.vue'
-import suppliers_wholesalers from '@/views/wholesalers/suppliers.vue'
-import detail_wholesalers from '@/views/wholesalers/detail.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -98,16 +93,6 @@ const router = createRouter({
       path: '/products/:slug',
       name: 'productDetail',
       component: ProductDetail
-    },
-    {
-      path: '/suppliers',
-      name: 'suppliers',
-      component: Suppliers
-    },
-    {
-      path: '/services',
-      name: 'services',
-      component: Services
     },
     {
       path: '/register',
@@ -215,34 +200,15 @@ const router = createRouter({
       component:forgot_password
     },
     {
-      path: '/reset-password',
+      path: '/clients/reset_password',
       name: 'reset_password',
       component: reset_password
-    },
-    {
-      path: '/wholesalers',
-      name: 'wholesalers',
-      component: wholesalers
-    },
-
-    {
-      path:'/wholesalers/suppliers',
-      name:'suppliers_wholesalers',
-      component:suppliers_wholesalers
-    },
-
-    {
-      path: '/wholesalers/suppliers-store',
-      name: 'detail_wholesalers',
-      component: detail_wholesalers
-
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
   const privatePages = [
-    '/cart',
     '/dashboard',
     '/profile',
     '/purchases',

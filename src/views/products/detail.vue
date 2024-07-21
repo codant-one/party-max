@@ -129,6 +129,12 @@ watch(() =>
   }
 );
 
+watch(() => 
+  cartStores.getWholesale, async (value) => {
+    onlyWholesale.value = value
+  }
+);
+
 watchEffect(fetchData)
 
 async function fetchData() {
@@ -162,7 +168,7 @@ async function fetchData() {
     selectedColor.value = data.value.product.colors[0]?.color.id.toString()
     selectedColorId.value = data.value.product.colors[0]?.id
 
-    onlyWholesale.value = data.value.wholesale
+    onlyWholesale.value = cartStores.getWholesale
 
     data.value.product.colors.forEach(element => { 
       var aux = {
@@ -287,99 +293,70 @@ const setThumbsSwiper = (swiper) => {
 
 const addCart = () => {
 
-  if(client_id.value) {
+  let isWholesale = route.query.wholesale === 'true' ? 1 : 0
 
-    let isWholesale = route.query.wholesale === 'true' ? 1 : 0
-
-    if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
-      let data = {
-        client_id: client_id.value,
-        product_color_id: selectedColorId.value,
-        quantity: cant_prod.value,
-        wholesale: isWholesale
-      }
-
-      load.value = true
-
-      cartStores.add(data)
-        .then(response => {
-
-          isDialogVisible.value = true
-          message.value = 'Agregado al carrito'
-          load.value = false
-
-          setTimeout(() => {
-            isDialogVisible.value = false
-            isError.value = false
-            message.value = ''
-          }, 3000)
-
-        }).catch(err => {
-          load.value = false
-          //console.error(err.message)
-        })
-    } else {
-      isDialogVisible.value = true
-      message.value = 'Debes agregar al carrito productos ' + (isWholesale ? 'al detal' : 'al mayor') + ' debido a tu selección anterior'
-      isError.value = true
-
-      setTimeout(() => {
-        isDialogVisible.value = false
-        isError.value = false
-        message.value = ''
-      }, 3000)
+  if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
+    let data = {
+      product_color_id: selectedColorId.value,
+      quantity: cant_prod.value,
+      wholesale: isWholesale
     }
 
-  } else {
-    isDialogVisible.value = true
-    message.value = 'Para continuar con tu compra, por favor regístrate o inicia sesión. ¡Únete ahora y disfruta de bonos de descuento exclusivos y promociones especiales!.'
-    isPending.value = true
+    load.value = true
 
-    setTimeout(() => {
-      isDialogVisible.value = false
-      isPending.value = false
-      message.value = ''
-    }, 3000)
-  }
-
-}
-
-const addfavorite = () => {
-
-  if(client_id.value) {
-    isFavorite.value = true
-
-    favoritesStores.add({user_id: user_id.value, product_id: product_id.value })
+    cartStores.add(data)
       .then(response => {
 
-        isFavorite.value = false
         isDialogVisible.value = true
-        message.value = 'Agregado a la lista de favoritos'
-        isFavoriteProduct.value = true
-                    
+        message.value = 'Agregado al carrito'
+        load.value = false
+
         setTimeout(() => {
           isDialogVisible.value = false
           isError.value = false
           message.value = ''
         }, 3000)
-    
-      }).catch(err => {
-        isFavorite.value = false
 
+      }).catch(err => {
+        load.value = false
         //console.error(err.message)
       })
+  } else {
+    isDialogVisible.value = true
+    message.value = 'Debes agregar al carrito productos ' + (isWholesale ? 'al detal' : 'al mayor') + ' debido a tu selección anterior'
+    isError.value = true
 
-    } else {
+    setTimeout(() => {
+      isDialogVisible.value = false
+      isError.value = false
+      message.value = ''
+    }, 3000)
+  }
+}
+
+const addfavorite = () => {
+
+  isFavorite.value = true
+
+  favoritesStores.add({user_id: user_id.value, product_id: product_id.value })
+    .then(response => {
+
+      isFavorite.value = false
       isDialogVisible.value = true
-      message.value = 'Para continuar con tu compra, por favor regístrate o inicia sesión. ¡Únete ahora y disfruta de bonos de descuento exclusivos y promociones especiales!.'
-      isPending.value = true
-
+      message.value = 'Agregado a la lista de favoritos'
+      isFavoriteProduct.value = true
+                    
       setTimeout(() => {
         isDialogVisible.value = false
+        isError.value = false
         message.value = ''
-        isPending.value = false
       }, 3000)
-  }
+    
+    }).catch(err => {
+      isFavorite.value = false
+
+      //console.error(err.message)
+    })
 
 }
 
