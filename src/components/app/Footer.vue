@@ -9,8 +9,10 @@
   import icopayment5 from '@assets/icons/payment-5.svg';
   import icopayment6 from '@assets/icons/payment-6.svg';
 
+
   import instagram from '@assets/icons/instagram.svg?inline';
   import facebook from '@assets/icons/facebook.svg?inline';
+  import whatsapp_mobile from '@assets/icons/whatsapp_mobile.svg?inline';
 
   import festinfooter from '@assets/images/festin-footer.png';
 
@@ -94,6 +96,9 @@
             </a>
             <a href="https://www.facebook.com/PartymaxCo/?locale=es_LA" target="_blank" class="m-0">
               <facebook class="mt-1 me-2"/>
+            </a>
+            <a href="https://wa.link/wvdoxg" target="_blank" class="m-0">
+              <whatsapp_mobile class="mt-1 me-2" />
             </a>
           </div>
         </VCol>
