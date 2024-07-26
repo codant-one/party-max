@@ -91,8 +91,8 @@ export default defineNuxtConfig({
   routeRules: {
     '/': { prerender: true },
     '/blogs': { static: true },
+    '/blogs/*': { ssr: true, swr: 3600 },
     '/cart': { static: true },
-    '/categories': { static: true },
     '/categories/*': { static: true },
     '/clients/*': { static: true },
     '/dashboard/*': { ssr: false },
