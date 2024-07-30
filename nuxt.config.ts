@@ -91,7 +91,7 @@ export default defineNuxtConfig({
   routeRules: {
     '/': { prerender: true },
     '/blogs': { static: true },
-    '/blogs/*': { ssr: true, swr: 3600 },
+    '/blogs/*': { static: true },
     '/cart': { static: true },
     '/categories/*': { static: true },
     '/clients/*': { static: true },
@@ -100,14 +100,6 @@ export default defineNuxtConfig({
     '/products': { static: true },
     '/products/*': { ssr: true, swr: 3600 },
     '/*': { static: true } 
-  },
-
-  nitro: {
-    prerender: {
-      concurrency: 250,
-      interval: 1200,
-      failOnError: false
-    }
   },
 
   compatibilityDate: '2024-07-14'

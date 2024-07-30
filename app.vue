@@ -91,7 +91,7 @@ async function fetchData() {
 </script>
 
 <template>
-  <client-only>
+  <!-- <client-only> -->
     <NuxtLayout>
       <VApp> 
         <VLayout >
@@ -104,5 +104,5 @@ async function fetchData() {
         <Footer />
       </VApp>
     </NuxtLayout>
-  </client-only>
+  <!-- </client-only> -->
 </template>
