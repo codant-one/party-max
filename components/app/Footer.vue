@@ -11,6 +11,7 @@
 
   import instagram from '@assets/icons/instagram.svg?inline';
   import facebook from '@assets/icons/facebook.svg?inline';
+  import whatsapp_mobile from '@assets/icons/whatsapp_mobile.svg?inline';
 
   import festinfooter from '@assets/images/festin-footer.png';
 
@@ -81,7 +82,7 @@
           <div class="d-flex text-left mt-3 mt-md-12 mb-1 mb-md-5">
             <icophone class="mt-1 me-2"/>
               <span class="d-flex align-center tw-text-tertiary font-size-16 pb-2 phone-text">
-                +57 310 4870 310           
+                300 4659 997        
               </span>
           </div>
           
@@ -94,6 +95,9 @@
             </a>
             <a href="https://www.facebook.com/PartymaxCo/?locale=es_LA" target="_blank" class="m-0">
               <facebook class="mt-1 me-2"/>
+            </a>
+            <a href="https://wa.link/wvdoxg" target="_blank" class="m-0">
+              <whatsapp_mobile class="mt-1 me-2" />
             </a>
           </div>
         </VCol>

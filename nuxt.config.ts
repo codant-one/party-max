@@ -12,8 +12,25 @@ export default defineNuxtConfig({
       titleTemplate: '%s PARTYMAX',
       link: [
         { rel: 'icon', type: 'image/png', href: '/favicon.png' }
+      ],
+      script: [
+        {
+          hid: 'smartsupp',
+          type: 'text/javascript',
+          innerHTML: `
+            var _smartsupp = _smartsupp || {};
+            _smartsupp.key = '21d8c9142756b05ee99dcc94e89dbb37e028aef4';
+            window.smartsupp||(function(d) {
+            var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+            s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+            c.type='text/javascript';c.charset='utf-8';c.async=true;
+            c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+            })(document);
+          `,
+          crossorigin: 'anonymous'
+        }
       ]
-    },
+    }
   },
 
   modules: [
@@ -41,7 +58,8 @@ export default defineNuxtConfig({
     '~/plugins/axios.ts',
     '~/plugins/webfontloader.client.ts',
     '~/plugins/date-fns.client.ts',
-    '~/plugins/vuetify.ts'
+    '~/plugins/vuetify.ts',
+    '~/plugins/vuegtag.client.ts'
   ],
 
   css: [
@@ -61,6 +79,8 @@ export default defineNuxtConfig({
       APP_DOMAIN_API_URL: process.env.NUXT_APP_DOMAIN_API_URL,
       APP_DOMAIN_ADMIN_URL: process.env.NUXT_APP_DOMAIN_ADMIN_URL,
       MY_DOMAIN: process.env.NUXT_MY_DOMAIN,
+      GOOGLE_TAG_MANAGER: process.env.NUXT_GOOGLE_TAG_MANAGER,
+      SMARTS_UPP_KEY: process.env.NUXT_SMARTS_UPP_KEY,
       NODE_ENV: process.env.NODE_ENV
     },
   },

@@ -91,18 +91,16 @@ async function fetchData() {
 </script>
 
 <template>
-  <!-- <client-only> -->
-    <NuxtLayout>
-      <VApp> 
-        <VLayout >
-          <Filters v-if="route.name === 'products'" :drawer="drawer"/>
-          <Header />
-          <VMain :style="backgroundStyle" :class="background">
-            <NuxtPage />
-          </VMain>
-        </VLayout>
-        <Footer />
-      </VApp>
-    </NuxtLayout>
-  <!-- </client-only> -->
+  <NuxtLayout>
+    <VApp> 
+      <VLayout >
+        <Filters v-if="route.name === 'products'" :drawer="drawer"/>
+        <Header />
+        <VMain :style="backgroundStyle" :class="background">
+          <NuxtPage />
+        </VMain>
+      </VLayout>
+      <Footer />
+    </VApp>
+  </NuxtLayout>
 </template>
