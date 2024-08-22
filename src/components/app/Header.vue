@@ -36,6 +36,8 @@
 
   const categories = ref([])
   const categories_ = ref([])
+  const categories_S = ref([])
+  const categories_S_= ref([])
   const categoriesSearch = ref(null)
   const services = ref([])
   const textSearch = ref(null)
@@ -130,7 +132,7 @@
     await homeStores.fetchData()
     
     categories.value = homeStores.getData.parentCategories
-    services.value = homeStores.getData.parentServices
+    categories_S.value = homeStores.getData.parentServices
 
     categoriesSearch.value = route.query.category ? findCategory(route.query.category) : 0
     textSearch.value = route.query.search ?? null
@@ -185,10 +187,16 @@
     }
   }
 
-  const openService = (id) => {
-    colse.value = 6
-    service.value = id - 161
-    widths.value = 650
+  const openService = (index) => {
+    category.value = index
+    
+    if(categories_S.value[index].children.length > 0) {
+      cols.value = 6
+      width.value = 650
+    } else {
+      cols.value = 12
+      width.value = 300
+    }
   }
 
   const chanceMenu = () => {
@@ -419,6 +427,80 @@
             </div>
           </VListGroup>
         </div>
+        <!--MENU SERVICIOS MOBILE-->
+        <VListItem>
+          <VListItemTitle class="d-block lineheight pt-6 pb-2">
+            <span class="d-block title-menu">SERVICIOS</span>
+            <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
+            </svg>
+          </VListItemTitle>
+        </VListItem>
+        <div v-for="(item, index) in categories_S">
+          <VListItem v-if="categories_S[index]?.children.length === 0">
+            <VListItemTitle class="d-block lineheight borderList pb-2">
+            <router-link 
+              :to="{
+                name: 'products',
+                query: {
+                  category: item.slug
+                }
+              }" 
+              class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+              <span class="d-block title-menu">{{ item.name }}</span>
+            </router-link>
+          </VListItemTitle> 
+          </VListItem>
+          <VListGroup v-else :value="item.name">
+            <template #activator="{ props }">
+              <VListItem class="items-list">
+                <VListItemTitle class="d-block lineheight borderList pb-2">
+                  <router-link
+                    :to="{
+                      name: 'categories',
+                      params: {
+                        slug: item.slug
+                      }
+                    }"  
+                    class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+                    <span class="d-block title-menu">{{ item.name }}</span>
+                  </router-link>
+                </VListItemTitle> 
+                <template #append>
+                  <VIcon
+                    v-bind="props"
+                    :icon="openedGroups.includes(index) 
+                    ? 'mdi-minus' 
+                    : 'mdi-plus'"
+                    size="20"
+                    @click="toggleGroupFn(index, item.name)"
+                  />
+                </template>
+              </VListItem>
+            </template>
+            <div 
+              v-for="(k, index2) in categories_S[index].children"
+              :key="index2"
+              class="style-menu-mobile">
+              <VListItem class="subtitle-menu">
+                <router-link
+                    :to="{
+                      name: 'products',
+                      query: {
+                        category: item.slug,
+                        subcategory: k.slug.split('/')[1]
+                      }
+                    }"  
+                    class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+                    <span class="d-block title-menu">
+                    {{ k.name }}
+                    </span>
+                  </router-link>
+              </VListItem>
+            </div>
+          </VListGroup>
+        </div>
+        <!--FIN MENU SERVICIOS MOBILE-->
       </VList>
     </VNavigationDrawer>
     <VNavigationDrawer
@@ -731,6 +813,89 @@
             </VCard>
           </VMenu>
         </div>
+      <!-----------------------SERVICIOS MENÚ------------------------------->
+        <div class="hover:tw-text-yellow">
+          <VMenu 
+            v-model="menuOpenS"
+            transition="slide-x-transition" 
+            location="bottom"
+            :close-on-content-click="false"
+            @update:modelValue="chanceMenuS">
+            <template  v-slot:activator="{ props }">
+              <div v-bind="props" class="d-flex">
+                <VAppBarNavIcon variant="text" />
+                <div class="pt-3">
+                  <span class="font-size-16 me-7 tw-cursor-pointer">Servicios</span>
+                </div>
+              </div>
+            </template>
+            <VCard class="style-menu" :width="width" @mouseleave="closeMenuOnMouseLeave">
+              <VRow no-gutters>
+                <VCol cols="12" :md="cols" class="py-5 pr-3">
+                  <VList class="pb-0">
+                    <VListItem>
+                      <VListItemTitle class="d-block lineheight">
+                        <span class="d-block title-menu">SERVICIOS</span>
+                        <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
+                        </svg>
+                      </VListItemTitle>
+                    </VListItem>
+                    <VListItem  
+                      v-for="(item, index) in categories_S"
+                      :key="index">
+                        <div class="d-flex align-center hover-icon-right tw-cursor-pointer" @mouseover="openService(index)">
+                          <span v-if="item.children.length > 0"
+                            class="subtitle-menu d-flex align-center"
+                            @click="redirect_('categories', item.slug)">
+                              <component v-if="items.filter(e => e.slug === item.slug).length === 1" :is="items.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
+                              <component v-else :is="icon5" class="me-3" />
+                              {{ item.name }} 
+                          </span>
+                          <router-link 
+                            :to="{
+                              name: 'products',
+                              query: {
+                                category: item.slug
+                              }
+                            }" 
+                            class="subtitle-menu tw-no-underline" v-else>
+                            <component v-if="items.filter(e => e.slug === item.slug).length === 1" :is="items.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
+                            <component v-else :is="icon5" class="me-3" />
+                            {{ item.name }}
+                          </router-link> 
+                          <VSpacer />
+                          <icon_right v-if="item.children.length > 0"/>  
+                        </div>
+                    </VListItem>
+                  </VList>
+                </VCol>
+                <VCol cols="12" :md="cols" v-show="cols === 6" class="borderCol py-5">
+                  <VList class="style-submenu mt-8">
+                    <VListItem 
+                      v-for="(i, index2) in categories_S[category].children"
+                      :key="index2"
+                      @click="closeMenuS">
+                      <router-link
+                        :to="{
+                          name: 'products',
+                          query: {
+                            category: i.slug.split('/')[0],
+                            subcategory: i.slug.split('/')[1]
+                          }
+                        }"
+                        class="tw-no-underline tw-text-tertiary">
+                        <span class="subtitle-menu">{{ i.name }}</span>
+                      </router-link>
+                    </VListItem>
+                  </VList>
+                </VCol>
+              </VRow>
+            </VCard>
+          </VMenu>
+          
+        </div>
+      <!---------FIN SERVICIOS MENÚ--------------------------->
         <span @click="toggleWholesalers"
           class="tw-no-underline d-flex align-center text-center tw-cursor-pointer"
           :class="route.query.wholesalers === 'true' ? 'tw-text-yellow hover:tw-text-white hover-icon-arrow-right-white' : 'tw-text-white hover:tw-text-yellow hover-icon-arrow-right'">
