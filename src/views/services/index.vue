@@ -14,8 +14,8 @@ import Loader from "@/components/common/Loader.vue";
 import icon1 from "@/assets/icons/icon-menu-1.svg";
 import icon2 from "@/assets/icons/icon-menu-2.svg";
 import icon3 from "@/assets/icons/icon-menu-3.svg";
-import Product3 from "@/components/product/Product3.vue";
-import Product4 from "@/components/product/Product4.vue";
+import Service1 from "@/components/service/Service1.vue";
+import Service2 from "@/components/service/Service2.vue";
 import arrow_right from '@assets/icons/arrow_right.svg?inline';
 import arrow_left from '@assets/icons/Arrow_left.svg?inline';
 import t_7 from '@assets/images/t_7.jpg';
@@ -41,7 +41,7 @@ const categories = ref(null);
 const panelCat = ref(null);
 const openedGroups = ref([]);
 const openedSubGroups = ref([]);
-const products = ref([]);
+const services = ref([]);
 const tab = ref('0');
 const category = ref(null);
 const toggle = ref([]);
@@ -49,15 +49,11 @@ const toggle = ref([]);
 const rowPerPage = ref(12);
 const currentPage = ref(1);
 const totalPages = ref(1);
-const totalProducts = ref(0);
+const totalServices = ref(0);
 const rangPrice = ref([0, 50000]);
 
 const min = ref(null);
 const max = ref(null);
-
-const colors = ref([]);
-const colorsSelected = ref([]);
-const onlyWholesale = ref(false)
 
 const rating = ref(5)
 const isMobile = /Mobi/i.test(navigator.userAgent);
@@ -70,7 +66,7 @@ const isPending = ref(false)
 const user_id = ref(null)
 const load = ref(false)
 const message = ref('')
-const product_id = ref(0)
+const service_id = ref(0)
 
 const bread = ref([
   {
@@ -146,50 +142,35 @@ async function fetchData() {
 
   await homeStores.fetchData();
 
-  categories.value = homeStores.getData.parentCategories;
+  categories.value = homeStores.getData.parentServices;
 
   let info = {
-    orderByField: (route.query.category && route.query.category !== 'all') ? 'pl.order_id' : 'products.order_id',
+    orderByField: (route.query.category && route.query.category !== 'all') ? 'sl.order_id' : 'services.order_id',
     orderBy: 'asc',
     limit: isMobile ? ( tab.value === '1' ? 3 : 6) : rowPerPage.value,
     page: currentPage.value,
     category: route.query.category ?? null,
     subcategory: route.query.subcategory ?? null,
-    colorId: route.query.colorId ?? null,
     searchPublic: route.query.search ?? null,
     min: min.value ?? null,
     max: max.value ?? null,
     sortBy: sortBy.value,
-    wholesalers: route.query.wholesalers === 'true' ? true : false,
     rating: rating.value
   };
 
-  var aux = await miscellaneousStores.products(info);
-  products.value = aux.products.data;
-  totalPages.value = aux.products.last_page;
-  totalProducts.value = aux.productsTotalCount;
+  var aux = await miscellaneousStores.services(info);
 
-  colors.value = aux.colors
-  onlyWholesale.value = cartStores.getWholesale
+  services.value = aux.services.data;
+  totalPages.value = aux.services.last_page;
+  totalServices.value = aux.servicesTotalCount;
 
-  if(route.query.colorId) {
-    const colorsQuery = route.query.colorId.split(',').map(Number);
-
-    const positions = colors.value.map(obj => obj.id).reduce((acc, num, index) => {
-      if (colorsQuery.includes(num))
-        acc.push(index);
-      return acc;
-    }, []);
-
-    toggle.value = positions
-  }
 
   if (route.query.category && route.query.category !== 'all') {
     panelCat.value = null
     category.value = {
       title: categories.value.filter(item => item.slug === route.query.category)[0].name,
       disabled: false,
-      href: "products?category=" + route.query.category + '&wholesalers=' + route.query.wholesalers ?? 'false'
+      href: "services?category=" + route.query.category
     };
 
     bread.value.push(category.value);
@@ -233,13 +214,13 @@ async function fetchData() {
 
 
     if(!isMobile) {
-      const product_ = {
-        title: "Productos",
+      const service_ = {
+        title: "Servicios",
         disabled: true,
         href: "",
       };
 
-      bread.value.push(product_);
+      bread.value.push(service_);
     }
   }
 
@@ -268,7 +249,7 @@ const chancePagination = () => {
 };
 
 const isLastItem = (index) => {
-  return index === products.value.length - 1;
+  return index === services.value.length - 1;
 };
 
 const priceAction = () => {
@@ -301,90 +282,14 @@ const toggleSubGroupFn = (index, subCat) => {
   }
 };
 
-const colorAction = () => {
-
-  colorsSelected.value = []
-
-  toggle.value.forEach(element => {
-    colorsSelected.value.push(colors.value[element].id)
-  });
-
-  router.push({ 
-    name: 'products', 
-    query: {
-      category: route.query.category,
-      fathercategory: route.query.fathercategory,
-      subcategory: route.query.subcategory,
-      colorId: colorsSelected.value.join(","),
-      wholesalers: route.query.wholesalers === 'true' ? true : false
-    }
-  })
-}
 
 const addCart = (value) => {
-  product_id.value = value.product_id
-    
-  let isWholesale = route.query.wholesalers === 'true' ? 1 : 0
 
-  if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
-
-    let data = {
-      product_color_id: value.product_color_id,
-      quantity: value.cant_prod,
-      wholesale: isWholesale
-    }
-
-    load.value = true
-
-    cartStores.add(data)
-      .then(response => {
-
-        isDialogVisible.value = true
-        message.value = 'Agregado al carrito'
-        load.value = false
-
-        setTimeout(() => {
-          isDialogVisible.value = false
-          isError.value = false
-          message.value = ''
-        }, 3000)
-
-      }).catch(err => {
-        load.value = false
-        //console.error(err.message)
-      })
-  } else {
-    isDialogVisible.value = true
-    message.value = 'Debes agregar al carrito productos ' + (isWholesale ? 'al detal' : 'al mayor') + ' debido a tu selección anterior'
-    isError.value = true
-
-    setTimeout(() => {
-      isDialogVisible.value = false
-      isError.value = false
-      message.value = ''
-    }, 3000)
-  }
 }
 
-const addfavorite = (product_id) => {
+const addfavorite = (service_id) => {
 
-  favoritesStores.add({user_id: user_id.value, product_id: product_id })
-    .then(response => {
-
-      isDialogVisible.value = true
-      message.value = 'Agregado a la lista de favoritos'
-                    
-      setTimeout(() => {
-        isDialogVisible.value = false
-        isError.value = false
-        message.value = ''
-      }, 3000)
-
-      fetchData()
-    
-    }).catch(err => {
-      //console.error(err.message)
-    })
+  
 }
 
 </script>
@@ -398,7 +303,7 @@ const addfavorite = (product_id) => {
     </VAppBar>
     <VContainer class="pt-0 container-mobile">
       <Loader :isLoading="isLoading" />
-      <VRow no-gutters v-if="categories" class="products-structure">
+      <VRow no-gutters v-if="categories" class="services-structure">
         <VCol cols="12" md="3" class="d-none d-md-block">
           <VCard class="mt-7 sidebar-container">
             <VCardItem class="p-0 text-left mt-6"> CATEGORÍAS </VCardItem>
@@ -406,10 +311,7 @@ const addfavorite = (product_id) => {
             <VCardItem v-if="route.query.category && route.query.category !== 'all'" class="p-0 text-allcategories tw-font-bold mt-6">
               <router-link
                 :to="{
-                  name: 'products',
-                  query: {
-                    wholesalers: route.query.wholesalers === 'true' ? true : false
-                  }
+                  name: 'services'
                 }"
                 class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
               >
@@ -426,11 +328,9 @@ const addfavorite = (product_id) => {
                   <VListItemTitle>
                     <router-link
                       :to="{
-                        name: 'products',
+                        name: 'services',
                         query: {
-                          category: i.slug.split('/')[0],
-                          colorId: colorsSelected.join(','),
-                          wholesalers: route.query.wholesalers === 'true' ? true : false
+                          category: i.slug.split('/')[0]
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ i.name }}
@@ -442,11 +342,9 @@ const addfavorite = (product_id) => {
                     <VListItem class="px-2">
                       <router-link
                         :to="{
-                          name: 'products',
+                          name: 'services',
                           query: {
-                            category: i.slug.split('/')[0],
-                            colorId: colorsSelected.join(','),
-                            wholesalers: route.query.wholesalers === 'true' ? true : false
+                            category: i.slug.split('/')[0]
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         <VListItemTitle>{{ i.name }}</VListItemTitle>
@@ -467,12 +365,10 @@ const addfavorite = (product_id) => {
                     <VListItem v-if="j.grandchildren.length === 0">
                       <router-link
                         :to="{
-                          name: 'products',
+                          name: 'services',
                           query: {
                             category: i.slug.split('/')[0],
-                            subcategory: j.slug.split('/')[1],
-                            colorId: colorsSelected.join(','),
-                            wholesalers: route.query.wholesalers === 'true' ? true : false
+                            subcategory: j.slug.split('/')[1]
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary">
                         <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -483,12 +379,10 @@ const addfavorite = (product_id) => {
                         <VListItem>
                           <router-link
                             :to="{
-                              name: 'products',
+                              name: 'services',
                               query: {
                                 category: i.slug.split('/')[0],
-                                subcategory: j.slug.split('/')[1],
-                                colorId: colorsSelected.join(','),
-                                wholesalers: route.query.wholesalers === 'true' ? true : false
+                                subcategory: j.slug.split('/')[1]
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                             <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -508,13 +402,11 @@ const addfavorite = (product_id) => {
                         <VListItem>
                           <router-link
                             :to="{
-                              name: 'products',
+                              name: 'services',
                               query: {
                                 category: i.slug.split('/')[0],
                                 fathercategory: j.slug.split('/')[1],
-                                subcategory: k.slug.split('/')[2],
-                                colorId: colorsSelected.join(','),
-                                wholesalers: route.query.wholesalers === 'true' ? true : false
+                                subcategory: k.slug.split('/')[2]
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                             {{ k.name }}
@@ -534,11 +426,9 @@ const addfavorite = (product_id) => {
                   <VIcon icon="mdi-chevron-left" />
                   <router-link
                     :to="{
-                      name: 'products',
+                      name: 'services',
                         query: {
-                          category: route.query.category,
-                          colorId: colorsSelected.join(','),
-                          wholesalers: route.query.wholesalers === 'true' ? true : false
+                          category: route.query.category
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.title }}
@@ -551,12 +441,10 @@ const addfavorite = (product_id) => {
                   <VIcon icon="mdi-chevron-left" />
                   <router-link
                     :to="{
-                      name: 'products',
+                      name: 'services',
                         query: {
                           category: route.query.category,
-                          subcategory: route.query.fathercategory,
-                          colorId: colorsSelected.join(','),
-                          wholesalers: route.query.wholesalers === 'true' ? true : false
+                          subcategory: route.query.fathercategory
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.fathercategory }}
@@ -583,11 +471,9 @@ const addfavorite = (product_id) => {
                   <VIcon icon="mdi-chevron-left" />
                   <router-link
                     :to="{
-                      name: 'products',
+                      name: 'services',
                         query: {
-                          category: route.query.category,
-                          colorId: colorsSelected.join(','),
-                          wholesalers: route.query.wholesalers === 'true' ? true : false
+                          category: route.query.category
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.title }}
@@ -608,13 +494,11 @@ const addfavorite = (product_id) => {
                 <VListItem>
                   <router-link
                     :to="{
-                      name: 'products',
+                      name: 'services',
                       query: {
                         category: route.query.category,
                         fathercategory: route.query.subcategory,
-                        subcategory: j.slug.split('/')[2],
-                        colorId: colorsSelected.join(','),
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: j.slug.split('/')[2]
                       },
                     }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ j.name }}
@@ -640,12 +524,10 @@ const addfavorite = (product_id) => {
                   <VListItem v-if="j.grandchildren.length === 0">
                     <router-link
                       :to="{
-                        name: 'products',
+                        name: 'services',
                         query: {
                           category: route.query.category,
-                          subcategory: j.slug.split('/')[1],
-                          colorId: colorsSelected.join(','),
-                          wholesalers: route.query.wholesalers === 'true' ? true : false
+                          subcategory: j.slug.split('/')[1]
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         {{ j.name }}
@@ -656,12 +538,10 @@ const addfavorite = (product_id) => {
                       <VListItem>
                         <router-link
                           :to="{
-                            name: 'products',
+                            name: 'services',
                             query: {
                               category: route.query.category,
-                              subcategory: j.slug.split('/')[1],
-                              colorId: colorsSelected.join(','),
-                              wholesalers: route.query.wholesalers === 'true' ? true : false
+                              subcategory: j.slug.split('/')[1]
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -681,13 +561,11 @@ const addfavorite = (product_id) => {
                       <VListItem>
                         <router-link
                           :to="{
-                            name: 'products',
+                            name: 'services',
                             query: {
                               category: route.query.category,
                               fathercategory: j.slug.split('/')[1],
-                              subcategory: k.slug.split('/')[2],
-                              colorId: colorsSelected.join(','),
-                              wholesalers: route.query.wholesalers === 'true' ? true : false
+                              subcategory: k.slug.split('/')[2]
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           {{ k.name }}
@@ -701,53 +579,6 @@ const addfavorite = (product_id) => {
           </VCard>
 
           <VCard class="mt-7 sidebar-container">
-            <VCardItem class="p-0 text-left mt-6"> COLOR </VCardItem>
-            <VCardText class="text-left align-left p-0 mt-4">
-              <div class="d-flex align-center flex-column">
-          
-                <VBtnToggle
-                  v-model="toggle"
-                  density="comfortable"
-                  multiple
-                  class="d-flex align-center flex-wrap tw-bg-none v-avatar-group h-auto"
-                >
-                  <VBtn v-for="(color, index) in colors" variant="text" @click="colorAction">
-                    <VAvatar 
-                      v-if="color.is_gradient" 
-                      size="30" 
-                      class="my-1 tw-cursor-pointer"
-                      :class="(toggle.indexOf(index) !== -1) ? 'color-selected' : 'color-chip'"
-                      :style="{ backgroundImage: color.color }"
-                    >
-                      <VTooltip
-                        location="top"
-                        activator="parent"
-                        transition="scroll-x-transition"
-                      >
-                        <span>{{ color.name }}</span>
-                      </VTooltip>
-                    </VAvatar>
-                    <VAvatar 
-                      v-else 
-                      :color="color.color" 
-                      size="30" 
-                      class="my-1 tw-cursor-pointer"
-                      :class="(toggle.indexOf(index) !== -1) ? 'color-selected' : 'color-chip'"
-                    >
-                      <VTooltip
-                        location="top"
-                        activator="parent"
-                      >
-                        <span>{{ color.name }}</span>
-                      </VTooltip>
-                    </VAvatar>
-                  </VBtn>
-                </VBtnToggle>
-              </div>
-            </VCardText>
-
-            <VDivider class="mb-6 mt-6"/>
-
             <VCardItem class="p-0 text-left mb-6 mt-6"> PRECIO </VCardItem>
             <VCardText class="text-left align-left p-0 mt-4">
               <VRow class="align-center container-vslider">
@@ -783,9 +614,10 @@ const addfavorite = (product_id) => {
               />
             </VCardText>
           </VCard>
+
         </VCol>
 
-        <VCol cols="12" md="9" class="col-menuproduct d-flex flex-column">
+        <VCol cols="12" md="9" class="col-menuservice d-flex flex-column">
           <!-- filters -->
           <VCard class="mt-7 menu-prod pt-0 pt-md-2 px-0 px-md-5">
             <VRow no-gutters class="align-center">
@@ -795,9 +627,9 @@ const addfavorite = (product_id) => {
                 lg="6"
                 class="text-left order-first order-md-first pb-4 pb-md-0 pl-4 pl-md-0 border-mobile d-flex"
               >
-                <span class="text-products pr-1">{{ totalProducts }} </span>
-                <span class="text-products" v-if="totalProducts === 1"> Producto </span>
-                <span class="text-products" v-else> Productos </span>
+                <span class="text-services pr-1">{{ totalServices }} </span>
+                <span class="text-services" v-if="totalServices === 1"> Servicio </span>
+                <span class="text-services" v-else> Servicios </span>
               </VCol>
 
               <VCol cols="7" md="7" lg="4" class="text-left pl-4 pl-lg-0">
@@ -844,259 +676,26 @@ const addfavorite = (product_id) => {
             </VRow>
           </VCard>
 
-          <!-- padres, hijos y nietos -->
-          <VCard class="no-shadown mt-5 card-icons tw-bg-green" v-if="route.query.fathercategory && category">
-            <VCardText 
-              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.length < 6 && !isMobile"
-              class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
-              :class="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
-              <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren">
-                <router-link
-                  :to="{
-                    name: 'products',
-                    query: {
-                      category: route.query.category,
-                      fathercategory: route.query.fathercategory,
-                      subcategory: i.slug.split('/')[2],
-                      colorId: colorsSelected.join(','),
-                      wholesalers: route.query.wholesalers === 'true' ? true : false
-                    }
-                  }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                  <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                </router-link>
-              </template>
-            </VCardText>
-            <VCardText 
-              v-else
-              class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
-              <swiper
-                :initialSlide="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.findIndex(item =>item.slug === route.query.category + '/' + route.query.fathercategory + '/' + route.query.subcategory)"
-                :slidesPerView="isMobile ? 3 : 5"
-                :spaceBetween="isMobile ? 1 : 5"
-                :navigation="true"
-                :loop="true"
-                :modules="modules"
-                class="mySwiper">
-                <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren" class="py-2">
-                  <router-link
-                    :to="{
-                      name: 'products',
-                      query: {
-                        category: route.query.category,
-                        fathercategory: route.query.fathercategory,
-                        subcategory: i.slug.split('/')[2],
-                        colorId: colorsSelected.join(','),
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
-                      }
-                    }" class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                  </router-link>
-                </swiper-slide>
-              </swiper>
-            </VCardText> 
-          </VCard>
-
-          <!-- solo padres e hijos -->
-          <VCard 
-            class="no-shadown mt-5 card-icons tw-bg-green" 
-            v-if="typeof route.query.fathercategory === 'undefined' && 
-            typeof route.query.subcategory !== 'undefined' 
-            && route.query.category && category
-            && categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length > 0">
-            <VCardText 
-              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length < 6 && !isMobile"
-              class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
-              :class="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
-              <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren">
-                <router-link
-                  :to="{
-                    name: 'products',
-                    query: {
-                      category: route.query.category,
-                      fathercategory: route.query.subcategory,
-                      subcategory: i.slug.split('/')[2],
-                      colorId: colorsSelected.join(','),
-                      wholesalers: route.query.wholesalers === 'true' ? true : false
-                    }
-                  }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                  <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                  <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                </router-link>
-              </template>
-            </VCardText> 
-            <VCardText 
-              v-else
-              class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
-              <swiper
-                :slidesPerView="isMobile ? 3 : 5"
-                :spaceBetween="isMobile ? 1 : 5"
-                :navigation="true"
-                :loop="true"
-                :modules="modules"
-                class="mySwiper">
-                <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren" class="py-2">
-                  <router-link
-                    :to="{
-                      name: 'products',
-                      query: {
-                        category: route.query.category,
-                        fathercategory: route.query.subcategory,
-                        subcategory: i.slug.split('/')[2],
-                        colorId: colorsSelected.join(','),
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
-                      }
-                    }" class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                  </router-link>
-                </swiper-slide>
-              </swiper>
-            </VCardText> 
-          </VCard>
-
-          <!-- solo padres e hijos sin nietos -->
-          <VCard 
-            class="no-shadown mt-5 card-icons tw-bg-green" 
-            v-if="typeof route.query.fathercategory === 'undefined' && 
-            typeof route.query.subcategory !== 'undefined' 
-            && route.query.category && category
-            && categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length === 0">
-            <VCardText 
-              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 6 && !isMobile"
-              class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
-              :class="categories.filter(item =>item.slug === route.query.category)[0].children.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
-              <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
-                <router-link
-                  :to="{
-                    name: 'products',
-                    query: {
-                      category: route.query.category,
-                      subcategory: i.slug.split('/')[1],
-                      colorId: colorsSelected.join(','),
-                      wholesalers: route.query.wholesalers === 'true' ? true : false
-                    }
-                  }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                  <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                  <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                </router-link>
-              </template>
-            </VCardText> 
-            <VCardText 
-              v-else
-              class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
-              <swiper
-                :initialSlide="categories.filter(item =>item.slug === route.query.category)[0].children.findIndex(item =>item.slug === route.query.category + '/' + route.query.subcategory)"
-                :slidesPerView="isMobile ? 3 : 5"
-                :spaceBetween="isMobile ? 1 : 5"
-                :navigation="true"
-                :loop="true"
-                :modules="modules"
-                class="mySwiper">
-                <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children" class="py-2">
-                  <router-link
-                    :to="{
-                      name: 'products',
-                      query: {
-                        category: route.query.category,
-                        subcategory: i.slug.split('/')[1],
-                        colorId: colorsSelected.join(','),
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
-                      }
-                    }" class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                  </router-link>
-                </swiper-slide>
-              </swiper>
-            </VCardText> 
-          </VCard>
-
-          <!-- solo padres -->
-          <VCard 
-            class="no-shadown mt-5 card-icons tw-bg-green" 
-            v-if="typeof route.query.fathercategory === 'undefined' && 
-            typeof route.query.subcategory === 'undefined' 
-            && route.query.category && category
-            && categories.filter(item =>item.slug === route.query.category)[0].children.length > 0">
-            <VCardText 
-              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 6 && !isMobile"
-              class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
-              :class="categories.filter(item =>item.slug === route.query.category)[0].children.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
-              <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
-                <router-link
-                  :to="{
-                    name: 'products',
-                    query: {
-                      category: route.query.category,
-                      subcategory: i.slug.split('/')[1],
-                      colorId: colorsSelected.join(','),
-                      wholesalers: route.query.wholesalers === 'true' ? true : false
-                    }
-                  }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                  <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                  <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                </router-link>
-              </template>
-            </VCardText> 
-            <VCardText 
-              v-else
-              class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
-              <swiper
-                :slidesPerView="isMobile ? 3 : 5"
-                :spaceBetween="isMobile ? 1 : 5"
-                :navigation="true"
-                :loop="true"
-                :modules="modules"
-                class="mySwiper">
-                <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children" class="py-2">
-                  <router-link
-                    :to="{
-                      name: 'products',
-                      query: {
-                        category: route.query.category,
-                        subcategory: i.slug.split('/')[1],
-                        colorId: colorsSelected.join(','),
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
-                      }
-                    }" class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                  </router-link>
-                </swiper-slide>
-              </swiper>
-            </VCardText> 
-          </VCard>
-
-          <!-- products -->
-          <div class="align-center row-products pb-0">
+          <!-- services -->
+          <div class="align-center row-services pb-0">
             <v-window v-model="tab" disabled>
               <v-window-item value="0">
                 <VRow no-gutters class="ms-1 ms-md-3">
-                  <VCol cols="6" sm="4" md="4" lg="3" v-for="(product, i) in products" class="mb-3 mb-md-7">
-                    <Product3 :key="i" :product="product" :readonly="true" />
+                  <VCol cols="6" sm="4" md="4" lg="3" v-for="(service, i) in services" class="mb-3 mb-md-7">
+                    <Service1 :key="i" :service="service" :readonly="true" />
                   </VCol>
                 </VRow>
               </v-window-item>
               <v-window-item value="1">
                 <VRow no-gutters class="ms-md-3">
-                  <VCol cols="12" v-for="(product, i) in products">
-                    <Product4
+                  <VCol cols="12" v-for="(service, i) in services">
+                    <Service2
                       :key="i"
-                      :product="product"
+                      :service="service"
                       :readonly="true"
                       :isLastItem="isLastItem(i)"
                       :loading="load"
-                      :productId="product_id"
+                      :serviceId="service_id"
                       @addCart="addCart"
                       @addfavorite="addfavorite"
                      />
@@ -1108,7 +707,7 @@ const addfavorite = (product_id) => {
 
           <!-- pagination -->
           <div class="mt-auto">
-            <VCardText v-if="totalProducts === 0" class="d-flex align-center justify-content-center py-3 px-5">
+            <VCardText v-if="totalServices === 0" class="d-flex align-center justify-content-center py-3 px-5">
               Datos no disponibles
             </VCardText>
             <VCardText class="d-flex align-center justify-content-center py-3 px-5 pb-0">
@@ -1217,22 +816,6 @@ const addfavorite = (product_id) => {
     border-radius: 16px;
   }
 
-  .border-theme {
-    width: 120px;
-    border-radius: 192px;
-    border: 1px solid var(--Maastricht-Blue, #0A1B33);
-    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
-    margin: auto;
-  }
-
-  .border-theme-active {
-    width: 120px;
-    border-radius: 192px;
-    border: 3px solid #FF0090;
-    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
-    margin: auto;
-  }
-
   .zoom {
     transition: transform ease-in-out 0.3s;
   }
@@ -1249,7 +832,7 @@ const addfavorite = (product_id) => {
     width: 50%;
   }
 
-  .products-structure {
+  .services-structure {
     display: flex;
     flex-wrap: wrap;
   }
@@ -1465,7 +1048,7 @@ const addfavorite = (product_id) => {
     box-shadow: none !important;
   }
 
-  .col-menuproduct {
+  .col-menuservice {
     padding-left: 20px !important;
   }
 
@@ -1482,7 +1065,7 @@ const addfavorite = (product_id) => {
     max-height: 33px !important;
   }
 
-  .row-products {
+  .row-services {
     padding: 20px 0;
   }
 
@@ -1526,7 +1109,7 @@ const addfavorite = (product_id) => {
       border-radius: 16px;
     }
 
-    .col-menuproduct {
+    .col-menuservice {
       padding-left: 0px !important;
     }
 
@@ -1560,20 +1143,12 @@ const addfavorite = (product_id) => {
       margin-top: -10px !important;
     }
 
-    .text-products {
+    .text-services {
       margin-top: -5px !important;
     }
 
     .filter-mobile {
       margin-top: -15px !important;
-    }
-
-    .border-theme {
-      width: 70px !important;
-    }
-
-    .border-theme-active {
-      width: 70px !important;
     }
 
     .size-theme {

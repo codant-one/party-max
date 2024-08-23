@@ -86,9 +86,9 @@ const items = ref([
   { text: 'Desechables', icon: icon5, slug: 'desechables' },
   { text: 'Decoración', icon: icon6, slug: 'decoracion' },
   { text: 'Sorpresas', icon: icon7, slug: 'sorpresas' },
-  { text: 'Mobiliario', icon: icon8, slug: 'renta-de-moviliario' },
+  { text: 'Mobiliario', icon: icon8, slug: 'renta-de-mobiliario' },
   { text: 'Dulces', icon: icon9, slug: 'dulces-y-ponques' },
-  { text: 'Animación y entretenimiento', icon: icon10, slug: 'animadores-de-fiestas' }
+  { text: 'Animadores de Fiestas', icon: icon10, slug: 'animadores-de-fiestas' }
 ])
 
 const sliders = ref( [
@@ -149,7 +149,28 @@ const tab = ref('0')
                   <VListItemTitle v-text="item.text" class="tw-text-tertiary"></VListItemTitle>
                 </VListItem>
               </router-link>
-              <VListItem
+              <router-link         
+                v-else
+                :to="{
+                  name: 'services',
+                  query: {
+                    category: item.slug
+                  }
+                }"
+                class="tw-no-underline tw-text-tertiary"
+              >
+                <VListItem
+                  color="primary"
+                  variant="plain"
+                  class="list py-0  tw-text-tertiary hover:tw-bg-yellow"
+                >
+                  <template v-slot:prepend>
+                    <img :src="item.icon" class="me-3 ms-4"/>
+                  </template>
+                  <VListItemTitle v-text="item.text" class="tw-text-tertiary"></VListItemTitle>
+                </VListItem>
+              </router-link>
+              <!-- <VListItem
                 v-else
                 color="primary"
                 variant="plain"
@@ -161,7 +182,7 @@ const tab = ref('0')
                   <span class="soon-items">{{ item.text }}</span>
                   <span class="soon-text d-none"> Próximamente </span>
                 </VListItemTitle>
-              </VListItem>
+              </VListItem> -->
             </template>
           </VList>
         </VSheet>
@@ -189,9 +210,9 @@ const tab = ref('0')
               <VCol cols="6" md="6" class="pslider2">
                 <router-link 
                   :to="{
-                    name: 'categories',
-                    params: {
-                      slug: 'hora-loca'
+                    name: 'products',
+                    query: {
+                      category: 'pinatas'
                     }
                   }"
                 >
@@ -201,9 +222,9 @@ const tab = ref('0')
               <VCol cols="6" md="6" class="pslider2">
                 <router-link
                   :to="{
-                    name: 'categories',
-                    params: {
-                      slug: 'dulces-y-ponques'
+                    name: 'services',
+                    query: {
+                      category: 'dulces-y-ponques'
                     }
                   }"
                 >
@@ -213,9 +234,9 @@ const tab = ref('0')
               <VCol cols="12" class="pslider3">
                 <router-link
                   :to="{
-                    name: 'categories',
-                    params: {
-                      slug: 'globos'
+                    name: 'products',
+                    query: {
+                      category: 'globos'
                     }
                   }"
                 >
@@ -225,39 +246,39 @@ const tab = ref('0')
             </VRow>
           </VCol>
           <VCol cols="12" md="7" class="pslider4" :class="isMobile ? 'order-last order-md-first pslider5' : ''">
-            <!-- <router-link 
+            <router-link 
               :to="{
-                name: 'categories',
-                params: {
-                  slug: 'renta-de-moviliario'
+                name: 'services',
+                query: {
+                  category: 'renta-de-mobiliario'
                 }
-              }"> -->
+              }">
               <VImg :src="Banner" class="img-galery" :class="isMobile ? 'slider5Img' : ''" height="auto" cover />
-            <!-- </router-link> -->
+            </router-link>
           </VCol>
           <VCol cols="12" md="5" class="pslider4">
             <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent">
               <VCol cols="6" md="6" class="pslider2">
-                <!-- <router-link 
+                <router-link 
                   :to="{
-                    name: 'categories',
-                    params: {
-                      slug: 'comida'
+                    name: 'services',
+                    query: {
+                      category: 'animadores-de-fiestas'
                     }
-                  }"> -->
+                  }">
                   <VImg :src="Plaza_4" class="img-galery"/>
-                <!-- </router-link> -->
+                </router-link>
               </VCol>
               <VCol cols="6" md="6" class="pslider2">
-                <!-- <router-link 
+                <router-link 
                   :to="{
-                    name: 'categories',
-                    params: {
-                      slug: 'fotografia-y-video'
+                    name: 'services',
+                    query: {
+                      category: 'animadores-de-fiestas'
                     }
-                  }"> -->
+                  }">
                   <VImg :src="Plaza_5" class="border-bottom-right img-galery"/>
-                <!-- </router-link> -->
+                </router-link>
               </VCol>
             </VRow>
           </VCol>

@@ -33,6 +33,14 @@ class Miscellaneous {
     colors() {
         return axios.get(`miscellaneous/colors`)
     }
+
+    services(params: Object) {
+        return axios.get(`miscellaneous/services`, {params})
+    }
+
+    service(slug: string) {
+        return axios.get(`miscellaneous/services/${slug}`)
+    }
 }
 
 const miscellaneous = new Miscellaneous();

@@ -10,6 +10,7 @@ import Help from '@/views/Help.vue'
 import Categories from '@/views/categories/index.vue'
 import Products from '@/views/products/index.vue'
 import ProductDetail from '@/views/products/detail.vue'
+import Services from '@/views/services/index.vue'
 import ServiceDetail from '@/views/services/detail.vue'
 import Register from '@/views/clients/register.vue'
 import RegisterConfirm from '@/views/clients/register_confirm.vue'
@@ -94,6 +95,11 @@ const router = createRouter({
       path: '/products/:slug',
       name: 'productDetail',
       component: ProductDetail
+    },
+    {
+      path: '/services',
+      name: 'services',
+      component: Services
     },
     {
       path: '/services/:slug',

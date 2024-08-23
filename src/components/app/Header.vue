@@ -36,8 +36,6 @@
 
   const categories = ref([])
   const categories_ = ref([])
-  const categories_S = ref([])
-  const categories_S_= ref([])
   const categoriesSearch = ref(null)
   const services = ref([])
   const textSearch = ref(null)
@@ -53,10 +51,7 @@
   const service = ref(1)
   const width = ref(300)
   const widths = ref(300)
-  const openMenu = ref(false)
   const menuOpen = ref(false)
-
-  const openMenuS = ref(false)
   const menuOpenS = ref(false)
   const isDrawerOpen = ref(false)
 
@@ -132,7 +127,7 @@
     await homeStores.fetchData()
     
     categories.value = homeStores.getData.parentCategories
-    categories_S.value = homeStores.getData.parentServices
+    services.value = homeStores.getData.parentServices
 
     categoriesSearch.value = route.query.category ? findCategory(route.query.category) : 0
     textSearch.value = route.query.search ?? null
@@ -190,7 +185,7 @@
   const openService = (index) => {
     category.value = index
     
-    if(categories_S.value[index].children.length > 0) {
+    if(services.value[index].children.length > 0) {
       cols.value = 6
       width.value = 650
     } else {
@@ -200,10 +195,9 @@
   }
 
   const chanceMenu = () => {
-    cols.value = (openMenu.value === true) ? 6 : 12
+    cols.value = 12
     category.value = 0
-    width.value = (openMenu.value === true) ? 650 : 300
-    openMenu.value = (openMenu.value === true) ? false : true
+    width.value = 300
   }
 
   const closeMenu = () => {
@@ -212,10 +206,9 @@
   }
 
   const chanceMenuS = () => {
-    colse.value = (openMenuS.value === true) ? 6 : 12
+    colse.value = 12
     service.value = 0
-    widths.value = (openMenuS.value === true) ? 650 : 300
-    openMenuS.value = (openMenuS.value === true) ? false : true
+    widths.value = 300
   }
 
   const closeMenuS = () => {
@@ -436,12 +429,12 @@
             </svg>
           </VListItemTitle>
         </VListItem>
-        <div v-for="(item, index) in categories_S">
-          <VListItem v-if="categories_S[index]?.children.length === 0">
+        <div v-for="(item, index) in services">
+          <VListItem v-if="services[index]?.children.length === 0">
             <VListItemTitle class="d-block lineheight borderList pb-2">
             <router-link 
               :to="{
-                name: 'products',
+                name: 'services',
                 query: {
                   category: item.slug
                 }
@@ -479,13 +472,13 @@
               </VListItem>
             </template>
             <div 
-              v-for="(k, index2) in categories_S[index].children"
+              v-for="(k, index2) in services[index].children"
               :key="index2"
               class="style-menu-mobile">
               <VListItem class="subtitle-menu">
                 <router-link
                     :to="{
-                      name: 'products',
+                      name: 'services',
                       query: {
                         category: item.slug,
                         subcategory: k.slug.split('/')[1]
@@ -842,7 +835,7 @@
                       </VListItemTitle>
                     </VListItem>
                     <VListItem  
-                      v-for="(item, index) in categories_S"
+                      v-for="(item, index) in services"
                       :key="index">
                         <div class="d-flex align-center hover-icon-right tw-cursor-pointer" @mouseover="openService(index)">
                           <span v-if="item.children.length > 0"
@@ -854,7 +847,7 @@
                           </span>
                           <router-link 
                             :to="{
-                              name: 'products',
+                              name: 'services',
                               query: {
                                 category: item.slug
                               }
@@ -873,12 +866,12 @@
                 <VCol cols="12" :md="cols" v-show="cols === 6" class="borderCol py-5">
                   <VList class="style-submenu mt-8">
                     <VListItem 
-                      v-for="(i, index2) in categories_S[category].children"
+                      v-for="(i, index2) in services[category].children"
                       :key="index2"
                       @click="closeMenuS">
                       <router-link
                         :to="{
-                          name: 'products',
+                          name: 'services',
                           query: {
                             category: i.slug.split('/')[0],
                             subcategory: i.slug.split('/')[1]

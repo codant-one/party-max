@@ -7,6 +7,7 @@ import { useFiltersStores } from '@/stores/filters'
 import Header from '@/components/app/Header.vue'
 import Footer from '@/components/app/Footer.vue'
 import Filters from '@/components/app/Filters.vue'
+import FilterServices from '@/components/app/FilterServices.vue'
 import home from '@assets/images/home.jpg';
 import categories from '@assets/images/categories.jpg';
 import register from '@assets/images/register.jpg';
@@ -92,7 +93,8 @@ async function fetchData() {
 <template>
   <VApp> 
     <VLayout >
-      <Filters :drawer="drawer"/>
+      <Filters :drawer="drawer" v-if="route.name === 'products'"/>
+      <FilterServices :drawer="drawer" v-else/>
       <Header />
       <VMain :style="backgroundStyle" :class="background">
         <router-view />

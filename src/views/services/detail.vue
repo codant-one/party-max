@@ -11,10 +11,11 @@ import { useFavoritesStores } from '@/stores/favorites'
 import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { VueImageZoomer } from 'vue-image-zoomer'
+import { Spanish } from 'flatpickr/dist/l10n/es.js';
+import FlatPickr from 'vue-flatpickr-component';
 import router from '@/router'
-import CustomRadiosWithIcon from '@/components/app/CustomRadiosWithIcon.vue'
 import Loader from '@/components/common/Loader.vue'
-import Product1 from '@/components/product/Product1.vue'
+import Service3 from '@/components/service/Service3.vue'
 import whatsapp from '@assets/icons/whatsapp.svg?inline';
 import facebook from '@assets/icons/facebook2.svg?inline';
 import twitter from '@assets/icons/twitter.svg?inline';
@@ -37,6 +38,7 @@ import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar'
 import 'swiper/css/pagination';
 import 'vue-image-zoomer/dist/style.css';
+import 'flatpickr/dist/flatpickr.css';
 
 const route = useRoute()
 const miscellaneousStores = useMiscellaneousStores()
@@ -46,8 +48,8 @@ const favoritesStores = useFavoritesStores()
 const isMobile = /Mobi/i.test(navigator.userAgent);
 
 const isLoading = ref(true)
-const tab = ref('1')
-const productUrl = ref(null)
+const tab = ref('0')
+const serviceUrl = ref(null)
 const searchWhatsapp = ref(null)
 const searchFacebook = ref(null)
 const searchTwitter = ref(null)
@@ -60,13 +62,13 @@ const bread = ref([
     href: '/',
   },
   {
-    title: 'Producto',
+    title: 'Servicio',
     disabled: true,
     href: '',
   }
 ])
 
-const productImages = ref([])
+const serviceImages = ref([])
 const modules = ref([FreeMode, Navigation, Thumbs, Scrollbar])
 const modules2 = ref([Pagination])
 const thumbsSwiper = ref(null);
@@ -79,46 +81,40 @@ const brand = ref(null)
 const rating = ref(null)
 const reviews = ref(null)
 const sku = ref(null)
-const wholesale = ref(false)
-const wholesale_price = ref(null)
-const wholesale_min = ref(null)
-const price_for_sale = ref(null)
+const price = ref(null)
 const store = ref(null)
-const in_stock = ref(null)
 const single_description = ref(null)
 const description = ref(null)
 const categories = ref([])
 const tags = ref([])
-const width = ref('')
-const height = ref('')
-const deep = ref('')
-const weigth = ref('')
-const material = ref('')
-const cant_stock = ref(1)
 
-const existence_whole = ref(false)
-
-const radioContent = ref([])
-const selectedColor = ref(null)
-const selectedColorId = ref(null)
 const load = ref(false)
-const color = ref('')
 const imageAux = ref('')
 const imageMeta = ref('')
 
-const cant_prod = ref(1)
 const client_id = ref(null)
-const product_id = ref(null)
+const service_id = ref(null)
 const user_id = ref(null)
 
 const isFavorite = ref(null)
-const isFavoriteProduct = ref(null)
+const isFavoriteService = ref(null)
 const message = ref('')
-const onlyWholesale = ref(false)
 
 const isDialogVisible = ref(false)
 const isError = ref(false)
 const isPending = ref(false)
+
+// calendar
+const date = ref(null)
+const calendar = ref()
+const config = ref({
+  locale: Spanish,
+  enableTime: true,
+  noCalendar: false,
+  dateFormat: "Y-m-d h:i K",
+  time_24hr: false,
+  minDate: new Date()
+})
 
 watch(() => 
   route.path,(newPath, oldPath) => {
@@ -129,12 +125,6 @@ watch(() =>
 watch(() => 
   route.query,(newPath, oldPath) => {
     thumbsSwiper.value.destroy(false, true)
-  }
-);
-
-watch(() => 
-  cartStores.getWholesale, async (value) => {
-    onlyWholesale.value = value
   }
 );
 
@@ -152,91 +142,62 @@ async function fetchData() {
 
   isLoading.value = true
   
-  radioContent.value = []
-  productImages.value = []
+  serviceImages.value = []
   data.value = null
 
- /* if(route.params.slug && route.path.startsWith('/products/')) {
-    existence_whole.value = route.query.wholesale === 'true' ? true : false
+ if(route.params.slug && route.path.startsWith('/services/')) {
 
-    await miscellaneousStores.getProduct(route.params.slug)
+    await miscellaneousStores.getService(route.params.slug)
     data.value = miscellaneousStores.getData
 
-    imageAux.value = [{ image : data.value.product.image }]
-    imageMeta.value = baseURL.value + data.value.product.image
+    imageAux.value = [{ image : data.value.service.image }]
+    imageMeta.value = baseURL.value + data.value.service.image
 
-    categories.value = data.value.product.colors[0]?.categories.map(item => item.category.name)
-    productImages.value = (data.value.product.colors[0]?.images.length === 0) ? imageAux.value : data.value.product.colors[0]?.images
-    color.value = data.value.product.colors[0]?.color.name
-    selectedColor.value = data.value.product.colors[0]?.color.id.toString()
-    selectedColorId.value = data.value.product.colors[0]?.id
+    categories.value = data.value.service.categories.map(item => item.category.name)
+    serviceImages.value = (data.value.service.images.length === 0) ? imageAux.value : data.value.service.images
 
-    onlyWholesale.value = cartStores.getWholesale
+    service_id.value = data.value.service.id
 
-    data.value.product.colors.forEach(element => { 
-      var aux = {
-        value: element.color.id.toString(),
-        title: element.color.name,
-        image:  (element.images.length === 0) ? data.value.product.image : element.images[0].image
-      }
+    serviceUrl.value = `https://${import.meta.env.VITE_MY_DOMAIN}/services/${data.value.service.slug}`
+    const imageUrl = `${import.meta.env.VITE_APP_DOMAIN_API_URL}/storage/${data.value.service.image}`
+    const descriptionText = 'Mira este increíble servicio.'
+    const twitterText = `${descriptionText} ${serviceUrl.value} ${imageUrl}`;
 
-      radioContent.value.push(aux)
-    });
-
-    product_id.value = data.value.product.id
-
-    productUrl.value = `https://${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
-    const imageUrl = `${import.meta.env.VITE_APP_DOMAIN_API_URL}/storage/${data.value.product.image}`
-    const descriptionText = 'Mira este increíble producto.'
-    const twitterText = `${descriptionText} ${productUrl.value} ${imageUrl}`;
-
-    searchWhatsapp.value = `https://wa.me/?text=${productUrl.value}`
-    searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl.value)}`
+    searchWhatsapp.value = `https://wa.me/?text=${serviceUrl.value}`
+    searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(serviceUrl.value)}`
     searchTwitter.value = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}`;
-    searchLinkendin.value = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(productUrl.value)}`;
+    searchLinkendin.value = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(serviceUrl.value)}`;
     
-    title.value = data.value.product.name
-    brand.value = data.value.product.brand.name
-    rating.value = data.value.product.rating
-    reviews.value = data.value.product.reviews
-    sku.value = data.value.product.colors[0].sku
-    wholesale.value = data.value.product.wholesale === 1 ? true : false
-    wholesale_price.value = data.value.product.wholesale_price
-    cant_prod.value = route.query.wholesale === 'true' ? data.value.product.wholesale_min : 1
-    wholesale_min.value = route.query.wholesale === 'true' ? data.value.product.wholesale_min : 1
-    price_for_sale.value = data.value.product.price_for_sale
-    store.value = data.value.product.user.user_detail.store_name ?? (data.value.product.user.supplier?.company_name ?? (data.value.product.user.name + ' ' + (data.value.product.user.last_name ?? '')))
-    in_stock.value = data.value.product.in_stock
-    color.value = data.value.product.colors[0].color.name
-    single_description.value = data.value.product.single_description
-    description.value = data.value.product.description ?? ''
-    cant_stock.value = parseInt(data.value.product.stock)
+    title.value = data.value.service.name
+    brand.value = data.value.service.brand.name
+    rating.value = data.value.service.rating
+    reviews.value = []
+    // reviews.value = data.value.service.reviews
+    sku.value = data.value.service.sku
+    price.value = data.value.service.price
+    store.value = data.value.service.user.user_detail.store_name ?? (data.value.service.user.supplier?.company_name ?? (data.value.service.user.name + ' ' + (data.value.service.user.last_name ?? '')))
+    single_description.value = data.value.service.single_description
+    description.value = data.value.service.description ?? ''
 
-    width.value = data.value.product.detail.width
-    weigth.value = data.value.product.detail.weigth
-    height.value = data.value.product.detail.height
-    deep.value = data.value.product.detail.deep
-    material.value = data.value.product.detail.material
-
-    data.value.product.colors[0].categories.forEach(element => { 
+    data.value.service.categories.forEach(element => { 
       categories.value.push(element.category.name)
     });
 
     tags.value = []
-    data.value.product.tags.forEach(element => { 
+    data.value.service.tags.forEach(element => { 
       tags.value.push(element.tag.name)
     });
 
     if(client_id.value)
-      isFavoriteProduct.value = await favoritesStores.show({user_id: user_id.value, product_id: product_id.value })
+      isFavoriteService.value = await favoritesStores.show({user_id: user_id.value, service_id: service_id.value })
 
     setMetaTags({
       title: title.value,
-      description: `Producto publicado en PARTYMAX como: ${title.value}`,
+      description: `Servicio publicado en PARTYMAX como: ${title.value}`,
       image:  imageMeta.value,
-      url: productUrl.value ,
+      url: serviceUrl.value ,
     });
-  }*/
+  }
   
   isLoading.value = false
 }
@@ -276,125 +237,23 @@ const setMetaTags = ({ title, description, image, url }) => {
   setMetaTag('twitter:site', '@SteffaniiPaola');
 }
 
-const chanceRadio = (value) => {
-
-  if (Number.isInteger(Number(value.id))) {        
-      var seleted =  data.value.product.colors.filter(item => item.color_id === Number(value.id))[0]
-      
-      categories.value = seleted.categories.map(item => item.category.name)
-      productImages.value = (seleted?.images.length === 0) ? imageAux.value : seleted?.images
-      color.value = seleted?.color.name
-      selectedColor.value = seleted?.color.id.toString()
-      selectedColorId.value = seleted.id
-      sku.value = seleted?.sku ?? null
-  }
-}
-
 const setThumbsSwiper = (swiper) => {
     thumbsSwiper.value = swiper;
 }
 
 const addCart = () => {
 
-  let isWholesale = route.query.wholesale === 'true' ? 1 : 0
-
-  if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
-    let data = {
-      product_color_id: selectedColorId.value,
-      quantity: cant_prod.value,
-      wholesale: isWholesale
-    }
-
-    load.value = true
-
-    cartStores.add(data)
-      .then(response => {
-
-        isDialogVisible.value = true
-        message.value = 'Agregado al carrito'
-        load.value = false
-
-        setTimeout(() => {
-          isDialogVisible.value = false
-          isError.value = false
-          message.value = ''
-        }, 3000)
-
-      }).catch(err => {
-        load.value = false
-        //console.error(err.message)
-      })
-  } else {
-    isDialogVisible.value = true
-    message.value = 'Debes agregar al carrito productos ' + (isWholesale ? 'al detal' : 'al mayor') + ' debido a tu selección anterior'
-    isError.value = true
-
-    setTimeout(() => {
-      isDialogVisible.value = false
-      isError.value = false
-      message.value = ''
-    }, 3000)
-  }
 }
 
 const addfavorite = () => {
 
-  isFavorite.value = true
-
-  favoritesStores.add({user_id: user_id.value, product_id: product_id.value })
-    .then(response => {
-
-      isFavorite.value = false
-      isDialogVisible.value = true
-      message.value = 'Agregado a la lista de favoritos'
-      isFavoriteProduct.value = true
-                    
-      setTimeout(() => {
-        isDialogVisible.value = false
-        isError.value = false
-        message.value = ''
-      }, 3000)
-    
-    }).catch(err => {
-      isFavorite.value = false
-
-      //console.error(err.message)
-    })
-
 }
 
-const controlCant = () => {
-  if (parseInt(cant_prod.value) > parseInt(cant_stock.value)) { 
-    cant_prod.value = cant_stock.value; 
-  } else if (parseInt(cant_prod.value) < 1) {
-    cant_prod.value = 1;
+const openCalendar = () => {
+  if (calendar.value && calendar.value.$el) {
+    calendar.value.$el.click();
   }
-}
-
-const wholesaleAction = () => {
-  if (route.query.wholesale === 'true') {
-    router.push({ 
-      name: 'productDetail',
-      params: { slug: route.params.slug }
-    })
-  } else { 
-    router.push({ 
-      name: 'productDetail',
-      params: { slug: route.params.slug },
-      query: {  wholesale: 'true' }
-    })
-  }
-}
-
-const increment = () => {
-  if (cant_prod.value < cant_stock.value)
-    cant_prod.value++
-}
-    
-const decrement = () => {
-  if (cant_prod.value > wholesale_min.value)
-    cant_prod.value--
-}
+};
 
 </script>
 
@@ -480,7 +339,7 @@ const decrement = () => {
                 @swiper="setThumbsSwiper"
                 class="mySwiper pt-0 d-flex align-center justify-content-center"
               >
-                <swiper-slide v-for="(picture, index) in productImages" :key="index">
+                <swiper-slide v-for="(picture, index) in serviceImages" :key="index">
                   <img width="60" :src="baseURL + picture.image" />
                 </swiper-slide>
               </swiper>
@@ -494,9 +353,9 @@ const decrement = () => {
                 :thumbs="{ swiper: thumbsSwiper }"
                 :modules="modules"
                 class="mySwiper2 border-img mx-0 mx-md-auto"
-                v-if="productImages.length > 0"
+                v-if="serviceImages.length > 0"
                 >
-                <swiper-slide v-for="(picture, index) in productImages" :key="index">
+                <swiper-slide v-for="(picture, index) in serviceImages" :key="index">
                   <vue-image-zoomer
                     :regular="baseURL + picture.image"
                     :zoom-amount="3" 
@@ -507,93 +366,61 @@ const decrement = () => {
             <VCol cols="12" md="7">
               <VCardText class="p-0">
                 <div class="d-flex py-2">
-                  <span class="text_1" v-if="existence_whole">$ {{ formatNumber(wholesale_price) }}</span>
-                  <span class="text_1" v-else>$ {{ formatNumber(price_for_sale) }}</span>
+                  <span class="text_1">$ {{ formatNumber(price) }}</span>
                 </div>
               </VCardText>
               <VCardText class="p-0 d-flex border-title">
                 <span class="d-block tw-text-tertiary">Tienda: 
                   <strong class="tw-text-gray tw-text-base ms-1">{{ store }}</strong>
                 </span>
-                <span class="d-block tw-text-tertiary ms-1 ms-md-8 mb-2">Status: 
-                  <strong class="tw-text-gray tw-text-base ms-1">
-                    {{ (in_stock === 1) ? 'En Stock (' + cant_stock + ')'  : 'AGOTADO' }}
-                  </strong>
-                </span>
-              </VCardText>
-              <VCardText class="p-0 d-block border-title mt-2">
-                <VBtn class="mb-2" style="border-radius: 32px;">
-                    <calendar_icon class="mr-2"/>
-                    Elegir fecha y hora
-                </VBtn>
               </VCardText>
               <VCardText class="p-0 d-block border-title mt-2" v-if="single_description !== null && single_description.length > 10">
                 <span class="d-block tw-text-tertiary ms-5 mb-2 tw-leading-5" v-html="single_description" />
               </VCardText>
-              <VCardText class="p-0 d-flex mt-2 mt-md-4 mb-md-2">
-            <!--<div class="d-flex flex-column">
-                  <span>Cantidad:</span>
-                  <div class="number-input-wrapper">
-                    <VBtn icon size="x-small" @click="decrement" variant="plain" color="#0A1B33">
-                      <VIcon>mdi-minus</VIcon>
-                    </VBtn>
-                    <VTextField
-                      v-model="cant_prod"
-                      variant="solo"
-                      type="text"
-                      readonly
-                      style="height: 30px;"
-                    />
-                    <VBtn icon size="x-small" @click="increment" variant="plain" color="#0A1B33">
-                      <VIcon>mdi-plus</VIcon>
-                    </VBtn>
-                  </div>
-                </div>-->
-                <div class="my-auto ms-5">
-                  <VBtn 
-                    variant="flat"
-                    @click="addCart"
-                    class="btn-register tw-text-white tw-bg-primary button-hover" 
-                    :disabled="(in_stock === 0 || cant_prod > cant_stock) ? true : false"
-                    >
-                      Agregar al carrito
-                      <VProgressCircular
-                        v-if="load"
-                        indeterminate
-                        color="#fff"
-                      />
-                  </VBtn>
-                </div>
-                <div class="my-auto ms-5">
-                  <span 
-                    v-if="!isFavorite" 
-                    class="me-4 index heart p-0 tw-cursor-pointer d-flex justify-content-center align-center"
-                    :class="(isFavoriteProduct) ? 'heart_fill' : ''" 
-                    @click="addfavorite">
-                  <heart />
-                  </span>
-                  <VProgressCircular
-                    v-else
-                    :size="30"
-                    width="3"
-                    indeterminate
-                    color="primary"
-                  />
-                </div> 
-              </VCardText>
-
-              <VCardText class="p-0 d-flex border-title pb-2 mt-2 mt-md-0">
+              <VCardText class="p-0 d-block border-title">
                 <VBtn 
-                  v-if="wholesale"
-                  :class="route.query.wholesale === 'true' ? 'b-mayorista-active': 'b-mayorista'"
-                  @click="wholesaleAction">
-                  <iconmayorista />
-                  <span class="ms-1">
-                    {{ route.query.wholesale === 'true' ? 'Precio al detal' : 'Precio al mayor' }}
-                  </span>
+                  class="mx-5 my-5 btn-date" 
+                  variant="outlined"
+                  @click="openCalendar" >
+                    <calendar_icon class="mr-2"/>
+                    Elegir fecha y hora
+                    <flat-pickr
+                      v-model="date"
+                      ref="calendar"  
+                      class="hidden"
+                      :config="config"
+                    />
                 </VBtn>
               </VCardText>
-              <VCardText class="p-0 d-block mt-2">
+              <VCardText class="p-0 d-flex border-title">
+                <VBtn 
+                  variant="flat"
+                  @click="addCart"
+                  class="btn-register tw-text-white tw-bg-primary button-hover mx-5 my-5" 
+                  >
+                    Agregar al carrito
+                    <VProgressCircular
+                      v-if="load"
+                      indeterminate
+                      color="#fff"
+                    />
+                </VBtn>
+                <span 
+                  v-if="!isFavorite" 
+                  class="me-4 index heart p-0 tw-cursor-pointer d-flex justify-content-center align-center"
+                  :class="(isFavoriteService) ? 'heart_fill' : ''" 
+                  @click="addfavorite">
+                  <heart />
+                </span>
+                <VProgressCircular
+                  v-else
+                  :size="30"
+                  width="3"
+                  indeterminate
+                  color="primary"
+                />
+              </VCardText>
+              <VCardText class="p-0 d-block mt-5">
                 <span class="tw-text-tertiary" style="display: none;">Categorías: 
                   <span class="ms-1">{{ categories.join(", ") }}</span>
                 </span>
@@ -609,8 +436,7 @@ const decrement = () => {
             <VCol cols="12" class="text-center">
               <VTabs v-model="tab" color="pink-accent-3" align-tabs="center" class="px-0">
                 <VTab value="0" class="text-tabs">Descripción</VTab>
-                <VTab value="1" class="text-tabs">Especificaciones</VTab>
-                <!--<VTab value="2" class="text-tabs">Reviews ({{reviews.length}})</VTab>-->
+                <VTab value="1" class="text-tabs">Reviews ({{reviews.length}})</VTab>
               </VTabs>
             </VCol>
 
@@ -620,22 +446,6 @@ const decrement = () => {
                   <span v-html="description" class="content"></span>
                 </v-window-item>
                 <v-window-item value="1">
-                  <VCardText>
-                    <VRow>
-                      <VCol cols="6" md="2" class="col-item"><span>Alto</span></VCol>
-                      <VCol cols="6" md="10" class="col-value"><span>{{ height }}cm</span></VCol>
-                      <VCol cols="6" md="2" class="col-item"><span>Ancho</span></VCol>
-                      <VCol cols="6" md="10" class="col-value"><span>{{ width }}cm</span></VCol>
-                      <VCol cols="6" md="2" class="col-item"><span>Peso</span></VCol>
-                      <VCol cols="6" md="10" class="col-value"><span>{{ weigth }}g</span></VCol>
-                      <VCol cols="6" md="2" class="col-item"><span>Profundo</span></VCol>
-                      <VCol cols="6" md="10" class="col-value"><span>{{ deep }}cm</span></VCol>
-                      <VCol cols="6" md="2" class="col-item"><span>Material</span></VCol>
-                      <VCol cols="6" md="10" class="col-value"><span>{{ material }}</span></VCol>
-                    </VRow>
-                  </VCardText>
-                </v-window-item>
-                <v-window-item value="2">
                   <VCardText class="py-0">
                     <VRow class="row-reviews border-title" v-for="review in reviews">
                       <VCol cols="3" md="1">
@@ -694,15 +504,15 @@ const decrement = () => {
               <p class="text-lef">Recomendaciones que te pueden interesar</p>
             </VCol>
             <VCol cols="4" md="6" class="text-right">
-              <router-link to="/products" class="ms-md-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
+              <router-link to="/services" class="ms-md-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
             </VCol> 
           </VRow>
         </VCardTitle>
         <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
-          <Product1 
-            v-for="(product, i) in data.recommendations"
+          <Service3 
+            v-for="(service, i) in data.recommendations"
             :key="i"
-            :product="product"
+            :service="service"
             :readonly="true"/>
         </VCardText>  
         <VCardText class="pb-0 px-4 px-md-7 mt-0 mt-md-5 mb-2 swiper-recomendations" v-if="data && isMobile">  
@@ -717,9 +527,9 @@ const decrement = () => {
             :watchSlidesProgress="true"
             :style="{ height: isMobile ? '340px' : '370px' }"
             >
-            <swiper-slide v-for="(product, i) in data.recommendations" :key="i">
-              <Product1 
-                :product="product"
+            <swiper-slide v-for="(service, i) in data.recommendations" :key="i">
+              <Service3 
+                :service="service"
                 :readonly="true"/>
             </swiper-slide>
           </swiper>
@@ -983,7 +793,306 @@ const decrement = () => {
  
 </style>
 
+
+<style lang="scss">
+/* stylelint-disable no-descending-specificity */
+@import "flatpickr/dist/flatpickr.css";
+
+.flat-picker-custom-style {
+  position: absolute;
+  color: inherit;
+  inline-size: 100%;
+  inset: 0;
+  outline: none;
+  padding-block: 0;
+  padding-inline: var(--v-field-padding-start);
+}
+
+input[altinputclass="inlinePicker"] {
+  display: none;
+}
+
+.flatpickr-calendar {
+  background-color: rgb(var(--v-theme-surface));
+  inline-size: 16.625rem;
+  margin-block-start: 0.1875rem;
+
+  .flatpickr-rContainer {
+    .flatpickr-weekdays {
+      padding-inline: 0.8rem;
+    }
+
+    .flatpickr-days {
+      min-inline-size: 16.625rem;
+
+      .dayContainer {
+        justify-content: center !important;
+        inline-size: 16.625rem;
+        min-inline-size: 16.625rem;
+        padding-block-end: 0.5rem;
+        padding-block-start: 0;
+
+        .flatpickr-day {
+          block-size: 2.125rem;
+          line-height: 2.125rem;
+          margin-block-start: 0 !important;
+          max-inline-size: 2.125rem;
+        }
+      }
+    }
+  }
+
+  .flatpickr-day {
+    color: rgba(var(--v-theme-on-background), var(--v-medium-emphasis-opacity));
+
+    &.today {
+      border-color: rgb(var(--v-theme-primary));
+
+      &:hover {
+        border-color: rgb(var(--v-theme-primary));
+        background: transparent;
+        color: rgba(var(--v-theme-on-background), var(--v-medium-emphasis-opacity));
+      }
+    }
+
+    &.selected,
+    &.selected:hover {
+      border-color: rgb(var(--v-theme-primary));
+      background: rgb(var(--v-theme-primary));
+      color: rgb(var(--v-theme-on-primary));
+    }
+
+    &.inRange,
+    &.inRange:hover {
+      border: none;
+      background: rgba(var(--v-theme-primary), 0.1) !important;
+      box-shadow: none !important;
+      color: rgb(var(--v-theme-primary));
+    }
+
+    &.startRange {
+      box-shadow: none;
+    }
+
+    &.endRange {
+      box-shadow: none;
+    }
+
+    &.startRange,
+    &.endRange,
+    &.startRange:hover,
+    &.endRange:hover {
+      border-color: rgb(var(--v-theme-primary));
+      background: rgb(var(--v-theme-primary));
+      color: rgb(var(--v-theme-on-primary));
+    }
+
+    &.selected.startRange + .endRange:not(:nth-child(7n + 1)),
+    &.startRange.startRange + .endRange:not(:nth-child(7n + 1)),
+    &.endRange.startRange + .endRange:not(:nth-child(7n + 1)) {
+      box-shadow: -10px 0 0 rgb(var(--v-theme-primary));
+    }
+
+    &.flatpickr-disabled,
+    &.prevMonthDay:not(.startRange,.inRange),
+    &.nextMonthDay:not(.endRange,.inRange) {
+      opacity: var(--v-disabled-opacity);
+    }
+
+    &:hover {
+      border-color: rgba(var(--v-theme-surface-variant), var(--v-hover-opacity));
+      background: rgba(var(--v-theme-surface-variant), var(--v-hover-opacity));
+    }
+  }
+
+  .flatpickr-weekday {
+    color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .flatpickr-days {
+    inline-size: 16.625rem;
+  }
+
+  &::after,
+  &::before {
+    display: none;
+  }
+
+  .flatpickr-months {
+    border-block-end: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+
+    .flatpickr-prev-month,
+    .flatpickr-next-month {
+      fill: rgba(var(--v-theme-on-background), var(--v-medium-emphasis-opacity));
+
+      &:hover i,
+      &:hover svg {
+        fill: rgba(var(--v-theme-on-background), var(--v-medium-emphasis-opacity));
+      }
+    }
+  }
+
+  .flatpickr-current-month span.cur-month {
+    font-weight: 300;
+  }
+
+  &.open {
+    z-index: 1051;
+  }
+
+  &.hasTime.open {
+    .flatpickr-time {
+      border-color: rgba(var(--v-border-color), var(--v-border-opacity));
+      block-size: auto;
+    }
+  }
+}
+
+.flatpickr-time input:hover,
+.flatpickr-time .flatpickr-am-pm:hover,
+.flatpickr-time input:focus,
+.flatpickr-time .flatpickr-am-pm:focus {
+  background: transparent;
+}
+
+.flatpickr-time {
+  .flatpickr-am-pm,
+  .flatpickr-time-separator,
+  input {
+    color: rgba(var(--v-theme-on-background), var(--v-medium-emphasis-opacity));
+  }
+
+  .numInputWrapper {
+    span {
+      &.arrowUp {
+        &::after {
+          border-block-end-color: rgb(var(--v-border-color));
+        }
+      }
+
+      &.arrowDown {
+        &::after {
+          border-block-start-color: rgb(var(--v-border-color));
+        }
+      }
+    }
+  }
+}
+
+.flatpickr-input[readonly],
+.flatpickr-input ~ .form-control[readonly],
+.flatpickr-human-friendly[readonly] {
+  background-color: inherit;
+  opacity: 1 !important;
+}
+
+.flatpickr-weekdays {
+  margin-block-start: 8px;
+}
+
+.flatpickr-current-month {
+  .flatpickr-monthDropdown-months {
+    appearance: none;
+  }
+
+  .flatpickr-monthDropdown-months,
+  .numInputWrapper {
+    padding: 2px;
+    border-radius: 4px;
+    color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.15s ease-out;
+    text-transform: uppercase;
+
+    span {
+      display: none;
+    }
+
+    .flatpickr-monthDropdown-month {
+      background-color: rgb(var(--v-theme-surface));
+    }
+
+    .numInput.cur-year {
+      font-weight: 500;
+    }
+  }
+}
+
+.flatpickr-day.flatpickr-disabled,
+.flatpickr-day.flatpickr-disabled:hover {
+  color: rgba(var(--v-theme-on-background), var(--v-medium-emphasis-opacity));
+}
+
+.v-theme--dark.flatpickr-calendar {
+  border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+  box-shadow: none;
+}
+
+.flatpickr-months {
+  padding-block: 0.75rem;
+  padding-inline: 1rem;
+
+  .flatpickr-prev-month,
+  .flatpickr-next-month {
+    background: rgba(var(--v-theme-surface-variant), var(--v-selected-opacity));
+    block-size: 1.75rem;
+    border-radius: 5rem;
+    inline-size: 1.75rem;
+    inset-block-start: 0.75rem !important;
+    padding-block: 0.25rem;
+    padding-inline: 0.4375rem;
+  }
+
+  .flatpickr-next-month {
+    inset-inline-end: 1.05rem !important;
+  }
+
+  .flatpickr-prev-month {
+    /* stylelint-disable-next-line liberty/use-logical-spec */
+    right: 3.5rem;
+    left: unset !important;
+  }
+
+  .flatpickr-month {
+    block-size: 1.75rem;
+
+    .flatpickr-current-month {
+      block-size: 1.75rem;
+      inset-inline-start: 0;
+      padding-block-start: 0.2rem;
+      text-align: start;
+    }
+  }
+}
+</style>
+
 <style scoped>
+
+  .btn-date {
+    padding: 0 27px;
+    border-radius: 32px;
+    height: 60px;
+    border: 1px solid  #0A1B33;
+    color: #0A1B33;
+    font-weight: bold;
+  }
+
+  .btn-date:hover::v-deep(path) {
+    fill: white;
+  }
+
+  .btn-date:hover {
+    background-color:  #0A1B33;
+    border: 1px solid #0A1B33;
+    color: white;
+  }
+
+  .flatpickr-input {
+    width: 0px !important;
+  }
 
   .carousel__item img {
     width: 60%;

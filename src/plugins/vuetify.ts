@@ -33,6 +33,7 @@ const myCustomLightTheme = {
     'disabled-opacity': 0.3,
     'border-color': '#2F2B3D',
     'border-opacity': 0.16,
+    'on-background': '#33303C',
     'high-emphasis-opacity': 0.78,
     'medium-emphasis-opacity': 0.68,
     'switch-opacity': 0.2,
@@ -41,7 +42,7 @@ const myCustomLightTheme = {
     'switch-checked-disabled-opacity': 0.3,
 
     // Shadows
-    'shadow-key-umbra-color': '#2F2B3D',
+    'shadow-key-umbra-color': '#2F2B3D'
   },
 }
 

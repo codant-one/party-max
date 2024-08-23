@@ -85,6 +85,25 @@ export const useMiscellaneousStores = defineStore('miscellaneous', {
                     return Promise.reject(error)
                 }) 
         },
+        services(params: Object) {
+            return Miscellaneous.services(params)
+                .then((response) => {
+                    return Promise.resolve(response.data.data)
+                })
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
+        },
+        getService(slug: string) { 
+            return Miscellaneous.service(slug)
+                .then((response) => {
+                    this.data = response.data.data
+                })
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
+            
+        },
     }
 })
 

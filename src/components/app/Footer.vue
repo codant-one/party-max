@@ -25,8 +25,8 @@
 
   async function fetchData() {
 
-    if(route.name === 'products' || route.name === 'about' || route.name === 'help' ||
-       route.name === 'cart' || route.name === 'productDetail'|| route.name === 'suppliers_wholesalers' ||
+    if(route.name === 'services' || route.name === 'products' || route.name === 'about' || route.name === 'help' ||
+       route.name === 'cart' || route.name === 'serviceDetail' || route.name === 'productDetail' ||
        route.name === 'detail_wholesalers' || route.name === 'terms_and_conditions' || route.name === 'privacy_statement') {
       isProduct.value = true
       backgroundTemp.value = route.name === 'cart' ? 'tw-bg-white' : 'tw-bg-green'
@@ -129,7 +129,7 @@
             class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Fiestas temáticas
           </router-link>
-          <router-link to="/suppliers" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          <router-link to="/products?wholesalers=true" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Mayoristas
           </router-link>
           <router-link to="/blogs" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
@@ -173,9 +173,9 @@
           </router-link>
           <router-link 
             :to="{
-              name: 'categories',
-              params: {
-                slug: 'mobiliario'
+              name: 'services',
+              query: {
+                category: 'renta-de-mobiliario'
               }
             }" 
             class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
@@ -183,13 +183,13 @@
           </router-link>
           <router-link 
             :to="{
-              name: 'categories',
-              params: {
-                slug: 'animacion-y-entretenimiento'
+              name: 'services',
+              query: {
+                category: 'animadores-de-fiestas'
               }
             }" 
             class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Animación y entrenimiento
+            Animadores de Fiestas
           </router-link>
           <router-link 
             :to="{

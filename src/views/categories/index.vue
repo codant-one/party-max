@@ -32,6 +32,7 @@ const slug2 = ref(null)
 const slug3 = ref(null)
 const slug4 = ref(null)
 const band = ref(0)
+const category_type_id = ref()
 
 const icons_categories = ref([])
 
@@ -73,6 +74,7 @@ async function fetchData() {
     slug3.value = data.value.category.banner3?.slug.split('/')[1]
     image4.value = (data.value.category.banner_4 === null) ? banner4 : baseURL.value + data.value.category.banner_4
     slug4.value = data.value.category.banner4?.slug.split('/')[1]
+    category_type_id.value = data.value.category.category_type_id
 
     isLoading.value = false
   }
@@ -85,7 +87,7 @@ async function fetchData() {
       <VCardItem class="p-0">
         <router-link 
           :to="{
-            name:'products',
+            name: category_type_id === 1 ? 'products' : 'services',
             query: {
                 category: route.params.slug,
                 subcategory: slug1
@@ -107,7 +109,7 @@ async function fetchData() {
         <VSpacer />
         <router-link
           :to="{
-            name: 'products',
+            name: category_type_id === 1 ? 'products' : 'services',
             query: {
               category: route.params.slug
             }
@@ -122,7 +124,7 @@ async function fetchData() {
           <router-link
             
             :to="{
-              name: 'products',
+              name: category_type_id === 1 ? 'products' : 'services',
               query: {
                 category: route.params.slug,
                 subcategory: i.slug.split('/')[1]
@@ -136,7 +138,7 @@ async function fetchData() {
         <router-link
           v-if="isMobile"
           :to="{
-            name: 'products',
+            name: category_type_id === 1 ? 'products' : 'services',
             query: {
               category: route.params.slug
             }
@@ -155,7 +157,7 @@ async function fetchData() {
         <VSpacer />
         <router-link
           :to="{
-            name:'products',
+            name: category_type_id === 1 ? 'products' : 'services',
             query: {
               category: route.params.slug
             }
@@ -197,7 +199,7 @@ async function fetchData() {
         <VCard class="no-shadown card-information p-0 w-100 w-md-50">
           <router-link
             :to="{
-              name:'products',
+              name: category_type_id === 1 ? 'products' : 'services',
               query: {
                 category: route.params.slug,
                 subcategory: slug2
@@ -212,7 +214,7 @@ async function fetchData() {
         <VCard class="no-shadown card-information p-0 w-100 w-md-50 ms-0 ms-md-5 mt-7 mt-md-0">
           <router-link
             :to="{
-              name:'products',
+              name: category_type_id === 1 ? 'products' : 'services',
               query: {
                 category: route.params.slug,
                 subcategory: slug3
@@ -231,7 +233,7 @@ async function fetchData() {
       <VCardItem class="p-0">
         <router-link
           :to="{
-            name:'products',
+            name: category_type_id === 1 ? 'products' : 'services',
             query: {
               category: route.params.slug,
               subcategory: slug4
@@ -246,7 +248,7 @@ async function fetchData() {
     
     <router-link 
       :to="{
-        name:'products',
+        name: category_type_id === 1 ? 'products' : 'services',
           query: {
             category: route.params.slug
           }
