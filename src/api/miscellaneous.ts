@@ -41,6 +41,10 @@ class Miscellaneous {
     service(slug: string) {
         return axios.get(`miscellaneous/services/${slug}`)
     }
+
+    getDataCupcake() {
+        return axios.get('miscellaneous/cupcakes')
+    }
 }
 
 const miscellaneous = new Miscellaneous();

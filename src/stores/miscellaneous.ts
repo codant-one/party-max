@@ -104,6 +104,15 @@ export const useMiscellaneousStores = defineStore('miscellaneous', {
                 }) 
             
         },
+        fetchDataCupcake() {
+            return Miscellaneous.getDataCupcake()
+                .then((miscellaneous) => {
+                    this.data = miscellaneous.data.data
+                })
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
+        }
     }
 })
 

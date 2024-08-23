@@ -27,7 +27,7 @@ watchEffect(() => {
 
     if (!(Object.entries(props.service).length === 0) && props.service.constructor === Object) {
         image.value = props.service.image
-        price.value = props.service.price
+        price.value = props.service.cupcakes.length > 0 ? props.service.cupcakes[0].price : props.service.price
         name.value = props.service.name.toLowerCase().replace(/(^|\s)\p{L}/gu, (match) => match.toUpperCase());
         store.value = props.service.user.user_detail.store_name ?? (props.service.user.supplier?.company_name ?? (props.service.user.name + ' ' + (props.service.user.last_name ?? '')))
         rating.value = props.service.rating
