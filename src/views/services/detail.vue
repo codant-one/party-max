@@ -4,7 +4,7 @@ import { formatNumber } from '@formatters'
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { avatarText} from '@formatters'
-import { ref } from 'vue'
+import { ref } from 'vue';
 import { useMiscellaneousStores } from '@/stores/miscellaneous'
 import { useCartStores } from '@/stores/cart'
 import { useFavoritesStores } from '@/stores/favorites'
@@ -12,7 +12,6 @@ import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination } from 'swiper/modu
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { VueImageZoomer } from 'vue-image-zoomer'
 import { Spanish } from 'flatpickr/dist/l10n/es.js';
-import CustomRadiosWithIcon from '@/components/app/CustomRadiosWithIcon.vue'
 import FlatPickr from 'vue-flatpickr-component';
 import router from '@/router'
 import Loader from '@/components/common/Loader.vue'
@@ -128,9 +127,9 @@ const filling = ref(null)
 const filling_id = ref(null)
 const cake_type = ref([])
 const cake_type_id = ref([])
+const cake_size = ref([])
 const cake_size_id = ref([])
-const prices = ref([])
-const is_simple = ref([])
+const is_simple = ref(null)
 const isCupcake = ref([])
 
 const radioFlavor = ref([])
@@ -232,8 +231,6 @@ async function fetchData() {
 const loadData = () => {
   listFlavors.value = miscellaneousStores.getData.flavors
   listFillings.value = miscellaneousStores.getData.fillings
-  listCakeTypes.value = miscellaneousStores.getData.cakeTypes
-  listCakeSizes.value = miscellaneousStores.getData.cakeSizes
 
   flavor_id.value = listFlavors.value[0].id
   flavor.value = listFlavors.value[0].name
@@ -258,6 +255,22 @@ const loadData = () => {
 
     radioFilling.value.push(aux)
   });
+  
+  const data = cupcakes.value.filter(item => item.is_simple === cupcakes.value[0].is_simple);
+
+  const cakeTypes = data.map(item => item.cake_size.cake_type);
+  listCakeTypes.value = Array.from(new Set(cakeTypes.map(JSON.stringify))).map(JSON.parse);
+
+  const cakeSizes = data.map(item => item.cake_size);
+  listCakeSizes.value = Array.from(new Set(cakeSizes.map(JSON.stringify))).map(JSON.parse);
+
+  is_simple.value = cupcakes.value[0].is_simple.toString()
+  cake_type.value = cupcakes.value[0].cake_size.cake_type.name
+  cake_type_id.value = cupcakes.value[0].cake_size.cake_type_id
+  selectCakeType(cake_type.value)
+  cake_size.value = cupcakes.value[0].cake_size.name
+  cake_size_id.value = cupcakes.value[0].cake_size.id
+  price.value = cupcakes.value[0].price
 
 }
 
@@ -273,12 +286,25 @@ const getCakeSizes = computed(() => {
 const selectCakeType = (cakeType) => {
   if (cakeType) {
     let _cakeType = listCakeTypes.value.find(item => item.name === cakeType)
-    // cake_type.value[i] = _cakeType.name
-    // cake_type_id.value[i] = _cakeType.id
-    // cake_size.value[i] = ''
-    // cake_size_id.value[i] = ''
+    cake_type.value = _cakeType.name
+    cake_type_id.value = _cakeType.id
 
-    // listSizesByTypes.value = listCakeSizes.value.filter(item => item.cake_type_id === _cakeType.id)
+    listSizesByTypes.value = listCakeSizes.value.filter(item => item.cake_type_id === _cakeType.id)
+    cake_size.value = listSizesByTypes.value[0].name
+    cake_size_id.value = listSizesByTypes.value[0].id
+   
+    const data = cupcakes.value.filter(item => item.cake_size_id === listSizesByTypes.value[0].id)[0];
+    price.value = data.price
+  }
+}
+
+const selectCakeSize = (cakeSize) => {
+  if (cakeSize) {
+    let _cakeSize = getCakeSizes.value.find(item => item.value === cakeSize)
+    cake_size_id.value = _cakeSize.value
+    
+    const data = cupcakes.value.filter(item => item.is_simple === parseInt(is_simple.value) && item.cake_size_id === cake_size_id.value)[0];
+    price.value = data.price
   }
 }
 
@@ -289,6 +315,30 @@ const chanceFlavor = (value) => {
       flavor.value = seleted?.name
       flavor_id.value = seleted?.id
 
+  }
+}
+
+const chanceDesing = (value) => {
+  const new_data = cupcakes.value.filter(item => item.is_simple === parseInt(value) && item.cake_size_id === cake_size_id.value);
+  const item_value = (new_data.length > 0) ? parseInt(value) : cupcakes.value[0].is_simple
+  const data = cupcakes.value.filter(item => item.is_simple === item_value);
+
+  const cakeTypes = data.map(item => item.cake_size.cake_type);
+  listCakeTypes.value = Array.from(new Set(cakeTypes.map(JSON.stringify))).map(JSON.parse);
+
+  const cakeSizes = data.map(item => item.cake_size);
+  listCakeSizes.value = Array.from(new Set(cakeSizes.map(JSON.stringify))).map(JSON.parse);
+
+  if(new_data.length > 0) {
+    price.value = new_data[0].price
+  } else {
+    is_simple.value = cupcakes.value[0].is_simple.toString()
+    cake_type.value = cupcakes.value[0].cake_size.cake_type.name
+    cake_type_id.value = cupcakes.value[0].cake_size.cake_type_id
+    selectCakeType(cake_type.value)
+    cake_size.value = cupcakes.value[0].cake_size.name
+    cake_size_id.value = cupcakes.value[0].cake_size.id
+    price.value = cupcakes.value[0].price
   }
 }
 
@@ -475,98 +525,109 @@ const openCalendar = () => {
                 </span>
               </VCardText>
               <VCardText class="p-0 d-block border-title mt-2" v-if="isCupcake">
-                <span class="d-block tw-text-tertiary mb-2">Sabor: 
-                  <strong class="tw-text-tertiary tw-text-base ms-1">{{ flavor }}</strong>
-                </span>
-                <span class="d-block tw-text-tertiary w-100">
-                  <VRadioGroup v-model="flavor_id" @update:model-value="chanceFlavor">
-                    <VRadio
-                      v-for="f in radioFlavor"
-                      :key="f.value"
-                      :label="f.title"
-                      :value="f.value"
-                    />
-                  </VRadioGroup>
-                  <!-- <CustomRadiosWithIcon
-                    v-model:selected-radio="flavor_id"
-                    :radio-content="radioFlavor"
-                    :grid-column="{ sm: '2', cols: '4' }"
-                    class="custom-input-setting"
-                     @change="chanceFlavor"
-                  >
-                    <template #default="{ item }">
-                      <div class="text-center">
-                        <span class="font-weight-semibold text-uppercase tw-text-xs">
-                          {{ item.title }}
-                        </span>
-                      </div>
-                      <VSpacer />
-                      <VIcon
-                        icon="mdi-ice-cream"
-                        size="25"
-                        class="icons"
-                      />
-                    </template>
-                  </CustomRadiosWithIcon> -->
-                </span>
-              </VCardText>
-              <VCardText class="p-0 d-block border-title mt-2" v-if="isCupcake">
-                <span class="d-block tw-text-tertiary mb-2">Relleno: 
-                  <strong class="tw-text-tertiary tw-text-base ms-1">{{ filling }}</strong>
-                </span>
-                <span class="d-block tw-text-tertiary w-100">
-                  <CustomRadiosWithIcon
-                    v-model:selected-radio="filling_id"
-                    :radio-content="radioFilling"
-                    :grid-column="{ sm: '2', cols: '4' }"
-                    class="custom-input-setting"
-                     @change="chanceFilling"
-                  >
-                    <template #default="{ item }">
-                      <div class="text-center">
-                        <span class="font-weight-semibold text-uppercase tw-text-xs">
-                          {{ item.title }}
-                        </span>
-                      </div>
-                      <VSpacer />
-                      <VIcon
-                        icon="mdi-ice-cream"
-                        size="25"
-                        class="icons"
-                      />
-                    </template>
-                  </CustomRadiosWithIcon>
-                </span>
-              </VCardText>
-              <VCardText v-if="isCupcake">
-                <VRow>   
-                <VCol
-                    cols="12"
-                    md="6"
-                  >
+                <VRow>
+                  <VCol cols="12" md="4" class="mb-0 mb-md-3">
+                    <span class="d-block tw-text-tertiary mb-2">Sabor: 
+                      <strong class="tw-text-tertiary tw-text-base ms-1">{{ flavor }}</strong>
+                    </span>
+                    <span class="d-block tw-text-tertiary w-100">
+                      <VRadioGroup 
+                        v-model="flavor_id" 
+                        false-icon="mdi-circle-off-outline"
+                        true-icon="mdi-circle-slice-8"
+                        @update:model-value="chanceFlavor">
+                        <VRadio
+                          v-for="f in radioFlavor"
+                          :key="f.value"
+                          :value="f.value"
+                          color="primary"
+                        >
+                        <template #label>
+                          <span class="ms-2">
+                            {{ f.title }}
+                          </span>
+                        </template>
+                      </VRadio>
+                      </VRadioGroup>
+                    </span>
+                  </VCol>
+                  <VCol cols="12" md="4" class="mb-0 mb-md-3">
+                    <span class="d-block tw-text-tertiary mb-2">Relleno: 
+                      <strong class="tw-text-tertiary tw-text-base ms-1">{{ filling }}</strong>
+                    </span>
+                    <span class="d-block tw-text-tertiary w-100">
+                      <VRadioGroup 
+                        v-model="filling_id" 
+                        false-icon="mdi-circle-off-outline"
+                        true-icon="mdi-circle-slice-8"
+                        @update:model-value="chanceFilling">
+                        <VRadio
+                          v-for="f in radioFilling"
+                          :key="f.value"
+                          :value="f.value"
+                          color="primary"
+                        >
+                        <template #label>
+                          <span class="ms-2">
+                            {{ f.title }}
+                          </span>
+                        </template>
+                      </VRadio>
+                      </VRadioGroup>
+                    </span>
+                  </VCol>
+                  <VCol cols="12" md="4">
+                    <span class="d-block tw-text-tertiary mb-2">Diseño: 
+                      <strong class="tw-text-tertiary tw-text-base ms-1">{{ is_simple === '1' ? 'Sencillo' : 'Personalizado' }}</strong>
+                    </span>
+                    <span class="d-block tw-text-tertiary w-100 mb-5">
+                      <VRadioGroup 
+                        v-model="is_simple"
+                        false-icon="mdi-circle-off-outline"
+                        true-icon="mdi-circle-slice-8"
+                        @update:modelValue="chanceDesing">
+                        <VRadio
+                          value="1"
+                          color="primary"
+                        >
+                          <template #label>
+                            <span class="ms-2">
+                              Sencillo
+                            </span>
+                          </template>
+                        </VRadio>
+                        <VRadio
+                          value="0"
+                          color="primary"
+                          >
+                          <template #label>
+                            <span class="ms-2">
+                              Personalizado
+                            </span>
+                          </template>
+                        </VRadio>
+                      </VRadioGroup>
+                    </span>
                     <VAutocomplete
-                      v-model="cake_type_id"
-                      label="Tipo de tortas"
+                      variant="outlined"
+                      v-model="cake_type"
+                      label="Tipo"
                       :items="listCakeTypes"
                       item-title="name"
                       item-value="name"
                       autocomplete="off"
-                      @update:model-value="selectCakeType(cake_type_id)"
-                      clearable/>
+                      @update:model-value="selectCakeType(cake_type)"
+                      />
+
+                      <VAutocomplete
+                        variant="outlined"
+                        v-model="cake_size"
+                        label="Tamaño"
+                        :items="getCakeSizes"
+                        autocomplete="off"
+                        @update:model-value="selectCakeSize(cake_size)" />
                   </VCol>
-                  <VCol
-                    cols="12"
-                    md="6"
-                  >
-                    <VAutocomplete
-                      v-model="cake_size_id"
-                      label="Tamaño de tortas"
-                      :items="getCakeSizes"
-                      autocomplete="off"
-                      clearable
-                      @update:model-value="selectCakeSize(cake_size_id)" />
-                  </VCol>
-                  </VRow>
+                </VRow> 
               </VCardText>
               <VCardText class="p-0 d-block border-title mt-2" v-if="single_description !== null && single_description.length > 10">
                 <span class="d-block tw-text-tertiary ms-5 mb-2 tw-leading-5" v-html="single_description" />
@@ -780,38 +841,6 @@ const openCalendar = () => {
 
   .text-pink-accent-3 {
     color: #FF0090 !important;
-  }
-
-  .v-text-field::v-deep(.v-field) { 
-    border: 0 !important;
-    height: 30px;
-    box-shadow: none;
-  } 
-
-  .v-text-field::v-deep(.v-field__input){
-    min-height: 30px;
-    padding: 0 !important;
-    width: 20px;
-    text-align: center;
-  }
-  
-  .v-text-field::v-deep(.v-field__field) { 
-    height: 30px;
-  }
-
-  .v-text-field::v-deep(::placeholder) { 
-    color: #0A1B33 !important;
-    opacity: inherit;
-  }
-
-  .v-text-field::v-deep(input) { 
-    padding: 0 0 0 5px !important;
-    color: #0A1B33 !important;
-  }
-  
-  .v-text-field::v-deep(.v-input__details){
-    padding: 0;
-    min-height: 0;
   }
 
   .heart:hover::v-deep(path), .shoppinp_cart:hover::v-deep(path) {
@@ -1264,6 +1293,58 @@ input[altinputclass="inlinePicker"] {
 </style>
 
 <style scoped>
+
+  .v-radio-group::v-deep(.v-input__details) { 
+    min-height: 0px;
+    height: 0px;
+    padding: 0;
+  }
+
+  .v-text-field::v-deep(.v-field__append-inner) { 
+    padding-top: 8px !important;
+    align-items: start !important;
+  }
+
+  .v-text-field::v-deep(.v-field) { 
+    border-radius: 24px;
+    height: 35px;
+    font-size: 14px;
+  }
+
+  .v-text-field::v-deep(.v-field-label) {
+    top: 33% !important;
+    font-size: 14px !important;
+  }
+
+  .v-text-field::v-deep(.v-field__outline__start) {
+    flex: 0 0 17px !important;
+  }
+
+  .v-text-field::v-deep(::placeholder) { 
+    color: #0A1B33 !important;
+    opacity: inherit;
+  }
+
+  .v-text-field::v-deep(input) { 
+    padding-top: 0 !important;
+    padding-left: 20px !important;
+  }
+
+  .v-text-field::v-deep(.v-input__details) {
+    min-height: 15px !important;
+  }
+
+  .v-autocomplete::v-deep(.v-field__overlay) {
+    background: white !important;
+  }
+
+  .v-autocomplete::v-deep(.v-field__input) { 
+    padding-top: 0 !important;
+  }
+
+  .v-autocomplete::v-deep(.v-input__prepend) {
+    margin-inline-end: 0 !important;
+  }
 
   .btn-date {
     padding: 0 27px;
