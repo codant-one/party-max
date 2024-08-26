@@ -210,8 +210,6 @@ async function fetchData() {
     });
 
     if(cupcakes.value.length > 0) {
-      listFlavors.value = []
-      listFillings.value = []
       await miscellaneousStores.fetchDataCupcake();
       loadData()
     }
@@ -236,6 +234,9 @@ const loadData = () => {
 
   flavor_id.value = listFlavors.value[0].id
   flavor.value = listFlavors.value[0].name
+
+  radioFlavor.value = []
+  radioFilling.value = []
 
   listFlavors.value.forEach(element => { 
     var aux = {
