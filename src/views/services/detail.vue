@@ -210,6 +210,8 @@ async function fetchData() {
     });
 
     if(cupcakes.value.length > 0) {
+      listFlavors.value = []
+      listFillings.value = []
       await miscellaneousStores.fetchDataCupcake();
       loadData()
     }
