@@ -580,7 +580,15 @@ const openCalendar = () => {
                     </span>
                   </VCol>
                   <VCol cols="12" md="4">
-                    <span class="d-block tw-text-tertiary mb-2">Diseño: 
+                    <VAutocomplete
+                        variant="outlined"
+                        v-model="cake_size"
+                        label="Tamaño"
+                        :items="getCakeSizes"
+                        autocomplete="off"
+                        @update:model-value="selectCakeSize(cake_size)" />
+
+                <!--<span class="d-block tw-text-tertiary mb-2">Diseño: 
                       <strong class="tw-text-tertiary tw-text-base ms-1">{{ is_simple === '1' ? 'Sencillo' : 'Personalizado' }}</strong>
                     </span>
                     <span class="d-block tw-text-tertiary w-100 mb-5">
@@ -620,15 +628,9 @@ const openCalendar = () => {
                       item-value="name"
                       autocomplete="off"
                       @update:model-value="selectCakeType(cake_type)"
-                      />
+                      />-->
 
-                      <VAutocomplete
-                        variant="outlined"
-                        v-model="cake_size"
-                        label="Tamaño"
-                        :items="getCakeSizes"
-                        autocomplete="off"
-                        @update:model-value="selectCakeSize(cake_size)" />
+                      
                   </VCol>
                 </VRow> 
               </VCardText>
