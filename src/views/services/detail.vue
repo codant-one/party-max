@@ -571,10 +571,13 @@ const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1
                     <span class="d-block tw-text-tertiary mb-4" v-if="is_simple === '0'">Subir diseño: </span>
                     <span class="d-block tw-text-tertiary w-100" v-if="is_simple === '0'">
                       <VFileInput 
-                        label="File input"
-                         :rules="rules"
+                        label="Subir archivo"
+                        :rules="rules"
                         accept="image/png, image/jpeg, image/bmp"
-                        density="compact">
+                        variant="outlined"
+                        density="compact"
+                        class="custom-file-input"
+                      >
                         <template #selection="{ fileNames }">
                           <template
                             v-for="fileName in fileNames"
@@ -584,7 +587,7 @@ const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1
                               label
                               size="small"
                               color="primary"
-                              class="me-2"
+                              class="file-chip"
                             >
                               {{ fileName }}
                             </VChip>
@@ -979,7 +982,12 @@ const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1
   .col-recomendaciones span {
     font-size: 14px;
   }
- 
+
+  .custom-file-input::v-deep(.v-field)
+  {
+    border-radius: 40px;
+  }
+
 </style>
 
 
