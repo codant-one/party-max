@@ -321,30 +321,6 @@ const chanceFlavor = (value) => {
   }
 }
 
-const chanceDesing = (value) => {
-  const new_data = cupcakes.value.filter(item => item.is_simple === parseInt(value) && item.cake_size_id === cake_size_id.value);
-  const item_value = (new_data.length > 0) ? parseInt(value) : cupcakes.value[0].is_simple
-  const data = cupcakes.value.filter(item => item.is_simple === item_value);
-
-  const cakeTypes = data.map(item => item.cake_size.cake_type);
-  listCakeTypes.value = Array.from(new Set(cakeTypes.map(JSON.stringify))).map(JSON.parse);
-
-  const cakeSizes = data.map(item => item.cake_size);
-  listCakeSizes.value = Array.from(new Set(cakeSizes.map(JSON.stringify))).map(JSON.parse);
-
-  if(new_data.length > 0) {
-    price.value = new_data[0].price
-  } else {
-    is_simple.value = cupcakes.value[0].is_simple.toString()
-    cake_type.value = cupcakes.value[0].cake_size.cake_type.name
-    cake_type_id.value = cupcakes.value[0].cake_size.cake_type_id
-    selectCakeType(cake_type.value)
-    cake_size.value = cupcakes.value[0].cake_size.name
-    cake_size_id.value = cupcakes.value[0].cake_size.id
-    price.value = cupcakes.value[0].price
-  }
-}
-
 const chanceFilling = (value) => {
   if (Number.isInteger(Number(value.id))) {        
       var seleted =  listFillings.value.filter(item => item.id === Number(value.id))[0]
@@ -407,6 +383,8 @@ const openCalendar = () => {
     calendar.value.$el.click();
   }
 };
+
+const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1000000 || 'Avatar size should be less than 1 MB!']
 
 </script>
 
@@ -580,57 +558,40 @@ const openCalendar = () => {
                     </span>
                   </VCol>
                   <VCol cols="12" md="4">
-                    <VAutocomplete
+                    <span class="d-block tw-text-tertiary mb-4">Tamaño: </span>
+                    <span class="d-block tw-text-tertiary w-100">
+                      <VAutocomplete
                         variant="outlined"
                         v-model="cake_size"
-                        label="Tamaño"
                         :items="getCakeSizes"
                         autocomplete="off"
                         @update:model-value="selectCakeSize(cake_size)" />
-
-                <!--<span class="d-block tw-text-tertiary mb-2">Diseño: 
-                      <strong class="tw-text-tertiary tw-text-base ms-1">{{ is_simple === '1' ? 'Sencillo' : 'Personalizado' }}</strong>
                     </span>
-                    <span class="d-block tw-text-tertiary w-100 mb-5">
-                      <VRadioGroup 
-                        v-model="is_simple"
-                        false-icon="mdi-circle-off-outline"
-                        true-icon="mdi-circle-slice-8"
-                        @update:modelValue="chanceDesing">
-                        <VRadio
-                          value="1"
-                          color="primary"
-                        >
-                          <template #label>
-                            <span class="ms-2">
-                              Sencillo
-                            </span>
-                          </template>
-                        </VRadio>
-                        <VRadio
-                          value="0"
-                          color="primary"
+
+                    <span class="d-block tw-text-tertiary mb-4" v-if="is_simple === '0'">Subir diseño: </span>
+                    <span class="d-block tw-text-tertiary w-100" v-if="is_simple === '0'">
+                      <VFileInput 
+                        label="File input"
+                         :rules="rules"
+                        accept="image/png, image/jpeg, image/bmp"
+                        density="compact">
+                        <template #selection="{ fileNames }">
+                          <template
+                            v-for="fileName in fileNames"
+                            :key="fileName"
                           >
-                          <template #label>
-                            <span class="ms-2">
-                              Personalizado
-                            </span>
+                            <VChip
+                              label
+                              size="small"
+                              color="primary"
+                              class="me-2"
+                            >
+                              {{ fileName }}
+                            </VChip>
                           </template>
-                        </VRadio>
-                      </VRadioGroup>
+                        </template>
+                      </VFileInput>
                     </span>
-                    <VAutocomplete
-                      variant="outlined"
-                      v-model="cake_type"
-                      label="Tipo"
-                      :items="listCakeTypes"
-                      item-title="name"
-                      item-value="name"
-                      autocomplete="off"
-                      @update:model-value="selectCakeType(cake_type)"
-                      />-->
-
-                      
                   </VCol>
                 </VRow> 
               </VCardText>
