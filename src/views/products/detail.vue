@@ -496,7 +496,9 @@ const decrement = () => {
                 v-if="productImages.length > 0"
                 >
                 <swiper-slide v-for="(picture, index) in productImages" :key="index">
+                  <img v-if="isMobile" :src="baseURL + picture.image" />
                   <vue-image-zoomer
+                    v-else
                     :regular="baseURL + picture.image"
                     :zoom-amount="3" 
                   />
@@ -1146,6 +1148,10 @@ const decrement = () => {
   }
 
   @media only screen and (max-width: 767px) {
+
+    .border-img {
+      padding: 10px !important;
+    }
 
     .col-recomendaciones p {
       font-size: 16px;

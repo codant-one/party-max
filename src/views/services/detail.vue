@@ -87,6 +87,7 @@ const description = ref(null)
 const categories = ref([])
 const tags = ref([])
 const cupcakes = ref([])
+const file = ref(null)
 
 const load = ref(false)
 const imageAux = ref('')
@@ -105,6 +106,10 @@ const isError = ref(false)
 const isPending = ref(false)
 
 // calendar
+const addDays = (date, days) => {
+  const result = new Date(date);
+  return result.setDate(result.getDate() + days);
+}
 const date = ref(null)
 const calendar = ref()
 const config = ref({
@@ -113,7 +118,8 @@ const config = ref({
   noCalendar: false,
   dateFormat: "Y-m-d h:i K",
   time_24hr: false,
-  minDate: new Date()
+  minDate: addDays(new Date(), 3),
+  disableMobile: true
 })
 
 const listFlavors = ref([])
@@ -138,12 +144,14 @@ const radioFilling = ref([])
 watch(() => 
   route.path,(newPath, oldPath) => {
     thumbsSwiper.value.destroy(false, true)
+    date.value = null
   }
 );
 
 watch(() => 
   route.query,(newPath, oldPath) => {
     thumbsSwiper.value.destroy(false, true)
+    date.value = null
   }
 );
 
@@ -247,12 +255,12 @@ const loadData = () => {
     radioFlavor.value.push(aux)
   });
 
-  filling_id.value = listFillings.value[0].id.toString()
+  filling_id.value = listFillings.value[0].id
   filling.value = listFillings.value[0].name
 
   listFillings.value.forEach(element => { 
     var aux = {
-      value: element.id.toString(),
+      value: element.id,
       title: element.name,
     }
 
@@ -313,21 +321,19 @@ const selectCakeSize = (cakeSize) => {
 
 const chanceFlavor = (value) => {
   if (Number.isInteger(Number(value))) {        
-      var seleted =  listFlavors.value.filter(item => item.id === Number(value))[0]
+      var selected =  listFlavors.value.filter(item => item.id === Number(value))[0]
     
-      flavor.value = seleted?.name
-      flavor_id.value = seleted?.id
-
+      flavor.value = selected?.name
+      flavor_id.value = selected?.id
   }
 }
 
 const chanceFilling = (value) => {
-  if (Number.isInteger(Number(value.id))) {        
-      var seleted =  listFillings.value.filter(item => item.id === Number(value.id))[0]
-    
-      filling.value = seleted?.name
-      filling_id.value = seleted?.id.toString()
+  if (Number.isInteger(Number(value))) {        
+      var selected =  listFillings.value.filter(item => item.id === Number(value))[0]
 
+      filling.value = selected?.name
+      filling_id.value = selected?.id
   }
 }
 
@@ -372,6 +378,44 @@ const setThumbsSwiper = (swiper) => {
 
 const addCart = () => {
 
+  if(cartStores.getCount === 0) {
+    if(date.value !== null) {
+      if(isCupcake.value && is_simple.value === '0' && (file.value === null || typeof file.value === 'undefined')) { 
+        isDialogVisible.value = true
+        message.value = 'Debes cargar el archivo personalizado para el servicio'
+        isError.value = true
+
+        setTimeout(() => {
+          isDialogVisible.value = false
+          isError.value = false
+          message.value = ''
+        }, 3000)
+      }
+
+    } else {
+
+      isDialogVisible.value = true
+      message.value = 'Debes agregar una fecha para la orden'
+      isError.value = true
+
+      setTimeout(() => {
+        isDialogVisible.value = false
+        isError.value = false
+        message.value = ''
+      }, 3000)
+    }
+  } else {
+    isDialogVisible.value = true
+    message.value = 'Debes gestionar los servicios y productos por separado'
+    isError.value = true
+
+    setTimeout(() => {
+      isDialogVisible.value = false
+      isError.value = false
+      message.value = ''
+    }, 3000)
+  }
+  
 }
 
 const addfavorite = () => {
@@ -384,7 +428,7 @@ const openCalendar = () => {
   }
 };
 
-const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1000000 || 'Avatar size should be less than 1 MB!']
+const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1000000 || '¡El tamaño del archivo debe ser menor a 1 MB!']
 
 </script>
 
@@ -487,7 +531,9 @@ const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1
                 v-if="serviceImages.length > 0"
                 >
                 <swiper-slide v-for="(picture, index) in serviceImages" :key="index">
+                  <img v-if="isMobile" :src="baseURL + picture.image" />
                   <vue-image-zoomer
+                    v-else
                     :regular="baseURL + picture.image"
                     :zoom-amount="3" 
                   />
@@ -568,14 +614,15 @@ const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1
                         @update:model-value="selectCakeSize(cake_size)" />
                     </span>
 
-                    <span class="d-block tw-text-tertiary mb-4" v-if="is_simple === '0'">Subir diseño: </span>
+                    <span class="d-block tw-text-tertiary mb-4" v-if="is_simple === '0'">Diseño: </span>
                     <span class="d-block tw-text-tertiary w-100" v-if="is_simple === '0'">
                       <VFileInput 
-                        label="Subir archivo"
+                        v-model="file"
                         :rules="rules"
+                        label="Subir archivo"
                         accept="image/png, image/jpeg, image/bmp"
                         variant="outlined"
-                        density="compact"
+                        prepend-icon="mdi-file-image-outline"
                         class="custom-file-input"
                       >
                         <template #selection="{ fileNames }">
@@ -588,6 +635,8 @@ const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1
                               size="small"
                               color="primary"
                               class="file-chip"
+                              closable
+                              @click:close="file = null"
                             >
                               {{ fileName }}
                             </VChip>
@@ -601,22 +650,24 @@ const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1
               <VCardText class="p-0 d-block border-title mt-2" v-if="single_description !== null && single_description.length > 10">
                 <span class="d-block tw-text-tertiary ms-5 mb-2 tw-leading-5" v-html="single_description" />
               </VCardText>
-              <VCardText class="p-0 d-block border-title">
+              <VCardText class="p-0 d-block d-md-flex align-center text-center border-title">
                 <VBtn 
-                  class="mx-5 my-5 btn-date" 
+                  class="mx-2 my-2 mx-md-5 my-md-5 btn-date" 
                   variant="outlined"
                   @click="openCalendar" >
                     <calendar_icon class="mr-2"/>
                     Elegir fecha y hora
                     <flat-pickr
                       v-model="date"
-                      ref="calendar"  
-                      class="hidden"
+                      ref="calendar"
                       :config="config"
                     />
                 </VBtn>
+                <div class="d-flex py-2 justify-content-center md:tw-justify-start ">
+                  <span class="text_1">{{ date }}</span>
+                </div>
               </VCardText>
-              <VCardText class="p-0 d-flex border-title">
+              <VCardText class="p-0 d-flex border-title justify-content-center md:tw-justify-start ">
                 <VBtn 
                   variant="flat"
                   @click="addCart"
@@ -983,9 +1034,38 @@ const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1
     font-size: 14px;
   }
 
-  .custom-file-input::v-deep(.v-field)
-  {
+  .custom-file-input::v-deep(.v-field) {
     border-radius: 40px;
+    height: 35px;
+  }
+
+  .custom-file-input::v-deep(.v-field-label) {
+    top: 18px !important;
+  }
+
+  .custom-file-input::v-deep(.v-input__prepend) {
+    margin-inline-end: 5px !important;
+  }
+
+  .custom-file-input::v-deep(.v-field__outline__start) {
+    flex: 0 0 48px !important;
+  }
+
+  .custom-file-input::v-deep(.v-label.v-field-label--floating) {
+    display: none !important;
+  }
+
+  .custom-file-input::v-deep(.v-field__input) {
+    padding: 0 0 0 15px !important;
+    min-height: 35px !important;
+  }
+
+  .custom-file-input::v-deep(.v-field__clearable > .v-icon) {
+    display: none !important;
+  }
+
+  .custom-file-input::v-deep(.v-field__clearable) {
+    margin: 0 !important;
   }
 
 </style>
@@ -993,7 +1073,6 @@ const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1
 
 <style lang="scss">
 /* stylelint-disable no-descending-specificity */
-@import "flatpickr/dist/flatpickr.css";
 
 .flat-picker-custom-style {
   position: absolute;
@@ -1330,7 +1409,8 @@ input[altinputclass="inlinePicker"] {
   }
 
   .btn-date:hover::v-deep(path) {
-    fill: white;
+    fill: #0A1B33;
+    stroke: white;
   }
 
   .btn-date:hover {
@@ -1484,6 +1564,10 @@ input[altinputclass="inlinePicker"] {
 
   @media only screen and (max-width: 767px) {
 
+    .border-img {
+      padding: 10px !important;
+    }
+
     .col-recomendaciones p {
       font-size: 16px;
     }
@@ -1530,6 +1614,12 @@ input[altinputclass="inlinePicker"] {
     }
     
     .btn-register {
+      width: auto;
+      height: 50px;
+      font-size: 10px;
+    }
+
+    .btn-date {
       width: auto;
       height: 50px;
       font-size: 10px;

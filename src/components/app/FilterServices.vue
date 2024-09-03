@@ -49,7 +49,7 @@ async function fetchData() {
     openedSubGroups.value = []
     category.value = null 
 
-    if (route.query.category && route.query.category !== 'all') {
+    if (route.query.category && route.query.category !== 'all' && route.name === 'services') {
         panelCat.value = null
         category.value = {
             title: categories.value.filter(item => item.slug === route.query.category)[0].name,

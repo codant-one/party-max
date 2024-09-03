@@ -26,6 +26,9 @@
   import icon6 from '@assets/icons/hora-loca.svg?inline';
   import icon7 from '@assets/icons/desechables.svg?inline';
   import icon8 from '@assets/icons/sorpresas.svg?inline';
+  import icon9 from '@assets/icons/dulces.svg?inline';
+  import icon10 from '@assets/icons/animación.svg?inline';
+  import icon11 from '@assets/icons/mobiliario.svg?inline';
 
   const color = ref('#FF0090')
   
@@ -64,7 +67,7 @@
   const openedGroups = ref([]);
   const panelCat = ref(null);
 
-  const items = ref([
+  const items_products = ref([
     { text: 'Fiestas infantiles', icon: markRaw(icon1), slug: 'fiestas-infantiles' },
     { text: 'Fiestas temáticas', icon: markRaw(icon2), slug: 'fiestas-tematicas' },
     { text: 'Fechas especiales', icon: markRaw(icon3), slug: 'fechas-especiales' },
@@ -73,6 +76,15 @@
     { text: 'Hora loca', icon: markRaw(icon6), slug: 'hora-loca' },
     { text: 'Desechables', icon: markRaw(icon7), slug: 'desechables' },
     { text: 'Sorpresas', icon: markRaw(icon8), slug: 'sorpresas' }
+  ])
+
+  const items_services = ref([
+    { text: 'Animadores de Fiestas', icon: markRaw(icon10), slug: 'animadores-de-fiestas' },
+    { text: 'Dulces y Ponques', icon: markRaw(icon9), slug: 'dulces-y-ponques' },
+    { text: 'Comida', icon: markRaw(icon7), slug: 'comida' },
+    { text: 'Musica', icon: markRaw(icon2), slug: 'musica' },
+    { text: 'Renta de Mobiliario', icon: markRaw(icon11), slug: 'renta-de-mobiliario' },
+    { text: 'Inflables', icon: markRaw(icon1), slug: 'inflables' }
   ])
 
   watch(() => 
@@ -760,9 +772,9 @@
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
                             @click="redirect_('categories', item.slug)">
-                              <component v-if="items.filter(e => e.slug === item.slug).length === 1" :is="items.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
+                              <component v-if="items_products.filter(e => e.slug === item.slug).length === 1" :is="items_products.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                               <component v-else :is="icon5" class="me-3" />
-                              {{ item.name }} 
+                              {{ item.name }}
                           </span>
                           <router-link 
                             :to="{
@@ -771,8 +783,8 @@
                                 category: item.slug
                               }
                             }" 
-                            class="subtitle-menu tw-no-underline" v-else>
-                            <component v-if="items.filter(e => e.slug === item.slug).length === 1" :is="items.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
+                            class="subtitle-menu d-flex align-center tw-no-underline" v-else>
+                            <component v-if="items_products.filter(e => e.slug === item.slug).length === 1" :is="items_products.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                             <component v-else :is="icon5" class="me-3" />
                             {{ item.name }}
                           </router-link> 
@@ -841,7 +853,7 @@
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
                             @click="redirect_('categories', item.slug)">
-                              <component v-if="items.filter(e => e.slug === item.slug).length === 1" :is="items.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
+                              <component v-if="items_services.filter(e => e.slug === item.slug).length === 1" :is="items_services.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                               <component v-else :is="icon5" class="me-3" />
                               {{ item.name }} 
                           </span>
@@ -852,8 +864,8 @@
                                 category: item.slug
                               }
                             }" 
-                            class="subtitle-menu tw-no-underline" v-else>
-                            <component v-if="items.filter(e => e.slug === item.slug).length === 1" :is="items.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
+                            class="subtitle-menu d-flex align-center tw-no-underline" v-else>
+                            <component v-if="items_services.filter(e => e.slug === item.slug).length === 1" :is="items_services.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                             <component v-else :is="icon5" class="me-3" />
                             {{ item.name }}
                           </router-link> 

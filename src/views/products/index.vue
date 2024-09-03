@@ -182,9 +182,10 @@ async function fetchData() {
     }, []);
 
     toggle.value = positions
-  }
-
-  if (route.query.category && route.query.category !== 'all') {
+  } else 
+    toggle.value = []
+  
+    if (route.query.category && route.query.category !== 'all') {
     panelCat.value = null
     category.value = {
       title: categories.value.filter(item => item.slug === route.query.category)[0].name,
@@ -312,9 +313,6 @@ const colorAction = () => {
   router.push({ 
     name: 'products', 
     query: {
-      category: route.query.category,
-      fathercategory: route.query.fathercategory,
-      subcategory: route.query.subcategory,
       colorId: colorsSelected.value.join(","),
       wholesalers: route.query.wholesalers === 'true' ? true : false
     }
@@ -429,7 +427,6 @@ const addfavorite = (product_id) => {
                         name: 'products',
                         query: {
                           category: i.slug.split('/')[0],
-                          colorId: colorsSelected.join(','),
                           wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -445,7 +442,6 @@ const addfavorite = (product_id) => {
                           name: 'products',
                           query: {
                             category: i.slug.split('/')[0],
-                            colorId: colorsSelected.join(','),
                             wholesalers: route.query.wholesalers === 'true' ? true : false
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -471,7 +467,6 @@ const addfavorite = (product_id) => {
                           query: {
                             category: i.slug.split('/')[0],
                             subcategory: j.slug.split('/')[1],
-                            colorId: colorsSelected.join(','),
                             wholesalers: route.query.wholesalers === 'true' ? true : false
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary">
@@ -487,7 +482,6 @@ const addfavorite = (product_id) => {
                               query: {
                                 category: i.slug.split('/')[0],
                                 subcategory: j.slug.split('/')[1],
-                                colorId: colorsSelected.join(','),
                                 wholesalers: route.query.wholesalers === 'true' ? true : false
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -513,7 +507,6 @@ const addfavorite = (product_id) => {
                                 category: i.slug.split('/')[0],
                                 fathercategory: j.slug.split('/')[1],
                                 subcategory: k.slug.split('/')[2],
-                                colorId: colorsSelected.join(','),
                                 wholesalers: route.query.wholesalers === 'true' ? true : false
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -537,7 +530,6 @@ const addfavorite = (product_id) => {
                       name: 'products',
                         query: {
                           category: route.query.category,
-                          colorId: colorsSelected.join(','),
                           wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -555,7 +547,6 @@ const addfavorite = (product_id) => {
                         query: {
                           category: route.query.category,
                           subcategory: route.query.fathercategory,
-                          colorId: colorsSelected.join(','),
                           wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -586,7 +577,6 @@ const addfavorite = (product_id) => {
                       name: 'products',
                         query: {
                           category: route.query.category,
-                          colorId: colorsSelected.join(','),
                           wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -613,7 +603,6 @@ const addfavorite = (product_id) => {
                         category: route.query.category,
                         fathercategory: route.query.subcategory,
                         subcategory: j.slug.split('/')[2],
-                        colorId: colorsSelected.join(','),
                         wholesalers: route.query.wholesalers === 'true' ? true : false
                       },
                     }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -644,7 +633,6 @@ const addfavorite = (product_id) => {
                         query: {
                           category: route.query.category,
                           subcategory: j.slug.split('/')[1],
-                          colorId: colorsSelected.join(','),
                           wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -660,7 +648,6 @@ const addfavorite = (product_id) => {
                             query: {
                               category: route.query.category,
                               subcategory: j.slug.split('/')[1],
-                              colorId: colorsSelected.join(','),
                               wholesalers: route.query.wholesalers === 'true' ? true : false
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -686,7 +673,6 @@ const addfavorite = (product_id) => {
                               category: route.query.category,
                               fathercategory: j.slug.split('/')[1],
                               subcategory: k.slug.split('/')[2],
-                              colorId: colorsSelected.join(','),
                               wholesalers: route.query.wholesalers === 'true' ? true : false
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -858,7 +844,6 @@ const addfavorite = (product_id) => {
                       category: route.query.category,
                       fathercategory: route.query.fathercategory,
                       subcategory: i.slug.split('/')[2],
-                      colorId: colorsSelected.join(','),
                       wholesalers: route.query.wholesalers === 'true' ? true : false
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
@@ -887,7 +872,6 @@ const addfavorite = (product_id) => {
                         category: route.query.category,
                         fathercategory: route.query.fathercategory,
                         subcategory: i.slug.split('/')[2],
-                        colorId: colorsSelected.join(','),
                         wholesalers: route.query.wholesalers === 'true' ? true : false
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">
@@ -919,7 +903,6 @@ const addfavorite = (product_id) => {
                       category: route.query.category,
                       fathercategory: route.query.subcategory,
                       subcategory: i.slug.split('/')[2],
-                      colorId: colorsSelected.join(','),
                       wholesalers: route.query.wholesalers === 'true' ? true : false
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
@@ -947,7 +930,6 @@ const addfavorite = (product_id) => {
                         category: route.query.category,
                         fathercategory: route.query.subcategory,
                         subcategory: i.slug.split('/')[2],
-                        colorId: colorsSelected.join(','),
                         wholesalers: route.query.wholesalers === 'true' ? true : false
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">
@@ -978,7 +960,6 @@ const addfavorite = (product_id) => {
                     query: {
                       category: route.query.category,
                       subcategory: i.slug.split('/')[1],
-                      colorId: colorsSelected.join(','),
                       wholesalers: route.query.wholesalers === 'true' ? true : false
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
@@ -1006,7 +987,6 @@ const addfavorite = (product_id) => {
                       query: {
                         category: route.query.category,
                         subcategory: i.slug.split('/')[1],
-                        colorId: colorsSelected.join(','),
                         wholesalers: route.query.wholesalers === 'true' ? true : false
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">
@@ -1037,7 +1017,6 @@ const addfavorite = (product_id) => {
                     query: {
                       category: route.query.category,
                       subcategory: i.slug.split('/')[1],
-                      colorId: colorsSelected.join(','),
                       wholesalers: route.query.wholesalers === 'true' ? true : false
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
@@ -1064,7 +1043,6 @@ const addfavorite = (product_id) => {
                       query: {
                         category: route.query.category,
                         subcategory: i.slug.split('/')[1],
-                        colorId: colorsSelected.join(','),
                         wholesalers: route.query.wholesalers === 'true' ? true : false
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">

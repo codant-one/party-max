@@ -66,7 +66,8 @@ async function fetchData() {
         }, []);
 
         toggle.value = positions
-    }
+    } else 
+      toggle.value = []
 
     if (route.query.category && route.query.category !== 'all') {
         panelCat.value = null
@@ -98,9 +99,6 @@ const colorAction = () => {
     router.push({ 
         name: 'products', 
         query: {
-            category: route.query.category,
-            fathercategory: route.query.fathercategory,
-            subcategory: route.query.subcategory,
             colorId: colorsSelected.value.join(","),
             wholesalers: route.query.wholesalers === 'true' ? true : false
         }
@@ -179,7 +177,6 @@ const toggleSubGroupFn = (index, subCat) => {
                         name: 'products',
                         query: {
                           category: i.slug.split('/')[0],
-                          colorId: colorsSelected.join(','),
                           wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -195,7 +192,6 @@ const toggleSubGroupFn = (index, subCat) => {
                           name: 'products',
                           query: {
                             category: i.slug.split('/')[0],
-                            colorId: colorsSelected.join(','),
                             wholesalers: route.query.wholesalers === 'true' ? true : false
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -221,7 +217,6 @@ const toggleSubGroupFn = (index, subCat) => {
                           query: {
                             category: i.slug.split('/')[0],
                             subcategory: j.slug.split('/')[1],
-                            colorId: colorsSelected.join(','),
                             wholesalers: route.query.wholesalers === 'true' ? true : false
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary">
@@ -237,7 +232,6 @@ const toggleSubGroupFn = (index, subCat) => {
                               query: {
                                 category: i.slug.split('/')[0],
                                 subcategory: j.slug.split('/')[1],
-                                colorId: colorsSelected.join(','),
                                 wholesalers: route.query.wholesalers === 'true' ? true : false
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -263,7 +257,6 @@ const toggleSubGroupFn = (index, subCat) => {
                                 category: i.slug.split('/')[0],
                                 fathercategory: j.slug.split('/')[1],
                                 subcategory: k.slug.split('/')[2],
-                                colorId: colorsSelected.join(','),
                                 wholesalers: route.query.wholesalers === 'true' ? true : false
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -287,7 +280,6 @@ const toggleSubGroupFn = (index, subCat) => {
                       name: 'products',
                         query: {
                           category: route.query.category,
-                          colorId: colorsSelected.join(','),
                           wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -305,7 +297,6 @@ const toggleSubGroupFn = (index, subCat) => {
                         query: {
                           category: route.query.category,
                           subcategory: route.query.fathercategory,
-                          colorId: colorsSelected.join(','),
                           wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -336,7 +327,6 @@ const toggleSubGroupFn = (index, subCat) => {
                       name: 'products',
                         query: {
                           category: route.query.category,
-                          colorId: colorsSelected.join(','),
                           wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -363,7 +353,6 @@ const toggleSubGroupFn = (index, subCat) => {
                         category: route.query.category,
                         fathercategory: route.query.subcategory,
                         subcategory: j.slug.split('/')[2],
-                        colorId: colorsSelected.join(','),
                         wholesalers: route.query.wholesalers === 'true' ? true : false
                       },
                     }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -394,7 +383,6 @@ const toggleSubGroupFn = (index, subCat) => {
                         query: {
                           category: route.query.category,
                           subcategory: j.slug.split('/')[1],
-                          colorId: colorsSelected.join(','),
                           wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -410,7 +398,6 @@ const toggleSubGroupFn = (index, subCat) => {
                             query: {
                               category: route.query.category,
                               subcategory: j.slug.split('/')[1],
-                              colorId: colorsSelected.join(','),
                               wholesalers: route.query.wholesalers === 'true' ? true : false
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -436,7 +423,6 @@ const toggleSubGroupFn = (index, subCat) => {
                               category: route.query.category,
                               fathercategory: j.slug.split('/')[1],
                               subcategory: k.slug.split('/')[2],
-                              colorId: colorsSelected.join(','),
                               wholesalers: route.query.wholesalers === 'true' ? true : false
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
