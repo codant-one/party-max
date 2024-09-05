@@ -170,7 +170,7 @@ async function fetchData() {
     category.value = {
       title: categories.value.filter(item => item.slug === route.query.category)[0].name,
       disabled: false,
-      href: "services?category=" + route.query.category
+      href: `/services?category=${route.query.category}`
     };
 
     bread.value.push(category.value);
@@ -178,8 +178,8 @@ async function fetchData() {
     if (route.query.fathercategory) {
       const fathercategory = {
         title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name,
-        disabled: true,
-        href: "",
+        disabled: false,
+        href: `/services?category=${route.query.category}&subcategory=${route.query.fathercategory}`
       };
 
       category.value.fathercategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name
@@ -190,8 +190,8 @@ async function fetchData() {
     if (typeof route.query.fathercategory === 'undefined' && route.query.subcategory) {
       const subcategory = {
         title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name,
-        disabled: true,
-        href: "",
+        disabled: false,
+        href: `/services?category=${route.query.category}&subcategory=${route.query.subcategory}`
       };
 
       category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name
@@ -203,8 +203,8 @@ async function fetchData() {
     if (typeof route.query.fathercategory !== 'undefined' && route.query.subcategory) {
       const subcategory = {
         title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name,
-        disabled: true,
-        href: "",
+        disabled: false,
+        href: `/services?category=${route.query.category}&fathercategory=${route.query.fathercategory}&subcategory=${route.query.subcategory}`
       };
 
       category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name
@@ -689,8 +689,7 @@ const addfavorite = (service_id) => {
                     query: {
                       category: route.query.category,
                       fathercategory: route.query.fathercategory,
-                      subcategory: i.slug.split('/')[2],
-                      wholesalers: route.query.wholesalers === 'true' ? true : false
+                      subcategory: i.slug.split('/')[2]
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
@@ -710,8 +709,7 @@ const addfavorite = (service_id) => {
                       query: {
                         category: route.query.category,
                         fathercategory: route.query.fathercategory,
-                        subcategory: i.slug.split('/')[2],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: i.slug.split('/')[2]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
                       <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
@@ -736,8 +734,7 @@ const addfavorite = (service_id) => {
                       query: {
                         category: route.query.category,
                         fathercategory: route.query.fathercategory,
-                        subcategory: i.slug.split('/')[2],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: i.slug.split('/')[2]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
@@ -767,8 +764,7 @@ const addfavorite = (service_id) => {
                     query: {
                       category: route.query.category,
                       fathercategory: route.query.subcategory,
-                      subcategory: i.slug.split('/')[2],
-                      wholesalers: route.query.wholesalers === 'true' ? true : false
+                      subcategory: i.slug.split('/')[2]
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
                   <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
@@ -788,8 +784,7 @@ const addfavorite = (service_id) => {
                       query: {
                         category: route.query.category,
                         fathercategory: route.query.subcategory,
-                        subcategory: i.slug.split('/')[2],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: i.slug.split('/')[2]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
@@ -813,8 +808,7 @@ const addfavorite = (service_id) => {
                       query: {
                         category: route.query.category,
                         fathercategory: route.query.subcategory,
-                        subcategory: i.slug.split('/')[2],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: i.slug.split('/')[2]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
@@ -843,8 +837,7 @@ const addfavorite = (service_id) => {
                     name: 'services',
                     query: {
                       category: route.query.category,
-                      subcategory: i.slug.split('/')[1],
-                      wholesalers: route.query.wholesalers === 'true' ? true : false
+                      subcategory: i.slug.split('/')[1]
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
                   <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
@@ -863,8 +856,7 @@ const addfavorite = (service_id) => {
                       name: 'services',
                       query: {
                         category: route.query.category,
-                        subcategory: i.slug.split('/')[1],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: i.slug.split('/')[1]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
@@ -888,8 +880,7 @@ const addfavorite = (service_id) => {
                       name: 'services',
                       query: {
                         category: route.query.category,
-                        subcategory: i.slug.split('/')[1],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: i.slug.split('/')[1]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
@@ -918,8 +909,7 @@ const addfavorite = (service_id) => {
                     name: 'services',
                     query: {
                       category: route.query.category,
-                      subcategory: i.slug.split('/')[1],
-                      wholesalers: route.query.wholesalers === 'true' ? true : false
+                      subcategory: i.slug.split('/')[1]
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
                   <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
@@ -938,8 +928,7 @@ const addfavorite = (service_id) => {
                       name: 'services',
                       query: {
                         category: route.query.category,
-                        subcategory: i.slug.split('/')[1],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: i.slug.split('/')[1]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
@@ -962,8 +951,7 @@ const addfavorite = (service_id) => {
                       name: 'services',
                       query: {
                         category: route.query.category,
-                        subcategory: i.slug.split('/')[1],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: i.slug.split('/')[1]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>

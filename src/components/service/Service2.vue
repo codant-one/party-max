@@ -105,8 +105,11 @@ const addfavorite = () => {
                         <router-link
                             :to="{
                                 name: 'serviceDetail',
-                                params: {
-                                    slug: slug
+                                params: { slug: slug },
+                                query: {  
+                                    category: route.query.category,
+                                    fathercategory: route.query.fathercategory,
+                                    subcategory: route.query.subcategory
                                 }
                             }"
                             class="tw-no-underline">

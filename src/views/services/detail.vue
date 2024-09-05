@@ -8,6 +8,7 @@ import { ref } from 'vue';
 import { useMiscellaneousStores } from '@/stores/miscellaneous'
 import { useCartStores } from '@/stores/cart'
 import { useFavoritesStores } from '@/stores/favorites'
+import { useHomeStores } from "@/stores/home";
 import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { VueImageZoomer } from 'vue-image-zoomer'
@@ -43,6 +44,7 @@ const route = useRoute()
 const miscellaneousStores = useMiscellaneousStores()
 const cartStores = useCartStores()
 const favoritesStores = useFavoritesStores()
+const homeStores = useHomeStores();
 
 const isMobile = /Mobi/i.test(navigator.userAgent);
 
@@ -54,16 +56,12 @@ const searchFacebook = ref(null)
 const searchTwitter = ref(null)
 const searchLinkendin = ref(null)
 
+const category = ref(null);
 const bread = ref([
   {
     title: 'Home',
     disabled: false,
     href: '/',
-  },
-  {
-    title: 'Servicio',
-    disabled: true,
-    href: '',
   }
 ])
 
@@ -159,6 +157,14 @@ watchEffect(fetchData)
 
 async function fetchData() {
 
+  bread.value = [
+    {
+      title: "Home",
+      disabled: false,
+      href: "/"
+    }
+  ]
+
   if(localStorage.getItem('user_data')){
     const userData = localStorage.getItem('user_data')
     const userDataJ = JSON.parse(userData)
@@ -174,13 +180,15 @@ async function fetchData() {
 
  if(route.params.slug && route.path.startsWith('/services/')) {
 
+    await homeStores.fetchData();
+    categories.value = homeStores.getData.parentServices;
+
     await miscellaneousStores.getService(route.params.slug)
     data.value = miscellaneousStores.getData
 
     imageAux.value = [{ image : data.value.service.image }]
     imageMeta.value = baseURL.value + data.value.service.image
 
-    categories.value = data.value.service.categories.map(item => item.category.name)
     serviceImages.value = (data.value.service.images.length === 0) ? imageAux.value : data.value.service.images
 
     service_id.value = data.value.service.id
@@ -208,10 +216,6 @@ async function fetchData() {
     cupcakes.value = data.value.service.cupcakes
     isCupcake.value = data.value.service.cupcakes.length > 0 ? true : false
 
-    data.value.service.categories.forEach(element => { 
-      categories.value.push(element.category.name)
-    });
-
     tags.value = []
     data.value.service.tags.forEach(element => { 
       tags.value.push(element.tag.name)
@@ -231,6 +235,65 @@ async function fetchData() {
       image:  imageMeta.value,
       url: serviceUrl.value ,
     });
+
+    if (route.query.category) {
+      category.value = {
+        title: categories.value.filter(item => item.slug === route.query.category)[0].name,
+        disabled: false,
+        href: `/services?category=${route.query.category}&wholesalers=${route.query.wholesalers ?? 'false'}`
+      };
+
+      bread.value.push(category.value);
+
+      if (route.query.fathercategory) {
+        const fathercategory = {
+          title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name,
+          disabled: false,
+          href: `/services?category=${route.query.category}&subcategory=${route.query.fathercategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
+        };
+
+        category.value.fathercategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name
+        bread.value.push(fathercategory);
+      }
+
+      if (typeof route.query.fathercategory === 'undefined' && route.query.subcategory) {
+        const subcategory = {
+          title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name,
+          disabled: false,
+          href: `/services?category=${route.query.category}&subcategory=${route.query.subcategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
+        };
+
+        category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name
+        bread.value.push(subcategory);
+      }
+
+      if (typeof route.query.fathercategory !== 'undefined' && route.query.subcategory) {
+        const subcategory = {
+          title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name,
+          disabled: false,
+          href: `/services?category=${route.query.category}&fathercategory=${route.query.fathercategory}&subcategory=${route.query.subcategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
+        };
+
+        category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name
+        bread.value.push(subcategory);
+      }
+
+      if(!isMobile) {
+        const product_ = {
+          title: "Producto",
+          disabled: true,
+          href: "",
+        };
+
+        bread.value.push(product_);
+      }
+    } else {
+      bread.value.push({
+        title: 'Producto',
+        disabled: true,
+        href: '',
+      });
+    }
   }
   
   isLoading.value = false
@@ -694,14 +757,6 @@ const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1
                   indeterminate
                   color="primary"
                 />
-              </VCardText>
-              <VCardText class="p-0 d-block mt-5">
-                <span class="tw-text-tertiary" style="display: none;">Categorías: 
-                  <span class="ms-1">{{ categories.join(", ") }}</span>
-                </span>
-                <span class="d-block tw-text-tertiary">Tags: 
-                  <span class="ms-1">{{ tags.join(", ") }}</span>
-                </span>
               </VCardText>
             </VCol>
           </VRow>

@@ -8,6 +8,7 @@ import { ref } from 'vue'
 import { useMiscellaneousStores } from '@/stores/miscellaneous'
 import { useCartStores } from '@/stores/cart'
 import { useFavoritesStores } from '@/stores/favorites'
+import { useHomeStores } from "@/stores/home";
 import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { VueImageZoomer } from 'vue-image-zoomer'
@@ -41,6 +42,7 @@ const route = useRoute()
 const miscellaneousStores = useMiscellaneousStores()
 const cartStores = useCartStores()
 const favoritesStores = useFavoritesStores()
+const homeStores = useHomeStores();
 
 const isMobile = /Mobi/i.test(navigator.userAgent);
 
@@ -52,16 +54,12 @@ const searchFacebook = ref(null)
 const searchTwitter = ref(null)
 const searchLinkendin = ref(null)
 
+const category = ref(null);
 const bread = ref([
   {
     title: 'Home',
     disabled: false,
-    href: '/',
-  },
-  {
-    title: 'Producto',
-    disabled: true,
-    href: '',
+    href: '/'
   }
 ])
 
@@ -141,6 +139,14 @@ watchEffect(fetchData)
 
 async function fetchData() {
 
+  bread.value = [
+    {
+      title: "Home",
+      disabled: false,
+      href: "/"
+    }
+  ]
+
   if(localStorage.getItem('user_data')){
     const userData = localStorage.getItem('user_data')
     const userDataJ = JSON.parse(userData)
@@ -156,7 +162,10 @@ async function fetchData() {
   data.value = null
 
   if(route.params.slug && route.path.startsWith('/products/')) {
-    existence_whole.value = route.query.wholesale === 'true' ? true : false
+    existence_whole.value = route.query.wholesalers === 'true' ? true : false
+
+    await homeStores.fetchData();
+    categories.value = homeStores.getData.parentCategories;
 
     await miscellaneousStores.getProduct(route.params.slug)
     data.value = miscellaneousStores.getData
@@ -164,7 +173,6 @@ async function fetchData() {
     imageAux.value = [{ image : data.value.product.image }]
     imageMeta.value = baseURL.value + data.value.product.image
 
-    categories.value = data.value.product.colors[0]?.categories.map(item => item.category.name)
     productImages.value = (data.value.product.colors[0]?.images.length === 0) ? imageAux.value : data.value.product.colors[0]?.images
     color.value = data.value.product.colors[0]?.color.name
     selectedColor.value = data.value.product.colors[0]?.color.id.toString()
@@ -201,8 +209,8 @@ async function fetchData() {
     sku.value = data.value.product.colors[0].sku
     wholesale.value = data.value.product.wholesale === 1 ? true : false
     wholesale_price.value = data.value.product.wholesale_price
-    cant_prod.value = route.query.wholesale === 'true' ? data.value.product.wholesale_min : 1
-    wholesale_min.value = route.query.wholesale === 'true' ? data.value.product.wholesale_min : 1
+    cant_prod.value = route.query.wholesalers === 'true' ? data.value.product.wholesale_min : 1
+    wholesale_min.value = route.query.wholesalers === 'true' ? data.value.product.wholesale_min : 1
     price_for_sale.value = data.value.product.price_for_sale
     store.value = data.value.product.user.user_detail.store_name ?? (data.value.product.user.supplier?.company_name ?? (data.value.product.user.name + ' ' + (data.value.product.user.last_name ?? '')))
     in_stock.value = data.value.product.in_stock
@@ -216,10 +224,6 @@ async function fetchData() {
     height.value = data.value.product.detail.height
     deep.value = data.value.product.detail.deep
     material.value = data.value.product.detail.material
-
-    data.value.product.colors[0].categories.forEach(element => { 
-      categories.value.push(element.category.name)
-    });
 
     tags.value = []
     data.value.product.tags.forEach(element => { 
@@ -235,8 +239,67 @@ async function fetchData() {
       image:  imageMeta.value,
       url: productUrl.value ,
     });
+
+    if (route.query.category) {
+      category.value = {
+        title: categories.value.filter(item => item.slug === route.query.category)[0].name,
+        disabled: false,
+        href: `/products?category=${route.query.category}&wholesalers=${route.query.wholesalers ?? 'false'}`
+      };
+
+      bread.value.push(category.value);
+
+      if (route.query.fathercategory) {
+        const fathercategory = {
+          title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name,
+          disabled: false,
+          href: `/products?category=${route.query.category}&subcategory=${route.query.fathercategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
+        };
+
+        category.value.fathercategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name
+        bread.value.push(fathercategory);
+      }
+
+      if (typeof route.query.fathercategory === 'undefined' && route.query.subcategory) {
+        const subcategory = {
+          title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name,
+          disabled: false,
+          href: `/products?category=${route.query.category}&subcategory=${route.query.subcategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
+        };
+
+        category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name
+        bread.value.push(subcategory);
+      }
+
+      if (typeof route.query.fathercategory !== 'undefined' && route.query.subcategory) {
+        const subcategory = {
+          title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name,
+          disabled: false,
+          href: `/products?category=${route.query.category}&fathercategory=${route.query.fathercategory}&subcategory=${route.query.subcategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
+        };
+
+        category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name
+        bread.value.push(subcategory);
+      }
+
+      if(!isMobile) {
+        const product_ = {
+          title: "Producto",
+          disabled: true,
+          href: "",
+        };
+
+        bread.value.push(product_);
+      }
+    } else {
+      bread.value.push({
+        title: 'Producto',
+        disabled: true,
+        href: '',
+      });
+    }
   }
-  
+
   isLoading.value = false
 }
 
@@ -280,7 +343,6 @@ const chanceRadio = (value) => {
   if (Number.isInteger(Number(value.id))) {        
       var seleted =  data.value.product.colors.filter(item => item.color_id === Number(value.id))[0]
       
-      categories.value = seleted.categories.map(item => item.category.name)
       productImages.value = (seleted?.images.length === 0) ? imageAux.value : seleted?.images
       color.value = seleted?.color.name
       selectedColor.value = seleted?.color.id.toString()
@@ -295,7 +357,7 @@ const setThumbsSwiper = (swiper) => {
 
 const addCart = () => {
 
-  let isWholesale = route.query.wholesale === 'true' ? 1 : 0
+  let isWholesale = route.query.wholesalers === 'true' ? 1 : 0
 
   if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
     let data = {
@@ -371,16 +433,26 @@ const controlCant = () => {
 }
 
 const wholesaleAction = () => {
-  if (route.query.wholesale === 'true') {
+  if (route.query.wholesalers === 'true') {
     router.push({ 
       name: 'productDetail',
-      params: { slug: route.params.slug }
+      params: { slug: route.params.slug },
+      query: {  
+        category: route.query.category,
+        fathercategory: route.query.fathercategory,
+        subcategory: route.query.subcategory
+       }
     })
   } else { 
     router.push({ 
       name: 'productDetail',
       params: { slug: route.params.slug },
-      query: {  wholesale: 'true' }
+      query: {  
+        category: route.query.category,
+        fathercategory: route.query.fathercategory,
+        subcategory: route.query.subcategory,
+        wholesalers: 'true'
+       }
     })
   }
 }
@@ -608,21 +680,13 @@ const decrement = () => {
               <VCardText class="p-0 d-flex border-title pb-2 mt-2 mt-md-0">
                 <VBtn 
                   v-if="wholesale"
-                  :class="route.query.wholesale === 'true' ? 'b-mayorista-active': 'b-mayorista'"
+                  :class="route.query.wholesalers === 'true' ? 'b-mayorista-active': 'b-mayorista'"
                   @click="wholesaleAction">
                   <iconmayorista />
                   <span class="ms-1">
-                    {{ route.query.wholesale === 'true' ? 'Precio al detal' : 'Precio al mayor' }}
+                    {{ route.query.wholesalers === 'true' ? 'Precio al detal' : 'Precio al mayor' }}
                   </span>
                 </VBtn>
-              </VCardText>
-              <VCardText class="p-0 d-block mt-2">
-                <span class="tw-text-tertiary" style="display: none;">Categorías: 
-                  <span class="ms-1">{{ categories.join(", ") }}</span>
-                </span>
-                <span class="d-block tw-text-tertiary">Tags: 
-                  <span class="ms-1">{{ tags.join(", ") }}</span>
-                </span>
               </VCardText>
             </VCol>
           </VRow>

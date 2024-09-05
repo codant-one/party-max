@@ -51,7 +51,12 @@ watchEffect(() => {
         :to="{
             name: 'productDetail',
             params: { slug: slug },
-            query: {  wholesale: route.query.wholesalers }
+            query: {  
+                category: route.query.category,
+                fathercategory: route.query.fathercategory,
+                subcategory: route.query.subcategory,
+                wholesalers: route.query.wholesalers
+            }
         }"
         class="tw-no-underline zoom-product">
         <VCard class="no-shadown card-information p-0">

@@ -13,6 +13,8 @@ const props = defineProps({
     }
 })
 
+const route = useRoute()
+
 const isMobile = /Mobi/i.test(navigator.userAgent);
 const image = ref(null)
 const price = ref(null)
@@ -41,7 +43,12 @@ watchEffect(() => {
     <router-link
         :to="{
             name: 'serviceDetail',
-            params: { slug: slug }
+            params: { slug: slug },
+            query: {  
+                category: route.query.category,
+                fathercategory: route.query.fathercategory,
+                subcategory: route.query.subcategory
+            }
         }"
         class="tw-no-underline zoom-service">
         <VCard class="no-shadown card-information p-0">
