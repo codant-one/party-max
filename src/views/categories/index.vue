@@ -130,8 +130,8 @@ async function fetchData() {
                 subcategory: i.slug.split('/')[1]
               }
             }" class="tw-no-underline d-block text-center justify-content-center zoom router-icons">
-            <img :src="baseURL + i.icon_subcategory" width="192" class="border-theme d-block" v-if="i.icon_subcategory !== null"/>
-            <img :src="t_7" width="192" class="border-theme d-block" v-else/>
+            <img :src="baseURL + i.icon_subcategory" class="border-theme d-block card-icons-img" v-if="i.icon_subcategory !== null"/>
+            <img :src="t_7" class="border-theme d-block card-icons-img" v-else/>
             <span class="d-block size-theme tw-text-tertiary mt-5 mb-5">{{i.name}}</span>
           </router-link>      
         </template>
@@ -274,7 +274,6 @@ async function fetchData() {
 
   .card-icons  {
     flex-wrap: wrap;
-
   }
     
   .transparent {
@@ -328,6 +327,18 @@ async function fetchData() {
 
   .router-icons {
     width: 20%;
+  }
+
+  @media only screen and (min-width: 1201px) {
+    .card-icons-img {
+      width: 192px;
+    }
+  }
+
+  @media only screen and (min-width: 768px) and (max-width: 1200px) {
+    .card-icons-img {
+      width: 150px;
+    }
   }
 
   @media only screen and (max-width: 767px) {

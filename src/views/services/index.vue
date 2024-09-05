@@ -147,7 +147,7 @@ async function fetchData() {
   let info = {
     orderByField: (route.query.category && route.query.category !== 'all') ? 'sl.order_id' : 'services.order_id',
     orderBy: 'asc',
-    limit: isMobile ? ( tab.value === '1' ? 3 : 6) : rowPerPage.value,
+    limit: isMobile ? 20 : rowPerPage.value,
     page: currentPage.value,
     category: route.query.category ?? null,
     subcategory: route.query.subcategory ?? null,
@@ -676,6 +676,305 @@ const addfavorite = (service_id) => {
             </VRow>
           </VCard>
 
+          <!-- padres, hijos y nietos -->
+          <VCard class="no-shadown mt-5 card-icons tw-bg-green" v-if="route.query.fathercategory && category">
+            <VCardText 
+              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.length < 6 && !isMobile"
+              class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
+              :class="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
+              <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren">
+                <router-link
+                  :to="{
+                    name: 'services',
+                    query: {
+                      category: route.query.category,
+                      fathercategory: route.query.fathercategory,
+                      subcategory: i.slug.split('/')[2],
+                      wholesalers: route.query.wholesalers === 'true' ? true : false
+                    }
+                  }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                  <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                </router-link>
+              </template>
+            </VCardText>
+            <VCardText 
+              v-else
+              class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
+              <template v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.length < 4 && isMobile">
+                <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren">
+                  <router-link
+                    :to="{
+                      name: 'services',
+                      query: {
+                        category: route.query.category,
+                        fathercategory: route.query.fathercategory,
+                        subcategory: i.slug.split('/')[2],
+                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                      }
+                    }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                      <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                      <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                  </router-link>
+                </template>
+              </template>
+              <swiper
+                v-else
+                :initialSlide="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.findIndex(item =>item.slug === route.query.category + '/' + route.query.fathercategory + '/' + route.query.subcategory)"
+                :slidesPerView="isMobile ? 3 : 5"
+                :spaceBetween="isMobile ? 1 : 5"
+                :navigation="true"
+                :loop="true"
+                :modules="modules"
+                class="mySwiper">
+                <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren" class="py-2">
+                  <router-link
+                    :to="{
+                      name: 'services',
+                      query: {
+                        category: route.query.category,
+                        fathercategory: route.query.fathercategory,
+                        subcategory: i.slug.split('/')[2],
+                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                      }
+                    }" class="tw-no-underline d-block text-center justify-content-center zoom">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                  </router-link>
+                </swiper-slide>
+              </swiper>
+            </VCardText> 
+          </VCard>
+
+          <!-- solo padres e hijos -->
+          <VCard 
+            class="no-shadown mt-5 card-icons tw-bg-green" 
+            v-if="typeof route.query.fathercategory === 'undefined' && 
+            typeof route.query.subcategory !== 'undefined' 
+            && route.query.category && category
+            && categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length > 0">
+            <VCardText 
+              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length < 6 && !isMobile"
+              class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
+              :class="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
+              <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren">
+                <router-link
+                  :to="{
+                    name: 'services',
+                    query: {
+                      category: route.query.category,
+                      fathercategory: route.query.subcategory,
+                      subcategory: i.slug.split('/')[2],
+                      wholesalers: route.query.wholesalers === 'true' ? true : false
+                    }
+                  }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                  <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                  <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                </router-link>
+              </template>
+            </VCardText> 
+            <VCardText 
+              v-else
+              class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
+              <template v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length < 4 && isMobile">
+                <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren">
+                  <router-link
+                    :to="{
+                      name: 'services',
+                      query: {
+                        category: route.query.category,
+                        fathercategory: route.query.subcategory,
+                        subcategory: i.slug.split('/')[2],
+                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                      }
+                    }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                  </router-link>
+                </template>
+              </template>
+              <swiper
+                v-else
+                :slidesPerView="isMobile ? 3 : 5"
+                :spaceBetween="isMobile ? 1 : 5"
+                :navigation="true"
+                :loop="true"
+                :modules="modules"
+                class="mySwiper">
+                <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren" class="py-2">
+                  <router-link
+                    :to="{
+                      name: 'services',
+                      query: {
+                        category: route.query.category,
+                        fathercategory: route.query.subcategory,
+                        subcategory: i.slug.split('/')[2],
+                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                      }
+                    }" class="tw-no-underline d-block text-center justify-content-center zoom">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                  </router-link>
+                </swiper-slide>
+              </swiper>
+            </VCardText> 
+          </VCard>
+
+          <!-- solo padres e hijos sin nietos -->
+          <VCard 
+            class="no-shadown mt-5 card-icons tw-bg-green" 
+            v-if="typeof route.query.fathercategory === 'undefined' && 
+            typeof route.query.subcategory !== 'undefined' 
+            && route.query.category && category
+            && categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length === 0">
+            <VCardText 
+              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 6 && !isMobile"
+              class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
+              :class="categories.filter(item =>item.slug === route.query.category)[0].children.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
+              <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
+                <router-link
+                  :to="{
+                    name: 'services',
+                    query: {
+                      category: route.query.category,
+                      subcategory: i.slug.split('/')[1],
+                      wholesalers: route.query.wholesalers === 'true' ? true : false
+                    }
+                  }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                  <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                  <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                </router-link>
+              </template>
+            </VCardText> 
+            <VCardText 
+              v-else
+              class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
+              <template v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 4 && isMobile">
+                <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
+                  <router-link
+                    :to="{
+                      name: 'services',
+                      query: {
+                        category: route.query.category,
+                        subcategory: i.slug.split('/')[1],
+                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                      }
+                    }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                  </router-link>
+                </template>
+              </template>
+              <swiper
+                v-else
+                :initialSlide="categories.filter(item =>item.slug === route.query.category)[0].children.findIndex(item =>item.slug === route.query.category + '/' + route.query.subcategory)"
+                :slidesPerView="isMobile ? 3 : 5"
+                :spaceBetween="isMobile ? 1 : 5"
+                :navigation="true"
+                :loop="true"
+                :modules="modules"
+                class="mySwiper">
+                <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children" class="py-2">
+                  <router-link
+                    :to="{
+                      name: 'services',
+                      query: {
+                        category: route.query.category,
+                        subcategory: i.slug.split('/')[1],
+                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                      }
+                    }" class="tw-no-underline d-block text-center justify-content-center zoom">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                  </router-link>
+                </swiper-slide>
+              </swiper>
+            </VCardText> 
+          </VCard>
+
+          <!-- solo padres -->
+          <VCard 
+            class="no-shadown mt-5 card-icons tw-bg-green" 
+            v-if="typeof route.query.fathercategory === 'undefined' && 
+            typeof route.query.subcategory === 'undefined' 
+            && route.query.category && category
+            && categories.filter(item =>item.slug === route.query.category)[0].children.length > 0">
+            <VCardText 
+              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 6 && !isMobile"
+              class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
+              :class="categories.filter(item =>item.slug === route.query.category)[0].children.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
+              <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
+                <router-link
+                  :to="{
+                    name: 'services',
+                    query: {
+                      category: route.query.category,
+                      subcategory: i.slug.split('/')[1],
+                      wholesalers: route.query.wholesalers === 'true' ? true : false
+                    }
+                  }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                  <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                  <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                </router-link>
+              </template>
+            </VCardText> 
+            <VCardText 
+              v-else
+              class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
+              <template v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 4 && isMobile">
+                <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
+                  <router-link
+                    :to="{
+                      name: 'services',
+                      query: {
+                        category: route.query.category,
+                        subcategory: i.slug.split('/')[1],
+                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                      }
+                    }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                  </router-link>
+                </template>
+              </template>
+              <swiper
+                v-else
+                :slidesPerView="isMobile ? 3 : 5"
+                :spaceBetween="isMobile ? 1 : 5"
+                :navigation="true"
+                :loop="true"
+                :modules="modules"
+                class="mySwiper">
+                <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children" class="py-2">
+                  <router-link
+                    :to="{
+                      name: 'services',
+                      query: {
+                        category: route.query.category,
+                        subcategory: i.slug.split('/')[1],
+                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                      }
+                    }" class="tw-no-underline d-block text-center justify-content-center zoom">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                  </router-link>
+                </swiper-slide>
+              </swiper>
+            </VCardText> 
+          </VCard>
+
           <!-- services -->
           <div class="align-center row-services pb-0">
             <v-window v-model="tab" disabled>
@@ -814,6 +1113,22 @@ const addfavorite = (service_id) => {
 
   .card-icons {
     border-radius: 16px;
+  }
+
+  .border-theme {
+    width: 120px;
+    border-radius: 192px;
+    border: 1px solid var(--Maastricht-Blue, #0A1B33);
+    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
+    margin: auto;
+  }
+
+  .border-theme-active {
+    width: 120px;
+    border-radius: 192px;
+    border: 3px solid #FF0090;
+    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
+    margin: auto;
   }
 
   .zoom {
@@ -1149,6 +1464,14 @@ const addfavorite = (service_id) => {
 
     .filter-mobile {
       margin-top: -15px !important;
+    }
+
+    .border-theme {
+      width: 70px !important;
+    }
+
+    .border-theme-active {
+      width: 70px !important;
     }
 
     .size-theme {
