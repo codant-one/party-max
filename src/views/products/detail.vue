@@ -240,7 +240,7 @@ async function fetchData() {
       url: productUrl.value ,
     });
 
-    if (route.query.category) {
+    if (route.query.category && route.query.category !== 'all') {
       category.value = {
         title: categories.value.filter(item => item.slug === route.query.category)[0].name,
         disabled: false,
