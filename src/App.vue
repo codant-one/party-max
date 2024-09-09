@@ -8,7 +8,7 @@ import Header from '@/components/app/Header.vue'
 import Footer from '@/components/app/Footer.vue'
 import Filters from '@/components/app/Filters.vue'
 import FilterServices from '@/components/app/FilterServices.vue'
-import home from '@assets/images/home.jpg';
+import home from '@assets/images/home.webp';
 import categories from '@assets/images/categories.jpg';
 import register from '@assets/images/register.jpg';
 import blogs from '@assets/images/blogs.jpg';
