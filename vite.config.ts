@@ -25,6 +25,16 @@ export default defineConfig({
       vueTemplate: true,
     }),
 	],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['vue', 'vue-router', 'pinia'], // Divide dependencias en chunks separados
+        },
+      },
+    },
+  },
+  
   define: { 'process.env': {} },
   resolve: {
     alias: {

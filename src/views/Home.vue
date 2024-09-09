@@ -21,9 +21,9 @@ import Plaza_4 from '@assets/images/Plaza_4.webp';
 import Plaza_5 from '@assets/images/Plaza_5.webp';
 import Banner from '@assets/images/Banner.webp';
 
-import Slider1 from '@assets/images/Slider_1.webp';
-import Slider2 from '@assets/images/Slider_2.webp';
-import Slider3 from '@assets/images/Slider_3.webp';
+import Slider1 from '@assets/images/Slider_1_op.webp';
+import Slider2 from '@assets/images/Slider_2_op.webp';
+import Slider3 from '@assets/images/Slider_3_op.webp';
 
 import icon1 from '@assets/icons/fiestas-infantiles.svg';
 import icon2 from '@assets/icons/fiestas-tematicas.svg';
