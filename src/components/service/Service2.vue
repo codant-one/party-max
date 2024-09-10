@@ -29,7 +29,6 @@ const props = defineProps({
 const route = useRoute()
 
 const emit = defineEmits([
-    'addCart',
     'addfavorite'
 ])
 
@@ -52,12 +51,14 @@ const isMobile = /Mobi/i.test(navigator.userAgent);
 watch(() => 
     props.loading, (data) => {
       load.value = data
-    });
+    }
+);
 
 watch(() => 
     props.serviceId, (data) => {
         service_id.value = data
-    });
+    }
+);
 
 watchEffect(() => {
 
@@ -80,13 +81,6 @@ watchEffect(() => {
         }
     }
 })
-
-const addCart = () => {
-    let data = {
-      
-    }
-    emit('addCart',  data)
-}
 
 const addfavorite = () => {
     emit('addfavorite', id.value)
@@ -148,21 +142,6 @@ const addfavorite = () => {
                     <VCardText class="px-1 px-md-2">
                         <div class="d-flex text-center align-center tw-justify-start md:tw-justify-center">
                             <span class="text_1 tw-text-tertiary">${{formatNumber(price) }}</span>
-                        </div>
-                    </VCardText>
-                    <VCardText class="mt-3 px-1 px-md-2">
-                        <div class="d-flex text-center align-center tw-justify-start md:tw-justify-center">
-                            <VBtn
-                                variant="flat"
-                                @click="addCart"
-                                class="btn-register tw-text-white tw-bg-primary button-hover">
-                                Agregar al carrito 
-                                <VProgressCircular
-                                    v-if="load && (service_id === id)"
-                                    indeterminate
-                                    color="#fff"
-                                />
-                            </VBtn>
                         </div>
                     </VCardText>
                     <VCardText class="mt-3 px-1 px-md-2">

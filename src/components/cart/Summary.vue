@@ -1,6 +1,7 @@
 <script setup>
 
 import Product5 from '@/components/product/Product5.vue'
+import Service5 from '@/components/service/Service5.vue'
 import { formatNumber } from '@formatters'
 
 const props = defineProps({
@@ -11,14 +12,21 @@ const props = defineProps({
     summary: {
         type: Object,
         required: true
+    },
+    type: {
+        type: Number,
+        required: true
     }
 })
 
 const emit = defineEmits([
     'update:currentStep',
-    'delete',
+    'deleteProduct',
+    'deleteService',
     'addCart'
 ])
+
+const type_ = ref(props.type)
 
 const isLastItem = (index) => {
   return index === props.products.length - 1;
@@ -36,21 +44,30 @@ const addCart = (data) => {
             <VCard class="card-products p-0">
                 <VCardTitle class="title-card mt-4 ms-4 px-2 px-md-5">Productos</VCardTitle>
                 <VCardText class="row-cardp p-0">
-                    <Product5
-                        v-for="(product, i) in props.products"
-                        :key="i"
-                        :product="product"
-                        :readonly="true"
-                        :isLastItem="isLastItem(i)"
-                        @delete="emit('delete', product.product_color_id)"
-                        @addCart="addCart"
-                        />
+                    <template v-if="type_ === 0">
+                        <Product5
+                            v-for="(product, i) in props.products"
+                            :key="i"
+                            :product="product"
+                            :readonly="true"
+                            :isLastItem="isLastItem(i)"
+                            @delete="emit('deleteProduct', product.product_color_id)"
+                            @addCart="addCart"
+                            />
+                    </template>
+                    <template v-else>
+                        <Service5
+                            v-for="(service, i) in props.products"
+                            :key="i"
+                            :service="service"
+                            :readonly="true"
+                            :type="type_"
+                            :isLastItem="isLastItem(i)"
+                            @delete="emit('deleteService', service.id)"
+                            @addCart="addCart"
+                            />
+                    </template>
                 </VCardText>
-                <!--<VCardText class="d-flex row-cardp3">
-                    <span>Envío</span>
-                    <VSpacer />
-                    <h4>${{ formatNumber(props.summary.send) }}</h4> 
-                </VCardText>-->
             </VCard>
         </VCol>
         <VCol cols="12" md="4">
@@ -64,12 +81,6 @@ const addCart = (data) => {
                         <VCol cols="5" md="6" class="text-right">
                             <span>${{ formatNumber(props.summary.subTotal) }}</span>
                         </VCol>
-                        <!--<VCol cols="7" md="6" class="text-left">
-                            <span>Envío</span>
-                        </VCol>
-                        <VCol cols="5" md="6" class="text-right">
-                            <span>${{ formatNumber(props.summary.send) }}</span>
-                        </VCol>-->
                         <VCol cols="7" md="6" class="text-left">
                             <h4>Subtotal</h4>
                         </VCol>

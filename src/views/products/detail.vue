@@ -356,38 +356,57 @@ const setThumbsSwiper = (swiper) => {
 }
 
 const addCart = () => {
+  if(cartStores.getType === 0 || cartStores.getType === -1) {
+    let isWholesale = route.query.wholesalers === 'true' ? 1 : 0
 
-  let isWholesale = route.query.wholesalers === 'true' ? 1 : 0
+    if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
+      let data = {
+        date: null,
+        service_id: null,
+        cake_size_id: null,
+        flavor_id: null,
+        filling_id: null,
+        order_file_id: null,
+        product_color_id: selectedColorId.value,
+        quantity: cant_prod.value,
+        wholesale: isWholesale,
+        type: 0
+      }
 
-  if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
-    let data = {
-      product_color_id: selectedColorId.value,
-      quantity: cant_prod.value,
-      wholesale: isWholesale
+      load.value = true
+
+      cartStores.add(data)
+        .then(response => {
+
+          isDialogVisible.value = true
+          message.value = 'Agregado al carrito'
+          load.value = false
+
+          setTimeout(() => {
+            isDialogVisible.value = false
+            isError.value = false
+            message.value = ''
+          }, 3000)
+
+        }).catch(err => {
+          load.value = false
+          //console.error(err.message)
+        })
+    } else {
+      isDialogVisible.value = true
+      message.value = 'Debes agregar al carrito productos ' + (isWholesale ? 'al detal' : 'al mayor') + ' debido a tu selección anterior'
+      isError.value = true
+
+      setTimeout(() => {
+        isDialogVisible.value = false
+        isError.value = false
+        message.value = ''
+      }, 3000)
     }
-
-    load.value = true
-
-    cartStores.add(data)
-      .then(response => {
-
-        isDialogVisible.value = true
-        message.value = 'Agregado al carrito'
-        load.value = false
-
-        setTimeout(() => {
-          isDialogVisible.value = false
-          isError.value = false
-          message.value = ''
-        }, 3000)
-
-      }).catch(err => {
-        load.value = false
-        //console.error(err.message)
-      })
+    
   } else {
     isDialogVisible.value = true
-    message.value = 'Debes agregar al carrito productos ' + (isWholesale ? 'al detal' : 'al mayor') + ' debido a tu selección anterior'
+    message.value = 'Debes gestionar los servicios y productos por separado'
     isError.value = true
 
     setTimeout(() => {

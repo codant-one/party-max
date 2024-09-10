@@ -9,6 +9,7 @@ import { useMiscellaneousStores } from '@/stores/miscellaneous'
 import { useCartStores } from '@/stores/cart'
 import { useFavoritesStores } from '@/stores/favorites'
 import { useHomeStores } from "@/stores/home";
+import { useOrdersStores } from '@/stores/orders'
 import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { VueImageZoomer } from 'vue-image-zoomer'
@@ -45,6 +46,7 @@ const miscellaneousStores = useMiscellaneousStores()
 const cartStores = useCartStores()
 const favoritesStores = useFavoritesStores()
 const homeStores = useHomeStores();
+const ordersStores = useOrdersStores()
 
 const isMobile = /Mobi/i.test(navigator.userAgent);
 
@@ -86,7 +88,9 @@ const categories = ref([])
 const tags = ref([])
 const cupcakes = ref([])
 const file = ref(null)
+const order_file_id = ref(null)
 
+const cant_prod = ref(1)
 const load = ref(false)
 const imageAux = ref('')
 const imageMeta = ref('')
@@ -132,7 +136,7 @@ const filling_id = ref(null)
 const cake_type = ref([])
 const cake_type_id = ref([])
 const cake_size = ref([])
-const cake_size_id = ref([])
+const cake_size_id = ref(null)
 const is_simple = ref(null)
 const isCupcake = ref([])
 
@@ -439,9 +443,9 @@ const setThumbsSwiper = (swiper) => {
     thumbsSwiper.value = swiper;
 }
 
-const addCart = () => {
+const addCart = async() => {
 
-  if(cartStores.getCount === 0) {
+  if(cartStores.getType === 1 || cartStores.getType === -1) {
     if(date.value !== null) {
       if(isCupcake.value && is_simple.value === '0' && (file.value === null || typeof file.value === 'undefined')) { 
         isDialogVisible.value = true
@@ -453,6 +457,48 @@ const addCart = () => {
           isError.value = false
           message.value = ''
         }, 3000)
+      } else {
+
+        load.value = true
+        if(isCupcake.value && is_simple.value === '0' && file.value !== null) {
+          const formData = new FormData()
+                
+          formData.append("image", file.value)
+
+          let response = await ordersStores.uploadFile(formData)
+          order_file_id.value = response.success ? response.data.order_file.id : null
+        }
+
+        let data = {
+          date: date.value,
+          service_id: service_id.value,
+          cake_size_id: cake_size_id.value ?? 0,
+          flavor_id: flavor_id.value ?? 0,
+          filling_id: filling_id.value ?? 0,
+          order_file_id: order_file_id.value ?? 0,
+          product_color_id: null,
+          quantity: cant_prod.value,
+          wholesale: null,
+          type: 1
+        }
+
+        cartStores.add(data)
+          .then(response => {
+
+            isDialogVisible.value = true
+            message.value = 'Agregado al carrito'
+            load.value = false
+
+            setTimeout(() => {
+              isDialogVisible.value = false
+              isError.value = false
+              message.value = ''
+            }, 3000)
+
+          }).catch(err => {
+            load.value = false
+            //console.error(err.message)
+          })
       }
 
     } else {
@@ -490,6 +536,11 @@ const openCalendar = () => {
     calendar.value.$el.click();
   }
 };
+
+const decrement = () => {
+  if (cant_prod.value > 1)
+    cant_prod.value--
+}
 
 const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1000000 || '¡El tamaño del archivo debe ser menor a 1 MB!']
 
@@ -565,7 +616,7 @@ const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1
         </VCardSubtitle>
         <!-- BODY -->
         <VCardText class="px-0 pb-0 mt-5 d-flex align-items-stretch justify-content-between">
-          <VRow class="border-title pb-2 pb-md-5">
+          <VRow class="border-title pb-2 pb-md-0">
             <VCol cols="3" md="1" class="px-1 p-md-2">
               <swiper
                 :direction="'vertical'"
@@ -603,7 +654,7 @@ const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1
                 </swiper-slide>
               </swiper>
             </VCol>
-            <VCol cols="12" md="7">
+            <VCol cols="12" md="7" class="pb-0">
               <VCardText class="p-0">
                 <div class="d-flex py-2">
                   <span class="text_1">$ {{ formatNumber(price) }}</span>
@@ -730,33 +781,55 @@ const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1
                   <span class="text_1">{{ date }}</span>
                 </div>
               </VCardText>
-              <VCardText class="p-0 d-flex border-title justify-content-center md:tw-justify-start ">
-                <VBtn 
-                  variant="flat"
-                  @click="addCart"
-                  class="btn-register tw-text-white tw-bg-primary button-hover mx-5 my-5" 
-                  >
-                    Agregar al carrito
-                    <VProgressCircular
-                      v-if="load"
-                      indeterminate
-                      color="#fff"
+              <VCardText class="p-0 d-flex justify-content-center md:tw-justify-start ">
+                <div class="d-flex flex-column my-auto me-md-5" v-if="isCupcake">
+                  <span>Cantidad:</span>
+                  <div class="number-input-wrapper">
+                    <VBtn icon size="x-small" @click="decrement" variant="plain" color="#0A1B33">
+                      <VIcon>mdi-minus</VIcon>
+                    </VBtn>
+                    <VTextField
+                      v-model="cant_prod"
+                      variant="solo"
+                      type="text"
+                      readonly
+                      style="height: 30px;"
                     />
-                </VBtn>
-                <span 
-                  v-if="!isFavorite" 
-                  class="me-4 index heart p-0 tw-cursor-pointer d-flex justify-content-center align-center"
-                  :class="(isFavoriteService) ? 'heart_fill' : ''" 
-                  @click="addfavorite">
-                  <heart />
-                </span>
-                <VProgressCircular
-                  v-else
-                  :size="30"
-                  width="3"
-                  indeterminate
-                  color="primary"
-                />
+                    <VBtn icon size="x-small" @click="cant_prod++" variant="plain" color="#0A1B33">
+                      <VIcon>mdi-plus</VIcon>
+                    </VBtn>
+                  </div>
+                </div>
+                <div class="my-auto">
+                  <VBtn 
+                    variant="flat"
+                    @click="addCart"
+                    class="btn-register tw-text-white tw-bg-primary button-hover mx-5 my-5" 
+                    >
+                      Agregar al carrito
+                      <VProgressCircular
+                        v-if="load"
+                        indeterminate
+                        color="#fff"
+                      />
+                  </VBtn>
+                </div>
+                <div class="my-auto ms-md-5">
+                  <span 
+                    v-if="!isFavorite" 
+                    class="me-4 index heart p-0 tw-cursor-pointer d-flex justify-content-center align-center"
+                    :class="(isFavoriteService) ? 'heart_fill' : ''" 
+                    @click="addfavorite">
+                    <heart />
+                  </span>
+                  <VProgressCircular
+                    v-else
+                    :size="30"
+                    width="3"
+                    indeterminate
+                    color="primary"
+                  />
+                </div>
               </VCardText>
             </VCol>
           </VRow>
@@ -1440,6 +1513,38 @@ input[altinputclass="inlinePicker"] {
 
   .v-text-field::v-deep(.v-input__details) {
     min-height: 15px !important;
+  }
+
+  .number-input-wrapper .v-text-field::v-deep(.v-field) { 
+    border: 0 !important;
+    height: 30px;
+    box-shadow: none;
+  } 
+
+  .number-input-wrapper .v-text-field::v-deep(.v-field__input){
+    min-height: 30px;
+    padding: 0 !important;
+    width: 20px;
+    text-align: center;
+  }
+  
+  .number-input-wrapper .v-text-field::v-deep(.v-field__field) { 
+    height: 30px;
+  }
+
+  .number-input-wrapper .v-text-field::v-deep(::placeholder) { 
+    color: #0A1B33 !important;
+    opacity: inherit;
+  }
+
+  .number-input-wrapper .v-text-field::v-deep(input) { 
+    padding: 0 0 0 5px !important;
+    color: #0A1B33 !important;
+  }
+  
+  .number-input-wrapper .v-text-field::v-deep(.v-input__details){
+    padding: 0;
+    min-height: 0;
   }
 
   .v-autocomplete::v-deep(.v-field__overlay) {

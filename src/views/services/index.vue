@@ -282,11 +282,6 @@ const toggleSubGroupFn = (index, subCat) => {
   }
 };
 
-
-const addCart = (value) => {
-
-}
-
 const addfavorite = (service_id) => {
 
   
@@ -983,7 +978,6 @@ const addfavorite = (service_id) => {
                       :isLastItem="isLastItem(i)"
                       :loading="load"
                       :serviceId="service_id"
-                      @addCart="addCart"
                       @addfavorite="addfavorite"
                      />
                   </VCol>

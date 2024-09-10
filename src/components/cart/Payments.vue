@@ -4,6 +4,7 @@ import { requiredValidator, phoneValidator, emailValidator } from '@validators'
 import { formatNumber } from '@formatters'
 import arrow_left from '@assets/icons/Arrow_left.svg?inline';
 import Product6 from '@/components/product/Product6.vue'
+import Service6 from '@/components/service/Service6.vue'
 import Payu from '@/assets/icons/payu.svg'
 
 const props = defineProps({
@@ -35,10 +36,15 @@ const props = defineProps({
         type: Boolean,
         required: true
     },
+    type: {
+        type: Number,
+        required: true
+    }
 })
 
 const emit = defineEmits(['submit', 'send', 'update:currentStep',])
 
+const type_ = ref(props.type)
 const refVForm = ref()
 const isMobile = /Mobi/i.test(navigator.userAgent)
 const address = ref(null)
@@ -283,12 +289,23 @@ const getFlagCountry = country => {
                     <h1 class="title-summary border-title pb-4">Resumen de compra</h1>
                     <h2 class="title-card px-5 px-md-16 my-3">Productos {{ props.iswholesale ? '(al mayor)' : ''}}</h2>
                     <VCardText class="row-cardp p-0">
-                        <Product6
-                            v-for="(product, i) in props.products"
-                            :key="i"
-                            :product="product"
-                            :readonly="true"
-                            :isLastItem="isLastItem(i)"/>
+                        <template v-if="type_ === 0">
+                            <Product6
+                                v-for="(product, i) in props.products"
+                                :key="i"
+                                :product="product"
+                                :readonly="true"
+                                :isLastItem="isLastItem(i)"/>
+                        </template>
+                        <template v-else>
+                            <Service6
+                                v-for="(service, i) in props.products"
+                                :key="i"
+                                :service="service"
+                                :readonly="true"
+                                :isLastItem="isLastItem(i)"/>
+                        </template>
+
                     </VCardText>
                     <VRow class="row-cardp3 pb-0 px-5 px-md-16">
                         <VCol cols="6" md="6" class="text-left">

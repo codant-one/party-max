@@ -16,6 +16,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 import router from '@/router'
+import dayjs from 'dayjs';
 
 import Stepper from '@/components/cart/Stepper.vue'
 import Summary from '@/components/cart/Summary.vue'
@@ -63,7 +64,7 @@ const products = ref([])
 const client_id = ref(null)
 const address_id = ref(0)
 const send_id = ref(0)
-const province_id = ref(0)
+const province_id = ref(293)
 
 const summary = ref({
     subTotal: 0,
@@ -100,7 +101,7 @@ const selectedAddress = ref({
     province_id: '',
     title: '',
     street: '',
-    city: '',
+    city: 'Bogotá',
     address: '',
     phone: '',
     postal_code: null,
@@ -200,7 +201,12 @@ async function fetchData() {
 
         let sum = 0
         products.value.forEach(element => {
-            let value = element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale
+            let cupcake = cartStores.getType === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
+            let value = 
+            cartStores.getType === 0 ? 
+              (element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale) :
+              (element.cake_size_id === 0 ? element.price : cupcake.price)
+
             iswholesale.value = element.wholesale === 1 ? true : false
             sum += (parseFloat(value) * element.quantity)
         });
@@ -247,7 +253,7 @@ const selectCountry = country => {
     let _country = listCountries.value.find(item => item.name === country)
     client_country_id.value = _country.name
  
-    selectedAddress.value.province_id = null
+    selectedAddress.value.province_id = 293
     
     listProvincesByCountry.value = listProvinces.value.filter(item => item.country_id === _country.id)
   }
@@ -264,12 +270,43 @@ const deleteProduct = (product_color_id) => {
 
 }
 
-const addCart = (data)=>{
+const deleteService = (service_id) => {
 
-    let data_ = {
-        product_color_id: data.product_color_id,
-        quantity: data.quantity,
-        wholesale: data.wholesale
+cartStores.delete({service_id: service_id})
+fetchData()   
+
+}
+
+const addCart = (data) =>{
+
+    var data_ = {}
+
+    if(cartStores.getType === 0) {
+        data_ = {
+            date: null,
+            service_id: null,
+            cake_size_id: null,
+            flavor_id: null,
+            filling_id: null,
+            order_file_id: null,
+            product_color_id: data.product_color_id,
+            quantity: data.quantity,
+            wholesale: data.wholesale,
+            type: 0
+        }
+    } else {
+        data_ = {
+            date: data.date,
+            service_id: data.service_id,
+            cake_size_id: data.cake_size_id,
+            flavor_id: data.flavor_id,
+            filling_id: data.filling_id,
+            order_file_id: data.order_file_id,
+            product_color_id: null,
+            quantity: data.quantity,
+            wholesale: null,
+            type: 1
+        }
     }
 
     cartStores.add(data_)
@@ -366,14 +403,36 @@ const addAddress = () => {
 const sendPayU = async (billingDetail) => {
 
     let product_color_id = []
+    let service_id = []
     let price = []
     let quantity = []
+    let date = []
+    let cake_size_id = []
+    let flavor_id = []
+    let filling_id = []
+    let order_file_id = []
 
-    products.value.forEach(element => {
-        product_color_id.push(element.product_color_id)
-        price.push(iswholesale.value === true ? element.product.wholesale_price : element.product.price_for_sale)
-        quantity.push(element.quantity)
-    });
+    if(cartStores.getType === 0)
+        products.value.forEach(element => {
+            product_color_id.push(element.product_color_id)
+            price.push(iswholesale.value === true ? element.product.wholesale_price : element.product.price_for_sale)
+            quantity.push(element.quantity)
+        });
+    else 
+        products.value.forEach(element => {
+            let isCupcake = element.cupcakes.length > 0 ? true : false
+            let cupcake = element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
+            let date_ = dayjs(element.date, "YYYY-MM-DD hh:mm A");
+
+            service_id.push(element.id)
+            price.push(element.cake_size_id === 0 ? element.price : cupcake.price)
+            quantity.push(element.quantity)
+            date.push(date_.format("YYYY-MM-DD HH:mm:ss"))
+            cake_size_id.push(element.cake_size_id === 0 ? null : element.cake_size_id)
+            flavor_id.push(element.cake_size_id > 0 ? element.flavor.id : null)
+            filling_id.push(element.cake_size_id > 0 ? element.filling.id : null)
+            order_file_id.push(element.order_file_id === 0 ? null : element.order_file_id)
+        });
 
     isLoading.value = true
 
@@ -407,8 +466,14 @@ const sendPayU = async (billingDetail) => {
             tax: 0,
             total: summary.value.total,
             product_color_id: product_color_id,
+            service_id: service_id,
             price: price,
             quantity: quantity,
+            date: date,
+            cake_size_id: cake_size_id,
+            flavor_id: flavor_id,
+            filling_id: filling_id,
+            order_file_id: order_file_id,
             province_id: billingDetail.province_id,
             name: billingDetail.name,
             last_name: billingDetail.last_name,
@@ -420,7 +485,8 @@ const sendPayU = async (billingDetail) => {
             city: billingDetail.city,
             postal_code: billingDetail.postal_code,
             note: billingDetail.note,
-            wholesale: iswholesale.value === true ? 1 : 0
+            wholesale: iswholesale.value === true ? 1 : 0,
+            type: cartStores.getType
         }
 
         isLoading.value = true 
@@ -478,6 +544,7 @@ const sendPayU = async (billingDetail) => {
 const deleteAll = async () => {
     localStorage.removeItem('shoppingCart') 
     cartStores.setWholesale(-1)
+    cartStores.setType(-1)
 }
 
 const updatePaymentState = async (payment_state_id) => {
@@ -503,12 +570,14 @@ const closeDialog = () => {
         province_id: '',
         title: '',
         street: '',
-        city: '',
+        city: 'Bogotá',
         address: '',
         phone: '',
         postal_code: null,
         default: false
     }
+
+    selectCountry(selectedAddress.value.country_id)
 }
 
 const dialog_error = ()=> {
@@ -556,7 +625,12 @@ const chanceSend = value => {
     let sum = 0
     
     products.value.forEach(element => {
-        let value = element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale
+        let cupcake = cartStores.getType === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
+        let value = 
+            cartStores.getType === 0 ? 
+              (element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale) :
+              (element.cake_size_id === 0 ? element.price : cupcake.price)
+              
         iswholesale.value = element.wholesale === 1 ? true : false
         sum += (parseFloat(value) * element.quantity)
     });
@@ -600,7 +674,9 @@ const chanceSend = value => {
                         v-model:current-step="currentStep"
                         :products="products"
                         :summary="summary"
-                        @delete="deleteProduct"
+                        :type="cartStores.getType"
+                        @deleteProduct="deleteProduct"
+                        @deleteService="deleteService"
                         @addCart="addCart"
                     />
                 </VWindowItem>
@@ -628,6 +704,7 @@ const chanceSend = value => {
                         :countries="listCountries"
                         :provinces="listProvinces"
                         :iswholesale="iswholesale"
+                        :type="cartStores.getType"
                         @submit="sendPayU"
                         @send="chanceSend"
                     />
@@ -732,6 +809,7 @@ const chanceSend = value => {
                                     item-title="name"
                                     item-value="name"
                                     :menu-props="{ maxHeight: '200px' }"
+                                    readonly
                                     @update:model-value="selectCountry"
                                     class="me-0 me-md-2"
                                     >
@@ -756,6 +834,7 @@ const chanceSend = value => {
                                     :rules="[requiredValidator]"
                                     :items="getProvinces"
                                     :menu-props="{ maxHeight: '200px' }"
+                                    :readonly="cartStores.getType === 1"
                                 />    
                             </VCol> 
                             <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
@@ -765,6 +844,7 @@ const chanceSend = value => {
                                     variant="outlined"
                                     :rules="[requiredValidator]"
                                     class="me-0 me-md-2"
+                                    :readonly="cartStores.getType === 1"
                                     />
                             </VCol>  
                             <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">

@@ -7,6 +7,7 @@
   import { formatNumber } from '@formatters'
   import Loader from '@/components/common/Loader.vue'
   import Product8 from '@/components/product/Product8.vue'
+  import Service4 from '@/components/service/Service4.vue'
   import router from '@/router'
   import logo from '@assets/images/logo.svg';
   import heart from '@assets/icons/heart.svg?inline';
@@ -106,7 +107,12 @@
 
         let sum = 0
         products.value.forEach(element => {
-          let value = element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale
+          let cupcake = cartStores.getType === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
+          let value = 
+            cartStores.getType === 0 ? 
+              (element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale) :
+              (element.cake_size_id === 0 ? element.price : cupcake.price)
+
           sum += (parseFloat(value) * element.quantity)
         });
 
@@ -510,7 +516,7 @@
     </VNavigationDrawer>
     <VNavigationDrawer
       :model-value="isDrawerOpen"
-      :width="isMobile ? 280 : 350"
+      :width="isMobile ? 280 : 380"
       :height="isMobile ? '80vh' : '100vh'"
       location="end"
       class="scrollable-content drawer"
@@ -548,16 +554,28 @@
           </VCardText>
         </VCard>
         <div v-else>
-          <Product8
-            v-for="(product, i) in products"
-            :key="i"
-            :product="product"
-            :readonly="true"
-            :isLastItem="isLastItem(i)"
-            @delete="deleteProduct(product.product_color_id)"
-          />
+          <template v-if="cartStores.getType === 0">
+            <Product8
+              v-for="(product, i) in products"
+              :key="i"
+              :product="product"
+              :readonly="true"
+              :isLastItem="isLastItem(i)"
+              @delete="deleteProduct(product.product_color_id)"
+            />
+          </template>
+          <template v-else>
+            <Service4
+              v-for="(service, i) in products"
+              :key="i"
+              :service="service"
+              :readonly="true"
+              :type="cartStores.getType"
+              :isLastItem="isLastItem(i)"
+              @delete="deleteProduct(service.service_id)"
+            />
+          </template>
         </div>
-        
       </PerfectScrollbar>
       <template v-slot:append>
         <VDivider class="mt-4"/>

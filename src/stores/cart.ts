@@ -5,7 +5,8 @@ export const useCartStores = defineStore('cart', {
     state: () => ({
         data: Array<Object>(),
         count: 0,
-        wholesale: -1
+        wholesale: -1,
+        type: -1
     }),
     getters:{
         getData(): any {
@@ -16,11 +17,17 @@ export const useCartStores = defineStore('cart', {
         },
         getWholesale(): any {
             return this.wholesale
+        },
+        getType(): any {
+            return this.type
         }
     },
     actions: {
         setWholesale(value: any){
             this.wholesale = value
+        },
+        setType(value: any){
+            this.type = value
         },
         fetchCart() {
             
@@ -33,17 +40,42 @@ export const useCartStores = defineStore('cart', {
                 const productColorIdsString = productColorIds.join(',')
                 const quantityIds = shoppingCart.map((item: { quantity: number }) => item.quantity)
                 const quantityIdsIdsString = quantityIds.join(',')
-                const wholesaleIds = shoppingCart.map((item: { wholesale: number }) => item.wholesale)
-                const wholesaleIdsString = wholesaleIds.join(',')
-                const params = { product_color_id: productColorIdsString, quantity: quantityIdsIdsString, wholesale:  wholesaleIdsString}
-  
+                const wholesale = shoppingCart.map((item: { wholesale: number }) => item.wholesale)[0] ?? ''
+                const servicesIds = shoppingCart.map((item: { service_id: number }) => item.service_id)
+                const servicesIdsString = servicesIds.join(',')
+                const cakeSizeIds = shoppingCart.map((item: { cake_size_id: number }) => item.cake_size_id)
+                const cakeSizeIdsString = cakeSizeIds.join(',')
+                const dateIds = shoppingCart.map((item: { date: string }) => item.date)
+                const dateIdsString = dateIds.join(',')
+                const flavorIds = shoppingCart.map((item: { flavor_id: number }) => item.flavor_id)
+                const flavorIdsString = flavorIds.join(',')
+                const fillingIds = shoppingCart.map((item: { filling_id: number }) => item.filling_id)
+                const fillingIdsString = fillingIds.join(',')
+                const fileIds = shoppingCart.map((item: { order_file_id: number }) => item.order_file_id)
+                const fileIdsString = fileIds.join(',')
+                const type = shoppingCart.map((item: { type: number }) => item.type)[0] ?? ''
+
+                const params = { 
+                    service_id: servicesIdsString,
+                    cake_size_id: cakeSizeIdsString,
+                    flavor_id: flavorIdsString,
+                    filling_id: fillingIdsString,
+                    order_file_id: fileIdsString,
+                    date: dateIdsString,
+                    product_color_id: productColorIdsString, 
+                    quantity: quantityIdsIdsString, 
+                    wholesale:  wholesale,
+                    type: type
+                }
+
                 return Cart.get(params)
                     .then((response) => {
                         this.data = response.data.data.cart
                         this.count = response.data.data.cart.length
-                       
+                        this.type = (this.count > 0) ? parseInt(response.data.data.type) : -1
+                        
                         if(this.count > 0)
-                            this.wholesale = Number(wholesaleIdsString[0])
+                            this.wholesale = wholesale
                         else 
                             this.wholesale = -1
 
@@ -68,14 +100,31 @@ export const useCartStores = defineStore('cart', {
                 if (!Array.isArray(shoppingCart))
                     return Promise.reject('Shopping cart is not an array')
 
-                const productIndex = 
-                    shoppingCart.findIndex(
-                        (item: { product_color_id: number }) => item.product_color_id === data.product_color_id
+                var index = -1
+
+                if(data.type === 0)
+                    index = 
+                        shoppingCart.findIndex(
+                            (item: { product_color_id: number }) => item.product_color_id === data.product_color_id
+                        )
+                else 
+                    index = 
+                        shoppingCart.findIndex(
+                            (item: { service_id: number }) => item.service_id === data.service_id
                     )
 
-                if (productIndex !== -1)
-                    shoppingCart[productIndex].quantity = data.quantity
-                else
+                if (index !== -1) {
+                    if(data.type === 0)
+                        shoppingCart[index].quantity = data.quantity
+                    else {
+                        shoppingCart[index].quantity = data.quantity
+                        shoppingCart[index].cake_size_id = data.cake_size_id
+                        shoppingCart[index].flavor_id = data.flavor_id
+                        shoppingCart[index].filling_id = data.filling_id
+                        shoppingCart[index].order_file_id = data.order_file_id
+                        shoppingCart[index].date = data.date
+                    }
+                } else
                     shoppingCart.push(data)
 
                 setTimeout(() => {
@@ -100,16 +149,30 @@ export const useCartStores = defineStore('cart', {
                 if (!Array.isArray(shoppingCart))
                     return Promise.reject('Shopping cart is not an array')
 
-                const productIndex = 
-                    shoppingCart.findIndex(
-                        (item: { product_color_id: number }) => item.product_color_id === data.product_color_id
-                    )
+                var index = -1
 
-                if (productIndex !== -1)
-                    shoppingCart.splice(productIndex, 1)
+                if(this.type === 0)
+                    index = 
+                        shoppingCart.findIndex(
+                            (item: { product_color_id: number }) => item.product_color_id === data.product_color_id
+                        )
+                else 
+                    index = 
+                        shoppingCart.findIndex(
+                            (item: { service_id: number }) => item.service_id === data.service_id
+                        )
+                    
+
+                if (index !== -1)
+                    shoppingCart.splice(index, 1)
 
                 setTimeout(() => {
                     this.count = shoppingCart.length
+                    
+                    if(this.count === 0) {
+                        this.wholesale = -1
+                        this.type = -1
+                    }
                 }, 1000)
                    
                 localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart))
@@ -122,6 +185,8 @@ export const useCartStores = defineStore('cart', {
         },
         refreshData() {
             this.count = 0
+            this.wholesale = -1
+            this.type = -1
         },
         checkAvailability(params: object) { 
             

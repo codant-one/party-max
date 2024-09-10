@@ -78,6 +78,15 @@ export const useOrdersStores = defineStore('orders',{
                 .catch(error => {
                     return Promise.reject(error)
                 }) 
-        }
+        },
+        uploadFile(data: object) {
+            return Orders.uploadFile(data)
+                .then((response: any) => {
+                    return Promise.resolve(response.data)
+                }).catch(error => {
+                    return Promise.reject(error)
+                })
+            
+        },
     }
 })

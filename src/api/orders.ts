@@ -29,6 +29,10 @@ class Orders {
     show_by_id(id: Number) {
         return axios.get(`orders/show-order/${id}`)
     }
+
+    uploadFile(data: object) {
+        return axios.post('/orders/upload/file', data)
+    }
 }
 
 const orders = new Orders();
