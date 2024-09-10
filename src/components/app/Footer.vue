@@ -14,7 +14,7 @@
   import facebook from '@assets/icons/facebook.svg?inline';
   import whatsapp_mobile from '@assets/icons/whatsapp_mobile.svg?inline';
 
-  import festinfooter from '@assets/images/festin-footer.png';
+  import festinfooter from '@assets/images/festin-footer.webp';
 
   const backgroundTemp = ref('tw-bg-white')
   const currentYear = ref(new Date().getFullYear());
@@ -203,7 +203,7 @@
           </router-link>
         </VCol>
         <VCol cols="5" md="3" class="align-center text-right">
-          <img :src="festinfooter" class="border-theme"/>
+          <img :src="festinfooter" class="border-theme" loading="lazy"/>
         </VCol>
       </VRow>
       <VDivider class="hr mt-10 d-none d-md-block" />

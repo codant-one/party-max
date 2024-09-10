@@ -14,16 +14,16 @@ import Loader from '@/components/common/Loader.vue'
 
 import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
 
-import Plaza_1 from '@assets/images/Plaza_1.jpg';
-import Plaza_2 from '@assets/images/Plaza_2.jpg';
-import Plaza_3 from '@assets/images/Plaza_3.jpg';
-import Plaza_4 from '@assets/images/Plaza_4.jpg';
-import Plaza_5 from '@assets/images/Plaza_5.jpg';
-import Banner from '@assets/images/Banner.jpg';
+import Plaza_1 from '@assets/images/Plaza_1.webp';
+import Plaza_2 from '@assets/images/Plaza_2.webp';
+import Plaza_3 from '@assets/images/Plaza_3.webp';
+import Plaza_4 from '@assets/images/Plaza_4.webp';
+import Plaza_5 from '@assets/images/Plaza_5.webp';
+import Banner from '@assets/images/Banner.webp';
 
-import Slider1 from '@assets/images/Slider_1.jpg';
-import Slider2 from '@assets/images/Slider_2.jpg';
-import Slider3 from '@assets/images/Slider_3.jpg';
+import Slider1 from '@assets/images/Slider_1_op.webp';
+import Slider2 from '@assets/images/Slider_2_op.webp';
+import Slider3 from '@assets/images/Slider_3_op.webp';
 
 import icon1 from '@assets/icons/fiestas-infantiles.svg';
 import icon2 from '@assets/icons/fiestas-tematicas.svg';
@@ -41,28 +41,28 @@ import location from '@assets/icons/location.svg';
 import sold from '@assets/icons/sold.svg';
 import tracking from '@assets/icons/tracking.svg';
 
-import banner_2 from '@assets/images/Banner_2.jpg';
-import banner_3 from '@assets/images/Banner_3.jpg';
-import banner_4 from '@assets/images/Banner_4.jpg';
-import banner_5 from '@assets/images/Banner_5.jpg';
+import banner_2 from '@assets/images/Banner_2.webp';
+import banner_3 from '@assets/images/Banner_3.webp';
+import banner_4 from '@assets/images/Banner_4.webp';
+import banner_5 from '@assets/images/Banner_5.webp';
 
-import banner_2_mobile from '@assets/images/Banner_2_mobile.jpg';
-import banner_3_mobile from '@assets/images/Banner_3_mobile.jpg';
-import banner_4_mobile from '@assets/images/Banner_4_mobile.jpg';
+import banner_2_mobile from '@assets/images/Banner_2_mobile.webp';
+import banner_3_mobile from '@assets/images/Banner_3_mobile.webp';
+import banner_4_mobile from '@assets/images/Banner_4_mobile.webp';
 
-import t_1 from '@assets/images/t_1.jpg';
-import t_2 from '@assets/images/t_2.jpg';
-import t_3 from '@assets/images/t_3.jpg';
-import t_4 from '@assets/images/t_4.jpg';
-import t_5 from '@assets/images/t_5.jpg';
-import t_6 from '@assets/images/t_6.jpg';
+import t_1 from '@assets/images/t_1.webp';
+import t_2 from '@assets/images/t_2.webp';
+import t_3 from '@assets/images/t_3.webp';
+import t_4 from '@assets/images/t_4.webp';
+import t_5 from '@assets/images/t_5.webp';
+import t_6 from '@assets/images/t_6.webp';
 
-import f_1 from '@assets/images/f_1.jpg';
-import f_2 from '@assets/images/f_2.jpg';
-import f_3 from '@assets/images/f_3.jpg';
-import f_4 from '@assets/images/f_4.jpg';
+import f_1 from '@assets/images/f_1.webp';
+import f_2 from '@assets/images/f_2.webp';
+import f_3 from '@assets/images/f_3.webp';
+import f_4 from '@assets/images/f_4.webp';
 
-import frame_pink from '@assets/images/frame_pink.jpeg';
+import frame_pink from '@assets/images/frame_pink.webp';
 
 const thumbsSwiper = ref(null);
 const modules = ref([Pagination])
@@ -144,7 +144,7 @@ const tab = ref('0')
                   class="list py-0  tw-text-tertiary hover:tw-bg-yellow"
                 >
                   <template v-slot:prepend>
-                    <img :src="item.icon" class="me-3 ms-4"/>
+                    <img :src="item.icon" class="me-3 ms-4" loading="lazy"/>
                   </template>
                   <VListItemTitle v-text="item.text" class="tw-text-tertiary"></VListItemTitle>
                 </VListItem>
@@ -165,7 +165,7 @@ const tab = ref('0')
                   class="list py-0  tw-text-tertiary hover:tw-bg-yellow"
                 >
                   <template v-slot:prepend>
-                    <img :src="item.icon" class="me-3 ms-4"/>
+                    <img :src="item.icon" class="me-3 ms-4" loading="lazy"/>
                   </template>
                   <VListItemTitle v-text="item.text" class="tw-text-tertiary"></VListItemTitle>
                 </VListItem>
@@ -216,7 +216,7 @@ const tab = ref('0')
                     }
                   }"
                 >
-                  <VImg :src="Plaza_1" class="img-galery"/>
+                  <VImg :src="Plaza_1" class="img-galery" alt="pinatas"/>
                 </router-link>
               </VCol>
               <VCol cols="6" md="6" class="pslider2">
@@ -228,7 +228,7 @@ const tab = ref('0')
                     }
                   }"
                 >
-                  <VImg :src="Plaza_2" class="border-top-right img-galery"/>
+                  <VImg :src="Plaza_2" class="border-top-right img-galery" alt="ponques"/>
                 </router-link>
               </VCol>
               <VCol cols="12" class="pslider3">
@@ -240,7 +240,7 @@ const tab = ref('0')
                     }
                   }"
                 >
-                  <VImg :src="Plaza_3" class="img-galery"/>
+                  <VImg :src="Plaza_3" class="img-galery" alt="globos"/>
                 </router-link>
               </VCol>
             </VRow>
@@ -266,7 +266,7 @@ const tab = ref('0')
                       category: 'animadores-de-fiestas'
                     }
                   }">
-                  <VImg :src="Plaza_4" class="img-galery"/>
+                  <VImg :src="Plaza_4" class="img-galery" alt="eventos"/>
                 </router-link>
               </VCol>
               <VCol cols="6" md="6" class="pslider2">
@@ -277,7 +277,7 @@ const tab = ref('0')
                       category: 'animadores-de-fiestas'
                     }
                   }">
-                  <VImg :src="Plaza_5" class="border-bottom-right img-galery"/>
+                  <VImg :src="Plaza_5" class="border-bottom-right img-galery" alt="personalizados"/>
                 </router-link>
               </VCol>
             </VRow>
@@ -291,28 +291,28 @@ const tab = ref('0')
       <VCardItem class="p-0">
         <VRow no-gutters  class="tw-text-tertiary">
           <VCol cols="12" md="3" class="d-flex align-center hr">
-            <img :src="motorcycle" width="60" class="ms-10"/>
+            <img :src="motorcycle" width="60" class="ms-10" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Envíos gratis</span>
               <span class="d-block card-information-subtitle">A partir de $190.000</span>
             </div>
           </VCol>
           <VCol cols="12" md="3" class="d-flex align-center hr">
-            <img :src="location" width="60" class="ms-10"/>
+            <img :src="location" width="60" class="ms-10" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Nuestras tiendas</span>
               <span class="d-block card-information-subtitle">En Bogotá</span>
             </div>
           </VCol>
           <VCol cols="12" md="3" class="d-flex align-center hr">
-            <img :src="sold" width="60" class="ms-10"/>
+            <img :src="sold" width="60" class="ms-10" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Ventas por mayor</span>
               <span class="d-block card-information-subtitle">A los mejores precios</span>
             </div>
           </VCol>
           <VCol cols="12" md="3" class="d-flex align-center col-siguecompra">
-            <img :src="tracking" width="60" class="ms-10"/>
+            <img :src="tracking" width="60" class="ms-10" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Sigue tu compra</span>
               <span class="d-block card-information-subtitle">Desde tu cuenta</span>
@@ -578,7 +578,7 @@ const tab = ref('0')
               subcategory: 'tematica-mexicana'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_1" class="border-theme d-block"/>
+          <img :src="t_1" class="border-theme d-block" loading="lazy" alt="mexicana"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
         </router-link>
         <router-link 
@@ -589,7 +589,7 @@ const tab = ref('0')
               subcategory: 'tematica-hawaiana'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_2" class="border-theme d-block"/>
+          <img :src="t_2" class="border-theme d-block" loading="lazy" alt="hawaiana"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Hawaiana</span>
         </router-link>
         <router-link 
@@ -600,7 +600,7 @@ const tab = ref('0')
               subcategory: 'tematica-vallenata'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_3" class="border-theme d-block"/>
+          <img :src="t_3" class="border-theme d-block" loading="lazy" alt="vallenata"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Vallenata</span>
         </router-link>
         <router-link 
@@ -611,7 +611,7 @@ const tab = ref('0')
               subcategory: 'tematica-metalizada'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_4" class="border-theme d-block"/>
+          <img :src="t_4" class="border-theme d-block" loading="lazy" alt="metalizada"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Metalizada</span>
         </router-link>
         <router-link 
@@ -622,7 +622,7 @@ const tab = ref('0')
               subcategory: 'tematica-neon'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_5" class="border-theme d-block"/>
+          <img :src="t_5" class="border-theme d-block" loading="lazy" alt="neon"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Neón</span>
         </router-link>
       </VCardText> 
@@ -637,7 +637,7 @@ const tab = ref('0')
                   subcategory: 'tematica-mexicana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_1" class="border-theme d-block" width="150"/>
+              <img :src="t_1" class="border-theme d-block" width="150" alt="mexicana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </router-link>
           </VCol>
@@ -650,7 +650,7 @@ const tab = ref('0')
                   subcategory: 'tematica-hawaiana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="border-theme d-block" width="150"/>
+              <img :src="t_2" class="border-theme d-block" width="150" alt="hawaiana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
             </router-link>
           </VCol>
@@ -663,7 +663,7 @@ const tab = ref('0')
                   subcategory: 'tematica-vallenata'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_3" class="border-theme d-block" width="150"/>
+              <img :src="t_3" class="border-theme d-block" width="150" alt="vallenata"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </router-link>
           </VCol>
@@ -676,7 +676,7 @@ const tab = ref('0')
                   subcategory: 'tematica-metalizada'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_4" class="border-theme d-block" width="150"/>
+              <img :src="t_4" class="border-theme d-block" width="150" alt="metalizada"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </router-link>
           </VCol>
@@ -689,7 +689,7 @@ const tab = ref('0')
                   subcategory: 'tematica-neon'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_5" class="border-theme d-block" width="150"/>
+              <img :src="t_5" class="border-theme d-block" width="150" loading="lazy" alt="neon"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Neón</span>
             </router-link>
           </VCol>
@@ -702,7 +702,7 @@ const tab = ref('0')
                 }
               }" 
               class="tw-no-underline d-block text-center zoom mt-0">
-              <img :src="t_6" class="border-theme d-block" width="150"/>
+              <img :src="t_6" class="border-theme d-block" width="150" alt="todos"/>
               <span class="d-block size-theme tw-text-tertiary mt-2 transparentColor">.</span>
             </router-link>
           </VCol>
@@ -740,7 +740,7 @@ const tab = ref('0')
                 subcategory: 'fiestas-ninos'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_1" class="border-theme d-block"/>
+            <img :src="f_1" class="border-theme d-block" loading="lazy" alt="iconos"/>
             <span class="d-block size-theme tw-text-white mt-5">Niños</span>
           </router-link>
           <router-link 
@@ -751,7 +751,7 @@ const tab = ref('0')
                 subcategory: 'tematica-ninas'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_2" class="border-theme d-block"/>
+            <img :src="f_2" class="border-theme d-block" loading="lazy" alt="icons2"/>
             <span class="d-block size-theme tw-text-white mt-5">Niñas</span>
           </router-link>
           <router-link 
@@ -762,7 +762,7 @@ const tab = ref('0')
                 subcategory: 'tematica-bebes'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_3" class="border-theme d-block"/>
+            <img :src="f_3" class="border-theme d-block" loading="lazy" alt="icons3"/>
             <span class="d-block size-theme tw-text-white mt-5">Bebes</span>
           </router-link>
           <router-link
@@ -775,7 +775,7 @@ const tab = ref('0')
               }
             }"
             class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_4" class="border-theme d-white"/>
+            <img :src="f_4" class="border-theme d-white" loading="lazy" alt="icons4"/>
             <span class="d-block size-theme tw-text-white mt-5">Adultos</span>
           </router-link>
         </VCardText> 
@@ -791,7 +791,7 @@ const tab = ref('0')
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_1" class="border-theme d-block" width="150"/>
+                <img :src="f_1" class="border-theme d-block" width="150" loading="lazy"/>
                 <span class="d-block size-theme tw-text-white mt-2">Niños</span>
               </router-link>
             </VCol>
@@ -805,7 +805,7 @@ const tab = ref('0')
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_2" class="border-theme d-block" width="150"/>
+                <img :src="f_2" class="border-theme d-block" width="150" loading="lazy"/>
                 <span class="d-block size-theme tw-text-white mt-2">Niñas</span>
               </router-link>
             </VCol>
@@ -819,7 +819,7 @@ const tab = ref('0')
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_3" class="border-theme d-block" width="150" />
+                <img :src="f_3" class="border-theme d-block" width="150" loading="lazy"/>
                 <span class="d-block size-theme tw-text-white mt-2">Bebes</span>
               </router-link>
             </VCol>
@@ -834,7 +834,7 @@ const tab = ref('0')
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_4" class="border-theme d-white" width="150"/>
+                <img :src="f_4" class="border-theme d-white" width="150" loading="lazy"/>
                 <span class="d-block size-theme tw-text-white mt-2">Adultos</span>
               </router-link>
             </VCol>
