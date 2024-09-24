@@ -149,7 +149,7 @@ const tab = ref('0')
                   <VListItemTitle v-text="item.text" class="tw-text-tertiary"></VListItemTitle>
                 </VListItem>
               </router-link>
-              <router-link         
+              <!-- <router-link         
                 v-else
                 :to="{
                   name: 'services',
@@ -158,7 +158,7 @@ const tab = ref('0')
                   }
                 }"
                 class="tw-no-underline tw-text-tertiary"
-              >
+              > -->
                 <VListItem
                   color="primary"
                   variant="plain"
@@ -169,7 +169,7 @@ const tab = ref('0')
                   </template>
                   <VListItemTitle v-text="item.text" class="tw-text-tertiary"></VListItemTitle>
                 </VListItem>
-              </router-link>
+              <!-- </router-link> -->
               <!-- <VListItem
                 v-else
                 color="primary"
