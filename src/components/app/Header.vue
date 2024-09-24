@@ -439,7 +439,7 @@
           </VListGroup>
         </div>
         <!--MENU SERVICIOS MOBILE-->
-        <VListItem>
+        <!--<VListItem>
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
             <span class="d-block title-menu">SERVICIOS</span>
             <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -510,7 +510,7 @@
               </VListItem>
             </div>
           </VListGroup>
-        </div>
+        </div>-->
         <!--FIN MENU SERVICIOS MOBILE-->
       </VList>
     </VNavigationDrawer>
@@ -837,7 +837,7 @@
           </VMenu>
         </div>
       <!-----------------------SERVICIOS MENÚ------------------------------->
-        <div class="hover:tw-text-yellow">
+        <!-- <div class="hover:tw-text-yellow">
           <VMenu 
             v-model="menuOpenS"
             transition="slide-x-transition" 
@@ -917,7 +917,7 @@
             </VCard>
           </VMenu>
           
-        </div>
+        </div> -->
       <!---------FIN SERVICIOS MENÚ--------------------------->
         <span @click="toggleWholesalers"
           class="tw-no-underline d-flex align-center text-center tw-cursor-pointer"
