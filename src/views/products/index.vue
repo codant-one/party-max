@@ -98,6 +98,7 @@ watchEffect(() => {
 
 watch(() => 
   route.query,(newPath, oldPath) => {
+    currentPage.value = 1
     fetchData()
   }
 );
