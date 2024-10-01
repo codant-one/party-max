@@ -10,6 +10,7 @@
   import Service4 from '@/components/service/Service4.vue'
   import router from '@/router'
   import logo from '@assets/images/logo.svg';
+  import searchIcon from '@assets/icons/search.svg?inline';
   import heart from '@assets/icons/heart.svg?inline';
   import shoppinp_cart from '@assets/icons/shoppinp_cart.svg?inline';
   import user from '@assets/icons/user.svg?inline';
@@ -917,13 +918,17 @@
         </div>
         <VTextField
           v-model="textSearch"
-          class="w-100x me-3"
+          class="me-3"
           placeholder="Quiero..."
           :color="color"
           flat
           variant="solo">
           <template v-slot:append-inner>
-            <VBtn @click="search" class="tw-bg-white tw-text-primary h-100 search-button button-hover">Buscar</VBtn>
+            <VBtn 
+              icon="mdi-magnify" 
+              @click="search" 
+              class="tw-bg-white tw-text-primary h-100 search-button button-hover"
+            />
           </template>
         </VTextField>
       </VContainer>
@@ -1198,6 +1203,7 @@
       border: 1.5px solid #FFFFFF !important;
       height: 30px;
       top: 35%;
+      padding: 0;
     } 
 
     .v-text-field::v-deep(.v-field__input) { 
@@ -1213,7 +1219,7 @@
     .v-text-field::v-deep(input) { 
       padding: 0 0 0 4% !important;
       color: #FFFFFF !important;
-      font-size: 12px;
+      font-size: 13px;
       border-radius: 100px;
     }
 
@@ -1230,7 +1236,7 @@
     }
 
     .search-button {
-      font-size: 8px;
+      width: 36px
     }
 
     .button-hover:hover {
