@@ -49,7 +49,7 @@ async function fetchData() {
     openedSubGroups.value = []
     category.value = null 
 
-    if (route.query.category && route.query.category !== 'all' && route.name === 'services') {
+    if (route.query.category && route.name === 'services') {
         panelCat.value = null
         category.value = {
             title: categories.value.filter(item => item.slug === route.query.category)[0].name,
@@ -115,7 +115,7 @@ const toggleSubGroupFn = (index, subCat) => {
         <VCard class="px-0 transparent no-shadown">
             <VCardItem class="px-2 p-0 text-left mt-2"> CATEGORÍAS </VCardItem>
 
-            <VCardItem v-if="route.query.category && route.query.category !== 'all'" class="p-0 text-allcategories tw-font-bold mt-6">
+            <VCardItem v-if="route.query.category" class="p-0 text-allcategories tw-font-bold mt-6">
               <router-link
                 :to="{
                   name: 'services'

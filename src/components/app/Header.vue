@@ -40,7 +40,6 @@
 
   const categories = ref([])
   const categories_ = ref([])
-  const categoriesSearch = ref(null)
   const services = ref([])
   const textSearch = ref(null)
   const user_data = ref(authStores.getUser)
@@ -147,7 +146,6 @@
     categories.value = homeStores.getData.parentCategories
     services.value = homeStores.getData.parentServices
 
-    categoriesSearch.value = route.query.category ? findCategory(route.query.category) : 0
     textSearch.value = route.query.search ?? null
 
     categories_.value = [{ id: 0, name: 'Todos' }, ...categories.value];
@@ -235,23 +233,12 @@
   }
 
   const search = () => {
-
-    if(categoriesSearch.value === 0)
-      router.push({ 
-        name: 'products',
-        query: {
-          category: 'all',
-          search: textSearch.value
-        }         
-      })
-    else 
-      router.push({ 
-        name: 'products',
-        query: {
-          category: categories.value.filter(item => item.id === Number(categoriesSearch.value))[0].slug,
-          search: textSearch.value
-        }         
-      })
+    router.push({ 
+      name: 'products',
+      query: {
+        search: textSearch.value
+      }         
+    })
   }
 
   onMounted(() => {
@@ -599,20 +586,10 @@
       <VContainer class="tw-bg-white">
         <VRow no-gutters v-if="!isMobile">
           <VCol cols="9" class="d-flex">
-            <router-link to="/" class="tw-no-underline tw-text-white ms-2">
+            <router-link to="/" class="tw-no-underline tw-text-white ms-2 me-8">
               <img :src="logo" width="255" cover/>
             </router-link>
             <VSpacer />
-            <VSelect
-              v-model="categoriesSearch"
-              class="ms-8 pt-4 tw-text-primary w-15 custom-select"
-              variant="plain"
-              menu-icon="mdi-chevron-down"
-              :items="categories_"
-              item-title="name"
-              item-value="id"
-              :menu-props="{ maxHeight: '1000px'}"
-              />
             <VTextField
               v-model="textSearch"
               class="pt-4 w-100x"
@@ -938,17 +915,6 @@
         <div class="hover:tw-text-yellow">
           <VAppBarNavIcon variant="text" @click.stop="drawer = !drawer"/> 
         </div>
-        <!-- search -->
-        <VSelect
-          v-model="categoriesSearch"
-          class="ms-1 tw-text-white w-15 custom-select"
-          variant="plain"
-          menu-icon="mdi-chevron-down"
-          :items="categories_"
-          item-title="name"
-          item-value="id"
-          :menu-props="{ maxHeight: '1000px', fontSize: '8px'}"
-          />
         <VTextField
           v-model="textSearch"
           class="w-100x me-3"
@@ -1079,10 +1045,7 @@
   }
 
   .v-text-field::v-deep(.v-field) { 
-    border-top-right-radius: 100px;
-    border-bottom-right-radius: 100px;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+    border-radius: 100px;
     border: 1.5px solid #FF0090 !important;
     height: 43px;
   } 
@@ -1095,29 +1058,6 @@
   .v-text-field::v-deep(input) { 
     padding-top: 0 !important;
     color: #FF0090 !important;
-  }
-
-  .v-select::v-deep(.v-field__input) {
-    padding-top: 0;
-    padding-left: 8%;
-   }
-
-  .v-select::v-deep(.v-field__append-inner) {
-    padding-top: 30% !important;
-    padding-right: 10% !important;
-  }
-
-  .v-select::v-deep(.v-field) { 
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-top-left-radius: 100px;
-    border-bottom-left-radius: 100px;
-    border: 1.5px solid #FF0090 !important;
-    padding: 0 !important;
-  }
-
-  .custom-select .v-list-item { 
-    background-color: #FF0090;
   }
 
   .button-hover:hover {
@@ -1254,10 +1194,7 @@
     }
 
     .v-text-field::v-deep(.v-field) { 
-      border-top-right-radius: 100px;
-      border-bottom-right-radius: 100px;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
+      border-radius: 100px;
       border: 1.5px solid #FFFFFF !important;
       height: 30px;
       top: 35%;
@@ -1276,37 +1213,8 @@
     .v-text-field::v-deep(input) { 
       padding: 0 0 0 4% !important;
       color: #FFFFFF !important;
-      font-size: 8px;
-    }
-
-    .v-select::v-deep(.v-field__input) {
-      padding-top: 6%;
-      padding-left: 10%;
-      font-size: 8px;
-      opacity: 1;
-      border-radius: 24px;
-    }
-
-    .v-select::v-deep(.v-field__append-inner) {
-      padding-top: 30% !important;
-      padding-right: 10% !important;
-    }
-
-    .v-select::v-deep(.v-field) { 
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-      border-top-left-radius: 100px;
-      border-bottom-left-radius: 100px;
-      border: 1.5px solid #FFFFFF !important;
-      padding: 0 !important;
-    }
-
-    .v-select::v-deep(.v-field__append-inner > .v-icon) { 
-      opacity: 1;
-    }
-
-    .v-select::v-deep(.v-icon--size-default) {
-      font-size: calc(var(--v-icon-size-multiplier) * 1em);
+      font-size: 11px;
+      border-radius: 100px;
     }
 
     .w-100x {

@@ -145,7 +145,7 @@ async function fetchData() {
   categories.value = homeStores.getData.parentServices;
 
   let info = {
-    orderByField: (route.query.category && route.query.category !== 'all') ? 'sl.order_id' : 'services.order_id',
+    orderByField: route.query.category ? 'sl.order_id' : 'services.order_id',
     orderBy: 'asc',
     limit: isMobile ? 20 : rowPerPage.value,
     page: currentPage.value,
@@ -165,7 +165,7 @@ async function fetchData() {
   totalServices.value = aux.servicesTotalCount;
 
 
-  if (route.query.category && route.query.category !== 'all') {
+  if (route.query.category) {
     panelCat.value = null
     category.value = {
       title: categories.value.filter(item => item.slug === route.query.category)[0].name,
@@ -303,7 +303,7 @@ const addfavorite = (service_id) => {
           <VCard class="mt-7 sidebar-container">
             <VCardItem class="p-0 text-left mt-6"> CATEGORÍAS </VCardItem>
 
-            <VCardItem v-if="route.query.category && route.query.category !== 'all'" class="p-0 text-allcategories tw-font-bold mt-6">
+            <VCardItem v-if="route.query.category" class="p-0 text-allcategories tw-font-bold mt-6">
               <router-link
                 :to="{
                   name: 'services'
