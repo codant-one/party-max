@@ -32,7 +32,7 @@ const emit = defineEmits([
     'changeAddreess',
     'dialog',
     'dialog_error',
-    'send',
+    'send'
 ])
 
 const error_address = ref('Debes agregar una dirección de envio')
@@ -121,7 +121,7 @@ const isDisabled = (i) => {
                 <VCardText class="p-0 border-line">
                     <VRadioGroup
                         v-model="id"
-                        false-icon="mdi-circle-off-outline"
+                        false-icon="mdi-circle-outline"
                         true-icon="mdi-circle-slice-8"
                         @update:modelValue="chanceSend"
                     >
@@ -192,7 +192,7 @@ const isDisabled = (i) => {
                         <VCol cols="9" md="8" class="text-right py-0">
                             <VRadioGroup
                                 v-model="sendId"
-                                false-icon="mdi-circle-off-outline"
+                                false-icon="mdi-circle-outline"
                                 true-icon="mdi-circle-slice-8"
                                 @update:modelValue="chanceExpress"
                             >

@@ -674,7 +674,7 @@ const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1
                     <span class="d-block tw-text-tertiary w-100">
                       <VRadioGroup 
                         v-model="flavor_id" 
-                        false-icon="mdi-circle-off-outline"
+                        false-icon="mdi-circle-outline"
                         true-icon="mdi-circle-slice-8"
                         @update:model-value="chanceFlavor">
                         <VRadio
@@ -699,7 +699,7 @@ const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1
                     <span class="d-block tw-text-tertiary w-100">
                       <VRadioGroup 
                         v-model="filling_id" 
-                        false-icon="mdi-circle-off-outline"
+                        false-icon="mdi-circle-outline"
                         true-icon="mdi-circle-slice-8"
                         @update:model-value="chanceFilling">
                         <VRadio

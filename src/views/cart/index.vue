@@ -341,7 +341,7 @@ const onSubmit = () => {
                     isDialogVisible.value = false
                     message.value = ''
                     isError.value = false
-                }, 3000)
+                }, 2000)
 
                 load.value = false
             }
@@ -369,7 +369,7 @@ const addAddress = () => {
                 isDialogVisible.value = false
                 message.value = ''
                 isError.value = false
-            }, 3000)
+            }, 2000)
 
             load.value = false                    
             
@@ -391,7 +391,7 @@ const addAddress = () => {
                 isDialogVisible.value = false
                 message.value = ''
                 isError.value = false
-            }, 3000)
+            }, 2000)
 
             // console.error(err.message)
         })
@@ -533,7 +533,7 @@ const sendPayU = async (billingDetail) => {
                     isDialogVisible.value = false
                     message.value = ''
                     isError.value = false
-                }, 3000)
+                }, 2000)
                 // console.error('Error:', error);
             });
     }
@@ -587,7 +587,7 @@ const dialog_error = ()=> {
         isDialogVisible.value = false
         message.value = ''
         isError.value = false
-    }, 3000)
+    }, 2000)
 }
 
 const getFlagCountry = country => {
@@ -703,8 +703,10 @@ const chanceSend = value => {
                         :provinces="listProvinces"
                         :iswholesale="iswholesale"
                         :type="cartStores.getType"
+                        :step="currentStep"
                         @submit="sendPayU"
                         @send="chanceSend"
+                        @dialog_error = "dialog_error"
                     />
                 </VWindowItem>
                 <VWindowItem>

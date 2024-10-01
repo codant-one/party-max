@@ -39,10 +39,22 @@ const props = defineProps({
     type: {
         type: Number,
         required: true
+    },
+    step: {
+        type: Number,
+        required: true
     }
 })
 
-const emit = defineEmits(['submit', 'send', 'update:currentStep',])
+const emit = defineEmits([
+    'submit', 
+    'send', 
+    'update:currentStep', 
+    'dialog_error'
+])
+
+const error_address = ref('Debes agregar una dirección de envio')
+const id = ref(props.address_id)
 
 const type_ = ref(props.type)
 const refVForm = ref()
@@ -96,8 +108,27 @@ onMounted(async () => {
     }
 })
 
+watch(() => 
+    props.step, (data) => {
+        if (data === 2 && id.value === 0) {
+            emit('update:currentStep', 0)
+            emit('dialog_error', error_address.value)
+        }
+    });
+
+watch(() => 
+    props.address_id, (data) => {
+        id.value = data
+    });
+
 watchEffect(() => {
-    if (!(Object.entries(props.addresses).length === 0)) {
+
+    if (id.value === 0 && props.step === 2) {
+        emit('update:currentStep', 0)
+        emit('dialog_error', error_address.value)
+    }
+
+    if (!(Object.entries(props.addresses).length === 0) && id.value > 0) {
         let index = props.addresses.findIndex((item) => item.id === props.address_id)
         address.value = props.addresses[index]
     }
@@ -318,7 +349,7 @@ const getFlagCountry = country => {
                     </VRow>
                 </VCard>
 
-                <VCard class="card-products mx-auto px-0">
+                <VCard class="card-products mx-auto px-0" v-if="address">
                     <h2 class="title-card px-5 px-md-16 my-3">Dirección de entrega</h2>
                     <VRow class="row-cardelivery3 px-5 px-md-16">
                         <VCol cols="12" md="10" class="text-left">
