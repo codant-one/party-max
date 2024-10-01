@@ -115,7 +115,7 @@ const isDisabled = (i) => {
                     <span class="d-block">Enviar a domicilio</span>
                     <span class="text-address d-block tw-text-gray d-flex align-center mb-2">
                         <info />
-                        <span class="ms-2"> El envío express solo está disponible para Bogotá D.C. </span>
+                        <span class="ms-1"> El envío express solo está disponible para Bogotá D.C. </span>
                     </span>
                 </VCardText>
                 <VCardText class="p-0 border-line">
@@ -416,7 +416,7 @@ const isDisabled = (i) => {
 
     @media only screen and (max-width: 767px) {
         .text-address svg {
-            width: 30px;
+            width: 35px;
         }
 
         .title-card {
