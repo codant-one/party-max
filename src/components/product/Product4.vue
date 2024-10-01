@@ -143,7 +143,7 @@ const addfavorite = () => {
                             {{ (in_stock === 1) ? ''  : 'AGOTADO' }}
                         </strong>
                     </VCardText>
-                    <VCardText class="px-0 px-md-1 pb-1">
+                    <VCardText class="px-0 px-md-1 pb-1 d-none">
                         <div class="d-flex">
                             <VRating
                                 half-increments

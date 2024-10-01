@@ -49,19 +49,17 @@ const addressTypes = [
   {
     icon: {
       icon: 'mdi-home-city',
-      size: '40',
+      size: '50',
     },
     title: 'Hogar',
-    desc: 'Hora de entrega </br>(7 a.m. - 9 p.m.)',
     value: '1',
   },
   {
     icon: {
       icon: 'mdi-office-building',
-      size: '40',
+      size: '50',
     },
     title: 'Oficina',
-    desc: 'Hora de entrega </br>(10 a.m. - 6 p.m.)',
     value: '2',
   },
 ]
@@ -505,7 +503,6 @@ const getFlagCountry = country => {
                                 v-model="selectedAddress.postal_code"
                                 label="Código Postal"
                                 variant="outlined"
-                                :rules="[requiredValidator, phoneValidator]"
                             />    
                         </VCol> 
                         <VCol cols="12" md="7"></VCol>
@@ -682,7 +679,7 @@ const getFlagCountry = country => {
     }
 
     .v-text-field::v-deep(::placeholder) { 
-        color: #0A1B33 !important;
+        color: #999999 !important;
         opacity: inherit;
     }
 

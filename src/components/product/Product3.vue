@@ -81,7 +81,7 @@ watchEffect(() => {
                     <strong v-else>{{ store }}</strong>
                 </span>
             </VCardText>
-            <VCardText class="px-1">
+            <VCardText class="px-1 d-none">
                 <div class="d-flex">
                     <VRating
                         half-increments
@@ -95,8 +95,8 @@ watchEffect(() => {
                     <span class="text_2 ms-2 mt-1">({{ stock }})</span>
                 </div>
             </VCardText>
-            <VCardText class="mt-1">
-                <div class="d-flex py-2">
+            <VCardText>
+                <div class="d-flex">
                 <span v-if="!existence_whole" class="text_1">${{ formatNumber(price_for_sale) }}</span>
                 <span v-if="existence_whole" class="text_1">${{ formatNumber(wholesale_price) }}</span>
                 </div>

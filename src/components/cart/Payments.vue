@@ -319,7 +319,7 @@ const getFlagCountry = country => {
                 </VCard>
 
                 <VCard class="card-products mx-auto px-0">
-                    <h2 class="title-card px-5 px-md-16 my-3">Forma de entrega</h2>
+                    <h2 class="title-card px-5 px-md-16 my-3">Dirección de entrega</h2>
                     <VRow class="row-cardelivery3 px-5 px-md-16">
                         <VCol cols="12" md="10" class="text-left">
                             <h4>
@@ -327,7 +327,7 @@ const getFlagCountry = country => {
                                 {{ address.street }} <span v-if="address.street !== null">,</span>
                                 {{ address.city }} ,
                                 {{ address.province.name }}.<br>
-                                Código Postal: {{ address.postal_code }}. 
+                                <span v-if="address.postal_code">Código Postal: {{ address.postal_code }}. </span>
                             </h4>
                         </VCol>
                         <VCol cols="12" md="2" class="text-right pe-6 pe-md-3">
@@ -418,7 +418,7 @@ const getFlagCountry = country => {
     }
 
     .v-text-field::v-deep(::placeholder) { 
-        color: #999 !important;
+        color: #999999 !important;
         font-size: 15px;
         opacity: inherit;
     }

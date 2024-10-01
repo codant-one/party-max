@@ -493,7 +493,7 @@ const addCart = async() => {
               isDialogVisible.value = false
               isError.value = false
               message.value = ''
-            }, 3000)
+            }, 1000)
 
           }).catch(err => {
             load.value = false

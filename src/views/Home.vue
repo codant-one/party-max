@@ -1154,6 +1154,10 @@ const tab = ref('0')
       line-height: normal;
     }
 
+    .swiper {
+      height: 280px!important;
+    }
+
     .swiper::v-deep(.swiper-pagination-bullet-active) {
       background: #FF0090 !important;
     }

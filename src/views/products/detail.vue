@@ -386,7 +386,7 @@ const addCart = () => {
             isDialogVisible.value = false
             isError.value = false
             message.value = ''
-          }, 3000)
+          }, 1000)
 
         }).catch(err => {
           load.value = false
@@ -433,7 +433,7 @@ const addfavorite = () => {
         isDialogVisible.value = false
         isError.value = false
         message.value = ''
-      }, 3000)
+      }, 1000)
     
     }).catch(err => {
       isFavorite.value = false
@@ -523,7 +523,7 @@ const decrement = () => {
               Marca: {{ brand }}
               <VDivider :thickness="2" color="#999" class="hr" vertical />
 
-              <div class="d-flex align-center">
+              <div class="d-none align-center">
                 <VRating
                   half-increments
                   readonly
@@ -536,7 +536,7 @@ const decrement = () => {
 
                 <span class="ms-1">({{ reviews.length }} {{ reviews.length > 1 ? 'Reviews' : 'Review' }})</span>
               </div>
-              <VDivider :thickness="2" color="#999" class="hr" vertical />
+              <VDivider :thickness="2" color="#999" class="hr d-none" vertical />
               <span class="d-block">SKU: {{ sku }}</span>
             </VCol>
             <VCol cols="12" md="6" class="align-right"></VCol>
@@ -716,7 +716,7 @@ const decrement = () => {
               <VTabs v-model="tab" color="pink-accent-3" align-tabs="center" class="px-0">
                 <VTab value="0" class="text-tabs">Descripción</VTab>
                 <VTab value="1" class="text-tabs">Especificaciones</VTab>
-                <VTab value="2" class="text-tabs">Reviews ({{reviews.length}})</VTab>
+                <!-- <VTab value="2" class="text-tabs d-none">Reviews ({{reviews.length}})</VTab> -->
               </VTabs>
             </VCol>
 
@@ -741,7 +741,7 @@ const decrement = () => {
                     </VRow>
                   </VCardText>
                 </v-window-item>
-                <v-window-item value="2">
+                <!-- <v-window-item value="2" class="d-none">
                   <VCardText class="py-0">
                     <VRow class="row-reviews border-title" v-for="review in reviews">
                       <VCol cols="3" md="1">
@@ -785,7 +785,7 @@ const decrement = () => {
                       </VCol>
                     </VRow>
                   </VCardText>
-                </v-window-item>
+                </v-window-item> -->
               </v-window>
             </VCol>
           </VRow>
@@ -1167,7 +1167,7 @@ const decrement = () => {
   }
 
   .swiper-recomendations .swiper::v-deep(.swiper-pagination-horizontal ) {
-    top: 95% !important;
+    top: 93% !important;
   }
     
   .col-item {
@@ -1265,7 +1265,7 @@ const decrement = () => {
     }
 
     .swiper-recomendations .swiper {
-      height: 360px !important;
+      height: 280px !important;
     }
 
     .mySwiper {

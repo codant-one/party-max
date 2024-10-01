@@ -163,7 +163,9 @@ const resolveStatusPayment = payment_state_id => {
                     {{ orders.address.street }} <span v-if="orders.address.street !== null">,</span>
                     {{ orders.address.city }} ,
                     {{ orders.address.province.name }}.<br>
-                    Código Postal: {{ orders.address.postal_code }}. 
+                    <span v-if="orders.address.postal_code">
+                        Código Postal: {{ orders.address.postal_code }}. 
+                    </span>
                     <span v-if="orders.billing.note !== null">
                         ({{ orders.billing.note }}).
                     </span>

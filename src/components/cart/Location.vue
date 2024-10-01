@@ -2,6 +2,7 @@
 
 import { formatNumber } from '@formatters'
 import arrow_left from '@assets/icons/Arrow_left.svg?inline';
+import info from '@assets/icons/info-circle.svg?inline';
 
 const props = defineProps({
     addresses: {
@@ -109,9 +110,14 @@ const isDisabled = (i) => {
     <VRow>
         <VCol cols="12" md="8">
             <VCard class="card-products p-0">
-                <VCardTitle class="title-card border-line mt-4 px-5 px-md-10">Elige la forma de entrega</VCardTitle>
-                <VCardText class="home pb-0 mt-3 mb-0 my-md-3 px-5 px-md-10">Enviar a domicilio</VCardText>
-                <VCardText class="p-0">
+                <VCardTitle class="title-card border-line mt-4 px-5 px-md-10">Elige la dirección de entrega</VCardTitle>
+                <VCardText class="home pb-0 mt-3 mb-0 my-md-3 px-5 px-md-10 d-block">
+                    <span class="d-block">Enviar a domicilio</span>
+                    <span class="text-address d-block tw-text-gray d-flex align-center">
+                        <info class="me-1" /> El envío express solo está disponible para Bogotá D.C.
+                    </span>
+                </VCardText>
+                <VCardText class="p-0 border-line">
                     <VRadioGroup
                         v-model="id"
                         false-icon="mdi-circle-off-outline"
@@ -133,7 +139,7 @@ const isDisabled = (i) => {
                                             {{ address.street }} <span v-if="address.street !== null">,</span>
                                             {{ address.city }} ,
                                             {{ address.province.name }}.
-                                            Código Postal: {{ address.postal_code }}. 
+                                            <span v-if="address.postal_code">Código Postal: {{ address.postal_code }}.</span> 
                                         </span>
                                     </div>
                                     <VSpacer />
@@ -260,6 +266,11 @@ const isDisabled = (i) => {
         line-height: 16px;
     }
 
+    
+    .text-address svg {
+        transform: scale(0.8);
+    }
+
     .card-summary {
         background-color:#F3FCFE;
         padding:24px 32px;
@@ -363,7 +374,7 @@ const isDisabled = (i) => {
     }
 
     .row-cardp3 {
-        padding: 16px 32px;
+        padding: 16px 40px;
     }
 
     .row-cardp3 span {

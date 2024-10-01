@@ -166,6 +166,7 @@ const onSubmit = () => {
                         <VCol cols="12">
                             <VTextField
                                 label="Teléfono"
+                                placeholder="+57 23 456 7890"
                                 v-model="phone"
                                 variant="outlined"
                                 :rules="[requiredValidator, phoneValidator]"
@@ -321,7 +322,7 @@ const onSubmit = () => {
     }
 
     .v-text-field::v-deep(::placeholder) { 
-        color: #0A1B33 !important;
+        color: #999999 !important;
         opacity: inherit;
     }
 

@@ -158,7 +158,7 @@ async function fetchData() {
   let info = {
     orderByField: (route.query.category && route.query.category !== 'all') ? 'pl.order_id' : 'products.order_id',
     orderBy: 'asc',
-    limit: isMobile ? 20 : rowPerPage.value,
+    limit: isMobile ? 50 : rowPerPage.value,
     page: currentPage.value,
     category: route.query.category ?? null,
     subcategory: route.query.subcategory ?? null,
@@ -256,6 +256,11 @@ async function fetchData() {
 
     user_id.value = userDataJ.id
   }
+
+  window.scrollTo({
+    top: 0, // Posición del contenedor de ítems
+    behavior: "smooth"  // Animación suave al hacer scroll
+  });
 
   isLoading.value = false;
 }
@@ -359,7 +364,7 @@ const addCart = (value) => {
             isDialogVisible.value = false
             isError.value = false
             message.value = ''
-          }, 3000)
+          }, 1000)
 
         }).catch(err => {
           load.value = false
@@ -402,7 +407,7 @@ const addfavorite = (product_id) => {
         isDialogVisible.value = false
         isError.value = false
         message.value = ''
-      }, 3000)
+      }, 1000)
 
       fetchData()
     

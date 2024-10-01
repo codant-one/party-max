@@ -346,6 +346,10 @@ async function fetchData() {
       height: 140px;
     }
 
+    .swiper {
+      height: 280px!important;
+    }
+    
     .swiper::v-deep(.swiper-pagination-bullet-active) {
       background: #FF0090 !important;
     }

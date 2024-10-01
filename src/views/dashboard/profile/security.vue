@@ -327,6 +327,7 @@ async function fetchData() {
                         <VCol cols="12" md="12" class="textinput mb-0 mb-md-2 mt-3">
                             <VTextField
                                 label="Teléfono"
+                                placeholder="+57 23 456 7890"
                                 v-model="newphone"
                                 variant="outlined"
                                 :rules="[requiredValidator,phoneValidator]"
@@ -487,7 +488,7 @@ async function fetchData() {
     }
 
     .v-text-field::v-deep(::placeholder) { 
-        color: #0A1B33 !important;
+        color: #999999 !important;
         opacity: inherit;
     }
 
