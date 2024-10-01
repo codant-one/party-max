@@ -1213,7 +1213,7 @@
     .v-text-field::v-deep(input) { 
       padding: 0 0 0 4% !important;
       color: #FFFFFF !important;
-      font-size: 11px;
+      font-size: 12px;
       border-radius: 100px;
     }
 
