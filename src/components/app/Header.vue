@@ -755,7 +755,7 @@
                   <VList class="pb-0">
                     <VListItem>
                       <VListItemTitle class="d-block lineheight">
-                        <span class="d-block title-menu">PRODUCTOS</span>
+                        <span class="d-block title-menu">PRODUCTOSsss</span>
                         <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
                         </svg>
@@ -1147,6 +1147,22 @@
   .style-submenu {
     padding: 22px 0 0 32px;
     border-radius: 0px 0px 0px 24px!important;
+    max-height: 450px;
+    overflow-y: auto;
+  }
+
+  .style-submenu::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .style-submenu::-webkit-scrollbar-track {
+    background-color: #F3FCFE;
+    border-radius: 10px;
+  }
+
+  .style-submenu::-webkit-scrollbar-thumb {
+    background-color: #D9EEF2;
+    border-radius: 10px;
   }
  
   .v-list-item--density-default.v-list-item--one-line {
@@ -1155,6 +1171,10 @@
 
   .style-submenu .v-list-item--density-default.v-list-item--one-line {
     min-height: 35px !important;
+  }
+
+  .style-submenu:hover .v-list-item--density-default.v-list-item--one-line {
+    color: white !important;
   }
 
   .line-div {
