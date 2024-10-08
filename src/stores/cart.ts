@@ -36,7 +36,7 @@ export const useCartStores = defineStore('cart', {
 
             if (!storedVersion || storedVersion !== this.CURRENT_VERSION) {
                 localStorage.removeItem('shoppingCart');
-                localStorage.setItem('shopping_cart_version', this.CURRENT_VERSION);
+                localStorage.setItem('shoppingCartVersion', this.CURRENT_VERSION);
 
                 this.wholesale = -1
                 this.type = -1
