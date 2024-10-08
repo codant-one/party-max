@@ -6,7 +6,8 @@ export const useCartStores = defineStore('cart', {
         data: Array<Object>(),
         count: 0,
         wholesale: -1,
-        type: -1
+        type: -1,
+        CURRENT_VERSION: '2.0.0'
     }),
     getters:{
         getData(): any {
@@ -31,6 +32,16 @@ export const useCartStores = defineStore('cart', {
         },
         fetchCart() {
             
+            const storedVersion = localStorage.getItem('shopping_cart_version');
+
+            if (!storedVersion || storedVersion !== this.CURRENT_VERSION) {
+                localStorage.removeItem('shoppingCart');
+                localStorage.setItem('shopping_cart_version', this.CURRENT_VERSION);
+
+                this.wholesale = -1
+                this.type = -1
+            }
+
             let shoppingCart = localStorage.getItem('shoppingCart')
     
             shoppingCart = shoppingCart ? JSON.parse(shoppingCart) : []
