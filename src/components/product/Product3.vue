@@ -25,6 +25,7 @@ const rating = ref(null)
 const slug = ref(null)
 const existence_whole = ref(false)
 const stock = ref(null)
+const in_stock = ref(null)
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
@@ -39,6 +40,7 @@ watchEffect(() => {
         rating.value = props.product.rating
         slug.value = props.product.slug
         stock.value = props.product.stock
+        in_stock.value = props.product.in_stock
     }
 
     existence_whole.value = route.query.wholesalers === 'true' ? true : false;
@@ -96,9 +98,12 @@ watchEffect(() => {
                 </div>
             </VCardText>
             <VCardText>
-                <div class="d-flex">
-                <span v-if="!existence_whole" class="text_1">${{ formatNumber(price_for_sale) }}</span>
-                <span v-if="existence_whole" class="text_1">${{ formatNumber(wholesale_price) }}</span>
+                <div class="d-flex align-center">
+                    <span v-if="!existence_whole" class="text_1">${{ formatNumber(price_for_sale) }}</span>
+                    <span v-if="existence_whole" class="text_1">${{ formatNumber(wholesale_price) }}</span>
+                    <strong class="tw-text-gray tw-text-base ms-3">
+                        {{ (in_stock === 1) ? ''  : 'AGOTADO' }}
+                    </strong>
                 </div>
             </VCardText>
         </VCard>
