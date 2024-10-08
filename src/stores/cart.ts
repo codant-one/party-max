@@ -32,7 +32,7 @@ export const useCartStores = defineStore('cart', {
         },
         fetchCart() {
             
-            const storedVersion = localStorage.getItem('shopping_cart_version');
+            const storedVersion = localStorage.getItem('shoppingCartVersion');
 
             if (!storedVersion || storedVersion !== this.CURRENT_VERSION) {
                 localStorage.removeItem('shoppingCart');
