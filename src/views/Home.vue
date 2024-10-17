@@ -201,6 +201,7 @@ const tab = ref('0')
                 v-for="(item,i) in sliders"
                 :key="i"
                 :src="item.src"
+                :lazy="true"
                 cover
               />
             </VCarousel>
@@ -291,28 +292,28 @@ const tab = ref('0')
       <VCardItem class="p-0">
         <VRow no-gutters  class="tw-text-tertiary">
           <VCol cols="12" md="3" class="d-flex align-center hr">
-            <img :src="motorcycle" width="60" class="ms-10" loading="lazy"/>
+            <img :src="motorcycle" width="60" height="60" class="ms-10" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Envíos gratis</span>
               <span class="d-block card-information-subtitle">A partir de $190.000</span>
             </div>
           </VCol>
           <VCol cols="12" md="3" class="d-flex align-center hr">
-            <img :src="location" width="60" class="ms-10" loading="lazy"/>
+            <img :src="location" width="60" height="60" class="ms-10" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Nuestras tiendas</span>
               <span class="d-block card-information-subtitle">En Bogotá</span>
             </div>
           </VCol>
           <VCol cols="12" md="3" class="d-flex align-center hr">
-            <img :src="sold" width="60" class="ms-10" loading="lazy"/>
+            <img :src="sold" width="60" height="60" class="ms-10" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Ventas por mayor</span>
               <span class="d-block card-information-subtitle">A los mejores precios</span>
             </div>
           </VCol>
           <VCol cols="12" md="3" class="d-flex align-center col-siguecompra">
-            <img :src="tracking" width="60" class="ms-10" loading="lazy"/>
+            <img :src="tracking" width="60" height="60" class="ms-10" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Sigue tu compra</span>
               <span class="d-block card-information-subtitle">Desde tu cuenta</span>
@@ -578,7 +579,7 @@ const tab = ref('0')
               subcategory: 'tematica-mexicana'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_1" class="border-theme d-block" loading="lazy" alt="mexicana"/>
+          <img :src="t_1" class="border-theme d-block size-circles-desktop" loading="lazy"  alt="mexicana"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
         </router-link>
         <router-link 
@@ -589,7 +590,7 @@ const tab = ref('0')
               subcategory: 'tematica-hawaiana'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_2" class="border-theme d-block" loading="lazy" alt="hawaiana"/>
+          <img :src="t_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="hawaiana"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Hawaiana</span>
         </router-link>
         <router-link 
@@ -600,7 +601,7 @@ const tab = ref('0')
               subcategory: 'tematica-vallenata'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_3" class="border-theme d-block" loading="lazy" alt="vallenata"/>
+          <img :src="t_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="vallenata"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Vallenata</span>
         </router-link>
         <router-link 
@@ -611,7 +612,7 @@ const tab = ref('0')
               subcategory: 'tematica-metalizada'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_4" class="border-theme d-block" loading="lazy" alt="metalizada"/>
+          <img :src="t_4" class="border-theme d-block size-circles-desktop" loading="lazy" alt="metalizada"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Metalizada</span>
         </router-link>
         <router-link 
@@ -622,7 +623,7 @@ const tab = ref('0')
               subcategory: 'tematica-neon'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_5" class="border-theme d-block" loading="lazy" alt="neon"/>
+          <img :src="t_5" class="border-theme d-block size-circles-desktop" loading="lazy" alt="neon"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Neón</span>
         </router-link>
       </VCardText> 
@@ -637,7 +638,7 @@ const tab = ref('0')
                   subcategory: 'tematica-mexicana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_1" class="border-theme d-block" width="150" alt="mexicana"/>
+              <img :src="t_1" class="border-theme d-block" width="150" height="150" alt="mexicana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </router-link>
           </VCol>
@@ -650,7 +651,7 @@ const tab = ref('0')
                   subcategory: 'tematica-hawaiana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="border-theme d-block" width="150" alt="hawaiana"/>
+              <img :src="t_2" class="border-theme d-block" width="150" height="150" alt="hawaiana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
             </router-link>
           </VCol>
@@ -663,7 +664,7 @@ const tab = ref('0')
                   subcategory: 'tematica-vallenata'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_3" class="border-theme d-block" width="150" alt="vallenata"/>
+              <img :src="t_3" class="border-theme d-block" width="150" height="150" alt="vallenata"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </router-link>
           </VCol>
@@ -676,7 +677,7 @@ const tab = ref('0')
                   subcategory: 'tematica-metalizada'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_4" class="border-theme d-block" width="150" alt="metalizada"/>
+              <img :src="t_4" class="border-theme d-block" width="150" height="150" alt="metalizada"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </router-link>
           </VCol>
@@ -689,7 +690,7 @@ const tab = ref('0')
                   subcategory: 'tematica-neon'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_5" class="border-theme d-block" width="150" loading="lazy" alt="neon"/>
+              <img :src="t_5" class="border-theme d-block" width="150"  height="150" loading="lazy" alt="neon"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Neón</span>
             </router-link>
           </VCol>
@@ -702,7 +703,7 @@ const tab = ref('0')
                 }
               }" 
               class="tw-no-underline d-block text-center zoom mt-0">
-              <img :src="t_6" class="border-theme d-block" width="150" alt="todos"/>
+              <img :src="t_6" class="border-theme d-block" width="150"  height="150" alt="todos"/>
               <span class="d-block size-theme tw-text-tertiary mt-2 transparentColor">.</span>
             </router-link>
           </VCol>
@@ -740,7 +741,7 @@ const tab = ref('0')
                 subcategory: 'fiestas-ninos'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_1" class="border-theme d-block" loading="lazy" alt="iconos"/>
+            <img :src="f_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt="iconos"/>
             <span class="d-block size-theme tw-text-white mt-5">Niños</span>
           </router-link>
           <router-link 
@@ -751,7 +752,7 @@ const tab = ref('0')
                 subcategory: 'tematica-ninas'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_2" class="border-theme d-block" loading="lazy" alt="icons2"/>
+            <img :src="f_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="icons2"/>
             <span class="d-block size-theme tw-text-white mt-5">Niñas</span>
           </router-link>
           <router-link 
@@ -762,7 +763,7 @@ const tab = ref('0')
                 subcategory: 'tematica-bebes'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_3" class="border-theme d-block" loading="lazy" alt="icons3"/>
+            <img :src="f_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="icons3"/>
             <span class="d-block size-theme tw-text-white mt-5">Bebes</span>
           </router-link>
           <router-link
@@ -775,7 +776,7 @@ const tab = ref('0')
               }
             }"
             class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_4" class="border-theme d-white" loading="lazy" alt="icons4"/>
+            <img :src="f_4" class="border-theme d-white size-circles-desktop" loading="lazy" alt="icons4"/>
             <span class="d-block size-theme tw-text-white mt-5">Adultos</span>
           </router-link>
         </VCardText> 
@@ -791,7 +792,7 @@ const tab = ref('0')
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_1" class="border-theme d-block" width="150" loading="lazy"/>
+                <img :src="f_1" class="border-theme d-block" width="150" height="150" loading="lazy"/>
                 <span class="d-block size-theme tw-text-white mt-2">Niños</span>
               </router-link>
             </VCol>
@@ -805,7 +806,7 @@ const tab = ref('0')
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_2" class="border-theme d-block" width="150" loading="lazy"/>
+                <img :src="f_2" class="border-theme d-block" width="150" height="150" loading="lazy"/>
                 <span class="d-block size-theme tw-text-white mt-2">Niñas</span>
               </router-link>
             </VCol>
@@ -819,7 +820,7 @@ const tab = ref('0')
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_3" class="border-theme d-block" width="150" loading="lazy"/>
+                <img :src="f_3" class="border-theme d-block" width="150" height="150" loading="lazy"/>
                 <span class="d-block size-theme tw-text-white mt-2">Bebes</span>
               </router-link>
             </VCol>
@@ -834,7 +835,7 @@ const tab = ref('0')
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_4" class="border-theme d-white" width="150" loading="lazy"/>
+                <img :src="f_4" class="border-theme d-white" width="150" height="150" loading="lazy"/>
                 <span class="d-block size-theme tw-text-white mt-2">Adultos</span>
               </router-link>
             </VCol>
@@ -1037,6 +1038,12 @@ const tab = ref('0')
 
   .text-pink-accent-3 {
     color: #FF0090 !important;
+  }
+
+  .size-circles-desktop
+  {
+    width: 194px;
+    height: 194px;
   }
 
   @media only screen and (max-width: 767px) {

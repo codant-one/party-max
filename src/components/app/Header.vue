@@ -669,7 +669,7 @@
         <VRow no-gutters v-else class="px-3">
           <VCol cols="6" class="d-flex">
             <router-link to="/" class="tw-no-underline tw-text-white">
-              <img :src="logo" width="200" cover/>
+              <img :src="logo" width="200" height="52" cover/>
             </router-link>
           </VCol>
           <VCol cols="6" class="d-flex align-center align-items-stretch flex-shrink-0 iconsMobile">
