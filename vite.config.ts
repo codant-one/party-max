@@ -26,10 +26,23 @@ export default defineConfig({
     }),
 	],
   build: {
+    minify: 'esbuild', // Asegúrate de usar el minificador por defecto rápido.
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['vue', 'vue-router', 'pinia'], // Divide dependencias en chunks separados
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            if (id.includes('vuetify')) {
+              return 'vuetify'; // Mueve Vuetify a un chunk separado.
+            }
+            if (id.includes('vue-gtag-next')) {
+              return 'gtag'; // Mueve la librería de Google Analytics a un chunk separado.
+            }
+            if (id.includes('axios')) {
+              return 'axios'; // Si usas Axios, crea un chunk para esta librería.
+            }
+            // Crea un chunk "vendor" para todas las dependencias grandes que no tengan un chunk específico.
+            return 'vendor';
+          }
         },
       },
     },

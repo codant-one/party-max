@@ -14,14 +14,16 @@
 
     <!-- Hotjar Tracking Code for https://partymax.co/ -->
     <script>
-        (function(h,o,t,j,a,r){
-            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-            h._hjSettings={hjid:5104424,hjsv:6};
-            a=o.getElementsByTagName('head')[0];
-            r=o.createElement('script');r.async=1;r.defer=1;
-            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-            a.appendChild(r);
-        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+        window.addEventListener('load', function() {
+            (function(h,o,t,j,a,r){
+                h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+                h._hjSettings={hjid:5104424,hjsv:6};
+                a=o.getElementsByTagName('head')[0];
+                r=o.createElement('script'); r.async = true; r.defer = true;
+                r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+                a.appendChild(r);
+            })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+        });
     </script>
 </head>
 
@@ -30,14 +32,21 @@
     <script type="module" src="/src/main.ts" defer></script>
     <!-- Smartsupp Live Chat script -->
     <script type="text/javascript">
-        var _smartsupp = _smartsupp || {};
-        _smartsupp.key = '21d8c9142756b05ee99dcc94e89dbb37e028aef4';
-        window.smartsupp||(function(d) {
-        var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
-        s=d.getElementsByTagName('script')[0];c=d.createElement('script');
-        c.type='text/javascript';c.charset='utf-8';c.async=true;c.defer=true;
-        c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
-        })(document);
+        setTimeout(function() {
+            var _smartsupp = _smartsupp || {};
+            _smartsupp.key = '21d8c9142756b05ee99dcc94e89dbb37e028aef4';
+            window.smartsupp||(function(d) {
+                var s, c, o = smartsupp = function() { o._.push(arguments) }; o._ = [];
+                s = d.getElementsByTagName('script')[0]; 
+                c = d.createElement('script');
+                c.type = 'text/javascript'; 
+                c.charset = 'utf-8'; 
+                c.async = true; 
+                c.defer = true;
+                c.src = 'https://www.smartsuppchat.com/loader.js?';
+                s.parentNode.insertBefore(c, s);
+            })(document);
+        }, 3000); // 3000 ms (3 segundos) de retraso para cargar el script del chat
     </script>
         
 </body>
