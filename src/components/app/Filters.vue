@@ -516,6 +516,8 @@ const toggleSubGroupFn = (index, subCat) => {
                 color="yellow-darken-2"
                 active-color="yellow-darken-2"
                 @update:modelValue="reviewAction"
+                :ripple="false"
+                density="compact"
               />
             </VCardText>
         </VCard>

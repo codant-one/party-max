@@ -40,7 +40,9 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: Home
+      // component: Home
+      component: () => import(/* webpackChunkName: "grupo" */ '@/views/Home.vue'),
+      props: true
     },
     {
       path: '/:catchAll(.*)',

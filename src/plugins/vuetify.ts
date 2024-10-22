@@ -44,6 +44,20 @@ const myCustomLightTheme = {
     // Shadows
     'shadow-key-umbra-color': '#2F2B3D'
   },
+  defaults: {
+    VCard: {
+      flat: true, // Reduce elementos DOM adicionales
+      elevation: 0,
+    },
+    VBtn: {
+      variant: 'text', // Reduce elementos DOM para efectos
+      ripple: false,
+    },
+    VList: {
+      nav: true, // Reduce la complejidad del DOM
+      dense: true,
+    }
+  }
 }
 
 export default createVuetify({

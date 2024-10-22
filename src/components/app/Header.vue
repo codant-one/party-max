@@ -377,7 +377,7 @@
             </router-link>
           </VListItemTitle> 
           </VListItem>
-          <VListGroup v-else :value="item.name">
+          <VListGroup v-else :value="item.name" :eager="false">
             <template #activator="{ props }">
               <VListItem class="items-list">
                 <VListItemTitle class="d-block lineheight borderList pb-2">
@@ -450,7 +450,7 @@
             </router-link>
           </VListItemTitle> 
           </VListItem>
-          <VListGroup v-else :value="item.name">
+          <VListGroup v-else :value="item.name" :eager="false">
             <template #activator="{ props }">
               <VListItem class="items-list">
                 <VListItemTitle class="d-block lineheight borderList pb-2">
