@@ -94,7 +94,7 @@ const items = ref([
 ])
 
 const sliders = ref( [
-  { src: isMobile ? Slider1Mobile : Slider1 },
+  { src: Slider1 },
   { src: Slider2 },
   { src: Slider3 }
 ])
@@ -191,7 +191,7 @@ const tab = ref('0')
       <VCol cols="12" md="9" class="tw-bg-white border-categories">
         <VRow no-gutters>
           <VCol cols="12" md="7" class="pslider">
-            <img :src="Plaza_1" fetchpriority="high" class="img-main" alt="birthday" v-if="isMobile" loading="lazy" />
+            <img :src="Slider1Mobile" fetchpriority="high" class="img-main" alt="birthday" width="330" height="170" v-if="isMobile" loading="lazy" />
             <VCarousel 
               v-else
               cycle
@@ -244,7 +244,7 @@ const tab = ref('0')
                     }
                   }"
                 >
-                  <img :src="isMobile ? Plaza_1 : Plaza_3" class="img-galery img-globo" alt="globos" width="330" height="160" loading="lazy"/>
+                  <img :src="isMobile ? Plaza_3_mobile : Plaza_3" fetchpriority="high" class="img-galery img-globo" alt="globos" width="330" height="160" loading="lazy"/>
                 </router-link>
               </VCol>
             </VRow>
@@ -1064,8 +1064,9 @@ const tab = ref('0')
     }
 
     .img-main {
-      height: 170px !important;
+      aspect-ratio: 330 / 170;
       width: 100%;
+      object-fit: cover;
       border-radius:  16px 16px 0 0 !important;
     }
 
