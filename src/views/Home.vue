@@ -886,6 +886,7 @@ const tab = ref('0')
   }
 
   .pslider3 {
+    transition: padding 0.3s ease-in-out;
     padding: 0 2px !important;
   }
 
@@ -1070,8 +1071,8 @@ const tab = ref('0')
 
     .img-globo {
       aspect-ratio: 330 / 160;
-      width: 100%;
       object-fit: cover;
+      width: 100%;
     }
 
     .carousel-home {
