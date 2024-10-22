@@ -2,7 +2,6 @@
   font-family: 'Switzer Regular';
   font-style: normal;
   font-weight: 400;
-  line-height: 14px;
   src: url('@assets/fonts/Switzer-Regular.otf');
   font-display: swap;
 }
@@ -10,6 +9,10 @@
 html {
   overflow: auto !important;
   scroll-behavior: smooth !important;
+}
+
+body {
+  line-height: 14px;
 }
 
 .align-right {

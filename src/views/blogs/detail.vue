@@ -54,9 +54,3 @@ async function fetchData() {
     </VRow> 
   </VContainer>
 </template>
-
-<style scoped>
-  .bg-image {
-    background-image: url()
-  }
-</style>

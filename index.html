@@ -8,9 +8,17 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="stylesheet" href="/src/assets/main.css" defer>
     <link rel="preload" href="/src/tailwind/tailwind.css" as="style" onload="this.rel='stylesheet'">
+
+    <link rel="preload" fetchpriority="high" as="image" href="/src/assets/images/Slider_1_op_mobile.webp" type="image/webp">
+
     <noscript>
         <link rel="stylesheet" href="/src/tailwind/tailwind.css">
     </noscript>
+</head>
+
+<body class="tw-font-switzer_regular">
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts" defer></script>
 
     <!-- Hotjar Tracking Code for https://partymax.co/ -->
     <script>
@@ -25,30 +33,6 @@
             })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
         });
     </script>
-</head>
-
-<body class="tw-font-switzer_regular">
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts" defer></script>
-    <!-- Smartsupp Live Chat script -->
-    <script type="text/javascript">
-        setTimeout(function() {
-            var _smartsupp = _smartsupp || {};
-            _smartsupp.key = '21d8c9142756b05ee99dcc94e89dbb37e028aef4';
-            window.smartsupp||(function(d) {
-                var s, c, o = smartsupp = function() { o._.push(arguments) }; o._ = [];
-                s = d.getElementsByTagName('script')[0]; 
-                c = d.createElement('script');
-                c.type = 'text/javascript'; 
-                c.charset = 'utf-8'; 
-                c.async = true; 
-                c.defer = true;
-                c.src = 'https://www.smartsuppchat.com/loader.js?';
-                s.parentNode.insertBefore(c, s);
-            })(document);
-        }, 3000); // 3000 ms (3 segundos) de retraso para cargar el script del chat
-    </script>
-        
 </body>
 
 </html>

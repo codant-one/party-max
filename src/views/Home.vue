@@ -17,6 +17,7 @@ import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
 import Plaza_1 from '@assets/images/Plaza_1.webp';
 import Plaza_2 from '@assets/images/Plaza_2.webp';
 import Plaza_3 from '@assets/images/Plaza_3.webp';
+import Plaza_3_mobile from '@assets/images/plaza_3_mobile.webp';
 import Plaza_4 from '@assets/images/Plaza_4.webp';
 import Plaza_5 from '@assets/images/Plaza_5.webp';
 import Banner from '@assets/images/Banner.webp';
@@ -24,6 +25,7 @@ import Banner from '@assets/images/Banner.webp';
 import Slider1 from '@assets/images/Slider_1_op.webp';
 import Slider2 from '@assets/images/Slider_2_op.webp';
 import Slider3 from '@assets/images/Slider_3_op.webp';
+import Slider1Mobile from '@assets/images/Slider_1_op_mobile.webp';
 
 import icon1 from '@assets/icons/fiestas-infantiles.svg';
 import icon2 from '@assets/icons/fiestas-tematicas.svg';
@@ -92,13 +94,12 @@ const items = ref([
 ])
 
 const sliders = ref( [
-  { src: Slider1 },
+  { src: isMobile ? Slider1Mobile : Slider1 },
   { src: Slider2 },
   { src: Slider3 }
 ])
 
 const homeStores = useHomeStores()
-const route = useRoute();
 
 const data = ref(null)
 const isLoading = ref(true)
@@ -189,8 +190,10 @@ const tab = ref('0')
       </VCol>
       <VCol cols="12" md="9" class="tw-bg-white border-categories">
         <VRow no-gutters>
-          <VCol cols="12" md="7" class="pslider">        
+          <VCol cols="12" md="7" class="pslider">
+            <img :src="Slider1Mobile" class="img-main" alt="birthday" v-if="isMobile" loading="lazy" />
             <VCarousel 
+              v-else
               cycle
               class="carousel-home"
               color="white"
@@ -241,7 +244,7 @@ const tab = ref('0')
                     }
                   }"
                 >
-                  <VImg :src="Plaza_3" class="img-galery" alt="globos"/>
+                  <VImg :src="isMobile ? Plaza_3_mobile : Plaza_3" class="img-galery img-globo" alt="globos"/>
                 </router-link>
               </VCol>
             </VRow>
@@ -1057,6 +1060,16 @@ const tab = ref('0')
 
     .pslider2 {
       padding: 12px 2px 3px 2px !important;
+    }
+
+    .img-main {
+      height: 170px !important;
+      width: 100%;
+      border-radius:  16px 16px 0 0 !important;
+    }
+
+    .img-globo {
+      height: 160px !important;
     }
 
     .carousel-home {
