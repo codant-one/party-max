@@ -40,7 +40,7 @@
 </script>
 
 <template>
-  <VFooter class="text-center d-flex flex-column bg p-0" :class="backgroundTemp">
+  <VFooter class="text-center d-flex flex-column bg p-0 w-100" :class="backgroundTemp">
     <div class="container-footer d-none" :class="isProduct ? 'tw-bg-primary text-colorfooter' : ''">
       <VContainer class="my-10">
         <VRow no-gutters class="tw-text-tertiary">

@@ -914,7 +914,7 @@
       </VContainer>
       <VContainer class="p-0 tw-text-white d-flex" v-else>
         <div class="hover:tw-text-yellow">
-          <VAppBarNavIcon variant="text" @click.stop="drawer = !drawer"/> 
+          <VAppBarNavIcon variant="text" @click.stop="drawer = !drawer" class="w-100 h-100 me-2"/> 
         </div>
         <VTextField
           v-model="textSearch"
