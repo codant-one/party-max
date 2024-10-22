@@ -1070,6 +1070,7 @@ const tab = ref('0')
 
     .img-globo {
       height: 160px !important;
+      min-width: 330px;
       width: 100%;
     }
 
