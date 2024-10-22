@@ -244,7 +244,7 @@ const tab = ref('0')
                     }
                   }"
                 >
-                  <img :src="isMobile ? Plaza_3_mobile : Plaza_3" fetchpriority="high" class="img-galery img-globo" alt="globos" width="330" loading="lazy"/>
+                  <img :src="isMobile ? Plaza_3_mobile : Plaza_3" fetchpriority="high" class="img-galery img-globo" alt="globos" loading="lazy"/>
                 </router-link>
               </VCol>
             </VRow>
