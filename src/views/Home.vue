@@ -191,7 +191,7 @@ const tab = ref('0')
       <VCol cols="12" md="9" class="tw-bg-white border-categories">
         <VRow no-gutters>
           <VCol cols="12" md="7" class="pslider">
-            <img :src="Slider1Mobile" fetchpriority="high" class="img-main" alt="birthday" width="330" height="170" v-if="isMobile" loading="lazy" />
+            <img :src="Slider1Mobile" fetchpriority="high" class="w-100" alt="birthday" v-if="isMobile" loading="lazy" />
             <VCarousel 
               v-else
               cycle
