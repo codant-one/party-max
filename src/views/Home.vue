@@ -244,7 +244,7 @@ const tab = ref('0')
                     }
                   }"
                 >
-                  <img :src="isMobile ? Plaza_3_mobile : Plaza_3" class="img-galery img-globo" alt="globos"/>
+                  <img :src="isMobile ? Plaza_3_mobile : Plaza_3" class="img-galery img-globo" alt="globos" width="330" height="160" loading="lazy"/>
                 </router-link>
               </VCol>
             </VRow>
@@ -1069,9 +1069,9 @@ const tab = ref('0')
     }
 
     .img-globo {
-      height: 160px !important;
-      min-width: 330px;
+      aspect-ratio: 330 / 160;
       width: 100%;
+      object-fit: cover;
     }
 
     .carousel-home {
