@@ -244,7 +244,7 @@ const tab = ref('0')
                     }
                   }"
                 >
-                  <img :src="isMobile ? Plaza_3_mobile : Plaza_3" fetchpriority="high" class="img-galery img-globo" alt="globos" width="330" height="160" loading="lazy"/>
+                  <img :src="isMobile ? Plaza_3_mobile : Plaza_3" fetchpriority="high" class="img-galery img-globo" alt="globos" width="330" loading="lazy"/>
                 </router-link>
               </VCol>
             </VRow>
@@ -1071,7 +1071,6 @@ const tab = ref('0')
     }
 
     .img-globo {
-      aspect-ratio: 330 / 160;
       width: 100%;
       object-fit: cover;
     }
