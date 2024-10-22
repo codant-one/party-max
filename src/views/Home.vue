@@ -191,7 +191,7 @@ const tab = ref('0')
       <VCol cols="12" md="9" class="tw-bg-white border-categories">
         <VRow no-gutters>
           <VCol cols="12" md="7" class="pslider">
-            <img :src="Slider1Mobile" fetchpriority="high" class="img-main" alt="birthday" v-if="isMobile" loading="lazy" />
+            <img :src="Plaza_1" fetchpriority="high" class="img-main" alt="birthday" v-if="isMobile" loading="lazy" />
             <VCarousel 
               v-else
               cycle
@@ -1071,8 +1071,8 @@ const tab = ref('0')
 
     .img-globo {
       aspect-ratio: 330 / 160;
-      object-fit: cover;
       width: 100%;
+      object-fit: cover;
     }
 
     .carousel-home {
