@@ -244,7 +244,14 @@ const tab = ref('0')
                     }
                   }"
                 >
-                  <img :src="isMobile ? Plaza_3_mobile : Plaza_3" fetchpriority="high" class="img-galery w-100" alt="globos" loading="lazy"/>
+                  <img :src="isMobile ? Plaza_3_mobile : Plaza_3" 
+                    fetchpriority="high" 
+                    class="img-galery w-100 img-globo" 
+                    alt="globos" 
+                    loading="lazy" 
+                    width="330"
+                    height="160" 
+                  />
                 </router-link>
               </VCol>
             </VRow>
@@ -257,7 +264,7 @@ const tab = ref('0')
                   category: 'renta-de-mobiliario'
                 }
               }">
-              <VImg :src="Banner" class="img-galery" :class="isMobile ? 'slider5Img' : ''" height="auto" cover />
+              <img :src="Banner" class="img-galery" :class="isMobile ? 'slider5Img' : ''" height="auto" cover />
             </router-link>
           </VCol>
           <VCol cols="12" md="5" class="pslider4">
@@ -284,6 +291,7 @@ const tab = ref('0')
                   <VImg :src="Plaza_5" class="border-bottom-right img-galery" alt="personalizados"/>
                 </router-link>
               </VCol>
+              <VCol cols="12" md="12" style="padding-top: 6px !important; padding-bottom: 6px !important;"></VCol>
             </VRow>
           </VCol>
         </VRow>
@@ -1019,6 +1027,11 @@ const tab = ref('0')
   .zoom:hover span{
     color: #FF0090!important;
   }
+  
+  .img-galery {
+    width: 100%;
+    height: auto;
+  }
 
   .img-galery:hover{
     filter: saturate(180%)!important;
@@ -1064,8 +1077,14 @@ const tab = ref('0')
     }
 
     .img-main {
+      height: 180px;
       width: 100%;
       border-radius:  16px 16px 0 0 !important;
+    }
+
+    .img-globo {
+      height: 160px !important;
+      min-width: 280px;
     }
 
     .carousel-home {
@@ -1142,7 +1161,7 @@ const tab = ref('0')
     }
 
     .pslider3 {
-      padding: 0 2px 14px 2px !important
+      margin: 0 0 14px 0 !important
     }
 
     .border-bottom-right {
@@ -1150,11 +1169,11 @@ const tab = ref('0')
     }
 
     .pslider4 {
-      padding: 1px 3px 3px 3px!important;
+      padding: 0 3px!important;
     }
 
     .pslider5 {
-      padding: 9px 3px 3px 3px!important;
+      padding: 1px 3px 3px 3px!important;
     }
 
     .slider5Img {

@@ -410,18 +410,7 @@ const toggleSubGroupFn = (index, subCat) => {
 
             <VCardItem class="px-2 p-0 text-left mt-2"> REVIEW </VCardItem>
             <VCardText class="px-2 p-0 text-left mb-6">
-              <VRating
-                half-increments
-                :length="5"
-                :size="40"
-                v-model="rating"
-                hover
-                color="yellow-darken-2"
-                active-color="yellow-darken-2"
-                @update:modelValue="reviewAction"
-                :ripple="false"
-                density="compact"
-              />
+
             </VCardText>
         </VCard>
     </VNavigationDrawer>

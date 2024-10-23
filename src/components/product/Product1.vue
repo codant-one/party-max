@@ -91,14 +91,22 @@ watchEffect(() => {
             <VCardText class="px-1 mt-2 d-none">
                 <div class="d-flex">
                     <VRating
+                        v-model="rating"
                         half-increments
                         :length="5"
-                        :size="isMobile ? 20 : 25"
-                        :model-value="rating"
                         :readonly="readonly"
-                        color="yellow-darken-2"
-                        active-color="yellow-darken-2"
-                        />
+                        :ripple="false" 
+                        density="compact"
+                        >
+                        <template v-slot:item="props">
+                            <VIcon
+                                v-bind="props"
+                                color="yellow-darken-2"
+                                active-color="yellow-darken-2"
+                                :size="isMobile ? 20 : 25"
+                            />
+                        </template>
+                    </VRating>
                     <span class="text_2 ms-2 mt-1">({{ stock }})</span>
                 </div>
             </VCardText>

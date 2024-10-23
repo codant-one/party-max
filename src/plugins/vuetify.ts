@@ -1,10 +1,13 @@
 // Styles
-import '@mdi/font/css/materialdesignicons.css'
-import 'vuetify/styles'
+import '@mdi/font/css/materialdesignicons.css' // Solo importar íconos que realmente uses
+import 'vuetify/styles' // Importa los estilos de Vuetify
 
 // Vuetify
 import { createVuetify } from 'vuetify'
+import { VApp, VAppBar, VBtn, VIcon, VList, VListItem, VRating } from 'vuetify/components'
+import { aliases, mdi } from 'vuetify/iconsets/mdi' // Para usar íconos de Material Design
 
+// Tema personalizado
 const myCustomLightTheme = {
   dark: false,
   colors: {
@@ -42,19 +45,32 @@ const myCustomLightTheme = {
     'switch-checked-disabled-opacity': 0.3,
 
     // Shadows
-    'shadow-key-umbra-color': '#2F2B3D'
+    'shadow-key-umbra-color': '#2F2B3D',
   }
 }
 
 export default createVuetify({
+  ssr: false,
+  components: {
+    VApp,        // Solo los componentes que estás utilizando
+    VAppBar,
+    VBtn,
+    VIcon,
+    VList,
+    VListItem,
+    VRating
+  },
   theme: {
     defaultTheme: 'myCustomLightTheme',
     themes: {
       myCustomLightTheme,
     },
   },
+  icons: {
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi,
+    },
+  },
 })
-
-// export default createVuetify(
-//   // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
-// )
