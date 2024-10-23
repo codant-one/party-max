@@ -1083,16 +1083,16 @@ const tab = ref('0')
     }
 
     .img-main {
-      height: 180px;
+      height: 181px;
       width: 100%;
       border-radius:  16px 16px 0 0 !important;
     }
 
     .img-globo {
-      height: 160px !important;
+      height: 169px !important;
       min-width: 280px;
     }
-    
+
     .slider5Img {
       border-bottom-right-radius: 16px!important;
       border-bottom-left-radius: 16px!important;
