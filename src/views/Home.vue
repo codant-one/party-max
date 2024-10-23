@@ -64,18 +64,11 @@ import f_2 from '@assets/images/f_2.webp';
 import f_3 from '@assets/images/f_3.webp';
 import f_4 from '@assets/images/f_4.webp';
 
-import frame_pink from '@assets/images/frame_pink.webp';
-
 const thumbsSwiper = ref(null);
 const modules = ref([Pagination])
 
 const setThumbsSwiper = (swiper) => {
     thumbsSwiper.value = swiper;
-}
-
-const backgroundStyle = {
-  backgroundImage: `url(${frame_pink})`,
-  backgroundSize: 'cover'
 }
 
 const isMobile = /Mobi/i.test(navigator.userAgent);
@@ -731,7 +724,7 @@ const tab = ref('0')
     </VCard>
   </VContainer>
 
-  <div :style="backgroundStyle">
+  <div class="birthday">
     <VContainer>
       <!-- birthday -->
       <VCard class="mt-7 no-shadown card-information transparent p-0 tw-text-white">
@@ -867,6 +860,11 @@ const tab = ref('0')
 
 <style scoped>
 
+  .birthday {
+    background-image: url('@assets/images/frame_pink.webp');
+    background-size: cover;
+  }
+  
   .soon-text {
     color: #FF0090;
     border: 1px solid #FF0090;
