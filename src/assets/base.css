@@ -2,12 +2,13 @@
   font-family: 'Switzer Regular';
   font-style: normal;
   font-weight: 400;
-  src: url('@assets/fonts/Switzer-Regular.otf');
+  src: url('@assets/fonts/Switzer-Regular.otf') format('opentype');
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Material Design Icons';
+  src: url('/node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff2') format('woff2');
   font-display: swap;
 }
 

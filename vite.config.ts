@@ -1,15 +1,15 @@
-import { defineConfig } from 'vite'
-import { fileURLToPath } from 'url'
-import vue from '@vitejs/plugin-vue'
-import vuetify from 'vite-plugin-vuetify'
-import AutoImport from 'unplugin-auto-import/vite'
+import { defineConfig } from 'vite';
+import { fileURLToPath } from 'url';
+import vue from '@vitejs/plugin-vue';
+import vuetify from 'vite-plugin-vuetify';
+import AutoImport from 'unplugin-auto-import/vite';
 import pluginSvgVue from '@vuetter/vite-plugin-vue-svg';
-import compression from 'vite-plugin-compression'
-import imagemin from 'vite-plugin-imagemin'
+import compression from 'vite-plugin-compression';
+import imagemin from 'vite-plugin-imagemin';
 
 export default defineConfig({
   plugins: [
-		vue(),
+    vue(),
     pluginSvgVue(),
     imagemin({
       gifsicle: {
@@ -39,16 +39,16 @@ export default defineConfig({
       },
       webp: {
         quality: 80,
-      }
+      },
     }),
     compression({
       algorithm: 'brotliCompress', // Usa Brotli en lugar de gzip
       ext: '.br', // Extensión de archivos Brotli
       deleteOriginFile: false,
-      threshold: 10240, 
-      filter: /\.(js|mjs|json|css|html|vue|svg)$/i, 
+      threshold: 10240,
+      filter: /\.(js|mjs|json|css|html|vue|svg)$/i,
     }),
-		vuetify({ autoImport: true }),
+    vuetify({ autoImport: true }),
     AutoImport({
       eslintrc: {
         enabled: true,
@@ -57,9 +57,17 @@ export default defineConfig({
       imports: ['vue', 'vue-router', 'pinia'],
       vueTemplate: true,
     }),
-	],
+  ],
   build: {
-    minify: 'esbuild', // Asegúrate de usar el minificador por defecto rápido.
+    minify: 'terser', // Cambia de 'esbuild' a 'terser'
+    terserOptions: {
+      compress: {
+        drop_console: true, // Elimina console.log
+      },
+      output: {
+        beautify: false, // Asegúrate de no embellecer la salida
+      },
+    },
     rollupOptions: {
       output: {
         manualChunks: (id) => {
@@ -73,8 +81,7 @@ export default defineConfig({
             if (id.includes('axios')) {
               return 'axios'; // Si usas Axios, crea un chunk para esta librería.
             }
-            // Crea un chunk "vendor" para todas las dependencias grandes que no tengan un chunk específico.
-            return 'vendor';
+            return 'vendor'; // Crea un chunk "vendor" para todas las dependencias grandes que no tengan un chunk específico.
           }
         },
       },
@@ -88,7 +95,7 @@ export default defineConfig({
       '@axios': fileURLToPath(new URL('./src/plugins/axios', import.meta.url)),
       '@assets': fileURLToPath(new URL('./src/assets/', import.meta.url)),
       '@validators': fileURLToPath(new URL('./src/utils/validators', import.meta.url)),
-      '@formatters': fileURLToPath(new URL('./src/utils/formatters', import.meta.url))
-    }
-  }
-})
+      '@formatters': fileURLToPath(new URL('./src/utils/formatters', import.meta.url)),
+    },
+  },
+});
