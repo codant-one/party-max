@@ -264,7 +264,13 @@ const tab = ref('0')
                   category: 'renta-de-mobiliario'
                 }
               }">
-              <img :src="Banner" class="img-galery" :class="isMobile ? 'slider5Img' : ''" height="auto" cover />
+              <img 
+                :src="Banner" 
+                class="img-galery" 
+                :class="isMobile ? 'slider5Img w-10' : ''" 
+                loading="lazy" 
+                width="330"
+                height="120" />
             </router-link>
           </VCol>
           <VCol cols="12" md="5" class="pslider4">
@@ -1086,6 +1092,11 @@ const tab = ref('0')
       height: 160px !important;
       min-width: 280px;
     }
+    
+    .slider5Img {
+      border-bottom-right-radius: 16px!important;
+      border-bottom-left-radius: 16px!important;
+    }
 
     .carousel-home {
       height: 195px !important;
@@ -1173,12 +1184,7 @@ const tab = ref('0')
     }
 
     .pslider5 {
-      padding: 1px 3px 3px 3px!important;
-    }
-
-    .slider5Img {
-      border-bottom-right-radius: 16px!important;
-      border-bottom-left-radius: 16px!important;
+      padding: 2px 3px 3px 3px!important;
     }
 
     .cardtitles {
