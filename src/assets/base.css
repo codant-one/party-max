@@ -10,6 +10,7 @@
 
 @font-face {
   font-family: 'Material Design Icons';
+  src: url('/node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff2') format('woff2');
   font-display: swap;
 }
 
