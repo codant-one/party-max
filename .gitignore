@@ -29,4 +29,5 @@ coverage
 package-lock.json
 
 
+robot.txt
 .env
