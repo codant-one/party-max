@@ -203,7 +203,7 @@
           </router-link>
         </VCol>
         <VCol cols="5" md="3" class="align-center text-right">
-          <img :src="festinfooter" class="border-theme" loading="lazy"/>
+          <img :src="festinfooter" class="border-theme" alt="festin-footer" loading="lazy"/>
         </VCol>
       </VRow>
       <VDivider class="hr mt-10 d-none d-md-block" />
