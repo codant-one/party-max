@@ -46,6 +46,7 @@ export default defineConfig({
       ext: '.br', // Extensión de archivos Brotli
       deleteOriginFile: false,
       threshold: 10240,
+      compressionOptions: { level: 6 }, // Ajusta el nivel de compresión
       filter: /\.(js|mjs|json|css|html|vue|svg)$/i,
     }),
     vuetify({ autoImport: true }),

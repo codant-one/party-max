@@ -325,17 +325,17 @@
     <VNavigationDrawer
       v-model="drawer"
       temporary>
-      <VList v-model:opened="panelCat" class="pb-0" :ripple="false">
+      <VList role="list" aria-label="Lista de elementos" v-model:opened="panelCat" class="pb-0" :ripple="false">
         <VListItem>
           <VListItemTitle class="d-block lineheight borderList pb-2">
-            <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+            <router-link aria-label="item-about-us" to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Quiénes somos</span>
             </router-link>
           </VListItemTitle>
         </VListItem>
         <VListItem>
           <VListItemTitle class="d-block lineheight borderList pb-2">
-            <router-link to="/help" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+            <router-link aria-label="item-help" to="/help" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Ayuda</span>
             </router-link>
           </VListItemTitle>  
@@ -364,9 +364,9 @@
         </VListItem>
       </VList>
 
-      <VList v-model:opened="panelCat" class="pb-0">
+      <VList role="list" aria-label="Lista de elementos 2" v-model:opened="panelCat" class="pb-0">
         <template v-for="(item, index) in categories">
-          <VListItem 
+          <VListItem role="listitem" aria-label="list-item"
             v-if="categories[index]?.children.length === 0"
             :to="{
               name: 'products',
@@ -378,7 +378,7 @@
           </VListItem>
           <VListGroup v-else :value="item.name" :eager="false">
             <template #activator="{ props }">
-              <VListItem class="items-list">
+              <VListItem role="listitem" class="items-list">
                 <VListItemTitle class="d-block lineheight borderList pb-2">
                   <router-link
                     :to="{
@@ -408,8 +408,8 @@
               v-for="(k, index2) in categories[index].children"
               :key="index2"
               class="style-menu-mobile">
-              <VListItem class="subtitle-menu">
-                <router-link
+              <VListItem role="listitem" class="subtitle-menu">
+                <router-link aria-label="item-product"
                     :to="{
                       name: 'products',
                       query: {
@@ -635,7 +635,7 @@
                   </span>
                 </template>
                 <VList>
-                  <VListItem class="px-0">
+                  <VListItem role="listitem" class="px-0">
                     <VListItemTitle class="px-5"><b>Hola</b></VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div tw-text-primary">{{name}}</VListItemTitle>
                     <VListItemTitle class="px-5">
@@ -704,7 +704,7 @@
                   </span>
                 </template>
                 <VList>
-                  <VListItem class="px-0">
+                  <VListItem role="listitem" class="px-0">
                     <VListItemTitle class="px-5"><b>Hola</b></VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div tw-text-primary">{{name}}</VListItemTitle>
                     <VListItemTitle class="px-5">
@@ -756,8 +756,8 @@
             <VCard class="style-menu" :width="width" @mouseleave="closeMenuOnMouseLeave">
               <VRow no-gutters>
                 <VCol cols="12" :md="cols" class="py-5 pr-3">
-                  <VList class="pb-0">
-                    <VListItem>
+                  <VList role="list" aria-label="Lista de elementos 3" class="pb-0">
+                    <VListItem role="listitem" aria-label="list-item">
                       <VListItemTitle class="d-block lineheight">
                         <span class="d-block title-menu">PRODUCTOS</span>
                         <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -765,7 +765,7 @@
                         </svg>
                       </VListItemTitle>
                     </VListItem>
-                    <VListItem  
+                    <VListItem   role="listitem"
                       v-for="(item, index) in categories"
                       :key="index">
                         <div class="d-flex align-center hover-icon-right tw-cursor-pointer" @mouseover="openCategory(index)">
@@ -795,12 +795,12 @@
                   </VList>
                 </VCol>
                 <VCol cols="12" :md="cols" v-show="cols === 6" class="borderCol py-5">
-                  <VList class="style-submenu mt-8">
-                    <VListItem 
+                  <VList role="list" aria-label="Lista de elementos 4" class="style-submenu mt-8">
+                    <VListItem role="listitem" aria-label="list-item"
                       v-for="(i, index2) in categories[category].children"
                       :key="index2"
                       @click="closeMenu">
-                      <router-link
+                      <router-link aria-label="item-menu"
                         :to="{
                           name: 'products',
                           query: {
@@ -909,11 +909,11 @@
         </span>  
         <VSpacer />
 
-        <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Quiénes somos</router-link>
+        <router-link aria-label="item-about" to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Quiénes somos</router-link>
         <VDivider class="hr" vertical/>
-        <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Blog</router-link>
+        <router-link aria-label="item-blog" to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Blog</router-link>
         <VDivider class="hr" vertical/>
-        <router-link to="/help" class="ms-5 tw-no-underline tw-text-white me-3 hover:tw-text-yellow">Ayuda</router-link>
+        <router-link aria-label="item-help" to="/help" class="ms-5 tw-no-underline tw-text-white me-3 hover:tw-text-yellow">Ayuda</router-link>
 
       </VContainer>
       <VContainer class="p-0 tw-text-white d-flex" v-else>
