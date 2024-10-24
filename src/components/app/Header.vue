@@ -592,7 +592,7 @@
         <VRow no-gutters v-if="!isMobile">
           <VCol cols="9" class="d-flex">
             <router-link to="/" class="tw-no-underline tw-text-white ms-2 me-8">
-              <img :src="logo" width="255" cover/>
+              <img :src="logo" width="255" alt="logo" cover/>
             </router-link>
             <VSpacer />
             <VTextField
@@ -673,7 +673,7 @@
         <VRow no-gutters v-else class="px-3">
           <VCol cols="6" class="d-flex">
             <router-link to="/" class="tw-no-underline tw-text-white">
-              <img :src="logo" width="200" height="52" cover/>
+              <img :src="logo" width="200" height="52" alt="logo" cover/>
             </router-link>
           </VCol>
           <VCol cols="6" class="d-flex align-center align-items-stretch flex-shrink-0 iconsMobile">
@@ -759,7 +759,7 @@
                   <VList class="pb-0">
                     <VListItem>
                       <VListItemTitle class="d-block lineheight">
-                        <span class="d-block title-menu">PRODUCTOSsss</span>
+                        <span class="d-block title-menu">PRODUCTOS</span>
                         <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
                         </svg>
@@ -918,7 +918,7 @@
       </VContainer>
       <VContainer class="p-0 tw-text-white d-flex" v-else>
         <div class="hover:tw-text-yellow">
-          <VAppBarNavIcon variant="text" @click.stop="drawer = !drawer" class="w-100 h-100 me-2"/> 
+          <VAppBarNavIcon variant="text" @click.stop="drawer = !drawer" class="w-100 h-100 me-2" aria-label="menu"/> 
         </div>
         <VTextField
           v-model="textSearch"
@@ -929,6 +929,7 @@
           variant="solo">
           <template v-slot:append-inner>
             <VBtn 
+              aria-label="search"
               icon="mdi-magnify" 
               @click="search" 
               class="tw-bg-white tw-text-primary h-100 search-button button-hover"
