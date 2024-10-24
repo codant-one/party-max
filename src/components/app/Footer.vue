@@ -203,7 +203,7 @@
           </router-link>
         </VCol>
         <VCol cols="5" md="3" class="align-center text-right">
-          <img :src="festinfooter" class="border-theme" alt="festin-footer" loading="lazy"/>
+          <img :src="festinfooter" class="festin-footer-size" alt="festin-footer" loading="lazy"/>
         </VCol>
       </VRow>
       <VDivider class="hr mt-10 d-none d-md-block" />
@@ -348,6 +348,12 @@
     color: #FFFFFF!important;
   }
 
+  .festin-footer-size
+  {
+    width: 228px;
+    height: 286px;
+  }
+
 
   @media only screen and (max-width: 767px) {
     .col-mobile {
@@ -392,5 +398,11 @@
      .search-button {
       font-size: 10px;
      }
+
+     .festin-footer-size
+      {
+        width: 150px;
+        height: 188px;
+      }
   }
 </style>
