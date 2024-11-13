@@ -41,6 +41,13 @@
 
 <template>
   <VFooter class="text-center d-flex flex-column bg p-0 w-100" :class="backgroundTemp">
+    <a href="https://wa.link/wvdoxg"
+        target="_blank"
+        class="whatsapp-float"
+        title="Contáctanos por WhatsApp"
+        >
+            <span class="mdi mdi-whatsapp whatsapp-icon"></span>
+    </a>
     <div class="container-footer d-none" :class="isProduct ? 'tw-bg-primary text-colorfooter' : ''">
       <VContainer class="my-10">
         <VRow no-gutters class="tw-text-tertiary">
@@ -232,6 +239,29 @@
 </template>
 <style scoped>
 
+  .whatsapp-float
+  {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    cursor: pointer;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: #25D366;
+    padding: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .whatsapp-icon {
+    font-size: 40px;
+    color: white; /* Cambia el color del ícono a blanco */
+  }
+
   .search-button {
     position: absolute;
     top: 0;
@@ -403,6 +433,16 @@
       {
         width: 150px;
         height: 188px;
+      }
+
+      .whatsapp-float
+      {
+        width: 40px;
+        height: 40px;
+      }
+
+      .whatsapp-icon {
+        font-size: 28px;
       }
   }
 </style>
