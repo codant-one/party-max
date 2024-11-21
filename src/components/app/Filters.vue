@@ -503,10 +503,10 @@ const toggleSubGroupFn = (index, subCat) => {
               </VCardItem>
             </VCardText>
            
-            <VDivider class="mb-6 mt-6"/>
+            <VDivider class="mb-6 mt-6 d-none"/>
 
-            <VCardItem class="px-2 p-0 text-left mt-2"> REVIEW </VCardItem>
-            <VCardText class="px-2 p-0 text-left mb-6">
+            <VCardItem class="px-2 p-0 text-left mt-2 d-none"> REVIEW </VCardItem>
+            <VCardText class="px-2 p-0 text-left mb-6 d-none">
 
             </VCardText>
         </VCard>

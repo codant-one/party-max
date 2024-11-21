@@ -73,7 +73,7 @@ watchEffect(() => {
                     <strong v-else>{{ store }}</strong>
                 </span>
             </VCardText>
-            <VCardText class="px-1">
+            <VCardText class="px-1 mt-2 d-none">
                 <div class="d-flex">
                     <VRating
                         half-increments
@@ -86,8 +86,8 @@ watchEffect(() => {
                         />
                 </div>
             </VCardText>
-            <VCardText class="mt-1">
-                <div class="d-flex py-2">
+            <VCardText>
+                <div class="d-flex">
                     <span class="text_1">${{ formatNumber(price) }}</span>
                 </div>
             </VCardText>

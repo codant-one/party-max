@@ -118,7 +118,7 @@ const addfavorite = () => {
                     <VCardText class="d-flex px-1 px-md-2">
                         <span class="d-block text_2 py-md-1 tw-text-tertiary title-service">{{ name }}</span>
                     </VCardText>
-                    <VCardText class="px-0 px-md-1 pb-1">
+                    <VCardText class="px-0 px-md-1 pb-1 d-none">
                         <div class="d-flex">
                             <VRating
                                 half-increments
