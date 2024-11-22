@@ -28,6 +28,10 @@ const props = defineProps({
         type: Object,
         required: true
     },
+    document_types: {
+        type: Object,
+        required: true
+    },
     provinces: {
         type: Object,
         required: true
@@ -60,6 +64,7 @@ const type_ = ref(props.type)
 const refVForm = ref()
 const isMobile = /Mobi/i.test(navigator.userAgent)
 const address = ref(null)
+const listDocumentTypes = ref(props.document_types)
 const listCountries = ref(props.countries)
 const listProvinces = ref(props.provinces)
 const listProvincesByCountry = ref([])
@@ -70,6 +75,8 @@ const billingDetail = ref({
     company: '',
     country_id: 'Colombia',
     province_id: '',
+    document_type_id: '',
+    document: '',
     street: '',
     city: '',
     address: '',
@@ -105,6 +112,8 @@ onMounted(async () => {
         billingDetail.value.address  = userDataJ.user_details.address
         billingDetail.value.phone = userDataJ.user_details.phone
         billingDetail.value.email = userDataJ.email
+        billingDetail.value.document_type_id = userDataJ.user_details.document_type_id
+        billingDetail.value.document = userDataJ.user_details.document
     }
 })
 
@@ -218,6 +227,25 @@ const getFlagCountry = country => {
                                         variant="outlined"
                                         :rules="[requiredValidator, emailValidator]"
                                     />    
+                                </VCol>
+                                <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
+                                    <VAutocomplete
+                                        variant="outlined"
+                                        v-model="billingDetail.document_type_id"
+                                        label="Tipo de Documento"
+                                        :rules="[requiredValidator]"
+                                        :items="listDocumentTypes"
+                                        class="me-0 me-md-2"
+                                        :menu-props="{ maxHeight: '200px' }"
+                                        /> 
+                                </VCol>
+                                <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
+                                    <VTextField
+                                        label="Nro Documento"
+                                        v-model="billingDetail.document"
+                                        variant="outlined"
+                                        :rules="[requiredValidator]"
+                                    />   
                                 </VCol>
                                 <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
                                     <VAutocomplete

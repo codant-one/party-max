@@ -218,7 +218,7 @@ const isDisabled = (i) => {
                                     class="custom-radio">
                                     <template v-slot:label>
                                         <span class="d-flex pl-1 pr-0 text-right text-send tw-font-semibold py-2 me-1 me-md-2">
-                                            Envío Express: $17.000.00
+                                            Envío Express (Solo a Bogotá): $17.000.00
                                         </span>
                                     </template>
                                 </VRadio>

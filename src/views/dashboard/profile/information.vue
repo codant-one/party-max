@@ -5,6 +5,7 @@ import { useProfileStores } from '@/stores/profile'
 import { useCountriesStores } from '@/stores/countries'
 import { useProvincesStores } from '@/stores/provinces'
 import { useGendersStores } from '@/stores/genders'
+import { useDocumentTypesStores } from '@/stores/document-types'
 import { requiredValidator } from '@validators'
 import Loader from '@/components/common/Loader.vue'
 import router from '@/router'
@@ -17,6 +18,7 @@ const countriesStores = useCountriesStores()
 const provincesStores = useProvincesStores()
 const gendersStores = useGendersStores()
 const authStores = useAuthStores()
+const documentTypesStores = useDocumentTypesStores()
 
 const load = ref(false)
 const refVForm = ref()
@@ -28,6 +30,7 @@ const usermail = ref(null)
 const username = ref(null)
 const phone = ref(null)
 const document = ref(null)
+const type_document = ref('')
 const country = ref(null)
 const province = ref(null)
 const birthday = ref(null)
@@ -41,6 +44,8 @@ const isError = ref(false)
 const newfname = ref(null) 
 const newlname = ref(null)
 const newdocument = ref(null)
+const newdocument_type_id = ref('')
+const newdocument_typeOld_id = ref('')
 const newaddress = ref(null)
 const newbirthday = ref(null)
 const newgender = ref(null)
@@ -55,11 +60,13 @@ const countryOld_id = ref(null)
 const province_id = ref('')
 const provinceOld_id = ref('')
 const genders = ref('')
+const documentTypes = ref([])
 
 const errors = ref({
   newfname: undefined,
   newlname: undefined,
   newdocument: undefined,
+  newdocument_type_id: undefined,
   newaddress: undefined,
   newbirthday: undefined,
   newgender: undefined,
@@ -73,6 +80,7 @@ const inputChange = () => {
     newfname: undefined,
     newlname: undefined,
     newdocument: undefined,
+    newdocument_type_id: undefined,
     newaddress: undefined,
     newbirthday: undefined,
     newgender: undefined,
@@ -135,6 +143,8 @@ async function fetchData() {
         gender.value = userDataJ.client.gender.name 
         province.value =  userDataJ.user_details.province.name
 
+        type_document.value = userDataJ.user_details?.document_type?.name ?? '----'
+
         client_country_id.value = userDataJ.user_details.province.country.name
         countryOld_id.value = userDataJ.user_details.province.country.name
 
@@ -144,13 +154,28 @@ async function fetchData() {
         newfname.value = userDataJ.name
         newlname.value = userDataJ.last_name
         newdocument.value = userDataJ.user_details.document
+        newdocument_type_id.value = userDataJ.user_details?.document_type_id
+        newdocument_typeOld_id.value = userDataJ.user_details?.document_type?.name
         newaddress.value = userDataJ.user_details.address
         newbirthday.value = userDataJ.client.birthday
         newgender.value = userDataJ.client.gender_id 
         newprovince.value = userDataJ.user_details.province_id 
         newusername.value = userDataJ.username  
+
+        await documentTypesStores.fetchDocumentTypes()
+        documentTypes.value = documentTypesStores.getData
     }
 }
+
+const getDocumentTypes = computed(() => {
+    return documentTypes.value.map((documentType) => {
+        return {
+        title: '(' + documentType.code + ') - ' + documentType.name,
+        value: documentType.id,
+        }
+    })
+})
+
 const loadCountries = () => {
   listCountries.value = countriesStores.getCountries
 }
@@ -183,6 +208,7 @@ const onSubmit = () => {
             let data = {
                 name: newfname.value,
                 last_name: newlname.value,
+                document_type_id: Number.isInteger(newdocument_type_id.value) ? newdocument_type_id.value : newdocument_typeOld_id.value ,
                 document: newdocument.value,
                 address: newaddress.value,
                 gender_id: newgender.value,
@@ -297,11 +323,17 @@ const getFlagCountry = country => {
                     <VCol cols="12" md="8" class="mb-2 mb-md-4">
                         <span class="labels tw-text-gray">{{ name }}</span>
                     </VCol>
-                    <VCol cols="12" md="4" class="mb-0 mb-md-4">
+                    <!-- <VCol cols="12" md="4" class="mb-0 mb-md-4">
                         <span class="labels tw-text-tertiary">Username</span>
                     </VCol>
                     <VCol cols="12" md="8" class="mb-2 mb-md-4">
                         <span class="labels tw-text-gray">{{ username }}</span>
+                    </VCol> -->
+                    <VCol cols="12" md="4" class="mb-0 mb-md-4">
+                        <span class="labels tw-text-tertiary">Tipo de documento</span>
+                    </VCol>
+                    <VCol cols="12" md="8" class="mb-2 mb-md-4">
+                        <span class="labels tw-text-gray">{{ type_document }}</span>
                     </VCol>
                     <VCol cols="12" md="4" class="mb-0 mb-md-4">
                         <span class="labels tw-text-tertiary">Documento</span>
@@ -384,7 +416,7 @@ const getFlagCountry = country => {
                                     class="mt-2"
                                 />
                             </VCol>
-                            <VCol cols="12" md="6" class="textinput mb-2">
+                            <!-- <VCol cols="12" md="6" class="textinput mb-2">
                                 <VTextField
                                     label="Username"
                                     v-model="newusername"
@@ -394,27 +426,17 @@ const getFlagCountry = country => {
                                     @input="inputChange()"
                                     class="me-0 me-md-2"
                                 />
-                            </VCol>
+                            </VCol> -->
                             <VCol cols="12" md="6" class="textinput mb-2">
                                 <VTextField
                                     label="Fecha de nacimiento"
                                     v-model="newbirthday"
                                     type="date"
                                     variant="outlined"
+                                    class="me-0 me-md-2"
                                     :rules="[requiredValidator]"
                                     :error-messages="errors.newbirthday"
                                      @input="inputChange()"
-                                />
-                            </VCol>
-                            <VCol cols="12" md="6" class="textinput mb-2">
-                                <VTextField
-                                    label="Nro Documento"
-                                    v-model="newdocument"
-                                    variant="outlined"
-                                    :rules="[requiredValidator]"
-                                    :error-messages="errors.newdocument"
-                                    @input="inputChange()"
-                                    class="me-0 me-md-2"
                                 />
                             </VCol>
                             <VCol cols="12" md="6" class="textinput mb-2">
@@ -427,6 +449,28 @@ const getFlagCountry = country => {
                                     :menu-props="{ maxHeight: '200px' }"
                                     />
                             </VCol>
+                            
+                            <VCol cols="12" md="6" class="textinput mb-2">
+                                <VAutocomplete
+                                    variant="outlined"
+                                    v-model="newdocument_type_id"
+                                    label="Tipo de Documento"
+                                    :rules="[requiredValidator]"
+                                    :items="getDocumentTypes"
+                                    class="me-0 me-md-2"
+                                    :menu-props="{ maxHeight: '200px' }"
+                                    /> 
+                            </VCol>
+                            <VCol cols="12" md="6" class="textinput mb-2">
+                                <VTextField
+                                    label="Nro Documento"
+                                    v-model="newdocument"
+                                    variant="outlined"
+                                    :rules="[requiredValidator]"
+                                    :error-messages="errors.newdocument"
+                                    @input="inputChange()"
+                                />
+                            </VCol>
                             <VCol cols="12" md="6" class="textinput mb-2">
                                 <VAutocomplete
                                     variant="outlined"
@@ -438,7 +482,8 @@ const getFlagCountry = country => {
                                     item-value="name"
                                     :menu-props="{ maxHeight: '200px' }"
                                     @update:model-value="selectCountry"
-                                    class="me-0 me-md-2">
+                                    class="me-0 me-md-2"
+                                    readonly>
                                     <template 
                                         v-if="client_country_id"
                                         #prepend

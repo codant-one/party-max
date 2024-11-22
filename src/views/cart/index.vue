@@ -9,6 +9,7 @@ import { useCountriesStores } from '@/stores/countries'
 import { useProvincesStores } from '@/stores/provinces'
 import { useOrdersStores } from '@/stores/orders'
 import { usePaymentsStores } from '@/stores/payments'
+import { useDocumentTypesStores } from '@/stores/document-types'
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
@@ -48,6 +49,7 @@ const provincesStores = useProvincesStores()
 const countriesStores = useCountriesStores()
 const ordersStores = useOrdersStores()
 const paymentsStores = usePaymentsStores()
+const documentTypesStores = useDocumentTypesStores()
 const route = useRoute()
 
 const isMobile = /Mobi/i.test(navigator.userAgent)
@@ -138,6 +140,7 @@ const listProvinces = ref([])
 const listProvincesByCountry = ref([])
 const client_country_id = ref(null)
 const provinceOld_id = ref('')
+const documentTypes = ref([])
 
 const currentStep = ref(0)
 const isLoading = ref(false)
@@ -235,8 +238,20 @@ async function fetchData() {
         isActiveStepValid.value = true
     }
 
+    await documentTypesStores.fetchDocumentTypes()
+    documentTypes.value = documentTypesStores.getData
+
     isLoading.value = false
 }
+
+const getDocumentTypes = computed(() => {
+    return documentTypes.value.map((documentType) => {
+        return {
+        title: '(' + documentType.code + ') - ' + documentType.name,
+        value: documentType.id,
+        }
+    })
+})
 
 const loadCountries = () => {
   listCountries.value = countriesStores.getCountries
@@ -473,6 +488,8 @@ const sendPayU = async (billingDetail) => {
             filling_id: filling_id,
             order_file_id: order_file_id,
             province_id: billingDetail.province_id,
+            document_type_id: billingDetail.document_type_id,
+            document: billingDetail.document,
             name: billingDetail.name,
             last_name: billingDetail.last_name,
             company: billingDetail.company,
@@ -701,6 +718,7 @@ const chanceSend = value => {
                         :summary="summary"
                         :countries="listCountries"
                         :provinces="listProvinces"
+                        :document_types="getDocumentTypes"
                         :iswholesale="iswholesale"
                         :type="cartStores.getType"
                         :step="currentStep"
