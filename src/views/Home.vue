@@ -14,19 +14,6 @@ import Loader from '@/components/common/Loader.vue'
 
 import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
 
-import Plaza_1 from '@assets/images/Plaza_1.webp';
-import Plaza_2 from '@assets/images/Plaza_2.webp';
-import Plaza_3 from '@assets/images/Plaza_3.webp';
-import Plaza_3_mobile from '@assets/images/plaza_3_mobile.webp';
-import Plaza_4 from '@assets/images/Plaza_4.webp';
-import Plaza_5 from '@assets/images/Plaza_5.webp';
-import Banner from '@assets/images/Banner.webp';
-
-import Slider1 from '@assets/images/Slider_1_op.webp';
-import Slider2 from '@assets/images/Slider_2_op.webp';
-import Slider3 from '@assets/images/Slider_3_op.webp';
-import Slider1Mobile from '@assets/images/Slider_1_op_mobile.webp';
-
 import icon1 from '@assets/icons/fiestas-infantiles.svg';
 import icon2 from '@assets/icons/fiestas-tematicas.svg';
 import icon3 from '@assets/icons/fechas-especiales.svg';
@@ -42,15 +29,6 @@ import motorcycle from '@assets/icons/motorcycle.svg';
 import location from '@assets/icons/location.svg';
 import sold from '@assets/icons/sold.svg';
 import tracking from '@assets/icons/tracking.svg';
-
-import banner_2 from '@assets/images/Banner_2.webp';
-import banner_3 from '@assets/images/Banner_3.webp';
-import banner_4 from '@assets/images/Banner_4.webp';
-import banner_5 from '@assets/images/Banner_5.webp';
-
-import banner_2_mobile from '@assets/images/Banner_2_mobile.webp';
-import banner_3_mobile from '@assets/images/Banner_3_mobile.webp';
-import banner_4_mobile from '@assets/images/Banner_4_mobile.webp';
 
 import t_1 from '@assets/images/t_1.webp';
 import t_2 from '@assets/images/t_2.webp';
@@ -79,6 +57,18 @@ const backgroundStyle = ref({
 })
 
 const backgroundDiv = ref(null)
+const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
+
+const banner_1 = ref([])
+const banner_2 = ref([])
+const banner_3 = ref([])
+const banner_4 = ref([])
+const banner_5 = ref([])
+const banner_6 = ref([])
+const banner_7 = ref([])
+const banner_8 = ref([])
+const banner_9 = ref([])
+const banner_10 = ref([])
 
 onMounted(() => {
   const observer = new IntersectionObserver(
@@ -113,11 +103,8 @@ const items = ref([
   { text: 'Animadores de Fiestas', icon: icon10, slug: 'animadores-de-fiestas' }
 ])
 
-const sliders = ref( [
-  { src: Slider1 },
-  { src: Slider2 },
-  { src: Slider3 }
-])
+const sliders = ref([])
+const banners = ref([])
 
 const homeStores = useHomeStores()
 
@@ -132,7 +119,40 @@ async function fetchData() {
   
   await homeStores.fetchData()
   data.value = homeStores.getData
- 
+
+  sliders.value = data.value.images.filter(item => item.is_slider === 1);
+  banners.value = data.value.images.filter(item => item.is_slider === 0);
+
+  banner_1.value.image = baseURL.value + banners.value.find(item => item.order_id === 1).image;
+  banner_1.value.url = banners.value.find(item => item.order_id === 1).url;
+
+  banner_2.value.image = baseURL.value + banners.value.find(item => item.order_id === 2).image;
+  banner_2.value.url = banners.value.find(item => item.order_id === 2).url;
+
+  banner_3.value.image = baseURL.value + banners.value.find(item => item.order_id === 3).image;
+  banner_3.value.url = banners.value.find(item => item.order_id === 3).url;
+
+  banner_4.value.image = baseURL.value + banners.value.find(item => item.order_id === 4).image;
+  banner_4.value.url = banners.value.find(item => item.order_id === 4).url;
+
+  banner_5.value.image = baseURL.value + banners.value.find(item => item.order_id === 5).image;
+  banner_5.value.url = banners.value.find(item => item.order_id === 5).url;
+
+  banner_6.value.image = baseURL.value + banners.value.find(item => item.order_id === 6).image;
+  banner_6.value.url = banners.value.find(item => item.order_id === 6).url;
+
+  banner_7.value.image = baseURL.value + banners.value.find(item => item.order_id === 7).image;
+  banner_7.value.url = banners.value.find(item => item.order_id === 7).url;
+
+  banner_8.value.image = baseURL.value + banners.value.find(item => item.order_id === 8).image;
+  banner_8.value.url = banners.value.find(item => item.order_id === 8).url;
+
+  banner_9.value.image = baseURL.value + banners.value.find(item => item.order_id === 9).image;
+  banner_9.value.url = banners.value.find(item => item.order_id === 9).url;
+
+  banner_10.value.image = baseURL.value + banners.value.find(item => item.order_id === 10).image;
+  banner_10.value.url = banners.value.find(item => item.order_id === 10).url;
+
   isLoading.value = false
 }
 
@@ -141,8 +161,8 @@ const tab = ref('0')
 </script>
 
 <template>
+  <Loader :isLoading="isLoading"/>
   <VContainer class="mt-2 mt-md-10">
-    <Loader :isLoading="isLoading"/>
     <!-- slider -->
     <VRow no-gutters class="transparent">
       <VCol cols="12" md="3" class="col-mobile">
@@ -209,24 +229,23 @@ const tab = ref('0')
         </VSheet>
       </VCol>
       <VCol cols="12" md="9" class="tw-bg-white border-categories">
-        <VRow no-gutters>
+        <VRow no-gutters v-if="data">
           <VCol cols="12" md="7" class="pslider">
-            <img :src="Slider1Mobile" fetchpriority="high" class="img-main" alt="birthday" v-if="isMobile"/>
             <VCarousel 
-              v-else
               cycle
-              class="carousel-home"
+              class="carousel-home cursor-pointer"
               color="white"
               :show-arrows="false" 
               hide-delimiter-background
               >
-              <VCarouselItem
-                v-for="(item,i) in sliders"
-                :key="i"
-                :src="item.src"
-                :lazy="true"
-                cover
-              />
+                <VCarouselItem
+                  v-for="(item,i) in sliders"
+                  :key="i"
+                  :src="baseURL + item.image"
+                  :lazy="true"
+                  class="img-gallery"
+                  cover
+                />
             </VCarousel>
           </VCol>
           <VCol cols="12" md="5" class="pslider">
@@ -240,7 +259,7 @@ const tab = ref('0')
                     }
                   }"
                 >
-                  <VImg :src="Plaza_1" class="img-galery" alt="pinatas"/>
+                  <VImg :src="banner_1.image" class="img-gallery" alt="pinatas"/>
                 </router-link>
               </VCol>
               <VCol cols="6" md="6" class="pslider2">
@@ -252,7 +271,7 @@ const tab = ref('0')
                     }
                   }"
                 >
-                  <VImg :src="Plaza_2" class="border-top-right img-galery" alt="ponques"/>
+                  <VImg :src="banner_2.image" class="border-top-right img-gallery" alt="ponques"/>
                 </router-link>
               </VCol>
               <VCol cols="12" class="pslider3">
@@ -264,9 +283,9 @@ const tab = ref('0')
                     }
                   }"
                 >
-                  <img :src="isMobile ? Plaza_3_mobile : Plaza_3" 
+                  <img :src="banner_3.image" 
                     fetchpriority="high" 
-                    class="img-galery w-100 img-globo" 
+                    class="img-gallery w-100 img-globo" 
                     alt="globos" 
                     loading="lazy" 
                     width="330"
@@ -284,15 +303,7 @@ const tab = ref('0')
                   category: 'renta-de-mobiliario'
                 }
               }">
-              <img 
-                :src="Banner" 
-                class="img-galery" 
-                :class="isMobile ? 'slider5Img w-10' : ''" 
-                loading="lazy" 
-                width="330"
-                height="120" 
-                alt="slider5"
-              />
+              <img :src="banner_4.image" class="img-gallery furniture" :class="isMobile ? 'slider5Img' : ''" height="auto" cover />
             </router-link>
           </VCol>
           <VCol cols="12" md="5" class="pslider4">
@@ -305,7 +316,7 @@ const tab = ref('0')
                       category: 'animadores-de-fiestas'
                     }
                   }">
-                  <VImg :src="Plaza_4" class="img-galery" alt="eventos"/>
+                  <VImg :src="banner_5.image" class="img-gallery" alt="eventos"/>
                 </router-link>
               </VCol>
               <VCol cols="6" md="6" class="pslider2">
@@ -316,10 +327,9 @@ const tab = ref('0')
                       category: 'animadores-de-fiestas'
                     }
                   }">
-                  <VImg :src="Plaza_5" class="border-bottom-right img-galery" alt="personalizados"/>
+                  <VImg :src="banner_6.image" class="border-bottom-right img-gallery" alt="personalizados"/>
                 </router-link>
               </VCol>
-              <VCol cols="12" md="12" style="padding-top: 6px !important; padding-bottom: 6px !important;"></VCol>
             </VRow>
           </VCol>
         </VRow>
@@ -397,7 +407,7 @@ const tab = ref('0')
     <!-- banner 2 -->
     <VCard class="mt-7 no-shadown card-information p-0">
       <VCardItem class="p-0">
-        <VImg :src="isMobile ? banner_2_mobile : banner_2" cover/>
+        <VImg :src="banner_7.image" cover/>
       </VCardItem>  
     </VCard>
     
@@ -452,7 +462,7 @@ const tab = ref('0')
             <VCard class="no-shadown">
               <VCardText class="p-0">
                 <VImg 
-                  :src="banner_5" 
+                  :src="banner_8.image" 
                   class="border-img" 
                   cover
                   />
@@ -572,7 +582,7 @@ const tab = ref('0')
               }
             }" class="tw-no-underline">
             <VCardItem class="p-0">
-              <VImg :src="isMobile ? banner_3_mobile : banner_3" cover/>
+              <VImg :src="banner_9.image" cover/>
             </VCardItem>  
           </router-link>
         </VCard>
@@ -586,7 +596,7 @@ const tab = ref('0')
               }
             }" class="tw-no-underline">
             <VCardItem class="p-0">
-              <VImg :src="isMobile ? banner_4_mobile : banner_4" cover/>
+              <VImg :src="banner_10.image" cover/>
             </VCardItem>  
           </router-link>
         </VCard>
@@ -926,8 +936,12 @@ const tab = ref('0')
     padding: 0 2px !important;
   }
 
+  .furniture {
+    height: 192px !important;
+  }
+
   .pslider4 {
-    padding: 1px 1px 0 1px!important;
+    padding: 0 1px!important;
   }
 
   .border-categories {
@@ -1056,12 +1070,12 @@ const tab = ref('0')
     color: #FF0090!important;
   }
   
-  .img-galery {
+  .img-gallery {
     width: 100%;
-    height: auto;
+    height: 100%;
   }
 
-  .img-galery:hover{
+  .img-gallery:hover{
     filter: saturate(180%)!important;
   }
 
@@ -1105,23 +1119,23 @@ const tab = ref('0')
     }
 
     .img-main {
-      height: 181px;
+      height: 170px !important;
       width: 100%;
       border-radius:  16px 16px 0 0 !important;
     }
 
     .img-globo {
-      height: 169px !important;
-      min-width: 280px;
+      height: 160px !important;
     }
 
     .slider5Img {
       border-bottom-right-radius: 16px!important;
       border-bottom-left-radius: 16px!important;
+      margin-top: 12px;
     }
 
     .carousel-home {
-      height: 195px !important;
+      height: 220px !important;
       border-radius:  16px 16px 0 0 !important;
     }
 
@@ -1201,12 +1215,16 @@ const tab = ref('0')
       border-radius: 0 !important;
     }
 
+    .furniture {
+      height: auto !important;
+    }
+
     .pslider4 {
       padding: 0 3px!important;
     }
 
     .pslider5 {
-      padding: 2px 3px 3px 3px!important;
+      padding: 1px 3px 3px 3px!important;
     }
 
     .cardtitles {
