@@ -105,6 +105,7 @@ const items = ref([
 
 const sliders = ref([])
 const banners = ref([])
+const firstImageUrl = ref([])
 
 const homeStores = useHomeStores()
 
@@ -153,6 +154,8 @@ async function fetchData() {
   banner_10.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 10).mobile : banners.value.find(item => item.order_id === 10).image);
   banner_10.value.url = banners.value.find(item => item.order_id === 10).url;
 
+  preloadFirstImage()
+
   isLoading.value = false
 }
 
@@ -160,6 +163,19 @@ const redirectTo = (url) => {
   if (url) {
     window.open(url, '_blank');
     // window.location.href = url
+  }
+}
+
+const preloadFirstImage = () => {
+  if (sliders.value.length > 0) {
+    firstImageUrl.value = baseURL.value + sliders.value[0].image
+    
+    // Crear enlace de precarga
+    const link = document.createElement('link')
+    link.rel = 'preload'
+    link.as = 'image'
+    link.href = firstImageUrl.value
+    document.head.appendChild(link)
   }
 }
 
