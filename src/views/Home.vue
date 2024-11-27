@@ -255,6 +255,9 @@ const tab = ref('0')
                   class="img-gallery"
                   cover
                   @click="redirectTo(item.url)"
+                  priority
+                  :width="isMobile ? '358' : '560'"
+                  :height="isMobile ? '180' : '391'"
                 />
             </VCarousel>
           </VCol>
@@ -1028,7 +1031,7 @@ const tab = ref('0')
   }
 
   .carousel-home {
-    height: 389px !important;
+    height: 391px !important;
   }
 
   .v-tab::v-deep(.v-btn__content) {
