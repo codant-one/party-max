@@ -156,6 +156,13 @@ async function fetchData() {
   isLoading.value = false
 }
 
+const redirectTo = (url) => {
+  if (url) {
+    window.open(url, '_blank');
+    // window.location.href = url
+  }
+}
+
 const tab = ref('0')
 
 </script>
@@ -236,6 +243,7 @@ const tab = ref('0')
               class="carousel-home cursor-pointer"
               color="white"
               :show-arrows="false" 
+              :disabled="false"
               hide-delimiter-background
               >
                 <VCarouselItem
@@ -245,44 +253,19 @@ const tab = ref('0')
                   :lazy="true"
                   class="img-gallery"
                   cover
+                  @click="redirectTo(item.url)"
                 />
             </VCarousel>
           </VCol>
           <VCol cols="12" md="5" class="pslider">
             <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent">
               <VCol cols="6" md="6" class="pslider2">
-                <router-link 
-                  :to="{
-                    name: 'products',
-                    query: {
-                      category: 'pinatas'
-                    }
-                  }"
-                >
-                  <VImg :src="banner_1.image" class="img-gallery" alt="pinatas"/>
-                </router-link>
+                  <VImg :src="banner_1.image" class="img-gallery" alt="pinatas" @click="redirectTo(banner_1.url)" />
               </VCol>
               <VCol cols="6" md="6" class="pslider2">
-                <router-link
-                  :to="{
-                    name: 'services',
-                    query: {
-                      category: 'dulces-y-ponques'
-                    }
-                  }"
-                >
-                  <VImg :src="banner_2.image" class="border-top-right img-gallery" alt="ponques"/>
-                </router-link>
+                  <VImg :src="banner_2.image" class="border-top-right img-gallery" alt="ponques" @click="redirectTo(banner_2.url)"/>
               </VCol>
               <VCol cols="12" class="pslider3">
-                <router-link
-                  :to="{
-                    name: 'products',
-                    query: {
-                      category: 'globos'
-                    }
-                  }"
-                >
                   <img :src="banner_3.image" 
                     fetchpriority="high" 
                     class="img-gallery w-100 img-globo" 
@@ -290,45 +273,21 @@ const tab = ref('0')
                     loading="lazy" 
                     width="330"
                     height="160" 
+                    @click="redirectTo(banner_3.url)"
                   />
-                </router-link>
               </VCol>
             </VRow>
           </VCol>
           <VCol cols="12" md="7" class="pslider4" :class="isMobile ? 'order-last order-md-first pslider5' : ''">
-            <router-link 
-              :to="{
-                name: 'services',
-                query: {
-                  category: 'renta-de-mobiliario'
-                }
-              }">
-              <img :src="banner_4.image" class="img-gallery furniture" :class="isMobile ? 'slider5Img' : ''" height="auto" cover />
-            </router-link>
+              <img :src="banner_4.image" class="img-gallery furniture" :class="isMobile ? 'slider5Img' : ''" height="auto" cover @click="redirectTo(banner_4.url)"/>
           </VCol>
           <VCol cols="12" md="5" class="pslider4">
             <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent">
               <VCol cols="6" md="6" class="pslider2">
-                <router-link 
-                  :to="{
-                    name: 'services',
-                    query: {
-                      category: 'animadores-de-fiestas'
-                    }
-                  }">
-                  <VImg :src="banner_5.image" class="img-gallery" alt="eventos"/>
-                </router-link>
+                  <VImg :src="banner_5.image" class="img-gallery" alt="eventos" @click="redirectTo(banner_5.url)"/>
               </VCol>
               <VCol cols="6" md="6" class="pslider2">
-                <router-link 
-                  :to="{
-                    name: 'services',
-                    query: {
-                      category: 'animadores-de-fiestas'
-                    }
-                  }">
-                  <VImg :src="banner_6.image" class="border-bottom-right img-gallery" alt="personalizados"/>
-                </router-link>
+                  <VImg :src="banner_6.image" class="border-bottom-right img-gallery" alt="personalizados" @click="redirectTo(banner_6.url)"/>
               </VCol>
             </VRow>
           </VCol>
@@ -407,7 +366,7 @@ const tab = ref('0')
     <!-- banner 2 -->
     <VCard class="mt-7 no-shadown card-information p-0">
       <VCardItem class="p-0">
-        <VImg :src="banner_7.image" cover/>
+        <VImg :src="banner_7.image" cover @click="redirectTo(banner_7.url)" class="img-gallery"/>
       </VCardItem>  
     </VCard>
     
@@ -463,8 +422,9 @@ const tab = ref('0')
               <VCardText class="p-0">
                 <VImg 
                   :src="banner_8.image" 
-                  class="border-img" 
+                  class="border-img img-gallery"
                   cover
+                  @click="redirectTo(banner_8.url)"
                   />
               </VCardText>
               <VCardText class="p-0">
@@ -573,32 +533,14 @@ const tab = ref('0')
     <!-- banner 2 , banner 3-->
     <VCard class="mt-7 no-shadown card-information p-0 d-flex transparent card-banner34">
         <VCard class="no-shadown card-information p-0 w-50 grid-item w-100">
-          <router-link 
-            :to="{
-              name: 'products',
-              query: {
-                category: 'decoracion',
-                subcategory: 'velas'
-              }
-            }" class="tw-no-underline">
             <VCardItem class="p-0">
-              <VImg :src="banner_9.image" cover/>
-            </VCardItem>  
-          </router-link>
+              <VImg :src="banner_9.image" cover @click="redirectTo(banner_9.url)"  class="img-gallery"/>
+            </VCardItem> 
         </VCard>
         <VCard class="no-shadown card-information p-0 w-50 ms-5 grid-item w-100">
-          <router-link 
-            :to="{
-              name: 'products',
-              query: {
-                category: 'globos',
-                subcategory: 'globos-metalizados'
-              }
-            }" class="tw-no-underline">
             <VCardItem class="p-0">
-              <VImg :src="banner_10.image" cover/>
-            </VCardItem>  
-          </router-link>
+              <VImg :src="banner_10.image" cover @click="redirectTo(banner_10.url)" class="img-gallery"/>
+            </VCardItem>
         </VCard>
     </VCard>
 
@@ -1077,6 +1019,7 @@ const tab = ref('0')
 
   .img-gallery:hover{
     filter: saturate(180%)!important;
+    cursor: pointer;
   }
 
   .v-tab:hover::v-deep(button) {
@@ -1084,7 +1027,7 @@ const tab = ref('0')
   }
 
   .carousel-home {
-    height:389px !important;
+    height: 389px !important;
   }
 
   .v-tab::v-deep(.v-btn__content) {
