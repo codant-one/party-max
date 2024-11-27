@@ -123,34 +123,34 @@ async function fetchData() {
   sliders.value = data.value.images.filter(item => item.is_slider === 1);
   banners.value = data.value.images.filter(item => item.is_slider === 0);
 
-  banner_1.value.image = baseURL.value + banners.value.find(item => item.order_id === 1).image;
+  banner_1.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 1).mobile : banners.value.find(item => item.order_id === 1).image);
   banner_1.value.url = banners.value.find(item => item.order_id === 1).url;
 
-  banner_2.value.image = baseURL.value + banners.value.find(item => item.order_id === 2).image;
+  banner_2.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 2).mobile : banners.value.find(item => item.order_id === 2).image);
   banner_2.value.url = banners.value.find(item => item.order_id === 2).url;
 
-  banner_3.value.image = baseURL.value + banners.value.find(item => item.order_id === 3).image;
+  banner_3.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 3).mobile : banners.value.find(item => item.order_id === 3).image);
   banner_3.value.url = banners.value.find(item => item.order_id === 3).url;
 
-  banner_4.value.image = baseURL.value + banners.value.find(item => item.order_id === 4).image;
+  banner_4.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 4).mobile : banners.value.find(item => item.order_id === 4).image);
   banner_4.value.url = banners.value.find(item => item.order_id === 4).url;
 
-  banner_5.value.image = baseURL.value + banners.value.find(item => item.order_id === 5).image;
+  banner_5.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 5).mobile : banners.value.find(item => item.order_id === 5).image);
   banner_5.value.url = banners.value.find(item => item.order_id === 5).url;
 
-  banner_6.value.image = baseURL.value + banners.value.find(item => item.order_id === 6).image;
+  banner_6.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 6).mobile : banners.value.find(item => item.order_id === 6).image);
   banner_6.value.url = banners.value.find(item => item.order_id === 6).url;
 
-  banner_7.value.image = baseURL.value + banners.value.find(item => item.order_id === 7).image;
+  banner_7.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 7).mobile : banners.value.find(item => item.order_id === 7).image);
   banner_7.value.url = banners.value.find(item => item.order_id === 7).url;
 
-  banner_8.value.image = baseURL.value + banners.value.find(item => item.order_id === 8).image;
+  banner_8.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 8).mobile : banners.value.find(item => item.order_id === 8).image);
   banner_8.value.url = banners.value.find(item => item.order_id === 8).url;
 
-  banner_9.value.image = baseURL.value + banners.value.find(item => item.order_id === 9).image;
+  banner_9.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 9).mobile : banners.value.find(item => item.order_id === 9).image);
   banner_9.value.url = banners.value.find(item => item.order_id === 9).url;
 
-  banner_10.value.image = baseURL.value + banners.value.find(item => item.order_id === 10).image;
+  banner_10.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 10).mobile : banners.value.find(item => item.order_id === 10).image);
   banner_10.value.url = banners.value.find(item => item.order_id === 10).url;
 
   isLoading.value = false
@@ -249,7 +249,8 @@ const tab = ref('0')
                 <VCarouselItem
                   v-for="(item,i) in sliders"
                   :key="i"
-                  :src="baseURL + item.image"
+                  :src="baseURL + (isMobile ? item.mobile : item.image)"
+                  :lazy-src="baseURL + item.mobile"
                   :lazy="true"
                   class="img-gallery"
                   cover
@@ -260,10 +261,10 @@ const tab = ref('0')
           <VCol cols="12" md="5" class="pslider">
             <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent">
               <VCol cols="6" md="6" class="pslider2">
-                  <VImg :src="banner_1.image" class="img-gallery" alt="pinatas" @click="redirectTo(banner_1.url)" />
+                  <img :src="banner_1.image" class="img-gallery" alt="pinatas" @click="redirectTo(banner_1.url)" />
               </VCol>
               <VCol cols="6" md="6" class="pslider2">
-                  <VImg :src="banner_2.image" class="border-top-right img-gallery" alt="ponques" @click="redirectTo(banner_2.url)"/>
+                  <img :src="banner_2.image" class="border-top-right img-gallery" alt="ponques" @click="redirectTo(banner_2.url)"/>
               </VCol>
               <VCol cols="12" class="pslider3">
                   <img :src="banner_3.image" 
@@ -279,15 +280,15 @@ const tab = ref('0')
             </VRow>
           </VCol>
           <VCol cols="12" md="7" class="pslider4" :class="isMobile ? 'order-last order-md-first pslider5' : ''">
-              <img :src="banner_4.image" class="img-gallery furniture" :class="isMobile ? 'slider5Img' : ''" height="auto" cover @click="redirectTo(banner_4.url)"/>
+              <img :src="banner_4.image" class="img-gallery furniture" :class="isMobile ? 'slider5Img' : ''" cover @click="redirectTo(banner_4.url)"/>
           </VCol>
           <VCol cols="12" md="5" class="pslider4">
             <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent">
               <VCol cols="6" md="6" class="pslider2">
-                  <VImg :src="banner_5.image" class="img-gallery" alt="eventos" @click="redirectTo(banner_5.url)"/>
+                  <img :src="banner_5.image" class="img-gallery" alt="eventos" @click="redirectTo(banner_5.url)"/>
               </VCol>
               <VCol cols="6" md="6" class="pslider2">
-                  <VImg :src="banner_6.image" class="border-bottom-right img-gallery" alt="personalizados" @click="redirectTo(banner_6.url)"/>
+                  <img :src="banner_6.image" class="border-bottom-right img-gallery" alt="personalizados" @click="redirectTo(banner_6.url)"/>
               </VCol>
             </VRow>
           </VCol>
@@ -364,9 +365,9 @@ const tab = ref('0')
     </VCard>
 
     <!-- banner 2 -->
-    <VCard class="mt-7 no-shadown card-information p-0">
+    <VCard class="mt-7 no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
-        <VImg :src="banner_7.image" cover @click="redirectTo(banner_7.url)" class="img-gallery"/>
+        <img :src="banner_7.image" cover @click="redirectTo(banner_7.url)" class="img-gallery"/>
       </VCardItem>  
     </VCard>
     
@@ -420,7 +421,7 @@ const tab = ref('0')
           <VCol cols="12" md="9">
             <VCard class="no-shadown">
               <VCardText class="p-0">
-                <VImg 
+                <img 
                   :src="banner_8.image" 
                   class="border-img img-gallery"
                   cover
@@ -534,12 +535,12 @@ const tab = ref('0')
     <VCard class="mt-7 no-shadown card-information p-0 d-flex transparent card-banner34">
         <VCard class="no-shadown card-information p-0 w-50 grid-item w-100">
             <VCardItem class="p-0">
-              <VImg :src="banner_9.image" cover @click="redirectTo(banner_9.url)"  class="img-gallery"/>
+              <img :src="banner_9.image" cover @click="redirectTo(banner_9.url)"  class="img-gallery"/>
             </VCardItem> 
         </VCard>
         <VCard class="no-shadown card-information p-0 w-50 ms-5 grid-item w-100">
             <VCardItem class="p-0">
-              <VImg :src="banner_10.image" cover @click="redirectTo(banner_10.url)" class="img-gallery"/>
+              <img :src="banner_10.image" cover @click="redirectTo(banner_10.url)" class="img-gallery"/>
             </VCardItem>
         </VCard>
     </VCard>
@@ -1078,7 +1079,7 @@ const tab = ref('0')
     }
 
     .carousel-home {
-      height: 220px !important;
+      height: 180px !important;
       border-radius:  16px 16px 0 0 !important;
     }
 
