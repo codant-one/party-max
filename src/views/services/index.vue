@@ -1023,8 +1023,8 @@ const addfavorite = (service_id) => {
     <VDialog v-model="isDialogVisible" >
       <VCard
         class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-        <VImg :width="isMobile ? '80' : '100'" :src="isError ? error_circle : (isPending ? festin_pending : check_circle)" class="mx-auto"/>
-        <VCardText class="text-message mb-5 px-0 px-md-5">
+        <VImg :width="isMobile ? '120' : '180'" :src="isError ? error_circle : (isPending ? festin_pending : check_circle)" class="mx-auto"/>
+        <VCardText class="text-message mb-5 px-0 px-md-5 pt-0">
           {{ message }}
         </VCardText>
       </VCard>
