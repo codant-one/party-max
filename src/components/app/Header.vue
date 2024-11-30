@@ -107,9 +107,9 @@
 
         let sum = 0
         products.value.forEach(element => {
-          let cupcake = cartStores.getType === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
+          let cupcake = element.type === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
           let value = 
-            cartStores.getType === 0 ? 
+            element.type === 0 ? 
               (element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale) :
               (element.cake_size_id === 0 ? element.price : cupcake.price)
 
@@ -306,10 +306,10 @@
     return index === products.value.length - 1;
   }
 
-  const deleteProduct = async (product_color_id) => {
+  const deleteProduct = async (data) => {
 
     isLoading.value = true
-    await cartStores.delete({ product_color_id: product_color_id })
+    await cartStores.delete(data)
     fetchData()   
     isLoading.value = false
 
@@ -429,81 +429,81 @@
       </VList>
         
       <!--MENU SERVICIOS MOBILE-->
-        <!-- <VList v-model:opened="panelCat" class="pb-0" :ripple="false">
-              <VListItem>
-                <VListItemTitle class="d-block lineheight pt-6 pb-2">
-                  <span class="d-block title-menu">SERVICIOS</span>
-                  <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
-                  </svg>
-                </VListItemTitle>
-              </VListItem>
-              <div v-for="(item, index) in services">
-                <VListItem v-if="services[index]?.children.length === 0">
-                  <VListItemTitle class="d-block lineheight borderList pb-2">
-                  <router-link 
+      <VList v-model:opened="panelCat" class="pb-0" :ripple="false">
+        <VListItem>
+          <VListItemTitle class="d-block lineheight pt-6 pb-2">
+            <span class="d-block title-menu">SERVICIOS</span>
+            <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
+            </svg>
+          </VListItemTitle>
+        </VListItem>
+        <div v-for="(item, index) in services">
+          <VListItem v-if="services[index]?.children.length === 0">
+            <VListItemTitle class="d-block lineheight borderList pb-2">
+              <router-link 
+                :to="{
+                  name: 'services',
+                  query: {
+                    category: item.slug
+                  }
+                }" 
+                class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+                <span class="d-block title-menu">{{ item.name }}</span>
+              </router-link>
+            </VListItemTitle> 
+          </VListItem>
+          <VListGroup v-else :value="item.name" :eager="false">
+            <template #activator="{ props }">
+              <VListItem class="items-list">
+                <VListItemTitle class="d-block lineheight borderList pb-2">
+                  <router-link
                     :to="{
-                      name: 'services',
-                      query: {
-                        category: item.slug
+                      name: 'categories',
+                      params: {
+                        slug: item.slug
                       }
-                    }" 
+                    }"  
                     class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
                     <span class="d-block title-menu">{{ item.name }}</span>
                   </router-link>
                 </VListItemTitle> 
-                </VListItem>
-                <VListGroup v-else :value="item.name" :eager="false">
-                  <template #activator="{ props }">
-                    <VListItem class="items-list">
-                      <VListItemTitle class="d-block lineheight borderList pb-2">
-                        <router-link
-                          :to="{
-                            name: 'categories',
-                            params: {
-                              slug: item.slug
-                            }
-                          }"  
-                          class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-                          <span class="d-block title-menu">{{ item.name }}</span>
-                        </router-link>
-                      </VListItemTitle> 
-                      <template #append>
-                        <VIcon
-                          v-bind="props"
-                          :icon="openedGroups.includes(index) 
-                          ? 'mdi-minus' 
-                          : 'mdi-plus'"
-                          size="20"
-                          @click="toggleGroupFn(index, item.name)"
-                        />
-                      </template>
-                    </VListItem>
-                  </template>
-                  <div 
-                    v-for="(k, index2) in services[index].children"
-                    :key="index2"
-                    class="style-menu-mobile">
-                    <VListItem class="subtitle-menu">
-                      <router-link
-                          :to="{
-                            name: 'services',
-                            query: {
-                              category: item.slug,
-                              subcategory: k.slug.split('/')[1]
-                            }
-                          }"  
-                          class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-                          <span class="d-block title-menu">
-                          {{ k.name }}
-                          </span>
-                        </router-link>
-                    </VListItem>
-                  </div>
-                </VListGroup>
-              </div>
-          </VList> -->
-        <!--FIN MENU SERVICIOS MOBILE-->
+                <template #append>
+                  <VIcon
+                    v-bind="props"
+                    :icon="openedGroups.includes(index) 
+                    ? 'mdi-minus' 
+                    : 'mdi-plus'"
+                    size="20"
+                    @click="toggleGroupFn(index, item.name)"
+                  />
+                </template>
+              </VListItem>
+            </template>
+            <div 
+              v-for="(k, index2) in services[index].children"
+              :key="index2"
+              class="style-menu-mobile">
+              <VListItem class="subtitle-menu">
+                <router-link
+                  :to="{
+                    name: 'services',
+                    query: {
+                      category: item.slug,
+                      subcategory: k.slug.split('/')[1]
+                    }
+                  }"  
+                  class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+                  <span class="d-block title-menu">
+                    {{ k.name }}
+                  </span>
+                </router-link>
+              </VListItem>
+            </div>
+          </VListGroup>
+        </div>
+      </VList>
+      <!--FIN MENU SERVICIOS MOBILE-->
    
     </VNavigationDrawer>
     <VNavigationDrawer
@@ -546,25 +546,21 @@
           </VCardText>
         </VCard>
         <div v-else>
-          <template v-if="cartStores.getType === 0">
+          <template v-for="(item, i) in products" :key="i">
             <Product8
-              v-for="(product, i) in products"
-              :key="i"
-              :product="product"
+              v-if="item.type === 0"
+              :product="item"
               :readonly="true"
               :isLastItem="isLastItem(i)"
-              @delete="deleteProduct(product.product_color_id)"
+              @delete="deleteProduct({ type: 0, product_color_id: parseInt(item.product_color_id) })"
             />
-          </template>
-          <template v-else>
             <Service4
-              v-for="(service, i) in products"
-              :key="i"
-              :service="service"
+              v-else
+              :service="item"
               :readonly="true"
-              :type="cartStores.getType"
+              :type="item.type"
               :isLastItem="isLastItem(i)"
-              @delete="deleteProduct(service.service_id)"
+              @delete="deleteProduct({ type: 1, service_id: parseInt(item.id) })"
             />
           </template>
         </div>
@@ -819,7 +815,7 @@
           </VMenu>
         </div>
       <!-----------------------SERVICIOS MENÚ------------------------------->
-        <!-- <div class="hover:tw-text-yellow">
+        <div class="hover:tw-text-yellow">
           <VMenu 
             v-model="menuOpenS"
             transition="slide-x-transition" 
@@ -899,7 +895,7 @@
             </VCard>
           </VMenu>
           
-        </div> -->
+        </div>
       <!---------FIN SERVICIOS MENÚ--------------------------->
         <span @click="toggleWholesalers"
           class="tw-no-underline d-flex align-center text-center tw-cursor-pointer"

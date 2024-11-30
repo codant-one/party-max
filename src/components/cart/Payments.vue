@@ -40,10 +40,6 @@ const props = defineProps({
         type: Boolean,
         required: true
     },
-    type: {
-        type: Number,
-        required: true
-    },
     step: {
         type: Number,
         required: true
@@ -60,7 +56,6 @@ const emit = defineEmits([
 const error_address = ref('Debes agregar una dirección de envio')
 const id = ref(props.address_id)
 
-const type_ = ref(props.type)
 const refVForm = ref()
 const isMobile = /Mobi/i.test(navigator.userAgent)
 const address = ref(null)
@@ -348,19 +343,15 @@ const getFlagCountry = country => {
                     <h1 class="title-summary border-title pb-4">Resumen de compra</h1>
                     <h2 class="title-card px-5 px-md-16 my-3">Productos {{ props.iswholesale ? '(al mayor)' : ''}}</h2>
                     <VCardText class="row-cardp p-0">
-                        <template v-if="type_ === 0">
+                        <template v-for="(item, i) in props.products" :key="i">
                             <Product6
-                                v-for="(product, i) in props.products"
-                                :key="i"
-                                :product="product"
+                                v-if="item.type === 0"
+                                :product="item"
                                 :readonly="true"
                                 :isLastItem="isLastItem(i)"/>
-                        </template>
-                        <template v-else>
                             <Service6
-                                v-for="(service, i) in props.products"
-                                :key="i"
-                                :service="service"
+                                v-else
+                                :service="item"
                                 :readonly="true"
                                 :isLastItem="isLastItem(i)"/>
                         </template>

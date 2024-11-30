@@ -445,66 +445,10 @@ const setThumbsSwiper = (swiper) => {
 
 const addCart = async() => {
 
-  if(cartStores.getType === 1 || cartStores.getType === -1) {
-    if(date.value !== null) {
-      if(isCupcake.value && is_simple.value === '0' && (file.value === null || typeof file.value === 'undefined')) { 
-        isDialogVisible.value = true
-        message.value = 'Debes cargar el archivo personalizado para el servicio'
-        isError.value = true
-
-        setTimeout(() => {
-          isDialogVisible.value = false
-          isError.value = false
-          message.value = ''
-        }, 3000)
-      } else {
-
-        load.value = true
-        if(isCupcake.value && is_simple.value === '0' && file.value !== null) {
-          const formData = new FormData()
-                
-          formData.append("image", file.value)
-
-          let response = await ordersStores.uploadFile(formData)
-          order_file_id.value = response.success ? response.data.order_file.id : null
-        }
-
-        let data = {
-          date: date.value,
-          service_id: service_id.value,
-          cake_size_id: cake_size_id.value ?? 0,
-          flavor_id: flavor_id.value ?? 0,
-          filling_id: filling_id.value ?? 0,
-          order_file_id: order_file_id.value ?? 0,
-          product_color_id: null,
-          quantity: cant_prod.value,
-          wholesale: null,
-          type: 1
-        }
-
-        cartStores.add(data)
-          .then(response => {
-
-            isDialogVisible.value = true
-            message.value = 'Agregado al carrito'
-            load.value = false
-
-            setTimeout(() => {
-              isDialogVisible.value = false
-              isError.value = false
-              message.value = ''
-            }, 1000)
-
-          }).catch(err => {
-            load.value = false
-            //console.error(err.message)
-          })
-      }
-
-    } else {
-
+  if(date.value !== null) {
+    if(isCupcake.value && is_simple.value === '0' && (file.value === null || typeof file.value === 'undefined')) { 
       isDialogVisible.value = true
-      message.value = 'Debes agregar una fecha para la orden'
+       message.value = 'Debes cargar el archivo personalizado para el servicio'
       isError.value = true
 
       setTimeout(() => {
@@ -512,10 +456,54 @@ const addCart = async() => {
         isError.value = false
         message.value = ''
       }, 3000)
+    } else {
+
+      load.value = true
+      if(isCupcake.value && is_simple.value === '0' && file.value !== null) {
+        const formData = new FormData()
+                
+        formData.append("image", file.value)
+
+        let response = await ordersStores.uploadFile(formData)
+        order_file_id.value = response.success ? response.data.order_file.id : null
+      }
+
+      let data = {
+        date: date.value,
+        service_id: service_id.value,
+        cake_size_id: cake_size_id.value ?? 0,
+        flavor_id: flavor_id.value ?? 0,
+        filling_id: filling_id.value ?? 0,
+        order_file_id: order_file_id.value ?? 0,
+        product_color_id: null,
+        quantity: cant_prod.value,
+        wholesale: null,
+        type: 1
+      }
+
+      cartStores.add(data)
+        .then(response => {
+
+          isDialogVisible.value = true
+          message.value = 'Agregado al carrito'
+          load.value = false
+
+          setTimeout(() => {
+            isDialogVisible.value = false
+            isError.value = false
+            message.value = ''
+          }, 1000)
+
+        }).catch(err => {
+          load.value = false
+          //console.error(err.message)
+        })
     }
+
   } else {
+
     isDialogVisible.value = true
-    message.value = 'Debes gestionar los servicios y productos por separado'
+    message.value = 'Debes agregar una fecha para la orden'
     isError.value = true
 
     setTimeout(() => {
@@ -524,7 +512,6 @@ const addCart = async() => {
       message.value = ''
     }, 3000)
   }
-  
 }
 
 const addfavorite = () => {
@@ -967,7 +954,7 @@ const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1
     font-size: 24px;
     font-style: normal;
     font-weight: 600;
-    line-height: 30px;
+    line-height: 24px !important;
   }
 
   .card-register {

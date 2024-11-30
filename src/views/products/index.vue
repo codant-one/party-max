@@ -331,60 +331,46 @@ const colorAction = () => {
 }
 
 const addCart = (value) => {
-  if(cartStores.getType === 0 || cartStores.getType === -1) {
-    product_id.value = value.product_id
+  product_id.value = value.product_id
     
-    let isWholesale = route.query.wholesalers === 'true' ? 1 : 0
+  let isWholesale = route.query.wholesalers === 'true' ? 1 : 0
     
-    if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
-
-      let data = {
-        date: null,
-        service_id: null,
-        cake_size_id: null,
-        flavor_id: null,
-        filling_id: null,
-        order_file_id: null,
-        product_color_id: value.product_color_id,
-        quantity: value.cant_prod,
-        wholesale: isWholesale,
-        type: 0
-      }
-
-      load.value = true
-
-      cartStores.add(data)
-        .then(response => {
-
-          isDialogVisible.value = true
-          message.value = 'Agregado al carrito'
-          load.value = false
-
-          setTimeout(() => {
-            isDialogVisible.value = false
-            isError.value = false
-            message.value = ''
-          }, 1000)
-
-        }).catch(err => {
-          load.value = false
-          //console.error(err.message)
-        })
-    } else {
-      isDialogVisible.value = true
-      message.value = 'Debes agregar al carrito productos ' + (isWholesale ? 'al detal' : 'al mayor') + ' debido a tu selección anterior'
-      isError.value = true
-
-      setTimeout(() => {
-        isDialogVisible.value = false
-        isError.value = false
-        message.value = ''
-      }, 3000)
+  if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
+    let data = {
+      date: null,
+      service_id: null,
+      cake_size_id: null,
+      flavor_id: null,
+      filling_id: null,
+      order_file_id: null,
+      product_color_id: value.product_color_id,
+      quantity: value.cant_prod,
+      wholesale: isWholesale,
+      type: 0
     }
 
+    load.value = true
+
+    cartStores.add(data)
+      .then(response => {
+
+        isDialogVisible.value = true
+        message.value = 'Agregado al carrito'
+        load.value = false
+
+        setTimeout(() => {
+          isDialogVisible.value = false
+          isError.value = false
+          message.value = ''
+        }, 1000)
+
+      }).catch(err => {
+        load.value = false
+        //console.error(err.message)
+      })
   } else {
     isDialogVisible.value = true
-    message.value = 'Debes gestionar los servicios y productos por separado'
+    message.value = 'Debes agregar al carrito productos ' + (isWholesale ? 'al detal' : 'al mayor') + ' debido a tu selección anterior'
     isError.value = true
 
     setTimeout(() => {
@@ -1243,7 +1229,7 @@ const addfavorite = (product_id) => {
     font-size: 24px;
     font-style: normal;
     font-weight: 600;
-    line-height: 30px;
+    line-height: 24px !important;
   }
 
   .card-register {

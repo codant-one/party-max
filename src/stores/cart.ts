@@ -6,7 +6,6 @@ export const useCartStores = defineStore('cart', {
         data: Array<Object>(),
         count: 0,
         wholesale: -1,
-        type: -1,
         CURRENT_VERSION: '2.0.0'
     }),
     getters:{
@@ -18,17 +17,11 @@ export const useCartStores = defineStore('cart', {
         },
         getWholesale(): any {
             return this.wholesale
-        },
-        getType(): any {
-            return this.type
         }
     },
     actions: {
         setWholesale(value: any){
             this.wholesale = value
-        },
-        setType(value: any){
-            this.type = value
         },
         fetchCart() {
             
@@ -39,7 +32,6 @@ export const useCartStores = defineStore('cart', {
                 localStorage.setItem('shoppingCartVersion', this.CURRENT_VERSION);
 
                 this.wholesale = -1
-                this.type = -1
             }
 
             let shoppingCart = localStorage.getItem('shoppingCart')
@@ -51,7 +43,6 @@ export const useCartStores = defineStore('cart', {
                 const productColorIdsString = productColorIds.join(',')
                 const quantityIds = shoppingCart.map((item: { quantity: number }) => item.quantity)
                 const quantityIdsIdsString = quantityIds.join(',')
-                const wholesale = shoppingCart.map((item: { wholesale: number }) => item.wholesale)[0] ?? ''
                 const servicesIds = shoppingCart.map((item: { service_id: number }) => item.service_id)
                 const servicesIdsString = servicesIds.join(',')
                 const cakeSizeIds = shoppingCart.map((item: { cake_size_id: number }) => item.cake_size_id)
@@ -64,8 +55,13 @@ export const useCartStores = defineStore('cart', {
                 const fillingIdsString = fillingIds.join(',')
                 const fileIds = shoppingCart.map((item: { order_file_id: number }) => item.order_file_id)
                 const fileIdsString = fileIds.join(',')
-                const type = shoppingCart.map((item: { type: number }) => item.type)[0] ?? ''
+                const typeIds = shoppingCart.map((item: { type: number }) => item.type)
+                const typeIdsString = typeIds.join(',')
+                const wholesale = shoppingCart.map((item: { wholesale: number }) => item.wholesale)[0] ?? -1
 
+                const wholesaleIds = shoppingCart.map((item: { wholesale: number }) => item.wholesale)
+                const wholesaleIdsString = wholesaleIds.join(',')
+                
                 const params = { 
                     service_id: servicesIdsString,
                     cake_size_id: cakeSizeIdsString,
@@ -75,15 +71,14 @@ export const useCartStores = defineStore('cart', {
                     date: dateIdsString,
                     product_color_id: productColorIdsString, 
                     quantity: quantityIdsIdsString, 
-                    wholesale:  wholesale,
-                    type: type
+                    wholesale:  wholesaleIdsString,
+                    type: typeIdsString
                 }
 
                 return Cart.get(params)
                     .then((response) => {
                         this.data = response.data.data.cart
                         this.count = response.data.data.cart.length
-                        this.type = (this.count > 0) ? parseInt(response.data.data.type) : -1
                         
                         if(this.count > 0)
                             this.wholesale = wholesale
@@ -162,7 +157,7 @@ export const useCartStores = defineStore('cart', {
 
                 var index = -1
 
-                if(this.type === 0)
+                if(data.type === 0)
                     index = 
                         shoppingCart.findIndex(
                             (item: { product_color_id: number }) => item.product_color_id === data.product_color_id
@@ -173,7 +168,6 @@ export const useCartStores = defineStore('cart', {
                             (item: { service_id: number }) => item.service_id === data.service_id
                         )
                     
-
                 if (index !== -1)
                     shoppingCart.splice(index, 1)
 
@@ -182,7 +176,6 @@ export const useCartStores = defineStore('cart', {
                     
                     if(this.count === 0) {
                         this.wholesale = -1
-                        this.type = -1
                     }
                 }, 1000)
                    
@@ -197,7 +190,6 @@ export const useCartStores = defineStore('cart', {
         refreshData() {
             this.count = 0
             this.wholesale = -1
-            this.type = -1
         },
         checkAvailability(params: object) { 
             

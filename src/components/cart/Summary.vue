@@ -12,10 +12,6 @@ const props = defineProps({
     summary: {
         type: Object,
         required: true
-    },
-    type: {
-        type: Number,
-        required: true
     }
 })
 
@@ -25,8 +21,6 @@ const emit = defineEmits([
     'deleteService',
     'addCart'
 ])
-
-const type_ = ref(props.type)
 
 const isLastItem = (index) => {
   return index === props.products.length - 1;
@@ -44,26 +38,22 @@ const addCart = (data) => {
             <VCard class="card-products p-0">
                 <VCardTitle class="title-card mt-4 ms-4 px-2 px-md-5">Productos</VCardTitle>
                 <VCardText class="row-cardp p-0">
-                    <template v-if="type_ === 0">
-                        <Product5
-                            v-for="(product, i) in props.products"
-                            :key="i"
-                            :product="product"
+                    <template v-for="(item, i) in props.products" :key="i">
+                        <Product5  
+                            v-if="item.type === 0"                          
+                            :product="item"
                             :readonly="true"
                             :isLastItem="isLastItem(i)"
-                            @delete="emit('deleteProduct', product.product_color_id)"
+                            @delete="emit('deleteProduct', item.product_color_id)"
                             @addCart="addCart"
                             />
-                    </template>
-                    <template v-else>
                         <Service5
-                            v-for="(service, i) in props.products"
-                            :key="i"
-                            :service="service"
+                            v-else
+                            :service="item"
                             :readonly="true"
-                            :type="type_"
+                            :type="item.type"
                             :isLastItem="isLastItem(i)"
-                            @delete="emit('deleteService', service.id)"
+                            @delete="emit('deleteService', item.id)"
                             @addCart="addCart"
                             />
                     </template>

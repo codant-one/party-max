@@ -30,7 +30,6 @@ import error_circle from '@assets/icons/error-circle.svg';
 
 import Loader from '@/components/common/Loader.vue'
 import Product1 from '@/components/product/Product1.vue'
-import CustomRadiosWithIcon from '@/components/app/CustomRadiosWithIcon.vue'
 
 import cart from '@assets/icons/cart.svg?inline'
 import address from '@assets/icons/address.svg?inline'
@@ -41,6 +40,7 @@ import cart_mobile from '@assets/icons/cart_mobile.svg?inline'
 import address_mobile from '@assets/icons/address_mobile.svg?inline'
 import payment_mobile from '@assets/icons/payment_mobile.svg?inline'
 import confirmation_mobile from '@assets/icons/confirmation_mobile.svg?inline'
+import info from '@assets/icons/info-circle.svg?inline';
 
 const homeStores = useHomeStores()
 const cartStores = useCartStores()
@@ -202,9 +202,9 @@ async function fetchData() {
 
         let sum = 0
         products.value.forEach(element => {
-            let cupcake = cartStores.getType === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
+            let cupcake = element.type === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
             let value = 
-            cartStores.getType === 0 ? 
+            element.type === 0 ? 
               (element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale) :
               (element.cake_size_id === 0 ? element.price : cupcake.price)
 
@@ -278,15 +278,15 @@ const changeAddreess = (id) => {
 
 const deleteProduct = (product_color_id) => {
 
-    cartStores.delete({product_color_id: product_color_id})
+    cartStores.delete({type: 0, product_color_id: parseInt(product_color_id)})
     fetchData()   
 
 }
 
 const deleteService = (service_id) => {
 
-cartStores.delete({service_id: service_id})
-fetchData()   
+    cartStores.delete({type: 1, service_id: parseInt(service_id)})
+    fetchData()   
 
 }
 
@@ -294,7 +294,7 @@ const addCart = (data) =>{
 
     var data_ = {}
 
-    if(cartStores.getType === 0) {
+    if(data.type === 0) {
         data_ = {
             date: null,
             service_id: null,
@@ -417,37 +417,48 @@ const sendPayU = async (billingDetail) => {
 
     let product_color_id = []
     let service_id = []
-    let price = []
-    let quantity = []
+    let price_product = []
+    let quantity_product = []
+    let price_service = []
+    let quantity_service = []
     let date = []
     let cake_size_id = []
     let flavor_id = []
     let filling_id = []
     let order_file_id = []
+    let product_type = 0
+    let service_type = 0
+    let type = 0
 
-    if(cartStores.getType === 0)
-        products.value.forEach(element => {
+    products.value.forEach(element => {
+
+        if(element.type === 0) {
             product_color_id.push(element.product_color_id)
-            price.push(iswholesale.value === true ? element.product.wholesale_price : element.product.price_for_sale)
-            quantity.push(element.quantity)
-        });
-    else 
-        products.value.forEach(element => {
-            let isCupcake = element.cupcakes.length > 0 ? true : false
+            price_product.push(iswholesale.value === true ? element.product.wholesale_price : element.product.price_for_sale)
+            quantity_product.push(element.quantity)
+            product_type = 1
+        } else {
             let cupcake = element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
             let date_ = dayjs(element.date, "YYYY-MM-DD hh:mm A");
 
             service_id.push(element.id)
-            price.push(element.cake_size_id === 0 ? element.price : cupcake.price)
-            quantity.push(element.quantity)
+            price_service.push(element.cake_size_id === 0 ? element.price : cupcake.price)
+            quantity_service.push(element.quantity)
             date.push(date_.format("YYYY-MM-DD HH:mm:ss"))
             cake_size_id.push(element.cake_size_id === 0 ? null : element.cake_size_id)
             flavor_id.push(element.cake_size_id > 0 ? element.flavor.id : null)
             filling_id.push(element.cake_size_id > 0 ? element.filling.id : null)
-            order_file_id.push(element.order_file_id === 0 ? null : element.order_file_id)
-        });
+            order_file_id.push(element.order_file_id === '0' ? null : element.order_file_id)
+            service_type = 1
+        }
+    });
 
-    isLoading.value = true
+    if(product_type === 1 && service_type === 1)
+        type = 2
+    else
+        type = (product_type === 1) ? 0 : 1
+
+    // isLoading.value = true
 
     let response = await cartStores.checkAvailability()
     
@@ -480,8 +491,10 @@ const sendPayU = async (billingDetail) => {
             total: summary.value.total,
             product_color_id: product_color_id,
             service_id: service_id,
-            price: price,
-            quantity: quantity,
+            price_product: price_product,
+            quantity_product: quantity_product,
+            price_service: price_service,
+            quantity_service: quantity_service,
             date: date,
             cake_size_id: cake_size_id,
             flavor_id: flavor_id,
@@ -501,7 +514,7 @@ const sendPayU = async (billingDetail) => {
             postal_code: billingDetail.postal_code,
             note: billingDetail.note,
             wholesale: iswholesale.value === true ? 1 : 0,
-            type: cartStores.getType
+            type: type
         }
 
         isLoading.value = true 
@@ -559,7 +572,6 @@ const sendPayU = async (billingDetail) => {
 const deleteAll = async () => {
     localStorage.removeItem('shoppingCart') 
     cartStores.setWholesale(-1)
-    cartStores.setType(-1)
 }
 
 const updatePaymentState = async (payment_state_id) => {
@@ -640,9 +652,9 @@ const chanceSend = value => {
     let sum = 0
     
     products.value.forEach(element => {
-        let cupcake = cartStores.getType === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
+        let cupcake = element.type === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
         let value = 
-            cartStores.getType === 0 ? 
+            element.type === 0 ? 
               (element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale) :
               (element.cake_size_id === 0 ? element.price : cupcake.price)
               
@@ -689,7 +701,6 @@ const chanceSend = value => {
                         v-model:current-step="currentStep"
                         :products="products"
                         :summary="summary"
-                        :type="cartStores.getType"
                         @deleteProduct="deleteProduct"
                         @deleteService="deleteService"
                         @addCart="addCart"
@@ -720,7 +731,6 @@ const chanceSend = value => {
                         :provinces="listProvinces"
                         :document_types="getDocumentTypes"
                         :iswholesale="iswholesale"
-                        :type="cartStores.getType"
                         :step="currentStep"
                         @submit="sendPayU"
                         @send="chanceSend"
@@ -805,19 +815,16 @@ const chanceSend = value => {
                 @submit.prevent="onSubmit"
             > 
                 <VCard class="pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-                    <VCardText class="subtitle-register p-0 mt-0 mt-md-7">
-                        AGREGAR NUEVA DIRECCIÓN
+                    <VCardText class="subtitle-register p-0 mt-0 mt-md-7 d-block">
+                        <span class="d-block">AGREGAR NUEVA DIRECCIÓN</span>
+                        <span v-if="products.some(product => product.type === 1)" class="tw-text-sm tw-text-gray d-flex mt-1 justify-content-center">
+                            <info class="me-1"/>
+                            Servicios válidos únicamente para Bogotá D.C.
+                        </span>
                     </VCardText>           
                     <VCardItem class="pb-0 px-3 px-md-10">
                         <VRow no-gutters class="text-left align-center">
-                            <VCol cols="12" md="12" class="textinput mb-0 mb-md-2 mt-3">
-                                <CustomRadiosWithIcon
-                                    v-model:selected-radio="selectedAddress.addresses_type_id"
-                                    :radio-content="addressTypes"
-                                    :grid-column="{ sm: '6', cols: '6' }"
-                                />
-                            </VCol>  
-                            <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
+                            <VCol cols="12" md="6" class="textinput mb-0 mb-md-2 mt-3">
                                 <VAutocomplete
                                     variant="outlined"
                                     v-model="selectedAddress.country_id"
@@ -844,7 +851,7 @@ const chanceSend = value => {
                                     </template>
                                 </VAutocomplete>
                             </VCol>  
-                            <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
+                            <VCol cols="12" md="6" class="textinput mb-0 mb-md-2 mt-3">
                                 <VAutocomplete
                                     variant="outlined"
                                     v-model="selectedAddress.province_id"
@@ -852,7 +859,7 @@ const chanceSend = value => {
                                     :rules="[requiredValidator]"
                                     :items="getProvinces"
                                     :menu-props="{ maxHeight: '200px' }"
-                                    :readonly="cartStores.getType === 1"
+                                    :readonly="products.some(product => product.type === 1)"
                                 />    
                             </VCol> 
                             <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
@@ -862,7 +869,7 @@ const chanceSend = value => {
                                     variant="outlined"
                                     :rules="[requiredValidator]"
                                     class="me-0 me-md-2"
-                                    :readonly="cartStores.getType === 1"
+                                    :readonly="products.some(product => product.type === 1)"
                                     />
                             </VCol>  
                             <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
@@ -1110,7 +1117,7 @@ const chanceSend = value => {
         font-size: 24px;
         font-style: normal;
         font-weight: 600;
-        line-height: 30px; 
+        line-height: 24px !important;
         padding: 0 80px !important;
     }
 

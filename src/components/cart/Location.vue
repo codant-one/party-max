@@ -195,6 +195,7 @@ const isDisabled = (i) => {
                                 false-icon="mdi-circle-outline"
                                 true-icon="mdi-circle-slice-8"
                                 @update:modelValue="chanceExpress"
+                                class="radioGroupCustom"
                             >
                                 <VRadio
                                     v-for="(item, i) in send_array"
