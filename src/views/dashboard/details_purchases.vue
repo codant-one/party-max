@@ -197,7 +197,7 @@ const resolveStatusPayment = payment_state_id => {
         </VCard>
 
         <!--DATOS DE ENTREGA-->
-        <VCard class="card-profile p-0 pb-3 mb-7 mb-md-0">
+        <VCard class="card-profile px-0 pt-0 pb-3 mb-7 mb-md-0">
             <VCardTitle class="px-10 pt-5 pb-0">
                 <span v-if="orders.payment.id === 4" class="text-editar" :class="'tw-text-'+resolveStatusShipping(orders.shipping.id)?.color">
                     {{ orders.shipping.name }}
