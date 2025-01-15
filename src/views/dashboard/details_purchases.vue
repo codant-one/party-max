@@ -207,15 +207,23 @@ const resolveStatusPayment = payment_state_id => {
                 </span> 
             </VCardTitle>
             <VCardText class="d-flex px-10 py-3 pb-0" v-if="orders.payment.id === 4">
-                <span v-if="orders.payment.id === 4 && orders.shipping.id === 1" class="text-date tw-text-tertiary">El pedido está en el almacén, listo para enviar.</span>
-                <span v-if="orders.payment.id === 4 && orders.shipping.id === 2" class="text-date tw-text-tertiary">No se pudo enviar el paquete.</span>
-                <span v-if="orders.payment.id === 4 && orders.shipping.id === 3" class="text-date tw-text-tertiary">Llegó el {{ format(orders.updated_at, 'd').concat(' de ') }} {{ format(orders.updated_at, 'MMMM, y', { locale: es }).replace(/(^|\s)\S/g, (char) => char.toUpperCase()) }}.</span>
-                <span v-if="orders.payment.id === 4 && orders.shipping.id === 4" class="text-date tw-text-tertiary">El paquete llegará de 3 a 5 días hábiles.</span>
+                <span v-if="orders.payment.id === 4 && orders.shipping.id === 1" class="text-date tw-text-tertiary">
+                    {{ orders.type === 1 ? 'El pedido fue realizado con exito.' : 'El pedido está en el almacén, listo para enviar.' }}
+                </span>
+                <span v-if="orders.payment.id === 4 && orders.shipping.id === 2" class="text-date tw-text-tertiary">
+                    {{ orders.type === 1 ? 'No se pudo realizar el pedido.' : 'No se pudo enviar el paquete.' }}
+                </span>
+                <span v-if="orders.payment.id === 4 && orders.shipping.id === 3" class="text-date tw-text-tertiary">
+                    {{ orders.type === 1 ? 'Se entrego el' : 'Llegó el' }} {{ format(orders.updated_at, 'd').concat(' de ') }} {{ format(orders.updated_at, 'MMMM, y', { locale: es }).replace(/(^|\s)\S/g, (char) => char.toUpperCase()) }}.
+                </span>
+                <span v-if="orders.payment.id === 4 && orders.shipping.id === 4" class="text-date tw-text-tertiary">
+                    {{ orders.type === 1 ? 'El pedido fue aceptado por el proveedor' : 'El paquete llegará de 3 a 5 días hábiles.' }}
+                </span>
             </VCardText>
             <VCardText class="d-flex px-10 py-3">
                 <span v-if="orders.payment.id === 4 && orders.shipping.id !== 2" class="text-editar tw-text-tertiary">
                     {{ orders.payment.id === 4 && orders.shipping.id === 3 ? 'Entregamos' : 'Entregaremos' }} 
-                        tu paquete en 
+                    {{ orders.type === 1 ? 'tu pedido en'  : 'tu paquete en' }}
                     {{ orders.address.address }} ,
                     {{ orders.address.street }} <span v-if="orders.address.street !== null">,</span>
                     {{ orders.address.city }} ,
