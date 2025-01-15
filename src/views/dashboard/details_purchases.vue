@@ -71,7 +71,7 @@ const resolveStatusPayment = payment_state_id => {
     <Loader :isLoading="isLoading"/>
     <VContainer class="my-1 my-md-10 container-dashboard" v-if="orders">
         <div v-for="(product, i) in products">
-            <VCard class="card-profile mt-5 p-0 pt-5">
+            <VCard class="card-profile mt-5 pt-5 px-0 pb-0">
                 <VRow no-gutters class="px-10 pb-5">
                     <VCol cols="12" md="3" class="d-flex justify-center">
                         <VImg :src="baseURL + product.product_image" class="image-product"/>
