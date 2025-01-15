@@ -138,7 +138,7 @@ const resolveStatusPayment = payment_state_id => {
                                 active-color="yellow-darken-2"
                                 readonly
                             />
-                            <span class="d-block name-product tw-text-tertiary ml-3">{{ service.product_name}}</span>
+                            <span class="d-block name-product tw-text-tertiary ml-3">{{ service.service_name}}</span>
                             <span class="text-status tw-text-gray ml-3" v-if="service.flavor">
                                 Sabor: {{ service.flavor }}
                             </span> <br>
