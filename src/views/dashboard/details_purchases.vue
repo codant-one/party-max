@@ -120,7 +120,7 @@ const resolveStatusPayment = payment_state_id => {
         </div>           
 
         <div v-for="(service, i) in services">
-            <VCard class="card-profile mt-5 p-0 pt-5">
+            <VCard class="card-profile mt-5 pt-5 px-0 pb-0">
                 <VRow no-gutters class="px-10 pb-5">
                     <VCol cols="12" md="3" class="d-flex justify-center">
                         <VImg :src="baseURL + service.service_image" class="image-product"/>
