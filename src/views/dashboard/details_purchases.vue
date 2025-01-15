@@ -11,6 +11,7 @@ const route = useRoute()
 
 const orders = ref(null)
 const products = ref(null)
+const services = ref(null)
 const isLoading = ref(true)
 const subtotal = ref(null)
 const shipping_cost = ref(null)
@@ -33,6 +34,7 @@ async function fetchData() {
       
     orders.value = ordersStores.getData[0]
     products.value = orders.value.products
+    services.value = orders.value.services
     subtotal.value = orders.value.subtotal
     shipping_cost.value = orders.value.shipping_cost
     total.value = orders.value.total
@@ -116,6 +118,61 @@ const resolveStatusPayment = payment_state_id => {
                 </VRow>
             </VCard>
         </div>           
+
+        <div v-for="(service, i) in services">
+            <VCard class="card-profile mt-5 p-0 pt-5">
+                <VRow no-gutters class="px-10 pb-5">
+                    <VCol cols="12" md="3" class="d-flex justify-center">
+                        <VImg :src="baseURL + service.service_image" class="image-product"/>
+                    </VCol>
+                    <VCol cols="12" md="6" class="d-flex justify-content-center align-center">
+                        <VCardText class="pl-md-0">
+                            <VRating
+                                v-if="orders.shipping.id === 3"
+                                half-increments
+                                :length="5"
+                                :size="isMobile ? 50 : 40"
+                                v-model="service.rating"
+                                hover
+                                color="yellow-darken-2"
+                                active-color="yellow-darken-2"
+                                readonly
+                            />
+                            <span class="d-block name-product tw-text-tertiary ml-3">{{ service.product_name}}</span>
+                            <span class="text-status tw-text-gray ml-3" v-if="service.flavor">
+                                Sabor: {{ service.flavor }}
+                            </span> <br>
+                            <span class="text-status tw-text-gray ml-3" v-if="service.filling">
+                                Relleno: {{ service.filling }}
+                            </span> <br>
+                            <span class="text-status tw-text-gray ml-3" v-if="service.cake_size">
+                                Tamaño: {{ service.cake_size }}
+                            </span> <br>
+                            <span class="d-block text-status tw-text-gray ml-3">{{ service.quantity }} {{ Number(service.quantity) === 1 ? 'Unidad' : 'Unidades' }}</span>
+                        </VCardText>
+                    </VCol>
+                    <VCol cols="12" md="3" class="d-flex flex-column justify-content-center align-center">
+                        <router-link
+                            :to="{
+                                name: 'rating_products',
+                                params: {
+                                    id: service.service_id
+                                }
+                            }"
+                            class="tw-no-underline btn-opinion-100">
+                            <VBtn class="btn-opinion tw-text-tertiary" v-if="orders.shipping.id === 3">
+                                Editar opinión
+                            </VBtn>
+                        </router-link> 
+                        <VBtn
+                            class="btn-buy tw-bg-primary tw-text-white"
+                            @click="redirect('services')">
+                                Volver a comprar
+                        </VBtn>
+                    </VCol>
+                </VRow>
+            </VCard>
+        </div>
 
         <!--DETALLES DE LA COMPRA-->
         <VCard class="card-profile p-0 pb-3">

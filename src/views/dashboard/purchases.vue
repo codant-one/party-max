@@ -120,7 +120,8 @@ const redirect = (name) => {
             </VCardTitle>
             <VRow align="center" class="row-summary">
                 <VCol cols="12" md="3" class="d-flex justify-center">
-                    <VImg :src="baseURL + order.products[0].product_image" class="image-product"/>
+                    <VImg :src="baseURL + order.products[0].product_image" class="image-product" v-if="order.products.length > 0"/>
+                    <VImg :src="baseURL + order.services[0].service_image" class="image-product" v-else/>
                 </VCol>
                 <VCol cols="12" md="6" class="d-block">
                     <span v-if="order.payment.id === 4" class="text-status" :class="'tw-text-'+resolveStatusShipping(order.shipping.id)?.color">
@@ -130,12 +131,26 @@ const redirect = (name) => {
                         {{ order.payment.name }}
                     </span> 
                     <br>
-                    <span class="name-product tw-text-tertiary">{{ order.products[0].product_name}}</span> <br>
-                    <span class="text-status tw-text-gray">
+                    <span class="name-product tw-text-tertiary">
+                        {{ order.products.length > 0 ? order.products[0].product_name : order.services[0].service_name}}
+                    </span> <br>
+                    <span class="text-status tw-text-gray" v-if="order.products.length > 0">
                         Color: {{ order.products[0].color }}
                     </span> <br>
-                    <span class="text-status tw-text-gray">
+                    <span class="text-status tw-text-gray" v-if="order.products.length === 0 && order.services.length > 0 && order.services[0].flavor">
+                        Sabor: {{ order.services[0].flavor }}
+                    </span> <br>
+                    <span class="text-status tw-text-gray" v-if="order.products.length === 0 && order.services.length > 0 && order.services[0].filling">
+                        Relleno: {{ order.services[0].filling }}
+                    </span> <br>
+                    <span class="text-status tw-text-gray" v-if="order.products.length === 0 && order.services.length > 0 && order.services[0].cake_size">
+                        Tamaño: {{ order.services[0].cake_size }}
+                    </span> <br>
+                    <span class="text-status tw-text-gray" v-if="order.products.length">
                         {{ order.products[0].quantity }} {{ Number(order.products[0].quantity) === 1 ? 'Unidad' : 'Unidades' }}
+                    </span>
+                    <span class="text-status tw-text-gray" v-else>
+                        {{ order.services[0].quantity }} {{ Number(order.services[0].quantity) === 1 ? 'Unidad' : 'Unidades' }}
                     </span>
                 </VCol>
                 <VCol cols="12" md="3" class="text-center">
