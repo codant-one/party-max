@@ -4,13 +4,14 @@ import { ref } from 'vue'
 import { useFavoritesStores } from '@/stores/favorites'
 import Loader from '@/components/common/Loader.vue'
 import Product7 from '@/components/product/Product7.vue'
+import Service7 from '@/components/service/Service7.vue'
 import arrow_right from '@assets/icons/arrow_right.svg?inline';
 import arrow_left from '@assets/icons/Arrow_left.svg?inline';
 
 const favoritesStores = useFavoritesStores()
 const route = useRoute();
 
-const products = ref([])
+const items = ref([])
 const user_id = ref(null)
 const isLoading = ref(true)
 const isMobile = /Mobi/i.test(navigator.userAgent);
@@ -54,7 +55,7 @@ async function fetchData() {
     }
 
     var aux = await favoritesStores.fetchFavorites(info)
-    products.value = favoritesStores.getData
+    items.value = favoritesStores.getData
     totalPages.value = aux.favorites.last_page;
     totalFavorites.value = aux.favoritesTotalCount;
 
@@ -77,15 +78,21 @@ const chancePagination = () => {
 
 
 const isLastItem = (index) => {
-    return index === products.value.length - 1;
+    return index === items.value.length - 1;
 }
 
-const deleteFavorite = async (product_id) => {
+const deleteFavorite = async (data) => {
 
-    await favoritesStores.delete({
-        user_id: user_id.value, 
-        product_id: product_id
-    })
+    if(data.is_product === 1)
+        await favoritesStores.delete({
+            user_id: user_id.value, 
+            product_id: data.product_id
+        })
+    else
+        await favoritesStores.delete({
+            user_id: user_id.value, 
+            service_id: data.service_id
+        })
 
     fetchData()
  
@@ -95,16 +102,23 @@ const deleteFavorite = async (product_id) => {
 
 <template>
     <Loader :isLoading="isLoading"/>
-    <VContainer class="my-1 my-md-10 container-dashboard d-flex flex-column" v-if="products">
+    <VContainer class="my-1 my-md-10 container-dashboard d-flex flex-column" v-if="items">
         <h2 class="data-title mt-5 pt-md-7">Favoritos</h2>
-        <VCard class="card-profile px-0 py-0" v-if="products.length > 0">
-            <Product7
-                v-for="(product, i) in products"
-                :key="i"
-                :product="product"
-                :readonly="true"
-                :isLastItem="isLastItem(i)"
-                @delete="deleteFavorite"/>
+        <VCard class="card-profile px-0 py-0" v-if="items.length > 0">
+            <template  v-for="(item, i) in items" :key="i">
+                <Product7
+                    v-if="item.is_product === 1"
+                    :product="item"
+                    :readonly="true"
+                    :isLastItem="isLastItem(i)"
+                    @delete="deleteFavorite"/>
+                <Service7
+                    v-else
+                    :service="item"
+                    :readonly="true"
+                    :isLastItem="isLastItem(i)"
+                    @delete="deleteFavorite"/>
+            </template>
         </VCard>
 
           <!-- pagination -->

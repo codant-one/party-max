@@ -283,7 +283,23 @@ const toggleSubGroupFn = (index, subCat) => {
 };
 
 const addfavorite = (service_id) => {
+  favoritesStores.add({user_id: user_id.value, service_id: service_id })
+    .then(response => {
 
+      isDialogVisible.value = true
+      message.value = 'Agregado a la lista de favoritos'
+                    
+      setTimeout(() => {
+        isDialogVisible.value = false
+        isError.value = false
+        message.value = ''
+      }, 1000)
+
+      fetchData()
+    
+    }).catch(err => {
+      //console.error(err.message)
+    })
   
 }
 

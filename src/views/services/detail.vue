@@ -515,7 +515,27 @@ const addCart = async() => {
 }
 
 const addfavorite = () => {
+  isFavorite.value = true
 
+  favoritesStores.add({user_id: user_id.value, service_id: service_id.value })
+    .then(response => {
+
+      isFavorite.value = false
+      isDialogVisible.value = true
+      message.value = 'Agregado a la lista de favoritos'
+      isFavoriteService.value = true
+                    
+      setTimeout(() => {
+        isDialogVisible.value = false
+        isError.value = false
+        message.value = ''
+      }, 1000)
+    
+    }).catch(err => {
+      isFavorite.value = false
+
+      //console.error(err.message)
+    })
 }
 
 const openCalendar = () => {

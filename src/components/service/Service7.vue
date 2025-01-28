@@ -3,7 +3,7 @@
 import { formatNumber } from '@formatters'
 
 const props = defineProps({
-    product: {
+    service: {
         type: Object,
         required: true
     },
@@ -20,35 +20,35 @@ const props = defineProps({
 const emit = defineEmits(['delete'])
 
 const image = ref(null)
-const price_for_sale = ref(null)
+const price = ref(null)
 const name = ref(null)
 const slug = ref(null)
-const product_id = ref(null)
+const service_id = ref(null)
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
 watchEffect(() => {
 
-    if (!(Object.entries(props.product).length === 0) && props.product.constructor === Object) {
-        image.value = props.product.image
-        price_for_sale.value = props.product.price_for_sale
-        name.value = props.product.name.toLowerCase().replace(/(^|\s)\p{L}/gu, (match) => match.toUpperCase());
-        slug.value = props.product.slug
-        product_id.value = props.product.id
+    if (!(Object.entries(props.service).length === 0) && props.service.constructor === Object) {
+        image.value = props.service.image
+        price.value = props.service.price ?? props.service.cupcakes[0].price
+        name.value = props.service.name.toLowerCase().replace(/(^|\s)\p{L}/gu, (match) => match.toUpperCase());
+        slug.value = props.service.slug
+        service_id.value = props.service.id
     }
 })
 
 </script>
 
 <template>
-    <div class="tw-no-underline zoom-product">
+    <div class="tw-no-underline zoom-service">
         <VCard 
             class="no-shadown py-5 pb-5 w-100 d-block d-md-flex" 
             :class="props.isLastItem ? '' : 'card-information'">
             <VCardText class="border-img ms-5 ms-md-10">
                 <router-link
                     :to="{
-                        name: 'productDetail',
+                        name: 'serviceDetail',
                         params: {
                             slug: slug
                         }
@@ -61,11 +61,11 @@ watchEffect(() => {
                 </router-link>
             </VCardText>
             <VCardText class="pl-5 d-block details">
-                <span class="d-block my-3 my-md-5 text_2 tw-text-tertiary title-product">{{ name }}</span>
-                <span class="d-block my-3 my-md-5 tw-text-tertiary price_prod">${{ formatNumber(price_for_sale) }}</span>
+                <span class="d-block my-3 my-md-5 text_2 tw-text-tertiary title-service">{{ name }}</span>
+                <span class="d-block my-3 my-md-5 tw-text-tertiary price_prod">${{ formatNumber(price) }}</span>
                 <span 
                     class="d-block my-3 my-md-5 text-left p-0 tw-cursor-pointer tw-text-primary text-delete hover:tw-text-yellow" 
-                    @click="emit('delete', {is_product: 1, product_id: product_id})">
+                    @click="emit('delete', {is_product: 0, service_id: service_id})">
                     Eliminar
                 </span>
             </VCardText>
@@ -110,15 +110,15 @@ watchEffect(() => {
         display: flex;
     }
 
-    .zoom-product  {
+    .zoom-service  {
         transition: transform ease-in-out 0.3s;
     }
 
-    .zoom-product:hover .v-img {
+    .zoom-service:hover .v-img {
         transform: scale(1.1) !important;
     }
 
-    .title-product {
+    .title-service {
         font-size: 14px;
         font-style: normal;
         font-weight: 400;
@@ -188,7 +188,7 @@ watchEffect(() => {
     }
     
     @media only screen and (max-width: 767px) {
-        .title-product {
+        .title-service {
             line-height: 20px;
         }
     }
