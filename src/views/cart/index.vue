@@ -483,8 +483,8 @@ const sendPayU = async (billingDetail) => {
     else
         type = (product_type === 1) ? 0 : 1
     
-    // let checkIp = await checkUserIP()
-    let checkIp = false
+    let checkIp = await checkUserIP()
+    // let checkIp = false
     if(!checkIp) {
         let response = await cartStores.checkAvailability()
         
@@ -984,7 +984,7 @@ const chanceSend = value => {
         <VDialog v-model="isDialogVisible" >
             <VCard
                 class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-                <VImg width="100" :src="isError ? error_circle : check_circle" class="mx-auto"/>
+                <VImg :width="isMobile ? '120' : '180'" :src="isError ? error_circle : check_circle" class="mx-auto"/>
                 <VCardText class="text-message mt-10 mb-5">
                     {{ message }}
                 </VCardText>
