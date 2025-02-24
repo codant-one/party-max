@@ -181,6 +181,8 @@ async function fetchData() {
 
     isLoading.value = true
 
+    console.log('antes', ip.value)
+
     const response = await axios.get('http://checkip.amazonaws.com/');
     ip.value = response.data
 
