@@ -483,8 +483,8 @@ const sendPayU = async (billingDetail) => {
     else
         type = (product_type === 1) ? 0 : 1
     
-    let checkIp = await checkUserIP()
-    // let checkIp = false
+    // let checkIp = await checkUserIP()
+    let checkIp = false
     if(!checkIp) {
         let response = await cartStores.checkAvailability()
         
@@ -540,7 +540,8 @@ const sendPayU = async (billingDetail) => {
                 postal_code: billingDetail.postal_code,
                 note: billingDetail.note,
                 wholesale: iswholesale.value === true ? 1 : 0,
-                type: type
+                type: type,
+                ip: ip.value
             }
 
             isLoading.value = true 
