@@ -244,6 +244,26 @@ async function fetchData() {
     isLoading.value = false
 }
 
+const checkUserIP = async () => {
+    try {
+        const response = await fetch('https://api64.ipify.org?format=json');
+        const data = await response.json();
+        const userIP = data.ip;
+
+        const notAllowedIPs = ['181.68.184.90', '177.253.39.31'];
+        console.log('ip', userIP)
+        if (notAllowedIPs.includes(userIP)) {
+            isDialogVisible.value = true
+            isError.value = true
+            message.value = 'Ha sido bloqueado, por registro de fraude'
+            return true
+        } else
+            return false
+    } catch (error) {
+        console.error('Error al obtener la IP:', error);
+    }
+}
+
 const getDocumentTypes = computed(() => {
     return documentTypes.value.map((documentType) => {
         return {
@@ -457,116 +477,119 @@ const sendPayU = async (billingDetail) => {
         type = 2
     else
         type = (product_type === 1) ? 0 : 1
-
-    // isLoading.value = true
-
-    let response = await cartStores.checkAvailability()
     
-    if(response.allAvailable === false) {
+    let checkIp = await checkUserIP()
 
-        currentStep.value = 0
-        await fetchData()
+    // if(!checkIp) {
 
-        message.value = "Todos los productos no estan disponibles"
-        isDialogVisible.value = true
-        isError.value = true
-
-        setTimeout(() => {
-            isDialogVisible.value = false
-            message.value = ''
-            isError.value = false
-        }, 5000)
-
-        isLoading.value = false
-    } else {
-
-        let data = {
-            client_id:  client_id.value,
-            address_id: address_id.value,
-            addresses: addresses.value,
-            sub_total: summary.value.subTotal,
-            shipping_total: summary.value.send,
-            shipping_express: summary.value.shipping_express,
-            tax: 0,
-            total: summary.value.total,
-            product_color_id: product_color_id,
-            service_id: service_id,
-            price_product: price_product,
-            quantity_product: quantity_product,
-            price_service: price_service,
-            quantity_service: quantity_service,
-            date: date,
-            cake_size_id: cake_size_id,
-            flavor_id: flavor_id,
-            filling_id: filling_id,
-            order_file_id: order_file_id,
-            province_id: billingDetail.province_id,
-            document_type_id: billingDetail.document_type_id,
-            document: billingDetail.document,
-            name: billingDetail.name,
-            last_name: billingDetail.last_name,
-            company: billingDetail.company,
-            email: billingDetail.email,
-            phone: billingDetail.phone,
-            address: billingDetail.address,
-            street: billingDetail.street,
-            city: billingDetail.city,
-            postal_code: billingDetail.postal_code,
-            note: billingDetail.note,
-            wholesale: iswholesale.value === true ? 1 : 0,
-            type: type
-        }
-
-        isLoading.value = true 
-
-        let order = await ordersStores.addOrder(data)
-        let payment = await paymentsStores.signature({referenceCode: order.reference_code, amount: summary.value.total})
+    //     let response = await cartStores.checkAvailability()
         
-        localStorage.setItem('order_id', order.id)
+    //     if(response.allAvailable === false) {
 
-        const formData = new URLSearchParams();
+    //         currentStep.value = 0
+    //         await fetchData()
 
-        formData.append('merchantId', payment.merchantId);
-        formData.append('accountId', payment.accountId);
-        formData.append('description', 'Order #'+ order.id);
-        formData.append('referenceCode', payment.referenceCode);
-        formData.append('amount', summary.value.total);
-        formData.append('tax', '0');
-        formData.append('taxReturnBase', '0');
-        formData.append('currency', 'COP');
-        formData.append('signature', payment.signature);
-        formData.append('test', (payment.test) ? '1' : '0');
-        formData.append('buyerEmail', billingDetail.email);
-        formData.append('buyerFullName', billingDetail.name + ' ' + billingDetail.last_name);
-        formData.append('mobilePhone', billingDetail.phone);
-        formData.append('telephone', billingDetail.phone);
-        formData.append('logoUrl', import.meta.env.VITE_APP_DOMAIN_API_URL + '/logos/slogan.png');
-        formData.append('shippingAddress', billingDetail.address);
-        formData.append('shippingCity', billingDetail.city);
-        formData.append('shippingCountry', 'CO');
-        formData.append('responseUrl', payment.responseUrl);
-        formData.append('confirmationUrl', payment.confirmationUrl);
+    //         message.value = "Todos los productos no estan disponibles"
+    //         isDialogVisible.value = true
+    //         isError.value = true
 
-        paymentsStores.redirectToPayU(formData)
-            .then(response => {
-                isLoading.value = false
-                window.location.href = response.url;
-            })
-            .catch(error => {
-                
-                isLoading.value = false
-                isDialogVisible.value = true
-                message.value = error
-                isError.value = true             
+    //         setTimeout(() => {
+    //             isDialogVisible.value = false
+    //             message.value = ''
+    //             isError.value = false
+    //         }, 5000)
 
-                setTimeout(() => {
-                    isDialogVisible.value = false
-                    message.value = ''
-                    isError.value = false
-                }, 2000)
-                // console.error('Error:', error);
-            });
-    }
+    //         isLoading.value = false
+    //     } else {
+
+    //         let data = {
+    //             client_id:  client_id.value,
+    //             address_id: address_id.value,
+    //             addresses: addresses.value,
+    //             sub_total: summary.value.subTotal,
+    //             shipping_total: summary.value.send,
+    //             shipping_express: summary.value.shipping_express,
+    //             tax: 0,
+    //             total: summary.value.total,
+    //             product_color_id: product_color_id,
+    //             service_id: service_id,
+    //             price_product: price_product,
+    //             quantity_product: quantity_product,
+    //             price_service: price_service,
+    //             quantity_service: quantity_service,
+    //             date: date,
+    //             cake_size_id: cake_size_id,
+    //             flavor_id: flavor_id,
+    //             filling_id: filling_id,
+    //             order_file_id: order_file_id,
+    //             province_id: billingDetail.province_id,
+    //             document_type_id: billingDetail.document_type_id,
+    //             document: billingDetail.document,
+    //             name: billingDetail.name,
+    //             last_name: billingDetail.last_name,
+    //             company: billingDetail.company,
+    //             email: billingDetail.email,
+    //             phone: billingDetail.phone,
+    //             address: billingDetail.address,
+    //             street: billingDetail.street,
+    //             city: billingDetail.city,
+    //             postal_code: billingDetail.postal_code,
+    //             note: billingDetail.note,
+    //             wholesale: iswholesale.value === true ? 1 : 0,
+    //             type: type
+    //         }
+
+    //         isLoading.value = true 
+
+    //         let order = await ordersStores.addOrder(data)
+    //         let payment = await paymentsStores.signature({referenceCode: order.reference_code, amount: summary.value.total})
+            
+    //         localStorage.setItem('order_id', order.id)
+
+    //         const formData = new URLSearchParams();
+
+    //         formData.append('merchantId', payment.merchantId);
+    //         formData.append('accountId', payment.accountId);
+    //         formData.append('description', 'Order #'+ order.id);
+    //         formData.append('referenceCode', payment.referenceCode);
+    //         formData.append('amount', summary.value.total);
+    //         formData.append('tax', '0');
+    //         formData.append('taxReturnBase', '0');
+    //         formData.append('currency', 'COP');
+    //         formData.append('signature', payment.signature);
+    //         formData.append('test', (payment.test) ? '1' : '0');
+    //         formData.append('buyerEmail', billingDetail.email);
+    //         formData.append('buyerFullName', billingDetail.name + ' ' + billingDetail.last_name);
+    //         formData.append('mobilePhone', billingDetail.phone);
+    //         formData.append('telephone', billingDetail.phone);
+    //         formData.append('logoUrl', import.meta.env.VITE_APP_DOMAIN_API_URL + '/logos/slogan.png');
+    //         formData.append('shippingAddress', billingDetail.address);
+    //         formData.append('shippingCity', billingDetail.city);
+    //         formData.append('shippingCountry', 'CO');
+    //         formData.append('responseUrl', payment.responseUrl);
+    //         formData.append('confirmationUrl', payment.confirmationUrl);
+
+    //         paymentsStores.redirectToPayU(formData)
+    //             .then(response => {
+    //                 isLoading.value = false
+    //                 window.location.href = response.url;
+    //             })
+    //             .catch(error => {
+                    
+    //                 isLoading.value = false
+    //                 isDialogVisible.value = true
+    //                 message.value = error
+    //                 isError.value = true             
+
+    //                 setTimeout(() => {
+    //                     isDialogVisible.value = false
+    //                     message.value = ''
+    //                     isError.value = false
+    //                 }, 2000)
+    //                 // console.error('Error:', error);
+    //             });
+    //     }
+    // }
 }
 
 const deleteAll = async () => {
