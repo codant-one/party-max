@@ -63,7 +63,7 @@ watchEffect(() => {
 <template>
     <div class="tw-no-underline zoom-service">
         <VCard 
-            class="no-shadown p-0 w-100 py-3 py-md-5" 
+            class="no-shadown px-0 w-100 py-3 py-md-5" 
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow no-gutters>
                 <VCol cols="6" md="4" class="d-flex justify-content-center align-center">
