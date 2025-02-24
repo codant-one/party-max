@@ -181,12 +181,9 @@ async function fetchData() {
 
     isLoading.value = true
 
-    console.log('antes', ip.value)
-
     const response = await axios.get('http://checkip.amazonaws.com/');
     ip.value = response.data
 
-    console.log('ip.value', ip.value)
     if(localStorage.getItem('user_data')){
         const userData = localStorage.getItem('user_data')
         const userDataJ = JSON.parse(userData)
@@ -543,7 +540,8 @@ const sendPayU = async (billingDetail) => {
                 note: billingDetail.note,
                 wholesale: iswholesale.value === true ? 1 : 0,
                 type: type,
-                ip: ip.value
+                ip: ip.value,
+                user_agent: navigator.userAgent
             }
 
             isLoading.value = true 
