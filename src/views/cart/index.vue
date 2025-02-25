@@ -181,9 +181,6 @@ async function fetchData() {
 
     isLoading.value = true
 
-    const response = await axios.get('http://checkip.amazonaws.com/');
-    ip.value = response.data
-
     if(localStorage.getItem('user_data')){
         const userData = localStorage.getItem('user_data')
         const userDataJ = JSON.parse(userData)
@@ -245,6 +242,9 @@ async function fetchData() {
     await documentTypesStores.fetchDocumentTypes()
     documentTypes.value = documentTypesStores.getData
 
+    const response = await axios.get('http://checkip.amazonaws.com/');
+    ip.value = response.data
+    
     isLoading.value = false
 }
 
