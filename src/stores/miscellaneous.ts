@@ -112,7 +112,16 @@ export const useMiscellaneousStores = defineStore('miscellaneous', {
                 .catch(error => {
                     return Promise.reject(error)
                 }) 
-        }
+        },
+        ips() {
+            return Miscellaneous.ips()
+                .then((response) => {
+                    return Promise.resolve(response.data.data.ips)
+                })
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
+        },
     }
 })
 

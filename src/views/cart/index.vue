@@ -10,6 +10,7 @@ import { useProvincesStores } from '@/stores/provinces'
 import { useOrdersStores } from '@/stores/orders'
 import { usePaymentsStores } from '@/stores/payments'
 import { useDocumentTypesStores } from '@/stores/document-types'
+import { useMiscellaneousStores } from "@/stores/miscellaneous";
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import axios from '@axios'
@@ -27,6 +28,7 @@ import Confirmation from '@/components/cart/Confirmation.vue'
 
 import check_circle from '@assets/icons/check-circle.svg';
 import error_circle from '@assets/icons/error-circle.svg';
+import maintenance_circle from '@assets/icons/maintenance-circle.svg';
 
 import Loader from '@/components/common/Loader.vue'
 import Product1 from '@/components/product/Product1.vue'
@@ -50,6 +52,7 @@ const countriesStores = useCountriesStores()
 const ordersStores = useOrdersStores()
 const paymentsStores = usePaymentsStores()
 const documentTypesStores = useDocumentTypesStores()
+const miscellaneousStores = useMiscellaneousStores();
 const route = useRoute()
 
 const isMobile = /Mobi/i.test(navigator.userAgent)
@@ -59,6 +62,7 @@ const dialog = ref(false)
 const isDialogVisible = ref(false)
 const message = ref()
 const isError = ref(false)
+const isBlocked = ref(false)
 const data = ref(null)
 const bg = ref('tw-bg-green')
 const addresses = ref([])
@@ -68,6 +72,7 @@ const address_id = ref(0)
 const send_id = ref(0)
 const province_id = ref(293)
 const ip = ref(null)
+const notAllowedIPs = ref([])
 
 const summary = ref({
     subTotal: 0,
@@ -75,25 +80,6 @@ const summary = ref({
     shipping_express: 0,
     total: 0
 })
-
-const addressTypes = ref([
-  {
-    icon: {
-      icon: 'mdi-home-city',
-      size: '50',
-    },
-    title: 'Hogar',
-    value: '1',
-  },
-  {
-    icon: {
-      icon: 'mdi-office-building',
-      size: '50',
-    },
-    title: 'Oficina',
-    value: '2',
-  },
-])
 
 const selectedAddress = ref({
     id: 0,
@@ -244,7 +230,9 @@ async function fetchData() {
 
     const response = await axios.get('http://checkip.amazonaws.com/');
     ip.value = response.data
-    
+
+    notAllowedIPs.value = await miscellaneousStores.ips();
+
     isLoading.value = false
 }
 
@@ -254,12 +242,18 @@ const checkUserIP = async () => {
         const data = await response.json();
         const userIP = data.ip;
 
-        const notAllowedIPs = ['181.68.184.90', '177.253.39.31'];
-        console.log('ip', userIP)
-        if (notAllowedIPs.includes(userIP)) {
+        if (notAllowedIPs.value.includes(userIP)) {
             isDialogVisible.value = true
             isError.value = true
-            message.value = 'Ha sido bloqueado, por registro de fraude'
+            isBlocked.value = true
+            message.value = 'Su acceso ha sido bloqueado debido a actividad fraudulenta. Para más información, por favor contacte con soporte.'
+
+            setTimeout(() => {
+                isDialogVisible.value = false
+                message.value = ''
+                isError.value = false
+                isBlocked.value = false
+            }, 10000)
             return true
         } else
             return false
@@ -482,8 +476,8 @@ const sendPayU = async (billingDetail) => {
     else
         type = (product_type === 1) ? 0 : 1
     
-    // let checkIp = await checkUserIP()
-    let checkIp = false
+    let checkIp = await checkUserIP()
+
     if(!checkIp) {
         let response = await cartStores.checkAvailability()
         
@@ -985,7 +979,7 @@ const chanceSend = value => {
         <VDialog v-model="isDialogVisible" >
             <VCard
                 class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-                <VImg :width="isMobile ? '120' : '180'" :src="isError ? error_circle : check_circle" class="mx-auto"/>
+                <VImg :width="isMobile ? '120' : '180'" :src="isError ? (isBlocked ? maintenance_circle : error_circle) : check_circle" class="mx-auto"/>
                 <VCardText class="text-message mt-10 mb-5">
                     {{ message }}
                 </VCardText>
@@ -1146,7 +1140,7 @@ const chanceSend = value => {
         font-style: normal;
         font-weight: 600;
         line-height: 24px !important;
-        padding: 0 80px !important;
+        padding: 0 60px !important;
     }
 
     @media only screen and (max-width: 767px) {
@@ -1163,7 +1157,7 @@ const chanceSend = value => {
         }
 
         .text-message {
-            padding: 0 30px !important;
+            padding: 0 20px !important;
             font-size: 18px;
         }
 

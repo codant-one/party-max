@@ -45,6 +45,10 @@ class Miscellaneous {
     getDataCupcake() {
         return axios.get('miscellaneous/cupcakes')
     }
+
+    ips() {
+        return axios.get(`miscellaneous/ips`)
+    }
 }
 
 const miscellaneous = new Miscellaneous();
