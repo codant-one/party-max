@@ -112,7 +112,7 @@ const addfavorite = () => {
 <template>
     <div class="zoom-product">
         <VCard 
-            class="no-shadown p-0 pb-5 w-100 mb-3 mb-md-5" 
+            class="no-shadown px-0 pt-0 pb-5 w-100 mb-3 mb-md-5" 
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow>
                 <VCol cols="6" md="3">
