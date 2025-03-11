@@ -201,6 +201,10 @@ async function fetchData() {
         summary.value.subTotal = sum.toFixed(2)
         summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
 
+        // console.log('province_id.value', province_id.value)
+        // console.log('selectedAddress.value', selectedAddress.value)
+        // province_id.value = Number.isInteger(selectedAddress.value.province_id)
+
         if(province_id.value === 293 && summary.value.subTotal <= parseFloat('210000').toFixed(2)) {
             chanceSend('sendToBogota')
             send_id.value = 2
@@ -687,22 +691,27 @@ const chanceSend = value => {
         case 'free':
             summary.value.shipping_express = 0
             summary.value.send = '0.00'
+            province_id.value = selectedAddress.value.province_id
         break;
         case 'send':
             summary.value.shipping_express = 0
             summary.value.send = '19000.00'
+            province_id.value = selectedAddress.value.province_id
         break;
         case 'sendToBogota':
             summary.value.shipping_express = 0
             summary.value.send = '12000.00'
+            province_id.value = 293
         break;
         case 'shipping_express':
             summary.value.shipping_express = 1
             summary.value.send = '17000.00'
+            province_id.value = 293
         break;
         case 'default':
             summary.value.shipping_express = 0
             summary.value.send = '12000.00'
+            province_id.value = 293
     }
 
     let sum = 0

@@ -72,7 +72,7 @@ const onChange = () => {
         type: 0
     }
 
-    emit('addCart',data)
+    emit('addCart', data)
 }
 
 const increment = () => {
@@ -98,11 +98,12 @@ const decrement = () => {
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow no-gutters>
                 <VCol cols="6" md="2" class="d-flex justify-content-center align-center">
-                    <VCardText class="border-img ms-5 ms-md-10">
+                    <VCardText class="border-img ms-5 ms-md-10 image-container">
                         <VImg 
                             :width="100"
                             :src="baseURL + image" 
                             cover />
+                        <div v-if="in_stock === 0" class="out-of-stock-label">AGOTADO</div>   
                     </VCardText>
                 </VCol>
                 <VCol cols="12" md="6" class="d-flex flex-column py-3 py-md-5 ps-4 ps-md-7 my-auto">
@@ -159,6 +160,28 @@ const decrement = () => {
 
 <style scoped>
 
+    .image-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .out-of-stock-label {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-30deg);
+        background-color: rgba(255, 0, 144, 0.7);
+        color: white;
+        padding: 5px 10px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 5px;
+        z-index: 10;
+        pointer-events: none; /* Para que no interfiera con el zoomer */
+        width: 90%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    
     .warning {
         border: 2px solid #FFC549 !important;
     }
@@ -274,6 +297,13 @@ const decrement = () => {
         font-style: normal;
         font-weight: 400;
         line-height: 8px; /* 80% */ 
+    }
+
+    @media only screen and (max-width: 767px) {
+
+        .out-of-stock-label {
+            font-size: 16px;
+        }
     }
     
 </style>
