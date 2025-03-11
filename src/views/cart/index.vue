@@ -76,7 +76,7 @@ const notAllowedIPs = ref([])
 
 const summary = ref({
     subTotal: 0,
-    send: '19000.00',
+    send: '12000.00',
     shipping_express: 0,
     total: 0
 })
@@ -201,6 +201,20 @@ async function fetchData() {
         summary.value.subTotal = sum.toFixed(2)
         summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
 
+        if(province_id.value === 293 && summary.value.subTotal <= parseFloat('210000').toFixed(2)) {
+            chanceSend('sendToBogota')
+            send_id.value = 2
+        } else if(province_id.value === 293 && summary.value.subTotal > parseFloat('210000').toFixed(2)) {
+            chanceSend('free') 
+            send_id.value = 0
+        } else if(province_id.value !== 293 && summary.value.subTotal <= parseFloat('210000').toFixed(2)) {
+            chanceSend('send') 
+            send_id.value = 1
+        } else if(province_id.value !== 293 && summary.value.subTotal > parseFloat('210000').toFixed(2)) {
+            chanceSend('free') 
+            send_id.value = 0
+        } 
+
         if(client_id.value) {
             await addressesStores.fetchAddresses(data_)
             addresses.value = addressesStores.getAddresses
@@ -209,11 +223,19 @@ async function fetchData() {
             if (addresses.value.length > 0) {
                 address_id.value = (index > -1) ? addresses.value[index].id : addresses.value[0].id 
                 province_id.value = addresses.value.filter(address => address.id === address_id.value)[0].province_id
-                if(province_id.value === 293) {
+                if(province_id.value === 293 && summary.value.subTotal <= parseFloat('210000').toFixed(2)) {
                     chanceSend('sendToBogota')
+                    send_id.value = 2
+                } else if(province_id.value === 293 && summary.value.subTotal > parseFloat('210000').toFixed(2)) {
+                    chanceSend('free') 
+                    send_id.value = 0
+                } else if(province_id.value !== 293 && summary.value.subTotal <= parseFloat('210000').toFixed(2)) {
+                    chanceSend('send') 
                     send_id.value = 1
-                } else
-                    chanceSend('send')
+                } else if(province_id.value !== 293 && summary.value.subTotal > parseFloat('210000').toFixed(2)) {
+                    chanceSend('free') 
+                    send_id.value = 0
+                } 
             } 
 
             isActiveStepValid.value = (address_id.value === 0 ) ? true : false
@@ -360,11 +382,19 @@ const onSubmit = () => {
                 
                 province_id.value = selectedAddress.value.province_id
 
-                if(province_id.value === 293) {
+                if(province_id.value === 293 && summary.value.subTotal <= parseFloat('210000').toFixed(2)) {
                     chanceSend('sendToBogota')
+                    send_id.value = 2
+                } else if(province_id.value === 293 && summary.value.subTotal > parseFloat('210000').toFixed(2)) {
+                    chanceSend('free') 
+                    send_id.value = 0
+                } else if(province_id.value !== 293 && summary.value.subTotal <= parseFloat('210000').toFixed(2)) {
+                    chanceSend('send') 
                     send_id.value = 1
-                } else
-                    chanceSend('send')
+                } else if(province_id.value !== 293 && summary.value.subTotal > parseFloat('210000').toFixed(2)) {
+                    chanceSend('free') 
+                    send_id.value = 0
+                } 
 
                 isDialogVisible.value = true
                 message.value = 'Dirección agregada exitosamente'
@@ -654,13 +684,17 @@ const getFlagCountry = country => {
 
 const chanceSend = value => {
     switch (value) {
+        case 'free':
+            summary.value.shipping_express = 0
+            summary.value.send = '0.00'
+        break;
         case 'send':
             summary.value.shipping_express = 0
             summary.value.send = '19000.00'
         break;
         case 'sendToBogota':
             summary.value.shipping_express = 0
-            summary.value.send = '10500.00'
+            summary.value.send = '12000.00'
         break;
         case 'shipping_express':
             summary.value.shipping_express = 1
@@ -668,7 +702,7 @@ const chanceSend = value => {
         break;
         case 'default':
             summary.value.shipping_express = 0
-            summary.value.send = '10500.00'
+            summary.value.send = '12000.00'
     }
 
     let sum = 0

@@ -136,9 +136,9 @@
             class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Fiestas temáticas
           </router-link>
-          <router-link to="/products?wholesalers=true" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          <!-- <router-link to="/products?wholesalers=true" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Mayoristas
-          </router-link>
+          </router-link> -->
           <router-link to="/blogs" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Blog
           </router-link>

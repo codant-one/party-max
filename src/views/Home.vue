@@ -323,7 +323,7 @@ const tab = ref('0')
             <img :src="motorcycle" width="60" height="60" class="ms-10" alt="motorcycle" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Envíos gratis</span>
-              <span class="d-block card-information-subtitle">A partir de $190.000</span>
+              <span class="d-block card-information-subtitle">A partir de $210.000</span>
             </div>
           </VCol>
           <VCol cols="12" md="3" class="d-flex align-center hr">

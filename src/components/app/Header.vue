@@ -347,13 +347,13 @@
             </router-link>
           </VListItemTitle>
         </VListItem>
-        <VListItem>
+        <!-- <VListItem>
           <VListItemTitle class="d-block lineheight borderList pb-2">
             <span @click="toggleWholesalers" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Precios Mayoristas</span>
             </span>
           </VListItemTitle>
-        </VListItem>
+        </VListItem> -->
         <VListItem>
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
             <span class="d-block title-menu">PRODUCTOS</span>
@@ -429,7 +429,7 @@
       </VList>
         
       <!--MENU SERVICIOS MOBILE-->
-      <VList v-model:opened="panelCat" class="pb-0" :ripple="false">
+      <VList v-model:opened="panelCat" class="pb-0 d-none" :ripple="false">
         <VListItem>
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
             <span class="d-block title-menu">SERVICIOS</span>
@@ -815,7 +815,7 @@
           </VMenu>
         </div>
       <!-----------------------SERVICIOS MENÚ------------------------------->
-        <div class="hover:tw-text-yellow">
+        <div class="hover:tw-text-yellow d-none">
           <VMenu 
             v-model="menuOpenS"
             transition="slide-x-transition" 
@@ -894,15 +894,15 @@
               </VRow>
             </VCard>
           </VMenu>
-          
         </div>
       <!---------FIN SERVICIOS MENÚ--------------------------->
-        <span @click="toggleWholesalers"
+
+        <!-- <span @click="toggleWholesalers"
           class="tw-no-underline d-flex align-center text-center tw-cursor-pointer"
           :class="route.query.wholesalers === 'true' ? 'tw-text-yellow hover:tw-text-white hover-icon-arrow-right-white' : 'tw-text-white hover:tw-text-yellow hover-icon-arrow-right'">
             <span class="ms-2"> Precios Mayoristas </span>
             <arrow_right class="ms-2 p-0 index" :class="route.query.wholesalers === 'true' ? 'wholesalers' : ''"/>
-        </span>  
+        </span>   -->
         <VSpacer />
 
         <router-link aria-label="item-about" to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Quiénes somos</router-link>

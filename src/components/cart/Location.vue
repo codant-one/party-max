@@ -39,7 +39,7 @@ const error_address = ref('Debes agregar una dirección de envio')
 const province = ref(props.province_id)
 const id = ref(props.address_id)
 
-const send_array = ref(['Envío Nacional: $19.000.00', 'Envío Bogotá: $10.500.00 '])
+const send_array = ref(['Envío gratis', 'Envío Nacional: $19.000.00', 'Envío Bogotá: $12.000.00 '])
 const sendId = ref(props.send_id)
 
 watch(() => 
@@ -73,35 +73,87 @@ const chanceSend = () => {
     if (id.value !== 0)  {
         province.value = props.addresses.filter(address => address.id === id.value)[0].province_id
 
-        if(province.value === 293) {
+        if(province.value === 293 && props.summary.subTotal <= parseFloat('210000').toFixed(2)) {
             emit('send', 'sendToBogota')
+            sendId.value = 2
+        }  else if(province.value === 293 && props.summary.subTotal > parseFloat('210000').toFixed(2)) {
+            emit('send', 'free') 
+            sendId.value = 0
+        } else if(province.value !== 293 && props.summary.subTotal <= parseFloat('210000').toFixed(2)) {
+            emit('send', 'send') 
             sendId.value = 1
-        } else {
-            emit('send', 'send')
+        } else if(province.value !== 293 && props.summary.subTotal > parseFloat('210000').toFixed(2)) {
+            emit('send', 'free') 
             sendId.value = 0
         }
     }
 }   
 
 const chanceExpress = () => {
-    if(sendId.value === 2)
+    if(sendId.value === 3)
         emit('send', 'shipping_express')
-    else
-        emit('send', 'sendToBogota')
+    else {
+        if(province.value === 293 && props.summary.subTotal <= parseFloat('210000').toFixed(2))
+            emit('send', 'sendToBogota')
+        else if(province.value === 293 && props.summary.subTotal > parseFloat('210000').toFixed(2))
+            emit('send', 'free') 
+        else if(province.value !== 293 && props.summary.subTotal <= parseFloat('210000').toFixed(2))
+            emit('send', 'send')
+        else if(province.value !== 293 && props.summary.subTotal > parseFloat('210000').toFixed(2))
+            emit('send', 'free')
+    }
 }
 
 const isDisabled = (i) => {
-    if(i === 0) { //nacional
-        if(sendId.value === 0)
-            return false
-        else 
-            return true
-    } else if (i === 1) { //bogota
-        if(sendId.value === 0)
-            return true
-        else 
-            return false
+    let response = false
+    if(i === 0) { //gratis
+        switch (sendId.value) {
+            case 0:
+                response = false
+            break;
+            case 1:
+                response = true
+            break;
+            case 2:
+                response = true
+            break;
+            case 3:
+                response = props.summary.subTotal <= parseFloat('210000').toFixed(2)
+            break;
+        }
+    } else if(i === 1) { //nacional
+        switch (sendId.value) {
+            case 0:
+                response = true
+            break;
+            case 1:
+                response = false
+            break;
+            case 2:
+                response = province.value === 293
+            break;
+            case 3:
+                response = province.value === 293
+            break;
+        }
+    } else if (i === 2) { //bogota
+        switch (sendId.value) {
+            case 0:
+                response = true
+            break;
+            case 1:
+                response = province.value !== 293
+            break;
+            case 2:
+                response = province.value !== 293
+            break;
+            case 3:
+                response = props.summary.subTotal > parseFloat('210000').toFixed(2)
+            break;
+        }
     }
+
+    return response
 }
 
 </script>
@@ -214,8 +266,8 @@ const isDisabled = (i) => {
                                 <VRadio
                                     v-show="province === 293"
                                     color="primary"
-                                    :key="2"
-                                    :value="2"
+                                    :key="3"
+                                    :value="3"
                                     class="custom-radio">
                                     <template v-slot:label>
                                         <span class="d-flex pl-1 pr-0 text-right text-send tw-font-semibold py-2 me-1 me-md-2">

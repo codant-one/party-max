@@ -116,7 +116,7 @@ const addfavorite = () => {
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow>
                 <VCol cols="6" md="3">
-                    <VCardText class="border-img ms-md-5 text-center justify-content-center align-center d-flex">
+                    <VCardText class="border-img image-container ms-md-5 text-center justify-content-center align-center d-flex">
                         <router-link
                             :to="{
                                 name: 'productDetail',
@@ -133,6 +133,8 @@ const addfavorite = () => {
                                 :width="isMobile ? 135 : 177"
                                 :src="baseURL + image" 
                                 cover />
+
+                            <div v-if="in_stock === 0" class="out-of-stock-label">AGOTADO</div>  
                         </router-link>
                     </VCardText>
                 </VCol>
@@ -209,6 +211,28 @@ const addfavorite = () => {
 </template>
 
 <style scoped>
+
+    .image-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .out-of-stock-label {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-30deg);
+        background-color: rgba(255, 0, 144, 0.7);
+        color: white;
+        padding: 10px 20px;
+        font-size: 20px;
+        font-weight: bold;
+        border-radius: 5px;
+        z-index: 10;
+        pointer-events: none; /* Para que no interfiera con el zoomer */
+        width: 85%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
 
     .heart:hover::v-deep(path), .shoppinp_cart:hover::v-deep(path) {
         fill: #FF0090;
@@ -306,6 +330,10 @@ const addfavorite = () => {
 
     @media only screen and (max-width: 767px) {
     
+        .out-of-stock-label {
+            font-size: 16px;
+        }
+
         .border-img {
             width: auto;
             height: 160px;

@@ -570,7 +570,7 @@ const decrement = () => {
                 :spaceBetween="isMobile ? 5 : 10"
                 :thumbs="{ swiper: thumbsSwiper }"
                 :modules="modules"
-                class="mySwiper2 border-img mx-0 mx-md-auto"
+                class="mySwiper2 border-img mx-0 mx-md-auto image-container"
                 v-if="productImages.length > 0"
                 >
                 <swiper-slide v-for="(picture, index) in productImages" :key="index">
@@ -580,6 +580,7 @@ const decrement = () => {
                     :regular="baseURL + picture.image"
                     :zoom-amount="3" 
                   />
+                  <div v-if="in_stock === 0" class="out-of-stock-label">AGOTADO</div>
                 </swiper-slide>
               </swiper>
             </VCol>
@@ -683,7 +684,7 @@ const decrement = () => {
                 </div> 
               </VCardText>
 
-              <VCardText class="p-0 d-flex border-title pb-2 mt-2 mt-md-0">
+              <!-- <VCardText class="p-0 d-flex border-title pb-2 mt-2 mt-md-0">
                 <VBtn 
                   v-if="wholesale"
                   :class="route.query.wholesalers === 'true' ? 'b-mayorista-active': 'b-mayorista'"
@@ -693,7 +694,7 @@ const decrement = () => {
                     {{ route.query.wholesalers === 'true' ? 'Precio al detal' : 'Precio al mayor' }}
                   </span>
                 </VBtn>
-              </VCardText>
+              </VCardText> -->
             </VCol>
           </VRow>
           </VCardText>
@@ -840,6 +841,28 @@ const decrement = () => {
 </style>
 
 <style scoped>
+
+  .image-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .out-of-stock-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    background-color: rgba(255, 0, 144, 0.7);
+    color: white;
+    padding: 10px 20px;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 5px;
+    z-index: 10;
+    pointer-events: none; /* Para que no interfiera con el zoomer */
+    width: 85%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
 
   .text-message {
     color:  #FF0090;
@@ -1218,6 +1241,10 @@ const decrement = () => {
   }
 
   @media only screen and (max-width: 767px) {
+
+    .out-of-stock-label {
+      font-size: 16px;
+    }
 
     .border-img {
       padding: 10px !important;

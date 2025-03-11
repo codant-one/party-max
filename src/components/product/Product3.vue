@@ -62,11 +62,13 @@ watchEffect(() => {
         }"
         class="tw-no-underline zoom-product">
         <VCard class="no-shadown card-information p-0">
-            <VCardText class="border-img ms-1 mb-2">
+            <VCardText class="border-img ms-1 mb-2 image-container">
                 <VImg 
                     class="img-prod"
                     :src="baseURL + image" 
                     cover />
+                
+                <div v-if="in_stock === 0" class="out-of-stock-label">AGOTADO</div>                    
             </VCardText>
             <VCardText>
                 <span v-if="name.length > 50 && !isMobile" class="d-block text_2 tw-text-tertiary title-product">
@@ -112,6 +114,28 @@ watchEffect(() => {
 
 <style scoped>
 
+    .image-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .out-of-stock-label {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-30deg);
+        background-color: rgba(255, 0, 144, 0.7);
+        color: white;
+        padding: 10px 20px;
+        font-size: 20px;
+        font-weight: bold;
+        border-radius: 5px;
+        z-index: 10;
+        pointer-events: none; /* Para que no interfiera con el zoomer */
+        width: 85%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    
     .v-card-text {
         padding: 0 10px;
     }
@@ -174,6 +198,11 @@ watchEffect(() => {
     
 
 @media only screen and (max-width: 767px) {
+
+    .out-of-stock-label {
+      font-size: 16px;
+    }
+    
     .card-information {
         width: 95%;
     }
