@@ -73,16 +73,16 @@ const chanceSend = () => {
     if (id.value !== 0)  {
         province.value = props.addresses.filter(address => address.id === id.value)[0].province_id
 
-        if(province.value === 293 && props.summary.subTotal <= parseFloat('210000').toFixed(2)) {
+        if(province.value === 293 && parseFloat(props.summary.subTotal) <= parseFloat('210000')) {
             emit('send', 'sendToBogota')
             sendId.value = 2
-        }  else if(province.value === 293 && props.summary.subTotal > parseFloat('210000').toFixed(2)) {
+        }  else if(province.value === 293 && parseFloat(props.summary.subTotal) > parseFloat('210000')) {
             emit('send', 'free') 
             sendId.value = 0
-        } else if(province.value !== 293 && props.summary.subTotal <= parseFloat('210000').toFixed(2)) {
+        } else if(province.value !== 293 && parseFloat(props.summary.subTotal) <= parseFloat('210000')) {
             emit('send', 'send') 
             sendId.value = 1
-        } else if(province.value !== 293 && props.summary.subTotal > parseFloat('210000').toFixed(2)) {
+        } else if(province.value !== 293 && parseFloat(props.summary.subTotal) > parseFloat('210000')) {
             emit('send', 'free') 
             sendId.value = 0
         }
@@ -93,13 +93,13 @@ const chanceExpress = () => {
     if(sendId.value === 3)
         emit('send', 'shipping_express')
     else {
-        if(province.value === 293 && props.summary.subTotal <= parseFloat('210000').toFixed(2))
+        if(province.value === 293 && parseFloat(props.summary.subTotal) <= parseFloat('210000'))
             emit('send', 'sendToBogota')
-        else if(province.value === 293 && props.summary.subTotal > parseFloat('210000').toFixed(2))
+        else if(province.value === 293 && parseFloat(props.summary.subTotal) > parseFloat('210000'))
             emit('send', 'free') 
-        else if(province.value !== 293 && props.summary.subTotal <= parseFloat('210000').toFixed(2))
+        else if(province.value !== 293 && parseFloat(props.summary.subTotal) <= parseFloat('210000'))
             emit('send', 'send')
-        else if(province.value !== 293 && props.summary.subTotal > parseFloat('210000').toFixed(2))
+        else if(province.value !== 293 && parseFloat(props.summary.subTotal) > parseFloat('210000'))
             emit('send', 'free')
     }
 }
@@ -118,7 +118,7 @@ const isDisabled = (i) => {
                 response = true
             break;
             case 3:
-                response = props.summary.subTotal <= parseFloat('210000').toFixed(2)
+                response = parseFloat(props.summary.subTotal) <= parseFloat('210000')
             break;
         }
     } else if(i === 1) { //nacional
@@ -148,7 +148,7 @@ const isDisabled = (i) => {
                 response = province.value !== 293
             break;
             case 3:
-                response = props.summary.subTotal > parseFloat('210000').toFixed(2)
+                response = parseFloat(props.summary.subTotal) > parseFloat('210000')
             break;
         }
     }

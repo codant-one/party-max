@@ -201,20 +201,16 @@ async function fetchData() {
         summary.value.subTotal = sum.toFixed(2)
         summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
 
-        // console.log('province_id.value', province_id.value)
-        // console.log('selectedAddress.value', selectedAddress.value)
-        // province_id.value = Number.isInteger(selectedAddress.value.province_id)
-
-        if(province_id.value === 293 && summary.value.subTotal <= parseFloat('210000').toFixed(2)) {
+        if(province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
             chanceSend('sendToBogota')
             send_id.value = 2
-        } else if(province_id.value === 293 && summary.value.subTotal > parseFloat('210000').toFixed(2)) {
+        } else if(province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
             chanceSend('free') 
             send_id.value = 0
-        } else if(province_id.value !== 293 && summary.value.subTotal <= parseFloat('210000').toFixed(2)) {
+        } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
             chanceSend('send') 
             send_id.value = 1
-        } else if(province_id.value !== 293 && summary.value.subTotal > parseFloat('210000').toFixed(2)) {
+        } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
             chanceSend('free') 
             send_id.value = 0
         } 
@@ -227,16 +223,16 @@ async function fetchData() {
             if (addresses.value.length > 0) {
                 address_id.value = (index > -1) ? addresses.value[index].id : addresses.value[0].id 
                 province_id.value = addresses.value.filter(address => address.id === address_id.value)[0].province_id
-                if(province_id.value === 293 && summary.value.subTotal <= parseFloat('210000').toFixed(2)) {
+                if(province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
                     chanceSend('sendToBogota')
                     send_id.value = 2
-                } else if(province_id.value === 293 && summary.value.subTotal > parseFloat('210000').toFixed(2)) {
+                } else if(province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
                     chanceSend('free') 
                     send_id.value = 0
-                } else if(province_id.value !== 293 && summary.value.subTotal <= parseFloat('210000').toFixed(2)) {
+                } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
                     chanceSend('send') 
                     send_id.value = 1
-                } else if(province_id.value !== 293 && summary.value.subTotal > parseFloat('210000').toFixed(2)) {
+                } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
                     chanceSend('free') 
                     send_id.value = 0
                 } 
@@ -311,7 +307,7 @@ const selectCountry = country => {
     client_country_id.value = _country.name
  
     selectedAddress.value.province_id = 293
-    
+
     listProvincesByCountry.value = listProvinces.value.filter(item => item.country_id === _country.id)
   }
 }
@@ -386,16 +382,16 @@ const onSubmit = () => {
                 
                 province_id.value = selectedAddress.value.province_id
 
-                if(province_id.value === 293 && summary.value.subTotal <= parseFloat('210000').toFixed(2)) {
+                if(province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
                     chanceSend('sendToBogota')
                     send_id.value = 2
-                } else if(province_id.value === 293 && summary.value.subTotal > parseFloat('210000').toFixed(2)) {
+                } else if(province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
                     chanceSend('free') 
                     send_id.value = 0
-                } else if(province_id.value !== 293 && summary.value.subTotal <= parseFloat('210000').toFixed(2)) {
+                } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
                     chanceSend('send') 
                     send_id.value = 1
-                } else if(province_id.value !== 293 && summary.value.subTotal > parseFloat('210000').toFixed(2)) {
+                } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
                     chanceSend('free') 
                     send_id.value = 0
                 } 
