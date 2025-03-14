@@ -38,12 +38,4 @@ export default {
         window.fbq('track', event, params);
       }
     }
-
-    // En cualquier componente
-    // import metapixel from './plugins/metapixel'
-
-    // Método para rastrear una compra
-    // const trackPurchase = (amount: number) => {
-    //     metapixel.trackEvent('Purchase', { value: amount, currency: 'USD' });
-    // };
 };

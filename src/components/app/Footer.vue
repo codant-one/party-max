@@ -178,7 +178,7 @@
             class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Sorpresas
           </router-link>
-          <router-link 
+          <!-- <router-link 
             :to="{
               name: 'services',
               query: {
@@ -197,7 +197,7 @@
             }" 
             class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Animadores de Fiestas
-          </router-link>
+          </router-link> -->
           <router-link 
             :to="{
               name: 'categories',

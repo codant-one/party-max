@@ -213,7 +213,7 @@ const tab = ref('0')
                   <VListItemTitle v-text="item.text" class="tw-text-tertiary"></VListItemTitle>
                 </VListItem>
               </router-link>
-              <router-link         
+              <!-- <router-link         
                 v-else
                 :to="{
                   name: 'services',
@@ -233,8 +233,8 @@ const tab = ref('0')
                   </template>
                   <VListItemTitle v-text="item.text" class="tw-text-tertiary"></VListItemTitle>
                 </VListItem>
-              </router-link>
-              <!-- <VListItem
+              </router-link> -->
+              <VListItem
                 v-else
                 color="primary"
                 variant="plain"
@@ -246,7 +246,7 @@ const tab = ref('0')
                   <span class="soon-items">{{ item.text }}</span>
                   <span class="soon-text d-none"> Próximamente </span>
                 </VListItemTitle>
-              </VListItem> -->
+              </VListItem>
             </template>
           </VList>
         </VSheet>

@@ -9,10 +9,12 @@ import configGtag from './plugins/vuegtag'
 import VueGtag from 'vue-gtag-next'
 import 'vue3-perfect-scrollbar/style.css'
 
-metapixel.init();
-router.afterEach(() => {// Configura el seguimiento de cambios de página si usas vue-router
-  metapixel.trackEvent('PageView');
-});
+if(import.meta.env.VITE_ENV !== 'development') {//solo para produccion
+  metapixel.init();
+  router.afterEach(() => {// Configura el seguimiento de cambios de página si usas vue-router
+    metapixel.trackEvent('PageView');
+  });
+}
 
 createApp(App)
   .use(router)

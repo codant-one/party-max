@@ -4,6 +4,7 @@ import festin_success from '@assets/icons/festin_success.svg';
 import festin_error from '@assets/icons/festin_error.svg';
 import festin_pending from '@assets/icons/festin_pending.svg';
 import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
+import metapixel from '@metapixel'
 
 const route = useRoute()
 
@@ -55,6 +56,11 @@ watchEffect(() => {
         case '1':
             message.value = 'Transacción aprobada'
             subMessage.value = 'Para nosotros es un placer acompañarte en tus momentos más especiales, ahora a disfrutar de la fiesta.'
+            metapixel.trackEvent('Purchase', { 
+                value: TX_VALUE.value, 
+                currency: currency.value,
+                description: extra1.value
+            });//SEGUIMIENTO META OJO
             emit('deleteAll')
             break;
         case '4':
