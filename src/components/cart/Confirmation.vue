@@ -56,11 +56,13 @@ watchEffect(() => {
         case '1':
             message.value = 'Transacción aprobada'
             subMessage.value = 'Para nosotros es un placer acompañarte en tus momentos más especiales, ahora a disfrutar de la fiesta.'
-            metapixel.trackEvent('Purchase', { 
-                value: TX_VALUE.value, 
-                currency: currency.value,
-                description: extra1.value
-            });//SEGUIMIENTO META OJO
+            if(import.meta.env.VITE_ENV !== 'development') {//solo para produccion
+                metapixel.trackEvent('Purchase', { 
+                    value: TX_VALUE.value, 
+                    currency: currency.value,
+                    description: extra1.value
+                });//SEGUIMIENTO META OJO
+            }
             emit('deleteAll')
             break;
         case '4':
