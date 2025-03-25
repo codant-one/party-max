@@ -688,26 +688,31 @@ const chanceSend = value => {
             summary.value.shipping_express = 0
             summary.value.send = '0.00'
             province_id.value = selectedAddress.value.province_id
+            send_id.value = 0
         break;
         case 'send':
             summary.value.shipping_express = 0
             summary.value.send = '19000.00'
             province_id.value = selectedAddress.value.province_id
+            send_id.value = 1
         break;
         case 'sendToBogota':
             summary.value.shipping_express = 0
             summary.value.send = '12000.00'
             province_id.value = 293
+            send_id.value = 2
         break;
         case 'shipping_express':
             summary.value.shipping_express = 1
             summary.value.send = '17000.00'
             province_id.value = 293
+            send_id.value = 3
         break;
         case 'default':
             summary.value.shipping_express = 0
             summary.value.send = '12000.00'
             province_id.value = 293
+            send_id.value = 2
     }
 
     let sum = 0
