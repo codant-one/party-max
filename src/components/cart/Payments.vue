@@ -411,7 +411,7 @@ const getFlagCountry = country => {
                             variant="flat"
                             type="submit"
                             class="btn-register tw-text-white tw-bg-primary button-hover">
-                                Realizar pedido
+                                Realizar pago
                         </VBtn>
                     </VCardText>
                     <VCardText class="d-block row-payu align-center text-center p-0 px-5 px-md-16">
