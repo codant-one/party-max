@@ -588,7 +588,7 @@ const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1
               Marca: {{ brand }}
               <VDivider :thickness="2" color="#999" class="hr" vertical />
 
-              <div class="d-none align-center">
+              <div class="d-flex align-center">
                 <VRating
                   half-increments
                   readonly
@@ -599,9 +599,9 @@ const rules = [fileList => !fileList || !fileList.length || fileList[0].size < 1
                   active-color="yellow-darken-2"
                 />
 
-                <!--<span class="ms-1">({{ reviews.length }} {{ reviews.length > 1 ? 'Reviews' : 'Review' }})</span>-->
+                <span class="ms-1">({{ reviews.length }} {{ reviews.length > 1 ? 'Reviews' : 'Review' }})</span>
               </div>
-              <VDivider :thickness="2" color="#999" class="hr d-none" vertical />
+              <VDivider :thickness="2" color="#999" class="hr" vertical />
               <span class="d-block">SKU: {{ sku }}</span>
             </VCol>
             <VCol cols="12" md="6" class="align-right"></VCol>

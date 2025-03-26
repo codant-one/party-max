@@ -122,7 +122,7 @@ const onSubmit = () => {
                     class="no-shadown card-register d-block text-center mx-auto">
                     <VImg :src="festin_image2" class="img-festin mx-auto d-none d-md-block"/>
                     <VCardText class="subtitle-register p-0 mb-5 mb-md-0">
-                        ¡Bienvenidx a la fiesta!
+                        ¡Bienvenid@ a la fiesta!
                     </VCardText>
                     <VCardItem class="client-card">
                         <VRow no-gutters class="text-left align-center">

@@ -85,8 +85,8 @@ watchEffect(() => {
                     <strong v-else>{{ store }}</strong>
                 </span>
             </VCardText>
-            <VCardText class="px-1 d-none">
-                <div class="d-flex">
+            <VCardText class="px-1">
+                <div class="d-flex align-center">
                     <VRating
                         half-increments
                         :length="5"
@@ -96,7 +96,7 @@ watchEffect(() => {
                         color="yellow-darken-2"
                         active-color="yellow-darken-2"
                         />
-                    <span class="text_2 ms-2 mt-1">({{ stock }})</span>
+                    <span class="text_2 ms-2 mt-1 mt-md-0">({{ stock }})</span>
                 </div>
             </VCardText>
             <VCardText>

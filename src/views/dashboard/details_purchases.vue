@@ -101,7 +101,8 @@ const resolveStatusPayment = payment_state_id => {
                             :to="{
                                 name: 'rating_products',
                                 params: {
-                                    id: product.product_id
+                                    id: product.product_id,
+                                    orderId: route.params.id
                                 }
                             }"
                             class="tw-no-underline btn-opinion-100">
@@ -156,7 +157,8 @@ const resolveStatusPayment = payment_state_id => {
                             :to="{
                                 name: 'rating_products',
                                 params: {
-                                    id: service.service_id
+                                    id: service.service_id,
+                                    orderId: route.params.id
                                 }
                             }"
                             class="tw-no-underline btn-opinion-100">

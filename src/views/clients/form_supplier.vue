@@ -222,7 +222,7 @@ const onSubmit = () => {
     }
 
     .text2 {
-        color: #999;
+        color: #FF0090;
         font-size: 13px;
         font-style: normal;
         font-weight: 400;
@@ -231,7 +231,7 @@ const onSubmit = () => {
     }
 
     .text2:hover {
-        color: #FF0090;
+        color: #999;
     }
 
     .button-hover:hover {

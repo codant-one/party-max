@@ -88,8 +88,8 @@ watchEffect(() => {
                     <strong v-else>{{ store }}</strong>
                 </span>
             </VCardText>
-            <VCardText class="px-1 mt-2 d-none">
-                <div class="d-flex">
+            <VCardText class="px-1">
+                <div class="d-flex align-center">
                     <VRating
                         v-model="rating"
                         half-increments

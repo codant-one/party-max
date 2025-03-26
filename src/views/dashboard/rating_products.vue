@@ -64,9 +64,10 @@ const save = () => {
 
             let data = {
                 client_id: client_id.value,
-                product_id: route.params.id,
+                product_id: Number(route.params.id),
                 rating: rating.value,
-                comments: comments.value
+                comments: comments.value,
+                order_id: Number(route.params.orderId)
             }
 
             if(review_id.value) {//update

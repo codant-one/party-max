@@ -116,6 +116,24 @@
           <router-link to="/about-us" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Quiénes somos
           </router-link>
+          <!-- <router-link to="/products?wholesalers=true" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+            Mayoristas
+          </router-link> -->
+          <router-link to="/blogs" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+            Blog
+          </router-link>
+          <router-link to="/help" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+            Preguntas frecuentes
+          </router-link>
+          <router-link to="/terms-and-conditions" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+            Términos y condiciones
+          </router-link>
+          <router-link to="/privacy-statement" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+            Declaración de Privacidad
+          </router-link>
+        </VCol>
+
+        <VCol cols="12" md="2" class="d-flex flex-column align-start text-left tw-gap-3 col-mobile">
           <router-link 
             :to="{
               name: 'categories',
@@ -136,18 +154,6 @@
             class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Fiestas temáticas
           </router-link>
-          <!-- <router-link to="/products?wholesalers=true" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Mayoristas
-          </router-link> -->
-          <router-link to="/blogs" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Blog
-          </router-link>
-          <router-link to="/help" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Ayuda
-          </router-link>
-        </VCol>
-
-        <VCol cols="12" md="2" class="d-flex flex-column align-start text-left tw-gap-3 col-mobile">
           <router-link 
             :to="{
               name: 'categories',

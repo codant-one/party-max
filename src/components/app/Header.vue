@@ -336,7 +336,7 @@
         <VListItem>
           <VListItemTitle class="d-block lineheight borderList pb-2">
             <router-link aria-label="item-help" to="/help" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-              <span class="d-block title-menu">Ayuda</span>
+              <span class="d-block title-menu">Preguntas frecuentes</span>
             </router-link>
           </VListItemTitle>  
         </VListItem>
@@ -909,7 +909,7 @@
         <VDivider class="hr" vertical/>
         <router-link aria-label="item-blog" to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Blog</router-link>
         <VDivider class="hr" vertical/>
-        <router-link aria-label="item-help" to="/help" class="ms-5 tw-no-underline tw-text-white me-3 hover:tw-text-yellow">Ayuda</router-link>
+        <router-link aria-label="item-help" to="/help" class="ms-5 tw-no-underline tw-text-white me-3 hover:tw-text-yellow">Preguntas frecuentes</router-link>
 
       </VContainer>
       <VContainer class="p-0 tw-text-white d-flex" v-else>

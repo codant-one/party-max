@@ -189,7 +189,7 @@ const router = createRouter({
           component: Detail_pusher,
         },
         {
-          path: '/rating-products/:id',
+          path: '/rating-products/:id/:orderId',
           name: 'rating_products',
           component: Rating_products
         }        

@@ -86,7 +86,7 @@ const sortByItems = ref([
   { id: 0, name : 'Recomendados'},
   { id: 1, name : 'Precio: Menor a mayor'},
   { id: 2, name : 'Precio: Mayor a menor'},
-  //{ id: 3, name : 'Mejor Valorados'},
+  { id: 3, name : 'Mejor Valorados'},
   { id: 4, name :  'Recientes'}
 ])
 
@@ -770,10 +770,10 @@ const addfavorite = (product_id) => {
               </VCardItem>
             </VCardText>
            
-            <VDivider class="mb-6 mt-6 d-none"/>
+            <VDivider class="mb-6 mt-6"/>
 
-            <VCardItem class="p-0 text-left mb-6 mt-6 d-none"> REVIEW </VCardItem>
-            <VCardText class="p-0 text-left mt-5 mb-6 d-none">
+            <VCardItem class="p-0 text-left mb-6 mt-6"> REVIEW </VCardItem>
+            <VCardText class="p-0 text-left mt-5 mb-6">
               <VRating
                 half-increments
                 :length="5"

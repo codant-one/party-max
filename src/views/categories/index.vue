@@ -347,7 +347,7 @@ async function fetchData() {
     }
 
     .swiper {
-      height: 280px!important;
+      height: 300px!important;
     }
     
     .swiper::v-deep(.swiper-pagination-bullet-active) {

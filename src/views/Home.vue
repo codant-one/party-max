@@ -1199,7 +1199,7 @@ const tab = ref('0')
     }
 
     .swiper {
-      height: 280px!important;
+      height: 300px!important;
     }
 
     .swiper::v-deep(.swiper-pagination-bullet-active) {

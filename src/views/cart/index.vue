@@ -223,6 +223,8 @@ async function fetchData() {
             if (addresses.value.length > 0) {
                 address_id.value = (index > -1) ? addresses.value[index].id : addresses.value[0].id 
                 province_id.value = addresses.value.filter(address => address.id === address_id.value)[0].province_id
+                selectedAddress.value.province_id = addresses.value.filter(address => address.id === address_id.value)[0].province_id
+
                 if(province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
                     chanceSend('sendToBogota')
                     send_id.value = 2
@@ -848,7 +850,7 @@ const chanceSend = value => {
                                     :bg="bg"/>
                             </VCardText> 
 
-                            <VCardText class="px-0 mt-3 mb-3 d-md-flex align-items-stretch justify-content-between" v-if="data && isMobile">
+                            <VCardText class="p-0 d-md-flex align-items-stretch justify-content-between" v-if="data && isMobile">
                                 <swiper
                                     :pagination="{
                                         dynamicBullets: true,
@@ -1083,7 +1085,7 @@ const chanceSend = value => {
 <style scoped>
 
     .swiper {
-      height: 280px!important;
+      height: 300px!important;
     }
 
     .swiper::v-deep(.swiper-pagination-bullet-active) {
@@ -1212,6 +1214,10 @@ const chanceSend = value => {
 
         .w-60 {
             width: 100%;
+        }
+
+        .text-left {
+            line-height: 24px;
         }
 
     }
