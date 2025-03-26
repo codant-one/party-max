@@ -278,7 +278,7 @@ const tab = ref('0')
             </VCarousel>
           </VCol>
           <VCol cols="12" md="5" class="pslider">
-            <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent">
+            <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent h-100">
               <VCol cols="6" md="6" class="pslider2">
                   <img :src="banner_1.image" class="img-gallery" alt="pinatas" @click="redirectTo(banner_1.url)" />
               </VCol>
@@ -302,7 +302,7 @@ const tab = ref('0')
               <img :src="banner_4.image" class="img-gallery furniture" :class="isMobile ? 'slider5Img' : ''" cover @click="redirectTo(banner_4.url)"/>
           </VCol>
           <VCol cols="12" md="5" class="pslider4">
-            <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent">
+            <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent h-100">
               <VCol cols="6" md="6" class="pslider2">
                   <img :src="banner_5.image" class="img-gallery" alt="eventos" @click="redirectTo(banner_5.url)"/>
               </VCol>
