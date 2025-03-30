@@ -773,15 +773,15 @@
                     Nombre:	DIEXCOM SAS <br>
                     Domicilio:	Bogotá D.C.<br>
                     Dirección: 	Calle 13 No. 69 - 02   Piso 3º. <br>
-                    Correo electrónico:  XXXXXXXXX      Teléfono:  <br>
+                    Correo electrónico: <a href="mailto:fiesta@partymax.co">fiesta@patymax.co</a>      Teléfono: <a href="tel:3004659997">300 4659 997</a> <br>
                     Nombre: 	 PARTIMAX<br>
                     Domicilio:	 Bogotá D.C.<br>
-                    Email:	            XXXXXXXX<br><br>
+                    Email:	    <a href="mailto:fiesta@partymax.co">fiesta@patymax.co</a><br><br>
 
                     <strong class="tw-text-secondary">ARTÍCULO 23. ATENCIÓN AL CLIENTE O TITULAR DE LOS DATOS PERSONALES. </strong><br>
                     Para consultas, reclamos, quejas o para el ejercicio de los derechos de consulta, reclamación o exclusión que le asisten, 
                     EL TITULAR de los datos podrá comunicarse con <strong class="tw-text-primary">DIEXCOM SAS y/o PARTIMAX</strong>  a los siguientes 
-                    correos electrónicos: xxxxxxxxxxxxxxxxxxxxxxxxxxx, o llamar a la línea de atención al cliente : xxxxxxxxxxxxxxx
+                    correos electrónicos: <a href="mailto:fiesta@partymax.co">fiesta@patymax.co</a>, o llamar a la línea de atención al cliente : <a href="tel:3004659997">300 4659 997</a>
                     <br><br>
 
                     <strong class="tw-text-secondary">ARTÍCULO 24. TRATAMIENTO AL CUAL SERÁN SOMETIDOS LOS DATOS PERSONALES.</strong><br>
