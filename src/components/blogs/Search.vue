@@ -37,11 +37,11 @@ const search = () => {
 
 <template>
     <VCard class="text-justify card-header px-0 card-information no-shadown">
-        <VCardTitle class="text-justify title-text px-41 py-7">
+        <VCardTitle class="text-justify title-text px-24 py-7">
             Buscar <VDivider class="mb-2 mt-4 color" />
         </VCardTitle>
 
-        <VCardText class="d-flex justify-items-center px-41"> 
+        <VCardText class="d-flex justify-items-center px-24"> 
             <VTextField
                 v-model="textSearch"
                 class="input-search ps-4"
@@ -63,13 +63,13 @@ const search = () => {
 
         <VDivider class="mt-4 mb-4 color" />
 
-        <VCardTitle class="text-justify title-text p-0 mt-10 px-41">
+        <VCardTitle class="text-justify title-text p-0 mt-10 px-24">
             Post Recientes
         </VCardTitle>
 
         <VList
             base-color="#999999"
-            class="px-41 items"
+            class="px-24 items"
         >
             <VListItem
                 v-for="blog in blogs"
@@ -99,13 +99,13 @@ const search = () => {
 
         <VDivider class="mt-4 mb-4 color" />
 
-        <VCardTitle class="text-justify title-text p-0 mt-10 px-41">
+        <VCardTitle class="text-justify title-text p-0 mt-10 px-24">
             Categorías <VDivider class="mb-2 mt-4 color" />
         </VCardTitle>
         
         <VList 
             base-color="#999999"
-            class="px-41 items mb-5"
+            class="px-24 items mb-5"
         >
             <VListItem
                 v-for="category in categories"
@@ -199,13 +199,18 @@ const search = () => {
         padding: 41px;
     }
 
-    .px-41 {
-        padding-left: 41px !important;
-        padding-right: 41px !important;
+    .px-24 {
+        padding-left: 24px !important;
+        padding-right: 24px !important;
     }
 
     @media only screen and (max-width: 767px) { 
-        .px-41 {
+        .subtitle-text {
+            font-size: 14px;
+            line-height: 24px;
+        }
+
+        .px-24 {
             padding-left: 20px !important;
             padding-right: 20px !important;
         }
