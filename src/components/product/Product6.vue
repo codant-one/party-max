@@ -60,16 +60,17 @@ watchEffect(() => {
             class="no-shadown px-0 w-100 py-5" 
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow no-gutters class="px-5 px-md-14">
-                <VCol cols="6" md="1" class="d-flex justify-content-center align-center">
+                <VCol cols="6" md="1" class="print-row d-flex justify-content-center align-center">
                     <VCardText class="border-img ms-md-16">
                         <VImg
                             :width="100"
                             :src="baseURL + image" 
+                            class="avatar-dynamic"
                             cover />
                     </VCardText>
                 </VCol>
                 <VCol cols="6" md="12" v-if="isMobile"></VCol>
-                <VCol cols="10" md="8" class="d-flex justify-content-center align-center mt-3 my-md-0 ps-md-14">
+                <VCol cols="10" md="8" class="print-row d-flex justify-content-center align-center mt-3 my-md-0 ps-md-14">
                     <VCardText>
                         <span class="d-block text_2 py-1 tw-text-tertiary title-product">{{ name }}</span>
                         <span class="d-block py-0 tw-text-gray">Color: {{ color }}</span>
@@ -79,7 +80,7 @@ watchEffect(() => {
                         </span>
                     </VCardText>
                 </VCol>
-                <VCol cols="2" md="3" class="d-flex justify-content-end tw-items-end md:tw-items-center">
+                <VCol cols="2" md="3" class="print-row d-flex justify-content-end tw-items-end md:tw-items-center">
                     <div class="me-0">
                         <VCardText class="d-flex text-end align-end justify-content-end">
                         </VCardText>

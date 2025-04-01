@@ -566,12 +566,14 @@ const getFlagCountry = country => {
         border-bottom: 1px solid #D9EEF2;
         border-top: 1px solid #D9EEF2;
     }
+    
     .row-cardp2 {
         border-bottom: 1px solid #D9EEF2;
         height:100px;
         padding: 32px;
 
     }
+
     .row-cardp3 {
         padding: 16px 32px;
     }
@@ -657,6 +659,7 @@ const getFlagCountry = country => {
         text-align:left;
 
     }
+
     .row-total h5 {
         color: #FF0090;
         text-align: right;

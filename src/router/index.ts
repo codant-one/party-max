@@ -19,6 +19,7 @@ import FormClient from '@/views/clients/form_client.vue'
 import FormSupplier from '@/views/clients/form_supplier.vue'
 import Login from '@/views/Login.vue'
 import Cart from '@/views/cart/index.vue'
+import Quote from '@/views/quote/index.vue'
 import DashboardHome from '@/views/dashboard/dashboard.vue'
 import Dashboard from '@/views/dashboard/index.vue'
 import Profile from '@/views/dashboard/profile/index.vue'
@@ -143,6 +144,11 @@ const router = createRouter({
       component: Cart
     },
     {
+      path: '/quote',
+      name: 'quote',
+      component: Quote
+    },
+    {
       path: '/dashboard',
       name: 'dashboard',
       redirect: { name: 'dashboardHome' },
@@ -237,8 +243,8 @@ router.beforeEach((to, from, next) => {
   // redirect to login page
   if (authRequired && !loggedIn) {
     next('/login');
-  } else if(to.path.includes('/services')) {
-    next('/');
+  // } else if(to.path.includes('/services')) {
+  //   next('/');
   } else {
     next();
   }

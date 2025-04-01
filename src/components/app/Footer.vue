@@ -40,7 +40,7 @@
 </script>
 
 <template>
-  <VFooter class="text-center d-flex flex-column bg p-0 w-100" :class="backgroundTemp">
+  <VFooter class="text-center d-flex flex-column bg p-0 w-100 d-print-none" :class="backgroundTemp">
     <a href="https://wa.link/wvdoxg"
         target="_blank"
         class="whatsapp-float"
@@ -57,7 +57,7 @@
           </VCol> 
           <VCol cols="12" md="7" class="d-flex align-center dark" v-if="isProduct">  
             <VTextField
-              class="me-24"
+              class="me-20"
               placeholder="Email"
               flat
               variant="solo">
@@ -68,7 +68,7 @@
           </VCol> 
           <VCol cols="12" md="7" class="d-flex align-center" v-else>
             <VTextField
-              class="me-24"
+              class="me-20"
               placeholder="Email"
               flat
               variant="solo">
@@ -101,7 +101,7 @@
             <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="m-0">
               <instagram class="mt-1 me-2"/>
             </a>
-            <a href="https://www.facebook.com/PartymaxCo/?locale=es_LA" target="_blank" class="m-0">
+            <a href="https://www.facebook.com/partymaxcolombia" target="_blank" class="m-0">
               <facebook class="mt-1 me-2"/>
             </a>
             <a href="https://wa.link/wvdoxg" target="_blank" class="m-0">
@@ -110,109 +110,26 @@
           </div>
         </VCol>
 
-        <VCol cols="12" md="2" class="d-flex align-center col-mobile"></VCol>
+        <VCol cols="12" md="4" class="d-flex align-center col-mobile"></VCol>
 
         <VCol cols="12" md="2" class="d-flex flex-column align-start text-left tw-gap-3 col-mobile">
-          <router-link to="/about-us" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          <router-link to="/about-us" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
             Quiénes somos
           </router-link>
           <!-- <router-link to="/products?wholesalers=true" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
             Mayoristas
           </router-link> -->
-          <router-link to="/blogs" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          <router-link to="/blogs" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
             Blog
           </router-link>
-          <router-link to="/help" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          <router-link to="/help" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
             Preguntas frecuentes
           </router-link>
-          <router-link to="/terms-and-conditions" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          <router-link to="/terms-and-conditions" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
             Términos y condiciones
           </router-link>
-          <router-link to="/privacy-statement" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          <router-link to="/privacy-statement" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
             Declaración de Privacidad
-          </router-link>
-        </VCol>
-
-        <VCol cols="12" md="2" class="d-flex flex-column align-start text-left tw-gap-3 col-mobile">
-          <router-link 
-            :to="{
-              name: 'categories',
-              params: {
-                slug: 'fiestas-infantiles'
-              }
-            }" 
-            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Fiestas infantiles
-          </router-link>
-          <router-link 
-            :to="{
-              name: 'categories',
-              params: {
-                slug: 'fiestas-tematicas'
-              }
-            }" 
-            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Fiestas temáticas
-          </router-link>
-          <router-link 
-            :to="{
-              name: 'categories',
-              params: {
-                slug: 'desechables'
-              }
-            }" 
-            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Desechables
-          </router-link>
-          <router-link 
-            :to="{
-              name: 'categories',
-              params: {
-                slug: 'decoracion'
-              }
-            }" 
-            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Decoración
-          </router-link>
-          <router-link 
-            :to="{
-              name: 'categories',
-              params: {
-                slug: 'sorpresas'
-              }
-            }" 
-            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Sorpresas
-          </router-link>
-          <!-- <router-link 
-            :to="{
-              name: 'services',
-              query: {
-                category: 'renta-de-mobiliario'
-              }
-            }" 
-            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Mobiliario
-          </router-link>
-          <router-link 
-            :to="{
-              name: 'services',
-              query: {
-                category: 'animadores-de-fiestas'
-              }
-            }" 
-            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Animadores de Fiestas
-          </router-link> -->
-          <router-link 
-            :to="{
-              name: 'categories',
-              params: {
-                slug: 'hora-loca'
-              }
-            }" 
-            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Hora loca
           </router-link>
         </VCol>
         <VCol cols="5" md="3" class="align-center text-right">
@@ -245,8 +162,7 @@
 </template>
 <style scoped>
 
-  .whatsapp-float
-  {
+  .whatsapp-float {
     position: fixed;
     width: 60px;
     height: 60px;

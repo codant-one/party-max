@@ -324,6 +324,7 @@
   <section>
     <VNavigationDrawer
       v-model="drawer"
+      class="d-print-none"
       temporary>
       <VList role="list" aria-label="Lista de elementos" v-model:opened="panelCat" class="pb-0" :ripple="false">
         <VListItem>
@@ -429,7 +430,7 @@
       </VList>
         
       <!--MENU SERVICIOS MOBILE-->
-      <!-- <VList v-model:opened="panelCat" class="pb-0 d-none" :ripple="false">
+      <VList v-model:opened="panelCat" class="pb-0" :ripple="false">
         <VListItem>
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
             <span class="d-block title-menu">SERVICIOS</span>
@@ -502,7 +503,7 @@
             </div>
           </VListGroup>
         </div>
-      </VList> -->
+      </VList>
       <!--FIN MENU SERVICIOS MOBILE-->
    
     </VNavigationDrawer>
@@ -511,7 +512,7 @@
       :width="isMobile ? 280 : 380"
       :height="isMobile ? '80vh' : '100vh'"
       location="end"
-      class="scrollable-content drawer"
+      class="scrollable-content drawer d-print-none"
       temporary
       @update:model-value="handleDrawerModelValueUpdate"
     >
@@ -580,10 +581,18 @@
             @click="redirect('cart')">
             ver carrito
           </VBtn>
+          <VBtn
+            variant="flat"
+            block
+            class="btn-order tw-text-tertiary my-2 me-2"
+            @click="redirect('quote')"
+            >
+              cotizar
+          </VBtn>
         </div>
       </template>
     </VNavigationDrawer>
-    <VAppBar flat class="header">
+    <VAppBar flat class="header d-print-none">
       <VContainer class="tw-bg-white">
         <VRow no-gutters v-if="!isMobile">
           <VCol cols="9" class="d-flex">
@@ -732,7 +741,7 @@
         </VRow>
       </VContainer>
     </VAppBar>
-    <VAppBar flat class="tw-bg-primary" :class="classFixed" ref="fixedSectionRef">
+    <VAppBar flat class="tw-bg-primary d-print-none" :class="classFixed" ref="fixedSectionRef">
       <VContainer class="p-0 tw-text-white d-flex justify-space-around align-center" v-if="!isMobile">
         <div class="hover:tw-text-yellow">
           <VMenu 
@@ -815,7 +824,7 @@
           </VMenu>
         </div>
       <!-----------------------SERVICIOS MENÚ------------------------------->
-        <!-- <div class="hover:tw-text-yellow d-none">
+        <div class="hover:tw-text-yellow">
           <VMenu 
             v-model="menuOpenS"
             transition="slide-x-transition" 
@@ -894,7 +903,7 @@
               </VRow>
             </VCard>
           </VMenu>
-        </div> -->
+        </div>
       <!---------FIN SERVICIOS MENÚ--------------------------->
 
         <!-- <span @click="toggleWholesalers"
@@ -963,6 +972,22 @@
     font-weight: 700;
     line-height: 14px;
     border-radius: 32px;
+  }
+
+  .btn-order {
+    border-radius: 32px;
+    border: 1px solid var(--Maastricht-Blue, #0A1B33);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 14px;
+    box-shadow: none;
+  }
+
+  .btn-order:hover {
+    border: 1px solid var(--Maastricht-Blue, #0A1B33) !important;
+    background: var(--Maastricht-Blue, #0A1B33) !important;
+    color: #FFFFFF!important;
   }
 
   .cart-empty {
@@ -1183,6 +1208,10 @@
   }
 
   @media only screen and (max-width: 767px) {
+
+    .btn-register, .btn-order {
+      width: 100%;
+    }
 
     .drawer {
       height: auto !important; /* Ocupa el 100% de la altura de la ventana */

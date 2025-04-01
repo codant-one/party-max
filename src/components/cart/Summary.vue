@@ -104,6 +104,7 @@ const addCart = (data) => {
         border-radius: 32px;
         height: 54px;
     }
+    
     .button-hover:hover {
         background-color: #FF27B3 !important;
         box-shadow: 0px 0px 24px 0px #FF27B3;
