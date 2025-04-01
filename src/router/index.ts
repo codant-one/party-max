@@ -243,8 +243,8 @@ router.beforeEach((to, from, next) => {
   // redirect to login page
   if (authRequired && !loggedIn) {
     next('/login');
-  // } else if(to.path.includes('/services')) {
-  //   next('/');
+  } else if(to.path.includes('/services')) {
+    next('/');
   } else {
     next();
   }

@@ -430,7 +430,7 @@
       </VList>
         
       <!--MENU SERVICIOS MOBILE-->
-      <VList v-model:opened="panelCat" class="pb-0" :ripple="false">
+      <VList v-model:opened="panelCat" class="pb-0 d-none" :ripple="false">
         <VListItem>
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
             <span class="d-block title-menu">SERVICIOS</span>
@@ -584,7 +584,7 @@
           <VBtn
             variant="flat"
             block
-            class="btn-order tw-text-tertiary my-2 me-2"
+            class="btn-order tw-text-tertiary my-2 me-2 d-none"
             @click="redirect('quote')"
             >
               cotizar
@@ -824,7 +824,7 @@
           </VMenu>
         </div>
       <!-----------------------SERVICIOS MENÚ------------------------------->
-        <div class="hover:tw-text-yellow">
+        <div class="hover:tw-text-yellow d-none">
           <VMenu 
             v-model="menuOpenS"
             transition="slide-x-transition" 
