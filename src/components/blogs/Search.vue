@@ -74,7 +74,7 @@ const search = () => {
             <VListItem
                 v-for="blog in blogs"
                 base-color="#999999"
-                class="hover:tw-bg-yellow"
+                class="hover:tw-bg-yellow px-1"
                 rounded
                 :link="true"
                 :to="{
@@ -111,7 +111,7 @@ const search = () => {
                 v-for="category in categories"
                 :key="category.id"
                 base-color="#999999"
-                class="hover:tw-bg-yellow px-0"
+                class="hover:tw-bg-yellow px-1"
                 :link="true"
                 rounded
             >
