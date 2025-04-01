@@ -111,7 +111,7 @@ const search = () => {
                 v-for="category in categories"
                 :key="category.id"
                 base-color="#999999"
-                class="hover:tw-bg-yellow"
+                class="hover:tw-bg-yellow px-0"
                 :link="true"
                 rounded
             >
@@ -124,7 +124,7 @@ const search = () => {
                         }"
                     class="tw-no-underline tw-text-tertiary">
                     <div class="d-flex align-center align-items-stretch flex-shrink-0">
-                        <book class="me-5"/>
+                        <book class="me-3"/>
                         <span class="subtitle-text me-auto">{{ category.name }}</span>
                         <span class="subtitle-text py-0 tw-text-left">
                             {{ category.blogs_count }}
