@@ -69,6 +69,7 @@ const modules2 = ref([Pagination])
 const thumbsSwiper = ref(null);
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
+const twitterAccount = ref(import.meta.env.VITE_TWITTER_ACCOUNT ?? '')
 const data = ref(null)
 const keywords = ref(null)
 
@@ -173,8 +174,6 @@ async function fetchData() {
 
     keywords.value = data.value.keywords.join(', ')
 
-    console.log('keywords', keywords.value)
-
     imageAux.value = [{ image : data.value.product.image }]
     imageMeta.value = baseURL.value + data.value.product.image
 
@@ -239,11 +238,11 @@ async function fetchData() {
       isFavoriteProduct.value = await favoritesStores.show({user_id: user_id.value, product_id: product_id.value })
 
     setMetaTags({
-      title: title.value,
-      description: `Producto publicado en PARTYMAX como: ${title.value}`,
+      title: title.value + ' | PARTYMAX',
+      description: `Descubre nuestro '${title.value}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'`,
       image:  imageMeta.value,
       url: productUrl.value ,
-      keywords: data.value.keywords
+      keywords: keywords.value
     });
 
     if (route.query.category) {
@@ -342,7 +341,7 @@ const setMetaTags = ({ title, description, image, url, keywords }) => {
   setMetaTag('twitter:title', title);
   setMetaTag('twitter:description', description);
   setMetaTag('twitter:image', image);
-  setMetaTag('twitter:site', '@SteffaniiPaola');
+  setMetaTag('twitter:site', twitterAccount.value);
 }
 
 const chanceRadio = (value) => {

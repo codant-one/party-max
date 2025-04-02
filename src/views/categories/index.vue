@@ -66,6 +66,8 @@ async function fetchData() {
     data.value = miscellaneousStores.getData
     icons_categories.value = data.value.category.children
 
+    console.log('data', data.value.category.keywords)
+
     image1.value = (data.value.category.banner === null) ? banner1 : baseURL.value + data.value.category.banner
     slug1.value = data.value.category.banner1?.slug.split('/')[1]
     image2.value = (data.value.category.banner_2 === null) ? banner2 : baseURL.value + data.value.category.banner_2
