@@ -22,6 +22,10 @@ const miscellaneousStores = useMiscellaneousStores()
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 const data = ref(null)
 const isLoading = ref(true)
+const twitterAccount = ref(import.meta.env.VITE_TWITTER_ACCOUNT ?? '')
+const title = ref(null)
+const cat = ref(null)
+const image = ref(null)
 
 const image1 = ref(null)
 const image2 = ref(null)
@@ -66,8 +70,6 @@ async function fetchData() {
     data.value = miscellaneousStores.getData
     icons_categories.value = data.value.category.children
 
-    console.log('data', data.value.category.keywords)
-
     image1.value = (data.value.category.banner === null) ? banner1 : baseURL.value + data.value.category.banner
     slug1.value = data.value.category.banner1?.slug.split('/')[1]
     image2.value = (data.value.category.banner_2 === null) ? banner2 : baseURL.value + data.value.category.banner_2
@@ -78,8 +80,58 @@ async function fetchData() {
     slug4.value = data.value.category.banner4?.slug.split('/')[1]
     category_type_id.value = data.value.category.category_type_id
 
+    
+    title.value = data.value.category.name
+    image.value = (data.value.category.icon_subcategory !== null) ? (baseURL.value + data.value.category.icon_subcategory) : (import.meta.env.VITE_APP_DOMAIN_API_URL + '/images/categories.jpg')
+
+    setMetaTags({
+      title: title.value + ' | PARTYMAX',
+      description: `Encuentra en PARTYMAX los mejores productos de '${title.value}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉`,
+      image:  image.value,
+      url: `https://${import.meta.env.VITE_MY_DOMAIN}/categories/${data.value.category.slug}` ,
+      keywords: data.value.category.keywords
+    });
+
     isLoading.value = false
   }
+
+  
+}
+
+const setMetaTags = ({ title, description, image, url, keywords }) => {
+  document.title = title;
+
+  const setMetaTag = (name, content) => {
+    let element = document.querySelector(`meta[name="${name}"]`) || document.createElement('meta');
+    element.setAttribute('name', name);
+    element.setAttribute('content', content);
+    document.head.appendChild(element);
+  };
+
+  const setPropertyMetaTag = (property, content) => {
+    let element = document.querySelector(`meta[property="${property}"]`) || document.createElement('meta');
+    element.setAttribute('property', property);
+    element.setAttribute('content', content);
+    document.head.appendChild(element);
+  };
+
+  setMetaTag('description', description);
+  setMetaTag('keywords', keywords);
+
+  // Open Graph / Facebook / LinkedIn / Pinterest / WhatsApp
+  setPropertyMetaTag('og:type', 'website');
+  setPropertyMetaTag('og:title', title);
+  setPropertyMetaTag('og:description', description);
+  setPropertyMetaTag('og:image', image);
+  setPropertyMetaTag('og:url', url);
+  setPropertyMetaTag('og:site_name', 'PARTYMAX');
+
+  // Twitter
+  setMetaTag('twitter:card', 'summary_large_image');
+  setMetaTag('twitter:title', title);
+  setMetaTag('twitter:description', description);
+  setMetaTag('twitter:image', image);
+  setMetaTag('twitter:site', twitterAccount.value)
 }
 </script>
 
