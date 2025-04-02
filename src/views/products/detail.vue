@@ -170,6 +170,7 @@ async function fetchData() {
     await miscellaneousStores.getProduct(route.params.slug)
     data.value = miscellaneousStores.getData
 
+console.log('data', data.value.keywords)
     imageAux.value = [{ image : data.value.product.image }]
     imageMeta.value = baseURL.value + data.value.product.image
 
