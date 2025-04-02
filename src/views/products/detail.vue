@@ -70,6 +70,7 @@ const thumbsSwiper = ref(null);
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 const data = ref(null)
+const keywords = ref(null)
 
 const title = ref(null)
 const brand = ref(null)
@@ -170,7 +171,10 @@ async function fetchData() {
     await miscellaneousStores.getProduct(route.params.slug)
     data.value = miscellaneousStores.getData
 
-console.log('data', data.value.keywords)
+    keywords.value = data.value.keywords.join(', ')
+
+    console.log('keywords', keywords.value)
+
     imageAux.value = [{ image : data.value.product.image }]
     imageMeta.value = baseURL.value + data.value.product.image
 
@@ -239,6 +243,7 @@ console.log('data', data.value.keywords)
       description: `Producto publicado en PARTYMAX como: ${title.value}`,
       image:  imageMeta.value,
       url: productUrl.value ,
+      keywords: data.value.keywords
     });
 
     if (route.query.category) {
@@ -304,7 +309,7 @@ console.log('data', data.value.keywords)
   isLoading.value = false
 }
 
-const setMetaTags = ({ title, description, image, url }) => {
+const setMetaTags = ({ title, description, image, url, keywords }) => {
   document.title = title;
 
   const setMetaTag = (name, content) => {
@@ -322,6 +327,7 @@ const setMetaTags = ({ title, description, image, url }) => {
   };
 
   setMetaTag('description', description);
+  setMetaTag('keywords', keywords);
 
   // Open Graph / Facebook / LinkedIn / Pinterest / WhatsApp
   setPropertyMetaTag('og:type', 'website');
