@@ -208,7 +208,7 @@ const tab = ref('0')
                   class="list py-0  tw-text-tertiary hover:tw-bg-yellow"
                 >
                   <template v-slot:prepend>
-                    <img :src="item.icon" class="me-3 ms-4" loading="lazy"/>
+                    <img :src="item.icon" class="me-3 ms-4" loading="lazy" :alt ="item.slug"/>
                   </template>
                   <VListItemTitle v-text="item.text" class="tw-text-tertiary"></VListItemTitle>
                 </VListItem>
@@ -229,7 +229,7 @@ const tab = ref('0')
                   class="list py-0  tw-text-tertiary hover:tw-bg-yellow"
                 >
                   <template v-slot:prepend>
-                    <img :src="item.icon" class="me-3 ms-4" loading="lazy"/>
+                    <img :src="item.icon" class="me-3 ms-4" loading="lazy" :alt ="item.slug"/>
                   </template>
                   <VListItemTitle v-text="item.text" class="tw-text-tertiary"></VListItemTitle>
                 </VListItem>
@@ -240,7 +240,7 @@ const tab = ref('0')
                 variant="plain"
                 class="list py-0 tw-text-tertiary tw-cursor-pointer">
                 <template v-slot:prepend>
-                  <img :src="item.icon" class="me-3 ms-4 soon-img"/>
+                  <img :src="item.icon" class="me-3 ms-4 soon-img" :alt ="item.slug"/>
                 </template>
                 <VListItemTitle class="tw-text-tertiary d-flex align-center">
                   <span class="soon-items">{{ item.text }}</span>
@@ -268,6 +268,7 @@ const tab = ref('0')
                   :src="baseURL + (isMobile ? item.mobile : item.image)"
                   :lazy-src="baseURL + item.mobile"
                   :lazy="true"
+                  :alt="item.slug"
                   class="img-gallery"
                   cover
                   @click="redirectTo(item.url)"
@@ -299,7 +300,7 @@ const tab = ref('0')
             </VRow>
           </VCol>
           <VCol cols="12" md="7" class="pslider4" :class="isMobile ? 'order-last order-md-first pslider5' : ''">
-              <img :src="banner_4.image" class="img-gallery furniture" :class="isMobile ? 'slider5Img' : ''" cover @click="redirectTo(banner_4.url)"/>
+              <img :src="banner_4.image" alt="furniture" class="img-gallery furniture" :class="isMobile ? 'slider5Img' : ''" cover @click="redirectTo(banner_4.url)"/>
           </VCol>
           <VCol cols="12" md="5" class="pslider4">
             <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent h-100">
