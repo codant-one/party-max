@@ -149,7 +149,7 @@ async function fetchData() {
 
   setMetaTags({
     title: 'PARTYMAX | THE PARTY MARKET',
-    description: `Descubre Partymax, la plataforma líder en Colombia para organizar eventos y celebraciones. Conecta con los mejores proveedores de decoración, catering y entretenimiento. Encuentra todo lo que necesitas para una fiesta inolvidable, de manera rápida, segura y al mejor precio. ¡Vive la experiencia Partymax! 🎉`,
+    description: `Partymax, tu aliado ideal para fiestas en Colombia. Conectamos tus ideas con los mejores proveedores.¡Haz tu celebración inolvidable de forma fácil y económica!`,
     image:  import.meta.env.VITE_APP_DOMAIN_API_URL + '/logos/R_ORIGINAL@2x.png',
     url: `https://${import.meta.env.VITE_MY_DOMAIN}` ,
     keywords:  `eventos en Colombia, marketplace de fiestas, proveedores de eventos, organización de eventos, planificación de fiestas, catering, decoración de fiestas, entretenimiento para eventos, servicios para bodas, fiestas infantiles, despedidas de soltera, tecnología para eventos, Partymax`

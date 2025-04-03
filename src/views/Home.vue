@@ -253,7 +253,7 @@ const tab = ref('0')
       </VCol>
       <VCol cols="12" md="9" class="tw-bg-white border-categories">
         <VRow no-gutters v-if="data">
-          <VCol cols="12" md="7" class="pslider">
+          <VCol cols="12" md="7" class="pslider" aria-label="Galería">
             <VCarousel 
               cycle
               class="carousel-home cursor-pointer"
@@ -269,14 +269,23 @@ const tab = ref('0')
                   :lazy-src="baseURL + item.mobile"
                   :lazy="true"
                   :alt="'slider'+(i+1)"
+                  :aria-label="'slider'+(i+1)"
                   class="img-gallery"
                   cover
                   @click="redirectTo(item.url)"
                   priority
                   :width="isMobile ? '358' : '560'"
                   :height="isMobile ? '180' : '391'"
-                />
-            </VCarousel>
+                >
+                  <img 
+                    :src="baseURL + (isMobile ? item.mobile : item.image)"
+                    :alt="'slider'+(i+1)"
+                    loading="lazy"
+                    :width="isMobile ? '358' : '560'"
+                    :height="isMobile ? '180' : '391'"
+                  >
+                </VCarouselItem>
+              </VCarousel>
           </VCol>
           <VCol cols="12" md="5" class="pslider">
             <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent h-100">
