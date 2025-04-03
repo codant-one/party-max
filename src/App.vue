@@ -22,6 +22,46 @@ const backgroundStyle = ref({})
 const background = ref('tw-bg-white')
 const isMobile = /Mobi/i.test(navigator.userAgent);
 const drawer = ref(false)
+const twitterAccount = ref(import.meta.env.VITE_TWITTER_ACCOUNT ?? '')
+
+const setMetaTags = ({ title, description, image, url, keywords }) => {
+  document.title = title;
+
+  const setMetaTag = (name, content) => {
+    let element = document.querySelector(`meta[name="${name}"]`) || document.createElement('meta');
+    element.setAttribute('name', name);
+    element.setAttribute('content', content);
+    document.head.appendChild(element);
+  };
+
+  const setPropertyMetaTag = (property, content) => {
+    let element = document.querySelector(`meta[property="${property}"]`) || document.createElement('meta');
+    element.setAttribute('property', property);
+    element.setAttribute('content', content);
+    document.head.appendChild(element);
+  };
+
+  setMetaTag('description', description);
+  setMetaTag('keywords', keywords);
+  setMetaTag('robots', 'index, follow');
+  setMetaTag('autor', 'Partymax');
+  setMetaTag('language', 'es');
+
+  // Open Graph / Facebook / LinkedIn / Pinterest / WhatsApp
+  setPropertyMetaTag('og:type', 'website');
+  setPropertyMetaTag('og:title', title);
+  setPropertyMetaTag('og:description', 'Organiza tu evento ideal con Partymax. Encuentra los mejores proveedores de decoración, catering, entretenimiento y más en un solo lugar.');
+  setPropertyMetaTag('og:image', image);
+  setPropertyMetaTag('og:url', url);
+  setPropertyMetaTag('og:site_name', 'PARTYMAX');
+
+  // Twitter
+  setMetaTag('twitter:card', 'summary_large_image');
+  setMetaTag('twitter:title', title);
+  setMetaTag('twitter:description', 'Organiza tu evento ideal con Partymax. Encuentra los mejores proveedores de decoración, catering, entretenimiento y más en un solo lugar.');
+  setMetaTag('twitter:image', image);
+  setMetaTag('twitter:site', twitterAccount.value)
+}
 
 watch(() => 
   filtersStores.getDrawer, (data) => {
@@ -85,6 +125,14 @@ async function fetchData() {
     localStorage.setItem('userAbilities', JSON.stringify(userAbilities))
     localStorage.setItem('user_data', JSON.stringify(user_data))
   }
+
+  setMetaTags({
+    title: 'PARTYMAX | THE PARTY MARKET',
+    description: `Descubre Partymax, la plataforma líder en Colombia para organizar eventos y celebraciones. Conecta con los mejores proveedores de decoración, catering y entretenimiento. Encuentra todo lo que necesitas para una fiesta inolvidable, de manera rápida, segura y al mejor precio. ¡Vive la experiencia Partymax! 🎉`,
+    image:  import.meta.env.VITE_APP_DOMAIN_API_URL + '/logos/R_ORIGINAL@2x.png',
+    url: `https://${import.meta.env.VITE_MY_DOMAIN}` ,
+    keywords:  `eventos en Colombia, marketplace de fiestas, proveedores de eventos, organización de eventos, planificación de fiestas, catering, decoración de fiestas, entretenimiento para eventos, servicios para bodas, fiestas infantiles, despedidas de soltera, tecnología para eventos, Partymax`
+  });
 
   await cartStores.fetchCart()
 }
