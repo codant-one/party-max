@@ -268,7 +268,7 @@ const tab = ref('0')
                   :src="baseURL + (isMobile ? item.mobile : item.image)"
                   :lazy-src="baseURL + item.mobile"
                   :lazy="true"
-                  :alt="item.slug"
+                  :alt="'slider'+(i+1)"
                   class="img-gallery"
                   cover
                   @click="redirectTo(item.url)"
@@ -387,7 +387,7 @@ const tab = ref('0')
     <!-- banner 2 -->
     <VCard class="mt-7 no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
-        <img :src="banner_7.image" cover @click="redirectTo(banner_7.url)" class="img-gallery"/>
+        <img :src="banner_7.image" cover @click="redirectTo(banner_7.url)" class="img-gallery" alt="banner7"/>
       </VCardItem>  
     </VCard>
     
@@ -444,6 +444,7 @@ const tab = ref('0')
                 <img 
                   :src="banner_8.image" 
                   class="border-img img-gallery"
+                  alt="banner8"
                   cover
                   @click="redirectTo(banner_8.url)"
                   />
@@ -555,12 +556,12 @@ const tab = ref('0')
     <VCard class="mt-7 no-shadown card-information p-0 d-flex transparent card-banner34">
         <VCard class="no-shadown card-information p-0 w-50 grid-item w-100">
             <VCardItem class="p-0">
-              <img :src="banner_9.image" cover @click="redirectTo(banner_9.url)"  class="img-gallery"/>
+              <img :src="banner_9.image" cover @click="redirectTo(banner_9.url)"  class="img-gallery" alt="banner9"/>
             </VCardItem> 
         </VCard>
         <VCard class="no-shadown card-information p-0 w-50 ms-5 grid-item w-100">
             <VCardItem class="p-0">
-              <img :src="banner_10.image" cover @click="redirectTo(banner_10.url)" class="img-gallery"/>
+              <img :src="banner_10.image" cover @click="redirectTo(banner_10.url)" class="img-gallery" alt="banner10"/>
             </VCardItem>
         </VCard>
     </VCard>
