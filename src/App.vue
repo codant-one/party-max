@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import { useCartStores } from '@/stores/cart'
 import { useAuthStores } from '@/stores/auth'
 import { useFiltersStores } from '@/stores/filters'
+import { useHead } from '@vueuse/head'
 import Header from '@/components/app/Header.vue'
 import Footer from '@/components/app/Footer.vue'
 import Filters from '@/components/app/Filters.vue'
@@ -23,6 +24,26 @@ const background = ref('tw-bg-white')
 const isMobile = /Mobi/i.test(navigator.userAgent);
 const drawer = ref(false)
 const twitterAccount = ref(import.meta.env.VITE_TWITTER_ACCOUNT ?? '')
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Partymax",
+        "url": `https://${import.meta.env.VITE_MY_DOMAIN}`,
+        "description": "Plataforma líder en Colombia para organizar eventos y fiestas con los mejores proveedores de catering, decoración y entretenimiento.",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": `https://${import.meta.env.VITE_MY_DOMAIN}/search?q={search_term_string}`,
+          "query-input": "required name=search_term_string"
+        }
+      })
+    }
+  ]
+})
 
 const setMetaTags = ({ title, description, image, url, keywords }) => {
   document.title = title;
