@@ -8,9 +8,9 @@ import { useCartStores } from '@/stores/cart'
 import { useDocumentTypesStores } from '@/stores/document-types'
 
 import Product6 from '@/components/product/Product6.vue'
+import Product9 from '@/components/product/Product9.vue'
 import Service6 from '@/components/service/Service6.vue'
 
-import logo from '@assets/images/logo.svg';
 import check_circle from '@assets/icons/check-circle.svg';
 import error_circle from '@assets/icons/error-circle.svg';
 import info from '@assets/icons/info-circle.svg?inline';
@@ -32,7 +32,16 @@ const isLoading = ref(false)
 const iswholesale = ref(false)
 const refVForm = ref()
 const quotationGenerated = ref(false)
-const today = new Date().toLocaleDateString('es-ES', {
+const today = new Date();
+const futureDate = new Date(today);
+const start_date = today.toLocaleDateString('es-ES', {
+  day: '2-digit',
+  month: '2-digit',
+  year: 'numeric'
+});
+
+futureDate.setDate(today.getDate() + 8);
+const due_date = futureDate.toLocaleDateString('es-ES', {
   day: '2-digit',
   month: '2-digit',
   year: 'numeric'
@@ -49,8 +58,7 @@ const billingDetail = ref({
 
 const summary = ref({
     subTotal: 0,
-    send: '12000.00',
-    shipping_express: 0,
+    iva: 0,
     total: 0
 })
 
@@ -78,8 +86,11 @@ async function fetchData() {
             iswholesale.value = element.wholesale === 1 ? true : false
             sum += (parseFloat(value) * element.quantity)
         });
-        summary.value.subTotal = sum.toFixed(2)
-        summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
+
+        let iva = ((sum * 19) / 100)
+        summary.value.subTotal = (sum - iva).toFixed(2)
+        summary.value.iva = iva.toFixed(2)
+        summary.value.total = sum.toFixed(2)
     }
 
     await documentTypesStores.fetchDocumentTypes()
@@ -132,18 +143,18 @@ const onSubmit = () => {
 
 <template>
    <div class="checkout-page">
-        <Loader :isLoading="isLoading"/>
+        <Loader :isLoading="isLoading" class="d-print-none"/>
         <VContainer class="checkout-card">
             <VForm
                 v-if="!quotationGenerated"
                 ref="refVForm" 
-                class="form-facturacion"
+                class="d-print-none"
                 @submit.prevent="onSubmit"> 
                 <VRow>
                     <VCol cols="12" md="8">     
                         <VCard class="card-products mx-auto px-0">
                             <h1 class="title-summary border-title pb-4">Resumen de cotización</h1>
-                            <h2 class="title-card px-5 px-md-16 my-3">Productos {{ iswholesale ? '(al mayor)' : ''}}</h2>
+                            <h2 class="title-card px-5 px-md-12 my-3">Productos {{ iswholesale ? '(al mayor)' : ''}}</h2>
                             <VCardText class="row-cardp p-0">
                                 <template v-for="(item, i) in products" :key="i">
                                     <Product6
@@ -159,13 +170,30 @@ const onSubmit = () => {
                                 </template>
 
                             </VCardText>
-                            <VRow class="row-cardp3 pb-0 px-5 px-md-16">
-                                <VCol cols="6" md="6" class="text-left">
+                            <VRow no-gutters class="px-5 px-md-12 my-3">
+                                <VCol cols="10" md="10" class="print-row d-flex justify-content-end align-center">
                                     <span>Subtotal</span>
                                 </VCol>
+                                <VCol cols="2" md="2" class="print-row d-flex justify-content-end align-center">
+                                    <span>${{ formatNumber(summary.subTotal) }}</span> 
+                                </VCol>
+                            </VRow>
 
-                                <VCol cols="6" md="6" class="text-right pe-6 pe-md-3">
-                                    <h4>${{ formatNumber(summary.subTotal) }}</h4> 
+                            <VRow no-gutters class="px-5 px-md-12 my-3">
+                                <VCol cols="10" md="10" class="print-row d-flex justify-content-end align-center">
+                                    <span>IVA</span>
+                                </VCol>
+                                <VCol cols="2" md="2" class="print-row d-flex justify-content-end align-center">
+                                    <span>${{ formatNumber(summary.iva) }}</span> 
+                                </VCol>
+                            </VRow>
+
+                            <VRow no-gutters class="px-5 px-md-12 my-3">
+                                <VCol cols="10" md="10" class="text-right tw-text-primary">
+                                    <span>Total</span>
+                                </VCol>
+                                <VCol cols="2" md="2" class="text-right tw-text-primary">
+                                    <span>${{ formatNumber(summary.total) }}</span> 
                                 </VCol>
                             </VRow>
                         </VCard>     
@@ -231,18 +259,18 @@ const onSubmit = () => {
                                                 :rules="[requiredValidator, emailValidator]"
                                             />     
                                         </VCol>
-                                        <VCol cols="12" md="12" class="mb-0 mb-md-1">
-                                            <VBtn
-                                                variant="flat"
-                                                width="100%"
-                                                style="border-radius:32px;"
-                                                type="submit"
-                                                class="btn-register tw-text-white tw-bg-primary button-hover"
-                                                >
-                                                    generar cotización
-                                            </VBtn>
-                                        </VCol>
                                     </VRow>
+                                </VCardItem>
+                                <VCardItem class="p-0 text-center">
+                                    <VBtn
+                                        variant="flat"
+                                        width="88%"
+                                        style="border-radius:32px;"
+                                        type="submit"
+                                        class="btn-register tw-text-white tw-bg-primary button-hover my-3"
+                                        >
+                                            generar cotización
+                                    </VBtn>
                                 </VCardItem>
                             </VCardText>
                         </VCard>
@@ -251,92 +279,116 @@ const onSubmit = () => {
             </VForm>
 
             <VRow v-if="quotationGenerated">
-                <VCol cols="12" md="8">     
-                    <VCard class="card-products mx-auto px-0">
-                        <VCardText class="d-block d-md-flex justify-content-between p-5 px-md-16">
-                            <div class="d-flex flex-column">
-                                <img :src="logo" width="300" alt="logo" cover/>
-                            </div>
-                            <div class="d-flex flex-column align-end">
-                                <span class="title-summary">Cotización</span>
-                                <h4 class="text_2 pb-2">{{ today }}</h4>
-                            </div>
-                        </VCardText>
-                        <VCardText class="d-flex flex-column border-title px-5 px-md-16">
-                            <h4 class="text_2">CLIENTE</h4>
-                            <span class="text_2">{{ billingDetail.name }}</span>
-                            <span class="text_2" v-if="billingDetail.company">{{ billingDetail.company }}</span>
-                            <span class="text_2">{{ documentTypes.filter(doc => doc.id === Number(billingDetail.document_type_id))[0].code }}-{{ billingDetail.document }}</span>
-                            <span class="text_2">(+57) {{ billingDetail.phone }}</span>
-                            <span class="text_2">{{ billingDetail.email }}</span>
-                        </VCardText>
+                <VCol cols="12" md="1"></VCol>
+                <VCol cols="12" md="7">    
+                    <div class="content-to-print">
+                        <VCard class="card-quote mx-auto d-flex flex-column">
+                            <VCardText class="d-flex justify-content-between p-5 px-md-12 mt-quote">
+                                <div class="d-flex flex-column">
+                                    <h4 class="text_2">CLIENTE</h4>
+                                    <span class="text_2">Nombre: {{ billingDetail.name }}</span>
+                                    <span class="text_2" v-if="billingDetail.company">Empresa: {{ billingDetail.company }}</span>
+                                    <span class="text_2">Documento: {{ documentTypes.filter(doc => doc.id === Number(billingDetail.document_type_id))[0].code }}-{{ billingDetail.document }}</span>
+                                    <span class="text_2">Teléfono: {{ billingDetail.phone.includes('+57') ? '' : '(+57)'}} {{ billingDetail.phone }}</span>
+                                    <span class="text_2">Correo electrónico: {{ billingDetail.email }}</span>
+                                </div>
+                                <div class="d-flex flex-column align-end">
+                                    <span class="title-summary">Cotización</span>
+                                    <h4 class="text_2 text-right">Fecha de solicitud: {{ start_date }}</h4>
+                                    <h4 class="text_2 text-right">Fecha de vencimiento: {{ due_date }}</h4>
+                                </div>
+                            </VCardText>
+                            <VCardText class="d-flex px-5 px-md-12 border-top mt-auto">
+                                <span class="text-address d-block tw-text-gray d-flex align-center my-2">
+                                    <info />
+                                    <span class="ms-2">
+                                        Los precios mostrados en esta cotización corresponden únicamente a los productos seleccionados. <br>
+                                        El costo de envío no está incluido y se calculará por separado, según la dirección de entrega. <br>
+                                        Todos nuestros productos en el marketplace incluyen el IVA. <br>
+                                        Esta cotización tiene una validez de 8 días a partir de la fecha de emisión.
+                                    </span>
+                                </span>
+                            </VCardText>
+                            <VCardText class="row-cardp p-0">
+                                <VRow no-gutters class="px-5 px-md-12 mt-1 pb-1 border-title">
+                                    <VCol cols="6" md="7" class="print-row d-flex justify-content-start align-center">
+                                        <h4 class="text_2">Productos {{ iswholesale ? '(al mayor)' : ''}}</h4>
+                                    </VCol>
+                                    <VCol cols="2" md="1" class="print-row d-flex justify-content-end tw-items-end">
+                                        <h4 class="text_2">Cant.</h4>
+                                    </VCol>
+                                    <VCol cols="2" md="2" class="print-row d-flex justify-content-end tw-items-end">
+                                        <h4 class="text_2">Unitario</h4>
+                                    </VCol>
+                                    <VCol cols="2" md="2" class="print-row d-flex justify-content-end tw-items-end">
+                                        <h4 class="text_2">Total</h4>
+                                    </VCol>
+                                </VRow>
 
-                        <h2 class="title-card px-5 px-md-16 my-3">Productos {{ iswholesale ? '(al mayor)' : ''}}</h2>
+                                <template v-for="(item, i) in products" :key="i">
+                                    <Product9
+                                        v-if="item.type === 0"
+                                        :product="item"
+                                        :readonly="true"
+                                        :isLastItem="isLastItem(i)"/>
+                                    <Service6
+                                        v-else
+                                        :service="item"
+                                        :readonly="true"
+                                        :isLastItem="isLastItem(i)"/>
+                                </template>
+                            </VCardText>
+                            <VCardText class="p-0 m-total">
+                                <VRow no-gutters class="px-5 px-md-12 my-3">
+                                    <VCol cols="10" md="10" class="print-row d-flex justify-content-end align-center">
+                                        <span>Subtotal</span>
+                                    </VCol>
+                                    <VCol cols="2" md="2" class="print-row d-flex justify-content-end align-center">
+                                        <span>${{ formatNumber(summary.subTotal) }}</span> 
+                                    </VCol>
+                                </VRow>
 
-                        <VCardText class="row-cardp p-0">
-                            <template v-for="(item, i) in products" :key="i">
-                                <Product6
-                                    v-if="item.type === 0"
-                                    :product="item"
-                                    :readonly="true"
-                                    :isLastItem="isLastItem(i)"/>
-                                <Service6
-                                    v-else
-                                    :service="item"
-                                    :readonly="true"
-                                    :isLastItem="isLastItem(i)"/>
-                            </template>
+                                <VRow no-gutters class="px-5 px-md-12 my-3">
+                                    <VCol cols="10" md="10" class="print-row d-flex justify-content-end align-center">
+                                        <span>IVA</span>
+                                    </VCol>
+                                    <VCol cols="2" md="2" class="print-row d-flex justify-content-end align-center">
+                                        <span>${{ formatNumber(summary.iva) }}</span> 
+                                    </VCol>
+                                </VRow>
 
-                        </VCardText>
-
-                        <VRow class="row-cardp3 border-title pb-0 px-5 px-md-16">
-                            <VCol cols="6" md="6" class="text-left">
-                                <span>Subtotal</span>
-                            </VCol>
-
-                            <VCol cols="6" md="6" class="text-right pe-6 pe-md-3">
-                                <h4>${{ formatNumber(summary.subTotal) }}</h4> 
-                            </VCol>
-                        </VRow>
-
-                        <VCardText class="d-flex px-5 px-md-16 mt-auto">
-                            <span class="text-address d-block tw-text-gray d-flex align-center my-2">
-                                <info />
-                                <span class="ms-2">
-                                    Los precios mostrados en esta cotización corresponden únicamente al valor de los productos seleccionados. <br>
-                                    El costo de envío no está incluido y será calculado por separado según la dirección de entrega.</span>
-                            </span>
-                        </VCardText>
-                    </VCard>     
+                                <VRow no-gutters class="px-5 px-md-12 my-3">
+                                    <VCol cols="10" md="10" class="text-right tw-text-primary">
+                                        <span>Total</span>
+                                    </VCol>
+                                    <VCol cols="2" md="2" class="text-right tw-text-primary">
+                                        <span>${{ formatNumber(summary.total) }}</span> 
+                                    </VCol>
+                                </VRow>
+                            </VCardText>
+                        </VCard>    
+                    </div>  
                 </VCol>
-                <VCol cols="12" md="4" class="d-print-none">
+                <VCol cols="12" md="3" class="d-print-none">
                     <VCard class="card-bono mx-auto p-0 py-5">
-                        <VCardText class="d-flex row-realizar title-card w-100 px-5 px-md-10 py-2">
-                            <VBtn
-                                block
-                                variant="flat"
-                                type="submit"
-                                class="btn-register tw-text-white tw-bg-primary button-hover">
-                                    Descargar
-                            </VBtn>
-                        </VCardText>
                         <VCardText class="d-flex row-realizar title-card w-100 px-5 px-md-10 py-2 ">
                             <VBtn
                                 block
                                 variant="flat"
                                 type="submit"
-                                class="btn-order"
+                                 class="btn-register tw-text-white tw-bg-primary button-hover"
                                 @click="printQuote">
                                     Imprimir
                             </VBtn>
                         </VCardText>
                     </VCard>
                 </VCol>
+                <VCol cols="12" md="1"></VCol>
             </VRow>
         </VContainer>
 
         <!--PopUp Message-->
-        <VDialog v-model="isDialogVisible" >
+        <VDialog v-model="isDialogVisible" class="d-print-none">
             <VCard
                 class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
                 <VImg :width="isMobile ? '120' : '180'" :src="isError ? error_circle : check_circle" class="mx-auto"/>
@@ -347,66 +399,6 @@ const onSubmit = () => {
         </VDialog>
     </div>
 </template>
-
-<style lang="scss">
-    @media print {
-
-        .border-img, .avatar-dynamic {
-            width: 50px !important;
-            height: 50px !important;
-        }
-
-        .checkout-page, .checkout-card {
-            margin-top: 0 !important;
-        }
-
-        .v-card {
-            border-top: 1px solid #999999;
-            border-radius: 0 !important;
-            margin: 0 !important;
-        }
-
-        body {
-            background: none !important;
-        }
-        
-        @page { margin: 0; size: auto; }
-
-        .layout-page-content,
-        .v-row,
-        .v-col-md-1, .v-col-md-2, .v-col-md-3, .v-col-md-4,
-        .v-col-md-5, .v-col-md-6, .v-col-md-7, .v-col-md-8,
-        .v-col-md-9, .v-col-md-10, .v-col-md-11, .v-col-md-12 {
-            padding: 0;
-            margin: 0;
-        }
-
-        .v-navigation-drawer,
-        .layout-vertical-nav,
-        .app-customizer-toggler,
-        .layout-footer,
-        .layout-navbar,
-        .layout-navbar-and-nav-container {
-            display: none !important;
-        }
-
-        .v-card {
-            box-shadow: none !important;
-
-            .print-row {
-                flex-direction: row !important;
-            }
-        }
-
-        .layout-content-wrapper {
-            padding-inline-start: 0 !important;
-        }
-
-        .v-table__wrapper {
-            overflow: hidden !important;
-        }
-    }
-</style>
 <style lang="scss">
 
     .w-60 {
@@ -446,7 +438,7 @@ const onSubmit = () => {
 
     .button-hover:hover {
         background-color: #FF27B3 !important;
-        box-shadow: 0px 0px 24px 0px #FF27B3;
+        box-shadow: 0px 0px 12px 0px #FF27B3;
     }
 
     .btn-order {
@@ -552,8 +544,7 @@ const onSubmit = () => {
     }
 
     .card-products {
-        background-color:#FFFFFF;
-        padding:16px 32px;
+        padding: 16px 32px;
         border-radius: 24px;
         box-shadow: none;
     }
@@ -564,6 +555,11 @@ const onSubmit = () => {
         font-style: normal;
         font-weight: 500;
         line-height: normal;
+    }
+
+    .border-top {
+        border-top: 1px solid #D9EEF2;
+        border-bottom: 1px solid #D9EEF2;
     }
 
     .border-title {
@@ -609,11 +605,6 @@ const onSubmit = () => {
 
     .row-cardp {
         border-bottom: 1px solid #D9EEF2;
-        border-top: 1px solid #D9EEF2;
-    }
-
-    .row-cardp3 {
-        padding: 16px 32px;
     }
 
     .row-cardp3 span {
@@ -634,7 +625,7 @@ const onSubmit = () => {
 
     .text-address {
         color: #0A1B33;
-        font-size: 12px;
+        font-size: 10px;
         font-style: normal;
         font-weight: 400;
         line-height: 16px;
@@ -693,5 +684,81 @@ const onSubmit = () => {
             width: 100%;
         }
 
+    }
+</style>
+<style lang="scss">
+
+    .content-to-print {
+        background-color: white;
+        border-radius: 24px;
+        padding: 0;
+    }
+
+    .card-quote {
+        box-shadow: none;
+        background-color: transparent;
+    }
+
+    .mt-quote {
+        margin-top: 20px;
+    }
+
+    @media print {
+
+        @page {
+            size: auto;
+            margin: 0;
+            padding: 165px 0 150px 0;
+            background-image: url(@assets/images/letterhead.jpg) !important;
+            background-repeat: no-repeat;
+            background-position: top center;
+            background-size: cover;
+            page-break-after: always;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            visibility: hidden;
+        }
+
+        .checkout-card, .v-main {
+            padding: 0 !important;
+            margin: 0 !important;
+            margin-block-end: 0 !important;
+        }
+
+        .content-to-print {
+            visibility: visible; 
+            background: none;
+            border: none;
+            border-radius: 0;
+            padding: 0;
+            margin: 0;
+            page-break-after: always;
+        }
+
+        .mt-quote {
+            margin-top: 0!important;
+        }
+
+            
+        .card-quote {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .v-card {
+            box-shadow: none !important;
+
+            .print-row {
+                flex-direction: row !important;
+            }
+        }
+
+        .v-card, .v-row, .v-col {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
     }
 </style>

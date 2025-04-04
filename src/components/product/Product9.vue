@@ -57,40 +57,35 @@ watchEffect(() => {
 <template>
     <div class="tw-no-underline zoom-product">
         <VCard 
-            class="no-shadown px-0 w-100 py-5" 
+            class="no-shadown px-0 w-100 py-1 bg-transparent " 
             :class="props.isLastItem ? '' : 'card-information'">
-            <VRow no-gutters class="px-5 px-md-14">
-                <VCol cols="6" md="1" class="print-row d-flex justify-content-center align-center">
-                    <VCardText class="border-img ms-md-16">
+            <VRow no-gutters class="px-5 px-md-12">
+                <VCol cols="1" md="1" class="d-flex justify-content-center align-center">
+                    <VCardText class="border-img ms-md-1">
                         <VImg
-                            :width="100"
+                            :width="50"
                             :src="baseURL + image" 
                             class="avatar-dynamic"
                             cover />
                     </VCardText>
                 </VCol>
                 <VCol cols="6" md="12" v-if="isMobile"></VCol>
-                <VCol cols="10" md="8" class="print-row d-flex justify-content-center align-center mt-3 my-md-0 ps-md-16">
+                <VCol cols="6" md="6" class="d-flex justify-content-center align-center my-md-0 ps-md-5">
                     <VCardText>
                         <span class="d-block text_2 py-1 tw-text-tertiary title-product">{{ name }}</span>
-                        <span class="d-block py-0 tw-text-gray">Color: {{ color }}</span>
-                        <span class="d-block py-0 tw-text-gray">
-                            <span>{{ quantity }} </span>
-                            <span>{{ (quantity > 1) ? ' Unidades' : ' Unidad' }}</span>
-                        </span>
+                        <span class="d-block text_2 py-0 tw-text-gray">Color: {{ color }}</span>
                     </VCardText>
                 </VCol>
-                <VCol cols="2" md="3" class="print-row d-flex justify-content-end tw-items-end md:tw-items-center">
-                    <div class="me-0">
-                        <VCardText class="d-flex text-end align-end justify-content-end">
-                        </VCardText>
-                        <VCardText class="mt-1">
-                            <div class="d-flex text-center align-end tw-justify-end md:tw-justify-center">
-                                <span v-if="existence_whole" class="text_1 tw-text-tertiary">${{ formatNumber(wholesale_price) }}</span>
-                                <span v-if="!existence_whole" class="text_1 tw-text-tertiary">${{ formatNumber(price_for_sale) }}</span>
-                            </div>
-                        </VCardText>
-                    </div>
+                <VCol cols="1" md="1" class="d-flex justify-content-end tw-items-center">
+                    <span class="text_1 tw-text-tertiary">{{ quantity }}</span>
+                </VCol>
+                <VCol cols="2" md="2" class="d-flex justify-content-end tw-items-center">
+                    <span v-if="existence_whole" class="text_1 tw-text-tertiary">${{ formatNumber(wholesale_price) }}</span>
+                    <span v-if="!existence_whole" class="text_1 tw-text-tertiary">${{ formatNumber(price_for_sale) }}</span>
+                </VCol>
+                <VCol cols="2" md="2" class="d-flex justify-content-end tw-items-center">
+                    <span v-if="existence_whole" class="text_1 tw-text-tertiary">${{ formatNumber(wholesale_price * quantity) }}</span>
+                    <span v-if="!existence_whole" class="text_1 tw-text-tertiary">${{ formatNumber(price_for_sale * quantity) }}</span>
                 </VCol>
             </VRow>
         </VCard>
@@ -122,8 +117,8 @@ watchEffect(() => {
     }
 
     .border-img {
-        width: 130px;
-        height: 130px;
+        width: 60px;
+        height: 60px;
         border-radius: 16px !important;
         border: 1px solid #D9EEF2;
         padding: 10px !important;
@@ -140,6 +135,10 @@ watchEffect(() => {
         transform: scale(1.1) !important;
     }
 
+    .bg-transparent {
+        background: transparent;
+    }
+
     .title-product {
         font-size: 14px;
         font-style: normal;
@@ -148,14 +147,14 @@ watchEffect(() => {
     }
 
     .text_1 {
-        font-size: 24px;
+        font-size: 14px;
         font-style: normal;
         font-weight: 400;
         line-height: 24px;
     }
 
     .text_2 {
-        font-size: 16px;
+        font-size: 12px;
         font-style: normal;
         font-weight: 400;
         line-height: 16px;

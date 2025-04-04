@@ -171,7 +171,7 @@ const getFlagCountry = country => {
 
 <template>
     <VForm
-        ref="refVForm" class="form-facturacion"
+        ref="refVForm" class="form-payment"
         @submit.prevent="onSubmit"> 
         <VRow no-gutters>
             <VCol cols="12" md="4">
@@ -712,7 +712,7 @@ const getFlagCountry = country => {
             padding: 16px 10px;
         }
 
-        .form-facturacion {
+        .form-payment {
             width: 100%!important;
         }
 
