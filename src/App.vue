@@ -99,7 +99,7 @@ async function fetchData() {
   var repeat = 'repeat'
   var size = (isMobile) ? 'auto' : 'contain'
 
-  if(route.name === 'dashboard' || route.name === 'register_confirm') {
+  if(route.name === 'dashboard' || route.name === 'register_confirm' || route.name === 'idea_generator') {
     background.value = 'tw-bg-green'
   } else {
     background.value = 'tw-bg-white'
