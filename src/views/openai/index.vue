@@ -1,6 +1,7 @@
 <script setup>
     import { requiredValidator} from '@validators'
     import { useOpenaiStores } from '@/stores/openai'
+    import Loader from '@/components/common/Loader.vue'
     const event_type = ref(null)
     const refVForm = ref()
     const theme = ref(null)
@@ -58,6 +59,7 @@
 
 <template>
     <VContainer class="mt-2 mt-md-10">
+        <Loader :isLoading="isLoading" class="d-print-none"/>
       <div class="card-container-generator">
             <h1 class="title-generator text-center">Genera las mejores ideas</h1>
             <span class="desc_generator text-center">Olvidate del estres que causa la planificación de tu celebración y deja que  <br>el poder de nuestra IA planifique tu evento de manera divertida.</span>
