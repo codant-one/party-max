@@ -34,6 +34,7 @@ import success_registerp from '@/views/clients/success_registerper.vue'
 import success_registerc from '@/views/clients/success_registercom.vue'
 import forgot_password from '@/views/clients/forgot_password.vue'
 import reset_password from '@/views/clients/reset_password.vue'
+import Openai from '@/views/openai/index.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -221,6 +222,11 @@ const router = createRouter({
       path: '/clients/reset_password',
       name: 'reset_password',
       component: reset_password
+    },
+    {
+      path: '/idea-generator/ai',
+      name: 'idea_generator',
+      component: Openai
     }
   ]
 })
