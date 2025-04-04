@@ -147,12 +147,12 @@
         <VCol cols="12" md="6" class="d-flex align-center text-right col-mobile">
           <VSpacer />
           <span class="copyright">Pagos seguros con</span>
-          <img :src="icopayment1" width="45" class="me-3 ms-8"/>
-          <img :src="icopayment2" width="44" class="me-3"/>
-          <img :src="icopayment3" width="44" class="me-3"/>
-          <img :src="icopayment4" width="46" class="me-3"/>
-          <img :src="icopayment5" width="45" class="me-3"/>
-          <img :src="icopayment6" width="46"/>
+          <img :src="icopayment1" alt="icopayment1" width="45" class="me-3 ms-8"/>
+          <img :src="icopayment2" alt="icopayment2" width="44" class="me-3"/>
+          <img :src="icopayment3" alt="icopayment3" width="44" class="me-3"/>
+          <img :src="icopayment4" alt="icopayment4" width="46" class="me-3"/>
+          <img :src="icopayment5" alt="icopayment5" width="45" class="me-3"/>
+          <img :src="icopayment6" alt="icopayment6" width="46"/>
         </VCol>
       </VRow>
 
