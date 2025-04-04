@@ -584,7 +584,7 @@
           <VBtn
             variant="flat"
             block
-            class="btn-order tw-text-tertiary my-2 me-2"
+            class="btn-order tw-text-tertiary my-2 me-2 d-none"
             @click="redirect('quote')"
             >
               cotizar
