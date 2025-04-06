@@ -582,9 +582,10 @@
             ver carrito
           </VBtn>
           <VBtn
+            v-if="products.length > 0"
             variant="flat"
             block
-            class="btn-order tw-text-tertiary my-2 me-2 d-none"
+            class="btn-order tw-text-tertiary my-2 me-2"
             @click="redirect('quote')"
             >
               cotizar

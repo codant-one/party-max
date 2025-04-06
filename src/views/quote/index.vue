@@ -6,10 +6,10 @@ import { requiredValidator, phoneValidator, emailValidator } from '@validators'
 import { useHomeStores } from '@/stores/home'
 import { useCartStores } from '@/stores/cart'
 import { useDocumentTypesStores } from '@/stores/document-types'
+import { useQuotesStores } from '@/stores/quotes'
 
-import Product6 from '@/components/product/Product6.vue'
 import Product9 from '@/components/product/Product9.vue'
-import Service6 from '@/components/service/Service6.vue'
+import Service8 from '@/components/service/Service8.vue'
 
 import check_circle from '@assets/icons/check-circle.svg';
 import error_circle from '@assets/icons/error-circle.svg';
@@ -20,6 +20,7 @@ import Loader from '@/components/common/Loader.vue'
 const homeStores = useHomeStores()
 const cartStores = useCartStores()
 const documentTypesStores = useDocumentTypesStores()
+const quotesStores = useQuotesStores()
 
 const isMobile = /Mobi/i.test(navigator.userAgent)
 const isDialogVisible = ref(false)
@@ -121,21 +122,99 @@ const onSubmit = () => {
         if (isValid) {
             isLoading.value = true
             
-            setTimeout(() => {
-                isLoading.value = false
+            let product_color_id = []
+            let service_id = []
+            let price_product = []
+            let quantity_product = []
+            let price_service = []
+            let quantity_service = []
+            let cake_size_id = []
+            let flavor_id = []
+            let filling_id = []
+            let order_file_id = []
+            let product_type = 0
+            let service_type = 0
+            let type = 0
 
-                isDialogVisible.value = true
-                isError.value = false
-                message.value = 'Cotización generada exitosamente.'
+            products.value.forEach(element => {
 
-                setTimeout(() => {
-                    isDialogVisible.value = false
-                    message.value = ''
+                if(element.type === 0) {
+                    product_color_id.push(element.product_color_id)
+                    price_product.push(iswholesale.value === true ? element.product.wholesale_price : element.product.price_for_sale)
+                    quantity_product.push(element.quantity)
+                    product_type = 1
+                } else {
+                    let cupcake = element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
+
+                    service_id.push(element.id)
+                    price_service.push(element.cake_size_id === 0 ? element.price : cupcake.price)
+                    quantity_service.push(element.quantity)
+                    cake_size_id.push(element.cake_size_id === 0 ? null : element.cake_size_id)
+                    flavor_id.push(element.cake_size_id > 0 ? element.flavor.id : null)
+                    filling_id.push(element.cake_size_id > 0 ? element.filling.id : null)
+                    order_file_id.push(element.order_file_id === '0' ? null : element.order_file_id)
+                    service_type = 1
+                }
+            });
+
+            if(product_type === 1 && service_type === 1)
+                type = 2
+            else
+                type = (product_type === 1) ? 0 : 1
+
+            let data = {
+                name: billingDetail.value.name,
+                company: billingDetail.value.company,
+                document_type_id: billingDetail.value.document_type_id,
+                document: billingDetail.value.document,
+                phone: billingDetail.value.phone,
+                email: billingDetail.value.email,
+                start_date: start_date,
+                due_date: due_date,
+                sub_total: summary.value.subTotal,
+                tax: summary.value.iva,
+                total: summary.value.total,
+                product_color_id: product_color_id,
+                service_id: service_id,
+                price_product: price_product,
+                quantity_product: quantity_product,
+                price_service: price_service,
+                quantity_service: quantity_service,
+                cake_size_id: cake_size_id,
+                flavor_id: flavor_id,
+                filling_id: filling_id,
+                type: type
+            }
+
+            quotesStores.addQuote(data)
+                .then(response => {
+                    isLoading.value = false
+
+                    isDialogVisible.value = true
                     isError.value = false
-                    quotationGenerated.value = true
-                }, 3000)
-            }, 1000)
-            
+                    message.value = 'Cotización generada exitosamente.'
+
+                    setTimeout(() => {
+                        isDialogVisible.value = false
+                        message.value = ''
+                        isError.value = false
+                        quotationGenerated.value = true
+                    }, 3000)
+                })
+                .catch(error => {
+                    
+                    isLoading.value = false
+                    isDialogVisible.value = true
+                    message.value = error
+                    isError.value = true             
+
+                    setTimeout(() => {
+                        isDialogVisible.value = false
+                        message.value = ''
+                        isError.value = false
+                    }, 2000)
+                    // console.error('Error:', error);
+                });
         }
     })
 }
@@ -154,45 +233,59 @@ const onSubmit = () => {
                     <VCol cols="12" md="8">     
                         <VCard class="card-products mx-auto px-0">
                             <h1 class="title-summary border-title pb-4">Resumen de cotización</h1>
-                            <h2 class="title-card px-5 px-md-12 my-3">Productos {{ iswholesale ? '(al mayor)' : ''}}</h2>
                             <VCardText class="row-cardp p-0">
+                                <VRow no-gutters class="px-5 px-md-12 mt-1 pb-1">
+                                    <VCol cols="7" md="7" class="print-row d-flex justify-content-start align-start">
+                                        <h4 class="text_2">Productos {{ iswholesale ? '(al mayor)' : ''}}</h4>
+                                    </VCol>
+                                    <VCol cols="2" md="1" class="print-row d-flex justify-content-end tw-items-end">
+                                        <h4 class="text_2">Cant.</h4>
+                                    </VCol>
+                                    <VCol cols="2" md="2" class="print-row d-none d-md-flex justify-content-end tw-items-end">
+                                        <h4 class="text_2">Unitario</h4>
+                                    </VCol>
+                                    <VCol cols="3" md="2" class="print-row d-flex justify-content-end tw-items-end">
+                                        <h4 class="text_2">Total</h4>
+                                    </VCol>
+                                </VRow>
+                            </VCardText>
+                            <VCardText class="row-cardp p-0 mb-4">
                                 <template v-for="(item, i) in products" :key="i">
-                                    <Product6
+                                    <Product9
                                         v-if="item.type === 0"
                                         :product="item"
                                         :readonly="true"
                                         :isLastItem="isLastItem(i)"/>
-                                    <Service6
+                                    <Service8
                                         v-else
                                         :service="item"
                                         :readonly="true"
                                         :isLastItem="isLastItem(i)"/>
                                 </template>
-
                             </VCardText>
-                            <VRow no-gutters class="px-5 px-md-12 my-3">
-                                <VCol cols="10" md="10" class="print-row d-flex justify-content-end align-center">
+                            <VRow no-gutters class="px-5 px-md-12 my-0 my-md-3 summary">
+                                <VCol cols="8" md="10" class="print-row d-flex justify-content-end align-center">
                                     <span>Subtotal</span>
                                 </VCol>
-                                <VCol cols="2" md="2" class="print-row d-flex justify-content-end align-center">
+                                <VCol cols="4" md="2" class="print-row d-flex justify-content-end align-center">
                                     <span>${{ formatNumber(summary.subTotal) }}</span> 
                                 </VCol>
                             </VRow>
 
-                            <VRow no-gutters class="px-5 px-md-12 my-3">
-                                <VCol cols="10" md="10" class="print-row d-flex justify-content-end align-center">
+                            <VRow no-gutters class="px-5 px-md-12 my-0 my-md-3 summary">
+                                <VCol cols="8" md="10" class="print-row d-flex justify-content-end align-center">
                                     <span>IVA</span>
                                 </VCol>
-                                <VCol cols="2" md="2" class="print-row d-flex justify-content-end align-center">
+                                <VCol cols="4" md="2" class="print-row d-flex justify-content-end align-center">
                                     <span>${{ formatNumber(summary.iva) }}</span> 
                                 </VCol>
                             </VRow>
 
-                            <VRow no-gutters class="px-5 px-md-12 my-3">
-                                <VCol cols="10" md="10" class="text-right tw-text-primary">
+                            <VRow no-gutters class="px-5 px-md-12 my-0 my-md-3 summary">
+                                <VCol cols="8" md="10" class="text-right tw-text-primary">
                                     <span>Total</span>
                                 </VCol>
-                                <VCol cols="2" md="2" class="text-right tw-text-primary">
+                                <VCol cols="4" md="2" class="text-right tw-text-primary">
                                     <span>${{ formatNumber(summary.total) }}</span> 
                                 </VCol>
                             </VRow>
@@ -279,11 +372,10 @@ const onSubmit = () => {
             </VForm>
 
             <VRow v-if="quotationGenerated">
-                <VCol cols="12" md="1"></VCol>
-                <VCol cols="12" md="7">    
-                    <div class="content-to-print">
-                        <VCard class="card-quote mx-auto d-flex flex-column">
-                            <VCardText class="d-flex justify-content-between p-5 px-md-12 mt-quote">
+                <VCol cols="12" md="8">    
+                    <div class="print-container">
+                        <VCard class="card-quote mx-auto content-to-print">
+                            <VCardText class="d-flex justify-content-between p-5 px-md-12 mt-quote -print">
                                 <div class="d-flex flex-column">
                                     <h4 class="text_2">CLIENTE</h4>
                                     <span class="text_2">Nombre: {{ billingDetail.name }}</span>
@@ -298,20 +390,9 @@ const onSubmit = () => {
                                     <h4 class="text_2 text-right">Fecha de vencimiento: {{ due_date }}</h4>
                                 </div>
                             </VCardText>
-                            <VCardText class="d-flex px-5 px-md-12 border-top mt-auto">
-                                <span class="text-address d-block tw-text-gray d-flex align-center my-2">
-                                    <info />
-                                    <span class="ms-2">
-                                        Los precios mostrados en esta cotización corresponden únicamente a los productos seleccionados. <br>
-                                        El costo de envío no está incluido y se calculará por separado, según la dirección de entrega. <br>
-                                        Todos nuestros productos en el marketplace incluyen el IVA. <br>
-                                        Esta cotización tiene una validez de 8 días a partir de la fecha de emisión.
-                                    </span>
-                                </span>
-                            </VCardText>
                             <VCardText class="row-cardp p-0">
                                 <VRow no-gutters class="px-5 px-md-12 mt-1 pb-1 border-title">
-                                    <VCol cols="6" md="7" class="print-row d-flex justify-content-start align-center">
+                                    <VCol cols="6" md="7" class="print-row d-flex justify-content-start align-start">
                                         <h4 class="text_2">Productos {{ iswholesale ? '(al mayor)' : ''}}</h4>
                                     </VCol>
                                     <VCol cols="2" md="1" class="print-row d-flex justify-content-end tw-items-end">
@@ -324,44 +405,52 @@ const onSubmit = () => {
                                         <h4 class="text_2">Total</h4>
                                     </VCol>
                                 </VRow>
-
-                                <template v-for="(item, i) in products" :key="i">
-                                    <Product9
-                                        v-if="item.type === 0"
-                                        :product="item"
-                                        :readonly="true"
-                                        :isLastItem="isLastItem(i)"/>
-                                    <Service6
-                                        v-else
-                                        :service="item"
-                                        :readonly="true"
-                                        :isLastItem="isLastItem(i)"/>
-                                </template>
                             </VCardText>
-                            <VCardText class="p-0 m-total">
+                            <template v-for="(item, i) in products" :key="i">
+                                <Product9
+                                    v-if="item.type === 0"
+                                    :product="item"
+                                    :readonly="true"
+                                    :isLastItem="isLastItem(i)"/>
+                                <Service8
+                                    v-else
+                                    :service="item"
+                                    :readonly="true"
+                                    :isLastItem="isLastItem(i)"/>
+                            </template>
+                            <VCardText class="d-flex px-5 px-md-12 border-top mt-auto">
+                                <span class="text-address d-block tw-text-gray d-flex align-center my-2">
+                                    <info />
+                                    <span class="ms-2">
+                                        Los precios mostrados en esta cotización corresponden únicamente a los productos seleccionados. <br>
+                                        El costo de envío no está incluido y se calculará por separado, según la dirección de entrega. <br>
+                                        Todos nuestros productos en el marketplace incluyen el IVA. <br>
+                                        Esta cotización tiene una validez de 8 días a partir de la fecha de emisión.
+                                    </span>
+                                </span>
+                            </VCardText>
+                            <VCardText class="p-0">
                                 <VRow no-gutters class="px-5 px-md-12 my-3">
-                                    <VCol cols="10" md="10" class="print-row d-flex justify-content-end align-center">
+                                    <VCol cols="10" md="10" class="print-row d-flex justify-content-end align-end">
                                         <span>Subtotal</span>
                                     </VCol>
-                                    <VCol cols="2" md="2" class="print-row d-flex justify-content-end align-center">
+                                    <VCol cols="2" md="2" class="print-row d-flex justify-content-end align-end">
                                         <span>${{ formatNumber(summary.subTotal) }}</span> 
                                     </VCol>
                                 </VRow>
-
                                 <VRow no-gutters class="px-5 px-md-12 my-3">
-                                    <VCol cols="10" md="10" class="print-row d-flex justify-content-end align-center">
+                                    <VCol cols="10" md="10" class="print-row d-flex justify-content-end align-end">
                                         <span>IVA</span>
                                     </VCol>
-                                    <VCol cols="2" md="2" class="print-row d-flex justify-content-end align-center">
+                                    <VCol cols="2" md="2" class="print-row d-flex justify-content-end align-end">
                                         <span>${{ formatNumber(summary.iva) }}</span> 
                                     </VCol>
                                 </VRow>
-
                                 <VRow no-gutters class="px-5 px-md-12 my-3">
-                                    <VCol cols="10" md="10" class="text-right tw-text-primary">
+                                    <VCol cols="10" md="10" class="print-row d-flex tw-text-primary justify-content-end align-end">
                                         <span>Total</span>
                                     </VCol>
-                                    <VCol cols="2" md="2" class="text-right tw-text-primary">
+                                    <VCol cols="2" md="2" class="print-row d-flex tw-text-primary justify-content-end align-end">
                                         <span>${{ formatNumber(summary.total) }}</span> 
                                     </VCol>
                                 </VRow>
@@ -369,8 +458,8 @@ const onSubmit = () => {
                         </VCard>    
                     </div>  
                 </VCol>
-                <VCol cols="12" md="3" class="d-print-none">
-                    <VCard class="card-bono mx-auto p-0 py-5">
+                <VCol cols="12" md="4" class="d-print-none">
+                    <VCard class="card-bono mx-auto p-0 bg-transparent">
                         <VCardText class="d-flex row-realizar title-card w-100 px-5 px-md-10 py-2 ">
                             <VBtn
                                 block
@@ -383,7 +472,6 @@ const onSubmit = () => {
                         </VCardText>
                     </VCard>
                 </VCol>
-                <VCol cols="12" md="1"></VCol>
             </VRow>
         </VContainer>
 
@@ -422,6 +510,13 @@ const onSubmit = () => {
         .checkout-card {
             margin-top: 8px;
             margin-block-end: 0 !important;
+        }
+
+        .summary span {
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
         }
     }
 </style>
@@ -696,69 +791,14 @@ const onSubmit = () => {
 
     .card-quote {
         box-shadow: none;
+        background-color: white;
+    }
+
+    .bg-transparent {
         background-color: transparent;
     }
 
     .mt-quote {
         margin-top: 20px;
-    }
-
-    @media print {
-
-        @page {
-            size: auto;
-            margin: 0;
-            padding: 165px 0 150px 0;
-            background-image: url(@assets/images/letterhead.jpg) !important;
-            background-repeat: no-repeat;
-            background-position: top center;
-            background-size: cover;
-            page-break-after: always;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            visibility: hidden;
-        }
-
-        .checkout-card, .v-main {
-            padding: 0 !important;
-            margin: 0 !important;
-            margin-block-end: 0 !important;
-        }
-
-        .content-to-print {
-            visibility: visible; 
-            background: none;
-            border: none;
-            border-radius: 0;
-            padding: 0;
-            margin: 0;
-            page-break-after: always;
-        }
-
-        .mt-quote {
-            margin-top: 0!important;
-        }
-
-            
-        .card-quote {
-            padding: 0 !important;
-            margin: 0 !important;
-        }
-
-        .v-card {
-            box-shadow: none !important;
-
-            .print-row {
-                flex-direction: row !important;
-            }
-        }
-
-        .v-card, .v-row, .v-col {
-            padding: 0 !important;
-            margin: 0 !important;
-        }
     }
 </style>
