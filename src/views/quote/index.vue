@@ -427,9 +427,9 @@ const onSubmit = () => {
                                 <VRow no-gutters>
                                     <VCol cols="12" md="6" class="d-flex flex-column order-last order-md-first mt-5 mt-md-0">
                                         <h4 class="text_2">CLIENTE</h4>
-                                        <span class="text_2"><strong>Nombre:</strong>{{ billingDetail.name }}</span>
+                                        <span class="text_2"><strong>Nombre:</strong> {{ billingDetail.name }}</span>
                                         <span class="text_2" v-if="billingDetail.company"><strong>Empresa:</strong> {{ billingDetail.company }}</span>
-                                        <!-- <span class="text_2"><strong>Documento:</strong> {{ documentTypes.filter(doc => doc.id === Number(billingDetail.document_type_id))[0].code }}-{{ billingDetail.document }}</span> -->
+                                        <span class="text_2"><strong>Documento:</strong> {{ documentTypes.filter(doc => doc.id === Number(billingDetail.document_type_id))[0].code }}-{{ billingDetail.document }}</span>
                                         <span class="text_2"><strong>Teléfono:</strong> {{ billingDetail.phone.includes('+57') ? '' : '(+57)'}} {{ billingDetail.phone }}</span>
                                         <span class="text_2"><strong>Correo electrónico:</strong> {{ billingDetail.email }}</span>
                                     </VCol>
