@@ -98,13 +98,13 @@
           <span class="item-footer-text">fiesta@partymax.co</span>
 
           <div class="d-flex align-center text-right mt-3 mt-md-8">
-            <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="m-0">
+            <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="m-0" aria-label="instagram">
               <instagram class="mt-1 me-2"/>
             </a>
-            <a href="https://www.facebook.com/partymaxcolombia" target="_blank" class="m-0">
+            <a href="https://www.facebook.com/partymaxcolombia" target="_blank" class="m-0" aria-label="facebook">
               <facebook class="mt-1 me-2"/>
             </a>
-            <a href="https://wa.link/wvdoxg" target="_blank" class="m-0">
+            <a href="https://wa.link/wvdoxg" target="_blank" class="m-0" aria-label="whatsapp">
               <whatsapp_mobile class="mt-1 me-2" />
             </a>
           </div>

@@ -668,7 +668,7 @@
                   </VListItem>
                 </VList>
               </VMenu>
-              <router-link class="link-header" :to="{ name: 'register'}">
+              <router-link class="link-header" :to="{ name: 'register'}" aria-label="Ingresar o Registrarme">
                 <span class="d-flex align-center tw-text-tertiary font-size-14 ms-2 text-regi" v-if="name === null">
                   Ingresar o Registrarme
                 </span>

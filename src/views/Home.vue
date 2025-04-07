@@ -601,7 +601,7 @@ const tab = ref('0')
               subcategory: 'tematica-mexicana'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_1" class="border-theme d-block size-circles-desktop" loading="lazy"  alt="mexicana"/>
+          <img :src="t_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt=""/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
         </router-link>
         <router-link 
@@ -612,7 +612,7 @@ const tab = ref('0')
               subcategory: 'tematica-hawaiana'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="hawaiana"/>
+          <img :src="t_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt=""/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Hawaiana</span>
         </router-link>
         <router-link 
@@ -623,7 +623,7 @@ const tab = ref('0')
               subcategory: 'tematica-vallenata'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="vallenata"/>
+          <img :src="t_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt=""/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Vallenata</span>
         </router-link>
         <router-link 
@@ -634,7 +634,7 @@ const tab = ref('0')
               subcategory: 'tematica-metalizada'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_4" class="border-theme d-block size-circles-desktop" loading="lazy" alt="metalizada"/>
+          <img :src="t_4" class="border-theme d-block size-circles-desktop" loading="lazy" alt=""/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Metalizada</span>
         </router-link>
         <router-link 
@@ -660,7 +660,7 @@ const tab = ref('0')
                   subcategory: 'tematica-mexicana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_1" class="border-theme d-block" width="150" height="150" alt="mexicana"/>
+              <img :src="t_1" class="border-theme d-block" width="150" height="150" alt=""/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </router-link>
           </VCol>
@@ -673,7 +673,7 @@ const tab = ref('0')
                   subcategory: 'tematica-hawaiana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="border-theme d-block" width="150" height="150" alt="hawaiana"/>
+              <img :src="t_2" class="border-theme d-block" width="150" height="150" alt=""/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
             </router-link>
           </VCol>
@@ -686,7 +686,7 @@ const tab = ref('0')
                   subcategory: 'tematica-vallenata'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_3" class="border-theme d-block" width="150" height="150" alt="vallenata"/>
+              <img :src="t_3" class="border-theme d-block" width="150" height="150" alt=""/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </router-link>
           </VCol>
@@ -699,7 +699,7 @@ const tab = ref('0')
                   subcategory: 'tematica-metalizada'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_4" class="border-theme d-block" width="150" height="150" alt="metalizada"/>
+              <img :src="t_4" class="border-theme d-block" width="150" height="150" alt=""/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </router-link>
           </VCol>
