@@ -118,6 +118,27 @@ const getDocumentTypes = computed(() => {
     })
 })
 
+const download = async() => {
+  try {
+    const baseURL = import.meta.env.VITE_APP_DOMAIN_API_URL+ '/api/'
+    const storageURL = import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/'
+    const response = await fetch(baseURL + 'proxy-image?url=' + storageURL + quote.value.file);
+    const blob = await response.blob();
+    
+    const blobUrl = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = 'quote-' + quote.value.id + '.pdf'; 
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
 const printQuote = async() => {
     try {
         const baseURL = import.meta.env.VITE_APP_DOMAIN_API_URL+ '/api/'
@@ -408,7 +429,7 @@ const onSubmit = () => {
                                         <h4 class="text_2">CLIENTE</h4>
                                         <span class="text_2"><strong>Nombre:</strong>{{ billingDetail.name }}</span>
                                         <span class="text_2" v-if="billingDetail.company"><strong>Empresa:</strong> {{ billingDetail.company }}</span>
-                                        <span class="text_2"><strong>Documento:</strong> {{ documentTypes.filter(doc => doc.id === Number(billingDetail.document_type_id))[0].code }}-{{ billingDetail.document }}</span>
+                                        <!-- <span class="text_2"><strong>Documento:</strong> {{ documentTypes.filter(doc => doc.id === Number(billingDetail.document_type_id))[0].code }}-{{ billingDetail.document }}</span> -->
                                         <span class="text_2"><strong>Teléfono:</strong> {{ billingDetail.phone.includes('+57') ? '' : '(+57)'}} {{ billingDetail.phone }}</span>
                                         <span class="text_2"><strong>Correo electrónico:</strong> {{ billingDetail.email }}</span>
                                     </VCol>
@@ -489,7 +510,7 @@ const onSubmit = () => {
                 </VCol>
                 <VCol cols="12" md="4" class="d-print-none">
                     <VCard class="card-bono mx-auto p-0 bg-transparent">
-                        <VCardText class="d-flex row-realizar title-card w-100 px-5 px-md-10 py-2 ">
+                        <VCardText class="d-flex flex-column row-realizar title-card w-100 px-5 px-md-10 py-2 ">
                             <VBtn
                                 block
                                 variant="flat"
@@ -497,6 +518,14 @@ const onSubmit = () => {
                                  class="btn-register tw-text-white tw-bg-primary button-hover"
                                 @click="printQuote">
                                     Imprimir
+                            </VBtn>
+                            <VBtn
+                                block
+                                variant="flat"
+                                type="submit"
+                                 class="btn-order tw-bg-green tw-text-tertiary my-2 me-2"
+                                @click="download">
+                                Descargar
                             </VBtn>
                         </VCardText>
                     </VCard>
@@ -568,12 +597,13 @@ const onSubmit = () => {
     .btn-order {
         border-radius: 32px;
         border: 1px solid var(--Maastricht-Blue, #0A1B33);
+        height: 54px;
+        width: 177px;
         font-size: 14px;
         font-style: normal;
         font-weight: 700;
         line-height: 14px;
         box-shadow: none;
-        height: 54px;
     }
 
     .btn-order:hover {
