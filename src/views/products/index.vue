@@ -166,6 +166,7 @@ async function fetchData() {
     page: currentPage.value,
     category: route.query.category ?? null,
     subcategory: route.query.subcategory ?? null,
+    fathercategory: route.query.fathercategory ?? null,
     colorId: route.query.colorId ?? null,
     searchPublic: route.query.search ?? null,
     min: min.value ?? null,
