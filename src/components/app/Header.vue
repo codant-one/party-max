@@ -430,7 +430,7 @@
       </VList>
         
       <!--MENU SERVICIOS MOBILE-->
-      <VList v-model:opened="panelCat" class="pb-0" :ripple="false">
+      <VList v-model:opened="panelCat" class="pb-0 d-none" :ripple="false">
         <VListItem>
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
             <span class="d-block title-menu">SERVICIOS</span>
@@ -825,7 +825,7 @@
           </VMenu>
         </div>
       <!-----------------------SERVICIOS MENÚ------------------------------->
-        <div class="hover:tw-text-yellow">
+        <div class="hover:tw-text-yellow d-none">
           <VMenu 
             v-model="menuOpenS"
             transition="slide-x-transition" 
