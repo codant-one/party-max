@@ -31,7 +31,6 @@ const quantity = ref(null)
 const existence_whole = ref(false)
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
-const isMobile = /Mobi/i.test(navigator.userAgent)
 
 watchEffect(() => {
 

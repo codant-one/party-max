@@ -35,7 +35,6 @@ const cake_size_id = ref(null)
 const date = ref(null)
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
-const isMobile = /Mobi/i.test(navigator.userAgent)
 
 watchEffect(() => {
 

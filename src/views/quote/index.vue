@@ -15,6 +15,9 @@ import check_circle from '@assets/icons/check-circle.svg';
 import error_circle from '@assets/icons/error-circle.svg';
 import info from '@assets/icons/info-circle.svg?inline';
 
+import letterhead_header from '@assets/images/letterhead_header.jpg';
+import letterhead_footer from '@assets/images/letterhead_footer.jpg';
+
 import Loader from '@/components/common/Loader.vue'
 
 const homeStores = useHomeStores()
@@ -33,6 +36,8 @@ const isLoading = ref(false)
 const iswholesale = ref(false)
 const refVForm = ref()
 const quotationGenerated = ref(false)
+const quoteId = ref(1)
+const quote = ref(null)
 const today = new Date();
 const futureDate = new Date(today);
 const start_date = today.toLocaleDateString('es-ES', {
@@ -113,8 +118,27 @@ const getDocumentTypes = computed(() => {
     })
 })
 
-const printQuote = () => {
-  window.print()
+const printQuote = async() => {
+    try {
+        const baseURL = import.meta.env.VITE_APP_DOMAIN_API_URL+ '/api/'
+        const storageURL = import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/'
+        const response = await fetch(baseURL + 'proxy-image?url=' + storageURL + quote.value.file);
+        const blob = await response.blob();
+        
+        const blobUrl = URL.createObjectURL(blob);
+        
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = blobUrl;
+        
+        iframe.onload = () => {
+            iframe.contentWindow.print();
+        };
+        
+        document.body.appendChild(iframe);
+    } catch (error) {
+        // console.error('Error:', error);
+    }
 }
 
 const onSubmit = () => {
@@ -194,6 +218,9 @@ const onSubmit = () => {
                     isError.value = false
                     message.value = 'Cotización generada exitosamente.'
 
+                    quoteId.value = response.id
+                    quote.value = response
+
                     setTimeout(() => {
                         isDialogVisible.value = false
                         message.value = ''
@@ -235,16 +262,16 @@ const onSubmit = () => {
                             <h1 class="title-summary border-title pb-4">Resumen de cotización</h1>
                             <VCardText class="row-cardp p-0">
                                 <VRow no-gutters class="px-5 px-md-12 mt-1 pb-1">
-                                    <VCol cols="7" md="7" class="print-row d-flex justify-content-start align-start">
+                                    <VCol cols="7" md="7" class="d-flex justify-content-start align-start">
                                         <h4 class="text_2">Productos {{ iswholesale ? '(al mayor)' : ''}}</h4>
                                     </VCol>
-                                    <VCol cols="2" md="1" class="print-row d-flex justify-content-end tw-items-end">
+                                    <VCol cols="2" md="1" class="d-flex justify-content-end tw-items-end">
                                         <h4 class="text_2">Cant.</h4>
                                     </VCol>
-                                    <VCol cols="2" md="2" class="print-row d-none d-md-flex justify-content-end tw-items-end">
+                                    <VCol cols="2" md="2" class="d-none d-md-flex justify-content-end tw-items-end">
                                         <h4 class="text_2">Unitario</h4>
                                     </VCol>
-                                    <VCol cols="3" md="2" class="print-row d-flex justify-content-end tw-items-end">
+                                    <VCol cols="3" md="2" class="d-flex justify-content-end tw-items-end">
                                         <h4 class="text_2">Total</h4>
                                     </VCol>
                                 </VRow>
@@ -264,19 +291,19 @@ const onSubmit = () => {
                                 </template>
                             </VCardText>
                             <VRow no-gutters class="px-5 px-md-12 my-0 my-md-3 summary">
-                                <VCol cols="8" md="10" class="print-row d-flex justify-content-end align-center">
+                                <VCol cols="8" md="10" class="d-flex justify-content-end align-center">
                                     <span>Subtotal</span>
                                 </VCol>
-                                <VCol cols="4" md="2" class="print-row d-flex justify-content-end align-center">
+                                <VCol cols="4" md="2" class="d-flex justify-content-end align-center">
                                     <span>${{ formatNumber(summary.subTotal) }}</span> 
                                 </VCol>
                             </VRow>
 
                             <VRow no-gutters class="px-5 px-md-12 my-0 my-md-3 summary">
-                                <VCol cols="8" md="10" class="print-row d-flex justify-content-end align-center">
+                                <VCol cols="8" md="10" class="d-flex justify-content-end align-center">
                                     <span>IVA</span>
                                 </VCol>
-                                <VCol cols="4" md="2" class="print-row d-flex justify-content-end align-center">
+                                <VCol cols="4" md="2" class="d-flex justify-content-end align-center">
                                     <span>${{ formatNumber(summary.iva) }}</span> 
                                 </VCol>
                             </VRow>
@@ -375,33 +402,35 @@ const onSubmit = () => {
                 <VCol cols="12" md="8">    
                     <div class="print-container">
                         <VCard class="card-quote mx-auto content-to-print">
-                            <VCardText class="d-flex justify-content-between p-5 px-md-12 mt-quote -print">
-                                <div class="d-flex flex-column">
-                                    <h4 class="text_2">CLIENTE</h4>
-                                    <span class="text_2">Nombre: {{ billingDetail.name }}</span>
-                                    <span class="text_2" v-if="billingDetail.company">Empresa: {{ billingDetail.company }}</span>
-                                    <span class="text_2">Documento: {{ documentTypes.filter(doc => doc.id === Number(billingDetail.document_type_id))[0].code }}-{{ billingDetail.document }}</span>
-                                    <span class="text_2">Teléfono: {{ billingDetail.phone.includes('+57') ? '' : '(+57)'}} {{ billingDetail.phone }}</span>
-                                    <span class="text_2">Correo electrónico: {{ billingDetail.email }}</span>
-                                </div>
-                                <div class="d-flex flex-column align-end">
-                                    <span class="title-summary">Cotización</span>
-                                    <h4 class="text_2 text-right">Fecha de solicitud: {{ start_date }}</h4>
-                                    <h4 class="text_2 text-right">Fecha de vencimiento: {{ due_date }}</h4>
-                                </div>
+                            <VCardText class="d-md-flex justify-content-between p-5 px-md-12 mt-quote">
+                                <VRow no-gutters>
+                                    <VCol cols="12" md="6" class="d-flex flex-column order-last order-md-first mt-5 mt-md-0">
+                                        <h4 class="text_2">CLIENTE</h4>
+                                        <span class="text_2"><strong>Nombre:</strong>{{ billingDetail.name }}</span>
+                                        <span class="text_2" v-if="billingDetail.company"><strong>Empresa:</strong> {{ billingDetail.company }}</span>
+                                        <span class="text_2"><strong>Documento:</strong> {{ documentTypes.filter(doc => doc.id === Number(billingDetail.document_type_id))[0].code }}-{{ billingDetail.document }}</span>
+                                        <span class="text_2"><strong>Teléfono:</strong> {{ billingDetail.phone.includes('+57') ? '' : '(+57)'}} {{ billingDetail.phone }}</span>
+                                        <span class="text_2"><strong>Correo electrónico:</strong> {{ billingDetail.email }}</span>
+                                    </VCol>
+                                    <VCol cols="12" md="6" class="d-flex flex-column align-end">
+                                        <span class="title-summary">Cotización # {{quoteId}}</span>
+                                        <h4 class="text_2 text-right"><strong>Fecha de solicitud:</strong> {{ start_date }}</h4>
+                                        <h4 class="text_2 text-right"><strong>Fecha de vencimiento:</strong> {{ due_date }}</h4>
+                                    </VCol>
+                                </VRow>
                             </VCardText>
-                            <VCardText class="row-cardp p-0">
-                                <VRow no-gutters class="px-5 px-md-12 mt-1 pb-1 border-title">
-                                    <VCol cols="6" md="7" class="print-row d-flex justify-content-start align-start">
+                            <VCardText class="row-cardp p-0 border-top">
+                                <VRow no-gutters class="px-5 px-md-12 mt-1 pb-1">
+                                    <VCol cols="7" md="7" class="d-flex justify-content-start align-start">
                                         <h4 class="text_2">Productos {{ iswholesale ? '(al mayor)' : ''}}</h4>
                                     </VCol>
-                                    <VCol cols="2" md="1" class="print-row d-flex justify-content-end tw-items-end">
+                                    <VCol cols="2" md="1" class="d-flex justify-content-end tw-items-end">
                                         <h4 class="text_2">Cant.</h4>
                                     </VCol>
-                                    <VCol cols="2" md="2" class="print-row d-flex justify-content-end tw-items-end">
+                                    <VCol cols="2" md="2" class="d-none d-md-flex justify-content-end tw-items-end">
                                         <h4 class="text_2">Unitario</h4>
                                     </VCol>
-                                    <VCol cols="2" md="2" class="print-row d-flex justify-content-end tw-items-end">
+                                    <VCol cols="3" md="2" class="d-flex justify-content-end tw-items-center">
                                         <h4 class="text_2">Total</h4>
                                     </VCol>
                                 </VRow>
@@ -418,7 +447,33 @@ const onSubmit = () => {
                                     :readonly="true"
                                     :isLastItem="isLastItem(i)"/>
                             </template>
-                            <VCardText class="d-flex px-5 px-md-12 border-top mt-auto">
+                            <VCardText class="p-0 border-top">
+                                <VRow no-gutters class="px-5 px-md-12 my-3">
+                                    <VCol cols="8" md="10" class="d-flex justify-content-end align-end">
+                                        <span>Subtotal</span>
+                                    </VCol>
+                                    <VCol cols="4" md="2" class="d-flex justify-content-end align-end">
+                                        <span>${{ formatNumber(summary.subTotal) }}</span> 
+                                    </VCol>
+                                </VRow>
+                                <VRow no-gutters class="px-5 px-md-12 my-3">
+                                    <VCol cols="8" md="10" class="d-flex justify-content-end align-end">
+                                        <span>IVA</span>
+                                    </VCol>
+                                    <VCol cols="4" md="2" class="d-flex justify-content-end align-end">
+                                        <span>${{ formatNumber(summary.iva) }}</span> 
+                                    </VCol>
+                                </VRow>
+                                <VRow no-gutters class="px-5 px-md-12 my-3">
+                                    <VCol cols="8" md="10" class="d-flex tw-text-primary justify-content-end align-end">
+                                        <span>Total</span>
+                                    </VCol>
+                                    <VCol cols="4" md="2" class="d-flex tw-text-primary justify-content-end align-end">
+                                        <span>${{ formatNumber(summary.total) }}</span> 
+                                    </VCol>
+                                </VRow>
+                            </VCardText>
+                            <VCardText class="d-flex px-5 px-md-12 mt-auto">
                                 <span class="text-address d-block tw-text-gray d-flex align-center my-2">
                                     <info />
                                     <span class="ms-2">
@@ -428,32 +483,6 @@ const onSubmit = () => {
                                         Esta cotización tiene una validez de 8 días a partir de la fecha de emisión.
                                     </span>
                                 </span>
-                            </VCardText>
-                            <VCardText class="p-0">
-                                <VRow no-gutters class="px-5 px-md-12 my-3">
-                                    <VCol cols="10" md="10" class="print-row d-flex justify-content-end align-end">
-                                        <span>Subtotal</span>
-                                    </VCol>
-                                    <VCol cols="2" md="2" class="print-row d-flex justify-content-end align-end">
-                                        <span>${{ formatNumber(summary.subTotal) }}</span> 
-                                    </VCol>
-                                </VRow>
-                                <VRow no-gutters class="px-5 px-md-12 my-3">
-                                    <VCol cols="10" md="10" class="print-row d-flex justify-content-end align-end">
-                                        <span>IVA</span>
-                                    </VCol>
-                                    <VCol cols="2" md="2" class="print-row d-flex justify-content-end align-end">
-                                        <span>${{ formatNumber(summary.iva) }}</span> 
-                                    </VCol>
-                                </VRow>
-                                <VRow no-gutters class="px-5 px-md-12 my-3">
-                                    <VCol cols="10" md="10" class="print-row d-flex tw-text-primary justify-content-end align-end">
-                                        <span>Total</span>
-                                    </VCol>
-                                    <VCol cols="2" md="2" class="print-row d-flex tw-text-primary justify-content-end align-end">
-                                        <span>${{ formatNumber(summary.total) }}</span> 
-                                    </VCol>
-                                </VRow>
                             </VCardText>
                         </VCard>    
                     </div>  
