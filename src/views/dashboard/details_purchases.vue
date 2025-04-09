@@ -14,6 +14,9 @@ const products = ref(null)
 const services = ref(null)
 const isLoading = ref(true)
 const subtotal = ref(null)
+const coupon_id = ref(null)
+const coupon = ref(null)
+const discount = ref(null)
 const shipping_cost = ref(null)
 const total = ref(null)
 
@@ -36,8 +39,23 @@ async function fetchData() {
     products.value = orders.value.products
     services.value = orders.value.services
     subtotal.value = orders.value.subtotal
+    coupon_id.value = ordes.value.coupon_id
+    coupon.value = ordes.value.coupon
     shipping_cost.value = orders.value.shipping_cost
     total.value = orders.value.total
+
+    if(coupon_id.value !== null) {//aplico cupon
+
+        const discount_ = 0;
+
+        if(coupon.value.is_percentage)// es porcentaje
+            discount_ = ((subtotal.valuel * coupon.value.amount) / 100).toFixed(2)
+        else
+            discount_ = coupon.value.amount.toFixed(2)
+
+        discount.value = (subtotal.value - discount_).toFixed(2)
+
+    }
 
     isLoading.value = false
     
@@ -185,6 +203,11 @@ const resolveStatusPayment = payment_state_id => {
                 <span class="text-editar tw-text-tertiary">Productos</span>
                 <VSpacer />
                 <span class="text-editar tw-text-tertiary">${{subtotal}}</span>
+            </VCardText>
+            <VCardText class="d-flex px-10 py-3" v-if="coupon_id">
+                <span class="text-editar tw-text-yellow">Descuento</span>
+                <VSpacer />
+                <span class="text-editar tw-text-yellow">-${{discount}}</span>
             </VCardText>
             <VCardText class="d-flex px-10 py-3">
                 <span class="text-editar tw-text-tertiary">Envío</span>
