@@ -341,6 +341,20 @@
             </router-link>
           </VListItemTitle>  
         </VListItem>
+        <VListItem>
+          <VListItemTitle class="d-block lineheight borderList pb-2">
+            <router-link aria-label="item-help" to="/terms-and-conditions" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+              <span class="d-block title-menu">Términos y condiciones</span>
+            </router-link>
+          </VListItemTitle>  
+        </VListItem>
+        <VListItem>
+          <VListItemTitle class="d-block lineheight borderList pb-2">
+            <router-link aria-label="item-help" to="/privacy-statement" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+              <span class="d-block title-menu">Declaración de Privacidad</span>
+            </router-link>
+          </VListItemTitle>  
+        </VListItem>
         <VListItem>        
           <VListItemTitle class="d-block lineheight borderList pb-2">
             <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">

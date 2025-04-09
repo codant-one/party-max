@@ -93,7 +93,7 @@ watchEffect(() => {
         <VCardSubtitle class="text-justify subtitle-text my-2 my-md-6 px-0 d-block d-md-flex">
             <div>
                 <VIcon size="20px" icon="mdi-account-outline" class="subtitle-text" /> 
-                by {{ user }} 
+                {{ user }} 
             </div>
             <div>  
                 <VIcon size="20px" :end="!isMobile" icon="mdi-clock-outline" class="subtitle-text" />
@@ -143,7 +143,7 @@ watchEffect(() => {
 
         <VRow v-if="props.type === 2" class="mb-6">
             <hr class="col-12 v-divider v-theme--myCustomLightTheme mb-2 mt-4" />
-            <VCol cols="12" md="12" class="d-flex flex-row align-center px-1 py-1">
+            <VCol cols="12" md="12" class="d-none flex-row align-center px-1 py-1">
                 <VCol cols="2" class="px-1 py-1 foot-data-text">
                     Tags:
                 </VCol>
