@@ -269,11 +269,15 @@ const copy = (data) => {
     @media only screen and (max-width: 767px) { 
 
         .coupon-instructions, .coupon-validity {
+            font-size: 16px;
+        }
+
+        .coupon-validity {
             font-size: 12px;
         }
 
         .coupon-title, .coupon-title span {
-            font-size: 16px;
+            font-size: 18px;
         }
     }
 </style>
