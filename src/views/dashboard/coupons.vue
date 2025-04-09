@@ -110,10 +110,10 @@ const copy = (data) => {
         <div class="card-profile coupon-ticket" v-for="(coupon, i) in coupons">
             <div class="coupon-left tw-text-white"   :style="backgroundStyle">
                 <h2 class="coupon-title">
-                    Cupón <br />
+                    <span class="font-weight-bold">Cupón</span> <br />
                     <span>DESCUENTO</span> <br />
-                    <strong v-if="coupon.is_percentage">{{coupon.amount}}%</strong>
-                    <strong v-else>${{ formatNumber(coupon.amount) }}</strong>
+                    <span class="font-weight-bold" v-if="coupon.is_percentage">{{coupon.amount}}%</span>
+                    <span class="font-weight-bold" v-else>${{ formatNumber(coupon.amount) }}</span>
                 </h2>
             </div>
 
@@ -135,7 +135,7 @@ const copy = (data) => {
                 </VChip>
                 <br>
                 <p class="coupon-instructions">
-                    Introduce el código <strong @click="copy(coupon.code)">{{ coupon.code }}</strong> <br />
+                    Introduce el código <span class="font-weight-bold" @click="copy(coupon.code)">{{ coupon.code }}</span> <br />
                     en tu carrito de compra
                 </p>
                 <p class="coupon-validity">
@@ -245,12 +245,6 @@ const copy = (data) => {
         font-weight: normal;
     }
 
-    .coupon-title strong {
-        display: block;
-        font-size: 2rem;
-        margin-top: 5px;
-    }
-
     .coupon-right {
         padding: 20px;
         display: flex;
@@ -278,7 +272,7 @@ const copy = (data) => {
             font-size: 12px;
         }
 
-        .coupon-title, .coupon-title span, .coupon-title strong {
+        .coupon-title, .coupon-title span {
             font-size: 16px;
         }
     }
