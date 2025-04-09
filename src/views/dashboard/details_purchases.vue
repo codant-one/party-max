@@ -39,8 +39,8 @@ async function fetchData() {
     products.value = orders.value.products
     services.value = orders.value.services
     subtotal.value = orders.value.subtotal
-    coupon_id.value = ordes.value.coupon_id
-    coupon.value = ordes.value.coupon
+    coupon_id.value = orders.value.coupon_id
+    coupon.value = orders.value.coupon
     shipping_cost.value = orders.value.shipping_cost
     total.value = orders.value.total
 
