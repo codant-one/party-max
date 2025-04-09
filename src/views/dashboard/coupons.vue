@@ -134,17 +134,17 @@ const copy = (data) => {
                     }}
                 </VChip>
                 <br>
-                <p class="coupon-instructions">
+                <span class="coupon-instructions">
                     Introduce el código <span class="font-weight-bold" @click="copy(coupon.code)">{{ coupon.code }}</span> <br />
                     en tu carrito de compra
-                </p>
-                <p class="coupon-validity">
+                </span>
+                <span class="coupon-validity">
                     {{ coupon.description }}
-                </p>
-                <p class="coupon-validity tw-text-yellow" v-if="new Date(coupon.expiration_date) < new Date() && coupon.purchase_date === null">
+                </span>
+                <span class="coupon-validity tw-text-yellow" v-if="new Date(coupon.expiration_date) < new Date() && coupon.purchase_date === null">
                     Expirado el {{ coupon.expiration_date }}
-                </p>
-                <p class="coupon-validity" :class="coupon.is_used ? 'mt-3' : ''" v-else>
+                </span>
+                <span class="coupon-validity" :class="coupon.is_used ? 'mt-3' : ''" v-else>
                     <router-link
                         v-if="coupon.is_used"
                         :to="{
@@ -162,7 +162,7 @@ const copy = (data) => {
                         válido hasta {{ coupon.expiration_date }}
                     </span>
                     
-                </p>
+                </span>
             </div>
         </div>
 
@@ -269,15 +269,11 @@ const copy = (data) => {
     @media only screen and (max-width: 767px) { 
 
         .coupon-instructions, .coupon-validity {
-            font-size: 16px;
-        }
-
-        .coupon-validity {
             font-size: 12px;
         }
 
         .coupon-title, .coupon-title span {
-            font-size: 18px;
+            font-size: 16px;
         }
     }
 </style>
