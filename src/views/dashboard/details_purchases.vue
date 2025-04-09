@@ -46,10 +46,10 @@ async function fetchData() {
 
     if(coupon_id.value !== null) {//aplico cupon
 
-        const discount_ = 0;
+        var discount_ = 0;
 
         if(coupon.value.is_percentage)// es porcentaje
-            discount_ = ((subtotal.valuel * coupon.value.amount) / 100).toFixed(2)
+            discount_ = ((subtotal.value * coupon.value.amount) / 100).toFixed(2)
         else
             discount_ = coupon.value.amount.toFixed(2)
 
