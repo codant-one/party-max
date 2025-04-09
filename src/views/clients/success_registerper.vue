@@ -14,10 +14,14 @@ import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
                 ¡Gracias por unirte a <br>nuestra fiesta!
             </VCardText>
             <VCardText class="text-register p-0 px-10 my-4">
+                Como agradecimiento, aquí tienes un 10% OFF. 
+                ¡Esperamos que disfrutes tu experiencia con nosotros!
+            </VCardText>
+            <VCardText class="text-register p-0 px-10 my-4">
                 Para comenzar a disfrutar de PartyMax te 
                 enviamos un correo electrónico de
                 confirmación de tu cuenta.
-            </VCardText> 
+            </VCardText>  
             <VCardText class="px-0 more">
               <router-link to="/login" class="d-flex tw-text-tertiary my-5 my-md-12 tw-no-underline hover:tw-text-primary hover-icon-arrow-right justify-content-center">
                 <span class="ms-5">Ingresar a mi cuenta</span>

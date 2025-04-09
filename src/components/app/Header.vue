@@ -659,6 +659,11 @@
                         Compras
                       </router-link>
                     </VListItemTitle>
+                    <VListItemTitle class="px-5">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'coupons' }">
+                        Cupones
+                      </router-link>
+                    </VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div">
                       <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'favorites' }">
                         Mis favoritos
@@ -726,6 +731,11 @@
                     <VListItemTitle class="px-5">
                       <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'purchases' }">
                         Compras
+                      </router-link>
+                    </VListItemTitle>
+                    <VListItemTitle class="px-5">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'coupons' }">
+                        Cupones
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div">

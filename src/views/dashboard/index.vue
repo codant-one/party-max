@@ -5,6 +5,7 @@ import home from '@assets/icons/lineas-de-cuadricula.svg?inline';
 import favorites from '@assets/icons/heart2.svg?inline';
 import favorites_mobile from '@assets/icons/heart-mobile.svg?inline';
 import purchases from '@assets/icons/icon-compras.svg?inline';
+import coupons from '@assets/icons/ticket-discount.svg?inline';
 
 const name = ref(null)
 const usermail = ref(null)
@@ -51,8 +52,8 @@ me()
             floating
             permanent
         >
-            <VList density="compact" nav class="mt-5">
-                <router-link :to="{ name: 'dashboardHome' }" class="link-menu" exact>
+            <VList density="compact" nav>
+                <!-- <router-link :to="{ name: 'dashboardHome' }" class="link-menu" exact>
                     <VListItem 
                         :class="{ 'v-list-item--active': ($route.name === 'dashboardHome') }"
                         class="items-list" title="Home" value="dashboardHome" >
@@ -60,7 +61,7 @@ me()
                             <home style="width: 24px; height: 24px;"></home>
                         </template>
                     </VListItem>
-                </router-link>
+                </router-link> -->
                 <router-link :to="{ name: 'profile' }" class="link-menu" exact>
                     <VListItem 
                         :class="{ 'v-list-item--active': $route.name === 'profile' }"
@@ -76,6 +77,15 @@ me()
                         class="items-list" style="margin-top: 16px;" title="Compras" value="purchases">
                         <template v-slot:prepend>
                             <purchases style="width: 24px; height: 24px;"></purchases>
+                        </template>
+                    </VListItem>
+                </router-link>
+                <router-link :to="{ name: 'coupons' }" class="link-menu" exact>
+                    <VListItem 
+                        :class="{ 'v-list-item--active': $route.name === 'coupons' }"
+                        class="items-list" style="margin-top: 16px;" title="Cupones" value="coupons">
+                        <template v-slot:prepend>
+                            <coupons style="width: 24px; height: 24px;"></coupons>
                         </template>
                     </VListItem>
                 </router-link>
@@ -97,7 +107,7 @@ me()
                         <div class="d-block text-center box-iconmob">
                             <router-link :to="{ name: 'profile' }" class="link-menumob tw-text-tertiary tw-no-underline" exact>
                                 <profile class="icon-menumob"></profile>
-                                <h5 class="text-menumob">Mi perfil</h5>
+                                <h5 class="text-menumob">Perfil</h5>
                             </router-link>
                         </div>
 
@@ -108,10 +118,17 @@ me()
                             </router-link>
                         </div>
 
+                        <div class="d-block text-center box-iconmob box-comp">
+                            <router-link :to="{ name: 'coupons' }" class="link-menumob tw-text-tertiary tw-no-underline" exact>
+                                <coupons class="icon-menumob"></coupons>
+                                <h5 class="text-menumob">Cupones</h5>
+                            </router-link>
+                        </div>
+
                         <div class="d-block text-center box-iconmob">
                             <router-link :to="{ name: 'favorites' }" class="link-menumob tw-text-tertiary tw-no-underline" exact>
                                 <favorites_mobile class="icon-menumob"></favorites_mobile>
-                                <h5 class="text-menumob">Mis favoritos</h5>
+                                <h5 class="text-menumob">Favoritos</h5>
                             </router-link>
                         </div>
                     </VCardTitle>
@@ -269,6 +286,10 @@ me()
             font-style: normal;
             font-weight: 400;
             line-height: 20px;
+        }
+        
+        .link-menumob::v-deep(path) {
+            stroke: #0A1B33!important;
         }
 
         .router-link-exact-active {

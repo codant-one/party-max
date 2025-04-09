@@ -238,6 +238,12 @@ const isDisabled = (i) => {
                         <VCol cols="5" md="6" class="text-right">
                             <span>${{ formatNumber(props.summary.subTotal) }}</span>
                         </VCol>
+                        <VCol cols="7" md="6" class="text-left" v-if="props.summary.discount > 0">
+                            <span class="tw-text-yellow">Descuento</span>
+                        </VCol>
+                        <VCol cols="5" md="6" class="text-right" v-if="props.summary.discount > 0">
+                            <span class="tw-text-yellow">-${{ formatNumber(props.summary.discount) }}</span>
+                        </VCol>
                         <VCol cols="3" md="4" class="text-left py-0">
                             <span>Envío</span>
                         </VCol>
@@ -379,6 +385,10 @@ const isDisabled = (i) => {
         border: 1px solid var(--Maastricht-Blue, #0A1B33) !important;
         background: var(--Maastricht-Blue, #0A1B33) !important;
         color: #FFFFFF!important;
+    }
+
+    .btn-order:hover::v-deep(path) {
+        fill: #FFFFFF;
     }
 
     .card-products {

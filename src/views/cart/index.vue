@@ -11,6 +11,7 @@ import { useOrdersStores } from '@/stores/orders'
 import { usePaymentsStores } from '@/stores/payments'
 import { useDocumentTypesStores } from '@/stores/document-types'
 import { useMiscellaneousStores } from "@/stores/miscellaneous";
+import { useCouponsStores } from '@/stores/coupons'
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import axios from '@axios'
@@ -53,6 +54,7 @@ const ordersStores = useOrdersStores()
 const paymentsStores = usePaymentsStores()
 const documentTypesStores = useDocumentTypesStores()
 const miscellaneousStores = useMiscellaneousStores();
+const couponsStores = useCouponsStores();
 const route = useRoute()
 
 const isMobile = /Mobi/i.test(navigator.userAgent)
@@ -73,13 +75,20 @@ const send_id = ref(0)
 const province_id = ref(293)
 const ip = ref(null)
 const notAllowedIPs = ref([])
+const coupon = ref(null)
 
 const summary = ref({
     subTotal: 0,
     send: '12000.00',
     shipping_express: 0,
+    discount: 0,
+    subTotalDiscount: 0,
+    coupon_id: 0,
+    coupon_code: '',
     total: 0
 })
+
+const discount = ref(false)
 
 const selectedAddress = ref({
     id: 0,
@@ -199,7 +208,17 @@ async function fetchData() {
             sum += (parseFloat(value) * element.quantity)
         });
         summary.value.subTotal = sum.toFixed(2)
-        summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
+
+        if(coupon.value !== null) {
+            if(coupon.value.is_percentage)// es porcentaje
+                summary.value.discount = ((summary.value.subTotal * coupon.value.amount) / 100).toFixed(2)
+            else
+                summary.value.value.discount = coupon.value.amount.toFixed(2)
+
+            summary.value.subTotalDiscount = (summary.value.subTotal - summary.value.discount).toFixed(2)
+        }
+        
+        summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal) - parseFloat(summary.value.discount)).toFixed(2)
 
         if(province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
             chanceSend('sendToBogota')
@@ -330,6 +349,54 @@ const deleteService = (service_id) => {
     cartStores.delete({type: 1, service_id: parseInt(service_id)})
     fetchData()   
 
+}
+
+const couponApply = async (code) => {
+    isLoading.value = true
+    
+    await couponsStores.show_by_code(code)
+      
+    coupon.value = couponsStores.getData
+
+    isLoading.value = false
+
+    if(coupon.value === null) {
+        isDialogVisible.value = true
+        message.value = 'Cupón inválido. Verifica el código e intenta nuevamente.'
+        isError.value = true
+    } else if (client_id.value !== coupon.value.client_id) {
+        isDialogVisible.value = true
+        message.value = '¡Oh no! Este cupón ya tiene dueño, pertenece a otro usuario.'
+        isError.value = true
+    } else if(new Date(coupon.value.expiration_date) < new Date() && coupon.value.purchase_date === null) {
+        isDialogVisible.value = true
+        message.value = 'Cupón expirado, ¡Prueba con otro o revisa nuestras ofertas!'
+        isError.value = true
+    } else if (coupon.value.is_used) {
+        isDialogVisible.value = true
+        message.value = 'Este cupón no es válido, ya fue canjeado. ¡Pero no te preocupes! Revisa tu correo o nuestras redes sociales para más promociones.'
+        isError.value = true
+    } else {
+
+        if(coupon.value.is_percentage)// es porcentaje
+            summary.value.discount = ((summary.value.subTotal * coupon.value.amount) / 100).toFixed(2)
+        else
+            summary.value.value.discount = coupon.value.amount.toFixed(2)
+
+        summary.value.subTotalDiscount = (summary.value.subTotal - summary.value.discount).toFixed(2)
+        summary.value.total = (summary.value.total - summary.value.discount).toFixed(2)
+        summary.value.coupon_id = coupon.value.id
+        summary.value.coupon_code = coupon.value.code
+
+        isDialogVisible.value = true
+        message.value = 'Gracias por usar tu cupón. ¡Disfruta tu ahorro!'
+    }
+
+    setTimeout(() => {
+        isDialogVisible.value = false
+        message.value = ''
+        isError.value = false
+    }, 5000)
 }
 
 const addCart = (data) =>{
@@ -567,7 +634,8 @@ const sendPayU = async (billingDetail) => {
                 wholesale: iswholesale.value === true ? 1 : 0,
                 type: type,
                 ip: ip.value,
-                user_agent: navigator.userAgent
+                user_agent: navigator.userAgent,
+                coupon_id: summary.value.coupon_id
             }
 
             isLoading.value = true 
@@ -731,7 +799,7 @@ const chanceSend = value => {
     });
 
     summary.value.subTotal = sum.toFixed(2)
-    summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
+    summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal) - parseFloat(summary.value.discount)).toFixed(2)
 }
 
 </script>
@@ -769,9 +837,12 @@ const chanceSend = value => {
                         v-model:current-step="currentStep"
                         :products="products"
                         :summary="summary"
+                        :discount="discount"
+                        :client_id="client_id !== null ? true : false"
                         @deleteProduct="deleteProduct"
                         @deleteService="deleteService"
                         @addCart="addCart"
+                        @couponApply="couponApply"
                     />
                 </VWindowItem>
                 <VWindowItem>

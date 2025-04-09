@@ -27,6 +27,7 @@ import information_client from '@/views/dashboard/profile/information.vue'
 import security_client from '@/views/dashboard/profile/security.vue'
 import address_client from '@/views/dashboard/profile/address.vue'
 import Purchases from '@/views/dashboard/purchases.vue'
+import Coupons from '@/views/dashboard/coupons.vue'
 import Favorites from '@/views/dashboard/favorites.vue'
 import Detail_pusher from '@/views/dashboard/details_purchases.vue'
 import Rating_products from '@/views/dashboard/rating_products.vue'
@@ -171,6 +172,11 @@ const router = createRouter({
           component: Purchases,
         },
         {
+          path: '/coupons',
+          name: 'coupons',
+          component: Coupons
+        },
+        {
           path: '/favorites',
           name: 'favorites',
           component: Favorites,
@@ -236,6 +242,7 @@ router.beforeEach((to, from, next) => {
     '/dashboard',
     '/profile',
     '/purchases',
+    '/coupons',
     '/favorites',
     '/mydata',
     '/detail-purchases',
