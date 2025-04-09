@@ -104,7 +104,7 @@ me()
             <div class="mt-0 p-0 mt-md-10 container-dashboard d-block d-md-none">
                 <VCard class="no-shadown card-information p-2 transparent box-bottom" :class="classFixed" ref="fixedSectionRefd">
                     <VCardTitle class="p-0 d-flex align-center justify-content-center">
-                        <div class="d-block text-center box-iconmob">
+                        <div class="d-block text-center box-iconmob box-comp">
                             <router-link :to="{ name: 'profile' }" class="link-menumob tw-text-tertiary tw-no-underline" exact>
                                 <profile class="icon-menumob"></profile>
                                 <h5 class="text-menumob">Perfil</h5>
@@ -305,7 +305,6 @@ me()
         }
 
         .box-comp {
-            border-left: 1px solid #E2F8FC;
             border-right: 1px solid #E2F8FC;
         }
 
