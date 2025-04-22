@@ -43,7 +43,7 @@ watchEffect(() => {
         store.value = props.product.user.user_detail.store_name ?? (props.product.user.supplier?.company_name ?? (props.product.user.name + ' ' + (props.product.user.last_name ?? '')))
         rating.value = props.product.rating
         slug.value = props.product.slug
-        stock.value = props.product.stock
+        stock.value = props.product.colors[0].stock
     }
 
     existence_whole.value = route.query.wholesalers === 'true' ? true : false;

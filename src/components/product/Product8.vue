@@ -31,12 +31,10 @@ const store = ref(null)
 const rating = ref(null)
 const single_description = ref(null)
 const slug = ref(null)
-const stock = ref(null)
 const quantity = ref(null)
 const product_id = ref(null)
 const product_color_id = ref(null)
 const existence_whole = ref(false)
-const in_stock = ref(null)
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
@@ -51,14 +49,12 @@ watchEffect(() => {
         rating.value = props.product.rating
         single_description.value = props.product.product.single_description
         slug.value = props.product.product.slug
-        stock.value = props.product.product.stock
         quantity.value = props.product.quantity ?? 1
         product_id.value = props.product.product.id
         product_color_id.value = props.product.product_color_id
         color.value = props.product.color.name
         existence_whole.value = props.product.wholesale === 1 ? true : false;
         wholesale_min.value = props.product.wholesale === 1 ? props.product.product.wholesale_min : 1
-        in_stock.value = props.product.product.in_stock
     }
 })
 

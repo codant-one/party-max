@@ -79,9 +79,9 @@ watchEffect(() => {
         isFavoriteProduct.value = props.product.is_favorite
         id.value = props.product.id
         product_color_id.value =  props.product.colors[0]?.id
-        in_stock.value = props.product.in_stock
+        in_stock.value = props.product.colors[0].in_stock
         cant_prod.value = route.query.wholesalers === 'true' ? props.product.wholesale_min : 1
-        cant_stock.value = parseInt(props.product.stock)
+        cant_stock.value = parseInt(props.product.colors[0].stock)
 
         if(localStorage.getItem('user_data')){
             const userData = localStorage.getItem('user_data')

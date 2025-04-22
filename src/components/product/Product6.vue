@@ -25,7 +25,6 @@ const store = ref(null)
 const rating = ref(null)
 const single_description = ref(null)
 const slug = ref(null)
-const stock = ref(null)
 const color = ref(null)
 const quantity = ref(null)
 const existence_whole = ref(false)
@@ -44,7 +43,6 @@ watchEffect(() => {
         rating.value = props.product.product.rating
         single_description.value = props.product.single_description
         slug.value = props.product.product.slug
-        stock.value = props.product.product.stock
         color.value = props.product.color.name
         quantity.value = props.product.quantity
 
