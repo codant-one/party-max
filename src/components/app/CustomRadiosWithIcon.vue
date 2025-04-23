@@ -53,7 +53,7 @@ const updateSelectedOption = value => {
           </slot>
 
           <div>
-            <VRadio :value="item.value" :disabled="item.disabled"/>
+            <VRadio :value="item.value" />
           </div>
         </VLabel>
       </VCol>

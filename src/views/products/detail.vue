@@ -188,8 +188,7 @@ async function fetchData() {
       var aux = {
         value: element.color.id.toString(),
         title: element.color.name,
-        image:  (element.images.length === 0) ? data.value.product.image : element.images[0].image,
-        disabled: element.in_stock === 0 ? true : false
+        image:  (element.images.length === 0) ? data.value.product.image : element.images[0].image
       }
 
       radioContent.value.push(aux)
