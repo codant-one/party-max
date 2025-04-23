@@ -44,7 +44,7 @@ async function fetchData() {
     shipping_cost.value = orders.value.shipping_cost
     total.value = orders.value.total
 
-    if(coupon_id.value !== null) {//aplico cupon
+    if(coupon_id.value !== null) {//aplico cupón
 
         if(coupon.value.is_percentage)// es porcentaje
             discount.value = ((subtotal.value * coupon.value.amount) / 100).toFixed(2)
@@ -210,7 +210,7 @@ const resolveStatusPayment = payment_state_id => {
                 <VSpacer />
                 <span class="text-editar tw-text-tertiary">${{shipping_cost}}</span>
             </VCardText>
-            <VCardText class="d-flex px-10 py-3">
+            <VCardText class="d-flex px-10 pt-3 pb-5">
                 <span class="text-editar tw-text-tertiary tw-font-bold">Total</span>
                 <VSpacer />
                 <span class="text-editar tw-text-tertiary tw-font-bold">${{total}}</span>

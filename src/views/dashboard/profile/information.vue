@@ -27,7 +27,6 @@ const isMobile = /Mobi/i.test(navigator.userAgent)
 
 const name = ref(null)
 const usermail = ref(null)
-const username = ref(null)
 const phone = ref(null)
 const document = ref(null)
 const type_document = ref('')
@@ -50,7 +49,6 @@ const newaddress = ref(null)
 const newbirthday = ref(null)
 const newgender = ref(null)
 const newprovince = ref(null)
-const newusername = ref(null)
 
 const listCountries = ref([])
 const listProvinces = ref([])
@@ -70,8 +68,7 @@ const errors = ref({
   newaddress: undefined,
   newbirthday: undefined,
   newgender: undefined,
-  newprovince: undefined,
-  newusername: undefined
+  newprovince: undefined
 })
 
 
@@ -84,8 +81,7 @@ const inputChange = () => {
     newaddress: undefined,
     newbirthday: undefined,
     newgender: undefined,
-    newprovince: undefined,
-    newusername: undefined
+    newprovince: undefined
   }
 }
 
@@ -134,7 +130,6 @@ async function fetchData() {
         const userDataJ = JSON.parse(userData)
         name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
         usermail.value = userDataJ.email
-        username.value = userDataJ.username
         phone.value = userDataJ.user_details.phone
         document.value = userDataJ.user_details.document ?? '----'
         country.value = userDataJ.user_details.province.country.name
@@ -159,8 +154,7 @@ async function fetchData() {
         newaddress.value = userDataJ.user_details.address
         newbirthday.value = userDataJ.client.birthday
         newgender.value = userDataJ.client.gender_id 
-        newprovince.value = userDataJ.user_details.province_id 
-        newusername.value = userDataJ.username  
+        newprovince.value = userDataJ.user_details.province_id
 
         await documentTypesStores.fetchDocumentTypes()
         documentTypes.value = documentTypesStores.getData
@@ -199,6 +193,19 @@ const selectCountry = country => {
   }
 }
 
+const slugify = (text) => {
+  return text
+    .toString()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '')
+}
+
 const onSubmit = () => {
     refVForm.value?.validate().then(({ valid: isValid }) => {
         if (isValid) {
@@ -213,7 +220,7 @@ const onSubmit = () => {
                 address: newaddress.value,
                 gender_id: newgender.value,
                 province_id: (Number.isInteger(province_id.value)) ? province_id.value : provinceOld_id.value,
-                username: newusername.value,
+                username: slugify(newfname.value + ' ' + newlname.value),
                 birthday: newbirthday.value
             }
 
@@ -323,12 +330,6 @@ const getFlagCountry = country => {
                     <VCol cols="12" md="8" class="mb-2 mb-md-4">
                         <span class="labels tw-text-gray">{{ name }}</span>
                     </VCol>
-                    <!-- <VCol cols="12" md="4" class="mb-0 mb-md-4">
-                        <span class="labels tw-text-tertiary">Username</span>
-                    </VCol>
-                    <VCol cols="12" md="8" class="mb-2 mb-md-4">
-                        <span class="labels tw-text-gray">{{ username }}</span>
-                    </VCol> -->
                     <VCol cols="12" md="4" class="mb-0 mb-md-4">
                         <span class="labels tw-text-tertiary">Tipo de documento</span>
                     </VCol>
@@ -416,17 +417,6 @@ const getFlagCountry = country => {
                                     class="mt-2"
                                 />
                             </VCol>
-                            <!-- <VCol cols="12" md="6" class="textinput mb-2">
-                                <VTextField
-                                    label="Username"
-                                    v-model="newusername"
-                                    variant="outlined"
-                                    :rules="[requiredValidator]"
-                                    :error-messages="errors.newusername"
-                                    @input="inputChange()"
-                                    class="me-0 me-md-2"
-                                />
-                            </VCol> -->
                             <VCol cols="12" md="6" class="textinput mb-2">
                                 <VTextField
                                     label="Fecha de nacimiento"

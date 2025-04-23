@@ -108,7 +108,7 @@ const copy = (data) => {
         <h2 class="data-title mt-5 mt-md-7">Mis Cupones</h2>
 
         <div class="card-profile coupon-ticket" v-for="(coupon, i) in coupons">
-            <div class="coupon-left tw-text-white"   :style="backgroundStyle">
+            <div class="coupon-left tw-text-white" :style="backgroundStyle">
                 <h2 class="coupon-title">
                     <span class="font-weight-bold">Cupón</span> <br />
                     <span>DESCUENTO</span> <br />
