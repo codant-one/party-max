@@ -357,6 +357,7 @@ const chanceRadio = (value) => {
 
       cant_prod.value = 1
       cant_stock.value = parseInt(seleted?.stock)
+      in_stock.value = seleted?.in_stock
   }
 }
 
