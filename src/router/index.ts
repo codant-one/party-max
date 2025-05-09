@@ -3,6 +3,7 @@ import Home from '@/views/Home.vue'
 import Testing from '@/views/Testing.vue'
 import Terms_and_conditions from '@/views/Terms_and_conditions.vue'
 import Privacy_statement from '@/views/Privacy_statement.vue'
+import Data_protection from '@/views/Data_protection.vue'
 import Blogs from '@/views/blogs/index.vue'
 import BlogDetail from '@/views/blogs/detail.vue'
 import About from '@/views/About.vue'
@@ -58,6 +59,11 @@ const router = createRouter({
       path: '/terms-and-conditions',
       name: 'terms_and_conditions',
       component: Terms_and_conditions
+    },
+    {
+      path: '/data-protection',
+      name: 'data_protection',
+      component: Data_protection
     },
     {
       path: '/privacy-statement',

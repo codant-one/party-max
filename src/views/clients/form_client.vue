@@ -184,11 +184,15 @@ const onSubmit = () => {
                             <div class="text1 ms-5 mt-2 mb-3 mb-md-0">
                                 Acepto los 
                                 <a href="/terms-and-conditions" target="_blank" class="text2">
-                                    Términos y condiciones
+                                    términos y condiciones
                                 </a>
                                 y autorizo el uso de mis datos de acuerdo a la 
                                 <a href="/privacy-statement" target="_blank" class="text2">
-                                    Declaración de Privacidad.
+                                    declaración de privacidad
+                                </a>
+                                y
+                                <a href="/data-protection" target="_blank" class="text2">
+                                    protección de datos.
                                 </a>
                             </div>
                         </VCol>

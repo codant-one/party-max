@@ -350,8 +350,15 @@
         </VListItem>
         <VListItem>
           <VListItemTitle class="d-block lineheight borderList pb-2">
+            <router-link aria-label="item-help" to="/data-protection" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+              <span class="d-block title-menu">Protección de datos</span>
+            </router-link>
+          </VListItemTitle>  
+        </VListItem>
+        <VListItem>
+          <VListItemTitle class="d-block lineheight borderList pb-2">
             <router-link aria-label="item-help" to="/privacy-statement" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-              <span class="d-block title-menu">Declaración de Privacidad</span>
+              <span class="d-block title-menu">Declaración de privacidad</span>
             </router-link>
           </VListItemTitle>  
         </VListItem>
@@ -593,7 +600,7 @@
             block
             class="btn-register tw-text-white tw-bg-primary button-hover my-2 mt-md-5"
             @click="redirect('cart')">
-            ver carrito
+            pagar
           </VBtn>
           <VBtn
             v-if="products.length > 0"

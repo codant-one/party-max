@@ -27,7 +27,8 @@
 
     if(route.name === 'services' || route.name === 'products' || route.name === 'about' || route.name === 'help' ||
        route.name === 'cart' || route.name === 'serviceDetail' || route.name === 'productDetail' ||
-       route.name === 'detail_wholesalers' || route.name === 'terms_and_conditions' || route.name === 'privacy_statement') {
+       route.name === 'detail_wholesalers' || route.name === 'terms_and_conditions' || route.name === 'privacy_statement' ||
+       route.name === 'data_protection') {
       isProduct.value = true
       backgroundTemp.value = route.name === 'cart' ? 'tw-bg-white' : 'tw-bg-green'
     } else {
@@ -129,7 +130,10 @@
             Términos y condiciones
           </router-link>
           <router-link to="/privacy-statement" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
-            Declaración de Privacidad
+            Declaración de privacidad
+          </router-link>
+          <router-link to="/data-protection" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
+            Protección de datos
           </router-link>
         </VCol>
         <VCol cols="5" md="3" class="align-center text-right">
