@@ -234,8 +234,6 @@ async function fetchData() {
 
     
     if (typeof route.query.fathercategory !== 'undefined' && route.query.subcategory) {
-      console.log('categories', categories.value)
-      console.log('entro', categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0])
       const subcategory = {
         title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name,
         disabled: false,
