@@ -29,6 +29,7 @@ import heart from '@assets/icons/heart.svg?inline';
 import check_circle from '@assets/icons/check-circle.svg';
 import error_circle from '@assets/icons/error-circle.svg';
 import festin_pending from '@assets/icons/festin_pending.svg';
+import playImage from '@assets/images/play.png';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -78,6 +79,7 @@ const brand = ref(null)
 const rating = ref(null)
 const reviews = ref(null)
 const sku = ref(null)
+const videos = ref('')
 const wholesale = ref(false)
 const wholesale_price = ref(null)
 const wholesale_min = ref(null)
@@ -236,6 +238,20 @@ async function fetchData() {
 
     if(client_id.value)
       isFavoriteProduct.value = await favoritesStores.show({user_id: user_id.value, product_id: product_id.value })
+
+    videos.value = data.value.product.videos.map(u => ({
+      type: 'video',
+      url: u.url,
+      thumb: '/assets/video-placeholder.png',
+    }))
+
+    await Promise.all(
+      videos.value.map(async slide => {
+        if (slide.type === 'video') {
+            slide.thumb = await loadVideoThumbnail(slide.url);
+        }
+      })
+    );
 
     setMetaTags({
       title: title.value + ' | PARTYMAX',
@@ -483,6 +499,46 @@ const decrement = () => {
     cant_prod.value--
 }
 
+const mediaSlides = computed(() => {
+  const imgs = productImages.value.map(i => ({
+    type: 'image',
+    url: baseURL.value + i.image,
+    thumb: baseURL.value + i.image
+  }));
+  const vids = videos.value.map(u => ({
+    type: 'video',
+    url: u.url,
+    thumb: u.thumb
+  }));
+  return [...vids, ...imgs];
+});
+
+const loadVideoThumbnail = async (url) => {
+    const yt = url.match(
+        /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/
+    );
+    if (yt) {
+        return `https://img.youtube.com/vi/${yt[1]}/mqdefault.jpg`;
+    }
+
+    const vm = url.match(/vimeo\.com\/(\d+)/);
+    if (vm) {
+        return `https://vumbnail.com/${vm[1]}.jpg`;
+    }
+
+    return '/assets/video-placeholder.png';
+}
+
+const buildEmbedUrl = (url) => {
+  const yt = url.match(
+    /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/
+  );
+  if (yt) return `https://www.youtube.com/embed/${yt[1]}`;
+  const vm = url.match(/vimeo\.com\/(\d+)/);
+  if (vm) return `https://player.vimeo.com/video/${vm[1]}`;
+  return url;
+}
+
 </script>
 
 <template>
@@ -560,7 +616,7 @@ const decrement = () => {
             <VCol cols="3" md="1" class="px-1 p-md-2">
               <swiper
                 :direction="'vertical'"
-                :pagination="{ clickable: true}"
+                :pagination="{ clickable: true }"
                 :spaceBetween="isMobile ? 3 : 5"
                 :slidesPerView="isMobile ? 3 : 6"
                 :freeMode="true"
@@ -568,8 +624,23 @@ const decrement = () => {
                 @swiper="setThumbsSwiper"
                 class="mySwiper pt-0 d-flex align-center justify-content-center"
               >
-                <swiper-slide v-for="(picture, index) in productImages" :key="index">
-                  <img width="60" :src="baseURL + picture.image" />
+                <swiper-slide v-for="(slide, index) in mediaSlides" :key="index">
+                    <img 
+                      v-if="slide.type === 'image'"
+                      :src="slide.url" 
+                      :alt="'image-'+index"
+                      width="60"
+                    />
+                    <template  v-else>
+                      <img                         
+                        :src="slide.thumb"
+                        :alt="'thumbnail-'+index"
+                        class="thumb-media"
+                      />
+                      <div class="play-overlay">
+                         <img :src="playImage" />
+                      </div> 
+                    </template>
                 </swiper-slide>
               </swiper>
             </VCol>
@@ -581,17 +652,26 @@ const decrement = () => {
                 :spaceBetween="isMobile ? 5 : 10"
                 :thumbs="{ swiper: thumbsSwiper }"
                 :modules="modules"
+                :slidesPerView="1"
+                :watchSlidesProgress="true"
                 class="mySwiper2 border-img mx-0 mx-md-auto image-container"
-                v-if="productImages.length > 0"
+                v-if="mediaSlides.length > 0"
                 >
-                <swiper-slide v-for="(picture, index) in productImages" :key="index">
-                  <img v-if="isMobile" :src="baseURL + picture.image" />
+                <swiper-slide v-for="(slide, index) in mediaSlides" :key="index">
+                  <img v-if="slide.type === 'image' && isMobile" :src="slide.url" :alt="'slide-'+index" class="slide-img-mobile"/>
                   <vue-image-zoomer
-                    v-else
-                    :regular="baseURL + picture.image"
-                    :zoom-amount="3" 
+                    v-if="slide.type === 'image' && !isMobile"
+                    :regular="slide.url"
+                    :zoom-amount="3"
                   />
-                  <div v-if="in_stock === 0" class="out-of-stock-label">AGOTADO</div>
+                  <iframe
+                    v-else
+                    :src="buildEmbedUrl(slide.url)"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  />  
+                  <div v-if="in_stock === 0" class="out-of-stock-label">AGOTADO</div>                
                 </swiper-slide>
               </swiper>
             </VCol>
@@ -852,6 +932,42 @@ const decrement = () => {
 
 <style scoped>
 
+  .thumb-media {
+    width: 100% !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+  }
+
+  .swiper-slide-active::v-deep(.vh--outer),
+  .swiper-slide-active::v-deep(.vh--outer > .vh--holder),
+  .swiper-slide-active::v-deep(.vh--outer > .vh--holder > picture) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .swiper-slide-active::v-deep(.vh--outer > .vh--holder > picture > img) {
+     height: 100%;
+  }
+
+  .play-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 32px;
+    height: 32px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 10;
+    background: rgba(0, 0, 0, .5);
+    border-radius: 50%;
+    justify-content: center;
+    display: flex;
+  }
+
+  .play-overlay img {
+    width: 15px !important;
+  }
+
   .image-container {
     position: relative;
     display: inline-block;
@@ -1111,14 +1227,10 @@ const decrement = () => {
 
 <style scoped>
 
-  .carousel__item img {
-    width: 60%;
-  }
-
   .border-img {
     border-radius: 16px !important;
     border: 1px solid #D9EEF2;
-    padding: 10px  10px 40px 10px !important;
+    /* padding: 10px  10px 40px 10px !important; */
     background-color: white;
     text-align: center;
     align-items: center;
@@ -1151,7 +1263,7 @@ const decrement = () => {
     background-position: center;
   }
 
-  .swiper-slide img {
+  .swiper-slide img, .swiper-slide iframe {
     display: block;
     width: 100%;
     height: 100%;
@@ -1178,8 +1290,8 @@ const decrement = () => {
   }
 
   .mySwiper2 {
-    height: 350px;
-    width: 100%;
+    height: 400px;
+    width: 400px;
   }
 
   .swiper-recomendations .swiper::v-deep(.swiper-pagination-bullet-active) {
@@ -1256,9 +1368,9 @@ const decrement = () => {
       font-size: 16px;
     }
 
-    .border-img {
+    /* .border-img {
       padding: 10px !important;
-    }
+    } */
 
     .col-recomendaciones p {
       font-size: 16px;
@@ -1297,12 +1409,16 @@ const decrement = () => {
     }
 
     .mySwiper .swiper-slide {
-      width: 57px;
+      width: 60px;
     }
 
     .mySwiper2 {
       max-height: 200px;
-      width: 87%;
+      width: 200px;
+    }
+
+    .slide-img-mobile {
+      margin-left: 200px;
     }
     
     .btn-register {
