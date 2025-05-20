@@ -945,9 +945,9 @@ const buildEmbedUrl = (url) => {
     height: 100%;
   }
 
-  .swiper-slide-active::v-deep(.vh--outer > .vh--holder > picture > img) {
+  /* .swiper-slide-active::v-deep(.vh--outer > .vh--holder > picture > img) {
      height: 100%;
-  }
+  } */
 
   .play-overlay {
     position: absolute;
