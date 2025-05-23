@@ -215,7 +215,7 @@ const addfavorite = () => {
     .out-of-stock-label {
         position: absolute;
         top: 44%;
-        left: 20%;
+        left: 13%;
         transform: translate(-50%, -50%) rotate(-30deg);
         background-color: rgba(255, 0, 144, 0.7);
         color: white;
@@ -225,7 +225,7 @@ const addfavorite = () => {
         border-radius: 5px;
         z-index: 10;
         pointer-events: none; /* Para que no interfiera con el zoomer */
-        width: 30%;
+        width: 20%;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
 
