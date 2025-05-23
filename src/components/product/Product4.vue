@@ -214,8 +214,8 @@ const addfavorite = () => {
 
     .out-of-stock-label {
         position: absolute;
-        top: 25%;
-        left: 50%;
+        top: 30%;
+        left: 47%;
         transform: translate(-50%, -50%) rotate(-30deg);
         background-color: rgba(255, 0, 144, 0.7);
         color: white;
@@ -342,6 +342,8 @@ const addfavorite = () => {
     
         .out-of-stock-label {
             font-size: 16px;
+            top: 25%;
+            left: 50%;
         }
 
         .border-img {
