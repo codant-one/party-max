@@ -196,7 +196,7 @@ async function fetchData() {
     imageAux.value = [{ image : data.value.service.image }]
     imageMeta.value = baseURL.value + data.value.service.image
 
-    serviceImages.value = (data.value.service.images.length === 0) ? imageAux.value : data.value.service.images
+    serviceImages.value = data.value.service.images
 
     service_id.value = data.value.service.id
 
@@ -580,7 +580,12 @@ const mediaSlides = computed(() => {
     url: u.url,
     thumb: u.thumb
   }));
-  return [...vids, ...imgs];
+  const main = {
+    type: 'image',
+    url: baseURL.value + imageAux.value[0].image,
+    thumb: baseURL.value + imageAux.value[0].image
+  }
+    return [...vids, main, ...imgs];
 });
 
 const loadVideoThumbnail = async (url) => {
@@ -1093,7 +1098,8 @@ const buildEmbedUrl = (url) => {
 <style scoped>
 
   .thumb-media {
-    width: 100% !important;
+    width: 60px !important;
+    height: 60px !important;
     object-fit: cover !important;
     border-radius: 8px !important;
   }
@@ -1815,7 +1821,7 @@ input[altinputclass="inlinePicker"] {
     border-style: solid;
     border-width: 1px;
     border-radius: 8px;
-    width: 60px;
+    width: 60px !important;
     height: 60px !important;
   }
     
