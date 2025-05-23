@@ -663,20 +663,21 @@ const buildEmbedUrl = (url) => {
                 v-if="mediaSlides.length > 0"
                 >
                 <swiper-slide v-for="(slide, index) in mediaSlides" :key="index">
-                  <img v-if="slide.type === 'image' && isMobile" :src="slide.url" :alt="'slide-'+index" class="slide-img-mobile"/>
-                  <vue-image-zoomer
-                    v-if="slide.type === 'image' && !isMobile"
-                    :regular="slide.url"
-                    :zoom-amount="3"
-                  />
+                  <template v-if="slide.type === 'image'">
+                    <img v-if="isMobile" :src="slide.url" :alt="'slide-'+index"/>
+                    <vue-image-zoomer
+                      v-else
+                      :regular="slide.url"
+                      :zoom-amount="3"
+                    />
+                  </template>
                   <iframe
                     v-else
                     :src="buildEmbedUrl(slide.url)"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen
-                  />  
-                  <div v-if="in_stock === 0" class="out-of-stock-label">AGOTADO</div>                
+                  />              
                 </swiper-slide>
               </swiper>
             </VCol>
@@ -1424,10 +1425,6 @@ const buildEmbedUrl = (url) => {
     .mySwiper2 {
       max-height: 200px;
       width: 200px;
-    }
-
-    .slide-img-mobile {
-      margin-left: 200px;
     }
     
     .btn-register {

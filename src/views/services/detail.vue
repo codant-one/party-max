@@ -732,12 +732,14 @@ const buildEmbedUrl = (url) => {
                 v-if="mediaSlides.length > 0"
                 >
                 <swiper-slide v-for="(slide, index) in mediaSlides" :key="index">
-                  <img v-if="slide.type === 'image' && isMobile" :src="slide.url" :alt="'slide-'+index" class="slide-img-mobile"/>
-                  <vue-image-zoomer
-                    v-if="slide.type === 'image' && !isMobile"
-                    :regular="slide.url"
-                    :zoom-amount="3"
-                  />
+                  <template v-if="slide.type === 'image'">
+                    <img v-if="isMobile" :src="slide.url" :alt="'slide-'+index"/>
+                    <vue-image-zoomer
+                      v-else
+                      :regular="slide.url"
+                      :zoom-amount="3"
+                    />
+                  </template>
                   <iframe
                     v-else
                     :src="buildEmbedUrl(slide.url)"
@@ -1054,7 +1056,7 @@ const buildEmbedUrl = (url) => {
             :service="service"
             :readonly="true"/>
         </VCardText>  
-        <VCardText class="pb-0 px-4 px-md-7 mt-0 mt-md-5 mb-2 swiper-recomendations" v-if="data && isMobile">  
+        <VCardText class="pb-0 px-4 px-md-7 mt-0 mt-md-5 swiper-recomendations" v-if="data && isMobile">
           <swiper
             :pagination="{
               dynamicBullets: true,
@@ -1838,9 +1840,9 @@ input[altinputclass="inlinePicker"] {
     background: #FF0090 !important;
   }
 
-  .swiper-recomendations .swiper::v-deep(.swiper-pagination-horizontal ) {
+  /* .swiper-recomendations .swiper::v-deep(.swiper-pagination-horizontal ) {
     top: 95% !important;
-  }
+  } */
     
   .col-item {
     padding: 16px 32px;
@@ -1942,7 +1944,7 @@ input[altinputclass="inlinePicker"] {
     }
 
     .swiper-recomendations .swiper {
-      height: 360px !important;
+      height: 300px !important;
     }
 
     .mySwiper {

@@ -103,7 +103,7 @@ watchEffect(() => {
 
     .border-img {
         width: 210px;
-        height: 200px;
+        height: 210px;
         border-radius: 16px !important;
         border: 1px solid #D9EEF2;
         background-color: white;
@@ -157,8 +157,8 @@ watchEffect(() => {
 
     @media only screen and (max-width: 767px) {
         .border-img {
-            width: 110px;
-            height: 110px;
+            width: 140px;
+            height: 140px;
         }
 
         .text_1 {
