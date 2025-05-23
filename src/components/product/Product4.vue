@@ -214,8 +214,8 @@ const addfavorite = () => {
 
     .out-of-stock-label {
         position: absolute;
-        top: 30%;
-        left: 47%;
+        top: 44%;
+        left: 20%;
         transform: translate(-50%, -50%) rotate(-30deg);
         background-color: rgba(255, 0, 144, 0.7);
         color: white;
@@ -225,7 +225,7 @@ const addfavorite = () => {
         border-radius: 5px;
         z-index: 10;
         pointer-events: none; /* Para que no interfiera con el zoomer */
-        width: 85%;
+        width: 30%;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
 
@@ -342,8 +342,9 @@ const addfavorite = () => {
     
         .out-of-stock-label {
             font-size: 16px;
-            top: 25%;
-            left: 50%;
+            top: 22%;
+            left: 24%;
+            width: 40%;
         }
 
         .border-img {

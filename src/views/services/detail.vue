@@ -1959,10 +1959,6 @@ input[altinputclass="inlinePicker"] {
       max-height: 200px;
       width: 200px;
     }
-
-    .slide-img-mobile {
-      margin-left: 200px;
-    }
     
     .btn-register {
       width: auto;
