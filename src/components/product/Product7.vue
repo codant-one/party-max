@@ -41,11 +41,11 @@ watchEffect(() => {
 </script>
 
 <template>
-    <div class="tw-no-underline zoom-product">
+    <div class="tw-no-underline zoom-product w-100">
         <VCard 
             class="no-shadown py-5 pb-5 w-100 d-block d-md-flex" 
             :class="props.isLastItem ? '' : 'card-information'">
-            <VCardText class="border-img ms-5 ms-md-10">
+            <VCardText class="border-img ms-5 ms-md-10 p-0">
                 <router-link
                     :to="{
                         name: 'productDetail',
@@ -54,10 +54,10 @@ watchEffect(() => {
                         }
                     }"
                     class="tw-no-underline">
-                    <VImg 
+                    <img 
                         :width="100"
                         :src="baseURL + image" 
-                        cover />
+                        class="img-prod" />
                 </router-link>
             </VCardText>
             <VCardText class="pl-5 d-block details">
@@ -92,6 +92,7 @@ watchEffect(() => {
         background-color: #FF27B3 !important;
         box-shadow: 0px 0px 8px 0px #FF27B3;
     }
+
     .v-card-text {
         padding: 0 10px;
     }
@@ -104,18 +105,33 @@ watchEffect(() => {
         height: 130px;
         border-radius: 16px !important;
         border: 1px solid #D9EEF2;
-        padding: 10px !important;
         text-align: center;
         align-items: center;
         display: flex;
+        overflow: hidden;
     }
 
-    .zoom-product  {
-        transition: transform ease-in-out 0.3s;
+    .zoom-product {
+        display: inline-block;
+        position: relative;
+        overflow: visible;
     }
 
-    .zoom-product:hover .v-img {
-        transform: scale(1.1) !important;
+    .zoom-product:hover .img-prod {
+        transform: scale(1.1);
+    }
+
+    .zoom-product:hover .title-product {
+        color: #FF0090 !important;
+    }
+
+    .img-prod {
+        display: block;
+        width: 130px;
+        height: 130px;
+        object-fit: cover;
+        border-radius: 16px;
+        transition: transform 0.3s ease-in-out;
     }
 
     .title-product {

@@ -154,10 +154,10 @@ const resolveStatusPayment = payment_state_id => {
                                 readonly
                             />
                             <span class="d-block name-product tw-text-tertiary ml-3">{{ service.service_name}}</span>
-                            <span class="text-status tw-text-gray ml-3" v-if="service.flavor">
+                            <span class="text-status tw-text-gray ml-3" v-if="service.flavor && service.is_full">
                                 Sabor: {{ service.flavor }}
                             </span> <br v-if="service.flavor">
-                            <span class="text-status tw-text-gray ml-3" v-if="service.filling">
+                            <span class="text-status tw-text-gray ml-3" v-if="service.filling && service.is_full">
                                 Relleno: {{ service.filling }}
                             </span> <br v-if="service.filling">
                             <span class="text-status tw-text-gray ml-3" v-if="service.cake_size">

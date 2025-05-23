@@ -1217,9 +1217,9 @@ const tab = ref('0')
       background: #FF0090 !important;
     }
 
-    .swiper::v-deep(.swiper-pagination-horizontal ) {
+    /* .swiper::v-deep(.swiper-pagination-horizontal ) {
       top: 92%;
-    }    
+    }     */
 
     .mostSoldMobile {
       width: -webkit-fill-available;

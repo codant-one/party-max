@@ -54,10 +54,10 @@ watchEffect(() => {
         class="tw-no-underline zoom-product">
         <VCard class="no-shadown card-information p-0 mb-5">
             <div class="d-flex">
-                <VCardText class="border-img">
-                    <VImg 
+                <VCardText class="border-img p-0 my-auto">
+                    <img 
                         :src="baseURL + image" 
-                        :width="61" />
+                        class="img-prod" />
                 </VCardText>
                 
                 <VCardText class="w-75 d-flex flex-column justify-content-between mb-1">
@@ -88,22 +88,33 @@ watchEffect(() => {
         height: 70px;
         border-radius: 8px !important;
         border: 1px solid #D9EEF2;
-        padding: 2px !important;
         text-align: center;
         align-items: center;
         display: flex;
+        overflow: hidden;
     }
 
-    .zoom-product  {
-        transition: transform ease-in-out 0.3s;
+    .zoom-product {
+        display: inline-block;
+        position: relative;
+        overflow: visible;
     }
 
-    .zoom-product:hover .v-img {
-        transform: scale(1.1) !important;
+    .zoom-product:hover .img-prod {
+        transform: scale(1.1);
     }
 
     .zoom-product:hover .title-product {
         color: #FF0090 !important;
+    }
+
+    .img-prod {
+        display: block;
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 16px;
+        transition: transform 0.3s ease-in-out;
     }
 
     .text_1 {

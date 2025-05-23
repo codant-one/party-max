@@ -66,15 +66,15 @@ watchEffect(() => {
             class="no-shadown px-0 w-100 py-3 py-md-5" 
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow no-gutters>
-                <VCol cols="6" md="4" class="d-flex justify-content-center align-center">
-                    <VCardText class="border-img ms-5 ms-md-10">
-                        <VImg 
+                <VCol cols="6" md="5" class="d-flex flex-column my-auto">
+                    <VCardText class="border-img ms-5 p-0">
+                        <img 
                             :width="100"
                             :src="baseURL + image" 
-                            cover />
+                            class="img-prod" />
                     </VCardText>
                 </VCol>
-                <VCol cols="12" md="8" class="d-flex flex-column pt-3 py-md-5 ps-4 ps-md-7 my-auto">
+                <VCol cols="12" md="7" class="d-flex flex-column pt-3 py-md-5 ps-4 ps-md-2 my-auto">
                     <VCardText class="px-1">
                         <span class="d-block text_2 py-1 tw-text-tertiary title-service">{{ name }}</span>
                         <span class="d-block py-0 tw-text-gray">Fecha: {{ date }}</span>
@@ -177,18 +177,33 @@ watchEffect(() => {
         height: 130px;
         border-radius: 16px !important;
         border: 1px solid #E1E1E1;
-        padding: 10px !important;
         text-align: center;
         align-items: center;
         display: flex;
+        overflow: hidden;
     }
 
-    .zoom-service  {
-        transition: transform ease-in-out 0.3s;
+    .zoom-service {
+        display: inline-block;
+        position: relative;
+        overflow: visible;
     }
 
-    .zoom-service:hover .v-img {
-        transform: scale(1.1) !important;
+    .zoom-service:hover .img-prod {
+        transform: scale(1.1);
+    }
+
+    .zoom-service:hover .title-service {
+        color: #FF0090 !important;
+    }
+
+    .img-prod {
+        display: block;
+        width: 130px;
+        height: 130px;
+        object-fit: cover;
+        border-radius: 16px;
+        transition: transform 0.3s ease-in-out;
     }
 
     .title-service {

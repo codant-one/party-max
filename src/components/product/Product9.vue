@@ -52,27 +52,26 @@ watchEffect(() => {
 </script>
 
 <template>
-    <div class="tw-no-underline zoom-product">
+    <div class="tw-no-underline zoom-product w-100">
         <VCard 
             class="no-shadown px-0 w-100 py-1 bg-transparent" 
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow no-gutters class="px-5 px-md-12">
-                <VCol cols="1" md="1" class="d-flex justify-content-center align-center">
-                    <VCardText class="border-img ms-md-1">
-                        <VImg
+                <VCol cols="2" md="1" class="d-flex flex-column mt-1 mt-md-0 mb-auto my-md-auto">
+                    <VCardText class="border-img p-0">
+                        <img
                             :width="50"
                             :src="baseURL + image" 
-                            class="avatar-dynamic"
-                            cover />
+                            class="img-prod" />
                     </VCardText>
                 </VCol>
-                <VCol cols="6" md="6" class="d-flex justify-content-center align-center my-md-0 ps-3">
+                <VCol cols="6" md="6" class="d-flex justify-content-center align-center my-md-0 ps-3 ps-md-0">
                     <VCardText>
                         <span class="d-block text_2 py-1 tw-text-tertiary title-product">{{ name }}</span>
                         <span class="d-block text_2 py-0 tw-text-gray">Color: {{ color }}</span>
                     </VCardText>
                 </VCol>
-                <VCol cols="2" md="1" class="d-flex justify-content-end tw-items-center">
+                <VCol cols="1" md="1" class="d-flex justify-content-end tw-items-center">
                     <span class="text_1 tw-text-tertiary">{{ quantity }}</span>
                 </VCol>
                 <VCol cols="2" md="2" class="d-none d-md-flex justify-content-end tw-items-center">
@@ -115,20 +114,34 @@ watchEffect(() => {
     .border-img {
         width: 60px;
         height: 60px;
-        border-radius: 16px !important;
+        border-radius: 8px !important;
         border: 1px solid #D9EEF2;
-        padding: 10px !important;
         text-align: center;
         align-items: center;
         display: flex;
     }
 
-    .zoom-product  {
-        transition: transform ease-in-out 0.3s;
+    .zoom-product {
+        display: inline-block;
+        position: relative;
+        overflow: visible;
     }
 
-    .zoom-product:hover .v-img {
-        transform: scale(1.1) !important;
+    .zoom-product:hover .img-prod {
+        transform: scale(1.1);
+    }
+
+    .zoom-product:hover .title-product {
+        color: #FF0090 !important;
+    }
+
+    .img-prod {
+        display: block;
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 8px;
+        transition: transform 0.3s ease-in-out;
     }
 
     .bg-transparent {

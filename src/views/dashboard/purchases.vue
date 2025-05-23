@@ -137,10 +137,10 @@ const redirect = (name) => {
                     <span class="text-status tw-text-gray" v-if="order.products.length > 0">
                         Color: {{ order.products[0].color }}
                     </span> <br>
-                    <span class="text-status tw-text-gray" v-if="order.products.length === 0 && order.services.length > 0 && order.services[0].flavor">
+                    <span class="text-status tw-text-gray" v-if="order.products.length === 0 && order.services.length > 0 && order.services[0].flavor && order.services[0].is_full">
                         Sabor: {{ order.services[0].flavor }}
                     </span> <br>
-                    <span class="text-status tw-text-gray" v-if="order.products.length === 0 && order.services.length > 0 && order.services[0].filling">
+                    <span class="text-status tw-text-gray" v-if="order.products.length === 0 && order.services.length > 0 && order.services[0].filling && order.services[0].is_full">
                         Relleno: {{ order.services[0].filling }}
                     </span> <br>
                     <span class="text-status tw-text-gray" v-if="order.products.length === 0 && order.services.length > 0 && order.services[0].cake_size">

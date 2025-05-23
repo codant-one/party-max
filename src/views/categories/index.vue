@@ -408,9 +408,9 @@ const setMetaTags = ({ title, description, image, url, keywords }) => {
       background: #FF0090 !important;
     }
 
-    .swiper::v-deep(.swiper-pagination-horizontal ) {
+    /* .swiper::v-deep(.swiper-pagination-horizontal ) {
       top: 90%
-    }
+    } */
 
     .cardtitles {
       white-space: pre-wrap;

@@ -61,11 +61,10 @@ watchEffect(() => {
         }"
         class="tw-no-underline zoom-product">
         <VCard class="no-shadown card-information p-0" :width="isMobile ? 'auto' : 230" :class="props.bg">
-            <VCardText class="border-img ms-1">
-                <VImg 
-                    :width="230"
+            <VCardText class="border-img ms-1 p-0">
+                <img 
                     :src="baseURL + image" 
-                    cover />
+                    class="img-prod" />
             </VCardText>
             <VCardText class="mt-2">
                 <div class="d-flex">
@@ -122,26 +121,37 @@ watchEffect(() => {
 
     .border-img {
         width: 210px;
-        height: 200px;
+        height: 210px;
         border-radius: 16px !important;
         border: 1px solid #D9EEF2;
-        padding: 10px !important;
         background-color: white;
         text-align: center;
         align-items: center;
         display: flex;
+        overflow: hidden;
     }
 
-    .zoom-product  {
-        transition: transform ease-in-out 0.3s;
+    .zoom-product {
+        display: inline-block;
+        position: relative;
+        overflow: visible;
     }
 
-    .zoom-product:hover .v-img {
-        transform: scale(1.1) !important;
+    .zoom-product:hover .img-prod {
+        transform: scale(1.1);
     }
 
     .zoom-product:hover .title-product {
         color: #FF0090 !important;
+    }
+
+    .img-prod {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 16px;
+        transition: transform 0.3s ease-in-out;
     }
 
     .title-product, .store {
@@ -165,8 +175,8 @@ watchEffect(() => {
 
     @media only screen and (max-width: 767px) {
         .border-img {
-            width: 110px;
-            height: 110px;
+            width: 140px;
+            height: 140px;
         }
 
         .text_1 {

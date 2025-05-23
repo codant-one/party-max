@@ -41,11 +41,11 @@ watchEffect(() => {
 </script>
 
 <template>
-    <div class="tw-no-underline zoom-service">
+    <div class="tw-no-underline zoom-service w-100">
         <VCard 
             class="no-shadown py-5 pb-5 w-100 d-block d-md-flex" 
             :class="props.isLastItem ? '' : 'card-information'">
-            <VCardText class="border-img ms-5 ms-md-10">
+            <VCardText class="border-img ms-5 ms-md-10 p-0">
                 <router-link
                     :to="{
                         name: 'serviceDetail',
@@ -54,10 +54,10 @@ watchEffect(() => {
                         }
                     }"
                     class="tw-no-underline">
-                    <VImg 
+                    <img 
                         :width="100"
                         :src="baseURL + image" 
-                        cover />
+                        class="img-prod" />
                 </router-link>
             </VCardText>
             <VCardText class="pl-5 d-block details">
@@ -104,18 +104,33 @@ watchEffect(() => {
         height: 130px;
         border-radius: 16px !important;
         border: 1px solid #D9EEF2;
-        padding: 10px !important;
         text-align: center;
         align-items: center;
         display: flex;
+        overflow: hidden;
     }
 
-    .zoom-service  {
-        transition: transform ease-in-out 0.3s;
+    .zoom-service {
+        display: inline-block;
+        position: relative;
+        overflow: visible;
     }
 
-    .zoom-service:hover .v-img {
-        transform: scale(1.1) !important;
+    .zoom-service:hover .img-prod {
+        transform: scale(1.1);
+    }
+
+    .zoom-service:hover .title-service {
+        color: #FF0090 !important;
+    }
+
+    .img-prod {
+        display: block;
+        width: 130px;
+        height: 130px;
+        object-fit: cover;
+        border-radius: 16px;
+        transition: transform 0.3s ease-in-out;
     }
 
     .title-service {

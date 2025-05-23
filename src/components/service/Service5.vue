@@ -40,6 +40,7 @@ const slug = ref(null)
 const quantity = ref(null)
 const service_id = ref(null)
 const size = ref(null)
+const is_full = ref(true)
 const flavor = ref(null)
 const flavor_id = ref(null)
 const filling = ref(null)
@@ -94,6 +95,7 @@ watchEffect(() => {
         filling_id.value = props.service.cake_size_id === 0 ? null : props.service.filling.id
         cake_size_id.value = props.service.cake_size_id
         order_file_id.value = props.service.order_file_id
+        is_full.value = props.service.is_full === 1 ? true : false
     }
 })
 
@@ -133,25 +135,25 @@ const decrement = () => {
 </script>
 
 <template>
-    <div class="tw-no-underline zoom-service">
+    <div class="tw-no-underline zoom-service w-100">
         <VCard 
             class="no-shadown px-0 w-100 py-5 py-md-7" 
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow no-gutters>
-                <VCol cols="6" md="2" class="d-flex justify-content-center align-center">
-                    <VCardText class="border-img ms-5 ms-md-10">
-                        <VImg 
+                <VCol cols="6" md="3" class="d-flex flex-column my-auto">
+                    <VCardText class="border-img ms-5 ms-md-10 p-0">
+                        <img 
                             :width="100"
                             :src="baseURL + image" 
-                            cover />
+                            class="img-prod" />
                     </VCardText>
                 </VCol>
-                <VCol cols="12" md="6" class="d-flex flex-column py-3 py-md-5 ps-4 ps-md-7 my-auto">
+                <VCol cols="12" md="5" class="d-flex flex-column py-3 py-md-5 ps-4 ps-md-0 my-auto">
                     <VCardText>
                         <span class="d-block text_2 py-1 tw-text-tertiary title-service">{{ name }}</span>
                         <span class="d-block py-0 tw-text-gray">Fecha: {{ date }}</span>
                         <span class="d-block py-0 tw-text-gray" v-if="size">Tamaño: {{ size }}</span>
-                        <span class="d-block py-0 tw-text-gray" v-if="size">
+                        <span class="d-block py-0 tw-text-gray" v-if="size && is_full">
                             Sabor: {{ flavor }} / Relleno: {{ filling }}
                         </span>
                     </VCardText>
@@ -201,7 +203,7 @@ const decrement = () => {
                 <VCol cols="6" md="2" class="align-center text-center pb-0 py-md-5 mt-auto my-md-auto pe-4">
                     <VCardText class="mt-1">
                         <div class="d-flex text-center align-center tw-justify-end md:tw-justify-center">
-                            <span class="text_1 tw-text-tertiary">${{ formatNumber(price) }}</span>
+                            <span class="text_1 tw-text-tertiary mb-1">${{ formatNumber(price) }}</span>
                         </div>
                     </VCardText>
                 </VCol>
@@ -307,18 +309,33 @@ const decrement = () => {
         height: 130px;
         border-radius: 16px !important;
         border: 1px solid #E1E1E1;
-        padding: 10px !important;
         text-align: center;
         align-items: center;
         display: flex;
+        overflow: hidden;
     }
 
-    .zoom-service  {
-        transition: transform ease-in-out 0.3s;
+    .zoom-service {
+        display: inline-block;
+        position: relative;
+        overflow: visible;
     }
 
-    .zoom-service:hover .v-img {
-        transform: scale(1.1) !important;
+    .zoom-service:hover .img-prod {
+        transform: scale(1.1);
+    }
+
+    .zoom-service:hover .title-service {
+        color: #FF0090 !important;
+    }
+
+    .img-prod {
+        display: block;
+        width: 130px;
+        height: 130px;
+        object-fit: cover;
+        border-radius: 16px;
+        transition: transform 0.3s ease-in-out;
     }
 
     .title-service {

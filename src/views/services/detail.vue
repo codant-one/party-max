@@ -131,6 +131,7 @@ const listFillings = ref([])
 const listCakeTypes = ref([])
 const listCakeSizes = ref([])
 const listSizesByTypes = ref([])
+const is_full = ref(true)
 const flavor = ref(null)
 const flavor_id = ref(null)
 const filling = ref(null)
@@ -221,6 +222,7 @@ async function fetchData() {
     description.value = data.value.service.description ?? ''
     cupcakes.value = data.value.service.cupcakes
     isCupcake.value = data.value.service.cupcakes.length > 0 ? true : false
+    is_full.value = data.value.service.is_full
 
     tags.value = []
     data.value.service.tags.forEach(element => { 
@@ -752,7 +754,7 @@ const buildEmbedUrl = (url) => {
                   <strong class="tw-text-gray tw-text-base ms-1">{{ store }}</strong>
                 </span>
               </VCardText>
-              <VCardText class="p-0 d-block border-title mt-2" v-if="isCupcake">
+              <VCardText class="p-0 d-block border-title mt-2" v-if="isCupcake && is_full">
                 <VRow>
                   <VCol cols="12" md="4" class="mb-0 mb-md-3">
                     <span class="d-block tw-text-tertiary mb-2">Sabor: 
@@ -851,9 +853,9 @@ const buildEmbedUrl = (url) => {
               <VCardText class="p-0 d-block border-title mt-2" v-if="single_description !== null && single_description.length > 10">
                 <span class="d-block tw-text-tertiary ms-5 mb-2 tw-leading-5" v-html="single_description" />
               </VCardText>
-              <VCardText class="p-0 d-block d-md-flex align-center text-center border-title">
+              <VCardText class="p-0 d-block d-md-flex justify-content-between align-center text-center border-title">
                 <VBtn 
-                  class="mx-2 my-2 mx-md-5 my-md-5 btn-date" 
+                  class="mx-0 my-2 my-md-5 btn-date" 
                   variant="outlined"
                   @click="openCalendar" >
                     <calendar_icon class="mr-2"/>
@@ -866,6 +868,48 @@ const buildEmbedUrl = (url) => {
                 </VBtn>
                 <div class="d-flex py-2 justify-content-center md:tw-justify-start ">
                   <span class="text_1">{{ date }}</span>
+                </div>
+                <div v-if="!is_full" class="text-start w-size">
+                  <span class="d-block tw-text-tertiary mb-4">Tamaño: </span>
+                  <span class="d-block tw-text-tertiary w-100">
+                    <VAutocomplete
+                      variant="outlined"
+                      v-model="cake_size"
+                      :items="getCakeSizes"
+                      autocomplete="off"
+                      @update:model-value="selectCakeSize(cake_size)" />
+                  </span>
+
+                  <span class="d-block tw-text-tertiary mb-4" v-if="is_simple === '0'">Diseño: </span>
+                  <span class="d-block tw-text-tertiary w-100" v-if="is_simple === '0'">
+                    <VFileInput 
+                      v-model="file"
+                      :rules="rules"
+                      label="Subir archivo"
+                      accept="image/png, image/jpeg, image/bmp"
+                      variant="outlined"
+                      prepend-icon="mdi-file-image-outline"
+                      class="custom-file-input"
+                    >
+                      <template #selection="{ fileNames }">
+                        <template
+                          v-for="fileName in fileNames"
+                          :key="fileName"
+                        >
+                          <VChip
+                            label
+                            size="small"
+                            color="primary"
+                            class="file-chip"
+                            closable
+                            @click:close="file = null"
+                          >
+                            {{ fileName }}
+                          </VChip>
+                        </template>
+                      </template>
+                    </VFileInput>
+                  </span>
                 </div>
               </VCardText>
               <VCardText class="p-0 d-flex justify-content-center md:tw-justify-start ">
@@ -1601,6 +1645,10 @@ input[altinputclass="inlinePicker"] {
 
 <style scoped>
 
+  .w-size {
+    width: 200px;
+  }
+
   .v-radio-group::v-deep(.v-input__details) { 
     min-height: 0px;
     height: 0px;
@@ -1853,6 +1901,11 @@ input[altinputclass="inlinePicker"] {
     /* .border-img {
       padding: 10px !important;
     } */
+
+    .w-size {
+      width: 100%;
+      margin-top: 30px;
+    }
 
     .col-recomendaciones p {
       font-size: 16px;

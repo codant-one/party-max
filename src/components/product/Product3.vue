@@ -62,11 +62,11 @@ watchEffect(() => {
         }"
         class="tw-no-underline zoom-product">
         <VCard class="no-shadown card-information p-0">
-            <VCardText class="border-img ms-1 mb-2 image-container">
-                <VImg 
+            <VCardText class="border-img ms-1 mb-2 p-0">
+                <img 
                     class="img-prod"
                     :src="baseURL + image" 
-                    cover />
+                />
                 
                 <div v-if="in_stock === 0" class="out-of-stock-label">AGOTADO</div>                    
             </VCardText>
@@ -114,11 +114,6 @@ watchEffect(() => {
 
 <style scoped>
 
-    .image-container {
-        position: relative;
-        display: inline-block;
-    }
-
     .out-of-stock-label {
         position: absolute;
         top: 50%;
@@ -142,26 +137,37 @@ watchEffect(() => {
 
     .border-img {
         width: 210px;
-        height: 200px;
+        height: 210px;
         border-radius: 16px !important;
         border: 1px solid #D9EEF2;
-        padding: 10px !important;
         background-color: white;
         text-align: center;
         align-items: center;
         display: flex;
+        overflow: hidden;
     }
 
-    .zoom-product  {
-        transition: transform ease-in-out 0.3s;
+    .zoom-product {
+        display: inline-block;
+        position: relative;
+        overflow: visible;
     }
 
-    .zoom-product:hover .v-img {
-        transform: scale(1.1) !important;
+    .zoom-product:hover .img-prod {
+        transform: scale(1.1);
     }
 
-    .zoom-product:hover .title-product{
+    .zoom-product:hover .title-product {
         color: #FF0090 !important;
+    }
+
+    .img-prod {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 16px;
+        transition: transform 0.3s ease-in-out;
     }
 
     .title-product {
@@ -190,10 +196,6 @@ watchEffect(() => {
     .card-information {
         width: 230px;
         min-height: 100px;
-    }
-
-    .img-prod {
-        width:230px;
     }
     
 

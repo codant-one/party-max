@@ -52,11 +52,11 @@ watchEffect(() => {
         }"
         class="tw-no-underline zoom-service">
         <VCard class="no-shadown card-information p-0" :width="isMobile ? 'auto' : 230" :class="props.bg">
-            <VCardText class="border-img ms-1">
-                <VImg 
+            <VCardText class="border-img ms-1 p-0">
+                <img
                     :width="230"
                     :src="baseURL + image" 
-                    cover />
+                    class="img-prod" />
             </VCardText>
             <VCardText class="mt-2">
                 <div class="d-flex">
@@ -106,23 +106,34 @@ watchEffect(() => {
         height: 200px;
         border-radius: 16px !important;
         border: 1px solid #D9EEF2;
-        padding: 10px !important;
         background-color: white;
         text-align: center;
         align-items: center;
         display: flex;
+        overflow: hidden;
     }
 
-    .zoom-service  {
-        transition: transform ease-in-out 0.3s;
+    .zoom-service {
+        display: inline-block;
+        position: relative;
+        overflow: visible;
     }
 
-    .zoom-service:hover .v-img {
-        transform: scale(1.1) !important;
+    .zoom-service:hover .img-prod {
+        transform: scale(1.1);
     }
 
     .zoom-service:hover .title-service {
         color: #FF0090 !important;
+    }
+
+    .img-prod {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 16px;
+        transition: transform 0.3s ease-in-out;
     }
 
     .title-service, .store {

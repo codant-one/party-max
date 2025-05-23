@@ -1301,9 +1301,9 @@ const buildEmbedUrl = (url) => {
     background: #FF0090 !important;
   }
 
-  .swiper-recomendations .swiper::v-deep(.swiper-pagination-horizontal ) {
+  /* .swiper-recomendations .swiper::v-deep(.swiper-pagination-horizontal ) {
     top: 94% !important;
-  }
+  } */
     
   .col-item {
     padding: 16px 32px;

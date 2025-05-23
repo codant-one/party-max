@@ -89,13 +89,13 @@ const addfavorite = () => {
 </script>
 
 <template>
-    <div class="zoom-service">
+    <div class="zoom-service w-100">
         <VCard 
             class="no-shadown px-0 pt-0 pb-5 w-100 mb-3 mb-md-5" 
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow>
                 <VCol cols="6" md="3">
-                    <VCardText class="border-img ms-md-5 text-center justify-content-center align-center d-flex">
+                    <VCardText class="border-img ms-md-5 text-center justify-content-center align-center d-flex p-0">
                         <router-link
                             :to="{
                                 name: 'serviceDetail',
@@ -107,10 +107,11 @@ const addfavorite = () => {
                                 }
                             }"
                             class="tw-no-underline">
-                            <VImg 
+                            <img 
                                 :width="isMobile ? 135 : 177"
                                 :src="baseURL + image" 
-                                cover />
+                                class="img-prod"
+                            />
                         </router-link>
                     </VCardText>
                 </VCol>
@@ -214,18 +215,33 @@ const addfavorite = () => {
         height: 200px;
         border-radius: 16px !important;
         border: 1px solid #D9EEF2;
-        padding: 10px !important;
         text-align: center;
         align-items: center;
         display: flex;
+        overflow: hidden;
     }
 
-    .zoom-service  {
-        transition: transform ease-in-out 0.3s;
+    .zoom-service {
+        display: inline-block;
+        position: relative;
+        overflow: visible;
     }
 
-    .zoom-service:hover .v-img {
-        transform: scale(1.1) !important;
+    .zoom-service:hover .img-prod {
+        transform: scale(1.1);
+    }
+
+    .zoom-service:hover .title-service {
+        color: #FF0090 !important;
+    }
+
+    .img-prod {
+        display: block;
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 16px;
+        transition: transform 0.3s ease-in-out;
     }
 
     .title-service {
@@ -233,10 +249,6 @@ const addfavorite = () => {
         font-style: normal;
         font-weight: 400;
         line-height: 16px;
-    }
-
-    .zoom-service:hover .title-service {
-        color: #FF0090 !important;
     }
 
     .text_1 {
