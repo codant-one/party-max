@@ -214,7 +214,7 @@ const addfavorite = () => {
 
     .out-of-stock-label {
         position: absolute;
-        top: 50%;
+        top: 25%;
         left: 50%;
         transform: translate(-50%, -50%) rotate(-30deg);
         background-color: rgba(255, 0, 144, 0.7);
