@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "composite": true,
     "allowJs": true,
     "baseUrl": "./",
     "target": "esnext",
@@ -19,5 +20,6 @@
     {
       "path": "./tsconfig.app.json"
     }
-  ]
+  ],
+  "include": ["src"]
 }

@@ -14,8 +14,15 @@ const head = createHead();
 
 if(import.meta.env.VITE_ENV !== 'development') {//solo para produccion
   metapixel.init();
-  router.afterEach(() => {// Configura el seguimiento de cambios de página si usas vue-router
+  router.afterEach((to) => {// Configura el seguimiento de cambios de página si usas vue-router
     metapixel.trackEvent('PageView');
+     // Google Tag Manager
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        event: 'pageview',
+        page: to.fullPath,
+      });
+    }
   });
 }
 
