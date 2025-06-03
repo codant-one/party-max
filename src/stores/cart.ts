@@ -20,7 +20,7 @@ export const useCartStores = defineStore('cart', {
         }
     },
     actions: {
-        setWholesale(value: any){
+        setWholesale(value: any) {
             this.wholesale = value
         },
         fetchCart() {

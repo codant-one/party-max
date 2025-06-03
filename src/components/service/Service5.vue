@@ -96,6 +96,7 @@ watchEffect(() => {
         cake_size_id.value = props.service.cake_size_id
         order_file_id.value = props.service.order_file_id
         is_full.value = props.service.is_full === 1 ? true : false
+        config.value.minDate = is_full.value ? addDays(new Date(), 3) : addDays(new Date(), 1)
     }
 })
 

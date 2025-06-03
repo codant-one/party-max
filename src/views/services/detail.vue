@@ -223,6 +223,7 @@ async function fetchData() {
     cupcakes.value = data.value.service.cupcakes
     isCupcake.value = data.value.service.cupcakes.length > 0 ? true : false
     is_full.value = data.value.service.is_full
+    config.value.minDate = is_full.value ? addDays(new Date(), 3) : addDays(new Date(), 1)
 
     tags.value = []
     data.value.service.tags.forEach(element => { 

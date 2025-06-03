@@ -118,6 +118,7 @@
 
         subTotal.value = sum.toFixed(2)
         isLoading.value = false
+        isDrawerOpen.value = true
       }
     }
   );
