@@ -101,6 +101,7 @@
       subTotal.value = '0.00'
 
       if(cart_products.value > 0) {
+        isDrawerOpen.value = true
         isLoading.value = true
         await cartStores.fetchCart()
         products.value = cartStores.getData
@@ -118,7 +119,6 @@
 
         subTotal.value = sum.toFixed(2)
         isLoading.value = false
-        isDrawerOpen.value = true
       }
     }
   );
