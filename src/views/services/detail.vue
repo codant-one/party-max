@@ -223,7 +223,7 @@ async function fetchData() {
     cupcakes.value = data.value.service.cupcakes
     isCupcake.value = data.value.service.cupcakes.length > 0 ? true : false
     is_full.value = data.value.service.is_full
-    config.value.minDate = is_full.value ? addDays(new Date(), 3) : addDays(new Date(), 1)
+    config.value.minDate = addDays(new Date(), Number(data.value.service.estimated_delivery_time) || 0)
 
     tags.value = []
     data.value.service.tags.forEach(element => { 
@@ -302,17 +302,17 @@ async function fetchData() {
       }
 
       if(!isMobile) {
-        const product_ = {
-          title: "Producto",
+        const service_ = {
+          title: "Servicio",
           disabled: true,
           href: "",
         };
 
-        bread.value.push(product_);
+        bread.value.push(service_);
       }
     } else {
       bread.value.push({
-        title: 'Producto',
+        title: 'Servicio',
         disabled: true,
         href: '',
       });
