@@ -310,7 +310,7 @@ const addfavorite = (service_id) => {
   <section>
     <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
       <VContainer class="tw-text-tertiary d-flex align-center px-0">
-        <v-breadcrumbs :items="bread" class="px-2"/>
+        <v-breadcrumbs :items="bread" class="px-2" aria-label="breadcrumb"/>
       </VContainer>
     </VAppBar>
     <VContainer class="pt-0 container-mobile">
@@ -665,7 +665,7 @@ const addfavorite = (service_id) => {
                 class="filter-mobile d-flex justify-content-end align-center d-lg-none tw-text-right pr-5"
                 @click="filtersStores.changeDrawer"
               >
-                <img :src="icon3" />
+                <img :src="icon3" alt="icon3"/>
                 <span class="pl-2">Filtros</span>
               </VCol>
 
@@ -678,10 +678,10 @@ const addfavorite = (service_id) => {
                 <span>Vista</span>
                 <VTabs v-model="tab">
                   <VTab value="0">
-                    <img :src="icon1" />
+                    <img :src="icon1"  alt="icon1"/>
                   </VTab>
                   <VTab value="1">
-                    <img :src="icon2" />
+                    <img :src="icon2"  alt="icon2"/>
                   </VTab>
                 </VTabs>
               </VCol>
@@ -704,8 +704,8 @@ const addfavorite = (service_id) => {
                       subcategory: i.slug.split('/')[2]
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"  alt="icono subcategoria"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                   <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                 </router-link>
               </template>
@@ -724,8 +724,8 @@ const addfavorite = (service_id) => {
                         subcategory: i.slug.split('/')[2]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                      <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                      <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                      <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
+                      <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </router-link>
                 </template>
@@ -749,8 +749,8 @@ const addfavorite = (service_id) => {
                         subcategory: i.slug.split('/')[2]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </router-link>
                 </swiper-slide>
@@ -779,8 +779,8 @@ const addfavorite = (service_id) => {
                       subcategory: i.slug.split('/')[2]
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                  <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
+                  <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                   <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                 </router-link>
               </template>
@@ -799,8 +799,8 @@ const addfavorite = (service_id) => {
                         subcategory: i.slug.split('/')[2]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </router-link>
                 </template>
@@ -823,8 +823,8 @@ const addfavorite = (service_id) => {
                         subcategory: i.slug.split('/')[2]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </router-link>
                 </swiper-slide>
@@ -852,8 +852,8 @@ const addfavorite = (service_id) => {
                       subcategory: i.slug.split('/')[1]
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                  <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
+                  <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                   <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                 </router-link>
               </template>
@@ -871,8 +871,8 @@ const addfavorite = (service_id) => {
                         subcategory: i.slug.split('/')[1]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </router-link>
                 </template>
@@ -895,8 +895,8 @@ const addfavorite = (service_id) => {
                         subcategory: i.slug.split('/')[1]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </router-link>
                 </swiper-slide>
@@ -924,8 +924,8 @@ const addfavorite = (service_id) => {
                       subcategory: i.slug.split('/')[1]
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                  <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
+                  <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                   <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                 </router-link>
               </template>
@@ -943,8 +943,8 @@ const addfavorite = (service_id) => {
                         subcategory: i.slug.split('/')[1]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </router-link>
                 </template>
@@ -966,8 +966,8 @@ const addfavorite = (service_id) => {
                         subcategory: i.slug.split('/')[1]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </router-link>
                 </swiper-slide>

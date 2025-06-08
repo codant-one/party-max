@@ -62,7 +62,8 @@ watchEffect(() => {
                         <img
                             :width="50"
                             :src="baseURL + image" 
-                            class="img-prod" />
+                            class="img-prod" 
+                            alt="Imagen del producto" />
                     </VCardText>
                 </VCol>
                 <VCol cols="6" md="6" class="d-flex justify-content-center align-center my-md-0 ps-3 ps-md-0">

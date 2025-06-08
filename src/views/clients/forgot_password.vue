@@ -91,7 +91,7 @@ const onSubmit = () => {
                 <VCardItem class="pb-0 client-card">
                     <VRow no-gutters class="text-left align-center">
                         <VCol cols="12" class="d-flex text-left mb-2">
-                            <img :src="icon1" class="me-3"/>
+                            <img :src="icon1" class="me-3" alt="email"/>
                             <div class="d-block">
                                 <span class="text-client text-left">E-mail</span> <br>
                                 <span class="p-client text-left">Recibirás información.</span>

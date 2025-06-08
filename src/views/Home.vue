@@ -161,7 +161,7 @@ async function fetchData() {
 
 const redirectTo = (url) => {
   if (url) {
-    window.open(url, '_blank');
+    window.open(url, '_blank', 'noopener,noreferrer');
     // window.location.href = url
   }
 }
@@ -273,6 +273,7 @@ const tab = ref('0')
                   class="img-gallery"
                   cover
                   @click="redirectTo(item.url)"
+                  @keydown.enter="redirectTo(item.url)"
                   priority
                   :width="isMobile ? '358' : '560'"
                   :height="isMobile ? '180' : '391'"
@@ -290,10 +291,10 @@ const tab = ref('0')
           <VCol cols="12" md="5" class="pslider">
             <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent h-100">
               <VCol cols="6" md="6" class="pslider2">
-                  <img :src="banner_1.image" class="img-gallery" alt="pinatas" @click="redirectTo(banner_1.url)" />
+                  <img :src="banner_1.image" class="img-gallery" alt="pinatas" @click="redirectTo(banner_1.url)" @keydown.enter="redirectTo(banner_1.url)" />
               </VCol>
               <VCol cols="6" md="6" class="pslider2">
-                  <img :src="banner_2.image" class="border-top-right img-gallery" alt="ponques" @click="redirectTo(banner_2.url)"/>
+                  <img :src="banner_2.image" class="border-top-right img-gallery" alt="ponques" @click="redirectTo(banner_2.url)" @keydown.enter="redirectTo(banner_2.url)"/>
               </VCol>
               <VCol cols="12" class="pslider3">
                   <img :src="banner_3.image" 
@@ -304,20 +305,21 @@ const tab = ref('0')
                     width="330"
                     height="160" 
                     @click="redirectTo(banner_3.url)"
+                    @keydown.enter="redirectTo(banner_3.url)"
                   />
               </VCol>
             </VRow>
           </VCol>
           <VCol cols="12" md="7" class="pslider4" :class="isMobile ? 'order-last order-md-first pslider5' : ''">
-              <img :src="banner_4.image" alt="furniture" class="img-gallery furniture" :class="isMobile ? 'slider5Img' : ''" cover @click="redirectTo(banner_4.url)"/>
+              <img :src="banner_4.image" alt="furniture" class="img-gallery furniture" :class="isMobile ? 'slider5Img' : ''" cover @click="redirectTo(banner_4.url)" @keydown.enter="redirectTo(banner_4.url)"/>
           </VCol>
           <VCol cols="12" md="5" class="pslider4">
             <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent h-100">
               <VCol cols="6" md="6" class="pslider2">
-                  <img :src="banner_5.image" class="img-gallery" alt="eventos" @click="redirectTo(banner_5.url)"/>
+                  <img :src="banner_5.image" class="img-gallery" alt="eventos" @click="redirectTo(banner_5.url)" @keydown.enter="redirectTo(banner_5.url)"/>
               </VCol>
               <VCol cols="6" md="6" class="pslider2">
-                  <img :src="banner_6.image" class="border-bottom-right img-gallery" alt="personalizados" @click="redirectTo(banner_6.url)"/>
+                  <img :src="banner_6.image" class="border-bottom-right img-gallery" alt="personalizados" @click="redirectTo(banner_6.url)" @keydown.enter="redirectTo(banner_6.url)"/>
               </VCol>
             </VRow>
           </VCol>
@@ -396,7 +398,7 @@ const tab = ref('0')
     <!-- banner 2 -->
     <VCard class="mt-7 no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
-        <img :src="banner_7.image" cover @click="redirectTo(banner_7.url)" class="img-gallery" alt="banner7"/>
+        <img :src="banner_7.image" cover @click="redirectTo(banner_7.url)" @keydown.enter="redirectTo(banner_7.url)" class="img-gallery" alt="banner7"/>
       </VCardItem>  
     </VCard>
     
@@ -456,6 +458,7 @@ const tab = ref('0')
                   alt="banner8"
                   cover
                   @click="redirectTo(banner_8.url)"
+                  @keydown.enter="redirectTo(banner_8.url)"
                   />
               </VCardText>
               <VCardText class="p-0">
@@ -565,12 +568,12 @@ const tab = ref('0')
     <VCard class="mt-7 no-shadown card-information p-0 d-flex transparent card-banner34">
         <VCard class="no-shadown card-information p-0 w-50 grid-item w-100">
             <VCardItem class="p-0">
-              <img :src="banner_9.image" cover @click="redirectTo(banner_9.url)"  class="img-gallery" alt="banner9"/>
+              <img :src="banner_9.image" cover @click="redirectTo(banner_9.url)" @keydown.enter="redirectTo(banner_9.url)" class="img-gallery" alt="banner9" />
             </VCardItem> 
         </VCard>
         <VCard class="no-shadown card-information p-0 w-50 ms-5 grid-item w-100">
             <VCardItem class="p-0">
-              <img :src="banner_10.image" cover @click="redirectTo(banner_10.url)" class="img-gallery" alt="banner10"/>
+              <img :src="banner_10.image" cover @click="redirectTo(banner_10.url)" @keydown.enter="redirectTo(banner_10.url)" class="img-gallery" alt="banner10"/>
             </VCardItem>
         </VCard>
     </VCard>
@@ -601,7 +604,7 @@ const tab = ref('0')
               subcategory: 'tematica-mexicana'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt=""/>
+          <img :src="t_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Mexicana"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
         </router-link>
         <router-link 
@@ -612,7 +615,7 @@ const tab = ref('0')
               subcategory: 'tematica-hawaiana'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt=""/>
+          <img :src="t_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Hawaiana"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Hawaiana</span>
         </router-link>
         <router-link 
@@ -623,7 +626,7 @@ const tab = ref('0')
               subcategory: 'tematica-vallenata'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt=""/>
+          <img :src="t_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Vallenata"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Vallenata</span>
         </router-link>
         <router-link 
@@ -634,7 +637,7 @@ const tab = ref('0')
               subcategory: 'tematica-metalizada'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_4" class="border-theme d-block size-circles-desktop" loading="lazy" alt=""/>
+          <img :src="t_4" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Metalizada"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Metalizada</span>
         </router-link>
         <router-link 
@@ -660,7 +663,7 @@ const tab = ref('0')
                   subcategory: 'tematica-mexicana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_1" class="border-theme d-block" width="150" height="150" alt=""/>
+              <img :src="t_1" class="border-theme d-block" width="150" height="150" alt="Mexicana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </router-link>
           </VCol>
@@ -673,7 +676,7 @@ const tab = ref('0')
                   subcategory: 'tematica-hawaiana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="border-theme d-block" width="150" height="150" alt=""/>
+              <img :src="t_2" class="border-theme d-block" width="150" height="150" alt="Hawaiana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
             </router-link>
           </VCol>
@@ -686,7 +689,7 @@ const tab = ref('0')
                   subcategory: 'tematica-vallenata'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_3" class="border-theme d-block" width="150" height="150" alt=""/>
+              <img :src="t_3" class="border-theme d-block" width="150" height="150" alt="Vallenata"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </router-link>
           </VCol>
@@ -699,7 +702,7 @@ const tab = ref('0')
                   subcategory: 'tematica-metalizada'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_4" class="border-theme d-block" width="150" height="150" alt=""/>
+              <img :src="t_4" class="border-theme d-block" width="150" height="150" alt="Metalizada"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </router-link>
           </VCol>

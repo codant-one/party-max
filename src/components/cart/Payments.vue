@@ -417,7 +417,7 @@ const getFlagCountry = country => {
                     <VCardText class="d-block row-payu align-center text-center p-0 px-5 px-md-16">
                         <div class="d-flex align-center tw-text-left md:tw-text-center justify-content-center">
                             <span class="tw-text-left me-2 me-md-5">PayU Latam Online Payments</span>
-                            <img :src="Payu"/>
+                            <img :src="Payu" alt="payu"/>
                         </div>
                         <VCardItem class="align-center text-center py-2 pt-md-0 mb-7 px-2 px-md-15">
                             <span>

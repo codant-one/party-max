@@ -99,7 +99,7 @@ const onSubmit = () => {
                 <VCardItem class="client-card">
                     <VRow no-gutters class="text-left align-center">
                         <VCol cols="12" class="d-flex text-left mb-2">
-                            <img :src="icon2" class="me-3"/>
+                            <img :src="icon2" class="me-3" alt="icono2"/>
                         <div cols="10" class="d-block">
                             <span class="text-client text-left">Nombre de tu empresa</span> <br>
                             <span class="p-client text-left">Cuéntanos cómo quieres que te llamemos.</span>
@@ -118,7 +118,7 @@ const onSubmit = () => {
                     </VRow>
                     <VRow no-gutters class="text-left align-center">
                         <VCol cols="12" class="d-flex text-left mb-2">
-                            <img :src="icon4" class="me-3"/> 
+                            <img :src="icon4" class="me-3" alt="icono4"/> 
                             <div cols="10" class="d-block">
                                 <span class="text-client text-left">Agrega tu NIT</span> <br>
                                 <span class="p-client text-left">Nos ayudará a identificar tu negocio.</span>
@@ -137,7 +137,7 @@ const onSubmit = () => {
                     </VRow>
                     <VRow no-gutters class="text-left align-center">
                         <VCol cols="12" class="d-flex text-left mb-2">
-                            <img :src="icon1" class="me-3"/>
+                            <img :src="icon1" class="me-3" alt="icono1"/>
                             <div cols="10" class="d-block">
                                 <span class="text-client text-left">Agrega tu e-mail</span> <br>
                                 <span class="p-client text-left">Recibirás información de tu cuenta.</span>
@@ -157,7 +157,7 @@ const onSubmit = () => {
                     </VRow>
                     <VRow no-gutters class="text-left align-center">
                         <VCol cols="12" class="d-flex text-left mb-2">
-                            <img :src="icon3" class="me-3"/> 
+                            <img :src="icon3" class="me-3" alt="icono3"/> 
                             <div cols="10" class="d-block">
                                 <span class="text-client text-left">Valida tu teléfono</span> <br>
                                 <span class="p-client text-left">Podrás usarlo para ingresar a tu cuenta.</span>

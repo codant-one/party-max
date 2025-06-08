@@ -643,7 +643,10 @@ const buildEmbedUrl = (url) => {
                         class="thumb-media"
                       />
                       <div class="play-overlay">
-                         <img :src="playImage" />
+                        <img 
+                          :src="playImage" 
+                          alt="play icon"
+                        />
                       </div> 
                     </template>
                 </swiper-slide>
@@ -718,7 +721,9 @@ const buildEmbedUrl = (url) => {
                         <div class="d-flex align-center justify-center">
                           <img 
                             width="75"
-                            :src="baseURL + item.image" />
+                            :src="baseURL + item.image"
+                            alt="Producto seleccionado"
+                          />
                         </div>
                       </div>
                     </template>

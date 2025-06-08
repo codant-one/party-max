@@ -57,7 +57,9 @@ watchEffect(() => {
                     <img 
                         :width="100"
                         :src="baseURL + image" 
-                        class="img-prod" />
+                        class="img-prod"
+                        alt="Imagen del Servicio"
+                    />
                 </router-link>
             </VCardText>
             <VCardText class="pl-5 d-block details">

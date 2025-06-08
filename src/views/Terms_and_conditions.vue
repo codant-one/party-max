@@ -27,6 +27,7 @@ const items = [
           class="bg-white align-imagel"
           :width="isMobile ? '100' : '150'"
           :src="festin_2"
+          alt="Logo PARTYMAX"
         />
       </VCol>
       <VCol cols="12" md="10" class="align-left text pl-md-5 mt-5 mt-md-10">

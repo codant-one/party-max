@@ -76,7 +76,9 @@ watchEffect(() => {
                         <img
                             :width="100"
                             :src="baseURL + image" 
-                            class="img-prod" />
+                            class="img-prod" 
+                            alt="Imagen del servicio"
+                        />
                     </VCardText>
                 </VCol>
                 <VCol cols="6" md="12" v-if="isMobile"></VCol>

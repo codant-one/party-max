@@ -132,7 +132,8 @@ const addfavorite = () => {
                             <img 
                                 :width="isMobile ? 135 : 177"
                                 :src="baseURL + image" 
-                                class="img-prod" />
+                                class="img-prod" 
+                                alt="Imagen del producto" />
 
                             <div v-if="in_stock === 0" class="out-of-stock-label">AGOTADO</div>  
                         </router-link>

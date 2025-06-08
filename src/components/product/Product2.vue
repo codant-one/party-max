@@ -57,7 +57,8 @@ watchEffect(() => {
                 <VCardText class="border-img p-0 my-auto">
                     <img 
                         :src="baseURL + image" 
-                        class="img-prod" />
+                        class="img-prod" 
+                        alt="Imagen del producto" />
                 </VCardText>
                 
                 <VCardText class="w-75 d-flex flex-column justify-content-between mb-1">

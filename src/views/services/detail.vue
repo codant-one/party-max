@@ -712,7 +712,10 @@ const buildEmbedUrl = (url) => {
                       class="thumb-media"
                     />
                     <div class="play-overlay">
-                        <img :src="playImage" />
+                        <img 
+                          :src="playImage" 
+                          alt="play icono"
+                        />
                     </div> 
                   </template>
                 </swiper-slide>

@@ -184,8 +184,8 @@ const setMetaTags = ({ title, description, image, url, keywords }) => {
                 subcategory: i.slug.split('/')[1]
               }
             }" class="tw-no-underline d-block text-center justify-content-center zoom router-icons">
-            <img :src="baseURL + i.icon_subcategory" class="border-theme d-block card-icons-img" v-if="i.icon_subcategory !== null"/>
-            <img :src="t_7" class="border-theme d-block card-icons-img" v-else/>
+            <img :src="baseURL + i.icon_subcategory" class="border-theme d-block card-icons-img" v-if="i.icon_subcategory !== null" alt="icon subcategory"/>
+            <img :src="t_7" class="border-theme d-block card-icons-img" v-else alt="icon subcategory"/>
             <span class="d-block size-theme tw-text-tertiary mt-5 mb-5">{{i.name}}</span>
           </router-link>      
         </template>
@@ -198,7 +198,7 @@ const setMetaTags = ({ title, description, image, url, keywords }) => {
             }
           }" 
           class="tw-no-underline d-block text-center justify-content-center zoom router-icons">
-          <img :src="t_6" class="border-theme d-block"/>
+          <img :src="t_6" class="border-theme d-block" alt="categoria" />
           <span class="d-block size-theme tw-text-tertiary mt-5 mb-5 transparentColor">.</span>
         </router-link>
       </VCardText>      

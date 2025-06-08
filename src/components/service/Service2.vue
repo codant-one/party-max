@@ -111,6 +111,7 @@ const addfavorite = () => {
                                 :width="isMobile ? 135 : 177"
                                 :src="baseURL + image" 
                                 class="img-prod"
+                                alt="Imagen del servicio"
                             />
                         </router-link>
                     </VCardText>

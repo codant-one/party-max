@@ -66,6 +66,7 @@ watchEffect(() => {
                 <img 
                     class="img-prod"
                     :src="baseURL + image" 
+                    alt="Imagen del producto"
                 />
                 
                 <div v-if="in_stock === 0" class="out-of-stock-label">AGOTADO</div>                    

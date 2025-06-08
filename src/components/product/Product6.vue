@@ -64,6 +64,7 @@ watchEffect(() => {
                             :width="100"
                             :src="baseURL + image"
                             class="img-prod" 
+                            alt="Imagen del producto"
                         />
                     </VCardText>
                 </VCol>

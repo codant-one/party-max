@@ -55,8 +55,9 @@ watchEffect(() => {
             <VCardText class="border-img ms-1 mb-2 p-0">
                 <img 
                     class="img-prod"
-                    :src="baseURL + image" 
-                     />
+                    :src="baseURL + image"
+                    alt="Imagen del servicio"
+                />
             </VCardText>
             <VCardText>
                 <span v-if="name.length > 50 && !isMobile" class="d-block text_2 tw-text-tertiary title-service">
