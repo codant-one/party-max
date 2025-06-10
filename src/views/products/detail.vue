@@ -9,7 +9,7 @@ import { useMiscellaneousStores } from '@/stores/miscellaneous'
 import { useCartStores } from '@/stores/cart'
 import { useFavoritesStores } from '@/stores/favorites'
 import { useHomeStores } from "@/stores/home";
-import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination } from 'swiper/modules';
+import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination, Zoom } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { VueImageZoomer } from 'vue-image-zoomer'
 import router from '@/router'
@@ -40,6 +40,7 @@ import 'swiper/css/free-mode';
 import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar'
 import 'swiper/css/pagination';
+import 'swiper/css/zoom';
 import 'vue-image-zoomer/dist/style.css';
 
 const route = useRoute()
@@ -68,7 +69,7 @@ const bread = ref([
 ])
 
 const productImages = ref([])
-const modules = ref([Pagination, FreeMode, Navigation, Thumbs, Scrollbar])
+const modules = ref([Pagination, FreeMode, Navigation, Thumbs, Scrollbar, Zoom])
 const modules2 = ref([Pagination])
 const thumbsSwiper = ref(null);
 const thumbsSwiperModal = ref(null);
@@ -676,6 +677,7 @@ const buildEmbedUrl = (url) => {
                 }"
                 :spaceBetween="isMobile ? 5 : 10"
                 :thumbs="{ swiper: thumbsSwiper }"
+                :zoom="{ maxRatio: 3, minRatio: 1 }"
                 :modules="modules"
                 :slidesPerView="1"
                 :watchSlidesProgress="true"
@@ -685,7 +687,9 @@ const buildEmbedUrl = (url) => {
                 >
                 <swiper-slide v-for="(slide, index) in mediaSlides" :key="index">
                   <template v-if="slide.type === 'image'">
-                    <img :src="slide.url" :alt="'slide-'+index" class="zoom-in" @click="isHoverVisible = true"/>
+                    <div class="swiper-zoom-container">
+                      <img :src="slide.url" :alt="'slide-'+index" class="zoom-in" @click="isHoverVisible = true"/>
+                    </div>
                   </template>
                   <iframe
                     v-else
@@ -949,7 +953,8 @@ const buildEmbedUrl = (url) => {
     </VDialog>
 
     <!-- hover -->
-    <VDialog
+    <VDialog 
+      v-if="!isMobile"
       v-model="isHoverVisible"   
       fullscreen
       transition="dialog-bottom-transition">
