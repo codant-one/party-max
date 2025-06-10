@@ -31,6 +31,9 @@ import error_circle from '@assets/icons/error-circle.svg';
 import festin_pending from '@assets/icons/festin_pending.svg';
 import playImage from '@assets/images/play.png';
 
+import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
+import arrow_left from '@assets/icons/arrow-left-dark.svg?inline';
+
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/free-mode';
@@ -65,9 +68,10 @@ const bread = ref([
 ])
 
 const productImages = ref([])
-const modules = ref([FreeMode, Navigation, Thumbs, Scrollbar])
+const modules = ref([Pagination, FreeMode, Navigation, Thumbs, Scrollbar])
 const modules2 = ref([Pagination])
 const thumbsSwiper = ref(null);
+const thumbsSwiperModal = ref(null);
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 const twitterAccount = ref(import.meta.env.VITE_TWITTER_ACCOUNT ?? '')
@@ -121,15 +125,19 @@ const isDialogVisible = ref(false)
 const isError = ref(false)
 const isPending = ref(false)
 
+const isHoverVisible = ref(false)
+
 watch(() => 
   route.path,(newPath, oldPath) => {
     thumbsSwiper.value.destroy(false, true)
+    thumbsSwiperModal.value.destroy(false, true)
   }
 );
 
 watch(() => 
   route.query,(newPath, oldPath) => {
     thumbsSwiper.value.destroy(false, true)
+    thumbsSwiperModal.value.destroy(false, true)
   }
 );
 
@@ -381,6 +389,15 @@ const setThumbsSwiper = (swiper) => {
     thumbsSwiper.value = swiper;
 }
 
+const setThumbsSwiperModal = (swiper) => {
+    thumbsSwiperModal.value = swiper;
+}
+
+const closeHoverVisible = () => {
+  isHoverVisible.value = false
+  thumbsSwiperModal.value.destroy(false, true)
+}
+
 const addCart = () => {
   let isWholesale = route.query.wholesalers === 'true' ? 1 : 0
 
@@ -553,7 +570,7 @@ const buildEmbedUrl = (url) => {
         <v-breadcrumbs :items="bread" class="px-2" />
       </VContainer>
     </VAppBar>
-    <VContainer class="pt-0">
+    <VContainer class="pt-0 m-top">
       <Loader :isLoading="isLoading"/>
       <!-- HEADER -->
       <VCard class="mt-md-7 no-shadown card-information p-0" v-if="!isLoading">
@@ -575,7 +592,7 @@ const buildEmbedUrl = (url) => {
             </a>
           </div>
         </VCardTitle>
-        <VCardSubtitle class="px-0 d-flex flex-column align-start border-title">
+        <VCardSubtitle class="px-0 d-flex flex-column align-start border-title pb-1 pb-md-0">
           <VRow no-gutters>
             <VCol cols="12" md="6" class="text-infoprod d-flex align-center mt-1">
               Marca: {{ brand }}
@@ -616,9 +633,9 @@ const buildEmbedUrl = (url) => {
           </div>
         </VCardSubtitle>
         <!-- BODY -->
-        <VCardText class="px-0 pb-0 mt-5 d-flex align-items-stretch justify-content-between">
+        <VCardText class="px-0 pb-0 mt-0 mt-md-5 d-flex align-items-stretch justify-content-between">
           <VRow class="border-title pb-2 pb-md-5">
-            <VCol cols="3" md="1" class="px-1 p-md-2">
+            <VCol cols="3" md="1" class="px-1 p-md-2 d-none d-md-block">
               <swiper
                 :direction="'vertical'"
                 :pagination="{ clickable: true }"
@@ -634,13 +651,14 @@ const buildEmbedUrl = (url) => {
                       v-if="slide.type === 'image'"
                       :src="slide.url" 
                       :alt="'image-'+index"
+                      class="cursor-pointer"
                       width="60"
                     />
                     <template  v-else>
                       <img                         
                         :src="slide.thumb"
                         :alt="'thumbnail-'+index"
-                        class="thumb-media"
+                        class="thumb-media cursor-pointer"
                       />
                       <div class="play-overlay">
                          <img :src="playImage" />
@@ -649,27 +667,25 @@ const buildEmbedUrl = (url) => {
                 </swiper-slide>
               </swiper>
             </VCol>
-            <VCol cols="9" md="4" class="d-flex justify-content-center">
+            <VCol cols="12" md="4" class="d-flex justify-content-center pb-0 pb-md-2">
               <swiper
-                :scrollbar="{
-                  hide: true,
+                :pagination="{ type: 'fraction' }"
+                :navigation="{
+                  prevEl: '.button-prev',
+                  nextEl: '.button-next'
                 }"
                 :spaceBetween="isMobile ? 5 : 10"
                 :thumbs="{ swiper: thumbsSwiper }"
                 :modules="modules"
                 :slidesPerView="1"
                 :watchSlidesProgress="true"
+                :loop="true"
                 class="mySwiper2 border-img mx-0 mx-md-auto image-container"
                 v-if="mediaSlides.length > 0"
                 >
                 <swiper-slide v-for="(slide, index) in mediaSlides" :key="index">
                   <template v-if="slide.type === 'image'">
-                    <img v-if="isMobile" :src="slide.url" :alt="'slide-'+index"/>
-                    <vue-image-zoomer
-                      v-else
-                      :regular="slide.url"
-                      :zoom-amount="3"
-                    />
+                    <img :src="slide.url" :alt="'slide-'+index" class="zoom-in" @click="isHoverVisible = true"/>
                   </template>
                   <iframe
                     v-else
@@ -679,6 +695,12 @@ const buildEmbedUrl = (url) => {
                     allowfullscreen
                   />              
                 </swiper-slide>
+                <div class="custom-nav-btn button-prev" v-if="mediaSlides.length > 1">
+                   <arrow_left />
+                </div>
+                <div class="custom-nav-btn button-next" v-if="mediaSlides.length > 1">
+                  <arrow_right />
+                </div>
               </swiper>
             </VCol>
             <VCol cols="12" md="7">
@@ -925,6 +947,100 @@ const buildEmbedUrl = (url) => {
         </VCardText>
       </VCard>
     </VDialog>
+
+    <!-- hover -->
+    <VDialog 
+      v-if="!isMobile"
+      v-model="isHoverVisible"   
+      fullscreen
+      transition="dialog-bottom-transition">
+      <div class="d-flex justify-content-end">
+        <VBtn
+          icon="mdi-window-close"
+          variant="text"
+          color="white"
+          @click="closeHoverVisible"
+         />
+      </div>
+      <div class="px-10">
+        <VRow no-gutters>
+          <VCol cols="3" md="2" class="px-1 p-md-2 d-none d-md-block">
+            <swiper
+              :direction="'vertical'"
+              :pagination="{ clickable: true }"
+              :spaceBetween="isMobile ? 3 : 5"
+              :slidesPerView="isMobile ? 3 : 6"
+              :freeMode="true"
+              :watchSlidesProgress="true"
+              @swiper="setThumbsSwiperModal"
+              class="mySwiperModal pt-0 h-100"
+            >
+              <swiper-slide v-for="(slide, index) in mediaSlides" :key="index">
+                  <img 
+                    v-if="slide.type === 'image'"
+                    :src="slide.url" 
+                    :alt="'image-'+index"
+                    class="cursor-pointer"
+                    width="100"
+                  />
+                  <template  v-else>
+                    <img                         
+                      :src="slide.thumb"
+                      :alt="'thumbnail-'+index"
+                      class="thumb-media-modal cursor-pointer"
+                    />
+                    <div class="play-overlay">
+                        <img :src="playImage" />
+                    </div> 
+                  </template>
+              </swiper-slide>
+            </swiper>
+          </VCol>
+          <VCol cols="9" md="10" class="d-flex justify-content-center pb-0 pb-md-2 tw-relative">
+            <swiper
+              :pagination="{ type: 'fraction' }"
+              :navigation="{
+                prevEl: '.button-prev',
+                nextEl: '.button-next'
+              }"
+              :spaceBetween="isMobile ? 5 : 10"
+              :thumbs="{ swiper: thumbsSwiperModal }"
+              :modules="modules"
+              :slidesPerView="1"
+              :watchSlidesProgress="true"
+              :loop="true"
+              class="mySwiper2Modal border-img mx-0 mx-md-auto image-container"
+              v-if="mediaSlides.length > 0"
+              >
+              <swiper-slide v-for="(slide, index) in mediaSlides" :key="index">
+                <template v-if="slide.type === 'image'">
+                  <vue-image-zoomer
+                    :regular="slide.url"
+                    :zoom-amount="3"
+                    :hover-message="`Color: ${color}`"
+                    :touch-message="`Color: ${color}`"
+                  />
+                </template>
+                <iframe
+                  v-else
+                  :src="buildEmbedUrl(slide.url)"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                />              
+              </swiper-slide>
+              
+            </swiper>
+            <div class="button-prev" v-if="mediaSlides.length > 1">
+                  <arrow_left />
+              </div>
+              <div class="button-next" v-if="mediaSlides.length > 1">
+                <arrow_right />
+              </div>
+          </VCol>
+        </VRow>
+      </div>
+    </VDialog>
   </section>
 </template>
 
@@ -939,10 +1055,61 @@ const buildEmbedUrl = (url) => {
 <style scoped>
 
   .thumb-media {
-     width: 60px !important;
+    width: 60px !important;
     height: 60px !important;
     object-fit: cover !important;
     border-radius: 8px !important;
+  }
+
+  .thumb-media-modal {
+    width: 100px !important;
+    height: 100px !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+  }
+
+  .swiper::v-deep(.vh--message-bottom) {
+    bottom: 30px !important;
+  } 
+
+  .m-top {
+    margin-top: -10px;
+  }
+
+  .custom-nav-btn {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    pointer-events: none;
+  }
+
+  .button-prev, .button-next {
+    position: absolute;
+    background: #D9EEF2;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    z-index: 10;
+    cursor: pointer;
+    display: flex;
+    padding: 8px;
+  }
+
+  .mySwiper2:hover .custom-nav-btn {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .zoom-in:hover {
+    cursor: zoom-in;
+  }
+
+  .button-prev { left: 8px; }
+  .button-next { right: 8px; }
+
+  /* Opcional: efectos hover */
+  .button-prev:hover v-icon,
+  .button-next:hover v-icon {
+    transform: scale(1.1);
   }
 
   .swiper-slide-active::v-deep(.vh--outer),
@@ -1281,27 +1448,46 @@ const buildEmbedUrl = (url) => {
     border-radius: 8px;
   }
 
-  .mySwiper {
+  .mySwiper, .mySwiperModal {
     box-sizing: border-box;
     padding: 10px 5px;
   }
       
   .mySwiper .swiper-slide {
-    opacity: 0.4;
-    border-style: solid;
-    border-width: 1px;
+    border: 1px solid #D9D9D9;
     border-radius: 8px;
     width: 60px !important;
     height: 60px !important;
   }
-    
+
+  .mySwiperModal .swiper-slide {
+    opacity: 1;
+    border: 2px solid #D9D9D9;
+    border-radius: 8px;
+    width: 100px !important;
+    height: 100px !important;
+  }
+
   .mySwiper .swiper-slide-thumb-active {
     opacity: 1;
+    border: 1px solid #D9EEF2;
+  }
+
+  .mySwiperModal .swiper-slide-thumb-active {
+    opacity: 1;
+    border: 2px solid #FF0090;
   }
 
   .mySwiper2 {
+    position: relative;
     height: 400px;
     width: 400px;
+  }
+
+  .mySwiper2Modal {
+    position: relative;
+    height: 650px;
+    width: 650px;
   }
 
   .swiper-recomendations .swiper::v-deep(.swiper-pagination-bullet-active) {
@@ -1408,15 +1594,15 @@ const buildEmbedUrl = (url) => {
       font-size: 11px;
     }
 
-    .swiper {
+    /* .swiper {
       height: 200px;
-    }
+    } */
 
     .swiper-recomendations .swiper {
       height: 320px !important;
     }
 
-    .mySwiper {
+    .mySwiper, .mySwiperModal {
       padding: 0 5px 10px 5px;
     }
 
@@ -1424,9 +1610,14 @@ const buildEmbedUrl = (url) => {
       width: 60px;
     }
 
-    .mySwiper2 {
-      max-height: 200px;
-      width: 200px;
+    .mySwiperModal .swiper-slide {
+      width: 100px;
+    }
+
+    .mySwiper2, .mySwiper2Modal {
+      /* max-height: 200px;
+      width: 200px; */
+      width: 100%;
     }
     
     .btn-register {
