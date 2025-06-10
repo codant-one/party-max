@@ -1263,6 +1263,10 @@ const buildEmbedUrl = (url) => {
     pointer-events: auto;
   }
 
+  .mySwiper2 iframe {
+    pointer-events: none !important;
+  }
+
   .zoom-in:hover {
     cursor: zoom-in;
   }
