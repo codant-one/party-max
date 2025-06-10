@@ -949,8 +949,7 @@ const buildEmbedUrl = (url) => {
     </VDialog>
 
     <!-- hover -->
-    <VDialog 
-      v-if="!isMobile"
+    <VDialog
       v-model="isHoverVisible"   
       fullscreen
       transition="dialog-bottom-transition">
