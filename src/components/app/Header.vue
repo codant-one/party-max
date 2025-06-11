@@ -10,11 +10,9 @@
   import Service4 from '@/components/service/Service4.vue'
   import router from '@/router'
   import logo from '@assets/images/logo.svg';
-  import searchIcon from '@assets/icons/search.svg?inline';
   import heart from '@assets/icons/heart.svg?inline';
   import shoppinp_cart from '@assets/icons/shoppinp_cart.svg?inline';
   import user from '@assets/icons/user.svg?inline';
-  import arrow_right from '@assets/icons/arrow_right.svg?inline';
   import icon_right from '@assets/icons/right-icon.svg?inline';
 
   import cart from '@assets/icons/cart.svg?inline'
