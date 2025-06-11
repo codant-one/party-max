@@ -129,8 +129,8 @@ async function fetchData() {
                 subcategory: i.slug.split('/')[1]
               }
             }" class="tw-no-underline d-block text-center justify-content-center zoom router-icons">
-            <img :src="baseURL + i.icon_subcategory" width="192" class="border-theme d-block" v-if="i.icon_subcategory !== null"/>
-            <img :src="t_7" width="192" class="border-theme d-block" v-else/>
+            <img :src="baseURL + i.icon_subcategory" alt="Icono" width="192" class="border-theme d-block" v-if="i.icon_subcategory !== null"/>
+            <img :src="t_7" alt="Icono" width="192" class="border-theme d-block" v-else/>
             <span class="d-block size-theme tw-text-tertiary mt-5 mb-5">{{i.name}}</span>
           </NuxtLink>      
         </template>
@@ -143,7 +143,7 @@ async function fetchData() {
             }
           }" 
           class="tw-no-underline d-block text-center justify-content-center zoom router-icons">
-          <img :src="t_6" class="border-theme d-block"/>
+          <img :src="t_6" alt="Producto" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5 mb-5 transparentColor">.</span>
         </NuxtLink>
       </VCardText>      

@@ -461,7 +461,7 @@ useHead({
                 class="mySwiper pt-0 d-flex align-center justify-content-center"
               >
                 <swiper-slide v-for="(picture, index) in productImages" :key="index">
-                  <img width="60" :src="baseURL + picture.image" />
+                  <img width="60" :src="baseURL + picture.image" alt="Slider" />
                 </swiper-slide>
               </swiper>
             </VCol>
@@ -521,7 +521,9 @@ useHead({
                         <div class="d-flex align-center justify-center">
                           <img 
                             width="75"
-                            :src="baseURL + item.image" />
+                            :src="baseURL + item.image" 
+                            alt="Item"
+                          />
                         </div>
                       </div>
                     </template>

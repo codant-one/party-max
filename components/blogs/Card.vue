@@ -88,9 +88,9 @@ watchEffect(() => {
                 }"
                 class="tw-no-underline"
             >
-                <img class="img-style" :src="baseURL + image" />
+                <img class="img-style" :src="baseURL + image" alt="Slug" />
             </NuxtLink>
-            <img v-else class="img-style" :src="baseURL + image" />
+            <img v-else class="img-style" :src="baseURL + image" alt="Slug" />
         </VCardItem>
 
         <VCardSubtitle class="text-justify subtitle-text my-2 my-md-6 px-0 d-block d-md-flex">

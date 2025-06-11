@@ -130,6 +130,7 @@ const addfavorite = () => {
                             <VImg 
                                 :width="isMobile ? 135 : 177"
                                 :src="baseURL + image" 
+                                :alt="name"
                                 cover />
                         </NuxtLink>
                     </VCardText>

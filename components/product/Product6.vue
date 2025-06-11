@@ -68,6 +68,7 @@ watchEffect(() => {
                         <VImg
                             :width="100"
                             :src="baseURL + image" 
+                            :alt="name"
                             cover />
                     </VCardText>
                 </VCol>

@@ -131,7 +131,7 @@ const onSubmit = () => {
                     <VCardItem class="client-card">
                         <VRow no-gutters class="text-left align-center">
                             <VCol cols="12" class="d-flex text-left mb-2">
-                                <img :src="icon2" class="me-3"/>
+                                <img :src="icon2" alt="Icono de Usuario" class="me-3"/>
                                 <div class="d-block">
                                     <span class="text-client text-left">E-mail o usuario</span> <br>
                                 </div>
@@ -149,7 +149,7 @@ const onSubmit = () => {
                             </VCol>
 
                             <VCol cols="12" class="d-flex text-left mb-2">
-                            <img :src="icon4" class="me-3"/>
+                            <img :src="icon4" alt="Icono de Contraseña" class="me-3"/>
                             <div cols="10" class="d-block">
                                 <span class="text-client text-left">Contraseña</span> <br>
                             </div>

@@ -5,7 +5,7 @@
   import icopayment1 from '@assets/icons/payment-1.svg';
   import icopayment2 from '@assets/icons/payment-2.svg';
   import icopayment3 from '@assets/icons/payment-3.svg';
-  import icopayment4 from '@assets/icons/payment-4.svg';
+  import icopayment7 from '@assets/icons/payment-7.svg';
   import icopayment5 from '@assets/icons/payment-5.svg';
   import icopayment6 from '@assets/icons/payment-6.svg';
 
@@ -39,7 +39,14 @@
 </script>
 
 <template>
-  <VFooter class="text-center d-flex flex-column bg p-0" :class="backgroundTemp">
+  <VFooter class="text-center d-flex flex-column bg p-0 w-100 d-print-none" :class="backgroundTemp">
+    <a href="https://wa.link/wvdoxg"
+        target="_blank"
+        class="whatsapp-float"
+        title="Contáctanos por WhatsApp"
+        >
+            <span class="mdi mdi-whatsapp whatsapp-icon"></span>
+    </a>
     <div class="container-footer d-none" :class="isProduct ? 'tw-bg-primary text-colorfooter' : ''">
       <VContainer class="my-10">
         <VRow no-gutters class="tw-text-tertiary">
@@ -49,7 +56,7 @@
           </VCol> 
           <VCol cols="12" md="7" class="d-flex align-center dark" v-if="isProduct">  
             <VTextField
-              class="me-24"
+              class="me-20"
               placeholder="Email"
               flat
               variant="solo">
@@ -60,7 +67,7 @@
           </VCol> 
           <VCol cols="12" md="7" class="d-flex align-center" v-else>
             <VTextField
-              class="me-24"
+              class="me-20"
               placeholder="Email"
               flat
               variant="solo">
@@ -82,7 +89,7 @@
           <div class="d-flex text-left mt-3 mt-md-12 mb-1 mb-md-5">
             <icophone class="mt-1 me-2"/>
               <span class="d-flex align-center tw-text-tertiary font-size-16 pb-2 phone-text">
-                300 4659 997        
+                300 4659 997         
               </span>
           </div>
           
@@ -90,106 +97,42 @@
           <span class="item-footer-text">fiesta@partymax.co</span>
 
           <div class="d-flex align-center text-right mt-3 mt-md-8">
-            <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="m-0">
+            <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="m-0" aria-label="instagram">
               <instagram class="mt-1 me-2"/>
             </a>
-            <a href="https://www.facebook.com/PartymaxCo/?locale=es_LA" target="_blank" class="m-0">
+            <a href="https://www.facebook.com/partymaxcolombia" target="_blank" class="m-0" aria-label="facebook">
               <facebook class="mt-1 me-2"/>
             </a>
-            <a href="https://wa.link/wvdoxg" target="_blank" class="m-0">
+            <a href="https://wa.link/wvdoxg" target="_blank" class="m-0" aria-label="whatsapp">
               <whatsapp_mobile class="mt-1 me-2" />
             </a>
           </div>
         </VCol>
 
-        <VCol cols="12" md="2" class="d-flex align-center col-mobile"></VCol>
+        <VCol cols="12" md="4" class="d-flex align-center col-mobile"></VCol>
 
         <VCol cols="12" md="2" class="d-flex flex-column align-start text-left tw-gap-3 col-mobile">
-          <NuxtLink :to="{ name: 'about' }" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          <NuxtLink to="/about" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
             Quiénes somos
           </NuxtLink>
-          <NuxtLink 
-            :to="{
-              name: 'categories-slug',
-              params: {
-                slug: 'fiestas-infantiles'
-              }
-            }" 
-            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Fiestas infantiles
-          </NuxtLink>
-          <NuxtLink 
-            :to="{
-              name: 'categories-slug',
-              params: {
-                slug: 'fiestas-tematicas'
-              }
-            }" 
-            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Fiestas temáticas
-          </NuxtLink>
-          <NuxtLink :to="{ name: 'blogs' }" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+          <NuxtLink to="/blogs" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
             Blog
           </NuxtLink>
-          <NuxtLink :to="{ name: 'help' }" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Ayuda
+          <NuxtLink to="/help" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
+            Preguntas frecuentes
           </NuxtLink>
-        </VCol>
-
-        <VCol cols="12" md="2" class="d-flex flex-column align-start text-left tw-gap-3 col-mobile">
-          <NuxtLink 
-            :to="{
-              name: 'categories-slug',
-              params: {
-                slug: 'desechables'
-              }
-            }" 
-            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Desechables
+          <NuxtLink to="/terms-and-conditions" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
+            Términos y condiciones
           </NuxtLink>
-          <NuxtLink 
-            :to="{
-              name: 'categories-slug',
-              params: {
-                slug: 'decoracion'
-              }
-            }" 
-            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Decoración
+          <NuxtLink to="/privacy-statement" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
+            Declaración de privacidad
           </NuxtLink>
-          <NuxtLink 
-            :to="{
-              name: 'categories-slug',
-              params: {
-                slug: 'sorpresas'
-              }
-            }" 
-            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Sorpresas
-          </NuxtLink>
-          <NuxtLink 
-            to="/"
-            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Mobiliario
-          </NuxtLink>
-          <NuxtLink 
-            to="/"
-            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Animación y entrenimiento
-          </NuxtLink>
-          <NuxtLink 
-            :to="{
-              name: 'categories-slug',
-              params: {
-                slug: 'hora-loca'
-              }
-            }" 
-            class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Hora loca
+          <NuxtLink to="/data-protection" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
+            Protección de datos
           </NuxtLink>
         </VCol>
         <VCol cols="5" md="3" class="align-center text-right">
-          <img :src="festinfooter" class="border-theme"/>
+          <img :src="festinfooter" class="festin-footer-size" alt="festin-footer" loading="lazy"/>
         </VCol>
       </VRow>
       <VDivider class="hr mt-10 d-none d-md-block" />
@@ -203,12 +146,12 @@
         <VCol cols="12" md="6" class="d-flex align-center text-right col-mobile">
           <VSpacer />
           <span class="copyright">Pagos seguros con</span>
-          <img :src="icopayment1" width="45" class="me-3 ms-8"/>
-          <img :src="icopayment2" width="44" class="me-3"/>
-          <img :src="icopayment3" width="44" class="me-3"/>
-          <img :src="icopayment4" width="46" class="me-3"/>
-          <img :src="icopayment5" width="45" class="me-3"/>
-          <img :src="icopayment6" width="46"/>
+          <img :src="icopayment1" alt="icopayment1" width="45" class="me-3 ms-8"/>
+          <img :src="icopayment2" alt="icopayment2" width="44" class="me-3"/>
+          <img :src="icopayment3" alt="icopayment3" width="44" class="me-3"/>
+          <img :src="icopayment7" alt="icopayment4" width="46" class="me-3"/>
+          <img :src="icopayment5" alt="icopayment5" width="45" class="me-3"/>
+          <img :src="icopayment6" alt="icopayment6" width="46"/>
         </VCol>
       </VRow>
 
@@ -216,7 +159,30 @@
     
   </VFooter>
 </template>
+
 <style scoped>
+
+  .whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    cursor: pointer;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: #25D366;
+    padding: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .whatsapp-icon {
+    font-size: 40px;
+    color: white; /* Cambia el color del ícono a blanco */
+  }
 
   .search-button {
     position: absolute;
@@ -330,8 +296,15 @@
   .container-footer {
     width: 100%;
   }
+
   .text-colorfooter span {
     color: #FFFFFF!important;
+  }
+
+  .festin-footer-size
+  {
+    width: 228px;
+    height: 286px;
   }
 
 
@@ -340,9 +313,6 @@
       display: none!important;
     }
 
-    .border-theme  {
-      width: 150px!important;
-    }
     .phone-text {
       font-size: 20px;
       line-height: 28.8px; /* 144% */
@@ -378,5 +348,21 @@
      .search-button {
       font-size: 10px;
      }
+
+     .festin-footer-size
+      {
+        width: 150px;
+        height: 188px;
+      }
+
+      .whatsapp-float
+      {
+        width: 40px;
+        height: 40px;
+      }
+
+      .whatsapp-icon {
+        font-size: 28px;
+      }
   }
 </style>

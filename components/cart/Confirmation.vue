@@ -191,7 +191,7 @@ watchEffect(() => {
         <VCol cols="12">
             <VCard
                 class="px-10 py-5 py-md-10 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-                <VImg :width="isMobile ? (isPending ? '80' : '130') : '200'" :src="isError ? festin_error : (isPending ? festin_pending : festin_success)" class="mx-auto"/>
+                <VImg :width="isMobile ? (isPending ? '80' : '130') : '200'" :src="isError ? festin_error : (isPending ? festin_pending : festin_success)" :alt="isError ? 'Pago fallido' : (isPending ? 'Pago pendiente' : 'Pago exitoso')" class="mx-auto"/>
                 <VCardText class="text-message border-line">
                     {{ message }}
                 </VCardText>

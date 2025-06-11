@@ -141,7 +141,7 @@ const onSubmit = () => {
                 <VCardItem class="pb-0 client-card">
                     <VRow no-gutters class="text-left align-center">
                         <VCol cols="12" class="d-flex text-left mb-2">
-                            <img :src="icon4" class="me-3"/>
+                            <img :src="icon4" alt="Contraseña" class="me-3"/>
                             <div class="d-block">
                                 <span class="text-client text-left">Ingrese tu contraseña</span> <br>
                                     <span class="p-client text-left">Mantendrás tu cuenta protegida.</span>
@@ -164,7 +164,7 @@ const onSubmit = () => {
                     </VRow>
                     <VRow no-gutters class="text-left align-center">
                         <VCol cols="12" class="d-flex text-left mb-2">
-                            <img :src="icon4" class="me-3"/>
+                            <img :src="icon4" alt="Confirmar Contraseña" class="me-3"/>
                             <div cols="10" class="d-block">
                                 <span class="text-client text-left">Confirma tu contraseña</span> <br>
                                 <span class="p-client text-left">Mantendrás tu cuenta protegida.</span>

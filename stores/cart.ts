@@ -3,9 +3,10 @@ import { Cart } from '~/api/cart'
 
 export const useCartStores = defineStore('cart', {
     state: () => ({
-        data: Array<Object>(),
+        data: [] as any[],
         count: 0,
-        wholesale: -1
+        wholesale: -1,
+        CURRENT_VERSION: '2.0.0'
     }),
     getters:{
         getData(): any {
@@ -121,6 +122,7 @@ export const useCartStores = defineStore('cart', {
         },
         refreshData() {
             this.count = 0
+            this.wholesale = -1
         },
         checkAvailability() {  
             if (process.client) {

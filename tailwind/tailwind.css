@@ -1284,7 +1284,8 @@
 }
 
 .tw-appearance-none {
-  appearance: none !important
+  -webkit-appearance: none !important;
+          appearance: none !important
 }
 
 .tw-bg-fixed {
@@ -22520,7 +22521,8 @@
   }
 
   .xs\:tw-appearance-none {
-    appearance: none !important
+    -webkit-appearance: none !important;
+            appearance: none !important
   }
 
   .xs\:tw-bg-fixed {
@@ -43621,7 +43623,8 @@
   }
 
   .sm\:tw-appearance-none {
-    appearance: none !important
+    -webkit-appearance: none !important;
+            appearance: none !important
   }
 
   .sm\:tw-bg-fixed {
@@ -64722,7 +64725,8 @@
   }
 
   .md\:tw-appearance-none {
-    appearance: none !important
+    -webkit-appearance: none !important;
+            appearance: none !important
   }
 
   .md\:tw-bg-fixed {
@@ -85823,7 +85827,8 @@
   }
 
   .lg\:tw-appearance-none {
-    appearance: none !important
+    -webkit-appearance: none !important;
+            appearance: none !important
   }
 
   .lg\:tw-bg-fixed {
@@ -106924,7 +106929,8 @@
   }
 
   .xl\:tw-appearance-none {
-    appearance: none !important
+    -webkit-appearance: none !important;
+            appearance: none !important
   }
 
   .xl\:tw-bg-fixed {
@@ -128025,7 +128031,8 @@
   }
 
   .\32xl\:tw-appearance-none {
-    appearance: none !important
+    -webkit-appearance: none !important;
+            appearance: none !important
   }
 
   .\32xl\:tw-bg-fixed {

@@ -67,6 +67,7 @@ watchEffect(() => {
                 <VImg 
                     :width="230"
                     :src="baseURL + image" 
+                    :alt="name"
                     cover />
             </VCardText>
             <VCardText class="mt-2">

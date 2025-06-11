@@ -88,7 +88,7 @@ const items = ref([
   { text: 'Sorpresas', icon: icon7, slug: 'sorpresas' },
   { text: 'Mobiliario', icon: icon8, slug: 'renta-de-moviliario' },
   { text: 'Dulces', icon: icon9, slug: 'dulces-y-ponques' },
-  { text: 'Animación y entretenimiento', icon: icon10, slug: 'animadores-de-fiestas' }
+  { text: 'Animadores de Fiesta', icon: icon10, slug: 'animadores-de-fiestas' }
 ])
 
 const sliders = ref( [
@@ -117,7 +117,10 @@ async function fetchData() {
 const tab = ref('0')
 
 useHead({
-  title: 'Inicio - '
+  title: 'PARTYMAX | THE PARTY MARKET',
+  meta: [
+    { name: 'description', content: 'Encuentra todo para tus fiestas: decoración, globos, piñatas, sorpresas y más en Party Max. Envíos a toda Colombia.' }
+  ]
 });
 
 </script>
@@ -147,7 +150,7 @@ useHead({
                   class="list py-0  tw-text-tertiary hover:tw-bg-yellow"
                 >
                   <template v-slot:prepend>
-                    <img :src="item.icon" class="me-3 ms-4"/>
+                    <img :src="item.icon" alt="Icono" class="me-3 ms-4"/>
                   </template>
                   <VListItemTitle v-text="item.text" class="tw-text-tertiary"></VListItemTitle>
                 </VListItem>
@@ -158,7 +161,7 @@ useHead({
                 variant="plain"
                 class="list py-0 tw-text-tertiary tw-cursor-pointer">
                 <template v-slot:prepend>
-                  <img :src="item.icon" class="me-3 ms-4 soon-img"/>
+                  <img :src="item.icon" alt="Icono" class="me-3 ms-4 soon-img"/>
                 </template>
                 <VListItemTitle class="tw-text-tertiary d-flex align-center">
                   <span class="soon-items">{{ item.text }}</span>
@@ -180,11 +183,11 @@ useHead({
               hide-delimiter-background
               >
               <VCarouselItem
-                v-for="(item,i) in sliders"
+                v-for="(item, i) in sliders"
                 :key="i"
-                :src="item.src"
-                cover
-              />
+              >
+                <VImg :src="item.src" :alt="`Slider ${i + 1}`" cover />
+              </VCarouselItem>
             </VCarousel>
           </VCol>
           <VCol cols="12" md="5" class="pslider">
@@ -198,7 +201,7 @@ useHead({
                     }
                   }"
                 >
-                  <VImg :src="Plaza_1" class="img-galery"/>
+                  <VImg :src="Plaza_1" alt="Plaza1" class="img-galery"/>
                 </NuxtLink>
               </VCol>
               <VCol cols="6" md="6" class="pslider2">
@@ -210,7 +213,7 @@ useHead({
                     }
                   }"
                 >
-                  <VImg :src="Plaza_2" class="border-top-right img-galery"/>
+                  <VImg :src="Plaza_2" alt="Plaza2" class="border-top-right img-galery"/>
                 </NuxtLink>
               </VCol>
               <VCol cols="12" class="pslider3">
@@ -222,7 +225,7 @@ useHead({
                     }
                   }"
                 >
-                  <VImg :src="Plaza_3" class="img-galery"/>
+                  <VImg :src="Plaza_3" alt="Plaza3" class="img-galery"/>
                 </NuxtLink>
               </VCol>
             </VRow>
@@ -235,7 +238,7 @@ useHead({
                   slug: 'renta-de-moviliario'
                 }
               }"> -->
-              <VImg :src="Banner" class="img-galery" :class="isMobile ? 'slider5Img' : ''" height="auto" cover />
+              <VImg :src="Banner" alt="Banner" class="img-galery" :class="isMobile ? 'slider5Img' : ''" height="auto" cover />
             <!-- </NuxtLink> -->
           </VCol>
           <VCol cols="12" md="5" class="pslider4">
@@ -248,7 +251,7 @@ useHead({
                       slug: 'comida'
                     }
                   }"> -->
-                  <VImg :src="Plaza_4" class="img-galery"/>
+                  <VImg :src="Plaza_4" alt="Plaza4" class="img-galery"/>
                 <!-- </NuxtLink> -->
               </VCol>
               <VCol cols="6" md="6" class="pslider2">
@@ -259,7 +262,7 @@ useHead({
                       slug: 'fotografia-y-video'
                     }
                   }"> -->
-                  <VImg :src="Plaza_5" class="border-bottom-right img-galery"/>
+                  <VImg :src="Plaza_5" alt="Plaza5" class="border-bottom-right img-galery"/>
                 <!-- </NuxtLink> -->
               </VCol>
             </VRow>
@@ -273,28 +276,28 @@ useHead({
       <VCardItem class="p-0">
         <VRow no-gutters  class="tw-text-tertiary">
           <VCol cols="12" md="3" class="d-flex align-center hr">
-            <img :src="motorcycle" width="60" class="ms-10"/>
+            <img :src="motorcycle" alt="Motocicleta" width="60" class="ms-10"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Envíos gratis</span>
-              <span class="d-block card-information-subtitle">A partir de $190.000</span>
+              <span class="d-block card-information-subtitle">A partir de $210.000</span>
             </div>
           </VCol>
           <VCol cols="12" md="3" class="d-flex align-center hr">
-            <img :src="location" width="60" class="ms-10"/>
+            <img :src="location" alt="Ubicación" width="60" class="ms-10"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Nuestras tiendas</span>
               <span class="d-block card-information-subtitle">En Bogotá</span>
             </div>
           </VCol>
           <VCol cols="12" md="3" class="d-flex align-center hr">
-            <img :src="sold" width="60" class="ms-10"/>
+            <img :src="sold" width="60" alt="Paquetes" class="ms-10"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Ventas por mayor</span>
               <span class="d-block card-information-subtitle">A los mejores precios</span>
             </div>
           </VCol>
           <VCol cols="12" md="3" class="d-flex align-center col-siguecompra">
-            <img :src="tracking" width="60" class="ms-10"/>
+            <img :src="tracking" alt="Ubicación" width="60" class="ms-10"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Sigue tu compra</span>
               <span class="d-block card-information-subtitle">Desde tu cuenta</span>
@@ -339,7 +342,7 @@ useHead({
     <!-- banner 2 -->
     <VCard class="mt-7 no-shadown card-information p-0">
       <VCardItem class="p-0">
-        <VImg :src="isMobile ? banner_2_mobile : banner_2" cover/>
+        <VImg :src="isMobile ? banner_2_mobile : banner_2" alt="Banner2" cover/>
       </VCardItem>  
     </VCard>
     
@@ -395,6 +398,7 @@ useHead({
               <VCardText class="p-0">
                 <VImg 
                   :src="banner_5" 
+                  alt="Banner5"
                   class="border-img" 
                   cover
                   />
@@ -514,7 +518,7 @@ useHead({
               }
             }" class="tw-no-underline">
             <VCardItem class="p-0">
-              <VImg :src="isMobile ? banner_3_mobile : banner_3" cover/>
+              <VImg :src="isMobile ? banner_3_mobile : banner_3" alt="Banner3" cover/>
             </VCardItem>  
           </NuxtLink>
         </VCard>
@@ -528,7 +532,7 @@ useHead({
               }
             }" class="tw-no-underline">
             <VCardItem class="p-0">
-              <VImg :src="isMobile ? banner_4_mobile : banner_4" cover/>
+              <VImg :src="isMobile ? banner_4_mobile : banner_4" alt="Banner4" cover/>
             </VCardItem>  
           </NuxtLink>
         </VCard>
@@ -560,7 +564,7 @@ useHead({
               subcategory: 'tematica-mexicana'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_1" class="border-theme d-block"/>
+          <img :src="t_1" alt="Mexicana" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
         </NuxtLink>
         <NuxtLink 
@@ -571,7 +575,7 @@ useHead({
               subcategory: 'tematica-hawaiana'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_2" class="border-theme d-block"/>
+          <img :src="t_2" alt="Hawaiana" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Hawaiana</span>
         </NuxtLink>
         <NuxtLink 
@@ -582,7 +586,7 @@ useHead({
               subcategory: 'tematica-vallenata'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_3" class="border-theme d-block"/>
+          <img :src="t_3" alt="Vallenata" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Vallenata</span>
         </NuxtLink>
         <NuxtLink
@@ -593,7 +597,7 @@ useHead({
               subcategory: 'tematica-metalizada'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_4" class="border-theme d-block"/>
+          <img :src="t_4" alt="Metalizada" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Metalizada</span>
         </NuxtLink>
         <NuxtLink 
@@ -604,7 +608,7 @@ useHead({
               subcategory: 'tematica-neon'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_5" class="border-theme d-block"/>
+          <img :src="t_5" alt="Neon" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Neón</span>
         </NuxtLink>
       </VCardText> 
@@ -619,7 +623,7 @@ useHead({
                   subcategory: 'tematica-mexicana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_1" class="border-theme d-block" width="150"/>
+              <img :src="t_1" alt="Mexicana" class="border-theme d-block" width="150"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </NuxtLink>
           </VCol>
@@ -632,7 +636,7 @@ useHead({
                   subcategory: 'tematica-hawaiana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="border-theme d-block" width="150"/>
+              <img :src="t_2" alt="Hawaiana" class="border-theme d-block" width="150"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
             </NuxtLink>
           </VCol>
@@ -645,7 +649,7 @@ useHead({
                   subcategory: 'tematica-vallenata'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_3" class="border-theme d-block" width="150"/>
+              <img :src="t_3" alt="Vallenata" class="border-theme d-block" width="150"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </NuxtLink>
           </VCol>
@@ -658,7 +662,7 @@ useHead({
                   subcategory: 'tematica-metalizada'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_4" class="border-theme d-block" width="150"/>
+              <img :src="t_4" alt="Metalizada" class="border-theme d-block" width="150"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </NuxtLink>
           </VCol>
@@ -671,7 +675,7 @@ useHead({
                   subcategory: 'tematica-neon'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_5" class="border-theme d-block" width="150"/>
+              <img :src="t_5" alt="Neon" class="border-theme d-block" width="150"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Neón</span>
             </NuxtLink>
           </VCol>
@@ -684,7 +688,7 @@ useHead({
                 }
               }" 
               class="tw-no-underline d-block text-center zoom mt-0">
-              <img :src="t_6" class="border-theme d-block" width="150"/>
+              <img :src="t_6" alt="Producto" class="border-theme d-block" width="150"/>
               <span class="d-block size-theme tw-text-tertiary mt-2 transparentColor">.</span>
             </NuxtLink>
           </VCol>
@@ -698,7 +702,7 @@ useHead({
       <!-- birthday -->
       <VCard class="mt-7 no-shadown card-information transparent p-0 tw-text-white">
         <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center cardtitles">
-          <span>Cumpleaños</span>
+          <h2 class="mb-0">Cumpleaños</h2>
           <VSpacer />
           <NuxtLink
             :to="{
@@ -722,7 +726,7 @@ useHead({
                 subcategory: 'fiestas-ninos'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_1" class="border-theme d-block"/>
+            <img :src="f_1" alt="Niños" class="border-theme d-block" width="150" height="150" loading="lazy"/>
             <span class="d-block size-theme tw-text-white mt-5">Niños</span>
           </NuxtLink>
           <NuxtLink 
@@ -733,7 +737,7 @@ useHead({
                 subcategory: 'tematica-ninas'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_2" class="border-theme d-block"/>
+            <img :src="f_2" alt="Niñas" class="border-theme d-block" width="150" height="150" loading="lazy"/>
             <span class="d-block size-theme tw-text-white mt-5">Niñas</span>
           </NuxtLink>
           <NuxtLink
@@ -744,7 +748,7 @@ useHead({
                 subcategory: 'tematica-bebes'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_3" class="border-theme d-block"/>
+            <img :src="f_3" alt="Bebes" class="border-theme d-block" width="150" height="150" loading="lazy"/>
             <span class="d-block size-theme tw-text-white mt-5">Bebes</span>
           </NuxtLink>
           <NuxtLink
@@ -757,7 +761,7 @@ useHead({
               }
             }"
             class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_4" class="border-theme d-white"/>
+            <img :src="f_4" alt="Adultos" class="border-theme d-white" width="150" height="150" loading="lazy"/>
             <span class="d-block size-theme tw-text-white mt-5">Adultos</span>
           </NuxtLink>
         </VCardText> 
@@ -773,7 +777,7 @@ useHead({
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_1" class="border-theme d-block" width="150"/>
+                <img :src="f_1" alt="Niños" class="border-theme d-block" width="150" height="150" loading="lazy"/>
                 <span class="d-block size-theme tw-text-white mt-2">Niños</span>
               </NuxtLink>
             </VCol>
@@ -787,7 +791,7 @@ useHead({
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_2" class="border-theme d-block" width="150"/>
+                <img :src="f_2" alt="Niñas" class="border-theme d-block" width="150" height="150" loading="lazy"/>
                 <span class="d-block size-theme tw-text-white mt-2">Niñas</span>
               </NuxtLink>
             </VCol>
@@ -801,7 +805,7 @@ useHead({
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_3" class="border-theme d-block" width="150" />
+                <img :src="f_3" alt="Bebes" class="border-theme d-block" width="150" height="150" loading="lazy" />
                 <span class="d-block size-theme tw-text-white mt-2">Bebes</span>
               </NuxtLink>
             </VCol>
@@ -816,7 +820,7 @@ useHead({
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_4" class="border-theme d-white" width="150"/>
+                <img :src="f_4" alt="Adultos" class="border-theme d-white" width="150" height="150" loading="lazy"/>
                 <span class="d-block size-theme tw-text-white mt-2">Adultos</span>
               </NuxtLink>
             </VCol>

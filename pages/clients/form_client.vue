@@ -102,7 +102,7 @@ const onSubmit = () => {
                 <VCardItem class="client-card">
                     <VRow no-gutters class="text-left align-center">
                         <VCol cols="12" class="d-flex text-left mb-2">
-                            <img :src="icon1" class="me-3"/>
+                            <img :src="icon1" alt="Agrega tu e-mail" class="me-3"/>
                             <div class="d-block">
                                 <span class="text-client text-left">Agrega tu e-mail</span> <br>
                                 <span class="p-client text-left">Recibirás información de tu cuenta.</span>
@@ -122,7 +122,7 @@ const onSubmit = () => {
                     </VRow>
                     <VRow no-gutters class="text-left align-center">
                         <VCol cols="12" class="d-flex text-left mb-2">
-                            <img :src="icon2" class="me-3"/>
+                            <img :src="icon2" alt="Nombre" class="me-3"/>
                             <div class="d-block">
                                 <span class="text-client text-left">Elige tu nombre</span> <br>
                                 <span class="p-client text-left">Cuéntanos cómo quieres que te llamemos.</span>
@@ -141,7 +141,7 @@ const onSubmit = () => {
                     </VRow>
                     <VRow no-gutters class="text-left align-center">
                         <VCol cols="12" class="d-flex text-left mb-2">
-                            <img :src="icon3" class="me-3"/>
+                            <img :src="icon3" alt="Telefono" class="me-3"/>
                             <div cols="10" class="d-block">
                                 <span class="text-client text-left">Valida tu teléfono</span> <br>
                                 <span class="p-client text-left">Podrás usarlo para ingresar a tu cuenta.</span>
@@ -160,7 +160,7 @@ const onSubmit = () => {
                     </VRow>
                     <VRow no-gutters class="text-left align-center">
                         <VCol cols="12" class="d-flex text-left mb-2">
-                            <img :src="icon4" class="me-3"/>
+                            <img :src="icon4" alt="Contraseña" class="me-3"/>
                             <div cols="10" class="d-block">
                                 <span class="text-client text-left">Crea tu contraseña</span> <br>
                                 <span class="p-client text-left">Mantendrás tu cuenta protegida.</span>
