@@ -35,6 +35,22 @@ export const Miscellaneous = () => {
         return await $axios.get(`miscellaneous/colors`)
     }
 
+    const services = async () => {
+        return await $axios.get(`miscellaneous/services`)
+    }
+
+    const service = async (slug: string) => {
+        return await $axios.get(`miscellaneous/services/${slug}`)
+    }
+
+    const getDataCupcake = async () => {
+        return await $axios.get(`miscellaneous/cupcakes`)
+    }
+
+    const ips = async () => {
+        return await $axios.get(`miscellaneous/ips`)
+    }
+
     return {
         categories,
         categoriesAll,
@@ -43,6 +59,10 @@ export const Miscellaneous = () => {
         blog,
         products,
         product,
-        colors
+        colors,
+        services,
+        service,
+        getDataCupcake,
+        ips
     }
 }

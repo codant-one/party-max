@@ -4,7 +4,7 @@ import { formatNumber } from '@formatters'
 import { useRuntimeConfig } from '#app'
 
 const props = defineProps({
-    product: {
+    service: {
         type: Object,
         required: true
     },
@@ -19,36 +19,28 @@ const props = defineProps({
     }
 })
 
-const route = useRoute()
-const config = useRuntimeConfig()
+const cofig = useRuntimeConfig()
 
 const { isMobile } = useDevice()
 const image = ref(null)
-const wholesale_price = ref(null)
-const price_for_sale = ref(null)
+const price = ref(null)
 const name = ref(null)
 const store = ref(null)
 const rating = ref(null)
 const slug = ref(null)
-const existence_whole = ref(false)
-const stock = ref(null)
 
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
 
 watchEffect(() => {
 
-    if (!(Object.entries(props.product).length === 0) && props.product.constructor === Object) {
-        image.value = props.product.image
-        wholesale_price.value = props.product.wholesale_price ?? '0.00'
-        price_for_sale.value = props.product.price_for_sale
-        name.value = props.product.name.toLowerCase().replace(/(^|\s)\p{L}/gu, (match) => match.toUpperCase());
-        store.value = props.product.user.user_detail.store_name ?? (props.product.user.supplier?.company_name ?? (props.product.user.name + ' ' + (props.product.user.last_name ?? '')))
-        rating.value = props.product.rating
-        slug.value = props.product.slug
-        stock.value = props.product.colors[0].stock
+    if (!(Object.entries(props.service).length === 0) && props.service.constructor === Object) {
+        image.value = props.service.image
+        price.value = props.service.cupcakes.length > 0 ? props.service.cupcakes[0].price : props.service.price
+        name.value = props.service.name.toLowerCase().replace(/(^|\s)\p{L}/gu, (match) => match.toUpperCase());
+        store.value = props.service.user.user_detail.store_name ?? (props.service.user.supplier?.company_name ?? (props.service.user.name + ' ' + (props.service.user.last_name ?? '')))
+        rating.value = props.service.rating
+        slug.value = props.service.slug
     }
-
-    existence_whole.value = route.query.wholesalers === 'true' ? true : false;
 })
 
 </script>
@@ -56,29 +48,29 @@ watchEffect(() => {
 <template>
     <router-link
         :to="{
-            name: 'productDetail',
+            name: 'serviceDetail',
             params: {
                 slug: slug
             }
         }"
-        class="tw-no-underline zoom-product">
+        class="tw-no-underline zoom-service">
         <VCard class="no-shadown card-information p-0" :width="isMobile ? 'auto' : 230" :class="props.bg">
             <VCardText class="border-img ms-1 p-0">
-                <img 
+                <img
+                    :width="230"
                     :src="baseURL + image" 
                     class="img-prod" />
             </VCardText>
             <VCardText class="mt-2">
                 <div class="d-flex">
-                <span class="text_1">${{ formatNumber(price_for_sale) }}</span>
-                <span v-if="existence_whole" class="text_2 ms-2">${{ formatNumber(wholesale_price) }}</span>
+                <span class="text_1">${{ formatNumber(price) }}</span>
                 </div>
             </VCardText>
             <VCardText>
-                <span v-if="name.length > 50 && !isMobile" class="text-start d-block text_2 tw-text-tertiary title-product">
+                <span v-if="name.length > 50 && !isMobile" class="text-start d-block text_2 tw-text-tertiary title-service">
                     {{ name.slice(0, 50) + '...'}}
                 </span>
-                <span v-else class="text-start d-block text_2 tw-text-tertiary title-product">
+                <span v-else class="text-start d-block text_2 tw-text-tertiary title-service">
                     <span v-if="isMobile"> {{ name.slice(0, 25) + '...'}}</span>
                     <span v-else> {{ name }}</span>
                 </span>
@@ -89,26 +81,17 @@ watchEffect(() => {
                     <strong v-else>{{ store }}</strong>
                 </span>
             </VCardText>
-            <VCardText class="px-1">
-                <div class="d-flex align-center">
+            <VCardText class="px-1 mt-2 d-none">
+                <div class="d-flex">
                     <VRating
-                        v-model="rating"
                         half-increments
                         :length="5"
+                        :size="isMobile ? 20 : 25"
+                        :model-value="rating"
                         :readonly="readonly"
-                        :ripple="false" 
-                        density="compact"
-                        >
-                        <template v-slot:item="props">
-                            <VIcon
-                                v-bind="props"
-                                color="yellow-darken-2"
-                                active-color="yellow-darken-2"
-                                :size="isMobile ? 20 : 25"
-                            />
-                        </template>
-                    </VRating>
-                    <span class="text_2 ms-2 mt-1">({{ stock }})</span>
+                        color="yellow-darken-2"
+                        active-color="yellow-darken-2"
+                        />
                 </div>
             </VCardText>
         </VCard>
@@ -133,17 +116,17 @@ watchEffect(() => {
         overflow: hidden;
     }
 
-    .zoom-product {
+    .zoom-service {
         display: inline-block;
         position: relative;
         overflow: visible;
     }
 
-    .zoom-product:hover .img-prod {
+    .zoom-service:hover .img-prod {
         transform: scale(1.1);
     }
 
-    .zoom-product:hover .title-product {
+    .zoom-service:hover .title-service {
         color: #FF0090 !important;
     }
 
@@ -156,7 +139,7 @@ watchEffect(() => {
         transition: transform 0.3s ease-in-out;
     }
 
-    .title-product, .store {
+    .title-service, .store {
         min-height: 45px;
     }
 
@@ -189,7 +172,7 @@ watchEffect(() => {
             font-size: 13px;
         }
 
-        .title-product {
+        .title-service {
             min-height: 40px;
         }
 
@@ -199,4 +182,3 @@ watchEffect(() => {
     }
     
 </style>
-

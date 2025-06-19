@@ -1,11 +1,10 @@
 <script setup>
 
 import { formatNumber } from '@formatters'
-import heart from '@assets/icons/heart_gray.svg?inline';
 import { useRuntimeConfig } from '#app'
 
 const props = defineProps({
-    product: {
+    service: {
         type: Object,
         required: true
     },
@@ -21,69 +20,57 @@ const props = defineProps({
         type: Boolean,
         required: true
     },
-    productId: {
+    serviceId: {
         type: Number,
         required: true
     }
 })
 
-const route = useRoute()
 const config = useRuntimeConfig()
-
 const emit = defineEmits([
-    'addCart',
     'addfavorite'
 ])
 
 const id = ref(null)
 const image = ref(null)
-const wholesale_price = ref(null)
-const price_for_sale = ref(null)
+const price = ref(null)
 const name = ref(null)
 const store = ref(null)
 const rating = ref(null)
 const single_description = ref(null)
 const slug = ref(null)
-const in_stock = ref(null)
-const cant_prod = ref(1)
-const cant_stock = ref(1)
-const existence_whole = ref(false)
-
 const client_id = ref(null)
-const product_color_id = ref(null)
 const load = ref(props.loading)
-const isFavoriteProduct = ref(null)
-const product_id = ref(props.productId)
+const isFavoriteService = ref(null)
+const service_id = ref(props.serviceId)
+const { isMobile } = useDevice()
+
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
-const { isMobile } = useDevice();
 
 watch(() => 
     props.loading, (data) => {
       load.value = data
-    });
+    }
+);
 
 watch(() => 
-    props.productId, (data) => {
-        product_id.value = data
-    });
+    props.serviceId, (data) => {
+        service_id.value = data
+    }
+);
 
 watchEffect(() => {
 
-    if (!(Object.entries(props.product).length === 0) && props.product.constructor === Object) {
-        image.value = props.product.image
-        wholesale_price.value = props.product.wholesale_price
-        price_for_sale.value = props.product.price_for_sale
-        name.value = props.product.name.toLowerCase().replace(/(^|\s)\p{L}/gu, (match) => match.toUpperCase());
-        store.value = props.product.user.name + ' ' + (props.product.user.last_name ?? '')
-        rating.value = props.product.rating
-        single_description.value = props.product.single_description
-        slug.value = props.product.slug
-        isFavoriteProduct.value = props.product.is_favorite
-        id.value = props.product.id
-        product_color_id.value =  props.product.colors[0]?.id
-        in_stock.value = props.product.colors[0].in_stock
-        cant_prod.value = route.query.wholesalers === 'true' ? props.product.wholesale_min : 1
-        cant_stock.value = parseInt(props.product.colors[0].stock)
+    if (!(Object.entries(props.service).length === 0) && props.service.constructor === Object) {
+        image.value = props.service.image
+        price.value = props.service.cupcakes.length > 0 ? props.service.cupcakes[0].price : props.service.price
+        name.value = props.service.name.toLowerCase().replace(/(^|\s)\p{L}/gu, (match) => match.toUpperCase());
+        store.value = props.service.user.name + ' ' + (props.service.user.last_name ?? '')
+        rating.value = props.service.rating
+        single_description.value = props.service.single_description
+        slug.value = props.service.slug
+        isFavoriteService.value = props.service.is_favorite
+        id.value = props.service.id
 
         if(localStorage.getItem('user_data')){
             const userData = localStorage.getItem('user_data')
@@ -92,18 +79,7 @@ watchEffect(() => {
             client_id.value = userDataJ.client.id
         }
     }
-
-    existence_whole.value = route.query.wholesalers === 'true' ? true : false;
 })
-
-const addCart = () => {
-    let data = {
-        product_id: id.value,
-        product_color_id: product_color_id.value,
-        cant_prod: cant_prod.value
-    }
-    emit('addCart',  data)
-}
 
 const addfavorite = () => {
     emit('addfavorite', id.value)
@@ -112,7 +88,7 @@ const addfavorite = () => {
 </script>
 
 <template>
-    <div class="zoom-product w-100">
+    <div class="zoom-service w-100">
         <VCard 
             class="no-shadown px-0 pt-0 pb-5 w-100 mb-3 mb-md-5" 
             :class="props.isLastItem ? '' : 'card-information'">
@@ -121,34 +97,29 @@ const addfavorite = () => {
                     <VCardText class="border-img ms-md-5 text-center justify-content-center align-center d-flex p-0">
                         <router-link
                             :to="{
-                                name: 'productDetail',
+                                name: 'serviceDetail',
                                 params: { slug: slug },
                                 query: {  
                                     category: route.query.category,
                                     fathercategory: route.query.fathercategory,
-                                    subcategory: route.query.subcategory,
-                                    wholesalers: route.query.wholesalers
+                                    subcategory: route.query.subcategory
                                 }
                             }"
                             class="tw-no-underline">
                             <img 
                                 :width="isMobile ? 135 : 177"
                                 :src="baseURL + image" 
-                                class="img-prod" />
-
-                            <div v-if="in_stock === 0" class="out-of-stock-label">AGOTADO</div>  
+                                class="img-prod"
+                            />
                         </router-link>
                     </VCardText>
                 </VCol>
                 <VCol cols="12" md="6" class="py-0 py-md-3">
                     <VCardText class="d-flex px-1 px-md-2">
-                        <span class="d-block text_2 py-md-1 tw-text-tertiary title-product">{{ name }}</span>
-                        <strong class="tw-text-gray tw-text-base ms-3">
-                            {{ (in_stock === 1) ? ''  : 'AGOTADO' }}
-                        </strong>
+                        <span class="d-block text_2 py-md-1 tw-text-tertiary title-service">{{ name }}</span>
                     </VCardText>
-                    <VCardText class="px-0 px-md-1 pb-1">
-                        <div class="d-flex align-center">
+                    <VCardText class="px-0 px-md-1 pb-1 d-none">
+                        <div class="d-flex">
                             <VRating
                                 half-increments
                                 :length="5"
@@ -158,7 +129,6 @@ const addfavorite = () => {
                                 color="yellow-darken-2"
                                 active-color="yellow-darken-2"
                                 />
-                            <span class="text_2 ms-2 mt-1">({{ cant_stock }})</span>
                         </div>
                     </VCardText>
                     <VCardText class="px-1 px-md-2">
@@ -171,24 +141,7 @@ const addfavorite = () => {
                 <VCol cols="12" md="3" class="align-center text-center pb-0">
                     <VCardText class="px-1 px-md-2">
                         <div class="d-flex text-center align-center tw-justify-start md:tw-justify-center">
-                            <span v-if="!existence_whole" class="text_1 tw-text-tertiary">${{formatNumber(price_for_sale) }}</span>
-                            <span v-if="existence_whole" class="text_1 tw-text-tertiary">${{formatNumber(wholesale_price) }}</span>
-                        </div>
-                    </VCardText>
-                    <VCardText class="mt-3 px-1 px-md-2">
-                        <div class="d-flex text-center align-center tw-justify-start md:tw-justify-center">
-                            <VBtn
-                                variant="flat"
-                                @click="addCart"
-                                class="btn-register tw-text-white tw-bg-primary button-hover"
-                                :disabled="(in_stock === 0 || cant_prod > cant_stock) ? true : false">
-                                Agregar al carrito 
-                                <VProgressCircular
-                                    v-if="load && (product_id === id)"
-                                    indeterminate
-                                    color="#fff"
-                                />
-                            </VBtn>
+                            <span class="text_1 tw-text-tertiary">${{formatNumber(price) }}</span>
                         </div>
                     </VCardText>
                     <VCardText class="mt-3 px-1 px-md-2">
@@ -196,11 +149,11 @@ const addfavorite = () => {
                             <span class="text_2 d-flex align-center">
                                 <span 
                                     class="me-2 pt-1"
-                                    :class="(isFavoriteProduct) ? 'heart_fill' : ''" 
+                                    :class="(isFavoriteService) ? 'heart_fill' : ''" 
                                     >
                                 <heart />
                                 </span>
-                                <span :class="(isFavoriteProduct) ? 'tw-text-primary' : ''">
+                                <span :class="(isFavoriteService) ? 'tw-text-primary' : ''">
                                     Guardar
                                 </span>
                             </span>
@@ -213,23 +166,6 @@ const addfavorite = () => {
 </template>
 
 <style scoped>
-
-    .out-of-stock-label {
-        position: absolute;
-        top: 44%;
-        left: 13%;
-        transform: translate(-50%, -50%) rotate(-30deg);
-        background-color: rgba(255, 0, 144, 0.7);
-        color: white;
-        padding: 10px 20px;
-        font-size: 20px;
-        font-weight: bold;
-        border-radius: 5px;
-        z-index: 10;
-        pointer-events: none; /* Para que no interfiera con el zoomer */
-        width: 20%;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    }
 
     .heart:hover::v-deep(path), .shoppinp_cart:hover::v-deep(path) {
         fill: #FF0090;
@@ -284,17 +220,17 @@ const addfavorite = () => {
         overflow: hidden;
     }
 
-    .zoom-product {
+    .zoom-service {
         display: inline-block;
         position: relative;
         overflow: visible;
     }
 
-    .zoom-product:hover .img-prod {
+    .zoom-service:hover .img-prod {
         transform: scale(1.1);
     }
 
-    .zoom-product:hover .title-product {
+    .zoom-service:hover .title-service {
         color: #FF0090 !important;
     }
 
@@ -307,15 +243,11 @@ const addfavorite = () => {
         transition: transform 0.3s ease-in-out;
     }
 
-    .title-product {
+    .title-service {
         font-size: 14px;
         font-style: normal;
         font-weight: 400;
         line-height: 16px;
-    }
-
-    .zoom-product:hover .title-product{
-        color: #FF0090 !important;
     }
 
     .text_1 {
@@ -342,13 +274,6 @@ const addfavorite = () => {
 
     @media only screen and (max-width: 767px) {
     
-        .out-of-stock-label {
-            font-size: 16px;
-            top: 22%;
-            left: 24%;
-            width: 40%;
-        }
-
         .border-img {
             width: auto;
             height: 160px;

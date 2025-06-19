@@ -15,17 +15,10 @@ const props = defineProps({
     isLastItem: {
         type: Boolean,
         required: true
-    },
-    type: {
-        type: Number,
-        required: true
     }
 })
 
-const emit = defineEmits([
-    'delete'
-])
-
+const config = useRuntimeConfig()
 
 const image = ref(null)
 const price = ref(null)
@@ -36,14 +29,20 @@ const single_description = ref(null)
 const slug = ref(null)
 const quantity = ref(null)
 const service_id = ref(null)
-const date = ref(null)
 const size = ref(null)
+const is_full = ref(true)
+const flavor = ref(null)
+const flavor_id = ref(null)
+const filling = ref(null)
+const filling_id = ref(null)
+const cake_size_id = ref(null)
+const date = ref(null)
 
-// Usa useRuntimeConfig para variables de entorno en Nuxt
-const config = useRuntimeConfig()
-const baseURL = ref(config.public.appDomainApiUrl + '/storage/')
+const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
+const { isMobile } =  useDevice()
 
 watchEffect(() => {
+
     if (!(Object.entries(props.service).length === 0) && props.service.constructor === Object) {
         let cupcake = props.type === 0 ? null : props.service.cupcakes.find(item => item.cake_size_id === props.service.cake_size_id)
 
@@ -58,45 +57,59 @@ watchEffect(() => {
         service_id.value = props.service.id
         date.value = props.service.date
         size.value = props.service.cake_size_id === 0 ? null : cupcake.cake_size.name
+        flavor.value = props.service.cake_size_id === 0 ? null : props.service.flavor.name
+        flavor_id.value = props.service.cake_size_id === 0 ? null : props.service.flavor.id
+        filling.value = props.service.cake_size_id === 0 ? null : props.service.filling.name
+        filling_id.value = props.service.cake_size_id === 0 ? null : props.service.filling.id
+        cake_size_id.value = props.service.cake_size_id
+        is_full.value = props.service.is_full === 1 ? true : false
     }
 })
+
 </script>
 
 <template>
-    <div class="tw-no-underline zoom-service">
+    <div class="tw-no-underline zoom-service w-100">
         <VCard 
-            class="no-shadown px-0 w-100 py-3 py-md-5" 
+            class="no-shadown px-0 w-100 py-5" 
             :class="props.isLastItem ? '' : 'card-information'">
-            <VRow no-gutters>
-                <VCol cols="6" md="5" class="d-flex flex-column my-auto">
-                    <VCardText class="border-img ms-5 p-0">
-                        <img 
+            <VRow no-gutters class="px-5 px-md-14">
+                <VCol cols="6" md="2" class="d-flex flex-column my-auto">
+                    <VCardText class="border-img ms-md-2 p-0">
+                        <img
                             :width="100"
                             :src="baseURL + image" 
-                            class="img-prod"
-                            alt="Imagen del servicio"
-                        />
+                            class="img-prod" />
                     </VCardText>
                 </VCol>
-                <VCol cols="12" md="7" class="d-flex flex-column pt-3 py-md-5 ps-4 ps-md-2 my-auto">
-                    <VCardText class="px-1">
+                <VCol cols="6" md="12" v-if="isMobile"></VCol>
+                <VCol cols="10" md="7" class="d-flex justify-content-center align-center mt-3 my-md-0 ps-md-5">
+                    <VCardText class="px-0">
                         <span class="d-block text_2 py-1 tw-text-tertiary title-service">{{ name }}</span>
                         <span class="d-block py-0 tw-text-gray">Fecha: {{ date }}</span>
                         <span class="d-block py-0 tw-text-gray" v-if="size">Tamaño: {{ size }}</span>
-                    </VCardText>
-                    <VCardText class="px-1">
-                        <span 
-                            class="d-flex tw-text-xs py-1 tw-text-primary title-service tw-cursor-pointer me-3" 
-                            @click="emit('delete', service_id)"
-                        >
-                            Eliminar
+                        <span class="d-block py-0 tw-text-gray" v-if="size && is_full">
+                            Sabor: {{ flavor }} / Relleno: {{ filling }}
+                        </span>
+                        <span class="d-block py-0 tw-text-gray" v-if="size">
+                            <span>{{ quantity }} </span>
+                            <span>{{ (quantity > 1) ? ' Unidades' : ' Unidad' }}</span>
+                        </span>
+                        <span class="d-block py-0 tw-text-gray" v-else>
+                            <span>1 Servicio</span>
                         </span>
                     </VCardText>
-                    <VCardText class="px-1">
-                        <span class="d-block py-0 tw-text-gray">{{ quantity }} x 
-                            <span class="tw-text-tertiary">${{ formatNumber(price) }}</span>
-                        </span>
-                    </VCardText>
+                </VCol>
+                <VCol cols="2" md="3" class="d-flex justify-content-end tw-items-end md:tw-items-center">
+                    <div class="me-0">
+                        <VCardText class="d-flex text-end align-end justify-content-end">
+                        </VCardText>
+                        <VCardText class="mt-1">
+                            <div class="d-flex text-center align-end tw-justify-end md:tw-justify-center">
+                                <span class="text_1 tw-text-tertiary">${{ formatNumber(price) }}</span>
+                            </div>
+                        </VCardText>
+                    </div>
                 </VCol>
             </VRow>
         </VCard>
@@ -104,56 +117,9 @@ watchEffect(() => {
 </template>
 
 <style scoped>
-    .warning {
-        border: 2px solid #FFC549 !important;
-    }
-
-    .number-input-wrapper {
-        display: flex;
-        align-items: center;
-        border-radius: 8px;
-        border: 2px solid #E1E1E1;
-        height: 40px;
-    }
-
-    .text-pink-accent-3 {
-        color: #FF0090 !important;
-    }
-
-    .v-text-field::v-deep(.v-field) { 
-        border: 0 !important;
-        height: 30px;
-        box-shadow: none;
-    } 
-
-    .v-text-field::v-deep(.v-field__input){
-        min-height: 30px;
-        padding: 0 !important;
-        width: 20px;
-        text-align: center;
-    }
-    
-    .v-text-field::v-deep(.v-field__field) { 
-        height: 30px;
-    }
-
-    .v-text-field::v-deep(::placeholder) { 
-        color: #0A1B33 !important;
-        opacity: inherit;
-    }
-
-    .v-text-field::v-deep(input) { 
-        padding: 0 0 0 5px !important;
-        color: #0A1B33 !important;
-    }
-    
-    .v-text-field::v-deep(.v-input__details){
-        padding: 0;
-        min-height: 0;
-    }
 
     .card-information {
-        border-bottom: 1px solid var(--Grey-2, #D9EEF2);
+        border-bottom: 1px solid var(--Grey-2, #E1E1E1);
         border-radius: 0;
     }
 
@@ -178,7 +144,7 @@ watchEffect(() => {
         width: 130px;
         height: 130px;
         border-radius: 16px !important;
-        border: 1px solid #E1E1E1;
+        border: 1px solid #D9EEF2;
         text-align: center;
         align-items: center;
         display: flex;
@@ -235,4 +201,32 @@ watchEffect(() => {
         font-weight: 400;
         line-height: 8px; /* 80% */ 
     }
+
+    .v-text-field::v-deep(.v-field) { 
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        border: 1.5px solid #E1E1E1 !important;
+        height: 45px;
+        width: 50px;
+        box-shadow: none;
+    } 
+
+    .v-text-field::v-deep(::placeholder) { 
+        color: #0A1B33 !important;
+        opacity: inherit;
+    }
+
+    .v-text-field::v-deep(input) { 
+        padding-top: 0 !important;
+        color: #0A1B33 !important;
+    }
+
+    .v-text-field::v-deep(.v-input__details) {
+        height: 0px !important;
+        min-height: 0px !important;
+        padding: 0px !important;
+    }
+    
 </style>

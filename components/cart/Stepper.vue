@@ -88,7 +88,7 @@ watchEffect(() => {
               :class="[props.direction === 'horizontal' && 'flex-column']"
             >
               <div class="stepper-icon">
-                <img :src="isMobile ? festin_mobile : festin" v-if="currentStep === index"  alt="Festin Party Max"/>
+                <img :src="isMobile ? festin_mobile : festin" v-if="currentStep === index" />
                 <component 
                     v-else
                     class="stepper-component"

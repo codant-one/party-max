@@ -2,6 +2,7 @@
 
 import { formatNumber } from '@formatters'
 import arrow_left from '@assets/icons/Arrow_left.svg?inline';
+import info from '@assets/icons/info-circle.svg?inline';
 
 const props = defineProps({
     addresses: {
@@ -38,7 +39,7 @@ const error_address = ref('Debes agregar una dirección de envio')
 const province = ref(props.province_id)
 const id = ref(props.address_id)
 
-const send_array = ref(['Envío Nacional: $19.000.00', 'Envío Bogotá: $10.500.00 '])
+const send_array = ref(['Envío Nacional: $19.000.00', 'Envío Bogotá: $12.000.00 '])
 const sendId = ref(props.send_id)
 
 watch(() => 
@@ -72,35 +73,87 @@ const chanceSend = () => {
     if (id.value !== 0)  {
         province.value = props.addresses.filter(address => address.id === id.value)[0].province_id
 
-        if(province.value === 293) {
+        if(province.value === 293 && parseFloat(props.summary.subTotal) <= parseFloat('210000')) {
             emit('send', 'sendToBogota')
+            sendId.value = 2
+        }  else if(province.value === 293 && parseFloat(props.summary.subTotal) > parseFloat('210000')) {
+            emit('send', 'free') 
+            sendId.value = 0
+        } else if(province.value !== 293 && parseFloat(props.summary.subTotal) <= parseFloat('210000')) {
+            emit('send', 'send') 
             sendId.value = 1
-        } else {
-            emit('send', 'send')
+        } else if(province.value !== 293 && parseFloat(props.summary.subTotal) > parseFloat('210000')) {
+            emit('send', 'free') 
             sendId.value = 0
         }
     }
 }   
 
 const chanceExpress = () => {
-    if(sendId.value === 2)
+    if(sendId.value === 3)
         emit('send', 'shipping_express')
-    else
-        emit('send', 'sendToBogota')
+    else {
+        if(province.value === 293 && parseFloat(props.summary.subTotal) <= parseFloat('210000'))
+            emit('send', 'sendToBogota')
+        else if(province.value === 293 && parseFloat(props.summary.subTotal) > parseFloat('210000'))
+            emit('send', 'free') 
+        else if(province.value !== 293 && parseFloat(props.summary.subTotal) <= parseFloat('210000'))
+            emit('send', 'send')
+        else if(province.value !== 293 && parseFloat(props.summary.subTotal) > parseFloat('210000'))
+            emit('send', 'free')
+    }
 }
 
 const isDisabled = (i) => {
-    if(i === 0) { //nacional
-        if(sendId.value === 0)
-            return false
-        else 
-            return true
-    } else if (i === 1) { //bogota
-        if(sendId.value === 0)
-            return true
-        else 
-            return false
+    let response = false
+    if(i === 0) { //gratis
+        switch (sendId.value) {
+            case 0:
+                response = false
+            break;
+            case 1:
+                response = true
+            break;
+            case 2:
+                response = true
+            break;
+            case 3:
+                response = parseFloat(props.summary.subTotal) <= parseFloat('210000')
+            break;
+        }
+    } else if(i === 1) { //nacional
+        switch (sendId.value) {
+            case 0:
+                response = true
+            break;
+            case 1:
+                response = false
+            break;
+            case 2:
+                response = province.value === 293
+            break;
+            case 3:
+                response = province.value === 293
+            break;
+        }
+    } else if (i === 2) { //bogota
+        switch (sendId.value) {
+            case 0:
+                response = true
+            break;
+            case 1:
+                response = province.value !== 293
+            break;
+            case 2:
+                response = province.value !== 293
+            break;
+            case 3:
+                response = parseFloat(props.summary.subTotal) > parseFloat('210000')
+            break;
+        }
     }
+
+    return response
 }
 
 </script>
@@ -109,12 +162,18 @@ const isDisabled = (i) => {
     <VRow>
         <VCol cols="12" md="8">
             <VCard class="card-products p-0">
-                <VCardTitle class="title-card border-line mt-4 px-5 px-md-10">Elige la forma de entrega</VCardTitle>
-                <VCardText class="home pb-0 mt-3 mb-0 my-md-3 px-5 px-md-10">Enviar a domicilio</VCardText>
-                <VCardText class="p-0">
+                <VCardTitle class="title-card border-line mt-4 px-5 px-md-10">Elige la dirección de entrega</VCardTitle>
+                <VCardText class="home pb-0 mt-3 mb-0 my-md-3 px-5 px-md-10 d-block">
+                    <span class="d-block">Enviar a domicilio</span>
+                    <span class="text-address d-block tw-text-gray d-flex align-center mb-2">
+                        <info />
+                        <span class="ms-1"> El envío express solo está disponible para Bogotá D.C. </span>
+                    </span>
+                </VCardText>
+                <VCardText class="p-0 border-line">
                     <VRadioGroup
                         v-model="id"
-                        false-icon="mdi-circle-off-outline"
+                        false-icon="mdi-circle-outline"
                         true-icon="mdi-circle-slice-8"
                         @update:modelValue="chanceSend"
                     >
@@ -133,7 +192,7 @@ const isDisabled = (i) => {
                                             {{ address.street }} <span v-if="address.street !== null">,</span>
                                             {{ address.city }} ,
                                             {{ address.province.name }}.
-                                            Código Postal: {{ address.postal_code }}. 
+                                            <span v-if="address.postal_code">Código Postal: {{ address.postal_code }}.</span> 
                                         </span>
                                     </div>
                                     <VSpacer />
@@ -179,15 +238,22 @@ const isDisabled = (i) => {
                         <VCol cols="5" md="6" class="text-right">
                             <span>${{ formatNumber(props.summary.subTotal) }}</span>
                         </VCol>
+                        <VCol cols="7" md="6" class="text-left" v-if="props.summary.discount > 0">
+                            <span class="tw-text-yellow">Descuento</span>
+                        </VCol>
+                        <VCol cols="5" md="6" class="text-right" v-if="props.summary.discount > 0">
+                            <span class="tw-text-yellow">-${{ formatNumber(props.summary.discount) }}</span>
+                        </VCol>
                         <VCol cols="3" md="4" class="text-left py-0">
                             <span>Envío</span>
                         </VCol>
                         <VCol cols="9" md="8" class="text-right py-0">
                             <VRadioGroup
                                 v-model="sendId"
-                                false-icon="mdi-circle-off-outline"
+                                false-icon="mdi-circle-outline"
                                 true-icon="mdi-circle-slice-8"
                                 @update:modelValue="chanceExpress"
+                                class="radioGroupCustom"
                             >
                                 <VRadio
                                     v-for="(item, i) in send_array"
@@ -206,12 +272,12 @@ const isDisabled = (i) => {
                                 <VRadio
                                     v-show="province === 293"
                                     color="primary"
-                                    :key="2"
-                                    :value="2"
+                                    :key="3"
+                                    :value="3"
                                     class="custom-radio">
                                     <template v-slot:label>
                                         <span class="d-flex pl-1 pr-0 text-right text-send tw-font-semibold py-2 me-1 me-md-2">
-                                            Envío Express: $17.000.00
+                                            Envío Express (Solo a Bogotá): $17.000.00
                                         </span>
                                     </template>
                                 </VRadio>
@@ -258,6 +324,11 @@ const isDisabled = (i) => {
         font-style: normal;
         font-weight: 400;
         line-height: 16px;
+    }
+
+    
+    .text-address svg {
+        transform: scale(0.8);
     }
 
     .card-summary {
@@ -316,6 +387,10 @@ const isDisabled = (i) => {
         color: #FFFFFF!important;
     }
 
+    .btn-order:hover::v-deep(path) {
+        fill: #FFFFFF;
+    }
+
     .card-products {
         background-color:#FFFFFF;
         padding:16px 32px;
@@ -363,7 +438,7 @@ const isDisabled = (i) => {
     }
 
     .row-cardp3 {
-        padding: 16px 32px;
+        padding: 16px 40px;
     }
 
     .row-cardp3 span {
@@ -403,6 +478,10 @@ const isDisabled = (i) => {
     }
 
     @media only screen and (max-width: 767px) {
+        .text-address svg {
+            width: 35px;
+        }
+
         .title-card {
             font-size: 20px;
         }

@@ -1,10 +1,9 @@
 <script setup>
 
-import { useFiltersStores } from '~/stores/filters'
-import { useHomeStores } from "~/stores/home";
-import { useMiscellaneousStores } from "~/stores/miscellaneous";
+import { useFiltersStores } from '@/stores/filters'
+import { useHomeStores } from "@/stores/home";
+import { useMiscellaneousStores } from "@/stores/miscellaneous";
 import { formatNumber } from '@formatters'
-import { useRouter, useRoute } from 'vue-router'
 
 const props = defineProps({
     drawer: {
@@ -13,27 +12,21 @@ const props = defineProps({
     }
 })
 
-const router = useRouter()
-const route = useRoute()
+const route = useRoute();
 const filtersStores = useFiltersStores()
-const miscellaneousStores = useMiscellaneousStores();
 const homeStores = useHomeStores();
 
 const categories = ref(null);
-const drawer_ = ref(false)
+const drawer_ = ref(props.drawer)
 const panelCat = ref(null);
 const openedGroups = ref([]);
 const openedSubGroups = ref([]);
-const toggle = ref([]);
 
 const rangPrice = ref([0, 50000]);
 const min = ref(null);
 const max = ref(null);
 const rating = ref(5)
 const category = ref(null);
-
-const colors = ref([]);
-const colorsSelected = ref([]);
 
 watch(() => 
     props.drawer, (data) => {
@@ -46,64 +39,30 @@ watchEffect(fetchData);
 
 async function fetchData() {
 
-  await homeStores.fetchData();
-  categories.value = homeStores.getData.parentCategories;
+    await homeStores.fetchData();
+    categories.value = homeStores.getData.parentServices;
 
-  var aux = await miscellaneousStores.colors();
+    openedGroups.value = []
+    openedSubGroups.value = []
+    category.value = null 
 
-  colors.value = aux.colors
+    if (route.query.category && route.name === 'services') {
+        panelCat.value = null
+        category.value = {
+            title: categories.value.filter(item => item.slug === route.query.category)[0].name,
+            disabled: false,
+            href: "services?category=" + route.query.category
+        };
 
-  openedGroups.value = []
-  openedSubGroups.value = []
-  category.value = null 
+        if (route.query.fathercategory)
+            category.value.fathercategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name
 
-  if(route.query.colorId) {
-    const colorsQuery = route.query.colorId.split(',').map(Number);
+        if (typeof route.query.fathercategory === 'undefined' && route.query.subcategory)
+            category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name
 
-    const positions = colors.value.map(obj => obj.id).reduce((acc, num, index) => {
-    if (colorsQuery.includes(num))
-        acc.push(index);
-    return acc;
-    }, []);
-
-    toggle.value = positions
-  } else 
-    toggle.value = []
-
-  if (route.query.category) {
-    panelCat.value = null
-    category.value = {
-        title: categories.value.filter(item => item.slug === route.query.category)[0].name,
-        disabled: false,
-        href: "products?category=" + route.query.category + '&wholesalers=' + route.query.wholesalers ?? 'false'
-    };
-
-    if (route.query.fathercategory)
-        category.value.fathercategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name
-
-    if (typeof route.query.fathercategory === 'undefined' && route.query.subcategory)
-        category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name
-
-    if (typeof route.query.fathercategory !== 'undefined' && route.query.subcategory) 
-        category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name
-  }
-}
-
-const colorAction = () => {
-
-    colorsSelected.value = []
-
-    toggle.value.forEach(element => {
-    colorsSelected.value.push(colors.value[element].id)
-    });
-
-    router.push({ 
-        name: 'products', 
-        query: {
-          colorId: colorsSelected.value.join(","),
-          wholesalers: route.query.wholesalers === 'true' ? true : false
-        }
-    })
+        if (typeof route.query.fathercategory !== 'undefined' && route.query.subcategory) 
+            category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name
+    }
 }
 
 const priceAction = () => {
@@ -156,10 +115,7 @@ const toggleSubGroupFn = (index, subCat) => {
             <VCardItem v-if="route.query.category" class="p-0 text-allcategories tw-font-bold mt-6">
               <router-link
                 :to="{
-                  name: 'products',
-                  query: {
-                    wholesalers: route.query.wholesalers === 'true' ? true : false
-                  }
+                  name: 'services'
                 }"
                 class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
               >
@@ -175,10 +131,9 @@ const toggleSubGroupFn = (index, subCat) => {
                   <VListItemTitle>
                     <router-link
                       :to="{
-                        name: 'products',
+                        name: 'services',
                         query: {
-                          category: i.slug.split('/')[0],
-                          wholesalers: route.query.wholesalers === 'true' ? true : false
+                          category: i.slug.split('/')[0]
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ i.name }}
@@ -190,10 +145,9 @@ const toggleSubGroupFn = (index, subCat) => {
                     <VListItem class="px-2">
                       <router-link
                         :to="{
-                          name: 'products',
+                          name: 'services',
                           query: {
-                            category: i.slug.split('/')[0],
-                            wholesalers: route.query.wholesalers === 'true' ? true : false
+                            category: i.slug.split('/')[0]
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         <VListItemTitle>{{ i.name }}</VListItemTitle>
@@ -214,11 +168,10 @@ const toggleSubGroupFn = (index, subCat) => {
                     <VListItem v-if="j.grandchildren.length === 0">
                       <router-link
                         :to="{
-                          name: 'products',
+                          name: 'services',
                           query: {
                             category: i.slug.split('/')[0],
-                            subcategory: j.slug.split('/')[1],
-                            wholesalers: route.query.wholesalers === 'true' ? true : false
+                            subcategory: j.slug.split('/')[1]
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary">
                         <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -229,11 +182,10 @@ const toggleSubGroupFn = (index, subCat) => {
                         <VListItem>
                           <router-link
                             :to="{
-                              name: 'products',
+                              name: 'services',
                               query: {
                                 category: i.slug.split('/')[0],
-                                subcategory: j.slug.split('/')[1],
-                                wholesalers: route.query.wholesalers === 'true' ? true : false
+                                subcategory: j.slug.split('/')[1]
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                             <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -253,12 +205,11 @@ const toggleSubGroupFn = (index, subCat) => {
                         <VListItem>
                           <router-link
                             :to="{
-                              name: 'products',
+                              name: 'services',
                               query: {
                                 category: i.slug.split('/')[0],
                                 fathercategory: j.slug.split('/')[1],
-                                subcategory: k.slug.split('/')[2],
-                                wholesalers: route.query.wholesalers === 'true' ? true : false
+                                subcategory: k.slug.split('/')[2]
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                             {{ k.name }}
@@ -278,10 +229,9 @@ const toggleSubGroupFn = (index, subCat) => {
                   <VIcon icon="mdi-chevron-left" />
                   <router-link
                     :to="{
-                      name: 'products',
+                      name: 'services',
                         query: {
-                          category: route.query.category,
-                          wholesalers: route.query.wholesalers === 'true' ? true : false
+                          category: route.query.category
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.title }}
@@ -294,11 +244,10 @@ const toggleSubGroupFn = (index, subCat) => {
                   <VIcon icon="mdi-chevron-left" />
                   <router-link
                     :to="{
-                      name: 'products',
+                      name: 'services',
                         query: {
                           category: route.query.category,
-                          subcategory: route.query.fathercategory,
-                          wholesalers: route.query.wholesalers === 'true' ? true : false
+                          subcategory: route.query.fathercategory
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.fathercategory }}
@@ -325,10 +274,9 @@ const toggleSubGroupFn = (index, subCat) => {
                   <VIcon icon="mdi-chevron-left" />
                   <router-link
                     :to="{
-                      name: 'products',
+                      name: 'services',
                         query: {
-                          category: route.query.category,
-                          wholesalers: route.query.wholesalers === 'true' ? true : false
+                          category: route.query.category
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.title }}
@@ -349,12 +297,11 @@ const toggleSubGroupFn = (index, subCat) => {
                 <VListItem>
                   <router-link
                     :to="{
-                      name: 'products',
+                      name: 'services',
                       query: {
                         category: route.query.category,
                         fathercategory: route.query.subcategory,
-                        subcategory: j.slug.split('/')[2],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: j.slug.split('/')[2]
                       },
                     }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ j.name }}
@@ -380,11 +327,10 @@ const toggleSubGroupFn = (index, subCat) => {
                   <VListItem v-if="j.grandchildren.length === 0">
                     <router-link
                       :to="{
-                        name: 'products',
+                        name: 'services',
                         query: {
                           category: route.query.category,
-                          subcategory: j.slug.split('/')[1],
-                          wholesalers: route.query.wholesalers === 'true' ? true : false
+                          subcategory: j.slug.split('/')[1]
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         {{ j.name }}
@@ -395,11 +341,10 @@ const toggleSubGroupFn = (index, subCat) => {
                       <VListItem>
                         <router-link
                           :to="{
-                            name: 'products',
+                            name: 'services',
                             query: {
                               category: route.query.category,
-                              subcategory: j.slug.split('/')[1],
-                              wholesalers: route.query.wholesalers === 'true' ? true : false
+                              subcategory: j.slug.split('/')[1]
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -419,12 +364,11 @@ const toggleSubGroupFn = (index, subCat) => {
                       <VListItem>
                         <router-link
                           :to="{
-                            name: 'products',
+                            name: 'services',
                             query: {
                               category: route.query.category,
                               fathercategory: j.slug.split('/')[1],
-                              subcategory: k.slug.split('/')[2],
-                              wholesalers: route.query.wholesalers === 'true' ? true : false
+                              subcategory: k.slug.split('/')[2]
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           {{ k.name }}
@@ -438,51 +382,6 @@ const toggleSubGroupFn = (index, subCat) => {
         </VCard>
 
         <VCard class="px-0 transparent no-shadown">
-            <VCardItem class="px-2 p-0 text-left mt-2"> COLOR </VCardItem>
-            <VCardText class="text-left align-left p-0 mt-4">
-              <div class="d-flex align-center flex-column">
-          
-                <VBtnToggle
-                  v-model="toggle"
-                  density="comfortable"
-                  multiple
-                  class="px-1 d-flex align-center flex-wrap tw-bg-none v-avatar-group h-auto"
-                >
-                  <VBtn v-for="(color, index) in colors" variant="text" @click="colorAction">
-                    <VAvatar 
-                      v-if="color.is_gradient" 
-                      size="25" 
-                      class="my-1 tw-cursor-pointer"
-                      :class="(toggle.indexOf(index) !== -1) ? 'color-selected' : 'color-chip'"
-                      :style="{ backgroundImage: color.color }"
-                    >
-                      <VTooltip
-                        location="top"
-                        activator="parent"
-                        transition="scroll-x-transition"
-                      >
-                        <span>{{ color.name }}</span>
-                      </VTooltip>
-                    </VAvatar>
-                    <VAvatar 
-                      v-else 
-                      :color="color.color" 
-                      size="25" 
-                      class="my-1 tw-cursor-pointer"
-                      :class="(toggle.indexOf(index) !== -1) ? 'color-selected' : 'color-chip'"
-                    >
-                      <VTooltip
-                        location="top"
-                        activator="parent"
-                      >
-                        <span>{{ color.name }}</span>
-                      </VTooltip>
-                    </VAvatar>
-                  </VBtn>
-                </VBtnToggle>
-              </div>
-            </VCardText>
-
             <VDivider class="mb-6 mt-6"/>
 
             <VCardItem class="px-2 p-0 text-left mb-7 mt-2"> PRECIO </VCardItem>
@@ -519,7 +418,7 @@ const toggleSubGroupFn = (index, subCat) => {
                 @update:modelValue="reviewAction"
                 :ripple="false"
                 density="compact"
-              />
+                />
             </VCardText>
         </VCard>
     </VNavigationDrawer>
@@ -607,4 +506,3 @@ const toggleSubGroupFn = (index, subCat) => {
         padding: 10px;
     }
 </style>
-

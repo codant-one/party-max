@@ -13,7 +13,6 @@
   import heart from '@assets/icons/heart.svg?inline';
   import shoppinp_cart from '@assets/icons/shoppinp_cart.svg?inline';
   import user from '@assets/icons/user.svg?inline';
-  import arrow_right from '@assets/icons/arrow_right.svg?inline';
   import icon_right from '@assets/icons/right-icon.svg?inline';
 
   import cart from '@assets/icons/cart.svg?inline'
@@ -27,6 +26,9 @@
   import icon6 from '@assets/icons/hora-loca.svg?inline';
   import icon7 from '@assets/icons/desechables.svg?inline';
   import icon8 from '@assets/icons/sorpresas.svg?inline';
+  import icon9 from '@assets/icons/dulces.svg?inline';
+  import icon10 from '@assets/icons/animación.svg?inline';
+  import icon11 from '@assets/icons/mobiliario.svg?inline';
 
   const color = ref('#FF0090')
   
@@ -53,23 +55,20 @@
   const service = ref(1)
   const width = ref(300)
   const widths = ref(300)
-  const openMenu = ref(false)
   const menuOpen = ref(false)
-
-  const openMenuS = ref(false)
   const menuOpenS = ref(false)
   const isDrawerOpen = ref(false)
 
+  const isLoading = ref(false)
   const { isMobile } = useDevice();
   const drawer = ref(false)
   const fixedSectionRef = ref(null)
   const classFixed = ref('second-header')
-  const isLoading = ref(false)
 
   const openedGroups = ref([]);
   const panelCat = ref(null);
 
-  const items = ref([
+  const items_products = ref([
     { text: 'Fiestas infantiles', icon: markRaw(icon1), slug: 'fiestas-infantiles' },
     { text: 'Fiestas temáticas', icon: markRaw(icon2), slug: 'fiestas-tematicas' },
     { text: 'Fechas especiales', icon: markRaw(icon3), slug: 'fechas-especiales' },
@@ -78,6 +77,15 @@
     { text: 'Hora loca', icon: markRaw(icon6), slug: 'hora-loca' },
     { text: 'Desechables', icon: markRaw(icon7), slug: 'desechables' },
     { text: 'Sorpresas', icon: markRaw(icon8), slug: 'sorpresas' }
+  ])
+
+  const items_services = ref([
+    { text: 'Animadores de Fiestas', icon: markRaw(icon10), slug: 'animadores-de-fiestas' },
+    { text: 'Dulces y Ponques', icon: markRaw(icon9), slug: 'dulces-y-ponques' },
+    { text: 'Comida', icon: markRaw(icon7), slug: 'comida' },
+    { text: 'Musica', icon: markRaw(icon2), slug: 'musica' },
+    { text: 'Renta de Mobiliario', icon: markRaw(icon11), slug: 'renta-de-mobiliario' },
+    { text: 'Inflables', icon: markRaw(icon1), slug: 'inflables' }
   ])
 
   watch(() => 
@@ -93,13 +101,19 @@
       subTotal.value = '0.00'
       
       if(cart_products.value > 0) {
+        isDrawerOpen.value = true
         isLoading.value = true
         await cartStores.fetchCart()
         products.value = cartStores.getData
 
         let sum = 0
         products.value.forEach(element => {
-          let value = element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale
+          let cupcake = element.type === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
+          let value = 
+            element.type === 0 ? 
+              (element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale) :
+              (element.cake_size_id === 0 ? element.price : cupcake.price)
+
           sum += (parseFloat(value) * element.quantity)
         });
 
@@ -134,8 +148,8 @@
     categories.value = homeStores.getData.parentCategories
     services.value = homeStores.getData.parentServices
 
-    categoriesSearch.value = route.query.category ? findCategory(route.query.category) : 0
     textSearch.value = route.query.search ?? null
+    categoriesSearch.value = route.query.category ? findCategory(route.query.category) : 0
 
     categories_.value = [{ id: 0, name: 'Todos' }, ...categories.value];
 
@@ -165,12 +179,9 @@
   const logout = () => {
     authStores.logout()
       .then(async response => {
-
-        if(process.client) {
-          localStorage.removeItem('user_data')
-          localStorage.removeItem('accessToken')
-          localStorage.removeItem('userAbilities')
-        }
+        localStorage.removeItem('user_data')// Remove "user_data" from localStorage
+        localStorage.removeItem('accessToken')// Remove "accessToken" from localStorage
+        localStorage.removeItem('userAbilities')// Remove "userAbilities" from localStorage
 
         await cartStores.refreshData()
 
@@ -190,17 +201,22 @@
     }
   }
 
-  const openService = (id) => {
-    colse.value = 6
-    service.value = id - 161
-    widths.value = 650
+  const openService = (index) => {
+    category.value = index
+    
+    if(services.value[index].children.length > 0) {
+      cols.value = 6
+      width.value = 650
+    } else {
+      cols.value = 12
+      width.value = 300
+    }
   }
 
   const chanceMenu = () => {
-    cols.value = (openMenu.value === true) ? 6 : 12
+    cols.value = 12
     category.value = 0
-    width.value = (openMenu.value === true) ? 650 : 300
-    openMenu.value = (openMenu.value === true) ? false : true
+    width.value = 300
   }
 
   const closeMenu = () => {
@@ -209,10 +225,9 @@
   }
 
   const chanceMenuS = () => {
-    colse.value = (openMenuS.value === true) ? 6 : 12
+    colse.value = 12
     service.value = 0
-    widths.value = (openMenuS.value === true) ? 650 : 300
-    openMenuS.value = (openMenuS.value === true) ? false : true
+    widths.value = 300
   }
 
   const closeMenuS = () => {
@@ -221,23 +236,12 @@
   }
 
   const search = () => {
-
-    if(categoriesSearch.value === 0)
-      router.push({ 
-        name: 'products',
-        query: {
-          category: 'all',
-          search: textSearch.value
-        }         
-      })
-    else 
-      router.push({ 
-        name: 'products',
-        query: {
-          category: categories.value.filter(item => item.id === Number(categoriesSearch.value))[0].slug,
-          search: textSearch.value
-        }         
-      })
+    router.push({ 
+      name: 'products',
+      query: {
+        search: textSearch.value
+      }         
+    })
   }
 
   onMounted(() => {
@@ -274,40 +278,15 @@
     }
   }
 
-  const toggleWholesalers = () => {
-    if (route.query.wholesalers === 'true') {
-      router.push({ 
-        name: 'products',
-        query: {
-          category: route.query.category,
-          fathercategory: route.query.fathercategory,
-          subcategory: route.query.subcategory,
-          colorId: route.query.colorId,
-          wholesalers: 'false'
-        }
-      })
-    } else { 
-      router.push({ 
-        name: 'products',
-        query: {
-          category: route.query.category,
-          fathercategory: route.query.fathercategory,
-          subcategory: route.query.subcategory,
-          colorId: route.query.colorId,
-          wholesalers: 'true'
-        }
-      })
-    }
-  }
 
   const isLastItem = (index) => {
     return index === products.value.length - 1;
   }
 
-  const deleteProduct = async (product_color_id) => {
+  const deleteProduct = async (data) => {
 
     isLoading.value = true
-    await cartStores.delete({ product_color_id: product_color_id })
+    await cartStores.delete(data)
     fetchData()   
     isLoading.value = false
 
@@ -367,13 +346,6 @@
             </router-link>
           </VListItemTitle>
         </VListItem>
-        <!-- <VListItem>
-          <VListItemTitle class="d-block lineheight borderList pb-2">
-            <span @click="toggleWholesalers" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-              <span class="d-block title-menu">Precios Mayoristas</span>
-            </span>
-          </VListItemTitle>
-        </VListItem> -->
         <VListItem>
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
             <span class="d-block title-menu">PRODUCTOS</span>
@@ -933,13 +905,6 @@
           </VMenu>
         </div>
       <!---------FIN SERVICIOS MENÚ--------------------------->
-
-        <!-- <span @click="toggleWholesalers"
-          class="tw-no-underline d-flex align-center text-center tw-cursor-pointer"
-          :class="route.query.wholesalers === 'true' ? 'tw-text-yellow hover:tw-text-white hover-icon-arrow-right-white' : 'tw-text-white hover:tw-text-yellow hover-icon-arrow-right'">
-            <span class="ms-2"> Precios Mayoristas </span>
-            <arrow_right class="ms-2 p-0 index" :class="route.query.wholesalers === 'true' ? 'wholesalers' : ''"/>
-        </span>   -->
         <VSpacer />
 
         <router-link aria-label="item-about" to="/about" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Quiénes somos</router-link>

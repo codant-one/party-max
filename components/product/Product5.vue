@@ -69,11 +69,12 @@ const onChange = () => {
 
     let data = {
         quantity: quantity.value,
-        product_color_id: product_color_id.value,
-        wholesale: existence_whole.value ? 1 : 0
+        product_color_id: parseInt(product_color_id.value),
+        wholesale: existence_whole.value ? 1 : 0,
+        type: 0
     }
 
-    emit('addCart',data)
+    emit('addCart', data)
 }
 
 const increment = () => {
@@ -93,21 +94,21 @@ const decrement = () => {
 </script>
 
 <template>
-    <div class="tw-no-underline zoom-product">
+    <div class="tw-no-underline zoom-product w-100">
         <VCard 
-            class="no-shadown p-0 w-100 py-5 py-md-7" 
+            class="no-shadown px-0 w-100 py-5 py-md-7" 
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow no-gutters>
-                <VCol cols="6" md="2" class="d-flex justify-content-center align-center">
-                    <VCardText class="border-img ms-5 ms-md-10">
-                        <VImg 
+                <VCol cols="6" md="3" class="d-flex flex-column my-auto">
+                    <VCardText class="border-img ms-5 ms-md-10 p-0">
+                        <img 
                             :width="100"
                             :src="baseURL + image" 
-                            :alt="name"
-                            cover />
+                            class="img-prod" />
+                        <div v-if="in_stock === 0" class="out-of-stock-label">AGOTADO</div>   
                     </VCardText>
                 </VCol>
-                <VCol cols="12" md="6" class="d-flex flex-column py-3 py-md-5 ps-4 ps-md-7 my-auto">
+                <VCol cols="12" md="5" class="d-flex flex-column py-3 py-md-5 ps-4 ps-md-0 my-auto">
                     <VCardText>
                         <span class="d-block text_2 py-1 tw-text-tertiary title-product">{{ name }}</span>
                         <span class="d-block py-0 tw-text-gray">Color: {{ color }}</span>
@@ -160,7 +161,23 @@ const decrement = () => {
 </template>
 
 <style scoped>
-
+    .out-of-stock-label {
+        position: absolute;
+        top: 30%;
+        left: 47%;
+        transform: translate(-50%, -50%) rotate(-30deg);
+        background-color: rgba(255, 0, 144, 0.7);
+        color: white;
+        padding: 5px 10px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 5px;
+        z-index: 10;
+        pointer-events: none; /* Para que no interfiera con el zoomer */
+        width: 90%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    
     .warning {
         border: 2px solid #FFC549 !important;
     }
@@ -236,18 +253,33 @@ const decrement = () => {
         height: 130px;
         border-radius: 16px !important;
         border: 1px solid #E1E1E1;
-        padding: 10px !important;
         text-align: center;
         align-items: center;
         display: flex;
+        overflow: hidden;
     }
 
-    .zoom-product  {
-        transition: transform ease-in-out 0.3s;
+    .zoom-product {
+        display: inline-block;
+        position: relative;
+        overflow: visible;
     }
 
-    .zoom-product:hover .v-img {
-        transform: scale(1.1) !important;
+    .zoom-product:hover .img-prod {
+        transform: scale(1.1);
+    }
+
+    .zoom-product:hover .title-product {
+        color: #FF0090 !important;
+    }
+
+    .img-prod {
+        display: block;
+        width: 130px;
+        height: 130px;
+        object-fit: cover;
+        border-radius: 16px;
+        transition: transform 0.3s ease-in-out;
     }
 
     .title-product {
@@ -277,5 +309,15 @@ const decrement = () => {
         font-weight: 400;
         line-height: 8px; /* 80% */ 
     }
+
+    @media only screen and (max-width: 767px) {
+
+        .out-of-stock-label {
+            font-size: 16px;
+            top: 25%;
+            left: 50%;
+        }
+    }
     
 </style>
+

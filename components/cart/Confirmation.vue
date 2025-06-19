@@ -4,6 +4,7 @@ import festin_success from '@assets/icons/festin_success.svg';
 import festin_error from '@assets/icons/festin_error.svg';
 import festin_pending from '@assets/icons/festin_pending.svg';
 import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
+import metapixel from '@metapixel'
 
 const route = useRoute()
 
@@ -55,6 +56,13 @@ watchEffect(() => {
         case '1':
             message.value = 'Transacción aprobada'
             subMessage.value = 'Para nosotros es un placer acompañarte en tus momentos más especiales, ahora a disfrutar de la fiesta.'
+            if(import.meta.env.VITE_ENV !== 'development') {//solo para produccion
+                metapixel.trackEvent('Purchase', { 
+                    value: TX_VALUE.value, 
+                    currency: currency.value,
+                    description: extra1.value
+                });//SEGUIMIENTO META OJO
+            }
             emit('deleteAll')
             break;
         case '4':
@@ -191,7 +199,7 @@ watchEffect(() => {
         <VCol cols="12">
             <VCard
                 class="px-10 py-5 py-md-10 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-                <VImg :width="isMobile ? (isPending ? '80' : '130') : '200'" :src="isError ? festin_error : (isPending ? festin_pending : festin_success)" :alt="isError ? 'Pago fallido' : (isPending ? 'Pago pendiente' : 'Pago exitoso')" class="mx-auto"/>
+                <VImg :width="isMobile ? (isPending ? '80' : '130') : '200'" :src="isError ? festin_error : (isPending ? festin_pending : festin_success)" class="mx-auto"/>
                 <VCardText class="text-message border-line">
                     {{ message }}
                 </VCardText>

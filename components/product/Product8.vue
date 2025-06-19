@@ -33,12 +33,10 @@ const store = ref(null)
 const rating = ref(null)
 const single_description = ref(null)
 const slug = ref(null)
-const stock = ref(null)
 const quantity = ref(null)
 const product_id = ref(null)
 const product_color_id = ref(null)
 const existence_whole = ref(false)
-const in_stock = ref(null)
 
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
 
@@ -53,14 +51,12 @@ watchEffect(() => {
         rating.value = props.product.rating
         single_description.value = props.product.product.single_description
         slug.value = props.product.product.slug
-        stock.value = props.product.product.stock
         quantity.value = props.product.quantity ?? 1
         product_id.value = props.product.product.id
         product_color_id.value = props.product.product_color_id
         color.value = props.product.color.name
         existence_whole.value = props.product.wholesale === 1 ? true : false;
         wholesale_min.value = props.product.wholesale === 1 ? props.product.product.wholesale_min : 1
-        in_stock.value = props.product.product.in_stock
     }
 })
 
@@ -69,18 +65,18 @@ watchEffect(() => {
 <template>
     <div class="tw-no-underline zoom-product">
         <VCard 
-            class="no-shadown p-0 w-100 py-3 py-md-5" 
+            class="no-shadown px-0 w-100 py-3 py-md-5" 
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow no-gutters>
-                <VCol cols="6" md="4" class="d-flex justify-content-center align-center">
-                    <VCardText class="border-img ms-5 ms-md-10">
-                        <VImg 
+                <VCol cols="6" md="5" class="d-flex flex-column my-auto">
+                    <VCardText class="border-img ms-5 p-0">
+                        <img 
                             :width="100"
                             :src="baseURL + image" 
-                            cover />
+                            class="img-prod" />
                     </VCardText>
                 </VCol>
-                <VCol cols="12" md="8" class="d-flex flex-column pt-3 py-md-5 ps-4 ps-md-7 my-auto">
+                <VCol cols="12" md="7" class="d-flex flex-column pt-3 py-md-5 ps-4 ps-md-8 my-auto">
                     <VCardText class="px-1">
                         <span class="d-block text_2 py-1 tw-text-tertiary title-product">{{ name }}</span>
                         <span class="d-block py-0 tw-text-gray">Color: {{ color }}</span>
@@ -183,18 +179,33 @@ watchEffect(() => {
         height: 130px;
         border-radius: 16px !important;
         border: 1px solid #E1E1E1;
-        padding: 10px !important;
         text-align: center;
         align-items: center;
         display: flex;
+        overflow: hidden;
     }
 
-    .zoom-product  {
-        transition: transform ease-in-out 0.3s;
+    .zoom-product {
+        display: inline-block;
+        position: relative;
+        overflow: visible;
     }
 
-    .zoom-product:hover .v-img {
-        transform: scale(1.1) !important;
+    .zoom-product:hover .img-prod {
+        transform: scale(1.1);
+    }
+
+    .zoom-product:hover .title-product {
+        color: #FF0090 !important;
+    }
+
+    .img-prod {
+        display: block;
+        width: 130px;
+        height: 130px;
+        object-fit: cover;
+        border-radius: 16px;
+        transition: transform 0.3s ease-in-out;
     }
 
     .title-product {

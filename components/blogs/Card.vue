@@ -2,7 +2,6 @@
 
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { useRuntimeConfig } from '#app'
 
 const props = defineProps({
     blog: {
@@ -15,8 +14,6 @@ const props = defineProps({
     }
 });
 
-const config = useRuntimeConfig()
-
 const id = ref(null)
 const name = ref(null)
 const title = ref(null)
@@ -28,8 +25,8 @@ const dateBlog = ref(null)
 const paragraphs = ref(null)
 const tags = ref(null)
 
-const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
-const { isMobile } = useDevice();
+const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
+const isMobile = /Mobi/i.test(navigator.userAgent);
 
 const searchWhatsapp = ref(null)
 const searchFacebook = ref(null)
@@ -49,10 +46,10 @@ watchEffect(() => {
         dateBlog.value = props.blog.date
         tags.value = props.blog.tags
 
-        searchWhatsapp.value = `https://wa.me/?text=${config.public.MY_DOMAIN}/blogs/${props.blog.slug}`
-        searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${config.public.MY_DOMAIN}/blogs/${props.blog.slug}`
-        searchTwitter.value = `https://twitter.com/intent/tweet?text=https://${config.public.MY_DOMAIN}/blogs/${props.blog.slug}`
-        searchPinterest.value = `https://pinterest.com/pin/create/button/?url=&media=https://${config.public.MY_DOMAIN}/blogs/${props.blog.slug}`
+        searchWhatsapp.value = `https://wa.me/?text=${import.meta.env.VITE_MY_DOMAIN}/blogs/${props.blog.slug}`
+        searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${import.meta.env.VITE_MY_DOMAIN}/blogs/${props.blog.slug}`
+        searchTwitter.value = `https://twitter.com/intent/tweet?text=https://${import.meta.env.VITE_MY_DOMAIN}/blogs/${props.blog.slug}`
+        searchPinterest.value = `https://pinterest.com/pin/create/button/?url=&media=https://${import.meta.env.VITE_MY_DOMAIN}/blogs/${props.blog.slug}`
 
         var blogContent = description.value; 
 
@@ -77,10 +74,10 @@ watchEffect(() => {
 <template>
     <VCard class="text-justify card-header mb-6 pb-2 card-information no-shadown">
         <VCardItem class="p-0">
-            <NuxtLink
+            <router-link
                 v-if="props.type == 1"
                 :to="{
-                    name: 'blogs-slug',
+                    name: 'blogDetail',
                     params: {
                         slug: slug                    
                     },
@@ -88,15 +85,15 @@ watchEffect(() => {
                 }"
                 class="tw-no-underline"
             >
-                <img class="img-style" :src="baseURL + image" alt="Slug" />
-            </NuxtLink>
-            <img v-else class="img-style" :src="baseURL + image" alt="Slug" />
+                <img class="img-style" :src="baseURL + image" />
+            </router-link>
+            <img v-else class="img-style" :src="baseURL + image" />
         </VCardItem>
 
         <VCardSubtitle class="text-justify subtitle-text my-2 my-md-6 px-0 d-block d-md-flex">
             <div>
                 <VIcon size="20px" icon="mdi-account-outline" class="subtitle-text" /> 
-                by {{ user }} 
+                {{ user }} 
             </div>
             <div>  
                 <VIcon size="20px" :end="!isMobile" icon="mdi-clock-outline" class="subtitle-text" />
@@ -105,10 +102,10 @@ watchEffect(() => {
         </VCardSubtitle>
 
         <VCardTitle class="px-0 pt-0 title-text">
-            <NuxtLink 
+            <router-link 
                 v-if="props.type == 1"
                 :to="{
-                    name: 'blogs-slug',
+                    name: 'blogDetail',
                     params: {
                         slug: slug                    
                     },
@@ -117,7 +114,7 @@ watchEffect(() => {
                 class="text-justify tw-no-underline"
             >
                 <span class="tw-text-primary hover:tw-text-secondary"> {{ title }} </span>
-            </NuxtLink>
+            </router-link>
             <span v-else class="text-justify tw-text-primary"> {{ title }} </span>
         </VCardTitle>
 
@@ -125,10 +122,10 @@ watchEffect(() => {
             <div v-html="paragraphs"></div>
         </VCardText>
 
-        <NuxtLink 
+        <router-link 
             v-if="props.type == 1"
             :to="{
-                name: 'blogs-slug',
+                name: 'blogDetail',
                 params: {
                     slug: slug                    
                 },
@@ -142,11 +139,11 @@ watchEffect(() => {
                 text="Leer más"
                 class="text-none text-justify description-text px-0 mb-2 tw-text-tertiary hover:tw-text-primary"
             />
-        </NuxtLink>
+        </router-link>
 
         <VRow v-if="props.type === 2" class="mb-6">
             <hr class="col-12 v-divider v-theme--myCustomLightTheme mb-2 mt-4" />
-            <VCol cols="12" md="12" class="d-flex flex-row align-center px-1 py-1">
+            <VCol cols="12" md="12" class="d-none flex-row align-center px-1 py-1">
                 <VCol cols="2" class="px-1 py-1 foot-data-text">
                     Tags:
                 </VCol>

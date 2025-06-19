@@ -31,13 +31,18 @@ export const Orders = () => {
         return await $axios.get(`orders/show-order/${id}`)
     }
 
+    const uploadFile = async (data: object) => {
+        return await $axios.post('/orders/upload/file', data)
+    }
+
     return {
         get,
-        update,
         create,
+        update,
         destroy,
         updatePaymentState,
         show_by_client,
-        show_by_id
+        show_by_id,
+        uploadFile
     }
 }
