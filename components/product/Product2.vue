@@ -46,12 +46,10 @@ watchEffect(() => {
 </script>
 
 <template>
-    <router-link 
+    <NuxtLink 
         :to="{
-            name: 'productDetail',
-            params: {
-                slug: slug
-            }
+            name: 'products-slug',
+            params: { slug: slug },
         }"
         class="tw-no-underline zoom-product">
         <VCard class="no-shadown card-information p-0 mb-5">
@@ -76,7 +74,7 @@ watchEffect(() => {
                 </VCardText>
             </div>
         </VCard>
-    </router-link>
+    </NuxtLink>
 </template>
 
 <style scoped>

@@ -39,7 +39,7 @@ const cake_size_id = ref(null)
 const date = ref(null)
 
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
-const { isMobile } =  useDevice()
+const { isMobile } = useDevice()
 
 watchEffect(() => {
 

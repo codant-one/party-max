@@ -1,7 +1,7 @@
 <script setup>
 
 import book from '@assets/icons/book.svg?inline';
-import router from '@/router'
+import { useRouter, useRoute } from 'vue-router'
 
 const props = defineProps({
     blogs: {
@@ -15,6 +15,7 @@ const props = defineProps({
 });
 
 const route = useRoute()
+const router = useRouter()
 const textSearch = ref(null)
 
 watch(() => 
@@ -115,7 +116,7 @@ const search = () => {
                 :link="true"
                 rounded
             >
-                <router-link
+                <NuxtLink
                     :to="{
                         name: 'blogs',
                         query: {
@@ -130,7 +131,7 @@ const search = () => {
                             {{ category.blogs_count }}
                         </span>
                     </div>
-                </router-link>
+                </NuxtLink>
             </VListItem>
         </VList>
     </VCard>

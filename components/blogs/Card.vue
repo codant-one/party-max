@@ -26,7 +26,7 @@ const paragraphs = ref(null)
 const tags = ref(null)
 
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
-const isMobile = /Mobi/i.test(navigator.userAgent);
+const { isMobile } = useDevice();
 
 const searchWhatsapp = ref(null)
 const searchFacebook = ref(null)
@@ -74,7 +74,7 @@ watchEffect(() => {
 <template>
     <VCard class="text-justify card-header mb-6 pb-2 card-information no-shadown">
         <VCardItem class="p-0">
-            <router-link
+            <NuxtLink
                 v-if="props.type == 1"
                 :to="{
                     name: 'blogDetail',
@@ -86,7 +86,7 @@ watchEffect(() => {
                 class="tw-no-underline"
             >
                 <img class="img-style" :src="baseURL + image" />
-            </router-link>
+            </NuxtLink>
             <img v-else class="img-style" :src="baseURL + image" />
         </VCardItem>
 
@@ -102,7 +102,7 @@ watchEffect(() => {
         </VCardSubtitle>
 
         <VCardTitle class="px-0 pt-0 title-text">
-            <router-link 
+            <NuxtLink 
                 v-if="props.type == 1"
                 :to="{
                     name: 'blogDetail',
@@ -114,7 +114,7 @@ watchEffect(() => {
                 class="text-justify tw-no-underline"
             >
                 <span class="tw-text-primary hover:tw-text-secondary"> {{ title }} </span>
-            </router-link>
+            </NuxtLink>
             <span v-else class="text-justify tw-text-primary"> {{ title }} </span>
         </VCardTitle>
 
@@ -122,7 +122,7 @@ watchEffect(() => {
             <div v-html="paragraphs"></div>
         </VCardText>
 
-        <router-link 
+        <NuxtLink 
             v-if="props.type == 1"
             :to="{
                 name: 'blogDetail',
@@ -139,7 +139,7 @@ watchEffect(() => {
                 text="Leer más"
                 class="text-none text-justify description-text px-0 mb-2 tw-text-tertiary hover:tw-text-primary"
             />
-        </router-link>
+        </NuxtLink>
 
         <VRow v-if="props.type === 2" class="mb-6">
             <hr class="col-12 v-divider v-theme--myCustomLightTheme mb-2 mt-4" />

@@ -15,7 +15,6 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import { VueImageZoomer } from 'vue-image-zoomer'
 import { Spanish } from 'flatpickr/dist/l10n/es.js';
 import FlatPickr from 'vue-flatpickr-component';
-import router from '@/router'
 import Loader from '@/components/common/Loader.vue'
 import Service3 from '@/components/service/Service3.vue'
 import whatsapp from '@assets/icons/whatsapp.svg?inline';
@@ -49,7 +48,7 @@ const favoritesStores = useFavoritesStores()
 const homeStores = useHomeStores();
 const ordersStores = useOrdersStores()
 
-const isMobile = /Mobi/i.test(navigator.userAgent);
+const { isMobile } = useDevice();
 
 const isLoading = ref(true)
 const tab = ref('0')
@@ -1048,7 +1047,7 @@ const buildEmbedUrl = (url) => {
               <p class="text-lef">Recomendaciones que te pueden interesar</p>
             </VCol>
             <VCol cols="4" md="6" class="text-right">
-              <router-link to="/services" class="ms-md-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
+              <NuxtLink to="/services" class="ms-md-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</NuxtLink>
             </VCol> 
           </VRow>
         </VCardTitle>

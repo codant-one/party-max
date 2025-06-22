@@ -11,6 +11,7 @@ import 'swiper/css/pagination';
 import Product1 from '@/components/product/Product1.vue'
 import Product2 from '@/components/product/Product2.vue'
 import Loader from '@/components/common/Loader.vue'
+import WelcomePopup from '@/components/app/WelcomePopup.vue'
 
 import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
 
@@ -127,6 +128,7 @@ useHead({
 
 <template>
   <VContainer class="mt-2 mt-md-10">
+    <WelcomePopup />
     <Loader :isLoading="isLoading"/>
     <!-- slider -->
     <VRow no-gutters class="transparent">

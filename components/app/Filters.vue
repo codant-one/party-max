@@ -144,6 +144,7 @@ const toggleSubGroupFn = (index, subCat) => {
 </script>
 
 <template>
+  <ClientOnly>
     <VNavigationDrawer
         v-model="drawer_"
         class="tw-bg-green"
@@ -154,7 +155,7 @@ const toggleSubGroupFn = (index, subCat) => {
             <VCardItem class="px-2 p-0 text-left mt-2"> CATEGORÍAS </VCardItem>
 
             <VCardItem v-if="route.query.category" class="p-0 text-allcategories tw-font-bold mt-6">
-              <router-link
+              <NuxtLink
                 :to="{
                   name: 'products',
                   query: {
@@ -166,14 +167,14 @@ const toggleSubGroupFn = (index, subCat) => {
                 <span>
                   <VIcon icon="mdi-chevron-left" />TODAS LAS CATEGORIAS
                 </span>
-              </router-link>
+              </NuxtLink>
             </VCardItem>
 
             <VList v-else v-model:opened="panelCat">
               <div v-for="(i, index) in categories" :key="index">
                 <VListItem v-if="i.children.length === 0" class="px-2">
                   <VListItemTitle>
-                    <router-link
+                    <NuxtLink
                       :to="{
                         name: 'products',
                         query: {
@@ -182,13 +183,13 @@ const toggleSubGroupFn = (index, subCat) => {
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ i.name }}
-                    </router-link> 
+                    </NuxtLink> 
                   </VListItemTitle>
                 </VListItem>
                 <VListGroup v-else :value="i.name" class="px-0">
                   <template #activator="{ props }">
                     <VListItem class="px-2">
-                      <router-link
+                      <NuxtLink
                         :to="{
                           name: 'products',
                           query: {
@@ -197,7 +198,7 @@ const toggleSubGroupFn = (index, subCat) => {
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         <VListItemTitle>{{ i.name }}</VListItemTitle>
-                      </router-link>
+                      </NuxtLink>
                       <template #append>
                         <VIcon
                           v-bind="props"
@@ -212,7 +213,7 @@ const toggleSubGroupFn = (index, subCat) => {
 
                   <div v-for="(j, jIndex) in i.children" :key="jIndex">
                     <VListItem v-if="j.grandchildren.length === 0">
-                      <router-link
+                      <NuxtLink
                         :to="{
                           name: 'products',
                           query: {
@@ -222,12 +223,12 @@ const toggleSubGroupFn = (index, subCat) => {
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary">
                         <VListItemTitle> {{ j.name }} </VListItemTitle>
-                      </router-link>
+                      </NuxtLink>
                     </VListItem>
                     <VListGroup v-else :value="j.name">
                       <template #activator="{ props }">
                         <VListItem>
-                          <router-link
+                          <NuxtLink
                             :to="{
                               name: 'products',
                               query: {
@@ -237,7 +238,7 @@ const toggleSubGroupFn = (index, subCat) => {
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                             <VListItemTitle> {{ j.name }} </VListItemTitle>
-                          </router-link>
+                          </NuxtLink>
                           <template #append>
                             <VIcon
                               v-bind="props"
@@ -251,7 +252,7 @@ const toggleSubGroupFn = (index, subCat) => {
                       </template>
                       <div v-for="k in j.grandchildren" :key="k">
                         <VListItem>
-                          <router-link
+                          <NuxtLink
                             :to="{
                               name: 'products',
                               query: {
@@ -262,7 +263,7 @@ const toggleSubGroupFn = (index, subCat) => {
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                             {{ k.name }}
-                          </router-link> 
+                          </NuxtLink> 
                         </VListItem>
                       </div>
                     </VListGroup>
@@ -276,7 +277,7 @@ const toggleSubGroupFn = (index, subCat) => {
               <VListItem class="tw-font-bold hover:tw-text-primary tw-uppercase px-0">
                 <span>
                   <VIcon icon="mdi-chevron-left" />
-                  <router-link
+                  <NuxtLink
                     :to="{
                       name: 'products',
                         query: {
@@ -285,14 +286,14 @@ const toggleSubGroupFn = (index, subCat) => {
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.title }}
-                  </router-link> 
+                  </NuxtLink> 
                 </span>
               </VListItem>
 
               <VListItem class="tw-font-bold hover:tw-text-primary tw-uppercase px-0">
                 <span>
                   <VIcon icon="mdi-chevron-left" />
-                  <router-link
+                  <NuxtLink
                     :to="{
                       name: 'products',
                         query: {
@@ -302,7 +303,7 @@ const toggleSubGroupFn = (index, subCat) => {
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.fathercategory }}
-                  </router-link> 
+                  </NuxtLink> 
                 </span>
               </VListItem>
 
@@ -323,7 +324,7 @@ const toggleSubGroupFn = (index, subCat) => {
               <VListItem class="tw-font-bold hover:tw-text-primary tw-uppercase px-0">
                 <span>
                   <VIcon icon="mdi-chevron-left" />
-                  <router-link
+                  <NuxtLink
                     :to="{
                       name: 'products',
                         query: {
@@ -332,7 +333,7 @@ const toggleSubGroupFn = (index, subCat) => {
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.title }}
-                  </router-link> 
+                  </NuxtLink> 
                 </span>
               </VListItem>
 
@@ -347,7 +348,7 @@ const toggleSubGroupFn = (index, subCat) => {
                 categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren" 
                 :key="jIndex">
                 <VListItem>
-                  <router-link
+                  <NuxtLink
                     :to="{
                       name: 'products',
                       query: {
@@ -358,7 +359,7 @@ const toggleSubGroupFn = (index, subCat) => {
                       },
                     }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ j.name }}
-                  </router-link> 
+                  </NuxtLink> 
                 </VListItem>
               </div>
             </VList>
@@ -378,7 +379,7 @@ const toggleSubGroupFn = (index, subCat) => {
 
               <div v-for="(j, jIndex) in categories.filter(item =>item.slug === route.query.category)[0].children" :key="jIndex">
                   <VListItem v-if="j.grandchildren.length === 0">
-                    <router-link
+                    <NuxtLink
                       :to="{
                         name: 'products',
                         query: {
@@ -388,12 +389,12 @@ const toggleSubGroupFn = (index, subCat) => {
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         {{ j.name }}
-                    </router-link> 
+                    </NuxtLink> 
                   </VListItem>
                   <VListGroup v-else :value="j.name">
                     <template #activator="{ props }">
                       <VListItem>
-                        <router-link
+                        <NuxtLink
                           :to="{
                             name: 'products',
                             query: {
@@ -403,7 +404,7 @@ const toggleSubGroupFn = (index, subCat) => {
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           <VListItemTitle> {{ j.name }} </VListItemTitle>
-                        </router-link>
+                        </NuxtLink>
                         <template #append>
                           <VIcon
                             v-bind="props"
@@ -417,7 +418,7 @@ const toggleSubGroupFn = (index, subCat) => {
                     </template>
                     <div v-for="k in j.grandchildren" :key="k">
                       <VListItem>
-                        <router-link
+                        <NuxtLink
                           :to="{
                             name: 'products',
                             query: {
@@ -428,7 +429,7 @@ const toggleSubGroupFn = (index, subCat) => {
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           {{ k.name }}
-                        </router-link> 
+                        </NuxtLink> 
                       </VListItem>
                     </div>
                   </VListGroup>
@@ -503,7 +504,7 @@ const toggleSubGroupFn = (index, subCat) => {
                 ${{ formatNumber(rangPrice[0]) }} - ${{ formatNumber(rangPrice[1]) }}
               </VCardItem>
             </VCardText>
-           
+          
             <VDivider class="mb-6 mt-6"/>
 
             <VCardItem class="px-2 p-0 text-left mt-2"> REVIEW </VCardItem>
@@ -523,6 +524,7 @@ const toggleSubGroupFn = (index, subCat) => {
             </VCardText>
         </VCard>
     </VNavigationDrawer>
+  </ClientOnly>
 </template>
 
 <style scoped>

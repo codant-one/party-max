@@ -48,7 +48,7 @@ watchEffect(() => {
             class="no-shadown py-5 pb-5 w-100 d-block d-md-flex" 
             :class="props.isLastItem ? '' : 'card-information'">
             <VCardText class="border-img ms-5 ms-md-10 p-0">
-                <router-link
+                <NuxtLink
                     :to="{
                         name: 'serviceDetail',
                         params: {
@@ -60,7 +60,7 @@ watchEffect(() => {
                         :width="100"
                         :src="baseURL + image" 
                         class="img-prod" />
-                </router-link>
+                </NuxtLink>
             </VCardText>
             <VCardText class="pl-5 d-block details">
                 <span class="d-block my-3 my-md-5 text_2 tw-text-tertiary title-service">{{ name }}</span>

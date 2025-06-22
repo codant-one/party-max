@@ -95,7 +95,7 @@ const addfavorite = () => {
             <VRow>
                 <VCol cols="6" md="3">
                     <VCardText class="border-img ms-md-5 text-center justify-content-center align-center d-flex p-0">
-                        <router-link
+                        <NuxtLink
                             :to="{
                                 name: 'serviceDetail',
                                 params: { slug: slug },
@@ -111,7 +111,7 @@ const addfavorite = () => {
                                 :src="baseURL + image" 
                                 class="img-prod"
                             />
-                        </router-link>
+                        </NuxtLink>
                     </VCardText>
                 </VCol>
                 <VCol cols="12" md="6" class="py-0 py-md-3">

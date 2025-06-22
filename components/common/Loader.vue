@@ -1,7 +1,6 @@
 <script setup>
 
 import Loading from 'vue3-loading-overlay';
-import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
 
 const props = defineProps({
     isLoading: {
@@ -17,6 +16,7 @@ const loader = ref('Bars')
 </script>
 
 <template>
+    <ClientOnly>
     <Loading 
         :active="isLoading" 
         :can-cancel="true" 
@@ -39,4 +39,5 @@ const loader = ref('Bars')
         <img class="custom-loader-gif" src="ruta/a/tu/imagen.gif" alt="Cargando..." />
     </span> -->
     </Loading>
+    </ClientOnly>
 </template>

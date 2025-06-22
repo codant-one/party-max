@@ -47,7 +47,8 @@ export default defineNuxtConfig({
   ],
 
   css: [
-    '~/assets/main.css'
+    '~/assets/main.css',
+    '~/tailwind/tailwind.css'
   ],
 
   postcss: {
@@ -64,7 +65,6 @@ export default defineNuxtConfig({
       APP_DOMAIN_ADMIN_URL: process.env.NUXT_APP_DOMAIN_ADMIN_URL,
       MY_DOMAIN: process.env.NUXT_MY_DOMAIN,
       GOOGLE_TAG_MANAGER: process.env.NUXT_GOOGLE_TAG_MANAGER,
-      SMARTS_UPP_KEY: process.env.NUXT_SMARTS_UPP_KEY,
       NODE_ENV: process.env.NODE_ENV
     },
   },
@@ -82,6 +82,7 @@ export default defineNuxtConfig({
       alias: {
         '@':  path.resolve(__dirname),
         '@axios':  path.resolve(__dirname, 'plugins/axios'),
+        '@metapixel':  path.resolve(__dirname, 'plugins/metapixel'),
         '@assets':  path.resolve(__dirname, 'assets'),
         '@validators':  path.resolve(__dirname, 'utils/validators'),
         '@formatters':  path.resolve(__dirname, 'utils/formatters')
@@ -94,16 +95,17 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/': { prerender: true },
-    '/blogs': { static: true },
-    '/blogs/*': { static: true },
-    '/cart': { static: true },
-    '/categories/*': { static: true },
-    '/clients/*': { static: true },
+    '/.well-known/**': { ssr: false },
+    '/blogs': { ssr: true, swr: 3600 },
+    '/blogs/*': { ssr: true, swr: 3600 },
+    '/cart': { ssr: true },
+    '/categories/*': { ssr: true, swr: 3600 },
+    '/clients/*': { ssr: false },
     '/dashboard/*': { ssr: false },
-    '/testing': { ssr: true },
     '/products': { static: true },
     '/products/*': { ssr: true, swr: 3600 },
-    '/*': { static: true } 
+    '/services': { static: true },
+    '/services/*': { ssr: true, swr: 3600 }
   },
 
   compatibilityDate: '2024-07-14'

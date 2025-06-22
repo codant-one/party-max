@@ -51,9 +51,9 @@ watchEffect(() => {
 </script>
 
 <template>
-    <router-link
+    <NuxtLink
         :to="{
-            name: 'productDetail',
+            name: 'products-slug',
             params: { slug: slug },
             query: {  
                 category: route.query.category,
@@ -111,7 +111,7 @@ watchEffect(() => {
                 </div>
             </VCardText>
         </VCard>
-    </router-link>
+    </NuxtLink>
 </template>
 
 <style scoped>

@@ -9,7 +9,6 @@ import { useFavoritesStores } from '@/stores/favorites'
 import { useCartStores } from '@/stores/cart'
 import { useFiltersStores } from '@/stores/filters'
 import { formatNumber } from '@formatters'
-import router from '@/router'
 import Loader from "@/components/common/Loader.vue";
 import icon1 from "@/assets/icons/icon-menu-1.svg";
 import icon2 from "@/assets/icons/icon-menu-2.svg";
@@ -56,7 +55,7 @@ const min = ref(null);
 const max = ref(null);
 
 const rating = ref(5)
-const isMobile = /Mobi/i.test(navigator.userAgent);
+const { isMobile } = useDevice();
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
 const isDialogVisible = ref(false)
@@ -321,7 +320,7 @@ const addfavorite = (service_id) => {
             <VCardItem class="p-0 text-left mt-6"> CATEGORÍAS </VCardItem>
 
             <VCardItem v-if="route.query.category" class="p-0 text-allcategories tw-font-bold mt-6">
-              <router-link
+              <NuxtLink
                 :to="{
                   name: 'services'
                 }"
@@ -331,14 +330,14 @@ const addfavorite = (service_id) => {
                   <VIcon icon="mdi-chevron-left" />
                   TODAS LAS CATEGORIAS
                 </span>
-              </router-link>
+              </NuxtLink>
             </VCardItem>
 
             <VList v-else v-model:opened="panelCat">
               <div v-for="(i, index) in categories" :key="index">
                 <VListItem v-if="i.children.length === 0" class="px-2">
                   <VListItemTitle>
-                    <router-link
+                    <NuxtLink
                       :to="{
                         name: 'services',
                         query: {
@@ -346,13 +345,13 @@ const addfavorite = (service_id) => {
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ i.name }}
-                    </router-link> 
+                    </NuxtLink> 
                   </VListItemTitle>
                 </VListItem>
                 <VListGroup v-else :value="i.name" class="px-0">
                   <template #activator="{ props }">
                     <VListItem class="px-2">
-                      <router-link
+                      <NuxtLink
                         :to="{
                           name: 'services',
                           query: {
@@ -360,7 +359,7 @@ const addfavorite = (service_id) => {
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         <VListItemTitle>{{ i.name }}</VListItemTitle>
-                      </router-link>
+                      </NuxtLink>
                       <template #append>
                         <VIcon
                           v-bind="props"
@@ -375,7 +374,7 @@ const addfavorite = (service_id) => {
 
                   <div v-for="(j, jIndex) in i.children" :key="jIndex">
                     <VListItem v-if="j.grandchildren.length === 0">
-                      <router-link
+                      <NuxtLink
                         :to="{
                           name: 'services',
                           query: {
@@ -384,12 +383,12 @@ const addfavorite = (service_id) => {
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary">
                         <VListItemTitle> {{ j.name }} </VListItemTitle>
-                      </router-link>
+                      </NuxtLink>
                     </VListItem>
                     <VListGroup v-else :value="j.name">
                       <template #activator="{ props }">
                         <VListItem>
-                          <router-link
+                          <NuxtLink
                             :to="{
                               name: 'services',
                               query: {
@@ -398,7 +397,7 @@ const addfavorite = (service_id) => {
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                             <VListItemTitle> {{ j.name }} </VListItemTitle>
-                          </router-link>
+                          </NuxtLink>
                           <template #append>
                             <VIcon
                               v-bind="props"
@@ -412,7 +411,7 @@ const addfavorite = (service_id) => {
                       </template>
                       <div v-for="k in j.grandchildren" :key="k">
                         <VListItem>
-                          <router-link
+                          <NuxtLink
                             :to="{
                               name: 'services',
                               query: {
@@ -422,7 +421,7 @@ const addfavorite = (service_id) => {
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                             {{ k.name }}
-                          </router-link> 
+                          </NuxtLink> 
                         </VListItem>
                       </div>
                     </VListGroup>
@@ -436,7 +435,7 @@ const addfavorite = (service_id) => {
               <VListItem class="tw-font-bold hover:tw-text-primary tw-uppercase px-0">
                 <span>
                   <VIcon icon="mdi-chevron-left" />
-                  <router-link
+                  <NuxtLink
                     :to="{
                       name: 'services',
                         query: {
@@ -444,14 +443,14 @@ const addfavorite = (service_id) => {
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.title }}
-                  </router-link> 
+                  </NuxtLink> 
                 </span>
               </VListItem>
 
               <VListItem class="tw-font-bold hover:tw-text-primary tw-uppercase px-0">
                 <span>
                   <VIcon icon="mdi-chevron-left" />
-                  <router-link
+                  <NuxtLink
                     :to="{
                       name: 'services',
                         query: {
@@ -460,7 +459,7 @@ const addfavorite = (service_id) => {
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.fathercategory }}
-                  </router-link> 
+                  </NuxtLink> 
                 </span>
               </VListItem>
 
@@ -481,7 +480,7 @@ const addfavorite = (service_id) => {
               <VListItem class="tw-font-bold hover:tw-text-primary tw-uppercase px-0">
                 <span>
                   <VIcon icon="mdi-chevron-left" />
-                  <router-link
+                  <NuxtLink
                     :to="{
                       name: 'services',
                         query: {
@@ -489,7 +488,7 @@ const addfavorite = (service_id) => {
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.title }}
-                  </router-link> 
+                  </NuxtLink> 
                 </span>
               </VListItem>
 
@@ -504,7 +503,7 @@ const addfavorite = (service_id) => {
                 categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren" 
                 :key="jIndex">
                 <VListItem>
-                  <router-link
+                  <NuxtLink
                     :to="{
                       name: 'services',
                       query: {
@@ -514,7 +513,7 @@ const addfavorite = (service_id) => {
                       },
                     }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ j.name }}
-                  </router-link> 
+                  </NuxtLink> 
                 </VListItem>
               </div>
             </VList>
@@ -534,7 +533,7 @@ const addfavorite = (service_id) => {
 
               <div v-for="(j, jIndex) in categories.filter(item =>item.slug === route.query.category)[0].children" :key="jIndex">
                   <VListItem v-if="j.grandchildren.length === 0">
-                    <router-link
+                    <NuxtLink
                       :to="{
                         name: 'services',
                         query: {
@@ -543,12 +542,12 @@ const addfavorite = (service_id) => {
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         {{ j.name }}
-                    </router-link> 
+                    </NuxtLink> 
                   </VListItem>
                   <VListGroup v-else :value="j.name">
                     <template #activator="{ props }">
                       <VListItem>
-                        <router-link
+                        <NuxtLink
                           :to="{
                             name: 'services',
                             query: {
@@ -557,7 +556,7 @@ const addfavorite = (service_id) => {
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           <VListItemTitle> {{ j.name }} </VListItemTitle>
-                        </router-link>
+                        </NuxtLink>
                         <template #append>
                           <VIcon
                             v-bind="props"
@@ -571,7 +570,7 @@ const addfavorite = (service_id) => {
                     </template>
                     <div v-for="k in j.grandchildren" :key="k">
                       <VListItem>
-                        <router-link
+                        <NuxtLink
                           :to="{
                             name: 'services',
                             query: {
@@ -581,7 +580,7 @@ const addfavorite = (service_id) => {
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           {{ k.name }}
-                        </router-link> 
+                        </NuxtLink> 
                       </VListItem>
                     </div>
                   </VListGroup>
@@ -695,7 +694,7 @@ const addfavorite = (service_id) => {
               class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
               :class="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
               <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren">
-                <router-link
+                <NuxtLink
                   :to="{
                     name: 'services',
                     query: {
@@ -707,7 +706,7 @@ const addfavorite = (service_id) => {
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"  alt="icono subcategoria"/>
                     <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                   <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                </router-link>
+                </NuxtLink>
               </template>
             </VCardText>
             <VCardText 
@@ -715,7 +714,7 @@ const addfavorite = (service_id) => {
               class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
               <template v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.length < 4 && isMobile">
                 <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren">
-                  <router-link
+                  <NuxtLink
                     :to="{
                       name: 'services',
                       query: {
@@ -727,7 +726,7 @@ const addfavorite = (service_id) => {
                       <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
                       <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                  </router-link>
+                  </NuxtLink>
                 </template>
               </template>
               <swiper
@@ -740,7 +739,7 @@ const addfavorite = (service_id) => {
                 :modules="modules"
                 class="mySwiper">
                 <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren" class="py-2">
-                  <router-link
+                  <NuxtLink
                     :to="{
                       name: 'services',
                       query: {
@@ -752,7 +751,7 @@ const addfavorite = (service_id) => {
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
                     <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                  </router-link>
+                  </NuxtLink>
                 </swiper-slide>
               </swiper>
             </VCardText> 
@@ -770,7 +769,7 @@ const addfavorite = (service_id) => {
               class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
               :class="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
               <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren">
-                <router-link
+                <NuxtLink
                   :to="{
                     name: 'services',
                     query: {
@@ -782,7 +781,7 @@ const addfavorite = (service_id) => {
                   <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
                   <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                   <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                </router-link>
+                </NuxtLink>
               </template>
             </VCardText> 
             <VCardText 
@@ -790,7 +789,7 @@ const addfavorite = (service_id) => {
               class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
               <template v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length < 4 && isMobile">
                 <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren">
-                  <router-link
+                  <NuxtLink
                     :to="{
                       name: 'services',
                       query: {
@@ -802,7 +801,7 @@ const addfavorite = (service_id) => {
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
                     <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                  </router-link>
+                  </NuxtLink>
                 </template>
               </template>
               <swiper
@@ -814,7 +813,7 @@ const addfavorite = (service_id) => {
                 :modules="modules"
                 class="mySwiper">
                 <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren" class="py-2">
-                  <router-link
+                  <NuxtLink
                     :to="{
                       name: 'services',
                       query: {
@@ -826,7 +825,7 @@ const addfavorite = (service_id) => {
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
                     <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                  </router-link>
+                  </NuxtLink>
                 </swiper-slide>
               </swiper>
             </VCardText> 
@@ -844,7 +843,7 @@ const addfavorite = (service_id) => {
               class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
               :class="categories.filter(item =>item.slug === route.query.category)[0].children.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
               <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
-                <router-link
+                <NuxtLink
                   :to="{
                     name: 'services',
                     query: {
@@ -855,7 +854,7 @@ const addfavorite = (service_id) => {
                   <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
                   <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                   <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                </router-link>
+                </NuxtLink>
               </template>
             </VCardText> 
             <VCardText 
@@ -863,7 +862,7 @@ const addfavorite = (service_id) => {
               class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
               <template v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 4 && isMobile">
                 <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
-                  <router-link
+                  <NuxtLink
                     :to="{
                       name: 'services',
                       query: {
@@ -874,7 +873,7 @@ const addfavorite = (service_id) => {
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
                     <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                  </router-link>
+                  </NuxtLink>
                 </template>
               </template>
               <swiper
@@ -887,7 +886,7 @@ const addfavorite = (service_id) => {
                 :modules="modules"
                 class="mySwiper">
                 <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children" class="py-2">
-                  <router-link
+                  <NuxtLink
                     :to="{
                       name: 'services',
                       query: {
@@ -898,7 +897,7 @@ const addfavorite = (service_id) => {
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
                     <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                  </router-link>
+                  </NuxtLink>
                 </swiper-slide>
               </swiper>
             </VCardText> 
@@ -916,7 +915,7 @@ const addfavorite = (service_id) => {
               class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
               :class="categories.filter(item =>item.slug === route.query.category)[0].children.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
               <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
-                <router-link
+                <NuxtLink
                   :to="{
                     name: 'services',
                     query: {
@@ -927,7 +926,7 @@ const addfavorite = (service_id) => {
                   <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
                   <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                   <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                </router-link>
+                </NuxtLink>
               </template>
             </VCardText> 
             <VCardText 
@@ -935,7 +934,7 @@ const addfavorite = (service_id) => {
               class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
               <template v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 4 && isMobile">
                 <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
-                  <router-link
+                  <NuxtLink
                     :to="{
                       name: 'services',
                       query: {
@@ -946,7 +945,7 @@ const addfavorite = (service_id) => {
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
                     <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                  </router-link>
+                  </NuxtLink>
                 </template>
               </template>
               <swiper
@@ -958,7 +957,7 @@ const addfavorite = (service_id) => {
                 :modules="modules"
                 class="mySwiper">
                 <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children" class="py-2">
-                  <router-link
+                  <NuxtLink
                     :to="{
                       name: 'services',
                       query: {
@@ -969,7 +968,7 @@ const addfavorite = (service_id) => {
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="icono subcategoria"/>
                     <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" alt="subcategoria"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                  </router-link>
+                  </NuxtLink>
                 </swiper-slide>
               </swiper>
             </VCardText> 

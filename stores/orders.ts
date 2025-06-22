@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import { Orders } from '~/api/orders'
 
 export const useOrdersStores = defineStore('orders',{
-
     state: () => ({
         data: {},
         orders: Array<Object>()

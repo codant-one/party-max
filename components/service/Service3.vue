@@ -46,7 +46,7 @@ watchEffect(() => {
 </script>
 
 <template>
-    <router-link
+    <NuxtLink
         :to="{
             name: 'serviceDetail',
             params: {
@@ -95,7 +95,7 @@ watchEffect(() => {
                 </div>
             </VCardText>
         </VCard>
-    </router-link>
+    </NuxtLink>
 </template>
 
 <style scoped>

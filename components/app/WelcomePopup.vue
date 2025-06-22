@@ -6,7 +6,7 @@ import popupImage from '@assets/images/discount.png';
 
 const show = ref(false)
 const router = useRouter()
-const isMobile = /Mobi/i.test(navigator.userAgent);
+const { isMobile } = useDevice();
 
 onMounted(() => {
   const shown = localStorage.getItem('welcome_popup_shown')
