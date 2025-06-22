@@ -39,6 +39,7 @@ export default defineNuxtConfig({
 
   plugins: [
     '~/plugins/axios.ts',
+    '~/plugins/error-logger.client.ts',
     '~/plugins/metapixel.ts',
     '~/plugins/vuegtag.ts',
     '~/plugins/vuetify.ts',
