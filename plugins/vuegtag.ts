@@ -3,7 +3,7 @@ export default defineNuxtPlugin(() => {
 
   const configGtag = {
     property: {
-      id: config.public.GOOGLE_TAG_MANAGER
+      id: config.public.GOOGLE_MANAGER
     },
     appName: 'PartyMax',
     isEnabled: true,
