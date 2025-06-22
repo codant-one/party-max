@@ -2,6 +2,7 @@
 
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { useRuntimeConfig } from '#app'
 
 const props = defineProps({
     blog: {
@@ -25,7 +26,8 @@ const dateBlog = ref(null)
 const paragraphs = ref(null)
 const tags = ref(null)
 
-const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
+const config = useRuntimeConfig()
+const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
 const { isMobile } = useDevice();
 
 const searchWhatsapp = ref(null)
@@ -77,10 +79,8 @@ watchEffect(() => {
             <NuxtLink
                 v-if="props.type == 1"
                 :to="{
-                    name: 'blogDetail',
-                    params: {
-                        slug: slug                    
-                    },
+                    name: 'blogs-slug',
+                    params: { slug: slug },
                     replace:true
                 }"
                 class="tw-no-underline"
@@ -105,10 +105,8 @@ watchEffect(() => {
             <NuxtLink 
                 v-if="props.type == 1"
                 :to="{
-                    name: 'blogDetail',
-                    params: {
-                        slug: slug                    
-                    },
+                    name: 'blogs-slug',
+                    params: { slug: slug },
                     replace:true
                 }"
                 class="text-justify tw-no-underline"
@@ -125,10 +123,8 @@ watchEffect(() => {
         <NuxtLink 
             v-if="props.type == 1"
             :to="{
-                name: 'blogDetail',
-                params: {
-                    slug: slug                    
-                },
+                name: 'blogs-slug',
+                params: { slug: slug },
                 replace:true
             }"
         >

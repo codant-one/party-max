@@ -9,6 +9,7 @@ import { useFavoritesStores } from '@/stores/favorites'
 import { useCartStores } from '@/stores/cart'
 import { useFiltersStores } from '@/stores/filters'
 import { formatNumber } from '@formatters'
+import { useRuntimeConfig } from '#app'
 import Loader from "@/components/common/Loader.vue";
 import icon1 from "@/assets/icons/icon-menu-1.svg";
 import icon2 from "@/assets/icons/icon-menu-2.svg";
@@ -56,7 +57,8 @@ const max = ref(null);
 
 const rating = ref(5)
 const { isMobile } = useDevice();
-const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
+const config = useRuntimeConfig()
+const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
 
 const isDialogVisible = ref(false)
 const isError = ref(false)

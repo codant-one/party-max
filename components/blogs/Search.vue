@@ -79,10 +79,8 @@ const search = () => {
                 rounded
                 :link="true"
                 :to="{
-                    name: 'blogDetail',
-                    params: {
-                        slug: blog.slug                    
-                    }
+                    name: 'blogs-slug',
+                    params: { slug: blog.slug },
                 }"
             >
                 <VListItemTitle>

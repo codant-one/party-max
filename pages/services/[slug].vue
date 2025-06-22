@@ -14,6 +14,7 @@ import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination } from 'swiper/modu
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { VueImageZoomer } from 'vue-image-zoomer'
 import { Spanish } from 'flatpickr/dist/l10n/es.js';
+import { useRuntimeConfig } from '#app'
 import FlatPickr from 'vue-flatpickr-component';
 import Loader from '@/components/common/Loader.vue'
 import Service3 from '@/components/service/Service3.vue'
@@ -72,7 +73,8 @@ const modules = ref([FreeMode, Navigation, Thumbs, Scrollbar])
 const modules2 = ref([Pagination])
 const thumbsSwiper = ref(null);
 
-const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
+const config_ = useRuntimeConfig()
+const baseURL = ref(config_.public.APP_DOMAIN_API_URL + '/storage/')
 const data = ref(null)
 
 const title = ref(null)
@@ -200,7 +202,7 @@ async function fetchData() {
     service_id.value = data.value.service.id
 
     serviceUrl.value = `https://${import.meta.env.VITE_MY_DOMAIN}/services/${data.value.service.slug}`
-    const imageUrl = `${import.meta.env.VITE_APP_DOMAIN_API_URL}/storage/${data.value.service.image}`
+    const imageUrl =  `${config.public.APP_DOMAIN_API_URL}/storage/${data.value.service.image}`
     const descriptionText = 'Mira este increíble servicio.'
     const twitterText = `${descriptionText} ${serviceUrl.value} ${imageUrl}`;
 
