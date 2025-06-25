@@ -35,7 +35,7 @@ const updateSelectedOption = value => {
         v-bind="gridColumn"
       >
         <VLabel
-          class="custom-input custom-radio-icon border-rounded cursor-pointer"
+          class="custom-input custom-radio-icon border-rounded"
           :class="props.selectedRadio === item.value ? 'active' : ''"
         >
           <slot :item="item">

@@ -451,7 +451,7 @@ const toggleSubGroupFn = (index, subCat) => {
                     <VAvatar 
                       v-if="color.is_gradient" 
                       size="25" 
-                      class="my-1 tw-cursor-pointer"
+                      class="my-1"
                       :class="(toggle.indexOf(index) !== -1) ? 'color-selected' : 'color-chip'"
                       :style="{ backgroundImage: color.color }"
                     >
@@ -467,7 +467,7 @@ const toggleSubGroupFn = (index, subCat) => {
                       v-else 
                       :color="color.color" 
                       size="25" 
-                      class="my-1 tw-cursor-pointer"
+                      class="my-1"
                       :class="(toggle.indexOf(index) !== -1) ? 'color-selected' : 'color-chip'"
                     >
                       <VTooltip

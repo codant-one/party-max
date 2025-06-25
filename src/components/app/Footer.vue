@@ -173,7 +173,6 @@
     bottom: 20px;
     right: 20px;
     z-index: 1000;
-    cursor: pointer;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     background-color: #25D366;
     padding: 10px;

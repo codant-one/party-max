@@ -240,7 +240,7 @@ const tab = ref('0')
                 v-else
                 color="primary"
                 variant="plain"
-                class="list py-0 tw-text-tertiary tw-cursor-pointer">
+                class="list py-0 tw-text-tertiary">
                 <template v-slot:prepend>
                   <img :src="item.icon" class="me-3 ms-4 soon-img" :alt ="item.slug"/>
                 </template>
@@ -258,7 +258,7 @@ const tab = ref('0')
           <VCol cols="12" md="7" class="pslider" aria-label="Galería">
             <VCarousel 
               cycle
-              class="carousel-home cursor-pointer"
+              class="carousel-home"
               color="white"
               :show-arrows="false" 
               :disabled="false"
@@ -1052,7 +1052,6 @@ const tab = ref('0')
 
   .img-gallery:hover{
     filter: saturate(180%)!important;
-    cursor: pointer;
   }
 
   .v-tab:hover::v-deep(button) {

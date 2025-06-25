@@ -72,7 +72,7 @@ watchEffect(() => {
       :value="index"
     >
       <div
-        class="cursor-pointer mx-1 tw-text-gray w-slide-group"
+        class="mx-1 tw-text-gray w-slide-group"
         :class="[
           (!props.isActiveStepValid && (isValidationEnabled)) && 'stepper-steps-invalid',
           activeOrCompletedStepsClasses(index),

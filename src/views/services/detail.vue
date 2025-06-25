@@ -689,16 +689,16 @@ const buildEmbedUrl = (url) => {
             <VCol cols="12" md="6" class="align-right"></VCol>
           </VRow>
           <div class="my-1 align-end redes-mobile">
-            <a :href="searchWhatsapp" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
+            <a :href="searchWhatsapp" target="_blank" class="tw-no-underline hover:tw-text-secondary">
               <whatsapp_mobile class="me-2" />
             </a>   
-            <a :href="searchFacebook" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
+            <a :href="searchFacebook" target="_blank" class="tw-no-underline hover:tw-text-secondary">
               <facebook_mobile class="me-2"/>
             </a>
-            <a :href="searchTwitter" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
+            <a :href="searchTwitter" target="_blank" class="tw-no-underline hover:tw-text-secondary">
               <twitter_mobile class="me-2"/>
             </a>
-            <a :href="searchLinkendin" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
+            <a :href="searchLinkendin" target="_blank" class="tw-no-underline hover:tw-text-secondary">
               <linkendin_mobile class="me-2"/>               
             </a>
           </div>
@@ -722,14 +722,13 @@ const buildEmbedUrl = (url) => {
                     v-if="slide.type === 'image'"
                     :src="slide.url" 
                     :alt="'image-'+index"
-                    class="cursor-pointer"
                     width="60"
                   />
                   <template  v-else>
                     <img                         
                       :src="slide.thumb"
                       :alt="'thumbnail-'+index"
-                      class="thumb-media cursor-pointer"
+                      class="thumb-media"
                     />
                     <div class="play-overlay">
                         <img :src="playImage" />
@@ -982,7 +981,7 @@ const buildEmbedUrl = (url) => {
                 <div class="my-auto ms-md-5">
                   <span 
                     v-if="!isFavorite" 
-                    class="me-4 index heart p-0 tw-cursor-pointer d-flex justify-content-center align-center"
+                    class="me-4 index heart p-0 d-flex justify-content-center align-center"
                     :class="(isFavoriteService) ? 'heart_fill' : ''" 
                     @click="addfavorite">
                     <heart />
@@ -1146,14 +1145,13 @@ const buildEmbedUrl = (url) => {
                     v-if="slide.type === 'image'"
                     :src="slide.url" 
                     :alt="'image-'+index"
-                    class="cursor-pointer"
                     width="100"
                   />
                   <template  v-else>
                     <img                         
                       :src="slide.thumb"
                       :alt="'thumbnail-'+index"
-                      class="thumb-media-modal cursor-pointer"
+                      class="thumb-media-modal"
                     />
                     <div class="play-overlay">
                         <img :src="playImage" />
@@ -1257,7 +1255,6 @@ const buildEmbedUrl = (url) => {
     transform: translateY(-50%);
     border-radius: 50%;
     z-index: 10;
-    cursor: pointer;
     display: flex;
     padding: 8px;
   }
@@ -1416,7 +1413,6 @@ const buildEmbedUrl = (url) => {
   .border-title2 span:hover {
     color: #FF0090;
     text-decoration: underline #FF0090;
-    cursor: pointer;
   }
 
   .btn-register {

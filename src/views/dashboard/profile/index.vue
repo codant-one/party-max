@@ -192,7 +192,6 @@ me()
                     <VCol cols="4" md="2" class="d-flex justify-md-end">
                         <VCardText class="d-block d-md-flex">
                             <VBadge
-                                class="tw-cursor-pointer"
                                 color="primary"
                                 location="bottom end" 
                                 icon="mdi-camera-plus"

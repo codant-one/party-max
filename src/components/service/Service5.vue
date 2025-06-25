@@ -96,7 +96,7 @@ watchEffect(() => {
         cake_size_id.value = props.service.cake_size_id
         order_file_id.value = props.service.order_file_id
         is_full.value = props.service.is_full === 1 ? true : false
-        config.value.minDate = addDays(new Date(), Number(data.value.service.estimated_delivery_time) || 0)
+        config.value.minDate = addDays(new Date(), Number(props.service.estimated_delivery_time) || 0)
     }
 })
 
@@ -160,7 +160,7 @@ const decrement = () => {
                     </VCardText>
                     <VCardText>
                         <span 
-                            class="d-flex tw-text-xs py-1 tw-text-primary title-service tw-cursor-pointer me-3" 
+                            class="d-flex tw-text-xs py-1 tw-text-primary title-service me-3" 
                             @click="emit('delete', service_id)"
                         >
                             Eliminar
