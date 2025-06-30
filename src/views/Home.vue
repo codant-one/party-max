@@ -11,6 +11,7 @@ import 'swiper/css/pagination';
 import Product1 from '@/components/product/Product1.vue'
 import Product2 from '@/components/product/Product2.vue'
 import Loader from '@/components/common/Loader.vue'
+import WelcomePopup from '@/components/app/WelcomePopup.vue'
 
 import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
 
@@ -184,6 +185,7 @@ const tab = ref('0')
 </script>
 
 <template>
+  <WelcomePopup />
   <Loader :isLoading="isLoading"/>
   <VContainer class="mt-2 mt-md-10">
     <!-- slider -->
@@ -238,7 +240,7 @@ const tab = ref('0')
                 v-else
                 color="primary"
                 variant="plain"
-                class="list py-0 tw-text-tertiary tw-cursor-pointer">
+                class="list py-0 tw-text-tertiary">
                 <template v-slot:prepend>
                   <img :src="item.icon" class="me-3 ms-4 soon-img" :alt ="item.slug"/>
                 </template>
@@ -256,7 +258,7 @@ const tab = ref('0')
           <VCol cols="12" md="7" class="pslider" aria-label="Galería">
             <VCarousel 
               cycle
-              class="carousel-home cursor-pointer"
+              class="carousel-home"
               color="white"
               :show-arrows="false" 
               :disabled="false"
@@ -1053,7 +1055,6 @@ const tab = ref('0')
 
   .img-gallery:hover{
     filter: saturate(180%)!important;
-    cursor: pointer;
   }
 
   .v-tab:hover::v-deep(button) {

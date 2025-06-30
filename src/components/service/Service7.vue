@@ -66,7 +66,7 @@ watchEffect(() => {
                 <span class="d-block my-3 my-md-5 text_2 tw-text-tertiary title-service">{{ name }}</span>
                 <span class="d-block my-3 my-md-5 tw-text-tertiary price_prod">${{ formatNumber(price) }}</span>
                 <span 
-                    class="d-block my-3 my-md-5 text-left p-0 tw-cursor-pointer tw-text-primary text-delete hover:tw-text-yellow" 
+                    class="d-block my-3 my-md-5 text-left p-0 tw-text-primary text-delete hover:tw-text-yellow" 
                     @click="emit('delete', {is_product: 0, service_id: service_id})">
                     Eliminar
                 </span>

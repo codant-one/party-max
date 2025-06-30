@@ -374,13 +374,13 @@ const getFlagCountry = country => {
                     <VList>
                         <VListItem class="px-0">
                             <VListItemTitle class="px-3" @click="edit(address)">
-                                <div class="d-flex tw-cursor-pointer hover:tw-text-primary">
+                                <div class="d-flex hover:tw-text-primary">
                                     <v-icon icon="mdi-pencil" size="small" class="me-2 mt-1"/>
                                     <span>Editar</span>
                                 </div>
                             </VListItemTitle>
                             <VListItemTitle class="px-3 mt-2" @click="removeAddress(address)">
-                                <div class="d-flex tw-cursor-pointer hover:tw-text-primary">
+                                <div class="d-flex hover:tw-text-primary">
                                     <v-icon icon="mdi-trash-can-outline" size="small" class="me-2 mt-1"/>
                                     <span>Eliminar</span>
                                 </div>
@@ -391,7 +391,7 @@ const getFlagCountry = country => {
              </VCardText>       
              <VCardText 
                 :class="(addresses.length > 0) ? 'border_line' : ''"
-                class="d-flex align-center py-0 px-7 px-md-12 mb-2 tw-cursor-pointer" 
+                class="d-flex align-center py-0 px-7 px-md-12 mb-2" 
                 @click="dialog=true">
                 <span class="labels tw-text-primary mt-3 mb-1 mt-md-3 mb-md-2">Agregar domicilio</span>
                 <VSpacer />
@@ -617,10 +617,6 @@ const getFlagCountry = country => {
         font-style: normal;
         font-weight: 400;
         line-height: 20px; /* 133.333% */
-    }
-
-    .icon-right {
-        cursor: pointer;
     }
 
     .icon-more {

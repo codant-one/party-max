@@ -213,7 +213,7 @@ async function fetchData() {
             <VSpacer />
             <v-icon color="primary" icon="mdi-check-bold"></v-icon>
         </VCardText>
-        <VCardText class="d-flex align-center py-0 px-7 px-md-12 border_line tw-cursor-pointer cardtext-profile password" @click="dialog = true">       
+        <VCardText class="d-flex align-center py-0 px-7 px-md-12 border_line cardtext-profile password" @click="dialog = true">       
             <icon_candado class="mt-4 mb-5 mt-md-3 mb-md-5"/>
             <div class="d-block ms-2 ms-md-5 mb-md-4 mt-md-2">
                 <span class="d-block labels tw-text-tertiary text-titles">Contraseña</span>
@@ -222,7 +222,7 @@ async function fetchData() {
             <VSpacer />
             <icon_right class="icon-right"/>  
         </VCardText>
-        <VCardText class="d-flex align-center py-0 px-7 px-md-12 border_line tw-cursor-pointer cardtext-profile phone" @click="dialog_phone = true">
+        <VCardText class="d-flex align-center py-0 px-7 px-md-12 border_line cardtext-profile phone" @click="dialog_phone = true">
             <icon_phone class="mt-5 mb-5 mt-md-6 mb-md-5"/>
             <div class="d-block ms-2 ms-md-5 mb-md-4 mt-md-4">
                 <span class="d-block labels tw-text-tertiary text-titles">Teléfono</span>
@@ -233,7 +233,7 @@ async function fetchData() {
                 <icon_right class="icon-right"/>
             </span>
         </VCardText>
-        <VCardText class="d-none align-center py-0 px-7 px-md-12 tw-cursor-pointer cardtext-profile authenticator">  
+        <VCardText class="d-none align-center py-0 px-7 px-md-12 cardtext-profile authenticator">  
             <icon_auth class="mt-5 mb-6 mt-md-5 mb-md-6"/>
             <div class="d-block ms-2 ms-md-5 mb-md-0 mt-md-0"> 
                 <span class="d-block labels tw-text-tertiary text-titles">Google Authenticator </span>

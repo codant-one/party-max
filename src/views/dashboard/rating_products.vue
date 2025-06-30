@@ -246,7 +246,7 @@ const remove = () => {
                 </VBtn>
                 <span 
                     v-if="review_id"
-                    class="text-status my-3 hover:tw-text-primary tw-cursor-pointer"
+                    class="text-status my-3 hover:tw-text-primary"
                     @click="remove">
                     Eliminar opinión
                 </span>

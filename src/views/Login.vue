@@ -443,5 +443,10 @@ const onSubmit = () => {
             justify-content: center; 
             min-height: 35px;
         }
+
+        img {
+            width: 40px;
+            height: 40px;
+        }
     }
 </style>

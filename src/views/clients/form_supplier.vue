@@ -368,6 +368,11 @@ const onSubmit = () => {
             margin-top: -15px;
             width: 210px !important;
         }
+
+        img {
+            width: 40px;
+            height: 40px;
+        }
     }
 
 </style>

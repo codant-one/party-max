@@ -99,6 +99,9 @@
       subTotal.value = '0.00'
 
       if(cart_products.value > 0) {
+        if(route.path.startsWith('/products') || route.path.startsWith('/services'))
+          isDrawerOpen.value = true
+        
         isLoading.value = true
         await cartStores.fetchCart()
         products.value = cartStores.getData
@@ -635,11 +638,11 @@
           <VCol cols="3" class="d-flex align-center align-items-stretch flex-shrink-0">
             <VSpacer />
             <span 
-                class="index heart tw-cursor-pointer"
+                class="index heart"
                 :class="(name === null) ? 'ms-n70 me-5': 'me-5'" @click="redirect('favorites')">
                 <heart />
             </span>
-            <span icon class="me-3 shoppinp_cart tw-cursor-pointer" @click="isDrawerOpen = true">
+            <span icon class="me-3 shoppinp_cart" @click="isDrawerOpen = true">
               <VBadge
                 color="primary"
                 :content="cart_products"
@@ -650,7 +653,7 @@
               </VBadge>
             </span>
             <div class="d-flex user-text">
-              <span v-if="name === null" class="user tw-cursor-pointer ms-2">
+              <span v-if="name === null" class="user ms-2">
                 <user />
               </span>
               <VMenu v-else>
@@ -688,7 +691,7 @@
                         Mis favoritos
                       </router-link>
                     </VListItemTitle>
-                    <VListItemTitle class="px-5 mt-2 tw-cursor-pointer tw-text-gray hover:tw-text-primary" @click="logout">Cerrar Sesión</VListItemTitle>
+                    <VListItemTitle class="px-5 mt-2 tw-text-gray hover:tw-text-primary" @click="logout">Cerrar Sesión</VListItemTitle>
                   </VListItem>
                 </VList>
               </VMenu>
@@ -762,7 +765,7 @@
                         Mis favoritos
                       </router-link>
                     </VListItemTitle>
-                    <VListItemTitle class="px-5 mt-2 tw-cursor-pointer tw-text-gray hover:tw-text-primary" @click="logout">Cerrar Sesión</VListItemTitle>
+                    <VListItemTitle class="px-5 mt-2 tw-text-gray hover:tw-text-primary" @click="logout">Cerrar Sesión</VListItemTitle>
                   </VListItem>
                 </VList>
               </VMenu>
@@ -784,7 +787,7 @@
               <div v-bind="props" class="d-flex">
                 <VAppBarNavIcon variant="text" />
                 <div class="pt-3">
-                  <span class="font-size-16 me-7 tw-cursor-pointer">Productos</span>
+                  <span class="font-size-16 me-7">Productos</span>
                 </div>
               </div>
             </template>
@@ -803,7 +806,7 @@
                     <VListItem   role="listitem"
                       v-for="(item, index) in categories"
                       :key="index">
-                        <div class="d-flex align-center hover-icon-right tw-cursor-pointer" @mouseover="openCategory(index)">
+                        <div class="d-flex align-center hover-icon-right" @mouseover="openCategory(index)">
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
                             @click="redirect_('categories', item.slug)">
@@ -865,7 +868,7 @@
               <div v-bind="props" class="d-flex">
                 <VAppBarNavIcon variant="text" />
                 <div class="pt-3">
-                  <span class="font-size-16 me-7 tw-cursor-pointer">Servicios</span>
+                  <span class="font-size-16 me-7">Servicios</span>
                 </div>
               </div>
             </template>
@@ -884,7 +887,7 @@
                     <VListItem  
                       v-for="(item, index) in services"
                       :key="index">
-                        <div class="d-flex align-center hover-icon-right tw-cursor-pointer" @mouseover="openService(index)">
+                        <div class="d-flex align-center hover-icon-right" @mouseover="openService(index)">
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
                             @click="redirect_('categories', item.slug)">
@@ -937,7 +940,7 @@
       <!---------FIN SERVICIOS MENÚ--------------------------->
 
         <!-- <span @click="toggleWholesalers"
-          class="tw-no-underline d-flex align-center text-center tw-cursor-pointer"
+          class="tw-no-underline d-flex align-center text-center"
           :class="route.query.wholesalers === 'true' ? 'tw-text-yellow hover:tw-text-white hover-icon-arrow-right-white' : 'tw-text-white hover:tw-text-yellow hover-icon-arrow-right'">
             <span class="ms-2"> Precios Mayoristas </span>
             <arrow_right class="ms-2 p-0 index" :class="route.query.wholesalers === 'true' ? 'wholesalers' : ''"/>
@@ -1132,12 +1135,10 @@
 
   .hover-icon-right:hover::v-deep(.subtitle-menu) {
     color: #FF0090;
-    cursor: pointer;
   }
 
   .subtitle-menu:hover {
     color: #FF0090;
-    cursor: pointer;
   }
 
   .wholesalers::v-deep(path) {

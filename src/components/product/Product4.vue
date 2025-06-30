@@ -72,16 +72,16 @@ watchEffect(() => {
         wholesale_price.value = props.product.wholesale_price
         price_for_sale.value = props.product.price_for_sale
         name.value = props.product.name.toLowerCase().replace(/(^|\s)\p{L}/gu, (match) => match.toUpperCase());
-        store.value = props.product.user.name + ' ' + (props.product.user.last_name ?? '')
+        store.value = props.product.store ?? (props.product.company ?? props.product.user)
         rating.value = props.product.rating
         single_description.value = props.product.single_description
         slug.value = props.product.slug
         isFavoriteProduct.value = props.product.is_favorite
         id.value = props.product.id
-        product_color_id.value =  props.product.colors[0]?.id
-        in_stock.value = props.product.colors[0].in_stock
+        product_color_id.value =  props.product.first_color.id
+        in_stock.value = props.product.first_color.in_stock
         cant_prod.value = route.query.wholesalers === 'true' ? props.product.wholesale_min : 1
-        cant_stock.value = parseInt(props.product.colors[0].stock)
+        cant_stock.value = parseInt(props.product.first_color.stock)
 
         if(localStorage.getItem('user_data')){
             const userData = localStorage.getItem('user_data')
@@ -191,7 +191,7 @@ const addfavorite = () => {
                         </div>
                     </VCardText>
                     <VCardText class="mt-3 px-1 px-md-2">
-                        <div v-if="client_id" class="d-flex text-center align-center tw-justify-start md:tw-justify-center tw-cursor-pointer heart" @click="addfavorite">
+                        <div v-if="client_id" class="d-flex text-center align-center tw-justify-start md:tw-justify-center heart" @click="addfavorite">
                             <span class="text_2 d-flex align-center">
                                 <span 
                                     class="me-2 pt-1"

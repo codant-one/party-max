@@ -204,7 +204,6 @@ const isDisabled = (i) => {
                 </VCardText>
                 <VCardText class="row-cardp3">
                     <span
-                        class="tw-cursor-pointer" 
                         @click="emit('dialog', true)">
                         Agregar domicilio
                     </span>
