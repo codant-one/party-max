@@ -40,7 +40,7 @@ watchEffect(() => {
         wholesale_price.value = props.product.wholesale_price ?? '0.00'
         price_for_sale.value = props.product.price_for_sale
         name.value = props.product.name.toLowerCase().replace(/(^|\s)\p{L}/gu, (match) => match.toUpperCase());
-        store.value = props.product.store ?? (props.product.company ?? props.product.user)
+        store.value = props.product.user.user_detail.store_name ?? (props.product.supplier?.company_name ?? (props.product.user.name + ' ' + (props.product.user.last_name ?? '')))
         rating.value = props.product.rating
         slug.value = props.product.slug
         stock.value = props.product.first_color.stock
