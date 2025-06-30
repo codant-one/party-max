@@ -8,7 +8,7 @@ const items = [
   'Ha leído y comprendido estos términos y acepta cumplir con ellos.',
   'Es mayor de edad y tiene capacidad legal para celebrar contratos vinculantes.',
   'Tiene la autoridad necesaria para aceptar estos términos, ya sea en nombre personal o en representación de una entidad legal.',
-  'Si no está de acuerdo con estos términos, no debe acceder ni utilizar Partymax Marketplace.'
+  'Si no está de acuerdo con estos términos, no debe acceder ni utilizar <strong class="tw-text-primary">PARTYMAX THE PARTY MARKET</strong>.'
 ]
 
 </script>
@@ -17,21 +17,20 @@ const items = [
   <VContainer class="content py-md-13 w-100">
     <VRow align="center" no-gutters>
       <VCol cols="12" md="12">
-        <h1 class="tw-text-primary title text-center">
+        <h1 class="tw-text-primary title text-center mb-5">
             Términos y condiciones de PARTYMAX
         </h1>
-        <h2 class="tw-text-primary text-center">¡Todo lo que necesitas saber sobre la letra pequeña!</h2>
+        <h2 class="tw-text-primary text-center subtitle">¡Todo lo que necesitas saber sobre la letra pequeña!</h2>
       </VCol>
       <VCol cols="12" md="2" class="d-flex align-center justify-content-center align-md-right mt-2 mt-md-10">
         <img
           class="bg-white align-imagel"
           :width="isMobile ? '100' : '150'"
           :src="festin_2"
-          alt="Partymax Logo"
         />
       </VCol>
       <VCol cols="12" md="10" class="align-left text pl-md-5 mt-5 mt-md-10">
-        <span class="mb-2">Bienvenido a <strong class="tw-text-primary">Partymax</strong> Marketplace!.</span><br>
+        <span class="mb-2">Bienvenido a <strong class="tw-text-primary">PARTYMAX THE PARTY MARKET</strong></span><br>
         <span>
             el espacio ideal para amantes de las fiestas que buscan la máxima variedad y 
             calidad en productos para celebrar. Estamos comprometidos con la creación de un ambiente seguro, 
@@ -42,10 +41,10 @@ const items = [
         <VCol cols="12" md="12" class="align-left text pl-md-5 mt-5 mt-md-10">
         <span class="mb-2">
             <strong>1. Aceptación de los términos</strong><br>
-            Al utilizar los servicios de <strong class="tw-text-primary">Partymax</strong> Marketplace, 
+            Al utilizar los servicios de <strong class="tw-text-primary">PARTYMAX THE PARTY MARKET</strong>, 
             incluidos nuestro sitio web, aplicaciones y cualquier servicio asociado, usted acepta estar 
             vinculado por estos términos y condiciones. Estos términos rigen su acceso y uso de 
-            <strong class="tw-text-primary">Partymax</strong> Marketplace y constituyen un acuerdo legal entre usted y 
+            <strong class="tw-text-primary">PARTYMAX THE PARTY MARKET</strong> y constituyen un acuerdo legal entre usted y 
             <strong class="tw-text-primary">Partymax</strong>.<br>
 
             Usted declara que:<br>
@@ -58,15 +57,13 @@ const items = [
                     <template #prepend>
                         <VIcon icon="mdi-auto-fix" />
                     </template>
-                    <VListItemTitle>
-                        {{ item }}
-                    </VListItemTitle>
+                    <VListItemTitle v-html="item"></VListItemTitle>
                 </VListItem>
             </VList><br>
 
             <strong>2. Uso de nuestro Marketplace</strong><br>
 
-            <strong class="tw-text-primary">Partymax</strong> Marketplace es una plataforma que permite a los vendedores 
+            <strong class="tw-text-primary">PARTYMAX THE PARTY MARKET</strong> es una plataforma que permite a los vendedores 
             externos ofrecer y vender sus productos. Cada vendedor es responsable de asegurar que sus productos cumplan 
             con nuestras políticas de calidad y legalidad. <strong class="tw-text-primary">Partymax</strong> no se hace 
             responsable de la exactitud, calidad, seguridad o legalidad de los productos ofrecidos.<br><br>
@@ -87,13 +84,13 @@ const items = [
             <strong>5. Contacto</strong><br>
 
             Si tiene alguna pregunta o inquietud sobre estos términos, por favor contáctenos o verifica  
-            <NuxtLink
+            <router-link
                 :to="{ name: 'help' }"
                 class="tw-text-primary tw-no-underline hover:tw-text-secondary">
                 Preguntas Frecuentes.
-            </NuxtLink><br><br>
+            </router-link><br><br>
 
-            Agradecemos su elección de <strong class="tw-text-primary">Partymax</strong> Marketplace para 
+            Agradecemos su elección de <strong class="tw-text-primary">PARTYMAX THE PARTY MARKET</strong> para 
             celebrar sus momentos especiales. Estamos aquí para asegurar que su experiencia sea tan emocionante 
             y satisfactoria como la fiesta misma.
         </span>
@@ -109,6 +106,10 @@ const items = [
     font-weight: 700;
     line-height: 63px;
     text-align: center;
+  }
+
+  .subtitle {
+    line-height: 63px;
   }
 
   .text {
@@ -139,6 +140,10 @@ const items = [
       font-size: 24px;
       line-height: 32px;
       text-align: center;
+    }
+
+    .subtitle {
+      line-height: 32px;
     }
 
     .items-list::v-deep(.v-list-item-title) {

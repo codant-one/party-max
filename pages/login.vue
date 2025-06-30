@@ -178,7 +178,7 @@ const onSubmit = () => {
                             class="letter hover:tw-text-primary"
                             :to="{ name: 'clients-forgot_password' }"
                         >
-                            ¿Olvidaste su contraseña?
+                            ¿Olvidaste tu contraseña?
                         </NuxtLink>
                     </VCardText>
                     <VCardText class="d-block align-center text-center justify-content-center">

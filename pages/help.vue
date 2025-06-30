@@ -27,6 +27,7 @@ const setFocus = async(category) => {
 
 </script>
 
+
 <template>
   <VContainer class="mt-0 mt-md-10 text-center">
     <Loader :isLoading="isLoading"/>

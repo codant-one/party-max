@@ -93,6 +93,46 @@ export const useMiscellaneousStores = defineStore('miscellaneous', {
                     return Promise.reject(error)
                 }) 
         },
+        services(params: Object) {
+            const { services } = Miscellaneous()
+            return services()
+                .then((response) => {
+                    return Promise.resolve(response.data.data)
+                })
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
+        },
+        getService(slug: string) {
+            const { service } = Miscellaneous()
+            return service(slug)
+                .then((response) => {
+                    return Promise.resolve(response.data.data)
+                })
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
+        },
+        fetchDataCupcake() {
+            const { getDataCupcake } = Miscellaneous()
+            return getDataCupcake()
+                .then((response) => {
+                    return Promise.resolve(response.data.data)
+                })
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
+        },
+        ips() {
+            const { ips } = Miscellaneous()
+            return ips()
+                .then((response) => {
+                    return Promise.resolve(response.data.data)
+                })
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
+        }
     }
 })
 

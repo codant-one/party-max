@@ -34,11 +34,10 @@ fetchData()
     <Loader :isLoading="isLoading"/>
     <VRow align="center" no-gutters>
       <VCol cols="12" md="6" class="order-last order-md-first align-left">
-        <h1  class="tw-text-primary title-about">Donde la magia de las celebraciones crea momentos inolvidables</h1>
+        <h1  class="tw-text-primary title-about">Misión</h1>
         <p class="text-about">
-          En el corazón de PartyMax reside el sueño compartido de tres mujeres emprendedoras que anhelaban llevar 
-          la magia festiva a cada rincón de Colombia. Lo que comenzó como una modesta tienda de productos evolucionó a una
-           plataforma en línea, surgiendo de la necesidad de ofrecer una variedad completa de servicios para celebraciones.
+          En Partymax, transformamos la manera en que las personas organizan sus celebraciones, brindando una plataforma digital innovadora donde clientes y proveedores se conectan en un solo lugar. Nuestra misión es facilitar la planificación de eventos, ofreciendo productos y servicios de calidad a los mejores precios del mercado, mientras potenciamos el crecimiento de nuestros aliados estratégicos con excelentes oportunidades de negocio. 
+          Nos comprometemos a ofrecer una experiencia segura, rápida y eficiente, donde cada usuario encuentre exactamente lo que necesita para hacer de su evento una ocasión inolvidable. 
         </p>
       </VCol>
       <VCol cols="12" md="6" class="align-right">
@@ -47,6 +46,14 @@ fetchData()
           width="auto"
           :src="aboutimage"
         />
+      </VCol>
+      <VCol cols="12" md="12">
+        <h1  class="tw-text-primary title-about mt-10">Visión</h1>
+        <p class="text-about">          
+          Ser la plataforma líder en Colombia y un referente en Latinoamérica para la organización de eventos y celebraciones. Nos proyectamos como el marketplace más grande y confiable del sector, donde clientes puedan encontrar todo lo necesario para sus fiestas y eventos en un solo lugar, con acceso a proveedores verificados y precios altamente competitivos. 
+ 
+          Queremos consolidarnos como el socio estratégico de nuestros proveedores, garantizando altas utilidades y visibilidad para sus negocios, creando un ecosistema digital que impulse el crecimiento del sector de eventos con tecnología, innovación y excelencia en el servicio. 
+        </p>
       </VCol>
     </VRow>  
 
@@ -59,13 +66,22 @@ fetchData()
         />
       </VCol>
       <VCol cols="12" md="6" class="align-left">
+        <h1  class="tw-text-primary title-about">Nuestra Historia</h1>
         <p class="text-about">
-          A través de desafíos que se convirtieron en lecciones valiosas, PartyMax se ha transformado en un referente en la 
-          industria de eventos, comprometido en brindar experiencias excepcionales y productos de calidad que reflejen la alegría 
-          de cada celebración. Con nuestra nueva plataforma, estamos emocionados de llevar la experiencia de PartyMax a nuevos 
-          horizontes, conectando con nuestros clientes de una manera aún más cercana y memorable.
+          En Partymax, creemos que cada celebración es una oportunidad única para crear momentos inolvidables. Nuestra historia comienza con un sueño: revolucionar la industria de los eventos conectando a clientes con los mejores proveedores en un solo lugar, de manera rápida, segura y eficiente. 
+          <br><br>
+          Desde nuestros inicios, entendimos que la organización de eventos podía ser un desafío: encontrar los mejores decoradores, servicios de catering, entretenimiento y logística requería tiempo y esfuerzo. Fue entonces cuando decidimos innovar y crear una plataforma digital que simplifica la planificación de eventos, ofreciendo acceso a una amplia red de proveedores confiables y de calidad. 
+          <br>
+        </p>
+      </VCol>
+      <VCol cols="12" md="12" class="align-center">
+        <p class="text-about">
+          A lo largo de nuestra trayectoria, hemos transformado la manera en que las personas organizan sus celebraciones, impulsando el crecimiento de emprendedores y empresas del sector. Nuestro compromiso es seguir evolucionando, incorporando tecnología, creatividad e innovación para brindar experiencias cada vez más personalizadas y satisfactorias. 
+          
+          Hoy, Partymax es mucho más que un marketplace. Somos un ecosistema donde clientes y proveedores se encuentran para hacer realidad eventos extraordinarios, con la confianza de contar con un servicio ágil, seguro y respaldado por los más altos estándares de calidad. 
+
           <br><br>  
-          <b>Únete a nosotros en este emocionante viaje, donde celebramos juntos cada momento especial.</b>
+          <b> Bienvenidos a Partymax, donde la magia de los eventos cobra vida. 🎉</b>
         </p>
       </VCol>
     </VRow>      
