@@ -431,7 +431,7 @@
             <VListItemTitle class="d-block lineheight borderList pb-2">
               <NuxtLink 
                 :to="{
-                  name: 'services',
+                  name: 'services-slug',
                   query: {
                     category: item.slug
                   }
@@ -853,14 +853,14 @@
                         <div class="d-flex align-center hover-icon-right" @mouseover="openService(index)">
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
-                            @click="redirect_('categories', item.slug)">
+                            @click="redirect_('categories-slug', item.slug)">
                               <component v-if="items_services.filter(e => e.slug === item.slug).length === 1" :is="items_services.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                               <component v-else :is="icon5" class="me-3" />
                               {{ item.name }} 
                           </span>
                           <NuxtLink 
                             :to="{
-                              name: 'services',
+                              name: 'services-slug',
                               query: {
                                 category: item.slug
                               }

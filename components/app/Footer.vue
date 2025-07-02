@@ -5,7 +5,7 @@
   import icopayment1 from '@assets/icons/payment-1.svg';
   import icopayment2 from '@assets/icons/payment-2.svg';
   import icopayment3 from '@assets/icons/payment-3.svg';
-  import icopayment7 from '@assets/icons/payment-7.svg';
+  import icopayment4 from '@assets/icons/payment-4.svg';
   import icopayment5 from '@assets/icons/payment-5.svg';
   import icopayment6 from '@assets/icons/payment-6.svg';
 
@@ -24,9 +24,10 @@
 
   async function fetchData() {
 
-    if(route.name === 'products' || route.name === 'about' || route.name === 'help' ||
-       route.name === 'cart' || route.name === 'products-slug' ||
-       route.name === 'terms_and_conditions' || route.name === 'privacy_statement') {
+    if(route.name === 'services' || route.name === 'products' || route.name === 'about' || route.name === 'help' ||
+       route.name === 'cart' || route.name === 'serviceDetail' || route.name === 'productDetail' ||
+       route.name === 'detail_wholesalers' || route.name === 'terms_and_conditions' || route.name === 'privacy_statement' ||
+       route.name === 'data_protection') {
       isProduct.value = true
       backgroundTemp.value = route.name === 'cart' ? 'tw-bg-white' : 'tw-bg-green'
     } else {
@@ -149,7 +150,7 @@
           <img :src="icopayment1" alt="icopayment1" width="45" class="me-3 ms-8"/>
           <img :src="icopayment2" alt="icopayment2" width="44" class="me-3"/>
           <img :src="icopayment3" alt="icopayment3" width="44" class="me-3"/>
-          <img :src="icopayment7" alt="icopayment4" width="46" class="me-3"/>
+          <img :src="icopayment4" alt="icopayment4" width="46" class="me-3"/>
           <img :src="icopayment5" alt="icopayment5" width="45" class="me-3"/>
           <img :src="icopayment6" alt="icopayment6" width="46"/>
         </VCol>
