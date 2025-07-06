@@ -1350,7 +1350,6 @@ const addfavorite = (product_id) => {
     width: 120px;
     border-radius: 192px;
     border: 1px solid var(--Maastricht-Blue, #0A1B33);
-    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
     margin: auto;
   }
 
@@ -1358,7 +1357,6 @@ const addfavorite = (product_id) => {
     width: 120px;
     border-radius: 192px;
     border: 3px solid #FF0090;
-    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
     margin: auto;
   }
 

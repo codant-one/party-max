@@ -363,7 +363,6 @@ const setMetaTags = ({ title, description, image, url, keywords }) => {
   .border-theme {
     border-radius: 192px;
     border: 1px solid var(--Maastricht-Blue, #0A1B33);
-    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
     margin: auto;
   }
 
