@@ -49,7 +49,7 @@ export default defineConfig({
       compressionOptions: { level: 6 }, // Ajusta el nivel de compresión
       filter: /\.(js|mjs|json|css|html|vue|svg)$/i,
     }),
-    vuetify({ autoImport: true }),
+    vuetify({ autoImport: true, styles: 'sass' }),
     AutoImport({
       eslintrc: {
         enabled: true,
@@ -88,7 +88,13 @@ export default defineConfig({
       },
     },
   },
-  
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler' // or "modern"
+      }
+    }
+  },
   define: { 'process.env': {} },
   resolve: {
     alias: {

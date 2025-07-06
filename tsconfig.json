@@ -1,25 +1,25 @@
 {
   "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler", // <- importante para Vite 5
     "composite": true,
     "allowJs": true,
-    "baseUrl": "./",
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
     "jsx": "preserve",
+    "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"],
       "@axios": ["src/plugins/axios"]
-    }
-  },
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
     },
-    {
-      "path": "./tsconfig.app.json"
-    }
-  ],
-  "include": ["src"]
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "types": ["vite/client"]
+  },
+  "include": ["src"],
+  "references": [
+    { "path": "./tsconfig.node.json" },
+    { "path": "./tsconfig.app.json" }
+  ]
 }

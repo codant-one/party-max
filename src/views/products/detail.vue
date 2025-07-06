@@ -888,8 +888,8 @@ const buildEmbedUrl = (url) => {
 
                         <p class="d-flex tw-flex-col md:tw-flex-row">
                           De<span class="ms-md-1">{{ review.client.user.name }} {{ review.client.user.last_name }}</span>
-                          <div class="d-none d-md-block ms-1 me-1">|</div>
-                          <div>{{ format(review.date, 'd').concat(' de ') }} {{ format(review.date, 'MMMM, y', { locale: es }).replace(/(^|\s)\S/g, (char) => char.toUpperCase()) }}</div>
+                          <span class="d-none d-md-block ms-1 me-1">|</span>
+                          <span>{{ format(review.date, 'd').concat(' de ') }} {{ format(review.date, 'MMMM, y', { locale: es }).replace(/(^|\s)\S/g, (char) => char.toUpperCase()) }}</span>
                         </p> <br>
                         <p>{{ review.comments }}</p> 
                       </VCol>
