@@ -60,13 +60,13 @@ export default defineConfig({
     }),
   ],
   build: {
-    minify: 'terser', // Cambia de 'esbuild' a 'terser'
+    minify: 'esbuild',
     terserOptions: {
       compress: {
         drop_console: true, // Elimina console.log
       },
       output: {
-        beautify: false, // Asegúrate de no embellecer la salida
+        beautify: false
       },
     },
     rollupOptions: {
