@@ -5,6 +5,7 @@ import home from '@assets/icons/lineas-de-cuadricula.svg?inline';
 import favorites from '@assets/icons/heart2.svg?inline';
 import favorites_mobile from '@assets/icons/heart-mobile.svg?inline';
 import purchases from '@assets/icons/icon-compras.svg?inline';
+import coupons from '@assets/icons/ticket-discount.svg?inline';
 
 const name = ref(null)
 const usermail = ref(null)
@@ -54,8 +55,8 @@ definePageMeta({
       app 
       floating
       permanent>
-      <VList density="compact" nav class="mt-5">
-        <NuxtLink :to="{ name: 'dashboard' }" class="link-menu" exact>
+      <VList density="compact" nav>
+        <!-- <NuxtLink :to="{ name: 'dashboard' }" class="link-menu" exact>
           <VListItem 
             :class="{ 'v-list-item--active': ($route.name === 'dashboard') }"
             class="items-list" title="Home" value="dashboard">
@@ -63,7 +64,7 @@ definePageMeta({
               <home style="width: 24px; height: 24px;"></home>
             </template>
           </VListItem>
-        </NuxtLink>
+        </NuxtLink> -->
         <NuxtLink :to="{ name: 'dashboard-profile' }" class="link-menu" exact>
           <VListItem 
             :class="{ 'v-list-item--active': $route.name === 'dashboard-profile' }"
@@ -82,6 +83,15 @@ definePageMeta({
             </template>
           </VListItem>
         </NuxtLink>
+        <router-link :to="{ name: 'dashboard-coupons' }" class="link-menu" exact>
+          <VListItem 
+              :class="{ 'v-list-item--active': $route.name === 'dashboard-coupons' }"
+              class="items-list" style="margin-top: 16px;" title="Cupones" value="coupons">
+              <template v-slot:prepend>
+                  <coupons style="width: 24px; height: 24px;"></coupons>
+              </template>
+          </VListItem>
+        </router-link>
         <NuxtLink :to="{ name: 'dashboard-favorites' } " class="link-menu" exact>
           <VListItem 
             :class="{ 'v-list-item--active': $route.name === 'dashboard-favorites' }"
@@ -103,12 +113,21 @@ definePageMeta({
                 <h5 class="text-menumob">Mi perfil</h5>
               </NuxtLink>
             </div>
+
             <div class="d-block text-center box-iconmob box-comp">
               <NuxtLink :to="{ name: 'dashboard-purchases' }" class="link-menumob tw-text-tertiary tw-no-underline" exact>
                 <purchases class="icon-menumob"></purchases>
                 <h5 class="text-menumob">Compras</h5>
               </NuxtLink>
             </div>
+
+            <div class="d-block text-center box-iconmob box-comp">
+              <NuxtLink :to="{ name: 'dashboard-coupons' }" class="link-menumob tw-text-tertiary tw-no-underline" exact>
+                <coupons class="icon-menumob"></coupons>
+                <h5 class="text-menumob">Cupones</h5>
+              </NuxtLink>
+            </div>
+
             <div class="d-block text-center box-iconmob">
               <NuxtLink :to="{ name: 'dashboard-favorites' }" class="link-menumob tw-text-tertiary tw-no-underline" exact>
                 <favorites_mobile class="icon-menumob"></favorites_mobile>
@@ -270,6 +289,10 @@ definePageMeta({
             font-weight: 400;
             line-height: 20px;
         }
+        
+        .link-menumob::v-deep(path) {
+            stroke: #0A1B33!important;
+        }
 
         .router-link-exact-active {
             color: #FF0090!important;
@@ -284,7 +307,6 @@ definePageMeta({
         }
 
         .box-comp {
-            border-left: 1px solid #E2F8FC;
             border-right: 1px solid #E2F8FC;
         }
 
