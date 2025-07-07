@@ -19,11 +19,15 @@ import t_7 from '@assets/images/t_7.jpg';
 
 const route = useRoute()
 const miscellaneousStores = useMiscellaneousStores()
-const config = useRuntimeConfig()
 
+const config = useRuntimeConfig()
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
+
 const data = ref(null)
 const isLoading = ref(true)
+const twitterAccount = ref(config.public.TWITTER_ACCOUNT ?? '')
+const title = ref(null)
+const image = ref(null)
 
 const image1 = ref(null)
 const image2 = ref(null)
@@ -34,6 +38,7 @@ const slug2 = ref(null)
 const slug3 = ref(null)
 const slug4 = ref(null)
 const band = ref(0)
+const category_type_id = ref()
 
 const icons_categories = ref([])
 
@@ -75,8 +80,38 @@ async function fetchData() {
     slug3.value = data.value.category.banner3?.slug.split('/')[1]
     image4.value = (data.value.category.banner_4 === null) ? banner4 : baseURL.value + data.value.category.banner_4
     slug4.value = data.value.category.banner4?.slug.split('/')[1]
+    category_type_id.value = data.value.category.category_type_id
 
     isLoading.value = false
+
+    title.value = data.value.category.name
+    image.value = (data.value.category.icon_subcategory !== null) ? (baseURL.value + data.value.category.icon_subcategory) : (config.public.APP_DOMAIN_API_URL + '/images/categories.jpg')
+
+    useHead({
+      title: title.value + ' | PARTYMAX',
+      meta: [
+        { name: 'description', content: `Encuentra en PARTYMAX los mejores productos de '${title.value}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉` },
+        { name: 'keywords', content: data.value.category.keywords },
+        { name: 'robots', content: 'index, follow' },
+        { name: 'autor', content: 'Partymax' },
+        { name: 'language', content: 'es' },
+
+        // Open Graph
+        { property: 'og:type', content: 'website' },
+        { property: 'og:title', content:  title.value + ' | PARTYMAX' },
+        { property: 'og:description', content: `Encuentra en PARTYMAX los mejores productos de '${title.value}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉` },
+        { property: 'og:image', content: image.value },
+        { property: 'og:url', content: `https://${config.public.MY_DOMAIN}/categories/${data.value.category.slug}` },
+        { property: 'og:site_name', content: 'PARTYMAX' },
+
+        // Twitter
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: title.value + ' | PARTYMAX'},
+        { name: 'twitter:description', content: `Encuentra en PARTYMAX los mejores productos de '${title.value}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉` },
+        { name: 'twitter:image', content: image.value },
+        { name: 'twitter:site', content: twitterAccount.value }
+      ]
+    });
   }
 }
 </script>
@@ -87,7 +122,7 @@ async function fetchData() {
       <VCardItem class="p-0">
         <NuxtLink
           :to="{
-            name: 'products',
+            name: category_type_id === 1 ? 'products' : 'services',
             query: {
                 category: route.params.slug,
                 subcategory: slug1
@@ -109,7 +144,7 @@ async function fetchData() {
         <VSpacer />
         <NuxtLink
           :to="{
-            name: 'products',
+            name: category_type_id === 1 ? 'products' : 'services',
             query: {
               category: route.params.slug
             }
@@ -123,7 +158,7 @@ async function fetchData() {
         <template v-for="(i, index) in icons_categories">
           <NuxtLink            
             :to="{
-              name: 'products',
+              name: category_type_id === 1 ? 'products' : 'services',
               query: {
                 category: route.params.slug,
                 subcategory: i.slug.split('/')[1]
@@ -137,7 +172,7 @@ async function fetchData() {
         <NuxtLink
           v-if="isMobile"
           :to="{
-            name: 'products',
+            name: category_type_id === 1 ? 'products' : 'services',
             query: {
               category: route.params.slug
             }
@@ -156,7 +191,7 @@ async function fetchData() {
         <VSpacer />
         <NuxtLink
           :to="{
-            name: 'products',
+            name: category_type_id === 1 ? 'products' : 'services',
             query: {
               category: route.params.slug
             }
@@ -198,7 +233,7 @@ async function fetchData() {
         <VCard class="no-shadown card-information p-0 w-100 w-md-50">
           <NuxtLink
             :to="{
-              name: 'products',
+              name: category_type_id === 1 ? 'products' : 'services',
               query: {
                 category: route.params.slug,
                 subcategory: slug2
@@ -213,7 +248,7 @@ async function fetchData() {
         <VCard class="no-shadown card-information p-0 w-100 w-md-50 ms-0 ms-md-5 mt-7 mt-md-0">
           <NuxtLink
             :to="{
-              name: 'products',
+              name: category_type_id === 1 ? 'products' : 'services',
               query: {
                 category: route.params.slug,
                 subcategory: slug3
@@ -232,7 +267,7 @@ async function fetchData() {
       <VCardItem class="p-0">
         <NuxtLink
           :to="{
-            name: 'products',
+            name: category_type_id === 1 ? 'products' : 'services',
             query: {
               category: route.params.slug,
               subcategory: slug4
@@ -245,7 +280,7 @@ async function fetchData() {
 
     <NuxtLink 
       :to="{
-        name: 'products',
+        name: category_type_id === 1 ? 'products' : 'services',
           query: {
             category: route.params.slug
           }

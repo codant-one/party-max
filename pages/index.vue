@@ -61,6 +61,7 @@ const backgroundStyle = {
 const backgroundDiv = ref(null)
 const config = useRuntimeConfig()
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
+const twitterAccount = ref(config.public.TWITTER_ACCOUNT ?? '')
 
 const banner_1 = ref([])
 const banner_2 = ref([])
@@ -186,7 +187,26 @@ const tab = ref('0')
 useHead({
   title: 'PARTYMAX | THE PARTY MARKET',
   meta: [
-    { name: 'description', content: 'Encuentra todo para tus fiestas: decoración, globos, piñatas, sorpresas y más en Party Max. Envíos a toda Colombia.' }
+    { name: 'description', content: 'Partymax, tu aliado ideal para fiestas en Colombia. Conectamos tus ideas con los mejores proveedores.¡Haz tu celebración inolvidable de forma fácil y económica!' },
+    { name: 'keywords', content: 'eventos en Colombia, marketplace de fiestas, proveedores de eventos, organización de eventos, planificación de fiestas, catering, decoración de fiestas, entretenimiento para eventos, servicios para bodas, fiestas infantiles, despedidas de soltera, tecnología para eventos, Partymax' },
+    { name: 'robots', content: 'index, follow' },
+    { name: 'autor', content: 'Partymax' },
+    { name: 'language', content: 'es' },
+
+    // Open Graph
+    { property: 'og:type', content: 'website' },
+    { property: 'og:title', content: 'PARTYMAX | THE PARTY MARKET' },
+    { property: 'og:description', content: 'Organiza tu evento ideal con Partymax. Encuentra los mejores proveedores de decoración, catering, entretenimiento y más en un solo lugar.' },
+    { property: 'og:image', content: config.public.APP_DOMAIN_API_URL + '/logos/R_ORIGINAL@2x.png' },
+    { property: 'og:url', content: `https://${config.public.MY_DOMAIN}` },
+    { property: 'og:site_name', content: 'PARTYMAX' },
+
+    // Twitter
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: 'PARTYMAX | THE PARTY MARKET' },
+    { name: 'twitter:description', content: 'Organiza tu evento ideal con Partymax. Encuentra los mejores proveedores de decoración, catering, entretenimiento y más en un solo lugar.' },
+    { name: 'twitter:image', content: config.public.APP_DOMAIN_API_URL + '/logos/R_ORIGINAL@2x.png' },
+    { name: 'twitter:site', content: twitterAccount.value }
   ]
 });
 
@@ -202,13 +222,11 @@ useHead({
         <VSheet class="border">
           <VList class="p-0 border">
             <template v-for="(item, i) in items" :key="i" :value="item">
-              <router-link         
+              <NuxtLink       
                 v-if="i < 7"
                 :to="{
                   name: 'categories-slug',
-                  params: {
-                    slug: item.slug
-                  }
+                  params: { slug: item.slug }
                 }"
                 class="tw-no-underline tw-text-tertiary"
               >
@@ -222,7 +240,7 @@ useHead({
                   </template>
                   <VListItemTitle v-text="item.text" class="tw-text-tertiary"></VListItemTitle>
                 </VListItem>
-              </router-link>
+              </NuxtLink>
               <VListItem
                 v-else
                 color="primary"
@@ -394,45 +412,37 @@ useHead({
       <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center card-vendido cardtitles hr-cyan">
         <span>Lo más vendido</span>
         <VSpacer />
-        <router-link 
+        <NuxtLink 
           :to="{
             name: 'categories-slug',
-            params: {
-              slug: 'globos'
-            }
+            params: { slug: 'globos' }
           }"
           class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-1 me-md-3 hover:tw-text-primary vendido-globos">Globos
-        </router-link>
-        <router-link 
+        </NuxtLink>
+        <NuxtLink
           :to="{
             name: 'categories-slug',
-            params: {
-              slug: 'hora-loca'
-            }
+            params: { slug: 'hora-loca' }
           }"
           class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-1 me-md-3 hover:tw-text-primary vendido-globos">
           Piñatas
-        </router-link>
-        <router-link 
+        </NuxtLink>
+        <NuxtLink
           :to="{
             name: 'categories-slug',
-            params: {
-              slug: 'sorpresas'
-            }
+            params: { slug: 'sorpresas' }
           }"
           class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-1 me-md-3 hover:tw-text-primary vendido-globos">
           Sorpresas
-        </router-link>
-        <router-link 
+        </NuxtLink>
+        <NuxtLink 
           :to="{
             name: 'categories-slug',
-            params: {
-              slug: 'decoracion'
-            }
+            params: { slug: 'decoracion' }
           }"
           class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-1 me-md-3 hover:tw-text-primary vendido-globos">
           Decoración
-        </router-link>
+        </NuxtLink>
       </VCardTitle>
       <VCardText class="px-4 px-md-7 pb-0 mt-2 mt-md-5 mb-2 mb-md-5 d-flex align-items-stretch justify-content-between card-banner5" v-if="data">
         <VRow no-gutters class="transparent mostSoldMobile">
@@ -540,10 +550,10 @@ useHead({
               </div>
             </VCardText>
             <VCardText class="p-0 more">
-              <router-link to="/products" class="d-flex tw-no-underline tw-text-tertiary hover:tw-text-primary hover-icon-arrow-right justify-content-end align-center">
+              <NuxtLink to="/products" class="d-flex tw-no-underline tw-text-tertiary hover:tw-text-primary hover-icon-arrow-right justify-content-end align-center">
                 <span class="ms-5">Ver más</span>
                 <arrow_right class="ms-2" />
-              </router-link>
+              </NuxtLink>
             </VCardText>
           </VCol>
         </VRow>
@@ -939,7 +949,6 @@ useHead({
   .border-theme {
     border-radius: 192px;
     border: 1px solid var(--Maastricht-Blue, #0A1B33);
-    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
   }
 
   .border-img {

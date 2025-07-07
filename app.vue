@@ -94,7 +94,8 @@ async function fetchData() {
   <NuxtLayout>
     <VApp> 
       <VLayout >
-        <Filters v-if="route.name === 'products'" :drawer="drawer"/>
+        <Filters :drawer="drawer" v-if="route.name === 'products'"/>
+        <FilterServices :drawer="drawer" v-else/>
         <Header />
         <VMain :style="backgroundStyle" :class="background">
           <NuxtPage />

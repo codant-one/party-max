@@ -4,16 +4,14 @@ module.exports = {
     preflight: false,
   },
   prefix: 'tw-',
-  purge: {
-    enabled: false,
-    content: [
-      "./components/**/*.{js,vue,ts}",
-      "./pages/**/*.vue",
-      "./plugins/*.{js,ts}",
-      "./app.vue",
-    ],
-    defaultExtractor: (content) => content.match(/[\w-/.:]+(?<!:)/g) || [],
-  },
+  content: [
+    './components/**/*.{vue,js,ts}',
+    './layouts/**/*.{vue,js,ts}',
+    './pages/**/*.{vue,js,ts}',
+    './composables/**/*.{js,ts}',
+    './plugins/**/*.{js,ts}',
+    './app.vue',
+  ],
   darkMode: 'class', // or 'media' or 'class'
   theme: {
     colors: {

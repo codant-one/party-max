@@ -84,11 +84,11 @@ const items = [
             <strong>5. Contacto</strong><br>
 
             Si tiene alguna pregunta o inquietud sobre estos términos, por favor contáctenos o verifica  
-            <router-link
+            <NuxtLink
                 :to="{ name: 'help' }"
                 class="tw-text-primary tw-no-underline hover:tw-text-secondary">
                 Preguntas Frecuentes.
-            </router-link><br><br>
+            </NuxtLink><br><br>
 
             Agradecemos su elección de <strong class="tw-text-primary">PARTYMAX THE PARTY MARKET</strong> para 
             celebrar sus momentos especiales. Estamos aquí para asegurar que su experiencia sea tan emocionante 

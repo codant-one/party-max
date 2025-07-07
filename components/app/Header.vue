@@ -360,7 +360,7 @@
             v-if="categories[index]?.children.length === 0"
             :to="{
               name: 'products-slug',
-              query: { category: item.slug }
+              params: { slug: item.slug }
             }">
             <VListItemTitle class="d-block title-menu lineheight borderList pb-2">
               {{ item.name }}
@@ -431,7 +431,7 @@
             <VListItemTitle class="d-block lineheight borderList pb-2">
               <NuxtLink 
                 :to="{
-                  name: 'services-slug',
+                  name: 'services',
                   query: {
                     category: item.slug
                   }
@@ -860,7 +860,7 @@
                           </span>
                           <NuxtLink 
                             :to="{
-                              name: 'services-slug',
+                              name: 'services',
                               query: {
                                 category: item.slug
                               }

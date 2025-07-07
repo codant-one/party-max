@@ -24,9 +24,9 @@
                     <strong>Domicilio.</strong><br>
 
                     <strong class="tw-text-primary">DIEXCOM S.A.S.</strong>  tiene su domicilio en la Calle 13 No. 69-02, zona industrial Montevideo de la 
-                    ciudad de Bogotá, piso 3º., dirección electrónica: <router-link to="/" class="tw-text-primary tw-no-underline hover:tw-text-secondary">
+                    ciudad de Bogotá, piso 3º., dirección electrónica: <NuxtLink to="/" class="tw-text-primary tw-no-underline hover:tw-text-secondary">
                         www.partymax.co
-                    </router-link> y línea telefónica de atención a nivel 
+                    </NuxtLink> y línea telefónica de atención a nivel 
                     nacional:<br>
                     WhatsApp Cel 3004659997 <br>
                     Correo electrónico: fiesta@partymax.co <br><br>
@@ -109,9 +109,9 @@
                     procedimentales necesarias para la protección de los datos personales recaudados, con el fin de garantizar su 
                     autenticidad, integridad, confidencialidad, seguridad y disponibilidad. <br>
                     De requerir información sobre el tratamiento de sus datos personales podrá consultar el siguiente enlace 
-                    electrónico: <router-link to="/" class="tw-text-primary tw-no-underline hover:tw-text-secondary">
+                    electrónico: <NuxtLink to="/" class="tw-text-primary tw-no-underline hover:tw-text-secondary">
                         www.partymax.co
-                    </router-link><br> 
+                    </NuxtLink><br> 
                     También puede hacerlo a través de nuestros canales de comunicación:
 
                     <VList>

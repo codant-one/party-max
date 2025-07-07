@@ -9,10 +9,21 @@ export default defineNuxtConfig({
       bodyAttrs: {
         class: 'tw-font-switzer_regular'
       },
-      titleTemplate: '%s PARTYMAX',
       link: [
         { rel: 'icon', type: 'image/png', href: '/favicon.png' }
       ]
+    }
+  },
+
+  hooks: {
+    'build:before'() {
+      console.log('🚀 Iniciando compilación de Nuxt...')
+    },
+    'vite:extendConfig'() {
+      console.log('📦 cargando...')
+    },
+    'ready'() {
+      console.log('✅ Nuxt listo.')
     }
   },
 
@@ -22,14 +33,14 @@ export default defineNuxtConfig({
     '@nuxtjs/device',
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
-        // @ts-expect-error
-        config.plugins.push(vuetify({ autoImport: true }));
+        if (config.plugins) {
+          config.plugins.push(vuetify({ autoImport: true }));
+        }
       });
     },
   ],
 
   device: {
-    refreshOnResize: true,
     defaultUserAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
   },
 
@@ -39,12 +50,12 @@ export default defineNuxtConfig({
 
   plugins: [
     '~/plugins/axios.ts',
-    '~/plugins/error-logger.client.ts',
     '~/plugins/metapixel.ts',
     '~/plugins/vuegtag.ts',
     '~/plugins/vuetify.ts',
     '~/plugins/webfontloader.client.ts',
     '~/plugins/date-fns.client.ts',
+    '~/plugins/vue-config.ts'
   ],
 
   css: [
@@ -67,6 +78,7 @@ export default defineNuxtConfig({
       MY_DOMAIN: process.env.NUXT_MY_DOMAIN,
       GOOGLE_MANAGER: process.env.NUXT_GOOGLE_MANAGER,
       GOOGLE_TAG_MANAGER: process.env.NUXT_GOOGLE_TAG_MANAGER,
+      TWITTER_ACCOUNT: process.env.NUXT_TWITTER_ACCOUNT,
       NODE_ENV: process.env.NODE_ENV
     },
   },
@@ -87,7 +99,8 @@ export default defineNuxtConfig({
         '@metapixel':  path.resolve(__dirname, 'plugins/metapixel'),
         '@assets':  path.resolve(__dirname, 'assets'),
         '@validators':  path.resolve(__dirname, 'utils/validators'),
-        '@formatters':  path.resolve(__dirname, 'utils/formatters')
+        '@formatters':  path.resolve(__dirname, 'utils/formatters'),
+        'form-data': path.resolve(__dirname, 'utils/empty-module'),
       }
     },
     plugins: [
