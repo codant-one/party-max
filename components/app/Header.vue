@@ -635,22 +635,22 @@
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'profile' }">
+                      <NuxtLink class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard-profile' }">
                         Mi Perfil
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'purchases' }">
+                      <NuxtLink class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard-purchases' }">
                         Compras
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'coupons' }">
+                      <NuxtLink class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard-coupons' }">
                         Cupones
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div">
-                      <NuxtLink class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'favorites' }">
+                      <NuxtLink class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard-favorites' }">
                         Mis favoritos
                       </NuxtLink>
                     </VListItemTitle>
