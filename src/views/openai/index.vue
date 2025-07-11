@@ -315,6 +315,10 @@ const onSubmit = () => {
         font-size: 14px;
     }
     
+    .v-autocomplete::v-deep(.v-field__input) {
+        padding-top: 0% !important;
+    }
+
     .v-text-field::v-deep(.v-field__outline) {
         border-radius: 24px;
     }
