@@ -267,15 +267,22 @@ const addCart = () => {
 
   if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
     let data = {
+      date: null,
+      service_id: null,
+      cake_size_id: null,
+      flavor_id: null,
+      filling_id: null,
+      order_file_id: null,
       product_color_id: selectedColorId.value,
       quantity: cant_prod.value,
-      wholesale: isWholesale
+      wholesale: isWholesale,
+      type: 0
     }
 
     load.value = true
 
     cartStores.add(data)
-      .then(async response => {
+      .then(response => {
 
         isDialogVisible.value = true
         message.value = 'Agregado al carrito'
@@ -285,11 +292,11 @@ const addCart = () => {
           isDialogVisible.value = false
           isError.value = false
           message.value = ''
-        }, 3000)
+        }, 1000)
 
       }).catch(err => {
         load.value = false
-        //console.error(err.message)
+         //console.error(err.message)
       })
   } else {
     isDialogVisible.value = true
