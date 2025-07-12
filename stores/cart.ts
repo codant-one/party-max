@@ -24,7 +24,7 @@ export const useCartStores = defineStore('cart', {
             this.wholesale = value
         },
         fetchCart() { 
-            if (process.client) {
+            if (process.client) {            
                 const storedVersion = localStorage.getItem('shoppingCartVersion');
 
                 if (!storedVersion || storedVersion !== this.CURRENT_VERSION) {
@@ -37,7 +37,7 @@ export const useCartStores = defineStore('cart', {
                 let shoppingCart = localStorage.getItem('shoppingCart')
         
                 shoppingCart = shoppingCart ? JSON.parse(shoppingCart) : []
-
+        
                 if (Array.isArray(shoppingCart)) {
                     const productColorIds = shoppingCart.map((item: { product_color_id: number }) => item.product_color_id)
                     const productColorIdsString = productColorIds.join(',')
@@ -61,7 +61,7 @@ export const useCartStores = defineStore('cart', {
 
                     const wholesaleIds = shoppingCart.map((item: { wholesale: number }) => item.wholesale)
                     const wholesaleIdsString = wholesaleIds.join(',')
-
+                    
                     const params = { 
                         service_id: servicesIdsString,
                         cake_size_id: cakeSizeIdsString,
@@ -75,15 +75,13 @@ export const useCartStores = defineStore('cart', {
                         type: typeIdsString
                     }
 
-                    const { get } = Cart()  
-
-                    return get(params)
+                    return Cart().get(params)
                         .then((response) => {
                             this.data = response.data.data.cart
                             this.count = response.data.data.cart.length
-
+                            
                             if(this.count > 0)
-                                this.wholesale = Number(wholesaleIdsString[0])
+                                this.wholesale = wholesale
                             else 
                                 this.wholesale = -1
 
@@ -91,8 +89,10 @@ export const useCartStores = defineStore('cart', {
                         })
                         .catch(error => {
                             return Promise.reject(error)
-                        }) 
+                        })  
+
                 }
+            
             }
         },
         add(data: any) {
@@ -197,9 +197,9 @@ export const useCartStores = defineStore('cart', {
 
             if (process.client) {
                 let shoppingCart = localStorage.getItem('shoppingCart')
-
+    
                 shoppingCart = shoppingCart ? JSON.parse(shoppingCart) : []
-
+        
                 if (Array.isArray(shoppingCart)) {
                     const productColorIds = shoppingCart.map((item: { product_color_id: number }) => item.product_color_id)
                     const productColorIdsString = productColorIds.join(',')

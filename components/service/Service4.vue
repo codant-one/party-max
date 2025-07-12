@@ -39,7 +39,6 @@ const service_id = ref(null)
 const date = ref(null)
 const size = ref(null)
 
-// Usa useRuntimeConfig para variables de entorno en Nuxt
 const config = useRuntimeConfig()
 const baseURL = ref(config.public.appDomainApiUrl + '/storage/')
 

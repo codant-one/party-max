@@ -100,7 +100,9 @@
       subTotal.value = '0.00'
 
       if(cart_products.value > 0) {
-        isDrawerOpen.value = true
+        if(route.path.startsWith('/products') || route.path.startsWith('/services'))
+          isDrawerOpen.value = true
+        
         isLoading.value = true
         await cartStores.fetchCart()
         products.value = cartStores.getData
@@ -169,10 +171,10 @@
     }
   };
 
-  const findCategory = (category) => {
-    let category_search = categories.value.filter(element => element.slug === category)
-    return category_search.length === 0 ? 0 : category_search[0].id
-  }
+  // const findCategory = (category) => {
+  //   let category_search = categories.value.filter(element => element.slug === category)
+  //   return category_search.length === 0 ? 0 : category_search[0].id
+  // }
 
   const logout = () => {
     authStores.logout()
@@ -528,6 +530,7 @@
               <cart v-if="!isMobile" class="d-block mx-auto mb-5"/>
               <cart_mobile v-else class="d-block mx-auto mb-5"/>
               <span class="d-block cart-empty">Tu carrito esta vacio.</span>
+              <span class="d-block cart-empty"> {{ products.length }} </span>
             </VCardItem>
           </VCardText>
         </VCard>

@@ -9,14 +9,18 @@ import { useCountriesStores } from '@/stores/countries'
 import { useProvincesStores } from '@/stores/provinces'
 import { useOrdersStores } from '@/stores/orders'
 import { usePaymentsStores } from '@/stores/payments'
+import { useDocumentTypesStore } from '@/stores/document-types'
+import { useMiscellaneousStores } from "@/stores/miscellaneous";
+import { useCouponsStores } from '@/stores/coupons'
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useRuntimeConfig } from '#app'
-
+import axios from 'axios'
 import 'swiper/css';
 import 'swiper/css/pagination';
 
 import { useRouter, useRoute } from 'vue-router'
+import dayjs from 'dayjs';
 
 import Stepper from '@/components/cart/Stepper.vue'
 import Summary from '@/components/cart/Summary.vue'
@@ -26,6 +30,7 @@ import Confirmation from '@/components/cart/Confirmation.vue'
 
 import check_circle from '@assets/icons/check-circle.svg';
 import error_circle from '@assets/icons/error-circle.svg';
+import maintenance_circle from '@assets/icons/maintenance-circle.svg';
 
 import Loader from '@/components/common/Loader.vue'
 import Product1 from '@/components/product/Product1.vue'
@@ -40,6 +45,7 @@ import cart_mobile from '@assets/icons/cart_mobile.svg?inline'
 import address_mobile from '@assets/icons/address_mobile.svg?inline'
 import payment_mobile from '@assets/icons/payment_mobile.svg?inline'
 import confirmation_mobile from '@assets/icons/confirmation_mobile.svg?inline'
+import info from '@assets/icons/info-circle.svg?inline';
 
 const homeStores = useHomeStores()
 const cartStores = useCartStores()
@@ -48,6 +54,9 @@ const provincesStores = useProvincesStores()
 const countriesStores = useCountriesStores()
 const ordersStores = useOrdersStores()
 const paymentsStores = usePaymentsStores()
+const documentTypesStores = useDocumentTypesStore()
+const miscellaneousStores = useMiscellaneousStores();
+const couponsStores = useCouponsStores();
 const route = useRoute()
 const router = useRouter()
 const config = useRuntimeConfig()
@@ -66,35 +75,23 @@ const products = ref([])
 const client_id = ref(null)
 const address_id = ref(0)
 const send_id = ref(0)
-const province_id = ref(0)
+const province_id = ref(293)
+const ip = ref(null)
+const notAllowedIPs = ref([])
+const coupon = ref(null)
 
 const summary = ref({
     subTotal: 0,
     send: '19000.00',
     shipping_express: 0,
+    discount: 0,
+    subTotalDiscount: 0,
+    coupon_id: 0,
+    coupon_code: '',
     total: 0
 })
 
-const addressTypes = ref([
-  {
-    icon: {
-      icon: 'mdi-home-city',
-      size: '40',
-    },
-    title: 'Hogar',
-    desc: 'Hora de entrega </br>(7 a.m. - 9 p.m.)',
-    value: '1',
-  },
-  {
-    icon: {
-      icon: 'mdi-office-building',
-      size: '40',
-    },
-    title: 'Oficina',
-    desc: 'Hora de entrega </br>(10 a.m. - 6 p.m.)',
-    value: '2',
-  },
-])
+const discount = ref(false)
 
 const selectedAddress = ref({
     id: 0,
@@ -103,7 +100,7 @@ const selectedAddress = ref({
     province_id: '',
     title: '',
     street: '',
-    city: '',
+    city: 'Bogota',
     address: '',
     phone: '',
     postal_code: null,
@@ -142,6 +139,7 @@ const listProvinces = ref([])
 const listProvincesByCountry = ref([])
 const client_country_id = ref(null)
 const provinceOld_id = ref('')
+const documentTypes = ref([])
 
 const currentStep = ref(0)
 const isLoading = ref(false)
@@ -202,13 +200,42 @@ async function fetchData() {
         products.value = cartStores.getData
 
         let sum = 0
-        products.value.forEach(element => {
-            let value = element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale
+         products.value.forEach(element => {
+            let cupcake = element.type === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
+            let value = 
+            element.type === 0 ? 
+              (element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale) :
+              (element.cake_size_id === 0 ? element.price : cupcake.price)
+
             iswholesale.value = element.wholesale === 1 ? true : false
             sum += (parseFloat(value) * element.quantity)
         });
         summary.value.subTotal = sum.toFixed(2)
+
+        if(coupon.value !== null) {
+            if(coupon.value.is_percentage)// es porcentaje
+                summary.value.discount = ((summary.value.subTotal * coupon.value.amount) / 100).toFixed(2)
+            else
+                summary.value.value.discount = coupon.value.amount.toFixed(2)
+
+            summary.value.subTotalDiscount = (summary.value.subTotal - summary.value.discount).toFixed(2)
+        }
+
         summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
+
+        if(province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+            chanceSend('sendToBogota')
+            send_id.value = 2
+        } else if(province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
+            chanceSend('free') 
+            send_id.value = 0
+        } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+            chanceSend('send') 
+            send_id.value = 1
+        } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
+            chanceSend('free') 
+            send_id.value = 0
+        } 
 
         if(client_id.value) {
             await addressesStores.fetchAddresses(data_)
@@ -218,11 +245,21 @@ async function fetchData() {
             if (addresses.value.length > 0) {
                 address_id.value = (index > -1) ? addresses.value[index].id : addresses.value[0].id 
                 province_id.value = addresses.value.filter(address => address.id === address_id.value)[0].province_id
-                if(province_id.value === 293) {
+                selectedAddress.value.province_id = addresses.value.filter(address => address.id === address_id.value)[0].province_id
+
+                if(province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
                     chanceSend('sendToBogota')
+                    send_id.value = 2
+                } else if(province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
+                    chanceSend('free') 
+                    send_id.value = 0
+                } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+                    chanceSend('send') 
                     send_id.value = 1
-                } else
-                    chanceSend('send')
+                } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
+                    chanceSend('free') 
+                    send_id.value = 0
+                } 
             } 
 
             isActiveStepValid.value = (address_id.value === 0 ) ? true : false
@@ -234,8 +271,51 @@ async function fetchData() {
         isActiveStepValid.value = true
     }
 
+    await documentTypesStores.fetchDocumentTypes()
+    documentTypes.value = documentTypesStores.getData
+
+    const response = await axios.get('http://checkip.amazonaws.com/');
+    ip.value = response.data
+
+    notAllowedIPs.value = await miscellaneousStores.ips();
+
     isLoading.value = false
 }
+
+const checkUserIP = async () => {
+    try {
+        const response = await fetch('https://api64.ipify.org?format=json');
+        const data = await response.json();
+        const userIP = data.ip;
+
+        if (notAllowedIPs.value.includes(userIP)) {
+            isDialogVisible.value = true
+            isError.value = true
+            isBlocked.value = true
+            message.value = 'Su acceso ha sido bloqueado debido a actividad fraudulenta. Para más información, por favor contacte con soporte.'
+
+            setTimeout(() => {
+                isDialogVisible.value = false
+                message.value = ''
+                isError.value = false
+                isBlocked.value = false
+            }, 10000)
+            return true
+        } else
+            return false
+    } catch (error) {
+        console.error('Error al obtener la IP:', error);
+    }
+}
+
+const getDocumentTypes = computed(() => {
+    return documentTypes.value.map((documentType) => {
+        return {
+        title: '(' + documentType.code + ') - ' + documentType.name,
+        value: documentType.id,
+        }
+    })
+})
 
 const loadCountries = () => {
   listCountries.value = countriesStores.getCountries
@@ -267,12 +347,91 @@ const deleteProduct = (product_color_id) => {
 
 }
 
-const addCart = (data)=>{
+const deleteService = (service_id) => {
 
-    let data_ = {
-        product_color_id: data.product_color_id,
-        quantity: data.quantity,
-        wholesale: data.wholesale
+    cartStores.delete({type: 1, service_id: parseInt(service_id)})
+    fetchData()   
+
+}
+
+const couponApply = async (code) => {
+    isLoading.value = true
+    
+    await couponsStores.show_by_code(code)
+      
+    coupon.value = couponsStores.getData
+
+    isLoading.value = false
+
+    if(coupon.value === null) {
+        isDialogVisible.value = true
+        message.value = 'Cupón inválido. Verifica el código e intenta nuevamente.'
+        isError.value = true
+    } else if (client_id.value !== coupon.value.client_id) {
+        isDialogVisible.value = true
+        message.value = '¡Oh no! Este cupón ya tiene dueño, pertenece a otro usuario.'
+        isError.value = true
+    } else if(new Date(coupon.value.expiration_date) < new Date() && coupon.value.purchase_date === null) {
+        isDialogVisible.value = true
+        message.value = 'Cupón expirado, ¡Prueba con otro o revisa nuestras ofertas!'
+        isError.value = true
+    } else if (coupon.value.is_used) {
+        isDialogVisible.value = true
+        message.value = 'Este cupón no es válido, ya fue canjeado. ¡Pero no te preocupes! Revisa tu correo o nuestras redes sociales para más promociones.'
+        isError.value = true
+    } else {
+
+        if(coupon.value.is_percentage)// es porcentaje
+            summary.value.discount = ((summary.value.subTotal * coupon.value.amount) / 100).toFixed(2)
+        else
+            summary.value.value.discount = coupon.value.amount.toFixed(2)
+
+        summary.value.subTotalDiscount = (summary.value.subTotal - summary.value.discount).toFixed(2)
+        summary.value.total = (summary.value.total - summary.value.discount).toFixed(2)
+        summary.value.coupon_id = coupon.value.id
+        summary.value.coupon_code = coupon.value.code
+
+        isDialogVisible.value = true
+        message.value = 'Gracias por usar tu cupón. ¡Disfruta tu ahorro!'
+    }
+
+    setTimeout(() => {
+        isDialogVisible.value = false
+        message.value = ''
+        isError.value = false
+    }, 5000)
+}
+
+const addCart = (data) =>{
+
+    var data_ = {}
+
+    if(data.type === 0) {
+        data_ = {
+            date: null,
+            service_id: null,
+            cake_size_id: null,
+            flavor_id: null,
+            filling_id: null,
+            order_file_id: null,
+            product_color_id: data.product_color_id,
+            quantity: data.quantity,
+            wholesale: data.wholesale,
+            type: 0
+        }
+    } else {
+        data_ = {
+            date: data.date,
+            service_id: data.service_id,
+            cake_size_id: data.cake_size_id,
+            flavor_id: data.flavor_id,
+            filling_id: data.filling_id,
+            order_file_id: data.order_file_id,
+            product_color_id: null,
+            quantity: data.quantity,
+            wholesale: null,
+            type: 1
+        }
     }
 
     cartStores.add(data_)
@@ -295,11 +454,19 @@ const onSubmit = () => {
                 
                 province_id.value = selectedAddress.value.province_id
 
-                if(province_id.value === 293) {
+                if(province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
                     chanceSend('sendToBogota')
+                    send_id.value = 2
+                } else if(province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
+                    chanceSend('free') 
+                    send_id.value = 0
+                } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+                    chanceSend('send') 
                     send_id.value = 1
-                } else
-                    chanceSend('send')
+                } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
+                    chanceSend('free') 
+                    send_id.value = 0
+                } 
 
                 isDialogVisible.value = true
                 message.value = 'Dirección agregada exitosamente'
@@ -309,24 +476,9 @@ const onSubmit = () => {
                     isDialogVisible.value = false
                     message.value = ''
                     isError.value = false
-                }, 3000)
+                }, 2000)
 
-                load.value = false  
-                
-                // address: "Cra. 104"
-                // addresses_type_id: 1
-                // city: "Bogota"
-                // client_id: 79
-                // default: 0
-                // id: 142
-                // phone: "3042603376"
-                // postal_code: "21312"
-                // province: {id: 293, country_id: 47, name: 'Distrito Capital', created_at: '2023-09-23T13:50:40.000000Z', updated_at: '2023-09-23T13:50:40.000000Z', …}
-                // province_id: 293
-                // street: "Fontibon"
-                // title: "CASA"
-                // type: {id: 1, name: 'Hogar', description: 'Hora de entrega (7 a.m. - 9 p.m.)', created_at: '2024-01-09T01:29:27.000000Z', updated_at: '2024-01-09T01:29:27.000000Z'}
-               
+                load.value = false               
 
             }
         }
@@ -385,113 +537,164 @@ const addAddress = () => {
 const sendPayU = async (billingDetail) => {
 
     let product_color_id = []
-    let price = []
-    let quantity = []
+    let service_id = []
+    let price_product = []
+    let quantity_product = []
+    let price_service = []
+    let quantity_service = []
+    let date = []
+    let cake_size_id = []
+    let flavor_id = []
+    let filling_id = []
+    let order_file_id = []
+    let product_type = 0
+    let service_type = 0
+    let type = 0
 
     products.value.forEach(element => {
-        product_color_id.push(element.product_color_id)
-        price.push(iswholesale.value === true ? element.product.wholesale_price : element.product.price_for_sale)
-        quantity.push(element.quantity)
+
+        if(element.type === 0) {
+            product_color_id.push(element.product_color_id)
+            price_product.push(iswholesale.value === true ? element.product.wholesale_price : element.product.price_for_sale)
+            quantity_product.push(element.quantity)
+            product_type = 1
+        } else {
+            let cupcake = element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
+            let date_ = dayjs(element.date, "YYYY-MM-DD hh:mm A");
+
+            service_id.push(element.id)
+            price_service.push(element.cake_size_id === 0 ? element.price : cupcake.price)
+            quantity_service.push(element.quantity)
+            date.push(date_.format("YYYY-MM-DD HH:mm:ss"))
+            cake_size_id.push(element.cake_size_id === 0 ? null : element.cake_size_id)
+            flavor_id.push(element.cake_size_id > 0 ? element.flavor.id : null)
+            filling_id.push(element.cake_size_id > 0 ? element.filling.id : null)
+            order_file_id.push(element.order_file_id === '0' ? null : element.order_file_id)
+            service_type = 1
+        }
     });
 
-    // isLoading.value = true
+    if(product_type === 1 && service_type === 1)
+        type = 2
+    else
+        type = (product_type === 1) ? 0 : 1
+    
+    let checkIp = await checkUserIP()
+
 
     let response = await cartStores.checkAvailability()
     
-    if(response.allAvailable === false) {
-
-        currentStep.value = 0
-        await fetchData()
-
-        message.value = "Todos los productos no estan disponibles"
-        isDialogVisible.value = true
-        isError.value = true
-
-        setTimeout(() => {
-            isDialogVisible.value = false
-            message.value = ''
-            isError.value = false
-        }, 5000)
-
-        isLoading.value = false
-    } else {
-
-        let data = {
-            client_id:  client_id.value,
-            address_id: address_id.value,
-            addresses: addresses.value,
-            sub_total: summary.value.subTotal,
-            shipping_total: summary.value.send,
-            shipping_express: summary.value.shipping_express,
-            tax: 0,
-            total: summary.value.total,
-            product_color_id: product_color_id,
-            price: price,
-            quantity: quantity,
-            province_id: billingDetail.province_id,
-            name: billingDetail.name,
-            last_name: billingDetail.last_name,
-            company: billingDetail.company,
-            email: billingDetail.email,
-            phone: billingDetail.phone,
-            address: billingDetail.address,
-            street: billingDetail.street,
-            city: billingDetail.city,
-            postal_code: billingDetail.postal_code,
-            note: billingDetail.note,
-            wholesale: iswholesale.value === true ? 1 : 0
-        }
-
-        isLoading.value = true 
-
-        let order = await ordersStores.addOrder(data)
-        let payment = await paymentsStores.signature({referenceCode: order.reference_code, amount: summary.value.total})
+    if(!checkIp) {
+        let response = await cartStores.checkAvailability()
         
-        if(process.client)
+        if(response.allAvailable === false) {
+
+            currentStep.value = 0
+            await fetchData()
+
+            message.value = "Todos los productos no estan disponibles"
+            isDialogVisible.value = true
+            isError.value = true
+
+            setTimeout(() => {
+                isDialogVisible.value = false
+                message.value = ''
+                isError.value = false
+            }, 5000)
+
+            isLoading.value = false
+        } else {
+
+            let data = {
+                client_id:  client_id.value,
+                address_id: address_id.value,
+                addresses: addresses.value,
+                sub_total: summary.value.subTotal,
+                shipping_total: summary.value.send,
+                shipping_express: summary.value.shipping_express,
+                tax: 0,
+                total: summary.value.total,
+                product_color_id: product_color_id,
+                service_id: service_id,
+                price_product: price_product,
+                quantity_product: quantity_product,
+                price_service: price_service,
+                quantity_service: quantity_service,
+                date: date,
+                cake_size_id: cake_size_id,
+                flavor_id: flavor_id,
+                filling_id: filling_id,
+                order_file_id: order_file_id,
+                province_id: billingDetail.province_id,
+                document_type_id: billingDetail.document_type_id,
+                document: billingDetail.document,
+                name: billingDetail.name,
+                last_name: billingDetail.last_name,
+                company: billingDetail.company,
+                email: billingDetail.email,
+                phone: billingDetail.phone,
+                address: billingDetail.address,
+                street: billingDetail.street,
+                city: billingDetail.city,
+                postal_code: billingDetail.postal_code,
+                note: billingDetail.note,
+                wholesale: iswholesale.value === true ? 1 : 0,
+                type: type,
+                ip: ip.value,
+                user_agent: navigator.userAgent,
+                coupon_id: summary.value.coupon_id
+            }
+
+            isLoading.value = true 
+
+            let order = await ordersStores.addOrder(data)
+            let payment = await paymentsStores.signature({referenceCode: order.reference_code, amount: summary.value.total})
+            
             localStorage.setItem('order_id', order.id)
 
-        const formData = new URLSearchParams();
+            const formData = new URLSearchParams();
 
-        formData.append('merchantId', payment.merchantId);
-        formData.append('accountId', payment.accountId);
-        formData.append('description', 'Order #'+ order.id);
-        formData.append('referenceCode', payment.referenceCode);
-        formData.append('amount', summary.value.total);
-        formData.append('tax', '0');
-        formData.append('taxReturnBase', '0');
-        formData.append('currency', 'COP');
-        formData.append('signature', payment.signature);
-        formData.append('test', (payment.test) ? '1' : '0');
-        formData.append('buyerEmail', billingDetail.email);
-        formData.append('buyerFullName', billingDetail.name + ' ' + billingDetail.last_name);
-        formData.append('mobilePhone', billingDetail.phone);
-        formData.append('telephone', billingDetail.phone);
-        formData.append('logoUrl', config.public.APP_DOMAIN_API_URL + '/logos/slogan.png');
-        formData.append('shippingAddress', billingDetail.address);
-        formData.append('shippingCity', billingDetail.city);
-        formData.append('shippingCountry', 'CO');
-        formData.append('responseUrl', payment.responseUrl);
-        formData.append('confirmationUrl', payment.confirmationUrl);
+            formData.append('merchantId', payment.merchantId);
+            formData.append('accountId', payment.accountId);
+            formData.append('description', 'Order #'+ order.id);
+            formData.append('referenceCode', payment.referenceCode);
+            formData.append('amount', summary.value.total);
+            formData.append('tax', '0');
+            formData.append('taxReturnBase', '0');
+            formData.append('currency', 'COP');
+            formData.append('signature', payment.signature);
+            formData.append('test', (payment.test) ? '1' : '0');
+            formData.append('buyerEmail', billingDetail.email);
+            formData.append('buyerFullName', billingDetail.name + ' ' + billingDetail.last_name);
+            formData.append('mobilePhone', billingDetail.phone);
+            formData.append('telephone', billingDetail.phone);
+            formData.append('logoUrl', import.meta.env.VITE_APP_DOMAIN_API_URL + '/logos/slogan.png');
+            formData.append('shippingAddress', billingDetail.address);
+            formData.append('shippingCity', billingDetail.city);
+            formData.append('shippingCountry', 'CO');
+            formData.append('responseUrl', payment.responseUrl);
+            formData.append('confirmationUrl', payment.confirmationUrl);
 
-        paymentsStores.redirectToPayU(formData)
-            .then(response => {
-                isLoading.value = false
-                window.location.href = response.url;
-            })
-            .catch(error => {
-                
-                isLoading.value = false
-                isDialogVisible.value = true
-                message.value = error
-                isError.value = true             
+            paymentsStores.redirectToPayU(formData)
+                .then(response => {
+                    isLoading.value = false
+                    window.location.href = response.url;
+                })
+                .catch(error => {
+                    
+                    isLoading.value = false
+                    isDialogVisible.value = true
+                    message.value = error
+                    isError.value = true             
 
-                setTimeout(() => {
-                    isDialogVisible.value = false
-                    message.value = ''
-                    isError.value = false
-                }, 3000)
-                // console.error('Error:', error);
-            });
+                    setTimeout(() => {
+                        isDialogVisible.value = false
+                        message.value = ''
+                        isError.value = false
+                    }, 2000)
+                    // console.error('Error:', error);
+                });
+        }
     }
 }
 
@@ -526,12 +729,14 @@ const closeDialog = () => {
         province_id: '',
         title: '',
         street: '',
-        city: '',
+        city: 'Bogotá',
         address: '',
         phone: '',
         postal_code: null,
         default: false
     }
+
+    selectCountry(selectedAddress.value.country_id)
 }
 
 const dialog_error = ()=> {
@@ -559,33 +764,52 @@ const getFlagCountry = country => {
 
 const chanceSend = value => {
     switch (value) {
+        case 'free':
+            summary.value.shipping_express = 0
+            summary.value.send = '0.00'
+            province_id.value = selectedAddress.value.province_id
+            send_id.value = 0
+        break;
         case 'send':
             summary.value.shipping_express = 0
             summary.value.send = '19000.00'
+            province_id.value = selectedAddress.value.province_id
+            send_id.value = 1
         break;
         case 'sendToBogota':
             summary.value.shipping_express = 0
-            summary.value.send = '10500.00'
+            summary.value.send = '12000.00'
+            province_id.value = 293
+            send_id.value = 2
         break;
         case 'shipping_express':
             summary.value.shipping_express = 1
             summary.value.send = '17000.00'
+            province_id.value = 293
+            send_id.value = 3
         break;
         case 'default':
             summary.value.shipping_express = 0
-            summary.value.send = '10500.00'
+            summary.value.send = '12000.00'
+            province_id.value = 293
+            send_id.value = 2
     }
 
     let sum = 0
     
     products.value.forEach(element => {
-        let value = element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale
+        let cupcake = element.type === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
+        let value = 
+            element.type === 0 ? 
+              (element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale) :
+              (element.cake_size_id === 0 ? element.price : cupcake.price)
+              
         iswholesale.value = element.wholesale === 1 ? true : false
         sum += (parseFloat(value) * element.quantity)
     });
 
     summary.value.subTotal = sum.toFixed(2)
-    summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
+    summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal) - parseFloat(summary.value.discount)).toFixed(2)
 }
 
 </script>
@@ -623,8 +847,12 @@ const chanceSend = value => {
                         v-model:current-step="currentStep"
                         :products="products"
                         :summary="summary"
-                        @delete="deleteProduct"
+                        :discount="discount"
+                        :client_id="client_id !== null ? true : false"
+                        @deleteProduct="deleteProduct"
+                        @deleteService="deleteService"
                         @addCart="addCart"
+                        @couponApply="couponApply"
                     />
                 </VWindowItem>
                 <VWindowItem>
@@ -650,9 +878,12 @@ const chanceSend = value => {
                         :summary="summary"
                         :countries="listCountries"
                         :provinces="listProvinces"
+                        :document_types="getDocumentTypes"
                         :iswholesale="iswholesale"
+                        :step="currentStep"
                         @submit="sendPayU"
                         @send="chanceSend"
+                        @dialog_error = "dialog_error"
                     />
                 </VWindowItem>
                 <VWindowItem>
@@ -684,7 +915,7 @@ const chanceSend = value => {
                             <h3>Recomendaciones que te pueden interesar</h3>
                         </VCol>
                         <VCol cols="3" md="6" class="text-right d-flex align-center justify-content-end pl-0 pr-1 pr-md-5">
-                            <NuxtLink :to="{ name: 'products' }" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-0 me-md-3 hover:tw-text-primary">Ver todos</NuxtLink>
+                            <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-0 me-md-3 hover:tw-text-primary">Ver todos</router-link>
                         </VCol>
                     </VRow>
                 </VCol>
@@ -700,7 +931,7 @@ const chanceSend = value => {
                                     :bg="bg"/>
                             </VCardText> 
 
-                            <VCardText class="px-0 mt-3 mb-3 d-md-flex align-items-stretch justify-content-between" v-if="data && isMobile">
+                            <VCardText class="p-0 d-md-flex align-items-stretch justify-content-between" v-if="data && isMobile">
                                 <swiper
                                     :pagination="{
                                         dynamicBullets: true,
@@ -733,19 +964,16 @@ const chanceSend = value => {
                 @submit.prevent="onSubmit"
             > 
                 <VCard class="pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-                    <VCardText class="subtitle-register p-0 mt-0 mt-md-7">
-                        AGREGAR NUEVA DIRECCIÓN
+                    <VCardText class="subtitle-register p-0 mt-0 mt-md-7 d-block">
+                        <span class="d-block">AGREGAR NUEVA DIRECCIÓN</span>
+                        <span v-if="products.some(product => product.type === 1)" class="tw-text-sm tw-text-gray d-flex mt-1 justify-content-center">
+                            <info class="me-1"/>
+                            Servicios válidos únicamente para Bogotá D.C.
+                        </span>
                     </VCardText>           
                     <VCardItem class="pb-0 px-3 px-md-10">
                         <VRow no-gutters class="text-left align-center">
-                            <VCol cols="12" md="12" class="textinput mb-0 mb-md-2 mt-3">
-                                <CustomRadiosWithIcon
-                                    v-model:selected-radio="selectedAddress.addresses_type_id"
-                                    :radio-content="addressTypes"
-                                    :grid-column="{ sm: '6', cols: '6' }"
-                                />
-                            </VCol>  
-                            <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
+                            <VCol cols="12" md="6" class="textinput mb-0 mb-md-2 mt-3">
                                 <VAutocomplete
                                     variant="outlined"
                                     v-model="selectedAddress.country_id"
@@ -755,6 +983,7 @@ const chanceSend = value => {
                                     item-title="name"
                                     item-value="name"
                                     :menu-props="{ maxHeight: '200px' }"
+                                    readonly
                                     @update:model-value="selectCountry"
                                     class="me-0 me-md-2"
                                     >
@@ -764,14 +993,14 @@ const chanceSend = value => {
                                         >
                                         <VAvatar
                                             start
-                                            style="margin-top: -20px;"
+                                            style="margin-top: -8px;"
                                             :size="isMobile ? '30' : '36'"
                                             :image="getFlagCountry(selectedAddress.country_id)"
                                         />
                                     </template>
                                 </VAutocomplete>
                             </VCol>  
-                            <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
+                            <VCol cols="12" md="6" class="textinput mb-0 mb-md-2 mt-3">
                                 <VAutocomplete
                                     variant="outlined"
                                     v-model="selectedAddress.province_id"
@@ -779,6 +1008,7 @@ const chanceSend = value => {
                                     :rules="[requiredValidator]"
                                     :items="getProvinces"
                                     :menu-props="{ maxHeight: '200px' }"
+                                    :readonly="products.some(product => product.type === 1)"
                                 />    
                             </VCol> 
                             <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
@@ -788,6 +1018,7 @@ const chanceSend = value => {
                                     variant="outlined"
                                     :rules="[requiredValidator]"
                                     class="me-0 me-md-2"
+                                    :readonly="products.some(product => product.type === 1)"
                                     />
                             </VCol>  
                             <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
@@ -821,7 +1052,6 @@ const chanceSend = value => {
                                     v-model="selectedAddress.postal_code"
                                     label="Código Postal"
                                     variant="outlined"
-                                    :rules="[requiredValidator, phoneValidator]"
                                 />    
                             </VCol> 
                             <VCol cols="12" md="12" class="textinput mb-2 mb-md-2">
@@ -876,7 +1106,7 @@ const chanceSend = value => {
         <VDialog v-model="isDialogVisible" >
             <VCard
                 class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-                <VImg width="100" :src="isError ? error_circle : check_circle" class="mx-auto"/>
+                <VImg :width="isMobile ? '120' : '180'" :src="isError ? (isBlocked ? maintenance_circle : error_circle) : check_circle" class="mx-auto"/>
                 <VCardText class="text-message mt-10 mb-5">
                     {{ message }}
                 </VCardText>
@@ -935,6 +1165,10 @@ const chanceSend = value => {
 </style>
 <style scoped>
 
+    .swiper {
+      height: 300px!important;
+    }
+
     .swiper::v-deep(.swiper-pagination-bullet-active) {
       background: #FF0090 !important;
     }
@@ -967,7 +1201,7 @@ const chanceSend = value => {
     }
 
     .v-text-field::v-deep(::placeholder) { 
-        color: #0A1B33 !important;
+        color: #999999 !important;
         opacity: inherit;
     }
 
@@ -981,7 +1215,7 @@ const chanceSend = value => {
     }
 
     .textinput .v-text-field::v-deep(.v-field-label) {
-        top: 17% !important;
+        top: 33% !important;
         font-size: 14px !important;
     }
 
@@ -1032,8 +1266,8 @@ const chanceSend = value => {
         font-size: 24px;
         font-style: normal;
         font-weight: 600;
-        line-height: 30px; 
-        padding: 0 80px !important;
+        line-height: 24px !important;
+        padding: 0 60px !important;
     }
 
     @media only screen and (max-width: 767px) {
@@ -1050,7 +1284,7 @@ const chanceSend = value => {
         }
 
         .text-message {
-            padding: 0 30px !important;
+            padding: 0 20px !important;
             font-size: 18px;
         }
 
@@ -1061,6 +1295,10 @@ const chanceSend = value => {
 
         .w-60 {
             width: 100%;
+        }
+
+        .text-left {
+            line-height: 24px;
         }
 
     }
