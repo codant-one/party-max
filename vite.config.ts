@@ -49,7 +49,7 @@ export default defineConfig({
       compressionOptions: { level: 6 }, // Ajusta el nivel de compresión
       filter: /\.(js|mjs|json|css|html|vue|svg)$/i,
     }),
-    vuetify({ autoImport: true }),
+    vuetify({ autoImport: true, styles: 'sass' }),
     AutoImport({
       eslintrc: {
         enabled: true,
@@ -61,6 +61,7 @@ export default defineConfig({
   ],
   build: {
     minify: 'terser', // Cambia de 'esbuild' a 'terser'
+    chunkSizeWarningLimit: 1000,
     terserOptions: {
       compress: {
         drop_console: true, // Elimina console.log
@@ -71,24 +72,26 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
+        manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('vuetify')) {
-              return 'vuetify'; // Mueve Vuetify a un chunk separado.
-            }
-            if (id.includes('vue-gtag-next')) {
-              return 'gtag'; // Mueve la librería de Google Analytics a un chunk separado.
-            }
-            if (id.includes('axios')) {
-              return 'axios'; // Si usas Axios, crea un chunk para esta librería.
-            }
-            return 'vendor'; // Crea un chunk "vendor" para todas las dependencias grandes que no tengan un chunk específico.
+            if (id.includes('vuetify')) return 'chunk-vuetify';
+            if (id.includes('dayjs')) return 'chunk-dayjs';
+            if (id.includes('swiper')) return 'chunk-swiper';
+            if (id.includes('axios')) return 'chunk-axios';
+            if (id.includes('vue-router')) return 'chunk-router';
+            return 'vendor';
           }
-        },
+        }        
       },
     },
   },
-  
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler' // or "modern"
+      }
+    }
+  },
   define: { 'process.env': {} },
   resolve: {
     alias: {

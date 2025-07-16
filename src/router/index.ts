@@ -236,8 +236,8 @@ const router = createRouter({
       component: reset_password
     },
     {
-      path: '/idea-generator/ai',
-      name: 'idea_generator',
+      path: '/event-planner',
+      name: 'event_planner',
       component: Openai
     }
   ]

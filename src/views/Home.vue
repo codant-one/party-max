@@ -955,7 +955,6 @@ const tab = ref('0')
   .border-theme {
     border-radius: 192px;
     border: 1px solid var(--Maastricht-Blue, #0A1B33);
-    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
   }
 
   .border-img {

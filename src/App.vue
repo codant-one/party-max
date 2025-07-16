@@ -99,7 +99,7 @@ async function fetchData() {
   var repeat = 'repeat'
   var size = (isMobile) ? 'auto' : 'contain'
 
-  if(route.name === 'dashboard' || route.name === 'register_confirm' || route.name === 'idea_generator') {
+  if(route.name === 'dashboard' || route.name === 'register_confirm') {
     background.value = 'tw-bg-green'
   } else {
     background.value = 'tw-bg-white'
@@ -115,7 +115,7 @@ async function fetchData() {
     bg = register
     repeat = 'no-repeat'
     size = 'cover'
-  } else if(route.name === 'blogs' || route.name === 'blogDetail') {
+  } else if(route.name === 'blogs' || route.name === 'blogDetail' || route.name === 'event_planner') {
     bg = blogs
     size = 'contain'
   } else 
