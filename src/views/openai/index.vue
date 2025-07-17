@@ -157,7 +157,7 @@ const onSubmit = () => {
                 </div>
             </div>
             
-            <VRow no-gutters v-if="responseData" class="mt-2 mt-md-10">
+            <VRow no-gutters v-if="responseData">
                 <VCol cols="12">
                     <VCard class="px-0 transparent no-shadown">
                         <VCardText class="px-0">
@@ -169,17 +169,17 @@ const onSubmit = () => {
                                     md="12"
                                     class="mt-2"
                                     >
-                                    <div v-html="formatText(value.text_response)" v-if="key === 'recommendations'" class="prose prose-sm max-w-none card-ia"/>
 
                                     <div v-if="key === 'recommendations'" class="text-center mb-6">
                                         <VImg
-                                        alt="Imagen generada por IA"
-                                        :src="value.image_url"
-                                        :max-width="isMobile ? '100%' : '300px'"
-                                        class="mx-auto rounded-lg"
-                                        cover
+                                            alt="Imagen generada por IA"
+                                            :src="value.image_url"
+                                            class="mx-auto rounded-lg"
+                                            cover
                                         />
                                     </div>
+
+                                    <div v-html="formatText(value.text_response)" v-if="key === 'recommendations'" class="prose prose-sm max-w-none card-ia"/>
 
                                     <div v-if="key !== 'recommendations' && value.length > 0">
                                         <strong >{{ key }}:</strong>
