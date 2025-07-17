@@ -26,6 +26,7 @@ const refVForm = ref()
 const theme = ref(null)
 const guests = ref(null)
 const responseData = ref(null);
+const imageGenerated = ref(null);
 const isLoading = ref(false)
 const listPartyTypes = ref([
     'Cumpleaños','Halloween','Despedida de soltera','Aniversario','Graduación','Día del niño','Baby shower', 'Jubilación', 'Compromiso',
@@ -72,6 +73,7 @@ const onSubmit = () => {
             openaiStore.show(formData)
                 .then((response) => {
                     responseData.value = response;
+                    imageGenerated.value = response.recommendations.image_url
                     isLoading.value = false
                     isDialogVisible.value = false
                 })
@@ -154,7 +156,7 @@ const onSubmit = () => {
                 </div>
             </div>
             
-            <VRow no-gutters v-if="responseData" class="mt-2 mt-md-10">
+            <VRow no-gutters v-if="responseData">
                 <VCol cols="12">
                     <VCard class="px-0 transparent no-shadown">
                         <VCardText class="px-0">
@@ -166,7 +168,17 @@ const onSubmit = () => {
                                     md="12"
                                     class="mt-2"
                                     >
-                                    <div v-html="formatText(value)" v-if="key === 'recommendations'" class="prose prose-sm max-w-none card-ia"/>
+
+                                    <div v-if="key === 'recommendations'" class="text-center mb-6">
+                                        <VImg
+                                            alt="Imagen generada por IA"
+                                            :src="value.image_url"
+                                            class="mx-auto rounded-lg"
+                                            cover
+                                        />
+                                    </div>
+
+                                    <div v-html="formatText(value.text_response)" v-if="key === 'recommendations'" class="prose prose-sm max-w-none card-ia"/>
 
                                     <div v-if="key !== 'recommendations' && value.length > 0">
                                         <strong >{{ key }}:</strong>
