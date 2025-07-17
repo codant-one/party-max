@@ -113,23 +113,19 @@ const onSubmit = () => {
                     > 
                         <VRow no-gutters class="mt-5">
                             <VCol cols="12" md="12">
-                                <VAutocomplete
-                                    variant="outlined"
+                                <VTextField
                                     v-model="event_type"
+                                    variant="outlined"
                                     label="Tipo de celebración"
                                     :rules="[requiredValidator]"
-                                    :items="listPartyTypes"
                                 /> 
                             </VCol>
                             <VCol cols="12" md="12">
-                                <VAutocomplete
-                                    variant="outlined"
+                                <VTextField
                                     v-model="theme"
+                                    variant="outlined"
                                     label="Temática"
                                     :rules="[requiredValidator]"
-                                    :items="listthematic"
-                                    item-title="name"
-                                    item-value="name"
                                 /> 
                             </VCol>
 
