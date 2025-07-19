@@ -184,6 +184,7 @@ const onSubmit = () => {
                                                 :pagination="{
                                                     dynamicBullets: true,
                                                 }"
+                                                :navigation="true"
                                                 :modules="modules"
                                                 :spaceBetween="2"
                                                 :slidesPerView="isMobile ? 2 : 5"
@@ -235,7 +236,35 @@ const onSubmit = () => {
 
 <style scoped>
     .swiper::v-deep(.swiper-pagination-bullet-active) {
-        background: #FF0090 !important;
+        background: white !important; /* Fondo blanco para el espacio */
+        border: 2px double #FF0090 !important; /* Borde rosado */
+        box-shadow: inset 0 0 0 3px white; /* "Recorta" el interior */
+        width: 16px; 
+        height: 16px;
+        
+        /* Círculo interior rosado */
+        &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 6px;  /* Tamaño del círculo rosado */
+            height: 6px;
+            background: #FF0090;
+            border-radius: 50%;
+        }
+    }
+
+    :deep(.swiper-pagination-bullets-dynamic) {
+        overflow: visible !important;
+    }
+
+    :deep(.swiper-pagination-bullet),
+    :deep(.swiper-pagination-bullet-active-next),
+    :deep(.swiper-pagination-bullet-active-next-next) {
+        width: 16px; 
+        height: 16px;
     }
     
     .swiper::v-deep(.swiper-pagination-horizontal ) {
@@ -261,6 +290,35 @@ const onSubmit = () => {
         width: 100%;
         height: 100%;
         object-fit: cover;
+    }
+
+    :deep(.swiper-button-next),
+    :deep(.swiper-button-prev)  {
+        background-image: url('@/assets/icons/arrow-square-right.svg');
+        background-color: #FF0090;
+        background-position: center;
+        border-radius: 11px;
+        width: 4%;
+        /* Oculta la flecha predeterminada */
+        &::after {
+            content: '' !important;
+        }
+        top: 7% !important; 
+    }
+
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .swiper-button-next {
+        right: 10px;
+    }
+
+    .swiper-button-prev {
+        left: 10px;
     }
 
     .card-ia::v-deep(h3) {
