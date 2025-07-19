@@ -292,9 +292,22 @@ const onSubmit = () => {
         object-fit: cover;
     }
 
-    :deep(.swiper-button-next),
-    :deep(.swiper-button-prev)  {
+    :deep(.swiper-button-next){
         background-image: url('@/assets/icons/arrow-square-right.svg');
+        background-color: #FF0090;
+        background-position: center;
+        border-radius: 11px;
+        width: 4%;
+        /* Oculta la flecha predeterminada */
+        &::after {
+            content: '' !important;
+        }
+        top: 7% !important; 
+    }
+
+    
+    :deep(.swiper-button-prev) {
+        background-image: url('@/assets/icons/arrow-square-left.svg');
         background-color: #FF0090;
         background-position: center;
         border-radius: 11px;
