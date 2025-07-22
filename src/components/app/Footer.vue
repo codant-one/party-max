@@ -1,344 +1,234 @@
 <script setup>
-  
   import { ref } from 'vue'
   import icophone from '@assets/icons/ic_phone.svg?inline';
+  import icochat from '@assets/icons/chat_bubble.svg?inline';
+  import icomail from '@assets/icons/letter.svg?inline';
+  import icostore from '@assets/icons/store_icon.svg?inline';
+  import icosearch from '@assets/icons/youtube_icon.svg?inline';
+  import instagram from '@assets/icons/instagram_magenta.svg?inline';
+  import xtwitter from '@assets/icons/x.svg?inline';
+  import facebook from '@assets/icons/facebook_magenta.svg?inline';
 
-  import instagram from '@assets/icons/instagram.svg?inline';
-  import facebook from '@assets/icons/facebook.svg?inline';
-  import whatsapp_mobile from '@assets/icons/whatsapp_mobile.svg?inline';
-
-  import festinfooter from '@assets/images/festin-footer.webp';
-
-  const backgroundTemp = ref('tw-bg-white')
   const currentYear = ref(new Date().getFullYear());
-  const route = useRoute()
-  const isProduct = ref(false)
-
-  watchEffect(fetchData)
-
-  async function fetchData() {
-
-    if(route.name === 'services' || route.name === 'products' || route.name === 'about' || route.name === 'help' ||
-       route.name === 'cart' || route.name === 'serviceDetail' || route.name === 'productDetail' ||
-       route.name === 'detail_wholesalers' || route.name === 'terms_and_conditions' || route.name === 'privacy_statement' ||
-       route.name === 'data_protection') {
-      isProduct.value = true
-      backgroundTemp.value = route.name === 'cart' ? 'tw-bg-white' : 'tw-bg-green'
-    } else {
-      isProduct.value = false
-      backgroundTemp.value = 'tw-bg-white'
-    }
-
-  }
+  const terms = ref(false)
 
 </script>
 
 <template>
-  <VFooter class="text-center d-flex flex-column bg p-0 w-100 d-print-none" :class="backgroundTemp">
-    <a href="https://wa.link/wvdoxg"
-        target="_blank"
-        class="whatsapp-float"
-        title="Contáctanos por WhatsApp"
-        >
-            <span class="mdi mdi-whatsapp whatsapp-icon"></span>
-    </a>
-    <div class="container-footer d-none" :class="isProduct ? 'tw-bg-primary text-colorfooter' : ''">
-      <VContainer class="my-10">
-        <VRow no-gutters class="tw-text-tertiary">
-          <VCol cols="12" md="5" class="d-flex xs:tw-text-center md:tw-text-left mb-4 mb-md-0">
-            <p class="tw-margin-auto"><span class="text-footer">Conoce todas nuestras ofertas</span> <br>
-            <span class="subtext-footer">Regístrate ahora a nuestro newsletter.</span></p>
-          </VCol> 
-          <VCol cols="12" md="7" class="d-flex align-center dark" v-if="isProduct">  
-            <VTextField
-              class="me-20"
-              placeholder="Email"
-              flat
-              variant="solo">
-              <template v-slot:append-inner>
-                <VBtn class="tw-bg-white tw-text-primary h-100 search-button button-hover">Suscríbete</VBtn>
-              </template>
-            </VTextField>
-          </VCol> 
-          <VCol cols="12" md="7" class="d-flex align-center" v-else>
-            <VTextField
-              class="me-20"
-              placeholder="Email"
-              flat
-              variant="solo">
-              <template v-slot:append-inner>
-                <VBtn class="tw-bg-primary tw-text-white h-100 search-button button-hover">Suscríbete</VBtn>
-              </template>
-            </VTextField>
-          </VCol>  
-        </VRow>  
-      </VContainer>
-    </div>
-    
-    <VDivider class="hr d-none" />
+  <VFooter class="text-center d-flex flex-column bg p-0 w-100 d-print-none tw-bg-white">
 
-    <div class="d-flex flex-column w-100 mt-5 mt-md-16 tw-border tw-border-b-grey_2">
-      <VContainer>
-        <VRow no-gutters class="tw-text-tertiary">
-          <VCol cols="7" md="3" class="d-block align-center text-left">
-            <span class="contact-text">Contactanos</span>
-            <div class="d-flex text-left mt-3 mt-md-12 mb-1 mb-md-5">
-              <icophone class="mt-1 me-2"/>
-                <span class="d-flex align-center tw-text-tertiary font-size-16 pb-2 phone-text">
-                  300 4659 997         
-                </span>
+      <VRow class="tw-relative row-footer">
+        <VCol cols="12" md="6" class="text-left tw-pr-8">
+            <h2 class="tw-text-primary tw-font-bold tw-text-4xl">Conecta con Nosotros</h2>
+            
+            <div class="mt-6">
+              <div class="d-flex align-center">
+                <icophone class="me-3"/>
+                <div>
+                  <p class="tw-text-tertiary tw-font-semibold tw-text-lg m-0">Teléfono</p>
+                  <p class="color-text-gray-1 m-0 tw-text-sm">Llámanos para asesoría personalizada.</p>
+                </div>
+              </div>
+              <p class="tw-text-tertiary tw-font-bold tw-text-2xl mt-2 mb-0">+57 310 4870 310</p>
             </div>
             
-            <span class="item-footer-text">Calle 13 # 69 - 06 , Bogotá</span> <br>
-            <span class="item-footer-text">fiesta@partymax.co</span>
-
-            <div class="d-flex align-center text-right mt-3 mt-md-8">
-              <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="m-0" aria-label="instagram">
-                <instagram class="mt-1 me-2"/>
-              </a>
-              <a href="https://www.facebook.com/partymaxcolombia" target="_blank" class="m-0" aria-label="facebook">
-                <facebook class="mt-1 me-2"/>
-              </a>
-              <a href="https://wa.link/wvdoxg" target="_blank" class="m-0" aria-label="whatsapp">
-                <whatsapp_mobile class="mt-1 me-2" />
-              </a>
+            <div class="mt-6">
+              <div class="d-flex align-center">
+                <icochat class="me-3"/>
+                <div>
+                  <p class="tw-text-tertiary tw-font-semibold tw-text-lg m-0">Mensaje directo</p>
+                  <p class="color-text-gray-1 m-0 tw-text-sm">Escríbenos para dudas rápidas y seguimiento.</p>
+                </div>
+              </div>
+              <VBtn class="tw-bg-primary tw-text-white mt-3" rounded="pill" href="https://wa.link/wvdoxg" target="_blank">Mensaje Directo</VBtn>
             </div>
-          </VCol>
 
-          <VCol cols="12" md="4" class="d-flex align-center col-mobile"></VCol>
+            <div class="mt-6">
+              <div class="d-flex align-center">
+                <icomail class="me-3"/>
+                <div>
+                  <p class="tw-text-tertiary tw-font-semibold tw-text-lg m-0">Correo electrónico</p>
+                  <p class="color-text-gray-1 m-0 tw-text-sm">Ideal para cotizaciones y ventas mayoristas.</p>
+                </div>
+              </div>
+              <p class="tw-text-tertiary tw-font-bold tw-text-2xl mt-2 mb-0">comercial@partymax.co</p>
+            </div>
 
-          <VCol cols="12" md="2" class="d-flex flex-column align-start text-left tw-gap-3 col-mobile">
-            <router-link to="/about-us" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
-              Quiénes somos
-            </router-link>
-            <!-- <router-link to="/products?wholesalers=true" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-              Mayoristas
-            </router-link> -->
-            <router-link to="/blogs" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
-              Blog
-            </router-link>
-            <router-link to="/help" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
-              Preguntas frecuentes
-            </router-link>
-            <router-link to="/terms-and-conditions" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
-              Términos y condiciones
-            </router-link>
-            <router-link to="/privacy-statement" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
-              Declaración de privacidad
-            </router-link>
-            <router-link to="/data-protection" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
-              Protección de datos
-            </router-link>
-          </VCol>
-          <VCol cols="5" md="3" class="align-center text-right">
-            <img :src="festinfooter" class="festin-footer-size" alt="festin-footer" loading="lazy"/>
-          </VCol>
-        </VRow>
-      </VContainer>
-      <VDivider class="hr mt-10 d-none d-md-block" />
-    </div>
+            <div class="mt-6">
+              <div class="d-flex align-center">
+                <icostore class="me-3"/>
+                <div>
+                  <p class="tw-text-tertiary tw-font-semibold tw-text-lg m-0">Tienda</p>
+                  <p class="color-text-gray-1 m-0 tw-text-sm">Visita nuestra tienda y sorpréndete.</p>
+                </div>
+              </div>
+              <p class="tw-text-tertiary tw-font-bold tw-text-2xl mt-2 mb-0">Calle 13 #-06, Bogotá</p>
+            </div>
 
-    <div class="d-flex w-100 tw-gap-2 mt-2 tw-p-5 align-center text-center tw-text-tertiary justify-content-center">
-      <span class="copyright">©{{currentYear}} PartyMax. All Rights Reserved</span>
+            <div class="mt-6">
+              <div class="d-flex align-center">
+                <icosearch class="me-3"/>
+                <div>
+                  <p class="tw-text-tertiary tw-font-semibold tw-text-lg m-0">Encuentra Inspiración Diaria</p>
+                  <p class="color-text-gray-1 m-0 tw-text-sm">Síguenos en nuestras redes y descubre ideas, tutoriales y las últimas tendencias para tus celebraciones.</p>
+                </div>
+              </div>
+              <div class="d-flex mt-3">
+                <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="me-2" aria-label="instagram">
+                  <instagram />
+                </a>
+                <a href="#" target="_blank" class="me-2" aria-label="twitter">
+                  <xtwitter />
+                </a>
+                <a href="https://www.facebook.com/partymaxcolombia" target="_blank" aria-label="facebook">
+                  <facebook />
+                </a>
+              </div>
+            </div>
+        </VCol>
+        
+
+        <VCol cols="12" md="6" class="tw-pl-8">
+          <div class="divider-line d-none d-md-block"></div>
+          <div class="contact-form">
+            <h2 class="tw-text-primary tw-font-bold tw-text-4xl mb-2">¡Hablemos, nos encantan las fiestas!</h2>
+            <p class="tw-text-tertiary mt-2 mb-6">Estamos aquí para ayudarte con tus consultas.</p>
+
+            <VForm class="mt-6">
+                <div class="mb-4">
+                  <label class="tw-text-tertiary tw-text-left tw-text-sm tw-block mb-1">Nombre</label>
+                  <VTextField
+                    class="rounded-input"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                  ></VTextField>
+                </div>
+
+                <div class="mb-4">
+                  <label class="tw-text-tertiary tw-text-left tw-text-sm tw-block mb-1">Correo Electrónico</label>
+                  <VTextField
+                    class="rounded-input"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                  ></VTextField>
+                </div>
+
+                <div class="mb-4">
+                  <label class="tw-text-tertiary tw-text-left tw-text-sm tw-block mb-1">Mensaje</label>
+                  <VTextarea
+                    variant="outlined"
+                    placeholder="Escribe tu mensaje..."
+                    hide-details
+                    rows="4"
+                  ></VTextarea>
+                </div>
+
+                <VCheckbox
+                  v-model="terms"
+                  color="primary"
+                  class="mb-4"
+                  hide-details
+                >
+                  <template #label>
+                    <div class="tw-text-tertiary tw-text-sm">
+                      Acepto los <a href="/terms-and-conditions" target="_blank" class="tw-text-primary tw-underline">Términos</a> y el <a href="/data-protection" target="_blank" class="tw-text-primary tw-underline">tratamiento de datos</a>.
+                    </div>
+                  </template>
+                </VCheckbox>
+
+                <VBtn class="tw-bg-primary tw-text-white" rounded="pill" block size="large">Enviar mensaje</VBtn>
+            </VForm>
+          </div>
+        </VCol>
+      </VRow>
+    <div class="d-flex w-100 tw-gap-4 mt-5 p-4 align-center justify-content-center tw-border-t tw-border-gray-200">
+      <span class="copyright">©{{currentYear}} PartyMax. Todos los derechos reservados.</span>
       <router-link to="/terms-and-conditions" class="copyright tw-no-underline tw-text-tertiary hover:tw-text-primary">
-        Términos y condiciones
+        Términos y Condiciones
       </router-link>
     </div>
-    
   </VFooter>
 </template>
+
 <style scoped>
-
-  .whatsapp-float {
-    position: fixed;
-    width: 60px;
-    height: 60px;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    background-color: #25D366;
-    padding: 10px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .contact-form {
+    border-radius: 8px;
   }
 
-  .whatsapp-icon {
-    font-size: 40px;
-    color: white; /* Cambia el color del ícono a blanco */
-  }
-
-  .search-button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    font-size: 11.5px;
-    padding-top: 2px;
-  }
-
-  .v-text-field::v-deep(.v-input__details) { 
-    padding: 0;
-    height: 0;
-    min-height: 0;
-  }
-
-  .dark .v-text-field::v-deep(.v-field) { 
-    border-radius: 100px;
-    border: 1px solid #0A1B33 !important;
-    height: 43px;
-    background-color: #FF0090;
-    border: 1.5px solid #FFFFFF !important;
-  }
-
-  .v-text-field::v-deep(.v-field) { 
-    border-radius: 100px;
-    border: 1px solid #0A1B33 !important;
-    height: 43px;
-  } 
-
-  .dark .v-text-field::v-deep(::placeholder) { 
-    color: #FFFFFF !important;
-    opacity: inherit;
-  }
-
-  .v-text-field::v-deep(::placeholder) { 
-    color: #0A1B33 !important;
-    opacity: inherit;
-  }
-
-  .dark .v-text-field::v-deep(input) { 
-    padding-top: 0 !important;
-    color: #FFFFFF !important;
-  }
-
-  .v-text-field::v-deep(input) { 
-    padding-top: 0 !important;
-  }
-  
-  .dark .button-hover:hover {
-    background-color: #E2F8FC !important;
-    box-shadow: 0px 0px 24px 0px #F3FCFE;
-  }
-
-  .button-hover:hover {
-    background-color: #FF27B3 !important;
-    box-shadow: 0px 0px 24px 0px #FF27B3;
-  }
-
- 
-  .hr {
-    width: 100%;
-    color: #D9EEF2;
-    opacity: 1 !important;
-  }
-  .text-footer {
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 146.3%;
-  }
-
-  .subtext-footer {
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 146.3%; 
-  }
-  .tw-margin-auto {
-    line-height: 20px;
-  }
-
-  .contact-text {
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  .phone-text {
-    color:  #FF0090!important;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 28.8px; 
-  }
-
-  .item-footer-text {
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22.4px;
-  }
   .copyright {
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
-    line-height: 22.4px;
   }
 
-  .container-footer {
-    width: 100%;
-  }
-  .text-colorfooter span {
-    color: #FFFFFF!important;
+  /* Línea divisoria vertical */
+  .divider-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: #e5e5e5;
+    z-index: 1;
   }
 
-  .festin-footer-size
+  /* Estilos para que los labels de los textfield se vean correctamente */
+  .v-text-field, .v-textarea {
+    margin-top: 0;
+  }
+
+ 
+  .v-field {
+    border-radius: 8px !important;
+  }
+
+  .v-text-field .v-field,
+  .v-textarea .v-field {
+    background-color: white;
+  }
+
+  .row-footer{
+      margin-top: 72px;
+      margin-bottom: 72px;
+      align-items: baseline;
+    }
+
+    :deep(.v-form .rounded-input.rounded-input .v-field),
+:deep(.v-form .rounded-input.rounded-input .v-field__outline) {
+  border-radius: 48px !important;
+}
+
+:deep(.rounded-input .v-field__input) {
+  padding-inline-start: 24px !important;
+  padding-inline-end: 24px !important;
+}
+  .color-text-gray-1
   {
-    width: 228px;
-    height: 286px;
+    color: #999999;
   }
 
-
-  @media only screen and (max-width: 767px) {
-    .col-mobile {
-      display: none!important;
+  @media only screen and (max-width: 960px) {
+    .text-left {
+      text-align: center !important;
     }
-
-    .border-theme  {
-      width: 150px!important;
+    .d-flex.align-center {
+      justify-content: center;
     }
-    .phone-text {
-      font-size: 20px;
-      line-height: 28.8px; /* 144% */
+    .d-flex.mt-3{
+      justify-content: center;
     }
-
-    .text-footer {
-      font-size: 20px;
+    
+    .divider-line {
+      display: none !important;
     }
-
-    .subtext-footer {
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 146.3%; 
+    
+    .tw-pr-8,
+    .tw-pl-8 {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
     }
-
-    .v-text-field::v-deep(input) {
-      font-size: 14px;
-      padding-top: 4px !important;
-     }
-
-     .search-button {
-      font-size: 10px;
-     }
-
-     .festin-footer-size
-      {
-        width: 150px;
-        height: 188px;
-      }
-
-      .whatsapp-float
-      {
-        width: 40px;
-        height: 40px;
-      }
-
-      .whatsapp-icon {
-        font-size: 28px;
-      }
   }
+
 </style>
