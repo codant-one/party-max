@@ -181,14 +181,13 @@ const onSubmit = () => {
                                         
                                         <VCardText class="py-0 px-0 px-md-4 mb-2">  
                                             <swiper
-                                                :pagination="{
-                                                    dynamicBullets: true,
-                                                }"
+                                                :pagination="true"
                                                 :navigation="true"
                                                 :modules="modules"
                                                 :spaceBetween="2"
                                                 :slidesPerView="isMobile ? 2 : 5"
                                                 :freeMode="true"
+                                                :loop="true"
                                                 :watchSlidesProgress="true"
                                                 :style="{ height: isMobile ? '340px' : '455px' }"
                                                 >
@@ -236,9 +235,9 @@ const onSubmit = () => {
 
 <style scoped>
     .swiper::v-deep(.swiper-pagination-bullet-active) {
-        background: white !important; /* Fondo blanco para el espacio */
-        border: 2px double #FF0090 !important; /* Borde rosado */
-        box-shadow: inset 0 0 0 3px white; /* "Recorta" el interior */
+        background: transparent !important;
+        border: 2px double #FF0090 !important;
+        box-shadow: inset 0 0 0 3px white;
         width: 16px; 
         height: 16px;
         
@@ -270,6 +269,10 @@ const onSubmit = () => {
     .swiper::v-deep(.swiper-pagination-horizontal ) {
       top: 95%;
     } 
+
+    :deep(.swiper-pagination-bullet:nth-child(n+12)) {
+        display: none !important;
+    }
 
     .swiper {
         width: 100%;
