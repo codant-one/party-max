@@ -31,19 +31,17 @@ import location from '@assets/icons/location.svg';
 import sold from '@assets/icons/sold.svg';
 import tracking from '@assets/icons/tracking.svg';
 
-import t_1 from '@assets/images/t_1.webp';
-import t_2 from '@assets/images/t_2.webp';
-import t_3 from '@assets/images/t_3.webp';
-import t_4 from '@assets/images/t_4.webp';
-import t_5 from '@assets/images/t_5.webp';
+import t_1 from '@assets/images/t_1.jpg';
+import t_2 from '@assets/images/t_2.jpg';
+import t_3 from '@assets/images/t_3.jpg';
+import t_4 from '@assets/images/t_4.jpg';
+import t_5 from '@assets/images/t_5.jpg';
 import t_6 from '@assets/images/t_6.webp';
 
-import f_1 from '@assets/images/f_1.webp';
-import f_2 from '@assets/images/f_2.webp';
-import f_3 from '@assets/images/f_3.webp';
-import f_4 from '@assets/images/f_4.webp';
-
-import frame_pink from '@assets/images/frame_pink.webp';
+import f_1 from '@assets/images/f_1.jpg';
+import f_2 from '@assets/images/f_2.jpg';
+import f_3 from '@assets/images/f_3.jpg';
+import f_4 from '@assets/images/f_4.jpg';
 
 const thumbsSwiper = ref(null);
 const modules = ref([Pagination])
@@ -52,12 +50,6 @@ const setThumbsSwiper = (swiper) => {
     thumbsSwiper.value = swiper;
 }
 
-const backgroundStyle = ref({
-  backgroundImage: '',
-  backgroundSize: 'cover'
-})
-
-const backgroundDiv = ref(null)
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 
 const banner_1 = ref([])
@@ -70,24 +62,6 @@ const banner_7 = ref([])
 const banner_8 = ref([])
 const banner_9 = ref([])
 const banner_10 = ref([])
-
-onMounted(() => {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          backgroundStyle.value.backgroundImage = `url(${frame_pink})`
-          observer.unobserve(entry.target) // Deja de observar una vez cargada
-        }
-      })
-    },
-    { threshold: 0.1 } // Cambia el valor según cuánto debe ser visible el elemento antes de cargar la imagen
-  )
-
-  if (backgroundDiv.value) {
-    observer.observe(backgroundDiv.value)
-  }
-})
 
 const isMobile = /Mobi/i.test(navigator.userAgent);
 
@@ -189,7 +163,7 @@ const tab = ref('0')
   <Loader :isLoading="isLoading"/>
   <VContainer class="mt-2 mt-md-10">
     <!-- slider -->
-    <VRow no-gutters class="transparent">
+    <VRow no-gutters class="transparent d-none">
       <VCol cols="12" md="3" class="col-mobile">
         <VSheet class="border">
           <VList class="p-0 border">
@@ -403,7 +377,7 @@ const tab = ref('0')
     </VCard>
     
     <!-- the most sold -->
-    <VCard class="mt-7 no-shadown card-information p-0">
+    <VCard class="mt-7 no-shadown card-information p-0 tw-bg-yellow_happiness_100">
       <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center card-vendido cardtitles hr-cyan">
         <span>Lo más vendido</span>
         <VSpacer />
@@ -450,7 +424,7 @@ const tab = ref('0')
       <VCardText class="px-4 px-md-7 pb-0 mt-2 mt-md-5 mb-2 mb-md-5 d-flex align-items-stretch justify-content-between card-banner5" v-if="data">
         <VRow no-gutters class="transparent mostSoldMobile">
           <VCol cols="12" md="9">
-            <VCard class="no-shadown">
+            <VCard class="no-shadown tw-bg-yellow_happiness_100">
               <VCardText class="p-0">
                 <img 
                   :src="banner_8.image" 
@@ -473,7 +447,8 @@ const tab = ref('0')
                         v-show="index < 4"
                         :key="index"
                         :product="product"
-                        :readonly="true"/>
+                        :readonly="true"
+                        :bg="`tw-bg-yellow_happiness_100`"/>
                     </VCardText>
 
                     <VCardText class="pb-0 px-0 mt-5 d-md-flex align-items-stretch justify-content-between" v-else>
@@ -505,7 +480,8 @@ const tab = ref('0')
                         v-show="index < 4"
                         :key="index"
                         :product="product"
-                        :readonly="true"/>
+                        :readonly="true"
+                        :bg="`tw-bg-yellow_happiness_100`"/>
                     </VCardText>
 
                     <VCardText class="pb-0 px-0 mt-5 d-md-flex align-items-stretch justify-content-between" v-else>
@@ -541,7 +517,8 @@ const tab = ref('0')
                   v-show="index >= 4"
                   :key="index"
                   :product="product"
-                  :readonly="true"/>
+                  :readonly="true"
+                  :bg="`tw-bg-yellow_happiness_100`"/>
               </div>
               <div v-else>
                 <Product2 
@@ -549,7 +526,8 @@ const tab = ref('0')
                   v-show="index >= 4"
                   :key="index"
                   :product="product"
-                  :readonly="true"/>
+                  :readonly="true"
+                  :bg="`tw-bg-yellow_happiness_100`"/>
               </div>
             </VCardText>
             <VCardText class="p-0 more">
@@ -603,7 +581,7 @@ const tab = ref('0')
               subcategory: 'tematica-mexicana'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt=""/>
+          <img :src="t_1" class="d-block size-rect-desktop" loading="lazy" alt=""/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
         </router-link>
         <router-link 
@@ -614,7 +592,7 @@ const tab = ref('0')
               subcategory: 'tematica-hawaiana'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt=""/>
+          <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" alt=""/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Hawaiana</span>
         </router-link>
         <router-link 
@@ -625,7 +603,7 @@ const tab = ref('0')
               subcategory: 'tematica-vallenata'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt=""/>
+          <img :src="t_3" class="d-block size-rect-desktop" loading="lazy" alt=""/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Vallenata</span>
         </router-link>
         <router-link 
@@ -636,7 +614,7 @@ const tab = ref('0')
               subcategory: 'tematica-metalizada'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_4" class="border-theme d-block size-circles-desktop" loading="lazy" alt=""/>
+          <img :src="t_4" class="d-block size-rect-desktop" loading="lazy" alt=""/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Metalizada</span>
         </router-link>
         <router-link 
@@ -647,7 +625,7 @@ const tab = ref('0')
               subcategory: 'tematica-neon'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_5" class="border-theme d-block size-circles-desktop" loading="lazy" alt="neon"/>
+          <img :src="t_5" class="d-block size-rect-desktop" loading="lazy" alt="neon"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Neón</span>
         </router-link>
       </VCardText> 
@@ -662,7 +640,7 @@ const tab = ref('0')
                   subcategory: 'tematica-mexicana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_1" class="border-theme d-block" width="150" height="150" alt=""/>
+              <img :src="t_1" class="d-block" width="150" height="150" alt=""/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </router-link>
           </VCol>
@@ -675,7 +653,7 @@ const tab = ref('0')
                   subcategory: 'tematica-hawaiana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="border-theme d-block" width="150" height="150" alt=""/>
+              <img :src="t_2" class="d-block" width="150" height="150" alt=""/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
             </router-link>
           </VCol>
@@ -688,7 +666,7 @@ const tab = ref('0')
                   subcategory: 'tematica-vallenata'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_3" class="border-theme d-block" width="150" height="150" alt=""/>
+              <img :src="t_3" class="d-block" width="150" height="150" alt=""/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </router-link>
           </VCol>
@@ -701,7 +679,7 @@ const tab = ref('0')
                   subcategory: 'tematica-metalizada'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_4" class="border-theme d-block" width="150" height="150" alt=""/>
+              <img :src="t_4" class="d-block" width="150" height="150" alt=""/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </router-link>
           </VCol>
@@ -714,7 +692,7 @@ const tab = ref('0')
                   subcategory: 'tematica-neon'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_5" class="border-theme d-block" width="150"  height="150" loading="lazy" alt="neon"/>
+              <img :src="t_5" class="d-block" width="150"  height="150" loading="lazy" alt="neon"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Neón</span>
             </router-link>
           </VCol>
@@ -736,10 +714,10 @@ const tab = ref('0')
     </VCard>
   </VContainer>
 
-  <div :style="backgroundStyle" ref="backgroundDiv" class="birthday">
+  <div class="tw-bg-magenta_100">
     <VContainer>
       <!-- birthday -->
-      <VCard class="mt-7 no-shadown card-information transparent p-0 tw-text-white">
+      <VCard class="mt-7 no-shadown card-information transparent p-0 tw-text-tertiary">
         <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center cardtitles">
           <span>Cumpleaños</span>
           <VSpacer />
@@ -751,7 +729,7 @@ const tab = ref('0')
                 subcategory: 'tematica-cumpleanos'
               }
             }"
-            class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-white hover:tw-text-yellow">
+            class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-tertiary hover:tw-text-yellow">
             Ver todos
           </router-link>
         </VCardTitle>
@@ -766,7 +744,7 @@ const tab = ref('0')
               }
             }" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt="iconos"/>
-            <span class="d-block size-theme tw-text-white mt-5">Niños</span>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Niños</span>
           </router-link>
           <router-link 
             :to="{
@@ -777,7 +755,7 @@ const tab = ref('0')
               }
             }" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="icons2"/>
-            <span class="d-block size-theme tw-text-white mt-5">Niñas</span>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Niñas</span>
           </router-link>
           <router-link 
             :to="{
@@ -788,7 +766,7 @@ const tab = ref('0')
               }
             }" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="icons3"/>
-            <span class="d-block size-theme tw-text-white mt-5">Bebes</span>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Bebes</span>
           </router-link>
           <router-link
             :to="{
@@ -801,7 +779,7 @@ const tab = ref('0')
             }"
             class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_4" class="border-theme d-white size-circles-desktop" loading="lazy" alt="icons4"/>
-            <span class="d-block size-theme tw-text-white mt-5">Adultos</span>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Adultos</span>
           </router-link>
         </VCardText> 
         <VCardText class="px-0 mt-2 mb-2 d-flex align-items-stretch justify-content-between" v-else>
@@ -1073,11 +1051,19 @@ const tab = ref('0')
     color: #FF0090 !important;
   }
 
-  .size-circles-desktop
-  {
+  .size-circles-desktop {
     width: 194px;
     height: 194px;
   }
+
+  .size-rect-desktop {
+    width: 204px;
+    height: 284px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 1px solid #D9EEF2;
+  }
+
 
   @media only screen and (max-width: 767px) {
     .col-mobile {

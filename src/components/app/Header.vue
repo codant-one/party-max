@@ -372,13 +372,6 @@
             </router-link>
           </VListItemTitle>
         </VListItem>
-        <!-- <VListItem>
-          <VListItemTitle class="d-block lineheight borderList pb-2">
-            <span @click="toggleWholesalers" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-              <span class="d-block title-menu">Precios Mayoristas</span>
-            </span>
-          </VListItemTitle>
-        </VListItem> -->
         <VListItem>
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
             <span class="d-block title-menu">PRODUCTOS</span>
@@ -594,7 +587,7 @@
         <VDivider class="mt-4"/>
         <div class="pa-2">
           <div class="d-flex px-3">
-            <span class="subtotal">SUBTOTAL</span>
+            <span class="tw-text-tertiary subtotal">SUBTOTAL</span>
             <VSpacer />
             <span>${{ formatNumber(subTotal) }}</span>
           </div>
@@ -776,9 +769,9 @@
         </VRow>
       </VContainer>
     </VAppBar>
-    <VAppBar flat class="tw-bg-primary d-print-none" :class="classFixed" ref="fixedSectionRef">
-      <VContainer class="p-0 tw-text-white d-flex justify-space-around align-center" v-if="!isMobile">
-        <div class="hover:tw-text-yellow">
+    <VAppBar flat class="d-print-none tw-border-y tw-border-grey_2" :class="classFixed" ref="fixedSectionRef">
+      <VContainer class="p-0 tw-text-tertiary d-flex justify-space-around align-center" v-if="!isMobile">
+        <div class="hover:tw-text-primary">
           <VMenu 
             v-model="menuOpen"
             transition="slide-x-transition" 
@@ -859,7 +852,7 @@
           </VMenu>
         </div>
       <!-----------------------SERVICIOS MENÚ------------------------------->
-        <div class="hover:tw-text-yellow">
+        <div class="hover:tw-text-primary">
           <VMenu 
             v-model="menuOpenS"
             transition="slide-x-transition" 
@@ -940,20 +933,13 @@
           </VMenu>
         </div>
       <!---------FIN SERVICIOS MENÚ--------------------------->
-
-        <!-- <span @click="toggleWholesalers"
-          class="tw-no-underline d-flex align-center text-center"
-          :class="route.query.wholesalers === 'true' ? 'tw-text-yellow hover:tw-text-white hover-icon-arrow-right-white' : 'tw-text-white hover:tw-text-yellow hover-icon-arrow-right'">
-            <span class="ms-2"> Precios Mayoristas </span>
-            <arrow_right class="ms-2 p-0 index" :class="route.query.wholesalers === 'true' ? 'wholesalers' : ''"/>
-        </span>   -->
         <VSpacer />
 
-        <router-link aria-label="item-about" to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Quiénes somos</router-link>
+        <router-link aria-label="item-about" to="/about-us" class="ms-5 tw-text-tertiary tw-no-underline hover:tw-text-primary">Quiénes somos</router-link>
         <VDivider class="hr" vertical/>
-        <router-link aria-label="item-blog" to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Blog</router-link>
+        <router-link aria-label="item-blog" to="/blogs" class="ms-5 tw-text-tertiary tw-no-underline hover:tw-text-primary">Blog</router-link>
         <VDivider class="hr" vertical/>
-        <router-link aria-label="item-help" to="/help" class="ms-5 tw-no-underline tw-text-white me-3 hover:tw-text-yellow">Preguntas frecuentes</router-link>
+        <router-link aria-label="item-help" to="/help" class="ms-5 tw-text-tertiary tw-no-underline me-3 hover:tw-text-primary">Preguntas frecuentes</router-link>
 
       </VContainer>
       <VContainer class="p-0 tw-text-white d-flex" v-else>
@@ -972,7 +958,7 @@
               aria-label="search"
               icon="mdi-magnify" 
               @click="search" 
-              class="tw-bg-white tw-text-primary h-100 search-button button-hover"
+              class="tw-bg-white tw-text-gray h-100 search-button button-hover"
             />
           </template>
         </VTextField>
@@ -998,7 +984,6 @@
   .subtotal {
     font-size: 16px;
     font-weight: 600;
-    color: #0A1B33;
   }
 
   .btn-register {
@@ -1011,7 +996,7 @@
 
   .btn-order {
     border-radius: 32px;
-    border: 1px solid var(--Maastricht-Blue, #0A1B33);
+    border: 1px solid var(--Maastricht-tertiary, #0A1B33);
     font-size: 14px;
     font-style: normal;
     font-weight: 700;
@@ -1020,8 +1005,8 @@
   }
 
   .btn-order:hover {
-    border: 1px solid var(--Maastricht-Blue, #0A1B33) !important;
-    background: var(--Maastricht-Blue, #0A1B33) !important;
+    border: 1px solid var(--Maastricht-tertiary, #0A1B33) !important;
+    background: var(--Maastricht-tertiary, #0A1B33) !important;
     color: #FFFFFF!important;
   }
 
@@ -1112,18 +1097,17 @@
 
   .v-text-field::v-deep(.v-field) { 
     border-radius: 100px;
-    border: 1.5px solid #FF0090 !important;
+    border: 1.5px solid #0A1B33 !important;
     height: 43px;
   } 
 
   .v-text-field::v-deep(::placeholder) { 
-    color: #FF0090 !important;
+    color: #999999 !important;
     opacity: inherit;
   }
 
   .v-text-field::v-deep(input) { 
     padding-top: 0 !important;
-    color: #FF0090 !important;
   }
 
   .button-hover:hover {

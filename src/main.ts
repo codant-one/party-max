@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createHead } from '@vueuse/head';
 import { PerfectScrollbarPlugin } from 'vue3-perfect-scrollbar';
+import '@/assets/main.css'; 
 import App from './App.vue'
 import router from './router'
 import vuetify from './plugins/vuetify'

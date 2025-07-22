@@ -2,13 +2,6 @@
   
   import { ref } from 'vue'
   import icophone from '@assets/icons/ic_phone.svg?inline';
-  import icopayment1 from '@assets/icons/payment-1.svg';
-  import icopayment2 from '@assets/icons/payment-2.svg';
-  import icopayment3 from '@assets/icons/payment-3.svg';
-  import icopayment4 from '@assets/icons/payment-4.svg';
-  import icopayment5 from '@assets/icons/payment-5.svg';
-  import icopayment6 from '@assets/icons/payment-6.svg';
-
 
   import instagram from '@assets/icons/instagram.svg?inline';
   import facebook from '@assets/icons/facebook.svg?inline';
@@ -53,7 +46,7 @@
       <VContainer class="my-10">
         <VRow no-gutters class="tw-text-tertiary">
           <VCol cols="12" md="5" class="d-flex xs:tw-text-center md:tw-text-left mb-4 mb-md-0">
-            <p class="line-p"><span class="text-footer">Conoce todas nuestras ofertas</span> <br>
+            <p class="tw-margin-auto"><span class="text-footer">Conoce todas nuestras ofertas</span> <br>
             <span class="subtext-footer">Regístrate ahora a nuestro newsletter.</span></p>
           </VCol> 
           <VCol cols="12" md="7" class="d-flex align-center dark" v-if="isProduct">  
@@ -84,83 +77,73 @@
     
     <VDivider class="hr d-none" />
 
-    <VContainer class="mt-5 mt-md-16 borderBottom">
-      <VRow no-gutters class="tw-text-tertiary">
-        <VCol cols="7" md="3" class="d-block align-center text-left">
-          <span class="contact-text">Contactanos</span>
-          <div class="d-flex text-left mt-3 mt-md-12 mb-1 mb-md-5">
-            <icophone class="mt-1 me-2"/>
-              <span class="d-flex align-center tw-text-tertiary font-size-16 pb-2 phone-text">
-                300 4659 997         
-              </span>
-          </div>
-          
-          <span class="item-footer-text">Calle 13 # 69 - 06 , Bogotá</span> <br>
-          <span class="item-footer-text">fiesta@partymax.co</span>
+    <div class="d-flex flex-column w-100 mt-5 mt-md-16 tw-border tw-border-b-grey_2">
+      <VContainer>
+        <VRow no-gutters class="tw-text-tertiary">
+          <VCol cols="7" md="3" class="d-block align-center text-left">
+            <span class="contact-text">Contactanos</span>
+            <div class="d-flex text-left mt-3 mt-md-12 mb-1 mb-md-5">
+              <icophone class="mt-1 me-2"/>
+                <span class="d-flex align-center tw-text-tertiary font-size-16 pb-2 phone-text">
+                  300 4659 997         
+                </span>
+            </div>
+            
+            <span class="item-footer-text">Calle 13 # 69 - 06 , Bogotá</span> <br>
+            <span class="item-footer-text">fiesta@partymax.co</span>
 
-          <div class="d-flex align-center text-right mt-3 mt-md-8">
-            <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="m-0" aria-label="instagram">
-              <instagram class="mt-1 me-2"/>
-            </a>
-            <a href="https://www.facebook.com/partymaxcolombia" target="_blank" class="m-0" aria-label="facebook">
-              <facebook class="mt-1 me-2"/>
-            </a>
-            <a href="https://wa.link/wvdoxg" target="_blank" class="m-0" aria-label="whatsapp">
-              <whatsapp_mobile class="mt-1 me-2" />
-            </a>
-          </div>
-        </VCol>
+            <div class="d-flex align-center text-right mt-3 mt-md-8">
+              <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="m-0" aria-label="instagram">
+                <instagram class="mt-1 me-2"/>
+              </a>
+              <a href="https://www.facebook.com/partymaxcolombia" target="_blank" class="m-0" aria-label="facebook">
+                <facebook class="mt-1 me-2"/>
+              </a>
+              <a href="https://wa.link/wvdoxg" target="_blank" class="m-0" aria-label="whatsapp">
+                <whatsapp_mobile class="mt-1 me-2" />
+              </a>
+            </div>
+          </VCol>
 
-        <VCol cols="12" md="4" class="d-flex align-center col-mobile"></VCol>
+          <VCol cols="12" md="4" class="d-flex align-center col-mobile"></VCol>
 
-        <VCol cols="12" md="2" class="d-flex flex-column align-start text-left tw-gap-3 col-mobile">
-          <router-link to="/about-us" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
-            Quiénes somos
-          </router-link>
-          <!-- <router-link to="/products?wholesalers=true" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-            Mayoristas
-          </router-link> -->
-          <router-link to="/blogs" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
-            Blog
-          </router-link>
-          <router-link to="/help" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
-            Preguntas frecuentes
-          </router-link>
-          <router-link to="/terms-and-conditions" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
-            Términos y condiciones
-          </router-link>
-          <router-link to="/privacy-statement" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
-            Declaración de privacidad
-          </router-link>
-          <router-link to="/data-protection" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
-            Protección de datos
-          </router-link>
-        </VCol>
-        <VCol cols="5" md="3" class="align-center text-right">
-          <img :src="festinfooter" class="festin-footer-size" alt="festin-footer" loading="lazy"/>
-        </VCol>
-      </VRow>
+          <VCol cols="12" md="2" class="d-flex flex-column align-start text-left tw-gap-3 col-mobile">
+            <router-link to="/about-us" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
+              Quiénes somos
+            </router-link>
+            <!-- <router-link to="/products?wholesalers=true" class="item-footer-text tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
+              Mayoristas
+            </router-link> -->
+            <router-link to="/blogs" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
+              Blog
+            </router-link>
+            <router-link to="/help" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
+              Preguntas frecuentes
+            </router-link>
+            <router-link to="/terms-and-conditions" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
+              Términos y condiciones
+            </router-link>
+            <router-link to="/privacy-statement" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
+              Declaración de privacidad
+            </router-link>
+            <router-link to="/data-protection" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
+              Protección de datos
+            </router-link>
+          </VCol>
+          <VCol cols="5" md="3" class="align-center text-right">
+            <img :src="festinfooter" class="festin-footer-size" alt="festin-footer" loading="lazy"/>
+          </VCol>
+        </VRow>
+      </VContainer>
       <VDivider class="hr mt-10 d-none d-md-block" />
-    </VContainer>
+    </div>
 
-    <VContainer class="mt-2">
-      <VRow no-gutters class="tw-text-tertiary">
-        <VCol cols="12" md="6" class="d-block align-center text-left col-copy">
-          <p class="copyright">©{{currentYear}} PartyMax. All Rights Reserved</p>
-        </VCol>
-        <VCol cols="12" md="6" class="d-flex align-center text-right col-mobile">
-          <VSpacer />
-          <span class="copyright">Pagos seguros con</span>
-          <img :src="icopayment1" alt="icopayment1" width="45" class="me-3 ms-8"/>
-          <img :src="icopayment2" alt="icopayment2" width="44" class="me-3"/>
-          <img :src="icopayment3" alt="icopayment3" width="44" class="me-3"/>
-          <img :src="icopayment4" alt="icopayment4" width="46" class="me-3"/>
-          <img :src="icopayment5" alt="icopayment5" width="45" class="me-3"/>
-          <img :src="icopayment6" alt="icopayment6" width="46"/>
-        </VCol>
-      </VRow>
-
-    </VContainer>
+    <div class="d-flex w-100 tw-gap-2 mt-2 tw-p-5 align-center text-center tw-text-tertiary justify-content-center">
+      <span class="copyright">©{{currentYear}} PartyMax. All Rights Reserved</span>
+      <router-link to="/terms-and-conditions" class="copyright tw-no-underline tw-text-tertiary hover:tw-text-primary">
+        Términos y condiciones
+      </router-link>
+    </div>
     
   </VFooter>
 </template>
@@ -266,7 +249,7 @@
     font-weight: 400;
     line-height: 146.3%; 
   }
-  .line-p {
+  .tw-margin-auto {
     line-height: 20px;
   }
 
@@ -321,18 +304,6 @@
     .phone-text {
       font-size: 20px;
       line-height: 28.8px; /* 144% */
-    }
-
-    .col-copy p {
-      text-align: center !important;
-    }
-
-    .line-p {
-      margin: auto;
-    }
-
-    .borderBottom {
-      border-bottom: 1px solid #D9EEF2;
     }
 
     .text-footer {

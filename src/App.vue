@@ -9,7 +9,6 @@ import Header from '@/components/app/Header.vue'
 import Footer from '@/components/app/Footer.vue'
 import Filters from '@/components/app/Filters.vue'
 import FilterServices from '@/components/app/FilterServices.vue'
-import home from '@assets/images/home.webp';
 import categories from '@assets/images/categories.jpg';
 import register from '@assets/images/register.jpg';
 import blogs from '@assets/images/blogs.jpg';
@@ -101,13 +100,13 @@ async function fetchData() {
 
   if(route.name === 'dashboard' || route.name === 'register_confirm') {
     background.value = 'tw-bg-green'
+  } else if(route.name === 'home') {
+    background.value = 'tw-bg-light_cyan_2'
   } else {
     background.value = 'tw-bg-white'
   }
 
-  if(route.name === 'home')
-    bg = home
-  else if(route.name === 'categories' || route.name === 'wholesalers')
+  if(route.name === 'categories' || route.name === 'wholesalers')
     bg = categories
   else if(route.name === 'register' || route.name === 'type_client' || route.name === 'form_client' || 
           route.name === 'form_supplier' || route.name === 'login' || route.name === 'success_person' || 
