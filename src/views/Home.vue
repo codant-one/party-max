@@ -2,11 +2,12 @@
 
 import { ref } from 'vue'
 import { useHomeStores } from '@/stores/home'
-import { Pagination } from 'swiper/modules';
+import { Navigation, Pagination, Mousewheel, Keyboard } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 import Product1 from '@/components/product/Product1.vue'
 import Product2 from '@/components/product/Product2.vue'
@@ -45,6 +46,7 @@ import f_4 from '@assets/images/f_4.jpg';
 
 const thumbsSwiper = ref(null);
 const modules = ref([Pagination])
+const modules2 = ref([Pagination])
 
 const setThumbsSwiper = (swiper) => {
     thumbsSwiper.value = swiper;
@@ -58,10 +60,6 @@ const banner_3 = ref([])
 const banner_4 = ref([])
 const banner_5 = ref([])
 const banner_6 = ref([])
-const banner_7 = ref([])
-const banner_8 = ref([])
-const banner_9 = ref([])
-const banner_10 = ref([])
 
 const isMobile = /Mobi/i.test(navigator.userAgent);
 
@@ -117,17 +115,6 @@ async function fetchData() {
   banner_6.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 6).mobile : banners.value.find(item => item.order_id === 6).image);
   banner_6.value.url = banners.value.find(item => item.order_id === 6).url;
 
-  banner_7.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 7).mobile : banners.value.find(item => item.order_id === 7).image);
-  banner_7.value.url = banners.value.find(item => item.order_id === 7).url;
-
-  banner_8.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 8).mobile : banners.value.find(item => item.order_id === 8).image);
-  banner_8.value.url = banners.value.find(item => item.order_id === 8).url;
-
-  banner_9.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 9).mobile : banners.value.find(item => item.order_id === 9).image);
-  banner_9.value.url = banners.value.find(item => item.order_id === 9).url;
-
-  banner_10.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 10).mobile : banners.value.find(item => item.order_id === 10).image);
-  banner_10.value.url = banners.value.find(item => item.order_id === 10).url;
 
   preloadFirstImage()
 
@@ -161,146 +148,51 @@ const tab = ref('0')
 <template>
   <WelcomePopup />
   <Loader :isLoading="isLoading"/>
-  <VContainer class="mt-2 mt-md-10">
-    <!-- slider -->
-    <VRow no-gutters class="transparent d-none">
-      <VCol cols="12" md="3" class="col-mobile">
-        <VSheet class="border">
-          <VList class="p-0 border">
-            <template v-for="(item, i) in items" :key="i" :value="item">
-              <router-link         
-                v-if="i < 7"
-                :to="{
-                  name: 'categories',
-                  params: {
-                    slug: item.slug
-                  }
-                }"
-                class="tw-no-underline tw-text-tertiary"
+  <div class="tw-flex tw-flex-col md:tw-flex-row tw-mt-2 md:tw-mt-3">
+    <div class="w-75">
+      <div class="tw-bg-gray-200 tw-flex tw-items-center tw-justify-center">
+          <swiper
+            v-if="data"
+            :pagination="true"
+            :modules="modules"
+            class="mySwiper tw-w-full tw-h-full"
+          >
+            <swiper-slide
+              v-for="(item,i) in sliders"
+              :key="i"
+              class="tw-w-full tw-h-full"
+            >
+              <img 
+                :src="baseURL + (isMobile ? item.mobile : item.image)"
+                :alt="'slider'+(i+1)"
+                class="tw-w-full tw-h-full tw-object-cover"
+                loading="lazy"
+                @click="redirectTo(item.url)"
               >
-                <VListItem
-                  color="primary"
-                  variant="plain"
-                  class="list py-0  tw-text-tertiary hover:tw-bg-yellow"
-                >
-                  <template v-slot:prepend>
-                    <img :src="item.icon" class="me-3 ms-4" loading="lazy" :alt ="item.slug"/>
-                  </template>
-                  <VListItemTitle v-text="item.text" class="tw-text-tertiary"></VListItemTitle>
-                </VListItem>
-              </router-link>
-              <!-- <router-link         
-                v-else
-                :to="{
-                  name: 'services',
-                  query: {
-                    category: item.slug
-                  }
-                }"
-                class="tw-no-underline tw-text-tertiary"
-              >
-                <VListItem
-                  color="primary"
-                  variant="plain"
-                  class="list py-0  tw-text-tertiary hover:tw-bg-yellow"
-                >
-                  <template v-slot:prepend>
-                    <img :src="item.icon" class="me-3 ms-4" loading="lazy" :alt ="item.slug"/>
-                  </template>
-                  <VListItemTitle v-text="item.text" class="tw-text-tertiary"></VListItemTitle>
-                </VListItem>
-              </router-link> -->
-              <VListItem
-                v-else
-                color="primary"
-                variant="plain"
-                class="list py-0 tw-text-tertiary">
-                <template v-slot:prepend>
-                  <img :src="item.icon" class="me-3 ms-4 soon-img" :alt ="item.slug"/>
-                </template>
-                <VListItemTitle class="tw-text-tertiary d-flex align-center">
-                  <span class="soon-items">{{ item.text }}</span>
-                  <span class="soon-text d-none"> Próximamente </span>
-                </VListItemTitle>
-              </VListItem>
-            </template>
-          </VList>
-        </VSheet>
-      </VCol>
-      <VCol cols="12" md="9" class="tw-bg-white border-categories">
-        <VRow no-gutters v-if="data">
-          <VCol cols="12" md="7" class="pslider" aria-label="Galería">
-            <VCarousel 
-              cycle
-              class="carousel-home"
-              color="white"
-              :show-arrows="false" 
-              :disabled="false"
-              hide-delimiter-background
-              >
-                <VCarouselItem
-                  v-for="(item,i) in sliders"
-                  :key="i"
-                  :src="baseURL + (isMobile ? item.mobile : item.image)"
-                  :lazy-src="baseURL + item.mobile"
-                  :lazy="true"
-                  :alt="'slider'+(i+1)"
-                  :aria-label="'slider'+(i+1)"
-                  class="img-gallery"
-                  cover
-                  @click="redirectTo(item.url)"
-                  priority
-                  :width="isMobile ? '358' : '560'"
-                  :height="isMobile ? '180' : '391'"
-                >
-                  <img 
-                    :src="baseURL + (isMobile ? item.mobile : item.image)"
-                    :alt="'slider'+(i+1)"
-                    loading="lazy"
-                    :width="isMobile ? '358' : '560'"
-                    :height="isMobile ? '180' : '391'"
-                  >
-                </VCarouselItem>
-              </VCarousel>
-          </VCol>
-          <VCol cols="12" md="5" class="pslider">
-            <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent h-100">
-              <VCol cols="6" md="6" class="pslider2">
-                  <img :src="banner_1.image" class="img-gallery" alt="pinatas" @click="redirectTo(banner_1.url)" />
-              </VCol>
-              <VCol cols="6" md="6" class="pslider2">
-                  <img :src="banner_2.image" class="border-top-right img-gallery" alt="ponques" @click="redirectTo(banner_2.url)"/>
-              </VCol>
-              <VCol cols="12" class="pslider3">
-                  <img :src="banner_3.image" 
-                    fetchpriority="high" 
-                    class="img-gallery w-100 img-globo" 
-                    alt="globos" 
-                    loading="lazy" 
-                    width="330"
-                    height="160" 
-                    @click="redirectTo(banner_3.url)"
-                  />
-              </VCol>
-            </VRow>
-          </VCol>
-          <VCol cols="12" md="7" class="pslider4" :class="isMobile ? 'order-last order-md-first pslider5' : ''">
-              <img :src="banner_4.image" alt="furniture" class="img-gallery furniture" :class="isMobile ? 'slider5Img' : ''" cover @click="redirectTo(banner_4.url)"/>
-          </VCol>
-          <VCol cols="12" md="5" class="pslider4">
-            <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent h-100">
-              <VCol cols="6" md="6" class="pslider2">
-                  <img :src="banner_5.image" class="img-gallery" alt="eventos" @click="redirectTo(banner_5.url)"/>
-              </VCol>
-              <VCol cols="6" md="6" class="pslider2">
-                  <img :src="banner_6.image" class="border-bottom-right img-gallery" alt="personalizados" @click="redirectTo(banner_6.url)"/>
-              </VCol>
-            </VRow>
-          </VCol>
-        </VRow>
-      </VCol>     
-    </VRow>
-
+            </swiper-slide>
+          </swiper>
+      </div>
+    </div>
+    <div class="w-25 tw-flex tw-flex-col tw-justify-between">
+      <div class="h-50">
+        <img
+          :src="banner_1.image"
+          alt="banner4"
+          class="tw-w-full tw-h-full tw-object-cover tw-cursor-pointer"
+          @click="redirectTo(banner_1.url)"
+        />
+      </div>
+      <div class="h-50">
+        <img
+          :src="banner_2.image"
+          alt="banner5"
+          class="tw-w-full tw-h-full tw-object-cover tw-cursor-pointer"
+          @click="redirectTo(banner_2.url)"
+        />
+      </div>
+    </div>
+  </div>
+  <VContainer>
     <!-- card -->
     <VCard class="mt-7 no-shadown card-information">
       <VCardItem class="p-0">
@@ -372,7 +264,7 @@ const tab = ref('0')
     <!-- banner 2 -->
     <VCard class="mt-7 no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
-        <img :src="banner_7.image" cover @click="redirectTo(banner_7.url)" class="img-gallery" alt="banner7"/>
+        <img :src="banner_3.image" cover @click="redirectTo(banner_3.url)" class="img-gallery" alt="banner7"/>
       </VCardItem>  
     </VCard>
     
@@ -427,11 +319,11 @@ const tab = ref('0')
             <VCard class="no-shadown tw-bg-yellow_happiness_100">
               <VCardText class="p-0">
                 <img 
-                  :src="banner_8.image" 
+                  :src="banner_4.image" 
                   class="border-img img-gallery"
                   alt="banner8"
                   cover
-                  @click="redirectTo(banner_8.url)"
+                  @click="redirectTo(banner_4.url)"
                   />
               </VCardText>
               <VCardText class="p-0">
@@ -545,12 +437,12 @@ const tab = ref('0')
     <VCard class="mt-7 no-shadown card-information p-0 d-flex transparent card-banner34">
         <VCard class="no-shadown card-information p-0 w-50 grid-item w-100">
             <VCardItem class="p-0">
-              <img :src="banner_9.image" cover @click="redirectTo(banner_9.url)"  class="img-gallery" alt="banner9"/>
+              <img :src="banner_5.image" cover @click="redirectTo(banner_5.url)"  class="img-gallery" alt="banner9"/>
             </VCardItem> 
         </VCard>
         <VCard class="no-shadown card-information p-0 w-50 ms-5 grid-item w-100">
             <VCardItem class="p-0">
-              <img :src="banner_10.image" cover @click="redirectTo(banner_10.url)" class="img-gallery" alt="banner10"/>
+              <img :src="banner_6.image" cover @click="redirectTo(banner_6.url)" class="img-gallery" alt="banner10"/>
             </VCardItem>
         </VCard>
     </VCard>
@@ -889,10 +781,6 @@ const tab = ref('0')
     padding: 0 2px !important;
   }
 
-  .furniture {
-    height: 192px !important;
-  }
-
   .pslider4 {
     padding: 0 1px!important;
   }
@@ -1035,10 +923,6 @@ const tab = ref('0')
     background-color: teal !important;
   }
 
-  .carousel-home {
-    height: 391px !important;
-  }
-
   .v-tab::v-deep(.v-btn__content) {
     font-size: 16px;
     font-style: normal;
@@ -1092,11 +976,6 @@ const tab = ref('0')
       border-bottom-right-radius: 16px!important;
       border-bottom-left-radius: 16px!important;
       margin-top: 12px;
-    }
-
-    .carousel-home {
-      height: 180px !important;
-      border-radius:  16px 16px 0 0 !important;
     }
 
     .border-categories {
@@ -1153,15 +1032,6 @@ const tab = ref('0')
       padding: 0!important;
     }
 
-    .v-carousel::v-deep(.v-btn--icon.v-btn--density-default) {
-      width: calc(var(--v-btn-height) + 1px);
-      height: calc(var(--v-btn-height) + 1px);
-    }
-
-    .v-carousel::v-deep(.v-icon--size-default) {
-      font-size: calc(var(--v-icon-size-multiplier) * 1.1em);
-    }
-
     .px-mobile {
       padding-right: 10px !important;
       padding-left: 10px !important;
@@ -1173,10 +1043,6 @@ const tab = ref('0')
 
     .border-bottom-right {
       border-radius: 0 !important;
-    }
-
-    .furniture {
-      height: auto !important;
     }
 
     .pslider4 {
