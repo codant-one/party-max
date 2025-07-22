@@ -148,48 +148,53 @@ const tab = ref('0')
 <template>
   <WelcomePopup />
   <Loader :isLoading="isLoading"/>
-  <div class="tw-flex tw-flex-col md:tw-flex-row tw-mt-2 md:tw-mt-3">
-    <div class="w-75">
-      <div class="tw-bg-gray-200 tw-flex tw-items-center tw-justify-center">
-          <swiper
-            v-if="data"
-            :pagination="true"
-            :modules="modules"
-            class="mySwiper tw-w-full tw-h-full"
+  <div class="tw-flex tw-flex-col md:tw-flex-row tw-mt-2 md:tw-mt-3 tw-h-[683px]">
+    <div class="tw-w-[75%] tw-h-[683px]">
+     <swiper
+        v-if="data"
+        :pagination="true"
+        :modules="modules"
+        class="mySwiper"
+      >
+        <swiper-slide
+          v-for="(item,i) in sliders"
+          :key="i"
+          class="tw-w-full tw-h-[683px]"
+        >
+          <img 
+            :src="baseURL + (isMobile ? item.mobile : item.image)"
+            :alt="'slider'+(i+1)"
+            class="tw-w-full tw-h-full tw-object-cover"
+            loading="lazy"
+            @click="redirectTo(item.url)"
           >
-            <swiper-slide
-              v-for="(item,i) in sliders"
-              :key="i"
-              class="tw-w-full tw-h-full"
-            >
-              <img 
-                :src="baseURL + (isMobile ? item.mobile : item.image)"
-                :alt="'slider'+(i+1)"
-                class="tw-w-full tw-h-full tw-object-cover"
-                loading="lazy"
-                @click="redirectTo(item.url)"
-              >
-            </swiper-slide>
-          </swiper>
-      </div>
+        </swiper-slide>
+      </swiper>
     </div>
-    <div class="w-25 tw-flex tw-flex-col tw-justify-between">
-      <div class="h-50">
-        <img
-          :src="banner_1.image"
-          alt="banner4"
-          class="tw-w-full tw-h-full tw-object-cover tw-cursor-pointer"
-          @click="redirectTo(banner_1.url)"
-        />
-      </div>
-      <div class="h-50">
-        <img
-          :src="banner_2.image"
-          alt="banner5"
-          class="tw-w-full tw-h-full tw-object-cover tw-cursor-pointer"
-          @click="redirectTo(banner_2.url)"
-        />
-      </div>
+    <div class="tw-w-[25%] tw-flex tw-flex-col tw-h-[683px]">
+       <!-- IMAGEN 1 COMO FONDO -->
+    <div
+      class="tw-h-1/2 tw-w-full tw-cursor-pointer tw-bg-cover tw-bg-center"
+      :style="{ backgroundImage: 'url(' + banner_1.image + ')' }"
+      @click="redirectTo(banner_1.url)"
+      role="img"
+      :aria-label="'banner4'"
+    >
+      <!-- Este div está intencionadamente vacío. Su fondo es la imagen. -->
+    </div>
+
+    <!-- IMAGEN 2 COMO FONDO -->
+    <div
+      class="tw-h-1/2 tw-w-full tw-cursor-pointer tw-bg-cover tw-bg-center"
+      :style="{ backgroundImage: 'url(' + banner_2.image + ')' }"
+      @click="redirectTo(banner_2.url)"
+      role="img"
+      :aria-label="'banner5'"
+    >
+      <!-- Este div está intencionadamente vacío. Su fondo es la imagen. -->
+    </div>
+
+
     </div>
   </div>
   <VContainer>
