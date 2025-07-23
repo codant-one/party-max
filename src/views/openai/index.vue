@@ -2,7 +2,7 @@
 
 import { requiredValidator} from '@validators'
 import { useOpenaiStores } from '@/stores/openai'
-import { Pagination } from 'swiper/modules';
+import { Pagination, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
 import 'swiper/css';
@@ -19,7 +19,7 @@ const isMobile = /Mobi/i.test(navigator.userAgent);
 const isDialogVisible = ref(false)
 const openaiStore = useOpenaiStores();
 
-const modules = ref([Pagination])
+const modules = ref([Pagination, Navigation])
 
 const event_type = ref(null)
 const refVForm = ref()
@@ -181,15 +181,15 @@ const onSubmit = () => {
                                         
                                         <VCardText class="py-0 px-0 px-md-4 mb-2">  
                                             <swiper
-                                                :pagination="{
-                                                    dynamicBullets: true,
-                                                }"
+                                                :pagination="true"
+                                                :navigation="true"
                                                 :modules="modules"
                                                 :spaceBetween="2"
                                                 :slidesPerView="isMobile ? 2 : 5"
                                                 :freeMode="true"
+                                                :loop="true"
                                                 :watchSlidesProgress="true"
-                                                :style="{ height: isMobile ? '340px' : '405px' }"
+                                                :style="{ height: isMobile ? '340px' : '455px' }"
                                                 >
                                                 <swiper-slide
                                                     v-for="(item, i) in value"
@@ -235,12 +235,43 @@ const onSubmit = () => {
 
 <style scoped>
     .swiper::v-deep(.swiper-pagination-bullet-active) {
-        background: #FF0090 !important;
+        background: transparent !important;
+        border: 2px double #FF0090 !important;
+        box-shadow: inset 0 0 0 3px white;
+        width: 16px; 
+        height: 16px;
+        
+        /* Círculo interior rosado */
+        &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 6px;  /* Tamaño del círculo rosado */
+            height: 6px;
+            background: #FF0090;
+            border-radius: 50%;
+        }
+    }
+
+    :deep(.swiper-pagination-bullets-dynamic) {
+        overflow: visible !important;
+    }
+
+    :deep(.swiper-pagination-bullet),
+    :deep(.swiper-pagination-bullet-active-next),
+    :deep(.swiper-pagination-bullet-active-next-next) {
+        width: 16px; 
+        height: 16px;
     }
     
     .swiper::v-deep(.swiper-pagination-horizontal ) {
       top: 95%;
     } 
+
+    :deep(.swiper-pagination-bullet:nth-child(n+12)) {
+        display: none !important;
+    }
 
     .swiper {
         width: 100%;
@@ -261,6 +292,32 @@ const onSubmit = () => {
         width: 100%;
         height: 100%;
         object-fit: cover;
+    }
+
+    :deep(.swiper-button-next),
+    :deep(.swiper-button-prev) {
+        background-color: #FFC549 !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        border-radius: 11px !important;
+        width: 40px !important;
+        height: 40px !important;
+        top: 5% !important;
+    }
+
+    :deep(.swiper-button-next) {
+        background-image: url('@/assets/icons/arrow-square-right.svg') !important;
+        right: 10px !important;
+    }
+
+    :deep(.swiper-button-prev) {
+        background-image: url('@/assets/icons/arrow-square-left.svg') !important;
+        left: 2px !important;
+    }
+
+    :deep(.swiper-button-next::after),
+    :deep(.swiper-button-prev::after) {
+        content: '' !important; /* Elimina flecha default */
     }
 
     .card-ia::v-deep(h3) {
@@ -378,6 +435,11 @@ const onSubmit = () => {
         .card-container-generator {
             padding: 20px;
             width: auto;
-        } 
+        }
+
+        :deep(.swiper-button-next),
+        :deep(.swiper-button-prev) {
+            display: none;
+        }
     }
 </style>
