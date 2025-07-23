@@ -2,12 +2,11 @@
 
 import { ref } from 'vue'
 import { useHomeStores } from '@/stores/home'
-import { Navigation, Pagination, Mousewheel, Keyboard } from 'swiper/modules';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
-import 'swiper/css/navigation';
 
 import Product1 from '@/components/product/Product1.vue'
 import Product2 from '@/components/product/Product2.vue'
@@ -15,17 +14,6 @@ import Loader from '@/components/common/Loader.vue'
 import WelcomePopup from '@/components/app/WelcomePopup.vue'
 
 import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
-
-import icon1 from '@assets/icons/fiestas-infantiles.svg';
-import icon2 from '@assets/icons/fiestas-tematicas.svg';
-import icon3 from '@assets/icons/fechas-especiales.svg';
-import icon4 from '@assets/icons/hora-loca.svg';
-import icon5 from '@assets/icons/desechables.svg';
-import icon6 from '@assets/icons/decoracion.svg';
-import icon7 from '@assets/icons/sorpresas.svg';
-import icon8 from '@assets/icons/mobiliario.svg';
-import icon9 from '@assets/icons/dulces.svg';
-import icon10 from '@assets/icons/animación.svg';
 
 import motorcycle from '@assets/icons/motorcycle.svg';
 import location from '@assets/icons/location.svg';
@@ -46,7 +34,7 @@ import f_4 from '@assets/images/f_4.jpg';
 
 const thumbsSwiper = ref(null);
 const modules = ref([Pagination])
-const modules2 = ref([Pagination])
+const modulesSlider = ref([Autoplay, Pagination, Navigation])
 
 const setThumbsSwiper = (swiper) => {
     thumbsSwiper.value = swiper;
@@ -62,19 +50,6 @@ const banner_5 = ref([])
 const banner_6 = ref([])
 
 const isMobile = /Mobi/i.test(navigator.userAgent);
-
-const items = ref([
-  { text: 'Fiestas infantiles', icon: icon1, slug: 'fiestas-infantiles' },
-  { text: 'Fiestas temáticas', icon: icon2, slug: 'fiestas-tematicas' },
-  { text: 'Fechas especiales', icon: icon3, slug: 'fechas-especiales' },
-  { text: 'Hora loca', icon: icon4, slug: 'hora-loca' },
-  { text: 'Desechables', icon: icon5, slug: 'desechables' },
-  { text: 'Decoración', icon: icon6, slug: 'decoracion' },
-  { text: 'Sorpresas', icon: icon7, slug: 'sorpresas' },
-  { text: 'Mobiliario', icon: icon8, slug: 'renta-de-mobiliario' },
-  { text: 'Dulces', icon: icon9, slug: 'dulces-y-ponques' },
-  { text: 'Animadores de Fiestas', icon: icon10, slug: 'animadores-de-fiestas' }
-])
 
 const sliders = ref([])
 const banners = ref([])
@@ -148,53 +123,50 @@ const tab = ref('0')
 <template>
   <WelcomePopup />
   <Loader :isLoading="isLoading"/>
-  <div class="tw-flex tw-flex-col md:tw-flex-row tw-mt-2 md:tw-mt-3 tw-h-[683px]">
-    <div class="tw-w-[75%] tw-h-[683px]">
+  <div class="d-flex flex-column flex-md-row tw-mt-2 mt-3 md:tw-h-[683px]">
+    <div class="md:tw-w-[75%] md:tw-h-[683px]">
      <swiper
         v-if="data"
         :pagination="true"
-        :modules="modules"
+        :navigation="true"
+        :modules="modulesSlider"    
+        :loop="true"
+        :autoplay="{
+          delay: 2500,
+          disableOnInteraction: false,
+        }"
         class="mySwiper"
       >
         <swiper-slide
           v-for="(item,i) in sliders"
           :key="i"
-          class="tw-w-full tw-h-[683px]"
+          class="w-100 md:tw-h-[683px]"
         >
           <img 
             :src="baseURL + (isMobile ? item.mobile : item.image)"
             :alt="'slider'+(i+1)"
-            class="tw-w-full tw-h-full tw-object-cover"
+            class="w-100 h-100 tw-object-cover"
             loading="lazy"
             @click="redirectTo(item.url)"
           >
         </swiper-slide>
       </swiper>
     </div>
-    <div class="tw-w-[25%] tw-flex tw-flex-col tw-h-[683px]">
-       <!-- IMAGEN 1 COMO FONDO -->
-    <div
-      class="tw-h-1/2 tw-w-full tw-cursor-pointer tw-bg-cover tw-bg-center"
-      :style="{ backgroundImage: 'url(' + banner_1.image + ')' }"
-      @click="redirectTo(banner_1.url)"
-      role="img"
-      :aria-label="'banner4'"
-    >
-      <!-- Este div está intencionadamente vacío. Su fondo es la imagen. -->
-    </div>
-
-    <!-- IMAGEN 2 COMO FONDO -->
-    <div
-      class="tw-h-1/2 tw-w-full tw-cursor-pointer tw-bg-cover tw-bg-center"
-      :style="{ backgroundImage: 'url(' + banner_2.image + ')' }"
-      @click="redirectTo(banner_2.url)"
-      role="img"
-      :aria-label="'banner5'"
-    >
-      <!-- Este div está intencionadamente vacío. Su fondo es la imagen. -->
-    </div>
-
-
+    <div class="md:tw-w-[25%] d-flex flex-column md:tw-h-[683px]">
+      <div
+          class="h-50 w-100 tw-cursor-pointer tw-bg-cover tw-bg-center"
+          :style="{ backgroundImage: 'url(' + banner_1.image + ')' }"
+          @click="redirectTo(banner_1.url)"
+          role="img"
+          :aria-label="'banner4'">
+      </div>
+      <div
+        class="h-50 w-100 tw-cursor-pointer tw-bg-cover tw-bg-center"
+        :style="{ backgroundImage: 'url(' + banner_2.image + ')' }"
+        @click="redirectTo(banner_2.url)"
+        role="img"
+        :aria-label="'banner5'"
+      ></div>
     </div>
   </div>
   <VContainer>
