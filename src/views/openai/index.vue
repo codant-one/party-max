@@ -246,7 +246,6 @@ const onSubmit = () => {
             content: '';
             position: absolute;
             top: 50%;
-            left: 50%;
             transform: translate(-50%, -50%);
             width: 6px;  /* Tamaño del círculo rosado */
             height: 6px;
