@@ -74,9 +74,11 @@ async function fetchData() {
 
   banner_1.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 1).mobile : banners.value.find(item => item.order_id === 1).image);
   banner_1.value.url = banners.value.find(item => item.order_id === 1).url;
+  banner_1.value.title = banners.value.find(item => item.order_id === 1).title;
 
   banner_2.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 2).mobile : banners.value.find(item => item.order_id === 2).image);
   banner_2.value.url = banners.value.find(item => item.order_id === 2).url;
+  banner_2.value.title = banners.value.find(item => item.order_id === 2).title;
 
   banner_3.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 3).mobile : banners.value.find(item => item.order_id === 3).image);
   banner_3.value.url = banners.value.find(item => item.order_id === 3).url;
@@ -123,21 +125,24 @@ const tab = ref('0')
 <template>
   <WelcomePopup />
   <Loader :isLoading="isLoading"/>
-  <div class="d-flex flex-column flex-md-row tw-mt-2 mt-3 md:tw-h-[683px]">
-    <div class="md:tw-w-[75%] md:tw-h-[683px]">
+  <div class="d-flex flex-column flex-md-row tw--mt-2 md:tw-mt-3 lg:tw-h-[683px]">
+    <div class="lg:tw-w-[75%] lg:tw-h-[683px]">
      <swiper
         v-if="data"
         :pagination="true"
         :navigation="true"
         :modules="modulesSlider"    
         :loop="true"
-       
-        class="mySwiper"
+        :autoplay="{
+          delay: 2500,
+          disableOnInteraction: false,
+        }"
+        class="MySwiper"
       >
         <swiper-slide
           v-for="(item,i) in sliders"
           :key="i"
-          class="w-100 md:tw-h-[683px] tw-relative"
+          class="w-100 tw-h-[683px] tw-relative"
         >
           <img 
             :src="baseURL + (isMobile ? item.mobile : item.image)"
@@ -145,13 +150,13 @@ const tab = ref('0')
             class="w-100 h-100 tw-object-cover"
             loading="lazy"
           >
-          <div class="tw-absolute tw-inset-0 tw-flex tw-flex-col tw-justify-center tw-items-start tw-p-[100px]">
+          <div class="tw-absolute tw-inset-0 tw-flex tw-flex-col tw-justify-center tw-items-start tw-p-5 md:tw-p-[100px]">
             <h2  
-              class="tw-text-white tw-font-bold tw-leading-[48px] md:tw-text-[40px] tw-mb-4 tw-w-[45%]">
+              class="tw-text-white tw-font-bold tw-leading-[48px] tw-text-[36px] md:tw-text-[40px] tw-mb-4 md:tw-w-[45%]">
               {{ item.title }}
             </h2>
 
-            <span v-html="item.text" class="tw-text-white tw-leading-[24px] tw-text-[16px] tw-max-w-lg tw-mb-6 tw-w-[45%]">
+            <span v-html="item.text" class="tw-text-white tw-leading-[24px] tw-text-[16px] tw-max-w-lg tw-mb-6 md:tw-w-[45%]">
             </span>
 
             <VBtn
@@ -166,21 +171,25 @@ const tab = ref('0')
         </swiper-slide>
       </swiper>
     </div>
-    <div class="md:tw-w-[25%] d-flex flex-column md:tw-h-[683px]">
+    <div class="lg:tw-w-[25%] d-flex flex-lg-column lg:tw-h-[683px] tw-relative">
       <div
-          class="h-50 w-100 tw-cursor-pointer tw-bg-cover tw-bg-center"
+          class="absolute tw-p-5 tw-h-[309px] h-lg-50 w-100 tw-cursor-pointer tw-bg-cover tw-bg-center img-gallery"
           :style="{ backgroundImage: 'url(' + banner_1.image + ')' }"
           @click="redirectTo(banner_1.url)"
           role="img"
-          :aria-label="'banner4'">
+          :aria-label="banner_1.title">
+          <span v-html="banner_1.title" class="tw-text-tertiary tw-leading-[36px] tw-text-[24px]">
+          </span>
       </div>
       <div
-        class="h-50 w-100 tw-cursor-pointer tw-bg-cover tw-bg-center"
+        class="absolute tw-p-5 tw-h-[309px] h-lg-50 w-100 tw-cursor-pointer tw-bg-cover tw-bg-center img-gallery"
         :style="{ backgroundImage: 'url(' + banner_2.image + ')' }"
         @click="redirectTo(banner_2.url)"
         role="img"
-        :aria-label="'banner5'"
-      ></div>
+        :aria-label="banner_2.title">
+        <span v-html="banner_2.title" class="tw-text-tertiary tw-leading-[36px] tw-text-[24px]">
+        </span>
+      </div>
     </div>
   </div>
   <VContainer>
@@ -188,28 +197,28 @@ const tab = ref('0')
     <VCard class="mt-7 no-shadown card-information">
       <VCardItem class="p-0">
         <VRow no-gutters  class="tw-text-tertiary">
-          <VCol cols="12" md="3" class="d-flex align-center hr">
+          <VCol cols="12" lg="3" class="d-flex align-center hr">
             <img :src="motorcycle" width="60" height="60" class="ms-10" alt="motorcycle" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Envíos gratis</span>
               <span class="d-block card-information-subtitle">A partir de $210.000</span>
             </div>
           </VCol>
-          <VCol cols="12" md="3" class="d-flex align-center hr">
+          <VCol cols="12" lg="3" class="d-flex align-center hr">
             <img :src="location" width="60" height="60" class="ms-10" alt="location" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Nuestras tiendas</span>
               <span class="d-block card-information-subtitle">En Bogotá</span>
             </div>
           </VCol>
-          <VCol cols="12" md="3" class="d-flex align-center hr">
+          <VCol cols="12" lg="3" class="d-flex align-center hr">
             <img :src="sold" width="60" height="60" class="ms-10" alt="sold" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Ventas por mayor</span>
               <span class="d-block card-information-subtitle">A los mejores precios</span>
             </div>
           </VCol>
-          <VCol cols="12" md="3" class="d-flex align-center col-siguecompra">
+          <VCol cols="12" lg="3" class="d-flex align-center col-siguecompra">
             <img :src="tracking" width="60" height="60" class="ms-10" alt="tracking" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Sigue tu compra</span>
@@ -242,6 +251,7 @@ const tab = ref('0')
           :watchSlidesProgress="true"
           @swiper="setThumbsSwiper"
           :style="{ height: isMobile ? '340px' : '370px' }"
+          class="MySwiper2"
           >
           <swiper-slide v-for="(product, i) in data.recommendations" :key="i">
             <Product1 
@@ -306,7 +316,7 @@ const tab = ref('0')
       </VCardTitle>
       <VCardText class="px-4 px-md-7 pb-0 mt-2 mt-md-5 mb-2 mb-md-5 d-flex align-items-stretch justify-content-between card-banner5" v-if="data">
         <VRow no-gutters class="transparent mostSoldMobile">
-          <VCol cols="12" md="9">
+          <VCol cols="12" lg="9">
             <VCard class="no-shadown tw-bg-yellow_happiness_100">
               <VCardText class="p-0">
                 <img 
@@ -318,7 +328,7 @@ const tab = ref('0')
                   />
               </VCardText>
               <VCardText class="p-0">
-                <VTabs v-model="tab" class="mt-3 mt-md-7" color="pink-accent-3">
+                <VTabs v-model="tab" class="mt-3 mt-7" color="pink-accent-3">
                   <VTab value="0">Agregados recientemente</VTab>
                   <VTab value="1">Lo  mejor de lo mejor</VTab>
                 </VTabs>
@@ -346,11 +356,13 @@ const tab = ref('0')
                         :watchSlidesProgress="true"
                         @swiper="setThumbsSwiper"
                         :style="{ height: isMobile ? '330px' : '370px' }"
+                        class="MySwiper2"
                         >
                         <swiper-slide v-for="(product, i) in data.mostSold.latestProducts" :key="i">
                           <Product1 
                             :product="product"
-                            :readonly="true"/>
+                            :readonly="true"
+                            :bg="`tw-bg-yellow_happiness_100`"/>
                         </swiper-slide>
                       </swiper>
                     </VCardText>
@@ -379,11 +391,13 @@ const tab = ref('0')
                         :watchSlidesProgress="true"
                         @swiper="setThumbsSwiper"
                         :style="{ height: isMobile ? '330px' : '370px' }"
+                        class="MySwiper2"
                         >
                         <swiper-slide v-for="(product, i) in data.mostSold.bestSellers" :key="i">
                           <Product1 
                             :product="product"
-                            :readonly="true"/>
+                            :readonly="true"
+                            :bg="`tw-bg-yellow_happiness_100`"/>
                         </swiper-slide>
                       </swiper>
                     </VCardText>
@@ -392,7 +406,7 @@ const tab = ref('0')
               </VCardText>
             </VCard>
           </VCol>
-          <VCol cols="12" md="3" class="d-flex flex-column col-mobile">
+          <VCol cols="12" lg="3" class="d-flex flex-column col-mobile">
             <VCardText class="p-0 ms-3">
               <div v-if="tab === '0'">
                 <Product2 
@@ -523,7 +537,7 @@ const tab = ref('0')
                   subcategory: 'tematica-mexicana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_1" class="d-block" width="150" height="150" alt=""/>
+              <img :src="t_1" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </router-link>
           </VCol>
@@ -536,7 +550,7 @@ const tab = ref('0')
                   subcategory: 'tematica-hawaiana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="d-block" width="150" height="150" alt=""/>
+              <img :src="t_2" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
             </router-link>
           </VCol>
@@ -549,7 +563,7 @@ const tab = ref('0')
                   subcategory: 'tematica-vallenata'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_3" class="d-block" width="150" height="150" alt=""/>
+              <img :src="t_3" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </router-link>
           </VCol>
@@ -562,7 +576,7 @@ const tab = ref('0')
                   subcategory: 'tematica-metalizada'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_4" class="d-block" width="150" height="150" alt=""/>
+              <img :src="t_4" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </router-link>
           </VCol>
@@ -575,7 +589,7 @@ const tab = ref('0')
                   subcategory: 'tematica-neon'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_5" class="d-block" width="150"  height="150" loading="lazy" alt="neon"/>
+              <img :src="t_5" class="d-block size-rect-desktop" width="150"  height="150" loading="lazy" alt="neon"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Neón</span>
             </router-link>
           </VCol>
@@ -588,8 +602,8 @@ const tab = ref('0')
                 }
               }" 
               class="tw-no-underline d-block text-center zoom mt-0">
-              <img :src="t_6" class="border-theme d-block" width="150"  height="150" alt="todos"/>
-              <span class="d-block size-theme tw-text-tertiary mt-2 transparentColor">.</span>
+              <span class="d-block size-rect-desktop tw-bg-primary"/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Todos</span>
             </router-link>
           </VCol>
         </VRow>
@@ -678,7 +692,7 @@ const tab = ref('0')
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
                 <img :src="f_1" class="border-theme d-block" width="150" height="150" loading="lazy" alt="iconos"/>
-                <span class="d-block size-theme tw-text-white mt-2">Niños</span>
+                <span class="d-block size-theme tw-text-tertiary mt-2">Niños</span>
               </router-link>
             </VCol>
             <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
@@ -692,7 +706,7 @@ const tab = ref('0')
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
                 <img :src="f_2" class="border-theme d-block" width="150" height="150" loading="lazy" alt="icons2"/>
-                <span class="d-block size-theme tw-text-white mt-2">Niñas</span>
+                <span class="d-block size-theme tw-text-tertiary mt-2">Niñas</span>
               </router-link>
             </VCol>
             <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
@@ -706,7 +720,7 @@ const tab = ref('0')
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
                 <img :src="f_3" class="border-theme d-block" width="150" height="150" loading="lazy" alt="icons3"/>
-                <span class="d-block size-theme tw-text-white mt-2">Bebes</span>
+                <span class="d-block size-theme tw-text-tertiary mt-2">Bebes</span>
               </router-link>
             </VCol>
             <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
@@ -721,7 +735,7 @@ const tab = ref('0')
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
                 <img :src="f_4" class="border-theme d-white" width="150" height="150" loading="lazy" alt="icons4"/>
-                <span class="d-block size-theme tw-text-white mt-2">Adultos</span>
+                <span class="d-block size-theme tw-text-tertiary mt-2">Adultos</span>
               </router-link>
             </VCol>
           </VRow>
@@ -954,13 +968,75 @@ const tab = ref('0')
     box-shadow: 0px 0px 24px 0px #FF27B3;
   }
 
+  .MySwiper::v-deep(.swiper-pagination-bullet-active) {
+    background: transparent !important;
+    border: 2px double #FF0090 !important;
+    width: 16px; 
+    height: 16px;
+    opacity: 1;
+    
+    /* Círculo interior rosado */
+    &::after {
+      content: '';
+      position: absolute;
+      top: 43%;
+      transform: translate(-50%, -50%);
+      width: 6px;  /* Tamaño del círculo rosado */
+      height: 6px;
+      background: #FF0090;
+      border-radius: 50%;
+    }
+  }
+
+  .MySwiper:deep(.swiper-pagination-bullets-dynamic) {
+    overflow: visible !important;
+  }
+
+  .MySwiper:deep(.swiper-pagination-bullet),
+  .MySwiper:deep(.swiper-pagination-bullet-active-next),
+  .MySwiper:deep(.swiper-pagination-bullet-active-next-next) {
+    width: 16px; 
+    height: 16px;
+    background-color: white;
+    opacity: 0.7;
+  }
+
+  .MySwiper:deep(.swiper-button-next),
+  .MySwiper:deep(.swiper-button-prev) {
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    border-radius: 11px !important;
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .MySwiper:deep(.swiper-button-next) {
+    background-image: url('@/assets/icons/arrow-square-right.svg') !important;
+    right: 2% !important;
+  }
+
+  .MySwiper:deep(.swiper-button-prev) {
+    background-image: url('@/assets/icons/arrow-square-left.svg') !important;
+    left: 2% !important;
+  }
+
+  .MySwiper:deep(.swiper-button-next::after),
+  .MySwiper:deep(.swiper-button-prev::after) {
+      content: '' !important; /* Elimina flecha default */
+  }
+
   @media only screen and (max-width: 767px) {
+
+    .size-rect-desktop {
+      width: 160px !important;
+      height: 220px !important;
+    }
 
     .button-hover:hover {
       color: #FFFFFF !important;
     }
     .btn-register {
-      width: 100%;
+      height: 48px;
     }
 
     .col-mobile {
@@ -1074,11 +1150,11 @@ const tab = ref('0')
       line-height: normal;
     }
 
-    .swiper {
+    .MySwiper2 {
       height: 300px!important;
     }
 
-    .swiper::v-deep(.swiper-pagination-bullet-active) {
+    .MySwiper2::v-deep(.swiper-pagination-bullet-active) {
       background: #FF0090 !important;
     }
 
@@ -1100,6 +1176,11 @@ const tab = ref('0')
     .v-tabs::v-deep(.v-btn.v-btn--density-default) {
       height: 40px !important;
       padding: 0 2px;
+    }
+
+    .MySwiper:deep(.swiper-button-next),
+    .MySwiper:deep(.swiper-button-prev) {
+        display: none;
     }
   }
 </style>

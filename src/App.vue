@@ -168,6 +168,6 @@ async function fetchData() {
         <router-view />
       </VMain>
     </VLayout>
-    <Footer />
+    <!-- <Footer /> -->
   </VApp>
 </template>

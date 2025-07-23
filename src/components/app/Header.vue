@@ -944,7 +944,7 @@
       </VContainer>
       <VContainer class="p-0 tw-text-white d-flex" v-else>
         <div class="hover:tw-text-yellow">
-          <VAppBarNavIcon variant="text" @click.stop="drawer = !drawer" class="w-100 h-100 me-2" aria-label="menu"/> 
+          <VAppBarNavIcon variant="text" @click.stop="drawer = !drawer" class="w-100 h-100 me-2 tw-text-tertiary" aria-label="menu"/> 
         </div>
         <VTextField
           v-model="textSearch"
@@ -958,7 +958,7 @@
               aria-label="search"
               icon="mdi-magnify" 
               @click="search" 
-              class="tw-bg-white tw-text-gray h-100 search-button button-hover"
+              class="tw-bg-primary tw-text-white h-100 search-button button-hover"
             />
           </template>
         </VTextField>
@@ -1275,11 +1275,11 @@
 
     .v-text-field::v-deep(.v-field__input) { 
       min-height: 27px;
-      background-color: #FF0090;
+      border: 1px solid #0A1B33 !important;
     }
     
     .v-text-field::v-deep(::placeholder) { 
-      color: #FFFFFF !important;
+      color: #0A1B33 !important;
       opacity: inherit;
     }
 
@@ -1303,7 +1303,9 @@
     }
 
     .search-button {
-      width: 36px
+      width: 36px;
+      border: 1px solid #0A1B33 !important;
+      height: 27px !important;
     }
 
     .button-hover:hover {

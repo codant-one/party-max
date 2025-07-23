@@ -138,7 +138,7 @@
                   </template>
                 </VCheckbox>
 
-                <VBtn class="tw-bg-primary tw-text-white" rounded="pill" block size="large">Enviar mensaje</VBtn>
+                <VBtn class="tw-bg-primary tw-text-white" rounded="pill" size="large">Enviar mensaje</VBtn>
             </VForm>
           </div>
         </VCol>
