@@ -131,24 +131,38 @@ const tab = ref('0')
         :navigation="true"
         :modules="modulesSlider"    
         :loop="true"
-        :autoplay="{
-          delay: 2500,
-          disableOnInteraction: false,
-        }"
+       
         class="mySwiper"
       >
         <swiper-slide
           v-for="(item,i) in sliders"
           :key="i"
-          class="w-100 md:tw-h-[683px]"
+          class="w-100 md:tw-h-[683px] tw-relative"
         >
           <img 
             :src="baseURL + (isMobile ? item.mobile : item.image)"
             :alt="'slider'+(i+1)"
             class="w-100 h-100 tw-object-cover"
             loading="lazy"
-            @click="redirectTo(item.url)"
           >
+          <div class="tw-absolute tw-inset-0 tw-flex tw-flex-col tw-justify-center tw-items-start tw-p-[100px]">
+            <h2  
+              class="tw-text-white tw-font-bold tw-leading-[48px] md:tw-text-[40px] tw-mb-4 tw-w-[45%]">
+              {{ item.title }}
+            </h2>
+
+            <span v-html="item.text" class="tw-text-white tw-leading-[24px] tw-text-[16px] tw-max-w-lg tw-mb-6 tw-w-[45%]">
+            </span>
+
+            <VBtn
+              variant="flat"
+              class="tw-capitalize btn-register tw-text-white tw-bg-primary button-hover my-2 mt-md-5"
+              @click="redirectTo(item.url)"
+            >
+              {{ item.button_text }}
+            </VBtn>
+
+          </div>
         </swiper-slide>
       </swiper>
     </div>
@@ -719,6 +733,15 @@ const tab = ref('0')
 
 <style scoped>
 
+  .btn-register {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 14px;
+    border-radius: 32px;
+    height: 62px;
+  }
+
   .soon-text {
     color: #FF0090;
     border: 1px solid #FF0090;
@@ -926,7 +949,20 @@ const tab = ref('0')
   }
 
 
+  .button-hover:hover {
+    background-color: #FF27B3 !important;
+    box-shadow: 0px 0px 24px 0px #FF27B3;
+  }
+
   @media only screen and (max-width: 767px) {
+
+    .button-hover:hover {
+      color: #FFFFFF !important;
+    }
+    .btn-register {
+      width: 100%;
+    }
+
     .col-mobile {
       display: none !important;
     }
