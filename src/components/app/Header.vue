@@ -643,13 +643,14 @@
           <VCol cols="3" class="d-flex align-center align-items-stretch flex-shrink-0">
             <VSpacer />
             <span 
-                class="index heart"
-                :class="(name === null) ? 'ms-n70 me-5': 'me-5'" @click="redirect('favorites')">
+                class="index heart" aria-label="Mis favoritos"
+                :class="(name === null) ? 'ms-n70 me-5': 'me-5'" @click="redirect('favorites')" @keydown.enter="redirect('favorites')">
                 <heart />
             </span>
             <span icon class="me-3 shoppinp_cart" @click="isDrawerOpen = true">
               <VBadge
                 color="primary"
+                aria-label="Mi Carrito"
                 :content="cart_products"
                 :model-value="!!cart_products"
                 location="end top"
@@ -663,36 +664,42 @@
               </span>
               <VMenu v-else>
                 <template v-slot:activator="{ props }">
-                  <span class="user ms-2 me-3" v-bind="props">
-                    <user />
-                  </span>
+                  <button 
+                    class="user ms-2 me-3" 
+                    v-bind="props"
+                    aria-label="Menú de usuario"
+                    aria-haspopup="true"
+                    aria-expanded="menuProps['aria-expanded']"
+                  >
+                    <user aria-hidden="true" />
+                  </button>
                 </template>
-                <VList>
-                  <VListItem role="listitem" class="px-0">
+                <VList role="menu" aria-label="Opciones de usuario" class="px-0">
+                  <VListItem role="none" class="px-0">
                     <VListItemTitle class="px-5"><b>Hola</b></VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div tw-text-primary">{{name}}</VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Dashboard" :to=" { name : 'dashboard' }">
                         Dashboard
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'profile' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Perfil" :to=" { name : 'profile' }">
                         Mi Perfil
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'purchases' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Compras" :to=" { name : 'purchases' }">
                         Compras
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'coupons' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Cupones" :to=" { name : 'coupons' }">
                         Cupones
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'favorites' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Favoritos" :to=" { name : 'favorites' }">
                         Mis favoritos
                       </router-link>
                     </VListItemTitle>
@@ -746,27 +753,27 @@
                     <VListItemTitle class="px-5"><b>Hola</b></VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div tw-text-primary">{{name}}</VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Dashboard" :to=" { name : 'dashboard' }">
                         Dashboard
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'profile' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Perfil" :to=" { name : 'profile' }">
                         Mi Perfil
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'purchases' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Compras" :to=" { name : 'purchases' }">
                         Compras
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'coupons' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Cupones" :to=" { name : 'coupons' }">
                         Cupones
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'favorites' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Favoritos" :to=" { name : 'favorites' }">
                         Mis favoritos
                       </router-link>
                     </VListItemTitle>
@@ -789,17 +796,23 @@
             :close-on-content-click="false"
             @update:modelValue="chanceMenu">
             <template  v-slot:activator="{ props }">
-              <div v-bind="props" class="d-flex">
-                <VAppBarNavIcon variant="text" />
-                <div class="pt-3">
-                  <span class="font-size-16 me-7">Productos</span>
-                </div>
-              </div>
+              <button 
+                v-bind="props"
+                class="d-flex menu-trigger"
+                aria-haspopup="true"
+                aria-expanded="menuOpen"
+                aria-controls="products-menu"
+                @keydown.enter="menuOpen = true"
+                @keydown.escape="menuOpen = false"
+              >
+                <VAppBarNavIcon variant="text" aria-hidden="true" />
+                <span class="pt-3 font-size-16 me-7">Productos</span>
+              </button>
             </template>
             <VCard class="style-menu" :width="width" @mouseleave="closeMenuOnMouseLeave">
               <VRow no-gutters>
                 <VCol cols="12" :md="cols" class="py-5 pr-3">
-                  <VList role="list" aria-label="Lista de elementos 3" class="pb-0">
+                  <VList role="menu" aria-label="Lista de elementos 3" class="pb-0">
                     <VListItem role="listitem" aria-label="list-item">
                       <VListItemTitle class="d-block lineheight">
                         <span class="d-block title-menu">PRODUCTOS</span>
@@ -808,13 +821,13 @@
                         </svg>
                       </VListItemTitle>
                     </VListItem>
-                    <VListItem   role="listitem"
+                    <VListItem role="none"
                       v-for="(item, index) in categories"
                       :key="index">
                         <div class="d-flex align-center hover-icon-right" @mouseover="openCategory(index)">
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
-                            @click="redirect_('categories', item.slug)">
+                            @click="redirect_('categories', item.slug)" @keydown.enter="redirect_('categories', item.slug)" aria-label="Subcategorias">
                               <component v-if="items_products.filter(e => e.slug === item.slug).length === 1" :is="items_products.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                               <component v-else :is="icon5" class="me-3" />
                               {{ item.name }}
@@ -826,6 +839,7 @@
                                 category: item.slug
                               }
                             }" 
+                            :aria-label="`Ir a ${item.name}`"
                             class="subtitle-menu d-flex align-center tw-no-underline" v-else>
                             <component v-if="items_products.filter(e => e.slug === item.slug).length === 1" :is="items_products.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                             <component v-else :is="icon5" class="me-3" />
@@ -851,6 +865,7 @@
                             subcategory: i.slug.split('/')[1]
                           }
                         }"
+                        :aria-label="`Ir a ${i.name}`"
                         class="tw-no-underline tw-text-tertiary">
                         <span class="subtitle-menu">{{ i.name }}</span>
                       </router-link>
@@ -870,18 +885,24 @@
             :close-on-content-click="false"
             @update:modelValue="chanceMenuS">
             <template  v-slot:activator="{ props }">
-              <div v-bind="props" class="d-flex">
-                <VAppBarNavIcon variant="text" />
-                <div class="pt-3">
-                  <span class="font-size-16 me-7">Servicios</span>
-                </div>
-              </div>
+              <button 
+                v-bind="props"
+                class="d-flex menu-trigger"
+                aria-haspopup="true"
+                aria-expanded="menuOpen"
+                aria-controls="products-menu"
+                @keydown.enter="menuOpen = true"
+                @keydown.escape="menuOpen = false"
+              >
+                <VAppBarNavIcon variant="text" aria-hidden="true" />
+                <span class="pt-3 font-size-16 me-7">Servicios</span>
+              </button>
             </template>
             <VCard class="style-menu" :width="width" @mouseleave="closeMenuOnMouseLeave">
               <VRow no-gutters>
                 <VCol cols="12" :md="cols" class="py-5 pr-3">
-                  <VList class="pb-0">
-                    <VListItem>
+                  <VList class="pb-0" role="menu" aria-label="Menú de servicios">
+                    <VListItem role="none">
                       <VListItemTitle class="d-block lineheight">
                         <span class="d-block title-menu">SERVICIOS</span>
                         <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -891,11 +912,11 @@
                     </VListItem>
                     <VListItem  
                       v-for="(item, index) in services"
-                      :key="index">
+                      :key="index" role="none">
                         <div class="d-flex align-center hover-icon-right" @mouseover="openService(index)">
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
-                            @click="redirect_('categories', item.slug)">
+                            @click="redirect_('categories', item.slug)" @keydown.enter="redirect_('categories', item.slug)" role="menuitem" aria-label="Subservicios">
                               <component v-if="items_services.filter(e => e.slug === item.slug).length === 1" :is="items_services.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                               <component v-else :is="icon5" class="me-3" />
                               {{ item.name }} 
@@ -906,14 +927,15 @@
                               query: {
                                 category: item.slug
                               }
-                            }" 
+                            }" :aria-label="`Ir a ${item.name}`"
+                            role="menuitem"
                             class="subtitle-menu d-flex align-center tw-no-underline" v-else>
                             <component v-if="items_services.filter(e => e.slug === item.slug).length === 1" :is="items_services.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                             <component v-else :is="icon5" class="me-3" />
                             {{ item.name }}
                           </router-link> 
                           <VSpacer />
-                          <icon_right v-if="item.children.length > 0"/>  
+                          <icon_right v-if="item.children.length > 0" :aria-label="openedGroups.includes(index) ? 'Submenú expandido' : 'Submenú colapsado'"/>  
                         </div>
                     </VListItem>
                   </VList>
@@ -932,6 +954,8 @@
                             subcategory: i.slug.split('/')[1]
                           }
                         }"
+                        :aria-label="`Ir a ${i.name}`"
+                        role="menuitem"
                         class="tw-no-underline tw-text-tertiary">
                         <span class="subtitle-menu">{{ i.name }}</span>
                       </router-link>

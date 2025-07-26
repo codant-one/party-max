@@ -107,15 +107,14 @@ const redirectTo = (url) => {
 
 const preloadFirstImage = () => {
   if (sliders.value.length > 0) {
-    const img = new Image();
-    img.src = baseURL.value + sliders.value[0].image;
+    firstImageUrl.value = baseURL.value + sliders.value[0].image
     
-    // Precargar WebP si es posible
-    const linkPreload = document.createElement('link');
-    linkPreload.rel = 'preload';
-    linkPreload.as = 'image';
-    linkPreload.href = `${baseURL.value}webp/${sliders.value[0].image.replace('.jpg', '.webp')}`;
-    document.head.appendChild(linkPreload);
+    // Crear enlace de precarga
+    const link = document.createElement('link')
+    link.rel = 'preload'
+    link.as = 'image'
+    link.href = firstImageUrl.value
+    document.head.appendChild(link)
   }
 }
 
@@ -149,7 +148,6 @@ const tab = ref('0')
             :src="baseURL + (isMobile ? item.mobile : item.image)"
             :alt="`${item.title} - ${item.text.replace(/<[^>]*>/g, '')}`"
             loading="lazy"
-            width="1200"
             :height="isMobile ? 500 : 683"
             class="w-100 h-100 tw-object-cover"
           >
