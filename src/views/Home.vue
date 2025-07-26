@@ -145,11 +145,11 @@ const tab = ref('0')
           :key="i"
           class="w-100 tw-h-[683px] tw-relative"
         >
-          <img
+          <img 
             :src="baseURL + (isMobile ? item.mobile : item.image)"
-            :alt="`${item.title} - ${item.text.replace(/<[^>]*>/g, '')}`"
-            loading="lazy"
+            :alt="'slider'+(i+1)"
             class="w-100 h-100 tw-object-cover"
+            loading="lazy"
           >
           <div class="tw-absolute tw-inset-0 tw-flex tw-flex-col tw-justify-center tw-items-start tw-p-5 md:tw-p-[100px]">
             <h2  
