@@ -61,7 +61,8 @@ watchEffect(() => {
             <div class="d-flex">
                 <VCardText class="border-img p-0 my-auto">
                     <img 
-                        :src="baseURL + image" 
+                        :src="baseURL + image"
+                        :alt="name" 
                         class="img-prod" />
                 </VCardText>
                 

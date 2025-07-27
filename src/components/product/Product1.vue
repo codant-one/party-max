@@ -64,7 +64,9 @@ watchEffect(() => {
             <VCardText class="border-img ms-1 p-0">
                 <img 
                     :src="baseURL + image" 
-                    class="img-prod" />
+                    :alt="name"
+                    class="img-prod"
+                />
             </VCardText>
             <VCardText class="mt-2">
                 <div class="d-flex">
