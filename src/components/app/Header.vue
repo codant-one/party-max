@@ -329,10 +329,10 @@
       v-model="drawer"
       class="d-print-none"
       temporary>
-      <VList role="navigation" aria-label="Menú de navegación principal" v-model:opened="panelCat" class="pb-0" :ripple="false">
+      <VList aria-label="Menú de navegación principal" v-model:opened="panelCat" class="pb-0" :ripple="false">
         <VListItem>
           <VListItemTitle class="d-block lineheight borderList pb-2">
-            <router-link aria-label="Acerca de nosotros" to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+            <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Quiénes somos</span>
             </router-link>
           </VListItemTitle>
@@ -353,28 +353,28 @@
         </VListItem>
         <VListItem>
           <VListItemTitle class="d-block lineheight borderList pb-2">
-            <router-link aria-label="Protección de datos" to="/data-protection" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+            <router-link to="/data-protection" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Protección de datos</span>
             </router-link>
           </VListItemTitle>  
         </VListItem>
         <VListItem>
           <VListItemTitle class="d-block lineheight borderList pb-2">
-            <router-link aria-label="Declaración de privacidad" to="/privacy-statement" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+            <router-link to="/privacy-statement" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Declaración de privacidad</span>
             </router-link>
           </VListItemTitle>  
         </VListItem>
         <VListItem>        
           <VListItemTitle class="d-block lineheight borderList pb-2">
-            <router-link aria-label="Blog" to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+            <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Blog</span>
             </router-link>
           </VListItemTitle>
         </VListItem>
         <VListItem>
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
-            <span class="d-block title-menu" aria-label="Sección de productos">PRODUCTOS</span>
+            <h2 class="d-block font-light title-menu">PRODUCTOS</h2>
             <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
             </svg>
@@ -382,9 +382,9 @@
         </VListItem>
       </VList>
 
-      <VList role="navigation" aria-label="Menú de categorías de productos" v-model:opened="panelCat" class="pb-0">
+      <VList aria-label="Menú de categorías de productos" v-model:opened="panelCat" class="pb-0">
         <template v-for="(item, index) in categories">
-          <VListItem role="listitem" aria-label="Categoría de producto"
+          <VListItem
             v-if="categories[index]?.children.length === 0"
             :to="{
               name: 'products',
@@ -396,7 +396,7 @@
           </VListItem>
           <VListGroup v-else :value="item.name" :eager="false">
             <template #activator="{ props }">
-              <VListItem role="listitem" class="items-list" aria-label="Categoría con subcategorías">
+              <VListItem class="items-list">
                 <VListItemTitle class="d-block lineheight borderList pb-2">
                   <router-link
                     :to="{
@@ -427,9 +427,8 @@
               :key="index2"
               :aria-label="'Subcategorías de ' + item.name"
               class="style-menu-mobile">
-              <VListItem role="listitem" class="subtitle-menu">
-                <router-link aria-label="item-product"
-                    :aria-label="'Ver productos de ' + k.name"
+              <VListItem class="subtitle-menu">
+                <router-link 
                     :to="{
                       name: 'products',
                       query: {
@@ -449,10 +448,10 @@
       </VList>
         
       <!--MENU SERVICIOS MOBILE-->
-      <VList role="menu" ria-label="Menú de servicios" v-model:opened="panelCat" class="pb-0" :ripple="false">
+      <VList aria-label="Menú de servicios" v-model:opened="panelCat" class="pb-0" :ripple="false">
         <VListItem>
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
-            <span class="d-block title-menu" aria-level="2" role="heading">SERVICIOS</span>
+            <h2 class="d-block font-light title-menu">SERVICIOS</h2>
             <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
               <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
             </svg>
@@ -460,7 +459,7 @@
         </VListItem>
 
         <div v-for="(item, index) in services" :key="index">
-          <VListItem v-if="services[index]?.children.length === 0" role="menuitem">
+          <VListItem v-if="services[index]?.children.length === 0">
             <VListItemTitle class="d-block lineheight borderList pb-2">
               <router-link 
                 :to="{
@@ -469,7 +468,6 @@
                     category: item.slug
                   }
                 }" 
-                :aria-label="`Ir a ${item.name}`"
                 class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
                 <span class="d-block title-menu">{{ item.name }}</span>
               </router-link>
@@ -478,7 +476,7 @@
 
           <VListGroup v-else :value="item.name" :eager="false">
             <template #activator="{ props }">
-              <VListItem class="items-list" role="menuitem">
+              <VListItem class="items-list">
                 <VListItemTitle class="d-block lineheight borderList pb-2">
                   <router-link
                     :to="{
@@ -509,9 +507,8 @@
               v-for="(k, index2) in services[index].children"
               :key="index2"
               class="style-menu-mobile"
-              role="menu"
               :aria-label="`Subservicios de ${item.name}`">
-              <VListItem class="subtitle-menu" role="menuitem">
+              <VListItem class="subtitle-menu">
                 <router-link
                   :to="{
                     name: 'services',
@@ -520,7 +517,6 @@
                       subcategory: k.slug.split('/')[1]
                     }
                   }"
-                  :aria-label="`Ir a ${k.name}`"
                   class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
                   <span class="d-block title-menu">
                     {{ k.name }}
@@ -625,7 +621,7 @@
         <VRow no-gutters v-if="!isMobile">
           <VCol cols="9" class="d-flex">
             <router-link to="/" class="tw-no-underline tw-text-white ms-2 me-8">
-              <img :src="logo" width="255" alt="logo" cover/>
+              <img :src="logo" width="255" alt="Logo de PartyMax - Ir a la página de inicio" cover/>
             </router-link>
             <VSpacer />
             <VTextField
@@ -642,26 +638,26 @@
           </VCol>
           <VCol cols="3" class="d-flex align-center align-items-stretch flex-shrink-0">
             <VSpacer />
-            <span 
+            <button 
                 class="index heart" aria-label="Mis favoritos"
-                :class="(name === null) ? 'ms-n70 me-5': 'me-5'" @click="redirect('favorites')" @keydown.enter="redirect('favorites')">
-                <heart />
-            </span>
-            <span icon class="me-3 shoppinp_cart" @click="isDrawerOpen = true">
+                :class="(name === null) ? 'ms-n70 me-5': 'me-5'" @click="redirect('favorites')">
+                <heart aria-hidden="true" />
+            </button>
+            <button icon class="me-3 shoppinp_cart" @click="isDrawerOpen = true">
               <VBadge
                 color="primary"
-                aria-label="Mi Carrito"
+                aria-label="Abrir carrito de compras"
                 :content="cart_products"
                 :model-value="!!cart_products"
                 location="end top"
               >
-                <shoppinp_cart />
+                <shoppinp_cart aria-hidden="true" />
               </VBadge>
-            </span>
+            </button>
             <div class="d-flex user-text">
-              <span v-if="name === null" class="user ms-2">
-                <user />
-              </span>
+              <button v-if="name === null" class="user ms-2">
+                <user aria-hidden="true" />
+              </button>
               <VMenu v-else>
                 <template v-slot:activator="{ props }">
                   <button 
@@ -669,37 +665,36 @@
                     v-bind="props"
                     aria-label="Menú de usuario"
                     aria-haspopup="true"
-                    aria-expanded="menuProps['aria-expanded']"
                   >
                     <user aria-hidden="true" />
                   </button>
                 </template>
-                <VList role="menu" aria-label="Opciones de usuario" class="px-0">
-                  <VListItem role="none" class="px-0">
+                <VList aria-label="Opciones de usuario" class="px-0">
+                  <VListItem class="px-0">
                     <VListItemTitle class="px-5"><b>Hola</b></VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div tw-text-primary">{{name}}</VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Dashboard" :to=" { name : 'dashboard' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard' }">
                         Dashboard
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Perfil" :to=" { name : 'profile' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'profile' }">
                         Mi Perfil
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Compras" :to=" { name : 'purchases' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'purchases' }">
                         Compras
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Cupones" :to=" { name : 'coupons' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'coupons' }">
                         Cupones
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Favoritos" :to=" { name : 'favorites' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'favorites' }">
                         Mis favoritos
                       </router-link>
                     </VListItemTitle>
@@ -707,7 +702,7 @@
                   </VListItem>
                 </VList>
               </VMenu>
-              <router-link class="link-header" :to="{ name: 'register'}" aria-label="Ingresar o Registrarme">
+              <router-link class="link-header" :to="{ name: 'register'}">
                 <span class="d-flex align-center tw-text-tertiary font-size-14 ms-2 text-regi" v-if="name === null">
                   Ingresar o Registrarme
                 </span>
@@ -718,7 +713,7 @@
         <VRow no-gutters v-else class="px-3">
           <VCol cols="6" class="d-flex">
             <router-link to="/" class="tw-no-underline tw-text-white">
-              <img :src="logo" width="200" height="52" alt="logo" cover/>
+              <img :src="logo" width="200" height="52" alt="Logo de PartyMax - Ir a la página de inicio" cover/>
             </router-link>
           </VCol>
           <VCol cols="6" class="d-flex align-center align-items-stretch flex-shrink-0 iconsMobile">
@@ -749,31 +744,31 @@
                   </span>
                 </template>
                 <VList>
-                  <VListItem role="listitem" class="px-0">
+                  <VListItem class="px-0">
                     <VListItemTitle class="px-5"><b>Hola</b></VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div tw-text-primary">{{name}}</VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Dashboard" :to=" { name : 'dashboard' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard' }">
                         Dashboard
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Perfil" :to=" { name : 'profile' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'profile' }">
                         Mi Perfil
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Compras" :to=" { name : 'purchases' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'purchases' }">
                         Compras
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Cupones" :to=" { name : 'coupons' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'coupons' }">
                         Cupones
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :aria-label="Favoritos" :to=" { name : 'favorites' }">
+                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'favorites' }">
                         Mis favoritos
                       </router-link>
                     </VListItemTitle>
@@ -806,28 +801,28 @@
                 @keydown.escape="menuOpen = false"
               >
                 <VAppBarNavIcon variant="text" aria-hidden="true" />
-                <span class="pt-3 font-size-16 me-7">Productos</span>
+                <h2 class="pt-3 font-size-16 me-7">Productos</h2>
               </button>
             </template>
             <VCard class="style-menu" :width="width" @mouseleave="closeMenuOnMouseLeave">
               <VRow no-gutters>
                 <VCol cols="12" :md="cols" class="py-5 pr-3">
-                  <VList role="menu" aria-label="Lista de elementos 3" class="pb-0">
-                    <VListItem role="listitem" aria-label="list-item">
+                  <VList class="pb-0">
+                    <VListItem>
                       <VListItemTitle class="d-block lineheight">
-                        <span class="d-block title-menu">PRODUCTOS</span>
+                        <h2 class="d-block title-menu">PRODUCTOS</h2>
                         <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
                         </svg>
                       </VListItemTitle>
                     </VListItem>
-                    <VListItem role="none"
+                    <VListItem
                       v-for="(item, index) in categories"
                       :key="index">
                         <div class="d-flex align-center hover-icon-right" @mouseover="openCategory(index)">
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
-                            @click="redirect_('categories', item.slug)" @keydown.enter="redirect_('categories', item.slug)" aria-label="Subcategorias">
+                            @click="redirect_('categories', item.slug)" @keydown.enter="redirect_('categories', item.slug)">
                               <component v-if="items_products.filter(e => e.slug === item.slug).length === 1" :is="items_products.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                               <component v-else :is="icon5" class="me-3" />
                               {{ item.name }}
@@ -839,7 +834,6 @@
                                 category: item.slug
                               }
                             }" 
-                            :aria-label="`Ir a ${item.name}`"
                             class="subtitle-menu d-flex align-center tw-no-underline" v-else>
                             <component v-if="items_products.filter(e => e.slug === item.slug).length === 1" :is="items_products.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                             <component v-else :is="icon5" class="me-3" />
@@ -852,12 +846,12 @@
                   </VList>
                 </VCol>
                 <VCol cols="12" :md="cols" v-show="cols === 6" class="borderCol py-5">
-                  <VList role="list" aria-label="Lista de elementos 4" class="style-submenu mt-8">
-                    <VListItem role="listitem" aria-label="list-item"
+                  <VList class="style-submenu mt-8">
+                    <VListItem
                       v-for="(i, index2) in categories[category].children"
                       :key="index2"
                       @click="closeMenu">
-                      <router-link aria-label="item-menu"
+                      <router-link
                         :to="{
                           name: 'products',
                           query: {
@@ -865,7 +859,6 @@
                             subcategory: i.slug.split('/')[1]
                           }
                         }"
-                        :aria-label="`Ir a ${i.name}`"
                         class="tw-no-underline tw-text-tertiary">
                         <span class="subtitle-menu">{{ i.name }}</span>
                       </router-link>
@@ -895,16 +888,16 @@
                 @keydown.escape="menuOpen = false"
               >
                 <VAppBarNavIcon variant="text" aria-hidden="true" />
-                <span class="pt-3 font-size-16 me-7">Servicios</span>
+                <h2 class="pt-3 font-size-16 me-7 font-light">Servicios</h2>
               </button>
             </template>
             <VCard class="style-menu" :width="width" @mouseleave="closeMenuOnMouseLeave">
               <VRow no-gutters>
                 <VCol cols="12" :md="cols" class="py-5 pr-3">
-                  <VList class="pb-0" role="menu" aria-label="Menú de servicios">
-                    <VListItem role="none">
+                  <VList class="pb-0">
+                    <VListItem >
                       <VListItemTitle class="d-block lineheight">
-                        <span class="d-block title-menu">SERVICIOS</span>
+                        <h2 class="d-block font-light title-menu">SERVICIOS</h2>
                         <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
                         </svg>
@@ -912,11 +905,11 @@
                     </VListItem>
                     <VListItem  
                       v-for="(item, index) in services"
-                      :key="index" role="none">
+                      :key="index" >
                         <div class="d-flex align-center hover-icon-right" @mouseover="openService(index)">
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
-                            @click="redirect_('categories', item.slug)" @keydown.enter="redirect_('categories', item.slug)" role="menuitem" aria-label="Subservicios">
+                            @click="redirect_('categories', item.slug)" @keydown.enter="redirect_('categories', item.slug)" aria-label="Subservicios">
                               <component v-if="items_services.filter(e => e.slug === item.slug).length === 1" :is="items_services.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                               <component v-else :is="icon5" class="me-3" />
                               {{ item.name }} 
@@ -927,8 +920,7 @@
                               query: {
                                 category: item.slug
                               }
-                            }" :aria-label="`Ir a ${item.name}`"
-                            role="menuitem"
+                            }"
                             class="subtitle-menu d-flex align-center tw-no-underline" v-else>
                             <component v-if="items_services.filter(e => e.slug === item.slug).length === 1" :is="items_services.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                             <component v-else :is="icon5" class="me-3" />
@@ -954,8 +946,6 @@
                             subcategory: i.slug.split('/')[1]
                           }
                         }"
-                        :aria-label="`Ir a ${i.name}`"
-                        role="menuitem"
                         class="tw-no-underline tw-text-tertiary">
                         <span class="subtitle-menu">{{ i.name }}</span>
                       </router-link>
@@ -969,11 +959,11 @@
       <!---------FIN SERVICIOS MENÚ--------------------------->
         <VSpacer />
 
-        <router-link aria-label="item-about" to="/about-us" class="ms-5 tw-text-tertiary tw-no-underline hover:tw-text-primary">Quiénes somos</router-link>
+        <router-link to="/about-us" class="ms-5 tw-text-tertiary tw-no-underline hover:tw-text-primary">Quiénes somos</router-link>
         <VDivider class="hr" vertical/>
-        <router-link aria-label="item-blog" to="/blogs" class="ms-5 tw-text-tertiary tw-no-underline hover:tw-text-primary">Blog</router-link>
+        <router-link to="/blogs" class="ms-5 tw-text-tertiary tw-no-underline hover:tw-text-primary">Blog</router-link>
         <VDivider class="hr" vertical/>
-        <router-link aria-label="item-help" to="/help" class="ms-5 tw-text-tertiary tw-no-underline me-3 hover:tw-text-primary">Preguntas frecuentes</router-link>
+        <router-link to="/help" class="ms-5 tw-text-tertiary tw-no-underline me-3 hover:tw-text-primary">Preguntas frecuentes</router-link>
 
       </VContainer>
       <VContainer class="p-0 tw-text-white d-flex" v-else>
@@ -989,7 +979,7 @@
           variant="solo">
           <template v-slot:append-inner>
             <VBtn 
-              aria-label="search"
+              aria-label="Buscar"
               icon="mdi-magnify" 
               @click="search" 
               class="tw-bg-primary tw-text-white h-100 search-button button-hover"
@@ -1014,6 +1004,10 @@
 </style>
 
 <style scoped>
+
+  h2 {
+    font-weight: normal;
+  }
 
   .subtotal {
     font-size: 16px;
