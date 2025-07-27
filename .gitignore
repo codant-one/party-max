@@ -28,6 +28,4 @@ coverage
 *.sw?
 package-lock.json
 
-
-/public/robots.txt
 .env
