@@ -53,15 +53,6 @@ me()
             permanent
         >
             <VList density="compact" nav>
-                <!-- <router-link :to="{ name: 'dashboardHome' }" class="link-menu" exact>
-                    <VListItem 
-                        :class="{ 'v-list-item--active': ($route.name === 'dashboardHome') }"
-                        class="items-list" title="Home" value="dashboardHome" >
-                        <template v-slot:prepend>
-                            <home style="width: 24px; height: 24px;"></home>
-                        </template>
-                    </VListItem>
-                </router-link> -->
                 <router-link :to="{ name: 'profile' }" class="link-menu" exact>
                     <VListItem 
                         :class="{ 'v-list-item--active': $route.name === 'profile' }"
@@ -100,8 +91,8 @@ me()
                 </router-link>
             </VList>
         </VNavigationDrawer>
-        <VMain style="min-height: 700px; background-color: #E2F8FC;" class="pt-30">
-            <div class="mt-0 p-0 mt-md-10 container-dashboard d-block d-md-none">
+        <VMain class="pt-30 h-custom tw-bg-green">
+            <div class="mt-0 p-0 mt-md-10 container-dashboard tw-block md:tw-hidden">
                 <VCard class="no-shadown card-information p-2 transparent box-bottom" :class="classFixed" ref="fixedSectionRefd">
                     <VCardTitle class="p-0 d-flex align-center justify-content-center">
                         <div class="d-block text-center box-iconmob box-comp">
@@ -247,6 +238,16 @@ me()
         opacity: 0 !important;
     }
 
+    .h-custom {
+        min-height: 700px;
+    }
+
+    @media only screen and (min-width: 768px) and (max-width: 1140px) {
+        .h-custom {
+            min-height: calc(100dvh - 175px);
+        }
+    }
+
     @media (max-width: 768px) {
 
         .second-header-dashboard {
@@ -311,7 +312,9 @@ me()
         .box-bottom {
             border-bottom: 1px solid #E2F8FC;
         }
+    }
 
+    @media (max-width: 767px) {
         .pt-30 {
             padding-top: 30%;
         }

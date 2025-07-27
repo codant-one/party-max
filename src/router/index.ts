@@ -253,7 +253,8 @@ router.beforeEach((to, from, next) => {
     '/mydata',
     '/detail-purchases',
     '/security',
-    '/address'
+    '/address',
+    '/event-planner'
   ];
   const authRequired = privatePages.includes(to.path);
   const loggedIn = localStorage.getItem('user_data');

@@ -2,6 +2,7 @@
 
 import { ref } from 'vue'
 import { useHomeStores } from '@/stores/home'
+import { useMiscellaneousStores } from "@/stores/miscellaneous";
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
@@ -25,12 +26,14 @@ import t_2 from '@assets/images/t_2.jpg';
 import t_3 from '@assets/images/t_3.jpg';
 import t_4 from '@assets/images/t_4.jpg';
 import t_5 from '@assets/images/t_5.jpg';
-import t_6 from '@assets/images/t_6.webp';
 
 import f_1 from '@assets/images/f_1.jpg';
 import f_2 from '@assets/images/f_2.jpg';
 import f_3 from '@assets/images/f_3.jpg';
 import f_4 from '@assets/images/f_4.jpg';
+
+import check_circle from '@assets/icons/check-circle.svg';
+import error_circle from '@assets/icons/error-circle.svg';
 
 const thumbsSwiper = ref(null);
 const modules = ref([Pagination])
@@ -56,9 +59,36 @@ const banners = ref([])
 const firstImageUrl = ref([])
 
 const homeStores = useHomeStores()
+const miscellaneousStores = useMiscellaneousStores()
 
 const data = ref(null)
 const isLoading = ref(true)
+
+const isDialogVisible = ref(false)
+const isError = ref(false)
+const message = ref(false)
+
+watch(() => 
+  miscellaneousStores.getLoading, async (value) => {
+    isLoading.value = value
+  }
+)
+
+watch(() => 
+  miscellaneousStores.getMessage, async (value) => {
+    if(value !== '') {
+      isError.value = miscellaneousStores.getError
+      isDialogVisible.value = true
+      message.value = value
+      setTimeout(() => {
+        miscellaneousStores.setError(false)
+        isDialogVisible.value = false
+        isError.value = false
+        message.value = ''
+      }, 2000)
+    }
+  }
+)
 
 watchEffect(fetchData)
 
@@ -173,7 +203,7 @@ const tab = ref('0')
     </div>
     <div class="lg:tw-w-[25%] d-flex tw-flex-col md:tw-flex-row lg:tw-flex-col lg:tw-h-[683px] tw-relative">
       <div
-          class="absolute tw-p-5 tw-h-[309px] h-lg-50 w-100 tw-cursor-pointer tw-bg-cover tw-bg-center img-gallery"
+          class="absolute tw-p-5 tw-h-[309px] lg:tw-h-[50%] w-100 tw-cursor-pointer tw-bg-cover tw-bg-center img-gallery"
           :style="{ backgroundImage: 'url(' + banner_1.image + ')' }"
           @click="redirectTo(banner_1.url)"
           role="img"
@@ -182,7 +212,7 @@ const tab = ref('0')
           </span>
       </div>
       <div
-        class="absolute tw-p-5 tw-h-[309px] h-lg-50 w-100 tw-cursor-pointer tw-bg-cover tw-bg-center img-gallery"
+        class="absolute tw-p-5 tw-h-[309px] lg:tw-h-[50%] w-100 tw-cursor-pointer tw-bg-cover tw-bg-center img-gallery"
         :style="{ backgroundImage: 'url(' + banner_2.image + ')' }"
         @click="redirectTo(banner_2.url)"
         role="img"
@@ -204,7 +234,7 @@ const tab = ref('0')
               <span class="d-block card-information-subtitle">A partir de $210.000</span>
             </div>
           </VCol>
-          <VCol cols="12" sm="6" md="3" class="d-flex align-center hr">
+          <VCol cols="12" sm="6" md="3" class="d-flex align-center hr no-border">
             <img :src="location" width="60" height="60" class="ms-10" alt="location" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Nuestras tiendas</span>
@@ -934,9 +964,33 @@ const tab = ref('0')
       </VCard>
     </VContainer>
   </div>
+
+  <VDialog v-model="isDialogVisible" >
+    <VCard
+      class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
+      <VImg :width="isMobile ? '120' : '180'" :src="isError ? error_circle : check_circle" class="mx-auto"/>
+      <VCardText class="text-message mb-5 px-0 px-md-5 pt-0">
+        {{ message }}
+      </VCardText>
+    </VCard>
+  </VDialog>
 </template>
 
 <style scoped>
+
+  .text-message {
+    color:  #FF0090;
+    text-align: center;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px !important;
+  }
+
+  .card-register {
+    width: 500px;
+    border-radius: 32px!important;
+  }
 
   .btn-register {
     font-size: 14px;
@@ -1238,7 +1292,12 @@ const tab = ref('0')
       width: 170px;
       height: 170px;
     }
+
+    .no-border {
+      border-right: 0 !important;
+    }
   }
+
   @media only screen and (max-width: 767px) {
   
     .size-circles-desktop {
@@ -1384,6 +1443,15 @@ const tab = ref('0')
     .MySwiper:deep(.swiper-button-next),
     .MySwiper:deep(.swiper-button-prev) {
         display: none;
+    }
+
+    .card-register {
+      padding: 20px;
+      width: auto;
+    }
+
+    .text-message {
+      font-size: 18px;
     }
   }
 </style>

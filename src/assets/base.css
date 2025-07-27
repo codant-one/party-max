@@ -97,6 +97,10 @@ label,
   line-height: 18px;
 }
 
+.grecaptcha-badge {
+  bottom: 90px !important;
+}
+
 @media (min-width: 1280px) {
   .v-container {
       max-width: 1312px !important;

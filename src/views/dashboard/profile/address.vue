@@ -407,7 +407,7 @@ const getFlagCountry = country => {
             @submit.prevent="onSubmit"
         > 
             <VCard class="pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-                <VCardText class="subtitle-register p-0 mt-0 mt-md-7">
+                <VCardText class="subtitle-register p-0 tw-mt-0 md:tw-mt-4 lg:tw-mt-7">
                     AGREGAR NUEVA DIRECCIÓN
                 </VCardText>           
                 <VCardItem class="pb-0 px-3 px-md-10">

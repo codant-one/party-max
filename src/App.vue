@@ -11,7 +11,6 @@ import Filters from '@/components/app/Filters.vue'
 import FilterServices from '@/components/app/FilterServices.vue'
 import categories from '@assets/images/categories.jpg';
 import register from '@assets/images/register.jpg';
-import blogs from '@assets/images/blogs.jpg';
 
 const authStores = useAuthStores()
 const cartStores = useCartStores()
@@ -100,13 +99,13 @@ async function fetchData() {
 
   if(route.name === 'dashboard' || route.name === 'register_confirm') {
     background.value = 'tw-bg-green'
-  } else if(route.name === 'home') {
+  } else if(route.name === 'home' || route.name === 'categories' || route.name === 'blogs' || route.name === 'blogDetail' || route.name === 'event_planner') {
     background.value = 'tw-bg-light_cyan_2'
   } else {
     background.value = 'tw-bg-white'
   }
 
-  if(route.name === 'categories' || route.name === 'wholesalers')
+  if(route.name === 'wholesalers')
     bg = categories
   else if(route.name === 'register' || route.name === 'type_client' || route.name === 'form_client' || 
           route.name === 'form_supplier' || route.name === 'login' || route.name === 'success_person' || 
@@ -114,9 +113,6 @@ async function fetchData() {
     bg = register
     repeat = 'no-repeat'
     size = 'cover'
-  } else if(route.name === 'blogs' || route.name === 'blogDetail' || route.name === 'event_planner') {
-    bg = blogs
-    size = 'contain'
   } else 
     bg = ''
 
@@ -168,6 +164,6 @@ async function fetchData() {
         <router-view />
       </VMain>
     </VLayout>
-    <!-- <Footer /> -->
+    <Footer />
   </VApp>
 </template>
