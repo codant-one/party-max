@@ -122,9 +122,6 @@ async function fetchData() {
   banner_6.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 6).mobile : banners.value.find(item => item.order_id === 6).image);
   banner_6.value.url = banners.value.find(item => item.order_id === 6).url;
 
-
-  preloadFirstImage()
-
   isLoading.value = false
 }
 
@@ -132,20 +129,6 @@ const redirectTo = (url) => {
   if (url) {
     window.open(url, '_blank');
     // window.location.href = url
-  }
-}
-
-const preloadFirstImage = () => {
-  if (sliders.value.length > 0) {
-    const img = new Image();
-    img.src = baseURL.value + sliders.value[0].image;
-    
-    // Precargar WebP si es posible
-    const linkPreload = document.createElement('link');
-    linkPreload.rel = 'preload';
-    linkPreload.as = 'image';
-    linkPreload.href = `${baseURL.value}webp/${sliders.value[0].image.replace('.jpg', '.webp')}`;
-    document.head.appendChild(linkPreload);
   }
 }
 
