@@ -70,7 +70,8 @@ watchEffect(() => {
                     <VCardText class="border-img ms-5 p-0">
                         <img 
                             :width="100"
-                            :src="baseURL + image" 
+                            :src="baseURL + image"
+                            :alt="name"
                             class="img-prod" />
                     </VCardText>
                 </VCol>

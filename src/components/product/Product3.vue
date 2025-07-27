@@ -65,6 +65,7 @@ watchEffect(() => {
             <VCardText class="border-img ms-1 mb-2 p-0">
                 <img 
                     class="img-prod"
+                    :alt="name"
                     :src="baseURL + image" 
                 />
                 

@@ -109,7 +109,8 @@ const addfavorite = () => {
                             class="tw-no-underline">
                             <img 
                                 :width="isMobile ? 135 : 177"
-                                :src="baseURL + image" 
+                                :src="baseURL + image"
+                                :alt="name"
                                 class="img-prod"
                             />
                         </router-link>

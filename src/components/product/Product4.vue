@@ -132,6 +132,7 @@ const addfavorite = () => {
                             <img 
                                 :width="isMobile ? 135 : 177"
                                 :src="baseURL + image" 
+                                :alt="name"
                                 class="img-prod" />
 
                             <div v-if="in_stock === 0" class="out-of-stock-label">AGOTADO</div>  
