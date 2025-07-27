@@ -253,7 +253,7 @@ async function fetchData() {
             @submit.prevent="onSubmit"
             > 
             <VCard class="pb-2 pb-md-4 no-shadown card-password d-block text-center mx-auto card-form">
-                <VCardText class="subtitle-register p-0 mt-0 mt-md-7">
+                <VCardText class="subtitle-register p-0 tw-mt-0 md:tw-mt-4 lg:tw-mt-7">
                     ACTUALIZAR CONTRASEÑA
                 </VCardText>
                 <VCardItem class="pb-0 px-3 px-md-10">
@@ -320,7 +320,7 @@ async function fetchData() {
             @submit.prevent="onSubmitP"
             > 
             <VCard class="pb-2 pb-md-4 no-shadown card-password d-block text-center mx-auto card-form">
-                <VCardText class="subtitle-register p-0 mt-0 mt-md-7">
+                <VCardText class="subtitle-register p-0 tw-mt-0 md:tw-mt-4 lg:tw-mt-7">
                     ACTUALIZAR NÚMERO DE TELÉFONO
                 </VCardText>
                 <VCardItem class="pb-0 px-3 px-md-10">

@@ -954,7 +954,7 @@ const chanceSend = value => {
                 @submit.prevent="onSubmit"
             > 
                 <VCard class="pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-                    <VCardText class="subtitle-register p-0 mt-0 mt-md-7 d-block">
+                    <VCardText class="subtitle-register p-0 tw-mt-0 md:tw-mt-4 lg:tw-mt-7 d-block">
                         <span class="d-block">AGREGAR NUEVA DIRECCIÓN</span>
                         <span v-if="products.some(product => product.type === 1)" class="tw-text-sm tw-text-gray d-flex mt-1 justify-content-center">
                             <info class="me-1"/>

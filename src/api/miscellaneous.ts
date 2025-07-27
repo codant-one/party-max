@@ -49,6 +49,10 @@ class Miscellaneous {
     ips() {
         return axios.get(`miscellaneous/ips`)
     }
+
+    contactUs(data: object) {
+        return axios.post(`miscellaneous/contactUs`, data)
+    }
 }
 
 const miscellaneous = new Miscellaneous();

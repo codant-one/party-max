@@ -2,6 +2,7 @@
 
 import { ref } from 'vue'
 import { useHomeStores } from '@/stores/home'
+import { useMiscellaneousStores } from "@/stores/miscellaneous";
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
@@ -25,12 +26,14 @@ import t_2 from '@assets/images/t_2.jpg';
 import t_3 from '@assets/images/t_3.jpg';
 import t_4 from '@assets/images/t_4.jpg';
 import t_5 from '@assets/images/t_5.jpg';
-import t_6 from '@assets/images/t_6.webp';
 
 import f_1 from '@assets/images/f_1.jpg';
 import f_2 from '@assets/images/f_2.jpg';
 import f_3 from '@assets/images/f_3.jpg';
 import f_4 from '@assets/images/f_4.jpg';
+
+import check_circle from '@assets/icons/check-circle.svg';
+import error_circle from '@assets/icons/error-circle.svg';
 
 const thumbsSwiper = ref(null);
 const modules = ref([Pagination])
@@ -56,9 +59,36 @@ const banners = ref([])
 const firstImageUrl = ref([])
 
 const homeStores = useHomeStores()
+const miscellaneousStores = useMiscellaneousStores()
 
 const data = ref(null)
 const isLoading = ref(true)
+
+const isDialogVisible = ref(false)
+const isError = ref(false)
+const message = ref(false)
+
+watch(() => 
+  miscellaneousStores.getLoading, async (value) => {
+    isLoading.value = value
+  }
+)
+
+watch(() => 
+  miscellaneousStores.getMessage, async (value) => {
+    if(value !== '') {
+      isError.value = miscellaneousStores.getError
+      isDialogVisible.value = true
+      message.value = value
+      setTimeout(() => {
+        miscellaneousStores.setError(false)
+        isDialogVisible.value = false
+        isError.value = false
+        message.value = ''
+      }, 2000)
+    }
+  }
+)
 
 watchEffect(fetchData)
 
@@ -172,9 +202,9 @@ const tab = ref('0')
         </swiper-slide>
       </swiper>
     </div>
-    <div class="lg:tw-w-[25%] d-flex flex-lg-column lg:tw-h-[683px] tw-relative">
+    <div class="lg:tw-w-[25%] d-flex tw-flex-col md:tw-flex-row lg:tw-flex-col lg:tw-h-[683px] tw-relative">
       <div
-          class="absolute tw-p-5 tw-h-[309px] h-lg-50 w-100 tw-cursor-pointer tw-bg-cover tw-bg-center img-gallery"
+          class="absolute tw-p-5 tw-h-[309px] lg:tw-h-[50%] w-100 tw-cursor-pointer tw-bg-cover tw-bg-center img-gallery"
           :style="{ backgroundImage: 'url(' + banner_1.image + ')' }"
           @click="redirectTo(banner_1.url)"
           role="img"
@@ -183,7 +213,7 @@ const tab = ref('0')
           </span>
       </div>
       <div
-        class="absolute tw-p-5 tw-h-[309px] h-lg-50 w-100 tw-cursor-pointer tw-bg-cover tw-bg-center img-gallery"
+        class="absolute tw-p-5 tw-h-[309px] lg:tw-h-[50%] w-100 tw-cursor-pointer tw-bg-cover tw-bg-center img-gallery"
         :style="{ backgroundImage: 'url(' + banner_2.image + ')' }"
         @click="redirectTo(banner_2.url)"
         role="img"
@@ -198,28 +228,28 @@ const tab = ref('0')
     <VCard class="mt-7 no-shadown card-information">
       <VCardItem class="p-0">
         <VRow no-gutters  class="tw-text-tertiary">
-          <VCol cols="12" lg="3" class="d-flex align-center hr">
+          <VCol cols="12" sm="6" md="3" class="d-flex align-center hr">
             <img :src="motorcycle" width="60" height="60" class="ms-10" alt="motorcycle" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Envíos gratis</span>
               <span class="d-block card-information-subtitle">A partir de $210.000</span>
             </div>
           </VCol>
-          <VCol cols="12" lg="3" class="d-flex align-center hr">
+          <VCol cols="12" sm="6" md="3" class="d-flex align-center hr no-border">
             <img :src="location" width="60" height="60" class="ms-10" alt="location" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Nuestras tiendas</span>
               <span class="d-block card-information-subtitle">En Bogotá</span>
             </div>
           </VCol>
-          <VCol cols="12" lg="3" class="d-flex align-center hr">
+          <VCol cols="12" sm="6" md="3" class="d-flex align-center hr">
             <img :src="sold" width="60" height="60" class="ms-10" alt="sold" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Ventas por mayor</span>
               <span class="d-block card-information-subtitle">A los mejores precios</span>
             </div>
           </VCol>
-          <VCol cols="12" lg="3" class="d-flex align-center col-siguecompra">
+          <VCol cols="12" sm="6" md="3" class="d-flex align-center col-siguecompra">
             <img :src="tracking" width="60" height="60" class="ms-10" alt="tracking" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Sigue tu compra</span>
@@ -233,14 +263,34 @@ const tab = ref('0')
     <!-- recommendations -->
     <VCard class="mt-7 no-shadown card-information p-0">
       <VCardTitle class="px-4 px-md-7 py-3 cardtitles hr-cyan">Recomendaciones según tus búsquedas</VCardTitle>
-      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
+      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-none d-md-flex align-items-stretch justify-content-between" v-if="data">
         <Product1 
           v-for="(product, i) in data.recommendations"
           :key="i"
           :product="product"
           :readonly="true"/>
       </VCardText>  
-      <VCardText class="pb-0 px-4 px-md-7 mt-5 mb-2 d-md-flex align-items-stretch justify-content-between" v-if="data && isMobile">  
+      <VCardText class="pb-0 px-4 px-md-7 mt-5 mb-2 xs:tw-hidden md:tw-block lg:tw-hidden align-items-stretch justify-content-between" v-if="data">  
+        <swiper
+          :pagination="{
+            dynamicBullets: true,
+          }"
+          :modules="modules"
+          :spaceBetween="5"
+          :slidesPerView="3"
+          :freeMode="true"
+          :watchSlidesProgress="true"
+          @swiper="setThumbsSwiper"
+          class="MySwiper3"
+          >
+          <swiper-slide v-for="(product, i) in data.recommendations" :key="i">
+            <Product1 
+              :product="product"
+              :readonly="true"/>
+          </swiper-slide>
+        </swiper>
+      </VCardText> 
+      <VCardText class="pb-0 px-4 px-md-7 mt-5 mb-2 xs:tw-block md:tw-hidden align-items-stretch justify-content-between" v-if="data">  
         <swiper
           :pagination="{
             dynamicBullets: true,
@@ -272,7 +322,7 @@ const tab = ref('0')
     
     <!-- the most sold -->
     <VCard class="mt-7 no-shadown card-information p-0 tw-bg-yellow_happiness_100">
-      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center card-vendido cardtitles hr-cyan">
+      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center card-vendido cardtitles hr-cyan tw-border-b tw-border-tertiary">
         <span>Lo más vendido</span>
         <VSpacer />
         <router-link 
@@ -316,26 +366,25 @@ const tab = ref('0')
         </router-link>
       </VCardTitle>
       <VCardText class="px-4 px-md-7 pb-0 mt-2 mt-md-5 mb-2 mb-md-5 d-flex align-items-stretch justify-content-between card-banner5" v-if="data">
-        <VRow no-gutters class="transparent mostSoldMobile">
+        <VRow no-gutters class="transparent tw-w-[-webkit-fill-available]">
           <VCol cols="12" lg="9">
             <VCard class="no-shadown tw-bg-yellow_happiness_100">
               <VCardText class="p-0">
                 <img 
                   :src="banner_4.image" 
-                  class="border-img img-gallery"
+                  class="border-img w-100"
                   alt="banner8"
-                  cover
                   @click="redirectTo(banner_4.url)"
                   />
               </VCardText>
               <VCardText class="p-0">
-                <VTabs v-model="tab" class="mt-3 mt-7" color="pink-accent-3">
+                <VTabs v-model="tab" class="mt-3 mt-7 tw-text-tertiary">
                   <VTab value="0">Agregados recientemente</VTab>
                   <VTab value="1">Lo  mejor de lo mejor</VTab>
                 </VTabs>
                 <v-window v-model="tab" disabled>
                   <v-window-item value="0">
-                    <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
+                    <VCardText class="px-0 mt-5 d-none d-md-flex align-items-stretch justify-content-between">
                       <Product1 
                         v-for="(product, index) in data.mostSold.latestProducts"
                         v-show="index < 4"
@@ -344,8 +393,29 @@ const tab = ref('0')
                         :readonly="true"
                         :bg="`tw-bg-yellow_happiness_100`"/>
                     </VCardText>
-
-                    <VCardText class="pb-0 px-0 mt-5 d-md-flex align-items-stretch justify-content-between" v-else>
+                    <VCardText class="pb-0 px-0 mt-5 xs:tw-hidden md:tw-block lg:tw-hidden align-items-stretch justify-content-between">
+                      <swiper
+                        :pagination="{
+                          dynamicBullets: true,
+                        }"
+                        :modules="modules"
+                        :spaceBetween="5"
+                        :slidesPerView="3"
+                        :freeMode="true"
+                        :watchSlidesProgress="true"
+                        @swiper="setThumbsSwiper"
+                        :style="{ height: '400px !important' }"
+                        class="MySwiper3"
+                        >
+                        <swiper-slide v-for="(product, i) in data.mostSold.latestProducts" :key="i">
+                          <Product1 
+                            :product="product"
+                            :readonly="true"
+                            :bg="`tw-bg-yellow_happiness_100`"/>
+                        </swiper-slide>
+                      </swiper>
+                    </VCardText>
+                    <VCardText class="pb-0 px-0 mt-5 xs:tw-block md:tw-hidden align-items-stretch justify-content-between">
                       <swiper
                         :pagination="{
                           dynamicBullets: true,
@@ -370,7 +440,7 @@ const tab = ref('0')
                   </v-window-item>
 
                   <v-window-item value="1">
-                    <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
+                    <VCardText class="px-0 mt-5 d-none d-md-flex align-items-stretch justify-content-between">
                       <Product1 
                         v-for="(product, index) in data.mostSold.bestSellers"
                         v-show="index < 4"
@@ -379,8 +449,29 @@ const tab = ref('0')
                         :readonly="true"
                         :bg="`tw-bg-yellow_happiness_100`"/>
                     </VCardText>
-
-                    <VCardText class="pb-0 px-0 mt-5 d-md-flex align-items-stretch justify-content-between" v-else>
+                    <VCardText class="pb-0 px-0 mt-5 xs:tw-hidden md:tw-block lg:tw-hidden align-items-stretch justify-content-between">
+                      <swiper
+                        :pagination="{
+                          dynamicBullets: true,
+                        }"
+                        :modules="modules"
+                        :spaceBetween="5"
+                        :slidesPerView="3"
+                        :freeMode="true"
+                        :watchSlidesProgress="true"
+                        @swiper="setThumbsSwiper"
+                        :style="{ height: '400px !important' }"
+                        class="MySwiper3"
+                        >
+                        <swiper-slide v-for="(product, i) in data.mostSold.bestSellers" :key="i">
+                          <Product1 
+                            :product="product"
+                            :readonly="true"
+                            :bg="`tw-bg-yellow_happiness_100`"/>
+                        </swiper-slide>
+                      </swiper>
+                    </VCardText>
+                    <VCardText class="pb-0 px-0 mt-5 xs:tw-block md:tw-hidden align-items-stretch justify-content-between">
                       <swiper
                         :pagination="{
                           dynamicBullets: true,
@@ -407,7 +498,7 @@ const tab = ref('0')
               </VCardText>
             </VCard>
           </VCol>
-          <VCol cols="12" lg="3" class="d-flex flex-column col-mobile">
+          <VCol cols="12" lg="3" class="d-none d-md-flex flex-column col-mobile">
             <VCardText class="p-0 ms-3">
               <div v-if="tab === '0'">
                 <Product2 
@@ -465,12 +556,12 @@ const tab = ref('0')
               category: 'fiestas-tematicas'
             }
           }"  
-          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary" v-if="!isMobile">
+          class="ms-5 tw-no-underline d-none d-md-flex tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
           Ver todos
         </router-link>
       </VCardTitle>
       <VDivider class="hr-primary"/>
-      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
+      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-none d-md-flex align-items-stretch justify-content-between">
         <router-link
           :to="{
             name: 'products',
@@ -527,7 +618,89 @@ const tab = ref('0')
           <span class="d-block size-theme tw-text-tertiary mt-5">Neón</span>
         </router-link>
       </VCardText> 
-      <VCardText class="px-0 mt-2 mb-2 d-flex align-items-stretch justify-content-between" v-else>
+      <VCardText class="px-0 mt-2 mb-2 xs:tw-hidden md:tw-block lg:tw-hidden align-items-stretch justify-content-between">
+        <VRow no-gutters class="transparent">
+          <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
+            <router-link 
+              :to="{
+                name: 'products',
+                query: {
+                  category: 'fiestas-tematicas',
+                  subcategory: 'tematica-mexicana'
+                }
+              }" class="tw-no-underline d-block text-center zoom">
+              <img :src="t_1" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
+            </router-link>
+          </VCol>
+          <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
+            <router-link 
+              :to="{
+                name: 'products',
+                query: {
+                  category: 'fiestas-tematicas',
+                  subcategory: 'tematica-hawaiana'
+                }
+              }" class="tw-no-underline d-block text-center zoom">
+              <img :src="t_2" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
+            </router-link>
+          </VCol>
+          <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
+            <router-link 
+              :to="{
+                name: 'products',
+                query: {
+                  category: 'fiestas-tematicas',
+                  subcategory: 'tematica-vallenata'
+                }
+              }" class="tw-no-underline d-block text-center zoom">
+              <img :src="t_3" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
+            </router-link>
+          </VCol>
+          <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
+            <router-link 
+              :to="{
+                name: 'products',
+                query: {
+                  category: 'fiestas-tematicas',
+                  subcategory: 'tematica-metalizada'
+                }
+              }" class="tw-no-underline d-block text-center zoom">
+              <img :src="t_4" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
+            </router-link>
+          </VCol>
+          <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
+            <router-link 
+              :to="{
+                name: 'products',
+                query: {
+                  category: 'fiestas-tematicas',
+                  subcategory: 'tematica-neon'
+                }
+              }" class="tw-no-underline d-block text-center zoom">
+              <img :src="t_5" class="d-block size-rect-desktop" width="150"  height="150" loading="lazy" alt="neon"/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Neón</span>
+            </router-link>
+          </VCol>
+          <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
+            <router-link
+              :to="{
+                name: 'products',
+                query: {
+                  category: 'fiestas-tematicas'
+                }
+              }" 
+              class="tw-no-underline d-block text-center zoom mt-0">
+              <span class="d-block size-rect-desktop tw-bg-primary"/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Todos</span>
+            </router-link>
+          </VCol>
+        </VRow>
+      </VCardText>
+      <VCardText class="px-0 mt-2 mb-2 xs:tw-block md:tw-hidden align-items-stretch justify-content-between">
         <VRow no-gutters class="transparent">
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
             <router-link 
@@ -627,12 +800,12 @@ const tab = ref('0')
                 subcategory: 'tematica-cumpleanos'
               }
             }"
-            class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-tertiary hover:tw-text-yellow">
+            class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-tertiary hover:tw-text-primary">
             Ver todos
           </router-link>
         </VCardTitle>
         <VDivider class="hr-secondary"/>
-        <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
+        <VCardText class="px-4 px-md-7 mt-5 mb-5 d-none d-md-flex align-items-stretch justify-content-between">
           <router-link 
             :to="{
               name: 'products',
@@ -679,8 +852,56 @@ const tab = ref('0')
             <img :src="f_4" class="border-theme d-white size-circles-desktop" loading="lazy" alt="icons4"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Adultos</span>
           </router-link>
-        </VCardText> 
-        <VCardText class="px-0 mt-2 mb-2 d-flex align-items-stretch justify-content-between" v-else>
+        </VCardText>
+        <VCardText class="px-4 px-md-7 mt-5 mb-5 xs:tw-hidden md:tw-flex lg:tw-hidden align-items-stretch justify-content-between">
+          <router-link 
+            :to="{
+              name: 'products',
+              query: {
+                category: 'fiestas-infantiles',
+                subcategory: 'fiestas-ninos'
+              }
+            }" class="tw-no-underline d-block text-center img-zoom">
+            <img :src="f_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt="iconos"/>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Niños</span>
+          </router-link>
+          <router-link 
+            :to="{
+              name: 'products',
+              query: {
+                category: 'fiestas-infantiles',
+                subcategory: 'tematica-ninas'
+              }
+            }" class="tw-no-underline d-block text-center img-zoom">
+            <img :src="f_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="icons2"/>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Niñas</span>
+          </router-link>
+          <router-link 
+            :to="{
+              name: 'products',
+              query: {
+                category: 'fiestas-infantiles',
+                subcategory: 'tematica-bebes'
+              }
+            }" class="tw-no-underline d-block text-center img-zoom">
+            <img :src="f_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="icons3"/>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Bebes</span>
+          </router-link>
+          <router-link
+            :to="{
+              name: 'products',
+              query: {
+                category: 'globos',
+                fathercategory: 'globos-metalizados',
+                subcategory: 'globos-metalizados-tematicas-adultos'
+              }
+            }"
+            class="tw-no-underline d-block text-center img-zoom">
+            <img :src="f_4" class="border-theme d-white size-circles-desktop" loading="lazy" alt="icons4"/>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Adultos</span>
+          </router-link>
+        </VCardText>
+        <VCardText class="px-0 mt-2 mb-2 xs:tw-block md:tw-hidden align-items-stretch justify-content-between">
           <VRow no-gutters class="transparent">
             <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
               <router-link
@@ -744,9 +965,33 @@ const tab = ref('0')
       </VCard>
     </VContainer>
   </div>
+
+  <VDialog v-model="isDialogVisible" >
+    <VCard
+      class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
+      <VImg :width="isMobile ? '120' : '180'" :src="isError ? error_circle : check_circle" class="mx-auto"/>
+      <VCardText class="text-message mb-5 px-0 px-md-5 pt-0">
+        {{ message }}
+      </VCardText>
+    </VCard>
+  </VDialog>
 </template>
 
 <style scoped>
+
+  .text-message {
+    color:  #FF0090;
+    text-align: center;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px !important;
+  }
+
+  .card-register {
+    width: 500px;
+    border-radius: 32px!important;
+  }
 
   .btn-register {
     font-size: 14px;
@@ -910,7 +1155,7 @@ const tab = ref('0')
   }
 
   .img-zoom:hover span{ 
-      color: #FFC549!important;
+      color: #FF0090!important;
   }
 
   .zoom {
@@ -1026,7 +1271,40 @@ const tab = ref('0')
       content: '' !important; /* Elimina flecha default */
   }
 
+  .MySwiper2 {
+    height: 300px!important;
+  }
+
+  .MySwiper3 {
+    height: 380px!important;
+  }
+
+  .MySwiper2::v-deep(.swiper-pagination-bullet-active),
+  .MySwiper3::v-deep(.swiper-pagination-bullet-active) {
+    background: #FF0090 !important;
+  }
+
+  /* .swiper::v-deep(.swiper-pagination-horizontal ) {
+    top: 92%;
+  }     */
+
+  @media only screen and (min-width: 768px) and (max-width: 1023px) {
+    .size-circles-desktop {
+      width: 170px;
+      height: 170px;
+    }
+
+    .no-border {
+      border-right: 0 !important;
+    }
+  }
+
   @media only screen and (max-width: 767px) {
+  
+    .size-circles-desktop {
+      width: 160px;
+      height: 160px;
+    }
 
     .size-rect-desktop {
       width: 160px !important;
@@ -1151,22 +1429,6 @@ const tab = ref('0')
       line-height: normal;
     }
 
-    .MySwiper2 {
-      height: 300px!important;
-    }
-
-    .MySwiper2::v-deep(.swiper-pagination-bullet-active) {
-      background: #FF0090 !important;
-    }
-
-    /* .swiper::v-deep(.swiper-pagination-horizontal ) {
-      top: 92%;
-    }     */
-
-    .mostSoldMobile {
-      width: -webkit-fill-available;
-    }
-
     .v-tab::v-deep(.v-btn__content) {
       font-size: 12px;
       font-style: normal;
@@ -1182,6 +1444,15 @@ const tab = ref('0')
     .MySwiper:deep(.swiper-button-next),
     .MySwiper:deep(.swiper-button-prev) {
         display: none;
+    }
+
+    .card-register {
+      padding: 20px;
+      width: auto;
+    }
+
+    .text-message {
+      font-size: 18px;
     }
   }
 </style>

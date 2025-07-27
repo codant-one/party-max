@@ -4,14 +4,34 @@ import Miscellaneous from '@/api/miscellaneous'
 export const useMiscellaneousStores = defineStore('miscellaneous', {
     state: () => ({
         data: {},
-        loading: false
+        loading: false,
+        error: false,
+        message: ''
     }),
     getters:{
         getData(): any {
             return this.data
+        },
+        getLoading(): any {
+            return this.loading
+        },
+        getMessage(): any {
+            return this.message
+        },
+        getError(): any {
+            return this.error
         }
     },
     actions: {
+        setLoading(value: any) {
+            this.loading = value
+        },
+        setMessage(value: any) {
+            this.message = value
+        },
+        setError(value: any) {
+            this.error = value
+        },
         getCategory(slug: string) {  
             return Miscellaneous.categories(slug)
                 .then((response) => {
@@ -121,6 +141,15 @@ export const useMiscellaneousStores = defineStore('miscellaneous', {
                 .catch(error => {
                     return Promise.reject(error)
                 }) 
+        },
+        contactUs(data: object) {
+            return Miscellaneous.contactUs(data)
+                .then((response: any) => {
+                    return Promise.resolve(response)
+                }).catch(error => {
+                    return Promise.reject(error)
+                })
+            
         },
     }
 })

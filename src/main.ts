@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createHead } from '@vueuse/head';
+import { VueReCaptcha } from 'vue-recaptcha-v3';
 import { PerfectScrollbarPlugin } from 'vue3-perfect-scrollbar';
 import '@/assets/main.css'; 
 import App from './App.vue'
@@ -33,5 +34,11 @@ createApp(App)
   .use(vuetify)
   .use(head)
   .use(PerfectScrollbarPlugin)
+  .use(VueReCaptcha, {
+    siteKey: import.meta.env.VITE_RECAPTCHA_SITE_KEY,
+    loaderOptions: {
+      autoHideBadge: false
+    },
+  })
   .use(createPinia())
   .mount('#app')

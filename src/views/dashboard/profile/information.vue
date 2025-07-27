@@ -390,7 +390,7 @@ const getFlagCountry = country => {
                 @submit.prevent="onSubmit"> 
                 <VCard 
                     class="pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto card-form">
-                    <VCardText class="subtitle-register p-0 mt-0 mt-md-7">
+                    <VCardText class="subtitle-register p-0 tw-mt-0 md:tw-mt-4 lg:tw-mt-7">
                         ACTUALIZAR DATOS
                     </VCardText>
                     <VCardItem class="pb-0 px-5 px-md-10">
