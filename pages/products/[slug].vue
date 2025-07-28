@@ -179,7 +179,7 @@ if (productData.value) {
     link: [
       {
         rel: 'canonical',
-        href: productUrl.value,
+        href: productUrl,
       },
     ],
     meta: [
