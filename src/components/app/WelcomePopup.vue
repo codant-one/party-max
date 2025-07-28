@@ -2,7 +2,8 @@
 
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import popupImage from '@assets/images/discount.png';
+import popupImage from '@assets/images/discount-desktop.webp';
+import popupImageMobile from '@assets/images/discount-mobile.webp';
 
 const show = ref(false)
 const router = useRouter()
@@ -26,9 +27,9 @@ function goToRegister() {
     <VDialog v-model="show" max-width="600" transition="dialog-top-transition">
         <VCard class="tw-relative p-0 card-welcome">
         <VCardText class="p-0 line">
-            <img :src="popupImage" alt="discount" class="w-100" />
+            <img :src="isMobile ? popupImageMobile : popupImage" alt="discount" class="w-100" />
         </VCardText>
-        <div class="tw-absolute tw-bottom-4 tw-right-0 tw--translate-x-1/2 tw-z-10">
+        <div class="tw-absolute tw-bottom-4 tw-right-0 tw-z-10">
             <VBtn 
                 variant="flat"
                 width="auto"
