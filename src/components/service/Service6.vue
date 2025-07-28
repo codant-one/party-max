@@ -77,7 +77,9 @@ watchEffect(() => {
                             :width="100"
                             :src="baseURL + image" 
                             :alt="name"
-                            class="img-prod" />
+                            class="img-prod"
+                            loading="lazy"
+                        />
                     </VCardText>
                 </VCol>
                 <VCol cols="6" md="12" v-if="isMobile"></VCol>

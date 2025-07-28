@@ -103,7 +103,9 @@ const decrement = () => {
                             :width="100"
                             :src="baseURL + image" 
                             :alt="name"
-                            class="img-prod" />
+                            class="img-prod"
+                            loading="lazy"
+                        />
                         <div v-if="in_stock === 0" class="out-of-stock-label">AGOTADO</div>   
                     </VCardText>
                 </VCol>

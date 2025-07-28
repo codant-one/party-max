@@ -613,7 +613,7 @@ const tab = ref('0')
                   subcategory: 'tematica-mexicana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_1" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Mexicana"/>
+              <img :src="t_1" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Mexicana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </router-link>
           </VCol>
@@ -626,7 +626,7 @@ const tab = ref('0')
                   subcategory: 'tematica-hawaiana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Hawaiana"/>
+              <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Hawaiana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
             </router-link>
           </VCol>
@@ -639,7 +639,7 @@ const tab = ref('0')
                   subcategory: 'tematica-vallenata'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_3" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Vallenata"/>
+              <img :src="t_3" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Vallenata"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </router-link>
           </VCol>
@@ -652,7 +652,7 @@ const tab = ref('0')
                   subcategory: 'tematica-metalizada'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_4" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Metalizada"/>
+              <img :src="t_4" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Metalizada"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </router-link>
           </VCol>
@@ -695,7 +695,7 @@ const tab = ref('0')
                   subcategory: 'tematica-mexicana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_1" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Mexicana"/>
+              <img :src="t_1" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Mexicana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </router-link>
           </VCol>
@@ -708,7 +708,7 @@ const tab = ref('0')
                   subcategory: 'tematica-hawaiana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Hawaiana"/>
+              <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Hawaiana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
             </router-link>
           </VCol>
@@ -721,7 +721,7 @@ const tab = ref('0')
                   subcategory: 'tematica-vallenata'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_3" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Vallenata"/>
+              <img :src="t_3" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Vallenata"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </router-link>
           </VCol>
@@ -734,7 +734,7 @@ const tab = ref('0')
                   subcategory: 'tematica-metalizada'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_4" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Metalizada"/>
+              <img :src="t_4" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Metalizada"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </router-link>
           </VCol>

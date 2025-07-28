@@ -112,6 +112,7 @@ const addfavorite = () => {
                                 :src="baseURL + image"
                                 :alt="name"
                                 class="img-prod"
+                                loading="lazy"
                             />
                         </router-link>
                     </VCardText>
