@@ -257,11 +257,12 @@ if (productData.value) {
     )
   }
 
+  console.log('productUrl', productUrl.value)
   useSeoMeta({
     title: productData.value.product.name,
     description: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'`,
     ogType: 'product',
-    ogUrl: productUrl,
+    ogUrl: productUrl.value,
     ogTitle: productData.value.product.name,
     ogDescription: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'`,
     ogSiteName: 'PARTYMAX',
