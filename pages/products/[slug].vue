@@ -280,7 +280,7 @@ if (productData.value) {
     link: [
       {
         rel: 'canonical',
-        href: `${baseURL.value}products/${productData.value.product.slug}`,
+        href: productUrl.value,
       },
     ],
     meta: [
