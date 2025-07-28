@@ -8,7 +8,8 @@ import { ref } from 'vue'
 import { useMiscellaneousStores } from '@/stores/miscellaneous'
 import { useCartStores } from '@/stores/cart'
 import { useFavoritesStores } from '@/stores/favorites'
-import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination } from 'swiper/modules';
+import { useHomeStores } from "@/stores/home";
+import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination, Zoom } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { VueImageZoomer } from 'vue-image-zoomer'
 import { useRouter, useRoute } from 'vue-router'
@@ -29,6 +30,10 @@ import heart from '@assets/icons/heart.svg?inline';
 import check_circle from '@assets/icons/check-circle.svg';
 import error_circle from '@assets/icons/error-circle.svg';
 import festin_pending from '@assets/icons/festin_pending.svg';
+import playImage from '@assets/images/play.png';
+
+import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
+import arrow_left from '@assets/icons/arrow-left-dark.svg?inline';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -36,14 +41,16 @@ import 'swiper/css/free-mode';
 import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar'
 import 'swiper/css/pagination';
+import 'swiper/css/zoom';
 import 'vue-image-zoomer/dist/style.css';
 
 const route = useRoute()
-const router = useRouter()
+
 const miscellaneousStores = useMiscellaneousStores()
 const cartStores = useCartStores()
 const favoritesStores = useFavoritesStores()
 const config = useRuntimeConfig()
+const homeStores = useHomeStores();
 
 const { isMobile } = useDevice();
 
@@ -55,31 +62,32 @@ const searchFacebook = ref(null)
 const searchTwitter = ref(null)
 const searchLinkendin = ref(null)
 
+const category = ref(null);
 const bread = ref([
   {
     title: 'Home',
     disabled: false,
-    href: '/',
-  },
-  {
-    title: 'Producto',
-    disabled: true,
-    href: '',
+    href: '/'
   }
 ])
 
 const productImages = ref([])
-const modules = ref([FreeMode, Navigation, Thumbs, Scrollbar])
+const modules = ref([Pagination, FreeMode, Navigation, Thumbs, Scrollbar, Zoom])
 const modules2 = ref([Pagination])
 const thumbsSwiper = ref(null);
+const thumbsSwiperModal = ref(null);
 
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
+const twitterAccount = ref(config.public.TWITTER_ACCOUNT ?? '')
+const data = ref(null)
+const keywords = ref(null)
 
 const title = ref(null)
 const brand = ref(null)
 const rating = ref(null)
 const reviews = ref(null)
 const sku = ref(null)
+const videos = ref('')
 const wholesale = ref(false)
 const wholesale_price = ref(null)
 const wholesale_min = ref(null)
@@ -105,6 +113,7 @@ const selectedColorId = ref(null)
 const load = ref(false)
 const color = ref('')
 const imageAux = ref('')
+const imageMeta = ref('')
 
 const cant_prod = ref(1)
 const client_id = ref(null)
@@ -114,51 +123,89 @@ const user_id = ref(null)
 const isFavorite = ref(null)
 const isFavoriteProduct = ref(null)
 const message = ref('')
-const onlyWholesale = ref(false)
+const onlyWholesale = ref(0)
 
 const isDialogVisible = ref(false)
 const isError = ref(false)
 const isPending = ref(false)
 
+const isHoverVisible = ref(false)
+
 watch(() => 
   route.path,(newPath, oldPath) => {
     thumbsSwiper.value.destroy(false, true)
+    thumbsSwiperModal.value.destroy(false, true)
   }
 );
 
 watch(() => 
   route.query,(newPath, oldPath) => {
     thumbsSwiper.value.destroy(false, true)
+    thumbsSwiperModal.value.destroy(false, true)
   }
 );
 
 watch(() => 
   cartStores.getWholesale, async (value) => {
     onlyWholesale.value = value
-    }
-  );
-
-const { data: dataFetch } = await useAsyncData(`product-${route.params.slug}`, async () => {
-  if(route.params.slug && route.path.startsWith('/products/')) {
-    isLoading.value = true
-
-    await miscellaneousStores.getProduct(route.params.slug)
-
-    let response = miscellaneousStores.getData
-
-    response.baseUrl = config.public.APP_DOMAIN_API_URL + '/storage/'
-
-    setTimeout(() => {
-      isLoading.value = false   
-    }, 2000)  
-
-    return response 
   }
-})
+);
 
-watchEffect(fetchData);
+const { data: productData, error } = await useAsyncData(
+  `product-${route.params.slug}`,
+  async () => {
+    await miscellaneousStores.getProduct(route.params.slug);
+    return miscellaneousStores.getData;
+  }
+)
+
+if (error.value || !productData.value?.product) {
+  throw showError({ statusCode: 404, statusMessage: 'Producto no encontrado' });
+}
+
+if (productData.value) {
+  useSeoMeta({
+    title: productData.value.product.name,
+    description: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'`,
+    ogTitle: productData.value.product.name,
+    ogDescription: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'`,
+    ogImage: baseURL.value + productData.value.product.image,
+    ogUrl:  `https://${config.public.MY_DOMAIN}/products/${productData.value.product.slug}`,
+    twitterCard: 'summary_large_image',
+  })
+
+  useHead({
+    link: [
+      {
+        rel: 'canonical',
+        href: `https://${config.public.MY_DOMAIN}/products/${productData.value.product.id}`,
+      },
+    ],
+    meta: [
+      {
+        name: 'keywords',
+        content: productData.value.keywords.join(', ')
+      },
+      // Metaetiquetas para Google Shopping (ejemplo)
+      { name: 'product:availability', content: 'in stock' },
+      { name: 'product:condition', content: 'new' },
+      { name: 'product:price:amount', content: productData.value.product.price_for_sale },
+      { name: 'product:price:currency', content: 'COP' },
+    ],
+  })
+}
+
+watchEffect(fetchData)
 
 async function fetchData() {
+
+  bread.value = [
+    {
+      title: "Home",
+      disabled: false,
+      href: "/"
+    }
+  ]
 
   if(process.client && localStorage.getItem('user_data')){
     const userData = localStorage.getItem('user_data')
@@ -167,37 +214,48 @@ async function fetchData() {
     client_id.value = userDataJ.client.id
     user_id.value = userDataJ.id
   }
+
+  isLoading.value = true
   
   radioContent.value = []
   productImages.value = []
+  data.value = null
 
-  if(route.params.slug && route.path.startsWith('/products/') && dataFetch.value) {
-    existence_whole.value = route.query.wholesale === 'true' ? true : false
+  if(route.params.slug && route.path.startsWith('/products/')) {
+    existence_whole.value = route.query.wholesalers === 'true' ? true : false
 
-    imageAux.value = [{ image : dataFetch.value.product.image }]
+    await homeStores.fetchData();
+    categories.value = homeStores.getData.parentCategories;
 
-    categories.value = dataFetch.value.product.colors[0]?.categories.map(item => item.category.name)
-    productImages.value = (dataFetch.value.product.colors[0]?.images.length === 0) ? imageAux.value : dataFetch.value.product.colors[0]?.images
-    color.value = dataFetch.value.product.colors[0]?.color.name
-    selectedColor.value = dataFetch.value.product.colors[0]?.color.id.toString()
-    selectedColorId.value = dataFetch.value.product.colors[0]?.id
+    await miscellaneousStores.getProduct(route.params.slug)
+    data.value = miscellaneousStores.getData
+
+    keywords.value = data.value.keywords.join(', ')
+
+    imageAux.value = [{ image : data.value.product.image }]
+    imageMeta.value = baseURL.value + data.value.product.image
+
+    productImages.value = data.value.product.colors[0]?.images
+    color.value = data.value.product.colors[0]?.color.name
+    selectedColor.value = data.value.product.colors[0]?.color.id.toString()
+    selectedColorId.value = data.value.product.colors[0]?.id
 
     onlyWholesale.value = cartStores.getWholesale
 
-    dataFetch.value.product.colors.forEach(element => { 
+    data.value.product.colors.forEach(element => { 
       var aux = {
         value: element.color.id.toString(),
         title: element.color.name,
-        image:  (element.images.length === 0) ? dataFetch.value.product.image : element.images[0].image
+        image:  (element.images.length === 0) ? data.value.product.image : element.images[0].image
       }
 
       radioContent.value.push(aux)
     });
 
-    product_id.value = dataFetch.value.product.id
+    product_id.value = data.value.product.id
 
-    productUrl.value = `https://${config.public.MY_DOMAIN}/products/${dataFetch.value.product.slug}`
-    const imageUrl = `${config.public.APP_DOMAIN_API_URL}/storage/${dataFetch.value.product.image}`
+    productUrl.value = `https://${config.public.MY_DOMAIN}/products/${data.value.product.slug}`
+    const imageUrl = `${config.public.APP_DOMAIN_API_URL}/storage/${data.value.product.image}`
     const descriptionText = 'Mira este increíble producto.'
     const twitterText = `${descriptionText} ${productUrl.value} ${imageUrl}`;
 
@@ -206,54 +264,128 @@ async function fetchData() {
     searchTwitter.value = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}`;
     searchLinkendin.value = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(productUrl.value)}`;
     
-    title.value = dataFetch.value.product.name
-    brand.value = dataFetch.value.product.brand.name
-    rating.value = dataFetch.value.product.rating
-    reviews.value = dataFetch.value.product.reviews
-    sku.value = dataFetch.value.product.colors[0].sku
-    wholesale.value = dataFetch.value.product.wholesale === 1 ? true : false
-    wholesale_price.value = dataFetch.value.product.wholesale_price
-    cant_prod.value = route.query.wholesale === 'true' ? dataFetch.value.product.wholesale_min : 1
-    wholesale_min.value = route.query.wholesale === 'true' ? dataFetch.value.product.wholesale_min : 1
-    price_for_sale.value = dataFetch.value.product.price_for_sale
-    store.value = dataFetch.value.product.user.user_detail.store_name ?? (dataFetch.value.product.user.supplier?.company_name ?? (dataFetch.value.product.user.name + ' ' + (dataFetch.value.product.user.last_name ?? '')))
-    in_stock.value = dataFetch.value.product.in_stock
-    color.value = dataFetch.value.product.colors[0].color.name
-    single_description.value = dataFetch.value.product.single_description
-    description.value = dataFetch.value.product.description ?? ''
-    cant_stock.value = parseInt(dataFetch.value.product.stock)
+    title.value = data.value.product.name
+    brand.value = data.value.product.brand.name
+    rating.value = data.value.product.rating
+    reviews.value = data.value.product.reviews
+    sku.value = data.value.product.colors[0].sku
+    wholesale.value = data.value.product.wholesale === 1 ? true : false
+    wholesale_price.value = data.value.product.wholesale_price
+    cant_prod.value = route.query.wholesalers === 'true' ? data.value.product.wholesale_min : 1
+    wholesale_min.value = route.query.wholesalers === 'true' ? data.value.product.wholesale_min : 1
+    price_for_sale.value = data.value.product.price_for_sale
+    store.value = data.value.product.user.user_detail.store_name ?? (data.value.product.user.supplier?.company_name ?? (data.value.product.user.name + ' ' + (data.value.product.user.last_name ?? '')))
+    in_stock.value = data.value.product.colors[0].in_stock
+    color.value = data.value.product.colors[0].color.name
+    cant_stock.value = parseInt(data.value.product.colors[0].stock)
+    single_description.value = data.value.product.single_description
+    description.value = data.value.product.description ?? ''
 
-    width.value = dataFetch.value.product.detail.width
-    weigth.value = dataFetch.value.product.detail.weigth
-    height.value = dataFetch.value.product.detail.height
-    deep.value = dataFetch.value.product.detail.deep
-    material.value = dataFetch.value.product.detail.material
-
-    dataFetch.value.product.colors[0].categories.forEach(element => { 
-      categories.value.push(element.category.name)
-    });
+    width.value = data.value.product.detail.width
+    weigth.value = data.value.product.detail.weigth
+    height.value = data.value.product.detail.height
+    deep.value = data.value.product.detail.deep
+    material.value = data.value.product.detail.material
 
     tags.value = []
-    dataFetch.value.product.tags.forEach(element => { 
+    data.value.product.tags.forEach(element => { 
       tags.value.push(element.tag.name)
     });
 
     if(client_id.value)
       isFavoriteProduct.value = await favoritesStores.show({user_id: user_id.value, product_id: product_id.value })
+
+    videos.value = data.value.product.videos.map(u => ({
+      type: 'video',
+      url: u.url,
+      thumb: '/assets/video-placeholder.png',
+    }))
+
+    await Promise.all(
+      videos.value.map(async slide => {
+        if (slide.type === 'video') {
+            slide.thumb = await loadVideoThumbnail(slide.url);
+        }
+      })
+    );
+
+    if (route.query.category) {
+      category.value = {
+        title: categories.value.filter(item => item.slug === route.query.category)[0].name,
+        disabled: false,
+        href: `/products?category=${route.query.category}&wholesalers=${route.query.wholesalers ?? 'false'}`
+      };
+
+      bread.value.push(category.value);
+
+      if (route.query.fathercategory) {
+        const fathercategory = {
+          title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name,
+          disabled: false,
+          href: `/products?category=${route.query.category}&subcategory=${route.query.fathercategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
+        };
+
+        category.value.fathercategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name
+        bread.value.push(fathercategory);
+      }
+
+      if (typeof route.query.fathercategory === 'undefined' && route.query.subcategory) {
+        const subcategory = {
+          title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name,
+          disabled: false,
+          href: `/products?category=${route.query.category}&subcategory=${route.query.subcategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
+        };
+
+        category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name
+        bread.value.push(subcategory);
+      }
+
+      if (typeof route.query.fathercategory !== 'undefined' && route.query.subcategory) {
+        const subcategory = {
+          title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name,
+          disabled: false,
+          href: `/products?category=${route.query.category}&fathercategory=${route.query.fathercategory}&subcategory=${route.query.subcategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
+        };
+
+        category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name
+        bread.value.push(subcategory);
+      }
+
+      if(!isMobile) {
+        const product_ = {
+          title: "Producto",
+          disabled: true,
+          href: "",
+        };
+
+        bread.value.push(product_);
+      }
+    } else {
+      bread.value.push({
+        title: 'Producto',
+        disabled: true,
+        href: '',
+      });
+    }
   }
+
+  isLoading.value = false
 }
 
 const chanceRadio = (value) => {
 
   if (Number.isInteger(Number(value.id))) {        
-      var seleted =  dataFetch.value.product.colors.filter(item => item.color_id === Number(value.id))[0]
+      var seleted =  data.value.product.colors.filter(item => item.color_id === Number(value.id))[0]
       
-      categories.value = seleted.categories.map(item => item.category.name)
       productImages.value = (seleted?.images.length === 0) ? imageAux.value : seleted?.images
       color.value = seleted?.color.name
       selectedColor.value = seleted?.color.id.toString()
       selectedColorId.value = seleted.id
       sku.value = seleted?.sku ?? null
+
+      cant_prod.value = 1
+      cant_stock.value = parseInt(seleted?.stock)
+      in_stock.value = seleted?.in_stock
   }
 }
 
@@ -261,9 +393,17 @@ const setThumbsSwiper = (swiper) => {
     thumbsSwiper.value = swiper;
 }
 
-const addCart = () => {
+const setThumbsSwiperModal = (swiper) => {
+    thumbsSwiperModal.value = swiper;
+}
 
-  let isWholesale = route.query.wholesale === 'true' ? 1 : 0
+const closeHoverVisible = () => {
+  isHoverVisible.value = false
+  thumbsSwiperModal.value.destroy(false, true)
+}
+
+const addCart = () => {
+  let isWholesale = route.query.wholesalers === 'true' ? 1 : 0
 
   if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
     let data = {
@@ -309,7 +449,6 @@ const addCart = () => {
       message.value = ''
     }, 3000)
   }
-
 }
 
 const addfavorite = () => {
@@ -328,7 +467,7 @@ const addfavorite = () => {
         isDialogVisible.value = false
         isError.value = false
         message.value = ''
-      }, 3000)
+      }, 1000)
     
     }).catch(err => {
       isFavorite.value = false
@@ -338,18 +477,11 @@ const addfavorite = () => {
 
 }
 
-const wholesaleAction = () => {
-  if (route.query.wholesale === 'true') {
-    router.push({ 
-      name: 'products-slug',
-      params: { slug: route.params.slug }
-    })
-  } else { 
-    router.push({ 
-      name: 'products-slug',
-      params: { slug: route.params.slug },
-      query: {  wholesale: 'true' }
-    })
+const controlCant = () => {
+  if (parseInt(cant_prod.value) > parseInt(cant_stock.value)) { 
+    cant_prod.value = cant_stock.value; 
+  } else if (parseInt(cant_prod.value) < 1) {
+    cant_prod.value = 1;
   }
 }
 
@@ -363,36 +495,61 @@ const decrement = () => {
     cant_prod.value--
 }
 
-useHead({
-  title: dataFetch.value?.product.name + ' - ' || 'Producto',
-  meta: [
-    { name: 'description', content: 'Producto publicado en PARTYMAX como: ' + (dataFetch.value?.product.name || 'Producto') },
-    // Open Graph / Facebook / LinkedIn / Pinterest / WhatsApp
-    { property: 'og:type', content: 'website' },
-    { property: 'og:title', content: dataFetch.value?.product.name || 'Producto' },
-    { property: 'og:description', content: `Producto publicado en PARTYMAX como: ${dataFetch.value?.product.name || 'Producto'}` },
-    { property: 'og:image', content: (dataFetch.value?.baseUrl || '') + (dataFetch.value?.product.image || '') },
-    { property: 'og:url', content: 'https://' + config.public.MY_DOMAIN + '/products/' + (dataFetch.value?.product.slug || '') },
-    { property: 'og:site_name', content: 'PARTYMAX' },
-    // Twitter
-    { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: dataFetch.value?.product.name || 'Producto' },
-    { name: 'twitter:description', content: `Producto publicado en PARTYMAX como: ${dataFetch.value?.product.name || 'Producto'}` },
-    { name: 'twitter:image', content: (dataFetch.value?.baseUrl || '') + (dataFetch.value?.product.image || '') },
-    { name: 'twitter:site', content: '@SteffaniiPaola' },
-  ]
-})
+const mediaSlides = computed(() => {
+  const imgs = productImages.value.map(i => ({
+    type: 'image',
+    url: baseURL.value + i.image,
+    thumb: baseURL.value + i.image
+  }));
+  const vids = videos.value.map(u => ({
+    type: 'video',
+    url: u.url,
+    thumb: u.thumb
+  }));
+  const main = {
+    type: 'image',
+    url: baseURL.value + imageAux.value[0].image,
+    thumb: baseURL.value + imageAux.value[0].image
+  }
+  return [...vids, main, ...imgs];
+});
+
+const loadVideoThumbnail = async (url) => {
+    const yt = url.match(
+        /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/
+    );
+    if (yt) {
+        return `https://img.youtube.com/vi/${yt[1]}/mqdefault.jpg`;
+    }
+
+    const vm = url.match(/vimeo\.com\/(\d+)/);
+    if (vm) {
+        return `https://vumbnail.com/${vm[1]}.jpg`;
+    }
+
+    return '/assets/video-placeholder.png';
+}
+
+const buildEmbedUrl = (url) => {
+  const yt = url.match(
+    /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/
+  );
+  if (yt) return `https://www.youtube.com/embed/${yt[1]}`;
+  const vm = url.match(/vimeo\.com\/(\d+)/);
+  if (vm) return `https://player.vimeo.com/video/${vm[1]}`;
+  return url;
+}
 
 </script>
 
 <template>
   <section>
-    <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
+   <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
       <VContainer class="tw-text-tertiary d-flex align-center px-0">
         <v-breadcrumbs :items="bread" class="px-2" />
       </VContainer>
     </VAppBar>
-    <VContainer class="pt-0">
+    <VContainer class="pt-0 m-top">
       <Loader :isLoading="isLoading"/>
       <!-- HEADER -->
       <VCard class="mt-md-7 no-shadown card-information p-0" v-if="!isLoading">
@@ -414,7 +571,7 @@ useHead({
             </a>
           </div>
         </VCardTitle>
-        <VCardSubtitle class="px-0 d-flex flex-column align-start border-title">
+        <VCardSubtitle class="px-0 d-flex flex-column align-start border-title pb-1 pb-md-0">
           <VRow no-gutters>
             <VCol cols="12" md="6" class="text-infoprod d-flex align-center mt-1">
               Marca: {{ brand }}
@@ -429,6 +586,7 @@ useHead({
                   :model-value="rating"
                   color="yellow-darken-2"
                   active-color="yellow-darken-2"
+                  class="mb-1"
                 />
 
                 <span class="ms-1">({{ reviews.length }} {{ reviews.length > 1 ? 'Reviews' : 'Review' }})</span>
@@ -439,27 +597,27 @@ useHead({
             <VCol cols="12" md="6" class="align-right"></VCol>
           </VRow>
           <div class="my-1 align-end redes-mobile">
-            <a :href="searchWhatsapp" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
+            <a :href="searchWhatsapp" target="_blank" class="tw-no-underline hover:tw-text-secondary">
               <whatsapp_mobile class="me-2" />
             </a>   
-            <a :href="searchFacebook" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
+            <a :href="searchFacebook" target="_blank" class="tw-no-underline hover:tw-text-secondary">
               <facebook_mobile class="me-2"/>
             </a>
-            <a :href="searchTwitter" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
+            <a :href="searchTwitter" target="_blank" class="tw-no-underline hover:tw-text-secondary">
               <twitter_mobile class="me-2"/>
             </a>
-            <a :href="searchLinkendin" target="_blank" class="tw-cursor-pointer tw-no-underline hover:tw-text-secondary">
+            <a :href="searchLinkendin" target="_blank" class="tw-no-underline hover:tw-text-secondary">
               <linkendin_mobile class="me-2"/>               
             </a>
           </div>
         </VCardSubtitle>
         <!-- BODY -->
-        <VCardText class="px-0 pb-0 mt-5 d-flex align-items-stretch justify-content-between">
+        <VCardText class="px-0 pb-0 mt-0 mt-md-5 d-flex align-items-stretch justify-content-between">
           <VRow class="border-title pb-2 pb-md-5">
-            <VCol cols="3" md="1" class="px-1 p-md-2">
+            <VCol cols="3" md="1" class="px-1 p-md-2 d-none d-md-block">
               <swiper
                 :direction="'vertical'"
-                :pagination="{ clickable: true}"
+                :pagination="{ clickable: true }"
                 :spaceBetween="isMobile ? 3 : 5"
                 :slidesPerView="isMobile ? 3 : 6"
                 :freeMode="true"
@@ -467,28 +625,63 @@ useHead({
                 @swiper="setThumbsSwiper"
                 class="mySwiper pt-0 d-flex align-center justify-content-center"
               >
-                <swiper-slide v-for="(picture, index) in productImages" :key="index">
-                  <img width="60" :src="baseURL + picture.image" alt="Slider" />
+                <swiper-slide v-for="(slide, index) in mediaSlides" :key="index">
+                    <img 
+                      v-if="slide.type === 'image'"
+                      :src="slide.url" 
+                      :alt="'image-'+index"
+                      width="60"
+                    />
+                    <template  v-else>
+                      <img                         
+                        :src="slide.thumb"
+                        :alt="'thumbnail-'+index"
+                        class="thumb-media"
+                      />
+                      <div class="play-overlay">
+                         <img :src="playImage" />
+                      </div> 
+                    </template>
                 </swiper-slide>
               </swiper>
             </VCol>
-            <VCol cols="9" md="4" class="d-flex justify-content-center">
+            <VCol cols="12" md="4" class="d-flex justify-content-center pb-0 pb-md-2">
               <swiper
-                :scrollbar="{
-                  hide: true,
+                :pagination="{ type: 'fraction' }"
+                :navigation="{
+                  prevEl: '.button-prev',
+                  nextEl: '.button-next'
                 }"
                 :spaceBetween="isMobile ? 5 : 10"
                 :thumbs="{ swiper: thumbsSwiper }"
+                :zoom="{ maxRatio: 3, minRatio: 1 }"
                 :modules="modules"
-                class="mySwiper2 border-img mx-0 mx-md-auto"
-                v-if="productImages.length > 0"
+                :slidesPerView="1"
+                :watchSlidesProgress="true"
+                :loop="true"
+                class="mySwiper2 border-img mx-0 mx-md-auto image-container"
+                v-if="mediaSlides.length > 0"
                 >
-                <swiper-slide v-for="(picture, index) in productImages" :key="index">
-                  <vue-image-zoomer
-                    :regular="baseURL + picture.image"
-                    :zoom-amount="3" 
-                  />
+                <swiper-slide v-for="(slide, index) in mediaSlides" :key="index">
+                  <template v-if="slide.type === 'image'">
+                    <div class="swiper-zoom-container">
+                      <img :src="slide.url" :alt="'slide-'+index" class="zoom-in" @click="isHoverVisible = true"/>
+                    </div>
+                  </template>
+                  <iframe
+                    v-else
+                    :src="buildEmbedUrl(slide.url)"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  />              
                 </swiper-slide>
+                <div class="custom-nav-btn button-prev" v-if="mediaSlides.length > 1">
+                   <arrow_left />
+                </div>
+                <div class="custom-nav-btn button-next" v-if="mediaSlides.length > 1">
+                  <arrow_right />
+                </div>
               </swiper>
             </VCol>
             <VCol cols="12" md="7">
@@ -528,9 +721,7 @@ useHead({
                         <div class="d-flex align-center justify-center">
                           <img 
                             width="75"
-                            :src="baseURL + item.image" 
-                            alt="Item"
-                          />
+                            :src="baseURL + item.image" />
                         </div>
                       </div>
                     </template>
@@ -575,10 +766,10 @@ useHead({
                       />
                   </VBtn>
                 </div>
-                <div class="my-auto ms-5" v-if="client_id">
+                <div class="my-auto ms-5">
                   <span 
                     v-if="!isFavorite" 
-                    class="me-4 index heart p-0 tw-cursor-pointer d-flex justify-content-center align-center"
+                    class="me-4 index heart p-0 d-flex justify-content-center align-center"
                     :class="(isFavoriteProduct) ? 'heart_fill' : ''" 
                     @click="addfavorite">
                   <heart />
@@ -591,26 +782,6 @@ useHead({
                     color="primary"
                   />
                 </div> 
-              </VCardText>
-
-              <VCardText class="p-0 d-flex border-title pb-2 mt-2 mt-md-0">
-                <VBtn 
-                  v-if="wholesale"
-                  :class="route.query.wholesale === 'true' ? 'b-mayorista-active': 'b-mayorista'"
-                  @click="wholesaleAction">
-                  <iconmayorista />
-                  <span class="ms-1">
-                    {{ route.query.wholesale === 'true' ? 'Precio al detal' : 'Precio al mayor' }}
-                  </span>
-                </VBtn>
-              </VCardText>
-              <VCardText class="p-0 d-block mt-2">
-                <span class="tw-text-tertiary" style="display: none;">Categorías: 
-                  <span class="ms-1">{{ categories.join(", ") }}</span>
-                </span>
-                <span class="d-block tw-text-tertiary">Tags: 
-                  <span class="ms-1">{{ tags.join(", ") }}</span>
-                </span>
               </VCardText>
             </VCol>
           </VRow>
@@ -698,7 +869,7 @@ useHead({
       </VCard> 
 
       <!-- recommendations -->
-      <VCard class="no-shadown card-information p-0" v-if="dataFetch">
+      <VCard class="no-shadown card-information p-0" v-if="data">
         <VCardTitle class="px-4 px-md-7 py-3 col-recomendaciones">
           <VRow align="center">
             <VCol cols="8" md="6" class="text-left">
@@ -709,14 +880,14 @@ useHead({
             </VCol> 
           </VRow>
         </VCardTitle>
-        <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="dataFetch && !isMobile">
+        <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
           <Product1 
-            v-for="(product, i) in dataFetch.recommendations"
+            v-for="(product, i) in data.recommendations"
             :key="i"
             :product="product"
             :readonly="true"/>
         </VCardText>  
-        <VCardText class="pb-0 px-4 px-md-7 mt-0 mt-md-5 mb-2 swiper-recomendations" v-if="dataFetch && isMobile">  
+        <VCardText class="pb-0 px-4 px-md-7 mt-0 mt-md-5 swiper-recomendations" v-if="data && isMobile">  
           <swiper
             :pagination="{
               dynamicBullets: true,
@@ -726,9 +897,8 @@ useHead({
             :slidesPerView="2"
             :freeMode="true"
             :watchSlidesProgress="true"
-            :style="{ height: isMobile ? '340px' : '370px' }"
             >
-            <swiper-slide v-for="(product, i) in dataFetch.recommendations" :key="i">
+            <swiper-slide v-for="(product, i) in data.recommendations" :key="i">
               <Product1 
                 :product="product"
                 :readonly="true"/>
@@ -740,11 +910,104 @@ useHead({
     <VDialog v-model="isDialogVisible" >
       <VCard
         class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-        <VImg :width="isMobile ? '80' : '100'" :src="isError ? error_circle : (isPending ? festin_pending : check_circle)" class="mx-auto"/>
-        <VCardText class="text-message mb-5 px-0 px-md-5">
+        <VImg :width="isMobile ? '120' : '180'" :src="isError ? error_circle : (isPending ? festin_pending : check_circle)" class="mx-auto"/>
+        <VCardText class="text-message mb-5 px-0 px-md-5 pt-0">
           {{ message }}
         </VCardText>
       </VCard>
+    </VDialog>
+
+    <!-- hover -->
+    <VDialog 
+      v-if="!isMobile"
+      v-model="isHoverVisible"   
+      fullscreen
+      transition="dialog-bottom-transition">
+      <div class="d-flex justify-content-end">
+        <VBtn
+          icon="mdi-window-close"
+          variant="text"
+          color="white"
+          @click="closeHoverVisible"
+         />
+      </div>
+      <div class="px-10">
+        <VRow no-gutters>
+          <VCol cols="3" md="2" class="px-1 p-md-2 d-none d-md-block">
+            <swiper
+              :direction="'vertical'"
+              :pagination="{ clickable: true }"
+              :spaceBetween="isMobile ? 3 : 5"
+              :slidesPerView="isMobile ? 3 : 6"
+              :freeMode="true"
+              :watchSlidesProgress="true"
+              @swiper="setThumbsSwiperModal"
+              class="mySwiperModal pt-0 h-100"
+            >
+              <swiper-slide v-for="(slide, index) in mediaSlides" :key="index">
+                  <img 
+                    v-if="slide.type === 'image'"
+                    :src="slide.url" 
+                    :alt="'image-'+index"
+                    width="100"
+                  />
+                  <template  v-else>
+                    <img                         
+                      :src="slide.thumb"
+                      :alt="'thumbnail-'+index"
+                      class="thumb-media-modal"
+                    />
+                    <div class="play-overlay">
+                        <img :src="playImage" />
+                    </div> 
+                  </template>
+              </swiper-slide>
+            </swiper>
+          </VCol>
+          <VCol cols="9" md="10" class="d-flex justify-content-center pb-0 pb-md-2 tw-relative">
+            <swiper
+              :pagination="{ type: 'fraction' }"
+              :navigation="{
+                prevEl: '.button-prev',
+                nextEl: '.button-next'
+              }"
+              :spaceBetween="isMobile ? 5 : 10"
+              :thumbs="{ swiper: thumbsSwiperModal }"
+              :modules="modules"
+              :slidesPerView="1"
+              :watchSlidesProgress="true"
+              :loop="true"
+              class="mySwiper2Modal border-img mx-0 mx-md-auto image-container"
+              v-if="mediaSlides.length > 0"
+              >
+              <swiper-slide v-for="(slide, index) in mediaSlides" :key="index">
+                <template v-if="slide.type === 'image'">
+                  <vue-image-zoomer
+                    :regular="slide.url"
+                    :zoom-amount="3"
+                    :hover-message="`Color: ${color}`"
+                    :touch-message="`Color: ${color}`"
+                  />
+                </template>
+                <iframe
+                  v-else
+                  :src="buildEmbedUrl(slide.url)"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                />              
+              </swiper-slide>
+              
+            </swiper>
+            <div class="button-prev" v-if="mediaSlides.length > 1">
+                  <arrow_left />
+              </div>
+              <div class="button-next" v-if="mediaSlides.length > 1">
+                <arrow_right />
+              </div>
+          </VCol>
+        </VRow>
+      </div>
     </VDialog>
   </section>
 </template>
@@ -759,13 +1022,129 @@ useHead({
 
 <style scoped>
 
+  .thumb-media {
+    width: 60px !important;
+    height: 60px !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+  }
+
+  .thumb-media-modal {
+    width: 100px !important;
+    height: 100px !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+  }
+
+  .swiper::v-deep(.vh--message-bottom) {
+    bottom: 30px !important;
+  } 
+
+  .m-top {
+    margin-top: -10px;
+  }
+
+  .custom-nav-btn {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    pointer-events: none;
+  }
+
+  .button-prev, .button-next {
+    position: absolute;
+    background: #D9EEF2;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    z-index: 10;
+    display: flex;
+    padding: 8px;
+  }
+
+  .mySwiper2:hover .custom-nav-btn {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mySwiper2 iframe {
+    pointer-events: none !important;
+  }
+
+  .zoom-in:hover {
+    cursor: zoom-in;
+  }
+
+  .button-prev { left: 8px; }
+  .button-next { right: 8px; }
+
+  /* Opcional: efectos hover */
+  .button-prev:hover v-icon,
+  .button-next:hover v-icon {
+    transform: scale(1.1);
+  }
+
+  .swiper-slide-active::v-deep(.vh--outer),
+  .swiper-slide-active::v-deep(.vh--outer > .vh--holder),
+  .swiper-slide-active::v-deep(.vh--outer > .vh--holder > picture) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .swiper-slide-active::v-deep(.vh--outer > .vh--holder > picture > img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .play-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 32px;
+    height: 32px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 10;
+    background: rgba(0, 0, 0, .5);
+    border-radius: 50%;
+    justify-content: center;
+    display: flex;
+  }
+
+  .play-overlay img {
+    width: 15px !important;
+  }
+
+  .image-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .out-of-stock-label {
+    position: absolute;
+    top: 30%;
+    left: 47%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    background-color: rgba(255, 0, 144, 0.7);
+    color: white;
+    padding: 10px 20px;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 5px;
+    z-index: 10;
+    pointer-events: none; /* Para que no interfiera con el zoomer */
+    width: 85%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+
   .text-message {
     color:  #FF0090;
     text-align: center;
     font-size: 24px;
     font-style: normal;
     font-weight: 600;
-    line-height: 30px;
+    line-height: 24px !important;
   }
 
   .card-register {
@@ -890,7 +1269,6 @@ useHead({
   .border-title2 span:hover {
     color: #FF0090;
     text-decoration: underline #FF0090;
-    cursor: pointer;
   }
 
   .btn-register {
@@ -996,14 +1374,10 @@ useHead({
 
 <style scoped>
 
-  .carousel__item img {
-    width: 60%;
-  }
-
   .border-img {
     border-radius: 16px !important;
     border: 1px solid #D9EEF2;
-    padding: 10px  10px 40px 10px !important;
+    /* padding: 10px  10px 40px 10px !important; */
     background-color: white;
     text-align: center;
     align-items: center;
@@ -1036,44 +1410,63 @@ useHead({
     background-position: center;
   }
 
-  .swiper-slide img {
+  .swiper-slide img, .swiper-slide iframe {
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     border-radius: 8px;
   }
 
-  .mySwiper {
+  .mySwiper, .mySwiperModal {
     box-sizing: border-box;
     padding: 10px 5px;
   }
       
   .mySwiper .swiper-slide {
-    opacity: 0.4;
-    border-style: solid;
-    border-width: 1px;
+    border: 1px solid #D9D9D9;
     border-radius: 8px;
-    width: 60px;
+    width: 60px !important;
     height: 60px !important;
   }
-    
+
+  .mySwiperModal .swiper-slide {
+    opacity: 1;
+    border: 2px solid #D9D9D9;
+    border-radius: 8px;
+    width: 100px !important;
+    height: 100px !important;
+  }
+
   .mySwiper .swiper-slide-thumb-active {
     opacity: 1;
+    border: 1px solid #D9EEF2;
+  }
+
+  .mySwiperModal .swiper-slide-thumb-active {
+    opacity: 1;
+    border: 2px solid #FF0090;
   }
 
   .mySwiper2 {
-    height: 350px;
-    width: 100%;
+    position: relative;
+    height: 400px;
+    width: 400px;
+  }
+
+  .mySwiper2Modal {
+    position: relative;
+    height: 650px;
+    width: 650px;
   }
 
   .swiper-recomendations .swiper::v-deep(.swiper-pagination-bullet-active) {
     background: #FF0090 !important;
   }
 
-  .swiper-recomendations .swiper::v-deep(.swiper-pagination-horizontal ) {
-    top: 95% !important;
-  }
+  /* .swiper-recomendations .swiper::v-deep(.swiper-pagination-horizontal ) {
+    top: 94% !important;
+  } */
     
   .col-item {
     padding: 16px 32px;
@@ -1137,6 +1530,16 @@ useHead({
 
   @media only screen and (max-width: 767px) {
 
+    .out-of-stock-label {
+      font-size: 16px;
+      top: 25%;
+      left: 50%;
+    }
+
+    /* .border-img {
+      padding: 10px !important;
+    } */
+
     .col-recomendaciones p {
       font-size: 16px;
     }
@@ -1161,25 +1564,30 @@ useHead({
       font-size: 11px;
     }
 
-    .swiper {
+    /* .swiper {
       height: 200px;
-    }
+    } */
 
     .swiper-recomendations .swiper {
-      height: 360px !important;
+      height: 320px !important;
     }
 
-    .mySwiper {
+    .mySwiper, .mySwiperModal {
       padding: 0 5px 10px 5px;
     }
 
     .mySwiper .swiper-slide {
-      width: 57px;
+      width: 60px;
     }
 
-    .mySwiper2 {
-      max-height: 200px;
-      width: 87%;
+    .mySwiperModal .swiper-slide {
+      width: 100px;
+    }
+
+    .mySwiper2, .mySwiper2Modal {
+      /* max-height: 200px;
+      width: 200px; */
+      width: 100%;
     }
     
     .btn-register {
