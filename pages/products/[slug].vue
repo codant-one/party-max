@@ -182,8 +182,6 @@ if (productData.value) {
   imageAux.value = [{ image : productData.value.product.image }]
   imageMeta.value  = apiURL.value  + 'proxy-image?url=' + baseURL.value + productData.value.product.image
 
-  console.log('image', imageMeta.value)
-  
   productImages.value = productData.value.product.colors[0]?.images
   color.value = productData.value.product.colors[0]?.color.name
   selectedColor.value = productData.value.product.colors[0]?.color.id.toString()
@@ -291,7 +289,9 @@ if (productData.value) {
         name: 'keywords',
         content: productData.value.keywords.join(', ')
       },
-      // Metaetiquetas para Google Shopping (ejemplo)
+      { property: 'og:title', content: productData.value.product.name },
+      { property: 'og:image', content: imageMeta },
+      { property: 'og:description', content: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'` },
       { name: 'product:availability', content: 'in stock' },
       { name: 'product:condition', content: 'new' },
       { name: 'product:price:amount', content: productData.value.product.price_for_sale },
