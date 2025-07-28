@@ -152,149 +152,155 @@ watch(() =>
 const { data: productData } = await useAsyncData(
   `product-${route.params.slug}`,
   async () => {
-    isLoading.value = true
     await miscellaneousStores.getProduct(route.params.slug)
-    isLoading.value = false
     return miscellaneousStores.getData
-  }
+  },
+  { watch: [() => route.params.slug] }
 )
 
-if (productData.value) {
+watch(productData, async (newValue) => {
+  console.log('newValue', newValue)
+  if (newValue) {
+    isLoading.value = false
+    console.log(' isLoading.value',  isLoading.value)
 
-  if(process.client && localStorage.getItem('user_data')){
-    const userData = localStorage.getItem('user_data')
-    const userDataJ = JSON.parse(userData)
-      
-    client_id.value = userDataJ.client.id
-    user_id.value = userDataJ.id
-  }
-
-  if(route.params.slug && route.path.startsWith('/products/')) {
-    existence_whole.value = route.query.wholesalers === 'true' ? true : false
-  }
-
-  radioContent.value = []
-  productImages.value = []
-
-  keywords.value = productData.value.keywords.join(', ')
-
-  imageAux.value = [{ image : productData.value.product.image }]
-  imageMeta.value = baseURL.value + productData.value.product.image
-
-  productImages.value = productData.value.product.colors[0]?.images
-  color.value = productData.value.product.colors[0]?.color.name
-  selectedColor.value = productData.value.product.colors[0]?.color.id.toString()
-  selectedColorId.value = productData.value.product.colors[0]?.id
-
-  onlyWholesale.value = cartStores.getWholesale
-
-  productData.value.product.colors.forEach(element => { 
-    var aux = {
-      value: element.color.id.toString(),
-      title: element.color.name,
-      image:  (element.images.length === 0) ? productData.value.product.image : element.images[0].image
+    if(process.client && localStorage.getItem('user_data')){
+      const userData = localStorage.getItem('user_data')
+      const userDataJ = JSON.parse(userData)
+        
+      client_id.value = userDataJ.client.id
+      user_id.value = userDataJ.id
     }
 
-    radioContent.value.push(aux)
-  });
+    if(route.params.slug && route.path.startsWith('/products/')) {
+      existence_whole.value = route.query.wholesalers === 'true' ? true : false
+    }
 
-  product_id.value = productData.value.product.id
+    radioContent.value = []
+    productImages.value = []
 
-  productUrl.value = `https://${config.public.MY_DOMAIN}/products/${productData.value.product.slug}`
-  const imageUrl = `${config.public.APP_DOMAIN_API_URL}/storage/${productData.value.product.image}`
-  const descriptionText = 'Mira este increíble producto.'
-  const twitterText = `${descriptionText} ${productUrl.value} ${imageUrl}`;
+    keywords.value = newValue.keywords.join(', ')
 
-  searchWhatsapp.value = `https://wa.me/?text=${productUrl.value}`
-  searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl.value)}`
-  searchTwitter.value = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}`;
-  searchLinkendin.value = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(productUrl.value)}`;
-  
-  title.value = productData.value.product.name
-  brand.value = productData.value.product.brand.name
-  rating.value = productData.value.product.rating
-  reviews.value = productData.value.product.reviews
-  sku.value = productData.value.product.colors[0].sku
-  wholesale.value = productData.value.product.wholesale === 1 ? true : false
-  wholesale_price.value = productData.value.product.wholesale_price
-  cant_prod.value = route.query.wholesalers === 'true' ? productData.value.product.wholesale_min : 1
-  wholesale_min.value = route.query.wholesalers === 'true' ? productData.value.product.wholesale_min : 1
-  price_for_sale.value = productData.value.product.price_for_sale
-  store.value = productData.value.product.user.user_detail.store_name ?? (productData.value.product.user.supplier?.company_name ?? (productData.value.product.user.name + ' ' + (productData.value.product.user.last_name ?? '')))
-  in_stock.value = productData.value.product.colors[0].in_stock
-  color.value = productData.value.product.colors[0].color.name
-  cant_stock.value = parseInt(productData.value.product.colors[0].stock)
-  single_description.value = productData.value.product.single_description
-  description.value = productData.value.product.description ?? ''
+    imageAux.value = [{ image : newValue.product.image }]
+    imageMeta.value = baseURL.value + newValue.product.image
 
-  width.value = productData.value.product.detail.width
-  weigth.value = productData.value.product.detail.weigth
-  height.value = productData.value.product.detail.height
-  deep.value = productData.value.product.detail.deep
-  material.value = productData.value.product.detail.material
+    productImages.value = newValue.product.colors[0]?.images
+    color.value = newValue.product.colors[0]?.color.name
+    selectedColor.value = newValue.product.colors[0]?.color.id.toString()
+    selectedColorId.value = newValue.product.colors[0]?.id
 
-  tags.value = []
-  productData.value.product.tags.forEach(element => { 
-    tags.value.push(element.tag.name)
-  });
+    onlyWholesale.value = cartStores.getWholesale
 
-  if(client_id.value)
-    isFavoriteProduct.value = await favoritesStores.show({user_id: user_id.value, product_id: product_id.value })
+    newValue.product.colors.forEach(element => { 
+      var aux = {
+        value: element.color.id.toString(),
+        title: element.color.name,
+        image:  (element.images.length === 0) ? newValue.product.image : element.images[0].image
+      }
 
-  videos.value = productData.value.product.videos.map(u => ({
-    type: 'video',
-    url: u.url,
-    thumb: '/assets/video-placeholder.png',
-  }))
+      radioContent.value.push(aux)
+    });
 
-  if(videos.value.length > 0 ) {
-    await Promise.all(
-      videos.value.map(async slide => {
-        if (slide.type === 'video') {
-            slide.thumb = await loadVideoThumbnail(slide.url);
-        }
-      })
-    )
+    product_id.value = newValue.product.id
+
+    productUrl.value = `https://${config.public.MY_DOMAIN}/products/${newValue.product.slug}`
+    const imageUrl = `${config.public.APP_DOMAIN_API_URL}/storage/${newValue.product.image}`
+    const descriptionText = 'Mira este increíble producto.'
+    const twitterText = `${descriptionText} ${productUrl.value} ${imageUrl}`;
+
+    searchWhatsapp.value = `https://wa.me/?text=${productUrl.value}`
+    searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl.value)}`
+    searchTwitter.value = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}`;
+    searchLinkendin.value = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(productUrl.value)}`;
+    
+    title.value = newValue.product.name
+    brand.value = newValue.product.brand.name
+    rating.value = newValue.product.rating
+    reviews.value = newValue.product.reviews
+    sku.value = newValue.product.colors[0].sku
+    wholesale.value = newValue.product.wholesale === 1 ? true : false
+    wholesale_price.value = newValue.product.wholesale_price
+    cant_prod.value = route.query.wholesalers === 'true' ? newValue.product.wholesale_min : 1
+    wholesale_min.value = route.query.wholesalers === 'true' ? newValue.product.wholesale_min : 1
+    price_for_sale.value = newValue.product.price_for_sale
+    store.value = newValue.product.user.user_detail.store_name ?? (newValue.product.user.supplier?.company_name ?? (newValue.product.user.name + ' ' + (newValue.product.user.last_name ?? '')))
+    in_stock.value = newValue.product.colors[0].in_stock
+    color.value = newValue.product.colors[0].color.name
+    cant_stock.value = parseInt(newValue.product.colors[0].stock)
+    single_description.value = newValue.product.single_description
+    description.value = newValue.product.description ?? ''
+
+    width.value = newValue.product.detail.width
+    weigth.value = newValue.product.detail.weigth
+    height.value = newValue.product.detail.height
+    deep.value = newValue.product.detail.deep
+    material.value = newValue.product.detail.material
+
+    tags.value = []
+    newValue.product.tags.forEach(element => { 
+      tags.value.push(element.tag.name)
+    });
+
+    if(client_id.value)
+      isFavoriteProduct.value = await favoritesStores.show({user_id: user_id.value, product_id: product_id.value })
+
+    videos.value = newValue.product.videos.map(u => ({
+      type: 'video',
+      url: u.url,
+      thumb: '/assets/video-placeholder.png',
+    }))
+
+    if(videos.value.length > 0 ) {
+      await Promise.all(
+        videos.value.map(async slide => {
+          if (slide.type === 'video') {
+              slide.thumb = await loadVideoThumbnail(slide.url);
+          }
+        })
+      )
+    }
+
+    useSeoMeta({
+      title: newValue.product.name,
+      description: `Descubre nuestro '${newValue.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'`,
+      ogType: 'product',
+      ogUrl: `${baseURL.value}products/${newValue.product.slug}`,
+      ogTitle: newValue.product.name,
+      ogDescription: `Descubre nuestro '${newValue.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'`,
+      ogSiteName: 'PARTYMAX',
+      ogImage: imageMeta,
+      ogImageWidth: '1200',
+      ogImageHeight: '630',
+      twitterCard: 'summary_large_image',
+      twitterTitle: newValue.product.name,
+      twitterDescription: `Descubre nuestro '${newValue.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'`,
+      twitterImage: imageMeta,
+      twitterSite: twitterAccount.value
+    })
+
+    useHead({
+      link: [
+        {
+          rel: 'canonical',
+          href: `${baseURL.value}products/${newValue.product.slug}`,
+        },
+      ],
+      meta: [
+        {
+          name: 'keywords',
+          content: newValue.keywords.join(', ')
+        },
+        // Metaetiquetas para Google Shopping (ejemplo)
+        { name: 'product:availability', content: 'in stock' },
+        { name: 'product:condition', content: 'new' },
+        { name: 'product:price:amount', content: newValue.product.price_for_sale },
+        { name: 'product:price:currency', content: 'COP' },
+      ],
+    })
   }
-
-  useSeoMeta({
-    title: productData.value.product.name,
-    description: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'`,
-    ogType: 'product',
-    ogUrl: `${baseURL.value}products/${productData.value.product.slug}`,
-    ogTitle: productData.value.product.name,
-    ogDescription: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'`,
-    ogSiteName: 'PARTYMAX',
-    ogImage: imageMeta,
-    ogImageWidth: '1200',
-    ogImageHeight: '630',
-    twitterCard: 'summary_large_image',
-    twitterTitle: productData.value.product.name,
-    twitterDescription: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'`,
-    twitterImage: imageMeta,
-    twitterSite: twitterAccount.value
-  })
-
-  useHead({
-    link: [
-      {
-        rel: 'canonical',
-        href: `${baseURL.value}products/${productData.value.product.slug}`,
-      },
-    ],
-    meta: [
-      {
-        name: 'keywords',
-        content: productData.value.keywords.join(', ')
-      },
-      // Metaetiquetas para Google Shopping (ejemplo)
-      { name: 'product:availability', content: 'in stock' },
-      { name: 'product:condition', content: 'new' },
-      { name: 'product:price:amount', content: productData.value.product.price_for_sale },
-      { name: 'product:price:currency', content: 'COP' },
-    ],
-  })
-}
+}, {
+  immediate: true 
+})
 
 const { data: categoryData } = await useAsyncData(
   `categories`,
@@ -548,7 +554,7 @@ const buildEmbedUrl = (url) => {
     <VContainer class="pt-0 m-top">
       <Loader :isLoading="isLoading"/>
       <!-- HEADER -->
-      <VCard class="mt-md-7 no-shadown card-information p-0" v-if="!isLoading">
+      <VCard class="mt-md-7 no-shadown card-information p-0" v-if="productData">
         <VCardTitle class="d-flex p-0 align-end">
           {{ title }}
           <VSpacer />
