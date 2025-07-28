@@ -149,19 +149,32 @@ watch(() =>
   }
 );
 
-const { data: productData, error } = await useAsyncData(
+const { data: productData } = await useAsyncData(
   `product-${route.params.slug}`,
   async () => {
-    await miscellaneousStores.getProduct(route.params.slug);
-    return miscellaneousStores.getData;
+    isLoading.value = true
+    await miscellaneousStores.getProduct(route.params.slug)
+    isLoading.value = false
+    return miscellaneousStores.getData
   }
 )
 
-if (error.value || !productData.value?.product) {
-  throw showError({ statusCode: 404, statusMessage: 'Producto no encontrado' });
-}
-
 if (productData.value) {
+
+  if(process.client && localStorage.getItem('user_data')){
+    const userData = localStorage.getItem('user_data')
+    const userDataJ = JSON.parse(userData)
+      
+    client_id.value = userDataJ.client.id
+    user_id.value = userDataJ.id
+  }
+
+  if(route.params.slug && route.path.startsWith('/products/')) {
+    existence_whole.value = route.query.wholesalers === 'true' ? true : false
+  }
+
+  radioContent.value = []
+  productImages.value = []
 
   keywords.value = productData.value.keywords.join(', ')
 
@@ -234,13 +247,15 @@ if (productData.value) {
     thumb: '/assets/video-placeholder.png',
   }))
 
-  await Promise.all(
-    videos.value.map(async slide => {
-      if (slide.type === 'video') {
-          slide.thumb = await loadVideoThumbnail(slide.url);
-      }
-    })
-  )
+  if(videos.value.length > 0 ) {
+    await Promise.all(
+      videos.value.map(async slide => {
+        if (slide.type === 'video') {
+            slide.thumb = await loadVideoThumbnail(slide.url);
+        }
+      })
+    )
+  }
 
   useSeoMeta({
     title: productData.value.product.name,
@@ -281,36 +296,16 @@ if (productData.value) {
   })
 }
 
-watchEffect(fetchData)
-
-async function fetchData() {
-
-  bread.value = [
-    {
-      title: "Home",
-      disabled: false,
-      href: "/"
-    }
-  ]
-
-  if(process.client && localStorage.getItem('user_data')){
-    const userData = localStorage.getItem('user_data')
-    const userDataJ = JSON.parse(userData)
-      
-    client_id.value = userDataJ.client.id
-    user_id.value = userDataJ.id
-  }
-
-  isLoading.value = true
-  
-  radioContent.value = []
-  productImages.value = []
-
-  if(route.params.slug && route.path.startsWith('/products/')) {
-    existence_whole.value = route.query.wholesalers === 'true' ? true : false
-
+const { data: categoryData } = await useAsyncData(
+  `categories`,
+  async () => {
     await homeStores.fetchData();
-    categories.value = homeStores.getData.parentCategories
+    return homeStores.getData.parentCategories
+  }
+)
+
+if (categoryData.value) {
+  categories.value = categoryData.value
     
     if (route.query.category) {
       category.value = {
@@ -370,9 +365,7 @@ async function fetchData() {
         href: '',
       });
     }
-  }
 
-  isLoading.value = false
 }
 
 const chanceRadio = (value) => {
