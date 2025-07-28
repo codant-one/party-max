@@ -149,14 +149,7 @@ watch(() =>
 
 const { data: productData } = await useAsyncData(
   `product-${route.params.slug}`,
-  async () => {
-    await miscellaneousStores.getProduct(route.params.slug)
-    return miscellaneousStores.getData
-  },
-  {
-    watch: [() => route.params.slug],
-    cache: false
-  }
+  () => miscellaneousStores.getProduct(route.params.slug)
 )
 
 if (productData.value) {
