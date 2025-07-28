@@ -37,29 +37,26 @@ async function fetchData() {
   var repeat = 'repeat'
   var size = (isMobile) ? 'auto' : 'contain'
 
-  if(route.name === 'dashboard-profile' || route.name === 'dashboard-purchases' || route.name === 'dashboard-favorites') {
+  if(route.name === 'dashboard' || route.name === 'register_confirm') {
     background.value = 'tw-bg-green'
+  } else if(route.name === 'home' || route.name === 'categories' || route.name === 'blogs' || route.name === 'blogDetail' || route.name === 'event_planner') {
+    background.value = 'tw-bg-light_cyan_2'
   } else {
     background.value = 'tw-bg-white'
   }
 
-  if(route.name === 'index')
-    bg = home
-  else if(route.name === 'categories-slug')
+  if(route.name === 'wholesalers')
     bg = categories
-  else if(route.name === 'register' || route.name === 'type_client' || route.name === 'clients-form_client' || 
-          route.name === 'clients-form_supplier' || route.name === 'login' || route.name === 'clients-success_register_person' || 
-          route.name === 'clients-success_register_company' || route.name === 'clients-forgot_password' || route.name === 'clients-reset_password') {
+  else if(route.name === 'register' || route.name === 'type_client' || route.name === 'form_client' || 
+          route.name === 'form_supplier' || route.name === 'login' || route.name === 'success_person' || 
+          route.name === 'success_company' || route.name === 'forgot_password' || route.name === 'reset_password') {
     bg = register
     repeat = 'no-repeat'
     size = 'cover'
-  } else if(route.name === 'blogs' || route.name === 'blogs-slug') {
-    bg = blogs
-    size = 'contain'
   } else 
     bg = ''
 
-  if (route.name === 'cart') {
+  if (route.name === 'cart' || route.name === 'quote') {
     if (Object.keys(route.query).length > 0) {
       bg = register
       repeat = 'no-repeat'

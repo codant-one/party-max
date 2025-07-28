@@ -2,6 +2,7 @@
 
 import { ref } from 'vue'
 import { useHomeStores } from '@/stores/home'
+import { useMiscellaneousStores } from "@/stores/miscellaneous";
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useRuntimeConfig } from '#app'
@@ -16,17 +17,6 @@ import WelcomePopup from '@/components/app/WelcomePopup.vue'
 
 import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
 
-import icon1 from '@assets/icons/fiestas-infantiles.svg';
-import icon2 from '@assets/icons/fiestas-tematicas.svg';
-import icon3 from '@assets/icons/fechas-especiales.svg';
-import icon4 from '@assets/icons/hora-loca.svg';
-import icon5 from '@assets/icons/desechables.svg';
-import icon6 from '@assets/icons/decoracion.svg';
-import icon7 from '@assets/icons/sorpresas.svg';
-import icon8 from '@assets/icons/mobiliario.svg';
-import icon9 from '@assets/icons/dulces.svg';
-import icon10 from '@assets/icons/animación.svg';
-
 import motorcycle from '@assets/icons/motorcycle.svg';
 import location from '@assets/icons/location.svg';
 import sold from '@assets/icons/sold.svg';
@@ -37,14 +27,12 @@ import t_2 from '@assets/images/t_2.jpg';
 import t_3 from '@assets/images/t_3.jpg';
 import t_4 from '@assets/images/t_4.jpg';
 import t_5 from '@assets/images/t_5.jpg';
-import t_6 from '@assets/images/t_6.jpg';
 
 import f_1 from '@assets/images/f_1.jpg';
 import f_2 from '@assets/images/f_2.jpg';
 import f_3 from '@assets/images/f_3.jpg';
 import f_4 from '@assets/images/f_4.jpg';
 
-import frame_pink from '@assets/images/frame_pink.jpeg';
 
 const thumbsSwiper = ref(null);
 const modules = ref([Pagination])
@@ -53,12 +41,6 @@ const setThumbsSwiper = (swiper) => {
     thumbsSwiper.value = swiper;
 }
 
-const backgroundStyle = {
-  backgroundImage: `url(${frame_pink})`,
-  backgroundSize: 'cover'
-}
-
-const backgroundDiv = ref(null)
 const config = useRuntimeConfig()
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
 const twitterAccount = ref(config.public.TWITTER_ACCOUNT ?? '')
@@ -69,58 +51,46 @@ const banner_3 = ref([])
 const banner_4 = ref([])
 const banner_5 = ref([])
 const banner_6 = ref([])
-const banner_7 = ref([])
-const banner_8 = ref([])
-const banner_9 = ref([])
-const banner_10 = ref([])
-
-onMounted(() => {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          observer.unobserve(entry.target) // Deja de observar una vez cargada
-        }
-      })
-    },
-    { threshold: 0.1 } // Cambia el valor según cuánto debe ser visible el elemento antes de cargar la imagen
-  )
-
-  if (backgroundDiv.value) {
-    observer.observe(backgroundDiv.value)
-  }
-})
 
 const { isMobile } = useDevice();
 
-const items = ref([
-  { text: 'Fiestas infantiles', icon: icon1, slug: 'fiestas-infantiles' },
-  { text: 'Fiestas temáticas', icon: icon2, slug: 'fiestas-tematicas' },
-  { text: 'Fechas especiales', icon: icon3, slug: 'fechas-especiales' },
-  { text: 'Hora loca', icon: icon4, slug: 'hora-loca' },
-  { text: 'Desechables', icon: icon5, slug: 'desechables' },
-  { text: 'Decoración', icon: icon6, slug: 'decoracion' },
-  { text: 'Sorpresas', icon: icon7, slug: 'sorpresas' },
-  { text: 'Mobiliario', icon: icon8, slug: 'renta-de-mobiliario' },
-  { text: 'Dulces', icon: icon9, slug: 'dulces-y-ponques' },
-  { text: 'Animadores de Fiestas', icon: icon10, slug: 'animadores-de-fiestas' }
-])
-
 const sliders = ref([])
 const banners = ref([])
-const firstImageUrl = ref([])
 
 const homeStores = useHomeStores()
+const miscellaneousStores = useMiscellaneousStores()
 
 const data = ref(null)
 const isLoading = ref(true)
+
+watch(() => 
+  miscellaneousStores.getLoading, async (value) => {
+    isLoading.value = value
+  }
+)
+
+watch(() => 
+  miscellaneousStores.getMessage, async (value) => {
+    if(value !== '') {
+      isError.value = miscellaneousStores.getError
+      isDialogVisible.value = true
+      message.value = value
+      setTimeout(() => {
+        miscellaneousStores.setError(false)
+        isDialogVisible.value = false
+        isError.value = false
+        message.value = ''
+      }, 2000)
+    }
+  }
+)
 
 watchEffect(fetchData)
 
 async function fetchData() {
 
   isLoading.value = true
-  
+
   await homeStores.fetchData()
   data.value = homeStores.getData
 
@@ -129,9 +99,11 @@ async function fetchData() {
 
   banner_1.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 1).mobile : banners.value.find(item => item.order_id === 1).image);
   banner_1.value.url = banners.value.find(item => item.order_id === 1).url;
+  banner_1.value.title = banners.value.find(item => item.order_id === 1).title;
 
   banner_2.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 2).mobile : banners.value.find(item => item.order_id === 2).image);
   banner_2.value.url = banners.value.find(item => item.order_id === 2).url;
+  banner_2.value.title = banners.value.find(item => item.order_id === 2).title;
 
   banner_3.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 3).mobile : banners.value.find(item => item.order_id === 3).image);
   banner_3.value.url = banners.value.find(item => item.order_id === 3).url;
@@ -145,20 +117,6 @@ async function fetchData() {
   banner_6.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 6).mobile : banners.value.find(item => item.order_id === 6).image);
   banner_6.value.url = banners.value.find(item => item.order_id === 6).url;
 
-  banner_7.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 7).mobile : banners.value.find(item => item.order_id === 7).image);
-  banner_7.value.url = banners.value.find(item => item.order_id === 7).url;
-
-  banner_8.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 8).mobile : banners.value.find(item => item.order_id === 8).image);
-  banner_8.value.url = banners.value.find(item => item.order_id === 8).url;
-
-  banner_9.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 9).mobile : banners.value.find(item => item.order_id === 9).image);
-  banner_9.value.url = banners.value.find(item => item.order_id === 9).url;
-
-  banner_10.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 10).mobile : banners.value.find(item => item.order_id === 10).image);
-  banner_10.value.url = banners.value.find(item => item.order_id === 10).url;
-
-  preloadFirstImage()
-
   isLoading.value = false
 }
 
@@ -166,19 +124,6 @@ const redirectTo = (url) => {
   if (url) {
     window.open(url, '_blank');
     // window.location.href = url
-  }
-}
-
-const preloadFirstImage = () => {
-  if (sliders.value.length > 0) {
-    firstImageUrl.value = baseURL.value + sliders.value[0].image
-    
-    // Crear enlace de precarga
-    const link = document.createElement('link')
-    link.rel = 'preload'
-    link.as = 'image'
-    link.href = firstImageUrl.value
-    document.head.appendChild(link)
   }
 }
 
@@ -215,149 +160,100 @@ useHead({
 <template>
   <WelcomePopup />
   <Loader :isLoading="isLoading"/>
-  <VContainer class="mt-2 mt-md-10">
-    <!-- slider -->
-    <VRow no-gutters class="transparent">
-      <VCol cols="12" md="3" class="col-mobile">
-        <VSheet class="border">
-          <VList class="p-0 border">
-            <template v-for="(item, i) in items" :key="i" :value="item">
-              <NuxtLink       
-                v-if="i < 7"
-                :to="{
-                  name: 'categories-slug',
-                  params: { slug: item.slug }
-                }"
-                class="tw-no-underline tw-text-tertiary"
-              >
-                <VListItem
-                  color="primary"
-                  variant="plain"
-                  class="list py-0  tw-text-tertiary hover:tw-bg-yellow"
-                >
-                  <template v-slot:prepend>
-                    <img :src="item.icon" class="me-3 ms-4" loading="lazy" :alt ="item.slug"/>
-                  </template>
-                  <VListItemTitle v-text="item.text" class="tw-text-tertiary"></VListItemTitle>
-                </VListItem>
-              </NuxtLink>
-              <VListItem
-                v-else
-                color="primary"
-                variant="plain"
-                class="list py-0 tw-text-tertiary tw-cursor-pointer">
-                <template v-slot:prepend>
-                  <img :src="item.icon" class="me-3 ms-4 soon-img" :alt ="item.slug"/>
-                </template>
-                <VListItemTitle class="tw-text-tertiary d-flex align-center">
-                  <span class="soon-items">{{ item.text }}</span>
-                  <span class="soon-text d-none"> Próximamente </span>
-                </VListItemTitle>
-              </VListItem>
-            </template>
-          </VList>
-        </VSheet>
-      </VCol>
-      <VCol cols="12" md="9" class="tw-bg-white border-categories">
-        <VRow no-gutters v-if="data">
-          <VCol cols="12" md="7" class="pslider" aria-label="Galería">
-            <VCarousel 
-              cycle
-              class="carousel-home cursor-pointer"
-              color="white"
-              :show-arrows="false" 
-              :disabled="false"
-              hide-delimiter-background
-              >
-                <VCarouselItem
-                  v-for="(item,i) in sliders"
-                  :key="i"
-                  :src="baseURL + (isMobile ? item.mobile : item.image)"
-                  :lazy-src="baseURL + item.mobile"
-                  :lazy="true"
-                  :alt="'slider'+(i+1)"
-                  :aria-label="'slider'+(i+1)"
-                  class="img-gallery"
-                  cover
-                  @click="redirectTo(item.url)"
-                  priority
-                  :width="isMobile ? '358' : '560'"
-                  :height="isMobile ? '180' : '391'"
-                >
-                  <img 
-                    :src="baseURL + (isMobile ? item.mobile : item.image)"
-                    :alt="'slider'+(i+1)"
-                    loading="lazy"
-                    :width="isMobile ? '358' : '560'"
-                    :height="isMobile ? '180' : '391'"
-                  >
-                </VCarouselItem>
-              </VCarousel>
-          </VCol>
-          <VCol cols="12" md="5" class="pslider">
-            <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent h-100">
-              <VCol cols="6" md="6" class="pslider2">
-                  <img :src="banner_1.image" class="img-gallery" alt="pinatas" @click="redirectTo(banner_1.url)" />
-              </VCol>
-              <VCol cols="6" md="6" class="pslider2">
-                  <img :src="banner_2.image" class="border-top-right img-gallery" alt="ponques" @click="redirectTo(banner_2.url)"/>
-              </VCol>
-              <VCol cols="12" class="pslider3">
-                  <img :src="banner_3.image" 
-                    fetchpriority="high" 
-                    class="img-gallery w-100 img-globo" 
-                    alt="globos" 
-                    loading="lazy" 
-                    width="330"
-                    height="160" 
-                    @click="redirectTo(banner_3.url)"
-                  />
-              </VCol>
-            </VRow>
-          </VCol>
-          <VCol cols="12" md="7" class="pslider4" :class="isMobile ? 'order-last order-md-first pslider5' : ''">
-              <img :src="banner_4.image" alt="furniture" class="img-gallery furniture" :class="isMobile ? 'slider5Img' : ''" cover @click="redirectTo(banner_4.url)"/>
-          </VCol>
-          <VCol cols="12" md="5" class="pslider4">
-            <VRow :class="isMobile ? 'px-mobile' : 'v-row--no-gutters'" class="transparent h-100">
-              <VCol cols="6" md="6" class="pslider2">
-                  <img :src="banner_5.image" class="img-gallery" alt="eventos" @click="redirectTo(banner_5.url)"/>
-              </VCol>
-              <VCol cols="6" md="6" class="pslider2">
-                  <img :src="banner_6.image" class="border-bottom-right img-gallery" alt="personalizados" @click="redirectTo(banner_6.url)"/>
-              </VCol>
-            </VRow>
-          </VCol>
-        </VRow>
-      </VCol>     
-    </VRow>
+  <div class="d-flex flex-column flex-md-row tw--mt-2 md:tw-mt-3 lg:tw-h-[683px]" v-if="data">
+    <div class="lg:tw-w-[75%] lg:tw-h-[683px]">
+     <swiper
+        v-if="data"
+        :pagination="true"
+        :navigation="true"
+        :modules="modulesSlider"    
+        :loop="true"
+        :autoplay="{
+          delay: 2500,
+          disableOnInteraction: false,
+        }"
+        class="MySwiper"
+      >
+        <swiper-slide
+          v-for="(item,i) in sliders"
+          :key="i"
+          class="w-100 tw-h-[683px] tw-relative"
+        >
+          <img 
+            :src="baseURL + (isMobile ? item.mobile : item.image)"
+            :alt="'slider'+(i+1)"
+            class="w-100 h-100 tw-object-cover"
+            loading="lazy"
+          >
+          <div class="tw-absolute tw-inset-0 tw-flex tw-flex-col tw-justify-center tw-items-start tw-p-5 md:tw-p-[100px]">
+            <h2  
+              class="tw-text-white tw-font-bold tw-leading-[48px] tw-text-[36px] md:tw-text-[40px] tw-mb-4 md:tw-w-[45%]">
+              {{ item.title }}
+            </h2>
 
+            <span v-html="item.text" class="tw-text-white tw-leading-[24px] tw-text-[16px] tw-max-w-lg tw-mb-6 md:tw-w-[45%]">
+            </span>
+
+            <VBtn
+              variant="flat"
+              class="tw-capitalize btn-register tw-text-white tw-bg-primary button-hover my-2 mt-md-5"
+              @click="redirectTo(item.url)"
+            >
+              {{ item.button_text }}
+            </VBtn>
+
+          </div>
+        </swiper-slide>
+      </swiper>
+    </div>
+    <div class="lg:tw-w-[25%] d-flex tw-flex-col md:tw-flex-row lg:tw-flex-col lg:tw-h-[683px] tw-relative">
+      <div
+          class="absolute tw-p-5 tw-h-[309px] lg:tw-h-[50%] w-100 tw-cursor-pointer tw-bg-cover tw-bg-center img-gallery"
+          :style="{ backgroundImage: 'url(' + banner_1.image + ')' }"
+          @click="redirectTo(banner_1.url)"
+          role="img"
+          :aria-label="banner_1.title">
+          <span v-html="banner_1.title" class="tw-text-tertiary tw-leading-[36px] tw-text-[24px]">
+          </span>
+      </div>
+      <div
+        class="absolute tw-p-5 tw-h-[309px] lg:tw-h-[50%] w-100 tw-cursor-pointer tw-bg-cover tw-bg-center img-gallery"
+        :style="{ backgroundImage: 'url(' + banner_2.image + ')' }"
+        @click="redirectTo(banner_2.url)"
+        role="img"
+        :aria-label="banner_2.title">
+        <span v-html="banner_2.title" class="tw-text-tertiary tw-leading-[36px] tw-text-[24px]">
+        </span>
+      </div>
+    </div>
+  </div>
+  <VContainer v-if="data">
     <!-- card -->
     <VCard class="mt-7 no-shadown card-information">
       <VCardItem class="p-0">
         <VRow no-gutters  class="tw-text-tertiary">
-          <VCol cols="12" md="3" class="d-flex align-center hr">
+          <VCol cols="12" sm="6" md="3" class="d-flex align-center hr">
             <img :src="motorcycle" width="60" height="60" class="ms-10" alt="motorcycle" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Envíos gratis</span>
               <span class="d-block card-information-subtitle">A partir de $210.000</span>
             </div>
           </VCol>
-          <VCol cols="12" md="3" class="d-flex align-center hr">
+          <VCol cols="12" sm="6" md="3" class="d-flex align-center hr no-border">
             <img :src="location" width="60" height="60" class="ms-10" alt="location" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Nuestras tiendas</span>
               <span class="d-block card-information-subtitle">En Bogotá</span>
             </div>
           </VCol>
-          <VCol cols="12" md="3" class="d-flex align-center hr">
+          <VCol cols="12" sm="6" md="3" class="d-flex align-center hr">
             <img :src="sold" width="60" height="60" class="ms-10" alt="sold" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Ventas por mayor</span>
               <span class="d-block card-information-subtitle">A los mejores precios</span>
             </div>
           </VCol>
-          <VCol cols="12" md="3" class="d-flex align-center col-siguecompra">
+          <VCol cols="12" sm="6" md="3" class="d-flex align-center col-siguecompra">
             <img :src="tracking" width="60" height="60" class="ms-10" alt="tracking" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Sigue tu compra</span>
@@ -371,14 +267,34 @@ useHead({
     <!-- recommendations -->
     <VCard class="mt-7 no-shadown card-information p-0">
       <VCardTitle class="px-4 px-md-7 py-3 cardtitles hr-cyan">Recomendaciones según tus búsquedas</VCardTitle>
-      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
+      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-none d-md-flex align-items-stretch justify-content-between" v-if="data">
         <Product1 
           v-for="(product, i) in data.recommendations"
           :key="i"
           :product="product"
           :readonly="true"/>
       </VCardText>  
-      <VCardText class="pb-0 px-4 px-md-7 mt-5 mb-2 d-md-flex align-items-stretch justify-content-between" v-if="data && isMobile">  
+      <VCardText class="pb-0 px-4 px-md-7 mt-5 mb-2 xs:tw-hidden md:tw-block lg:tw-hidden align-items-stretch justify-content-between" v-if="data">  
+        <swiper
+          :pagination="{
+            dynamicBullets: true,
+          }"
+          :modules="modules"
+          :spaceBetween="5"
+          :slidesPerView="3"
+          :freeMode="true"
+          :watchSlidesProgress="true"
+          @swiper="setThumbsSwiper"
+          class="MySwiper3"
+          >
+          <swiper-slide v-for="(product, i) in data.recommendations" :key="i">
+            <Product1 
+              :product="product"
+              :readonly="true"/>
+          </swiper-slide>
+        </swiper>
+      </VCardText> 
+      <VCardText class="pb-0 px-4 px-md-7 mt-5 mb-2 xs:tw-block md:tw-hidden align-items-stretch justify-content-between" v-if="data">  
         <swiper
           :pagination="{
             dynamicBullets: true,
@@ -390,6 +306,7 @@ useHead({
           :watchSlidesProgress="true"
           @swiper="setThumbsSwiper"
           :style="{ height: isMobile ? '340px' : '370px' }"
+          class="MySwiper2"
           >
           <swiper-slide v-for="(product, i) in data.recommendations" :key="i">
             <Product1 
@@ -403,34 +320,40 @@ useHead({
     <!-- banner 2 -->
     <VCard class="mt-7 no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
-        <img :src="banner_7.image" cover @click="redirectTo(banner_7.url)" class="img-gallery" alt="banner7"/>
+        <img :src="banner_3.image" cover @click="redirectTo(banner_3.url)" class="img-gallery" alt="banner7"/>
       </VCardItem>  
     </VCard>
     
     <!-- the most sold -->
-    <VCard class="mt-7 no-shadown card-information p-0">
-      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center card-vendido cardtitles hr-cyan">
+    <VCard class="mt-7 no-shadown card-information p-0 tw-bg-yellow_happiness_100">
+      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center card-vendido cardtitles hr-cyan tw-border-b tw-border-tertiary">
         <span>Lo más vendido</span>
         <VSpacer />
         <NuxtLink 
           :to="{
             name: 'categories-slug',
-            params: { slug: 'globos' }
+            params: {
+              slug: 'globos'
+            }
           }"
           class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-1 me-md-3 hover:tw-text-primary vendido-globos">Globos
         </NuxtLink>
-        <NuxtLink
+        <NuxtLink 
           :to="{
             name: 'categories-slug',
-            params: { slug: 'hora-loca' }
+            params: {
+              slug: 'hora-loca'
+            }
           }"
           class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-1 me-md-3 hover:tw-text-primary vendido-globos">
           Piñatas
         </NuxtLink>
-        <NuxtLink
+        <NuxtLink 
           :to="{
             name: 'categories-slug',
-            params: { slug: 'sorpresas' }
+            params: {
+              slug: 'sorpresas'
+            }
           }"
           class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-1 me-md-3 hover:tw-text-primary vendido-globos">
           Sorpresas
@@ -438,42 +361,65 @@ useHead({
         <NuxtLink 
           :to="{
             name: 'categories-slug',
-            params: { slug: 'decoracion' }
+            params: {
+              slug: 'decoracion'
+            }
           }"
           class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-1 me-md-3 hover:tw-text-primary vendido-globos">
           Decoración
         </NuxtLink>
       </VCardTitle>
       <VCardText class="px-4 px-md-7 pb-0 mt-2 mt-md-5 mb-2 mb-md-5 d-flex align-items-stretch justify-content-between card-banner5" v-if="data">
-        <VRow no-gutters class="transparent mostSoldMobile">
-          <VCol cols="12" md="9">
-            <VCard class="no-shadown">
+        <VRow no-gutters class="transparent tw-w-[-webkit-fill-available]">
+          <VCol cols="12" lg="9">
+            <VCard class="no-shadown tw-bg-yellow_happiness_100">
               <VCardText class="p-0">
                 <img 
-                  :src="banner_8.image" 
-                  class="border-img img-gallery"
+                  :src="banner_4.image" 
+                  class="border-img w-100"
                   alt="banner8"
-                  cover
-                  @click="redirectTo(banner_8.url)"
+                  @click="redirectTo(banner_4.url)"
                   />
               </VCardText>
               <VCardText class="p-0">
-                <VTabs v-model="tab" class="mt-3 mt-md-7" color="pink-accent-3">
+                <VTabs v-model="tab" class="mt-3 mt-7 tw-text-tertiary">
                   <VTab value="0">Agregados recientemente</VTab>
                   <VTab value="1">Lo  mejor de lo mejor</VTab>
                 </VTabs>
                 <v-window v-model="tab" disabled>
                   <v-window-item value="0">
-                    <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
+                    <VCardText class="px-0 mt-5 d-none d-md-flex align-items-stretch justify-content-between">
                       <Product1 
                         v-for="(product, index) in data.mostSold.latestProducts"
                         v-show="index < 4"
                         :key="index"
                         :product="product"
-                        :readonly="true"/>
+                        :readonly="true"
+                        :bg="`tw-bg-yellow_happiness_100`"/>
                     </VCardText>
-
-                    <VCardText class="pb-0 px-0 mt-5 d-md-flex align-items-stretch justify-content-between" v-else>
+                    <VCardText class="pb-0 px-0 mt-5 xs:tw-hidden md:tw-block lg:tw-hidden align-items-stretch justify-content-between">
+                      <swiper
+                        :pagination="{
+                          dynamicBullets: true,
+                        }"
+                        :modules="modules"
+                        :spaceBetween="5"
+                        :slidesPerView="3"
+                        :freeMode="true"
+                        :watchSlidesProgress="true"
+                        @swiper="setThumbsSwiper"
+                        :style="{ height: '400px !important' }"
+                        class="MySwiper3"
+                        >
+                        <swiper-slide v-for="(product, i) in data.mostSold.latestProducts" :key="i">
+                          <Product1 
+                            :product="product"
+                            :readonly="true"
+                            :bg="`tw-bg-yellow_happiness_100`"/>
+                        </swiper-slide>
+                      </swiper>
+                    </VCardText>
+                    <VCardText class="pb-0 px-0 mt-5 xs:tw-block md:tw-hidden align-items-stretch justify-content-between">
                       <swiper
                         :pagination="{
                           dynamicBullets: true,
@@ -485,27 +431,51 @@ useHead({
                         :watchSlidesProgress="true"
                         @swiper="setThumbsSwiper"
                         :style="{ height: isMobile ? '330px' : '370px' }"
+                        class="MySwiper2"
                         >
                         <swiper-slide v-for="(product, i) in data.mostSold.latestProducts" :key="i">
                           <Product1 
                             :product="product"
-                            :readonly="true"/>
+                            :readonly="true"
+                            :bg="`tw-bg-yellow_happiness_100`"/>
                         </swiper-slide>
                       </swiper>
                     </VCardText>
                   </v-window-item>
 
                   <v-window-item value="1">
-                    <VCardText class="px-0 mt-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
+                    <VCardText class="px-0 mt-5 d-none d-md-flex align-items-stretch justify-content-between">
                       <Product1 
                         v-for="(product, index) in data.mostSold.bestSellers"
                         v-show="index < 4"
                         :key="index"
                         :product="product"
-                        :readonly="true"/>
+                        :readonly="true"
+                        :bg="`tw-bg-yellow_happiness_100`"/>
                     </VCardText>
-
-                    <VCardText class="pb-0 px-0 mt-5 d-md-flex align-items-stretch justify-content-between" v-else>
+                    <VCardText class="pb-0 px-0 mt-5 xs:tw-hidden md:tw-block lg:tw-hidden align-items-stretch justify-content-between">
+                      <swiper
+                        :pagination="{
+                          dynamicBullets: true,
+                        }"
+                        :modules="modules"
+                        :spaceBetween="5"
+                        :slidesPerView="3"
+                        :freeMode="true"
+                        :watchSlidesProgress="true"
+                        @swiper="setThumbsSwiper"
+                        :style="{ height: '400px !important' }"
+                        class="MySwiper3"
+                        >
+                        <swiper-slide v-for="(product, i) in data.mostSold.bestSellers" :key="i">
+                          <Product1 
+                            :product="product"
+                            :readonly="true"
+                            :bg="`tw-bg-yellow_happiness_100`"/>
+                        </swiper-slide>
+                      </swiper>
+                    </VCardText>
+                    <VCardText class="pb-0 px-0 mt-5 xs:tw-block md:tw-hidden align-items-stretch justify-content-between">
                       <swiper
                         :pagination="{
                           dynamicBullets: true,
@@ -517,11 +487,13 @@ useHead({
                         :watchSlidesProgress="true"
                         @swiper="setThumbsSwiper"
                         :style="{ height: isMobile ? '330px' : '370px' }"
+                        class="MySwiper2"
                         >
                         <swiper-slide v-for="(product, i) in data.mostSold.bestSellers" :key="i">
                           <Product1 
                             :product="product"
-                            :readonly="true"/>
+                            :readonly="true"
+                            :bg="`tw-bg-yellow_happiness_100`"/>
                         </swiper-slide>
                       </swiper>
                     </VCardText>
@@ -530,7 +502,7 @@ useHead({
               </VCardText>
             </VCard>
           </VCol>
-          <VCol cols="12" md="3" class="d-flex flex-column col-mobile">
+          <VCol cols="12" lg="3" class="d-none d-md-flex flex-column col-mobile">
             <VCardText class="p-0 ms-3">
               <div v-if="tab === '0'">
                 <Product2 
@@ -538,7 +510,8 @@ useHead({
                   v-show="index >= 4"
                   :key="index"
                   :product="product"
-                  :readonly="true"/>
+                  :readonly="true"
+                  :bg="`tw-bg-yellow_happiness_100`"/>
               </div>
               <div v-else>
                 <Product2 
@@ -546,7 +519,8 @@ useHead({
                   v-show="index >= 4"
                   :key="index"
                   :product="product"
-                  :readonly="true"/>
+                  :readonly="true"
+                  :bg="`tw-bg-yellow_happiness_100`"/>
               </div>
             </VCardText>
             <VCardText class="p-0 more">
@@ -564,18 +538,18 @@ useHead({
     <VCard class="mt-7 no-shadown card-information p-0 d-flex transparent card-banner34">
         <VCard class="no-shadown card-information p-0 w-50 grid-item w-100">
             <VCardItem class="p-0">
-              <img :src="banner_9.image" cover @click="redirectTo(banner_9.url)"  class="img-gallery" alt="banner9"/>
+              <img :src="banner_5.image" cover @click="redirectTo(banner_5.url)"  class="img-gallery" alt="banner9"/>
             </VCardItem> 
         </VCard>
         <VCard class="no-shadown card-information p-0 w-50 ms-5 grid-item w-100">
             <VCardItem class="p-0">
-              <img :src="banner_10.image" cover @click="redirectTo(banner_10.url)" class="img-gallery" alt="banner10"/>
+              <img :src="banner_6.image" cover @click="redirectTo(banner_6.url)" class="img-gallery" alt="banner10"/>
             </VCardItem>
         </VCard>
     </VCard>
 
     <!-- theme parties -->
-     <VCard class="mt-7 no-shadown card-information transparent p-0">
+    <VCard class="mt-7 no-shadown card-information transparent p-0">
       <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center cardtitles">
         <span>Fiestas temáticas</span>
         <VSpacer />
@@ -586,12 +560,12 @@ useHead({
               category: 'fiestas-tematicas'
             }
           }"  
-          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary" v-if="!isMobile">
+          class="ms-5 tw-no-underline d-none d-md-flex tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
           Ver todos
         </NuxtLink>
       </VCardTitle>
       <VDivider class="hr-primary"/>
-      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
+      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-none d-md-flex align-items-stretch justify-content-between">
         <NuxtLink
           :to="{
             name: 'products',
@@ -600,7 +574,7 @@ useHead({
               subcategory: 'tematica-mexicana'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_1" alt="Mexicana" class="border-theme d-block"/>
+          <img :src="t_1" class="d-block size-rect-desktop" loading="lazy" alt=""/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
         </NuxtLink>
         <NuxtLink 
@@ -611,7 +585,7 @@ useHead({
               subcategory: 'tematica-hawaiana'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_2" alt="Hawaiana" class="border-theme d-block"/>
+          <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" alt=""/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Hawaiana</span>
         </NuxtLink>
         <NuxtLink 
@@ -622,10 +596,10 @@ useHead({
               subcategory: 'tematica-vallenata'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_3" alt="Vallenata" class="border-theme d-block"/>
+          <img :src="t_3" class="d-block size-rect-desktop" loading="lazy" alt=""/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Vallenata</span>
         </NuxtLink>
-        <NuxtLink
+        <NuxtLink 
           :to="{
             name: 'products',
             query: {
@@ -633,7 +607,7 @@ useHead({
               subcategory: 'tematica-metalizada'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_4" alt="Metalizada" class="border-theme d-block"/>
+          <img :src="t_4" class="d-block size-rect-desktop" loading="lazy" alt=""/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Metalizada</span>
         </NuxtLink>
         <NuxtLink 
@@ -644,11 +618,93 @@ useHead({
               subcategory: 'tematica-neon'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_5" alt="Neon" class="border-theme d-block"/>
+          <img :src="t_5" class="d-block size-rect-desktop" loading="lazy" alt="neon"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Neón</span>
         </NuxtLink>
       </VCardText> 
-      <VCardText class="px-0 mt-2 mb-2 d-flex align-items-stretch justify-content-between" v-else>
+      <VCardText class="px-0 mt-2 mb-2 xs:tw-hidden md:tw-block lg:tw-hidden align-items-stretch justify-content-between">
+        <VRow no-gutters class="transparent">
+          <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
+            <NuxtLink 
+              :to="{
+                name: 'products',
+                query: {
+                  category: 'fiestas-tematicas',
+                  subcategory: 'tematica-mexicana'
+                }
+              }" class="tw-no-underline d-block text-center zoom">
+              <img :src="t_1" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
+            </NuxtLink>
+          </VCol>
+          <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
+            <NuxtLink 
+              :to="{
+                name: 'products',
+                query: {
+                  category: 'fiestas-tematicas',
+                  subcategory: 'tematica-hawaiana'
+                }
+              }" class="tw-no-underline d-block text-center zoom">
+              <img :src="t_2" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
+            </NuxtLink>
+          </VCol>
+          <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
+            <NuxtLink 
+              :to="{
+                name: 'products',
+                query: {
+                  category: 'fiestas-tematicas',
+                  subcategory: 'tematica-vallenata'
+                }
+              }" class="tw-no-underline d-block text-center zoom">
+              <img :src="t_3" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
+            </NuxtLink>
+          </VCol>
+          <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
+            <NuxtLink 
+              :to="{
+                name: 'products',
+                query: {
+                  category: 'fiestas-tematicas',
+                  subcategory: 'tematica-metalizada'
+                }
+              }" class="tw-no-underline d-block text-center zoom">
+              <img :src="t_4" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
+            </NuxtLink>
+          </VCol>
+          <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
+            <NuxtLink 
+              :to="{
+                name: 'products',
+                query: {
+                  category: 'fiestas-tematicas',
+                  subcategory: 'tematica-neon'
+                }
+              }" class="tw-no-underline d-block text-center zoom">
+              <img :src="t_5" class="d-block size-rect-desktop" width="150"  height="150" loading="lazy" alt="neon"/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Neón</span>
+            </NuxtLink>
+          </VCol>
+          <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
+            <NuxtLink
+              :to="{
+                name: 'products',
+                query: {
+                  category: 'fiestas-tematicas'
+                }
+              }" 
+              class="tw-no-underline d-block text-center zoom mt-0">
+              <span class="d-block size-rect-desktop tw-bg-primary"/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Todos</span>
+            </NuxtLink>
+          </VCol>
+        </VRow>
+      </VCardText>
+      <VCardText class="px-0 mt-2 mb-2 xs:tw-block md:tw-hidden align-items-stretch justify-content-between">
         <VRow no-gutters class="transparent">
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
             <NuxtLink 
@@ -659,12 +715,12 @@ useHead({
                   subcategory: 'tematica-mexicana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_1" alt="Mexicana" class="border-theme d-block" width="150"/>
+              <img :src="t_1" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </NuxtLink>
           </VCol>
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
-            <NuxtLink
+            <NuxtLink 
               :to="{
                 name: 'products',
                 query: {
@@ -672,7 +728,7 @@ useHead({
                   subcategory: 'tematica-hawaiana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" alt="Hawaiana" class="border-theme d-block" width="150"/>
+              <img :src="t_2" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
             </NuxtLink>
           </VCol>
@@ -685,12 +741,12 @@ useHead({
                   subcategory: 'tematica-vallenata'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_3" alt="Vallenata" class="border-theme d-block" width="150"/>
+              <img :src="t_3" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </NuxtLink>
           </VCol>
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
-            <NuxtLink
+            <NuxtLink 
               :to="{
                 name: 'products',
                 query: {
@@ -698,12 +754,12 @@ useHead({
                   subcategory: 'tematica-metalizada'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_4" alt="Metalizada" class="border-theme d-block" width="150"/>
+              <img :src="t_4" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </NuxtLink>
           </VCol>
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
-            <NuxtLink
+            <NuxtLink 
               :to="{
                 name: 'products',
                 query: {
@@ -711,7 +767,7 @@ useHead({
                   subcategory: 'tematica-neon'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_5" alt="Neon" class="border-theme d-block" width="150"/>
+              <img :src="t_5" class="d-block size-rect-desktop" width="150"  height="150" loading="lazy" alt="neon"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Neón</span>
             </NuxtLink>
           </VCol>
@@ -724,8 +780,8 @@ useHead({
                 }
               }" 
               class="tw-no-underline d-block text-center zoom mt-0">
-              <img :src="t_6" alt="Producto" class="border-theme d-block" width="150"/>
-              <span class="d-block size-theme tw-text-tertiary mt-2 transparentColor">.</span>
+              <span class="d-block size-rect-desktop tw-bg-primary"/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Todos</span>
             </NuxtLink>
           </VCol>
         </VRow>
@@ -733,12 +789,12 @@ useHead({
     </VCard>
   </VContainer>
 
-  <div :style="backgroundStyle">
+  <div class="tw-bg-magenta_100" v-if="data">
     <VContainer>
       <!-- birthday -->
-      <VCard class="mt-7 no-shadown card-information transparent p-0 tw-text-white">
+      <VCard class="mt-7 no-shadown card-information transparent p-0 tw-text-tertiary">
         <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center cardtitles">
-          <h2 class="mb-0">Cumpleaños</h2>
+          <span>Cumpleaños</span>
           <VSpacer />
           <NuxtLink
             :to="{
@@ -748,13 +804,13 @@ useHead({
                 subcategory: 'tematica-cumpleanos'
               }
             }"
-            class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-white hover:tw-text-yellow">
+            class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-tertiary hover:tw-text-primary">
             Ver todos
           </NuxtLink>
         </VCardTitle>
         <VDivider class="hr-secondary"/>
-        <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="!isMobile">
-          <NuxtLink
+        <VCardText class="px-4 px-md-7 mt-5 mb-5 d-none d-md-flex align-items-stretch justify-content-between">
+          <NuxtLink 
             :to="{
               name: 'products',
               query: {
@@ -762,8 +818,8 @@ useHead({
                 subcategory: 'fiestas-ninos'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_1" alt="Niños" class="border-theme d-block" width="150" height="150" loading="lazy"/>
-            <span class="d-block size-theme tw-text-white mt-5">Niños</span>
+            <img :src="f_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt="iconos"/>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Niños</span>
           </NuxtLink>
           <NuxtLink 
             :to="{
@@ -773,10 +829,10 @@ useHead({
                 subcategory: 'tematica-ninas'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_2" alt="Niñas" class="border-theme d-block" width="150" height="150" loading="lazy"/>
-            <span class="d-block size-theme tw-text-white mt-5">Niñas</span>
+            <img :src="f_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="icons2"/>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Niñas</span>
           </NuxtLink>
-          <NuxtLink
+          <NuxtLink 
             :to="{
               name: 'products',
               query: {
@@ -784,8 +840,8 @@ useHead({
                 subcategory: 'tematica-bebes'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_3" alt="Bebes" class="border-theme d-block" width="150" height="150" loading="lazy"/>
-            <span class="d-block size-theme tw-text-white mt-5">Bebes</span>
+            <img :src="f_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="icons3"/>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Bebes</span>
           </NuxtLink>
           <NuxtLink
             :to="{
@@ -797,11 +853,59 @@ useHead({
               }
             }"
             class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_4" alt="Adultos" class="border-theme d-white" width="150" height="150" loading="lazy"/>
-            <span class="d-block size-theme tw-text-white mt-5">Adultos</span>
+            <img :src="f_4" class="border-theme d-white size-circles-desktop" loading="lazy" alt="icons4"/>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Adultos</span>
           </NuxtLink>
-        </VCardText> 
-        <VCardText class="px-0 mt-2 mb-2 d-flex align-items-stretch justify-content-between" v-else>
+        </VCardText>
+        <VCardText class="px-4 px-md-7 mt-5 mb-5 xs:tw-hidden md:tw-flex lg:tw-hidden align-items-stretch justify-content-between">
+          <NuxtLink 
+            :to="{
+              name: 'products',
+              query: {
+                category: 'fiestas-infantiles',
+                subcategory: 'fiestas-ninos'
+              }
+            }" class="tw-no-underline d-block text-center img-zoom">
+            <img :src="f_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt="iconos"/>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Niños</span>
+          </NuxtLink>
+          <NuxtLink 
+            :to="{
+              name: 'products',
+              query: {
+                category: 'fiestas-infantiles',
+                subcategory: 'tematica-ninas'
+              }
+            }" class="tw-no-underline d-block text-center img-zoom">
+            <img :src="f_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="icons2"/>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Niñas</span>
+          </NuxtLink>
+          <NuxtLink 
+            :to="{
+              name: 'products',
+              query: {
+                category: 'fiestas-infantiles',
+                subcategory: 'tematica-bebes'
+              }
+            }" class="tw-no-underline d-block text-center img-zoom">
+            <img :src="f_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="icons3"/>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Bebes</span>
+          </NuxtLink>
+          <NuxtLink
+            :to="{
+              name: 'products',
+              query: {
+                category: 'globos',
+                fathercategory: 'globos-metalizados',
+                subcategory: 'globos-metalizados-tematicas-adultos'
+              }
+            }"
+            class="tw-no-underline d-block text-center img-zoom">
+            <img :src="f_4" class="border-theme d-white size-circles-desktop" loading="lazy" alt="icons4"/>
+            <span class="d-block size-theme tw-text-tertiary mt-5">Adultos</span>
+          </NuxtLink>
+        </VCardText>
+        <VCardText class="px-0 mt-2 mb-2 xs:tw-block md:tw-hidden align-items-stretch justify-content-between">
           <VRow no-gutters class="transparent">
             <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
               <NuxtLink
@@ -813,8 +917,8 @@ useHead({
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_1" alt="Niños" class="border-theme d-block" width="150" height="150" loading="lazy"/>
-                <span class="d-block size-theme tw-text-white mt-2">Niños</span>
+                <img :src="f_1" class="border-theme d-block" width="150" height="150" loading="lazy" alt="iconos"/>
+                <span class="d-block size-theme tw-text-tertiary mt-2">Niños</span>
               </NuxtLink>
             </VCol>
             <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
@@ -827,8 +931,8 @@ useHead({
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_2" alt="Niñas" class="border-theme d-block" width="150" height="150" loading="lazy"/>
-                <span class="d-block size-theme tw-text-white mt-2">Niñas</span>
+                <img :src="f_2" class="border-theme d-block" width="150" height="150" loading="lazy" alt="icons2"/>
+                <span class="d-block size-theme tw-text-tertiary mt-2">Niñas</span>
               </NuxtLink>
             </VCol>
             <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
@@ -841,8 +945,8 @@ useHead({
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_3" alt="Bebes" class="border-theme d-block" width="150" height="150" loading="lazy" />
-                <span class="d-block size-theme tw-text-white mt-2">Bebes</span>
+                <img :src="f_3" class="border-theme d-block" width="150" height="150" loading="lazy" alt="icons3"/>
+                <span class="d-block size-theme tw-text-tertiary mt-2">Bebes</span>
               </NuxtLink>
             </VCol>
             <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
@@ -856,8 +960,8 @@ useHead({
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_4" alt="Adultos" class="border-theme d-white" width="150" height="150" loading="lazy"/>
-                <span class="d-block size-theme tw-text-white mt-2">Adultos</span>
+                <img :src="f_4" class="border-theme d-white" width="150" height="150" loading="lazy" alt="icons4"/>
+                <span class="d-block size-theme tw-text-tertiary mt-2">Adultos</span>
               </NuxtLink>
             </VCol>
           </VRow>
@@ -865,9 +969,42 @@ useHead({
       </VCard>
     </VContainer>
   </div>
+
+  <VDialog v-model="isDialogVisible" >
+    <VCard
+      class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
+      <VImg :width="isMobile ? '120' : '180'" :src="isError ? error_circle : check_circle" class="mx-auto"/>
+      <VCardText class="text-message mb-5 px-0 px-md-5 pt-0">
+        {{ message }}
+      </VCardText>
+    </VCard>
+  </VDialog>
 </template>
 
 <style scoped>
+
+  .text-message {
+    color:  #FF0090;
+    text-align: center;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px !important;
+  }
+
+  .card-register {
+    width: 500px;
+    border-radius: 32px!important;
+  }
+
+  .btn-register {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 14px;
+    border-radius: 32px;
+    height: 62px;
+  }
 
   .soon-text {
     color: #FF0090;
@@ -906,10 +1043,6 @@ useHead({
   .pslider3 {
     transition: padding 0.3s ease-in-out;
     padding: 0 2px !important;
-  }
-
-  .furniture {
-    height: 192px !important;
   }
 
   .pslider4 {
@@ -1026,7 +1159,7 @@ useHead({
   }
 
   .img-zoom:hover span{ 
-      color: #FFC549!important;
+      color: #FF0090!important;
   }
 
   .zoom {
@@ -1048,15 +1181,10 @@ useHead({
 
   .img-gallery:hover{
     filter: saturate(180%)!important;
-    cursor: pointer;
   }
 
   .v-tab:hover::v-deep(button) {
     background-color: teal !important;
-  }
-
-  .carousel-home {
-    height: 391px !important;
   }
 
   .v-tab::v-deep(.v-btn__content) {
@@ -1071,13 +1199,129 @@ useHead({
     color: #FF0090 !important;
   }
 
-  .size-circles-desktop
-  {
+  .size-circles-desktop {
     width: 194px;
     height: 194px;
   }
 
+  .size-rect-desktop {
+    width: 204px;
+    height: 284px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 1px solid #D9EEF2;
+  }
+
+
+  .button-hover:hover {
+    background-color: #FF27B3 !important;
+    box-shadow: 0px 0px 24px 0px #FF27B3;
+  }
+
+  .MySwiper::v-deep(.swiper-pagination-bullet-active) {
+    background: transparent !important;
+    border: 2px double #FF0090 !important;
+    width: 16px; 
+    height: 16px;
+    opacity: 1;
+    
+    /* Círculo interior rosado */
+    &::after {
+      content: '';
+      position: absolute;
+      top: 43%;
+      transform: translate(-50%, -50%);
+      width: 6px;  /* Tamaño del círculo rosado */
+      height: 6px;
+      background: #FF0090;
+      border-radius: 50%;
+    }
+  }
+
+  .MySwiper:deep(.swiper-pagination-bullets-dynamic) {
+    overflow: visible !important;
+  }
+
+  .MySwiper:deep(.swiper-pagination-bullet),
+  .MySwiper:deep(.swiper-pagination-bullet-active-next),
+  .MySwiper:deep(.swiper-pagination-bullet-active-next-next) {
+    width: 16px; 
+    height: 16px;
+    background-color: white;
+    opacity: 0.7;
+  }
+
+  .MySwiper:deep(.swiper-button-next),
+  .MySwiper:deep(.swiper-button-prev) {
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    border-radius: 11px !important;
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .MySwiper:deep(.swiper-button-next) {
+    background-image: url('@/assets/icons/arrow-square-right.svg') !important;
+    right: 2% !important;
+  }
+
+  .MySwiper:deep(.swiper-button-prev) {
+    background-image: url('@/assets/icons/arrow-square-left.svg') !important;
+    left: 2% !important;
+  }
+
+  .MySwiper:deep(.swiper-button-next::after),
+  .MySwiper:deep(.swiper-button-prev::after) {
+      content: '' !important; /* Elimina flecha default */
+  }
+
+  .MySwiper2 {
+    height: 300px!important;
+  }
+
+  .MySwiper3 {
+    height: 380px!important;
+  }
+
+  .MySwiper2::v-deep(.swiper-pagination-bullet-active),
+  .MySwiper3::v-deep(.swiper-pagination-bullet-active) {
+    background: #FF0090 !important;
+  }
+
+  /* .swiper::v-deep(.swiper-pagination-horizontal ) {
+    top: 92%;
+  }     */
+
+  @media only screen and (min-width: 768px) and (max-width: 1023px) {
+    .size-circles-desktop {
+      width: 170px;
+      height: 170px;
+    }
+
+    .no-border {
+      border-right: 0 !important;
+    }
+  }
+
   @media only screen and (max-width: 767px) {
+  
+    .size-circles-desktop {
+      width: 160px;
+      height: 160px;
+    }
+
+    .size-rect-desktop {
+      width: 160px !important;
+      height: 220px !important;
+    }
+
+    .button-hover:hover {
+      color: #FFFFFF !important;
+    }
+    .btn-register {
+      height: 48px;
+    }
+
     .col-mobile {
       display: none !important;
     }
@@ -1104,11 +1348,6 @@ useHead({
       border-bottom-right-radius: 16px!important;
       border-bottom-left-radius: 16px!important;
       margin-top: 12px;
-    }
-
-    .carousel-home {
-      height: 180px !important;
-      border-radius:  16px 16px 0 0 !important;
     }
 
     .border-categories {
@@ -1165,15 +1404,6 @@ useHead({
       padding: 0!important;
     }
 
-    .v-carousel::v-deep(.v-btn--icon.v-btn--density-default) {
-      width: calc(var(--v-btn-height) + 1px);
-      height: calc(var(--v-btn-height) + 1px);
-    }
-
-    .v-carousel::v-deep(.v-icon--size-default) {
-      font-size: calc(var(--v-icon-size-multiplier) * 1.1em);
-    }
-
     .px-mobile {
       padding-right: 10px !important;
       padding-left: 10px !important;
@@ -1185,10 +1415,6 @@ useHead({
 
     .border-bottom-right {
       border-radius: 0 !important;
-    }
-
-    .furniture {
-      height: auto !important;
     }
 
     .pslider4 {
@@ -1207,22 +1433,6 @@ useHead({
       line-height: normal;
     }
 
-    .swiper {
-      height: 300px!important;
-    }
-
-    .swiper::v-deep(.swiper-pagination-bullet-active) {
-      background: #FF0090 !important;
-    }
-
-    /* .swiper::v-deep(.swiper-pagination-horizontal ) {
-      top: 92%;
-    }     */
-
-    .mostSoldMobile {
-      width: -webkit-fill-available;
-    }
-
     .v-tab::v-deep(.v-btn__content) {
       font-size: 12px;
       font-style: normal;
@@ -1233,6 +1443,20 @@ useHead({
     .v-tabs::v-deep(.v-btn.v-btn--density-default) {
       height: 40px !important;
       padding: 0 2px;
+    }
+
+    .MySwiper:deep(.swiper-button-next),
+    .MySwiper:deep(.swiper-button-prev) {
+        display: none;
+    }
+
+    .card-register {
+      padding: 20px;
+      width: auto;
+    }
+
+    .text-message {
+      font-size: 18px;
     }
   }
 </style>

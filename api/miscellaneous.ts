@@ -51,6 +51,10 @@ export const Miscellaneous = () => {
         return await $axios.get(`miscellaneous/ips`)
     }
 
+    const contactUs = async (data: object) => {
+        return  await $axios.post(`miscellaneous/contactUs`, data)
+    }
+
     return {
         categories,
         categoriesAll,
@@ -63,6 +67,7 @@ export const Miscellaneous = () => {
         services,
         service,
         getDataCupcake,
-        ips
+        ips,
+        contactUs
     }
 }

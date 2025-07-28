@@ -11,9 +11,9 @@ import { useFavoritesStores } from '@/stores/favorites'
 import { useHomeStores } from "@/stores/home";
 import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination, Zoom } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { VueImageZoomer } from 'vue-image-zoomer'
 import { useRouter, useRoute } from 'vue-router'
 import { useRuntimeConfig } from '#app'
+import VueImageZoomer from 'vue-image-zoomer';
 import CustomRadiosWithIcon from '@/components/app/CustomRadiosWithIcon.vue'
 import Loader from '@/components/common/Loader.vue'
 import Product1 from '@/components/product/Product1.vue'
@@ -42,7 +42,6 @@ import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar'
 import 'swiper/css/pagination';
 import 'swiper/css/zoom';
-import 'vue-image-zoomer/dist/style.css';
 
 const route = useRoute()
 
@@ -982,7 +981,7 @@ const buildEmbedUrl = (url) => {
               >
               <swiper-slide v-for="(slide, index) in mediaSlides" :key="index">
                 <template v-if="slide.type === 'image'">
-                  <vue-image-zoomer
+                  <VueImageZoomer
                     :regular="slide.url"
                     :zoom-amount="3"
                     :hover-message="`Color: ${color}`"
