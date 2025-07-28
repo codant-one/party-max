@@ -163,13 +163,19 @@ if (error.value || !productData.value?.product) {
 }
 
 if (productData.value) {
+  const imageUrl = baseURL.value + productData.value.product.image;
+
   useSeoMeta({
     title: productData.value.product.name,
     description: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'`,
+    ogType: 'product',
+    ogUrl: `${baseURL.value}products/${productData.value.product.slug}`,
     ogTitle: productData.value.product.name,
     ogDescription: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'`,
-    ogImage: baseURL.value + productData.value.product.image,
-    ogUrl:  `https://${config.public.MY_DOMAIN}/products/${productData.value.product.slug}`,
+    ogSiteName: 'PARTYMAX',
+    ogImage: imageUrl,
+    ogImageWidth: '1200',
+    ogImageHeight: '630',
     twitterCard: 'summary_large_image',
   })
 
@@ -177,7 +183,7 @@ if (productData.value) {
     link: [
       {
         rel: 'canonical',
-        href: `https://${config.public.MY_DOMAIN}/products/${productData.value.product.id}`,
+        href: `${baseURL.value}products/${productData.value.product.slug}`,
       },
     ],
     meta: [
