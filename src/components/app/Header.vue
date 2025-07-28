@@ -393,6 +393,7 @@
       <VList aria-label="Menú de categorías de productos" v-model:opened="panelCat" class="pb-0">
         <template v-for="(item, index) in categories">
           <VListItem
+            role="none" tabindex="-1"
             v-if="categories[index]?.children.length === 0"
             :to="{
               name: 'products',
@@ -402,9 +403,9 @@
               {{ item.name }}
             </VListItemTitle> 
           </VListItem>
-          <VListGroup v-else :value="item.name" :eager="false">
+          <VListGroup :id="item.name" v-else :value="item.name" :eager="false">
             <template #activator="{ props }">
-              <VListItem class="items-list">
+              <VListItem :title="item.name" class="items-list">
                 <VListItemTitle class="d-block lineheight borderList pb-2">
                   <router-link
                     :to="{
@@ -467,7 +468,7 @@
         </VListItem>
 
         <div v-for="(item, index) in services" :key="index">
-          <VListItem v-if="services[index]?.children.length === 0">
+          <VListItem role="none" tabindex="-1" v-if="services[index]?.children.length === 0">
             <VListItemTitle class="d-block lineheight borderList pb-2">
               <router-link 
                 :to="{
@@ -482,9 +483,9 @@
             </VListItemTitle> 
           </VListItem>
 
-          <VListGroup v-else :value="item.name" :eager="false">
+          <VListGroup :id="item.name" v-else :value="item.name" :eager="false">
             <template #activator="{ props }">
-              <VListItem class="items-list">
+              <VListItem :title="item.name" class="items-list">
                 <VListItemTitle class="d-block lineheight borderList pb-2">
                   <router-link
                     :to="{
@@ -915,7 +916,8 @@
                     </VListItem>
                     <VListItem  
                       v-for="(item, index) in services"
-                      :key="index" >
+                      :key="index"
+                      role="none" tabindex="-1" >
                         <div class="d-flex align-center hover-icon-right" @mouseover="openService(index)">
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
