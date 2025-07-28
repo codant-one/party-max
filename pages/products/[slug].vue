@@ -258,6 +258,23 @@ if (productData.value) {
   }
 
   console.log('productUrl', productUrl.value)
+  useSeoMeta({
+    title: productData.value.product.name,
+    description: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨`,
+    ogType: 'product',
+    ogUrl: productUrl.value,
+    ogTitle: productData.value.product.name,
+    ogDescription: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨`,
+    ogSiteName: 'PARTYMAX',
+    ogImage: imageMeta.value,
+    ogImageWidth: '1200',
+    ogImageHeight: '630',
+    twitterCard: 'summary_large_image',
+    twitterTitle: productData.value.product.name,
+    twitterDescription: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨`,
+    twitterImage: imageMeta.value,
+    twitterSite: twitterAccount.value
+  })
 
   useHead({
     link: [
@@ -271,16 +288,6 @@ if (productData.value) {
         name: 'keywords',
         content: productData.value.keywords.join(', ')
       },
-      { hid: 'description', name: 'description', content:  `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨` },
-      { property: 'og:title', content: productData.value.product.name},
-      { property: 'og:description', content: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨` },
-      { property: 'og:type', content: 'product' },
-      { property: 'og:url', content: productUrl.value },
-      { property: 'og:image', content: imageMeta.value },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: productData.value.product.name },
-      { name: 'twitter:description', content: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨` },
-      { name: 'twitter:image', content: imageMeta.value },
       // Metaetiquetas para Google Shopping (ejemplo)
       { name: 'product:availability', content: 'in stock' },
       { name: 'product:condition', content: 'new' },
