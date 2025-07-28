@@ -111,8 +111,9 @@ const onSubmit = () => {
       target="_blank"
       class="whatsapp-float"
       title="Contáctanos por WhatsApp"
+      aria-label="Contactar por WhatsApp"
       >
-        <span class="mdi mdi-whatsapp whatsapp-icon"></span>
+        <span class="mdi mdi-whatsapp whatsapp-icon" aria-hidden="true"></span>
     </a>
     <div class="tw-flex tw-flex-col md:tw-flex-row my-10 tw-px-5" v-if="!isConnected">
       <div class="md:tw-w-1/2 text-left tw-pr-0 md:tw-pr-8 border-fix">
@@ -175,13 +176,13 @@ const onSubmit = () => {
           </div>
           <div class="tw-flex tw-mt-3">
             <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="tw-mr-2" aria-label="instagram">
-              <instagram />
+              <instagram aria-hidden="true" />
             </a>
             <a href="https://www.facebook.com/partymaxcolombia" target="_blank" class="tw-mr-2" aria-label="facebook">
-              <facebook />
+              <facebook aria-hidden="true" />
             </a>
             <a href="https://wa.link/wvdoxg" target="_blank" aria-label="whatsapp">
-              <whatsapp_magenta />
+              <whatsapp_magenta aria-hidden="true" />
             </a>
           </div>
         </div>
@@ -194,26 +195,28 @@ const onSubmit = () => {
             @submit.prevent="onSubmit"
             >
           <div class="tw-mb-1 textinput">
-            <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1">Nombre</label>
-            <VTextField 
+            <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1" for="name-input">Nombre</label>
+            <VTextField
               v-model="name"
               variant="outlined" 
               density="compact" 
               :rules="[requiredValidator]"
-              @input="inputChange()"/>
+              @input="inputChange()"
+              id="name-input" />
           </div>
           <div class="tw-mb-1 textinput">
-            <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1">Correo Electrónico</label>
+            <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1" for="email-input">Correo Electrónico</label>
             <VTextField 
               v-model="email"
               type="email"
               variant="outlined" 
               density="compact" 
               :rules="[requiredValidator, emailValidator]"
-              @input="inputChange()" />
+              @input="inputChange()" 
+              id="email-input"/>
           </div>
           <div class="tw-mb-1">
-            <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1">Mensaje</label>
+            <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1" for="message-input">Mensaje</label>
             <VTextarea
               v-model="message"
               variant="outlined"
@@ -221,6 +224,7 @@ const onSubmit = () => {
               :rules="[requiredValidator]"
               @input="inputChange()"
               rows="4"
+              id="message-input"
             />
           </div>
           <VCheckbox v-model="terms" color="primary" class="tw-mb-4" :rules="[requiredValidator]">

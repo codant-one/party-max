@@ -160,7 +160,7 @@ const tab = ref('0')
         >
           <img 
             :src="baseURL + (isMobile ? item.mobile : item.image)"
-            :alt="'slider'+(i+1)"
+            :alt="item.title + ' - Imagen de slider'"
             class="w-100 h-100 tw-object-cover"
             loading="lazy"
           >
@@ -212,28 +212,28 @@ const tab = ref('0')
       <VCardItem class="p-0">
         <VRow no-gutters  class="tw-text-tertiary">
           <VCol cols="12" sm="6" md="3" class="d-flex align-center hr">
-            <img :src="motorcycle" width="60" height="60" class="ms-10" alt="motorcycle" loading="lazy"/>
+            <img :src="motorcycle" width="60" height="60" class="ms-10" alt="Icono de motocicleta para envíos gratis" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Envíos gratis</span>
               <span class="d-block card-information-subtitle">A partir de $210.000</span>
             </div>
           </VCol>
           <VCol cols="12" sm="6" md="3" class="d-flex align-center hr no-border">
-            <img :src="location" width="60" height="60" class="ms-10" alt="location" loading="lazy"/>
+            <img :src="location" width="60" height="60" class="ms-10" alt="Icono de ubicación para nuestras tiendas" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Nuestras tiendas</span>
               <span class="d-block card-information-subtitle">En Bogotá</span>
             </div>
           </VCol>
           <VCol cols="12" sm="6" md="3" class="d-flex align-center hr">
-            <img :src="sold" width="60" height="60" class="ms-10" alt="sold" loading="lazy"/>
+            <img :src="sold" width="60" height="60" class="ms-10" alt="Icono de etiqueta de vendido para ventas al por mayor" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Ventas por mayor</span>
               <span class="d-block card-information-subtitle">A los mejores precios</span>
             </div>
           </VCol>
           <VCol cols="12" sm="6" md="3" class="d-flex align-center col-siguecompra">
-            <img :src="tracking" width="60" height="60" class="ms-10" alt="tracking" loading="lazy"/>
+            <img :src="tracking" width="60" height="60" class="ms-10" alt="Icono de seguimiento para seguir tu compra" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Sigue tu compra</span>
               <span class="d-block card-information-subtitle">Desde tu cuenta</span>
@@ -299,7 +299,7 @@ const tab = ref('0')
     <!-- banner 2 -->
     <VCard class="mt-7 no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
-        <img :src="banner_3.image" cover @click="redirectTo(banner_3.url)" class="img-gallery" alt="banner7"/>
+        <img :src="banner_3.image" cover @click="redirectTo(banner_3.url)" class="img-gallery" alt="Banner para animar al usuario a registrarse"/>
       </VCardItem>  
     </VCard>
     
@@ -356,7 +356,7 @@ const tab = ref('0')
                 <img 
                   :src="banner_4.image" 
                   class="border-img w-100"
-                  alt="banner8"
+                  alt="Lo mas vendido - Se parte de nuestro marketplace"
                   @click="redirectTo(banner_4.url)"
                   />
               </VCardText>
@@ -517,12 +517,12 @@ const tab = ref('0')
     <VCard class="mt-7 no-shadown card-information p-0 d-flex transparent card-banner34">
         <VCard class="no-shadown card-information p-0 w-50 grid-item w-100">
             <VCardItem class="p-0">
-              <img :src="banner_5.image" cover @click="redirectTo(banner_5.url)"  class="img-gallery" alt="banner9"/>
+              <img :src="banner_5.image" cover @click="redirectTo(banner_5.url)"  class="img-gallery" alt="Tu guia de Inteligencia Artificial para fiestas inoolvidables!"/>
             </VCardItem> 
         </VCard>
         <VCard class="no-shadown card-information p-0 w-50 ms-5 grid-item w-100">
             <VCardItem class="p-0">
-              <img :src="banner_6.image" cover @click="redirectTo(banner_6.url)" class="img-gallery" alt="banner10"/>
+              <img :src="banner_6.image" cover @click="redirectTo(banner_6.url)" class="img-gallery" alt="Haz tu celebracion inolvidable con PartyMax"/>
             </VCardItem>
         </VCard>
     </VCard>
@@ -538,7 +538,8 @@ const tab = ref('0')
             query: {
               category: 'fiestas-tematicas'
             }
-          }"  
+          }"
+          aria-label="Ver todos los productos de fiestas temáticas"
           class="ms-5 tw-no-underline d-none d-md-flex tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
           Ver todos
         </router-link>
@@ -553,7 +554,7 @@ const tab = ref('0')
               subcategory: 'tematica-mexicana'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_1" class="d-block size-rect-desktop" loading="lazy" alt=""/>
+          <img :src="t_1" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Mexicana"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
         </router-link>
         <router-link 
@@ -564,7 +565,7 @@ const tab = ref('0')
               subcategory: 'tematica-hawaiana'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" alt=""/>
+          <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Hawaiana"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Hawaiana</span>
         </router-link>
         <router-link 
@@ -575,7 +576,7 @@ const tab = ref('0')
               subcategory: 'tematica-vallenata'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_3" class="d-block size-rect-desktop" loading="lazy" alt=""/>
+          <img :src="t_3" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Vallenata"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Vallenata</span>
         </router-link>
         <router-link 
@@ -586,7 +587,7 @@ const tab = ref('0')
               subcategory: 'tematica-metalizada'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_4" class="d-block size-rect-desktop" loading="lazy" alt=""/>
+          <img :src="t_4" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Metalizada"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Metalizada</span>
         </router-link>
         <router-link 
@@ -597,7 +598,7 @@ const tab = ref('0')
               subcategory: 'tematica-neon'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_5" class="d-block size-rect-desktop" loading="lazy" alt="neon"/>
+          <img :src="t_5" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Neón"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Neón</span>
         </router-link>
       </VCardText> 
@@ -612,7 +613,7 @@ const tab = ref('0')
                   subcategory: 'tematica-mexicana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_1" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <img :src="t_1" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Mexicana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </router-link>
           </VCol>
@@ -625,7 +626,7 @@ const tab = ref('0')
                   subcategory: 'tematica-hawaiana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <img :src="t_2" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Hawaiana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
             </router-link>
           </VCol>
@@ -638,7 +639,7 @@ const tab = ref('0')
                   subcategory: 'tematica-vallenata'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_3" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <img :src="t_3" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Vallenata"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </router-link>
           </VCol>
@@ -651,7 +652,7 @@ const tab = ref('0')
                   subcategory: 'tematica-metalizada'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_4" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <img :src="t_4" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Metalizada"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </router-link>
           </VCol>
@@ -664,7 +665,7 @@ const tab = ref('0')
                   subcategory: 'tematica-neon'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_5" class="d-block size-rect-desktop" width="150"  height="150" loading="lazy" alt="neon"/>
+              <img :src="t_5" class="d-block size-rect-desktop" width="150"  height="150" loading="lazy" alt="Fiesta con tematica Neón"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Neón</span>
             </router-link>
           </VCol>
@@ -694,7 +695,7 @@ const tab = ref('0')
                   subcategory: 'tematica-mexicana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_1" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <img :src="t_1" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Mexicana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </router-link>
           </VCol>
@@ -707,7 +708,7 @@ const tab = ref('0')
                   subcategory: 'tematica-hawaiana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <img :src="t_2" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Hawaiana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
             </router-link>
           </VCol>
@@ -720,7 +721,7 @@ const tab = ref('0')
                   subcategory: 'tematica-vallenata'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_3" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <img :src="t_3" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Vallenata"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </router-link>
           </VCol>
@@ -733,7 +734,7 @@ const tab = ref('0')
                   subcategory: 'tematica-metalizada'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_4" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <img :src="t_4" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Metalizada"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </router-link>
           </VCol>
@@ -746,7 +747,7 @@ const tab = ref('0')
                   subcategory: 'tematica-neon'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_5" class="d-block size-rect-desktop" width="150"  height="150" loading="lazy" alt="neon"/>
+              <img :src="t_5" class="d-block size-rect-desktop" width="150"  height="150" loading="lazy" alt="Fiesta con tematica Neón"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Neón</span>
             </router-link>
           </VCol>
@@ -783,6 +784,7 @@ const tab = ref('0')
                 subcategory: 'tematica-cumpleanos'
               }
             }"
+            aria-label="Ver todos los productos de cumpleaños"
             class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-tertiary hover:tw-text-primary">
             Ver todos
           </router-link>
@@ -797,7 +799,7 @@ const tab = ref('0')
                 subcategory: 'fiestas-ninos'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt="iconos"/>
+            <img :src="f_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Niños"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Niños</span>
           </router-link>
           <router-link 
@@ -808,7 +810,7 @@ const tab = ref('0')
                 subcategory: 'tematica-ninas'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="icons2"/>
+            <img :src="f_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Niñas"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Niñas</span>
           </router-link>
           <router-link 
@@ -819,7 +821,7 @@ const tab = ref('0')
                 subcategory: 'tematica-bebes'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="icons3"/>
+            <img :src="f_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Bebes"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Bebes</span>
           </router-link>
           <router-link
@@ -832,7 +834,7 @@ const tab = ref('0')
               }
             }"
             class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_4" class="border-theme d-white size-circles-desktop" loading="lazy" alt="icons4"/>
+            <img :src="f_4" class="border-theme d-white size-circles-desktop" loading="lazy" alt="Fiesta para Adultos"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Adultos</span>
           </router-link>
         </VCardText>
@@ -845,7 +847,7 @@ const tab = ref('0')
                 subcategory: 'fiestas-ninos'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt="iconos"/>
+            <img :src="f_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Niños"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Niños</span>
           </router-link>
           <router-link 
@@ -856,7 +858,7 @@ const tab = ref('0')
                 subcategory: 'tematica-ninas'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="icons2"/>
+            <img :src="f_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Niñas"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Niñas</span>
           </router-link>
           <router-link 
@@ -867,7 +869,7 @@ const tab = ref('0')
                 subcategory: 'tematica-bebes'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="icons3"/>
+            <img :src="f_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Bebes"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Bebes</span>
           </router-link>
           <router-link
@@ -880,7 +882,7 @@ const tab = ref('0')
               }
             }"
             class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_4" class="border-theme d-white size-circles-desktop" loading="lazy" alt="icons4"/>
+            <img :src="f_4" class="border-theme d-white size-circles-desktop" loading="lazy" alt="Fiesta para Adultos"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Adultos</span>
           </router-link>
         </VCardText>
@@ -896,7 +898,7 @@ const tab = ref('0')
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_1" class="border-theme d-block" width="150" height="150" loading="lazy" alt="iconos"/>
+                <img :src="f_1" class="border-theme d-block" width="150" height="150" loading="lazy" alt="Fiesta para Niños"/>
                 <span class="d-block size-theme tw-text-tertiary mt-2">Niños</span>
               </router-link>
             </VCol>
@@ -910,7 +912,7 @@ const tab = ref('0')
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_2" class="border-theme d-block" width="150" height="150" loading="lazy" alt="icons2"/>
+                <img :src="f_2" class="border-theme d-block" width="150" height="150" loading="lazy" alt="Fiesta para Niñas"/>
                 <span class="d-block size-theme tw-text-tertiary mt-2">Niñas</span>
               </router-link>
             </VCol>
@@ -924,7 +926,7 @@ const tab = ref('0')
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_3" class="border-theme d-block" width="150" height="150" loading="lazy" alt="icons3"/>
+                <img :src="f_3" class="border-theme d-block" width="150" height="150" loading="lazy" alt="Fiesta para Bebes"/>
                 <span class="d-block size-theme tw-text-tertiary mt-2">Bebes</span>
               </router-link>
             </VCol>
@@ -939,7 +941,7 @@ const tab = ref('0')
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_4" class="border-theme d-white" width="150" height="150" loading="lazy" alt="icons4"/>
+                <img :src="f_4" class="border-theme d-white" width="150" height="150" loading="lazy" alt="Fiesta para Adultos"/>
                 <span class="d-block size-theme tw-text-tertiary mt-2">Adultos</span>
               </router-link>
             </VCol>
@@ -952,7 +954,7 @@ const tab = ref('0')
   <VDialog v-model="isDialogVisible" >
     <VCard
       class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-      <VImg :width="isMobile ? '120' : '180'" :src="isError ? error_circle : check_circle" class="mx-auto"/>
+      <VImg :width="isMobile ? '120' : '180'" :src="isError ? error_circle : check_circle" :alt="isError ? 'Icono de error' : 'Icono de éxito'" class="mx-auto"/>
       <VCardText class="text-message mb-5 px-0 px-md-5 pt-0">
         {{ message }}
       </VCardText>
