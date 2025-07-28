@@ -77,6 +77,7 @@ const thumbsSwiper = ref(null);
 const thumbsSwiperModal = ref(null);
 
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
+const apiURL = ref(config.public.APP_DOMAIN_API_URL + '/api/')
 const twitterAccount = ref(config.public.TWITTER_ACCOUNT ?? '')
 const keywords = ref(null)
 
@@ -179,7 +180,7 @@ if (productData.value) {
   keywords.value = productData.value.keywords.join(', ')
 
   imageAux.value = [{ image : productData.value.product.image }]
-  imageMeta.value = baseURL.value + productData.value.product.image
+  imageMeta.value = fetch(apiURL.value  + 'proxy-image?url=' + baseURL.value + productData.value.product.image) 
 
   productImages.value = productData.value.product.colors[0]?.images
   color.value = productData.value.product.colors[0]?.color.name
