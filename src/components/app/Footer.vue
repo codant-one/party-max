@@ -115,7 +115,7 @@ const onSubmit = () => {
       >
         <span class="mdi mdi-whatsapp whatsapp-icon" aria-hidden="true"></span>
     </a>
-    <div class="tw-flex tw-flex-col md:tw-flex-row my-10 tw-px-5" v-if="!isConnected">
+    <div class="tw-flex tw-flex-col md:tw-flex-row my-10 tw-px-5" v-show="!isConnected">
       <div class="md:tw-w-1/2 text-left tw-pr-0 md:tw-pr-8 border-fix">
         <h2 class="tw-text-primary tw-font-bold tw-text-4xl">Conecta con Nosotros</h2>
         <div class="tw-mt-6">
