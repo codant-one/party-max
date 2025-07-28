@@ -267,13 +267,13 @@ if (productData.value) {
     ogTitle: productData.value.product.name,
     ogDescription: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'`,
     ogSiteName: 'PARTYMAX',
-    ogImage: imageMeta,
+    ogImage: 'https://partymax.codant.one/_nuxt/festin-footer.CLzmoePj.png',
     ogImageWidth: '1200',
     ogImageHeight: '630',
     twitterCard: 'summary_large_image',
     twitterTitle: productData.value.product.name,
     twitterDescription: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'`,
-    twitterImage: imageMeta,
+    twitterImage: 'https://partymax.codant.one/_nuxt/festin-footer.CLzmoePj.png',
     twitterSite: twitterAccount.value
   })
 
@@ -290,7 +290,7 @@ if (productData.value) {
         content: productData.value.keywords.join(', ')
       },
       { property: 'og:title', content: productData.value.product.name },
-      { property: 'og:image', content: imageMeta },
+      { property: 'og:image', content: 'https://partymax.codant.one/_nuxt/festin-footer.CLzmoePj.png' },
       { property: 'og:description', content: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'` },
       { name: 'product:availability', content: 'in stock' },
       { name: 'product:condition', content: 'new' },
