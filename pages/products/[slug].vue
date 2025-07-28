@@ -180,8 +180,10 @@ if (productData.value) {
   keywords.value = productData.value.keywords.join(', ')
 
   imageAux.value = [{ image : productData.value.product.image }]
-  imageMeta.value = fetch(apiURL.value  + 'proxy-image?url=' + baseURL.value + productData.value.product.image) 
+  imageMeta.value  = apiURL.value  + 'proxy-image?url=' + baseURL.value + productData.value.product.image
 
+  console.log('image', imageMeta.value)
+  
   productImages.value = productData.value.product.colors[0]?.images
   color.value = productData.value.product.colors[0]?.color.name
   selectedColor.value = productData.value.product.colors[0]?.color.id.toString()
