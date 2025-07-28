@@ -329,47 +329,55 @@
       v-model="drawer"
       class="d-print-none"
       temporary>
-      <VList aria-label="Menú de navegación principal" v-model:opened="panelCat" class="pb-0" :ripple="false">
-        <VListItem>
+      <VList aria-label="Menú de navegación principal" v-model:opened="panelCat" class="pb-0" :ripple="false" role="list">
+        <VListItem
+          to="/about-us" class="tw-no-underline tw-text-white hover:tw-text-yellow"
+          aria-label="Quiénes somos" 
+        >
+            <VListItemTitle class="d-block lineheight borderList pb-2">
+                <span class="d-block title-menu">Quiénes somos</span>
+            </VListItemTitle>
+        </VListItem>
+        <VListItem
+          to="/help"
+          class="tw-no-underline tw-text-white hover:tw-text-yellow"
+          aria-label="Preguntas frecuentes"
+        >
           <VListItemTitle class="d-block lineheight borderList pb-2">
-            <router-link to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-              <span class="d-block title-menu">Quiénes somos</span>
-            </router-link>
+              <span class="d-block title-menu">Preguntas frecuentes</span>
           </VListItemTitle>
         </VListItem>
-        <VListItem>
+        <VListItem
+          to="/terms-and-conditions"
+          class="tw-no-underline tw-text-white hover:tw-text-yellow"
+          aria-label="Términos y condiciones"
+        >
           <VListItemTitle class="d-block lineheight borderList pb-2">
-            <router-link aria-label="Preguntas frecuentes" to="/help" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-              <span class="d-block title-menu">Preguntas frecuentes</span>
-            </router-link>
-          </VListItemTitle>  
-        </VListItem>
-        <VListItem>
-          <VListItemTitle class="d-block lineheight borderList pb-2">
-            <router-link aria-label="Términos y condiciones" to="/terms-and-conditions" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Términos y condiciones</span>
-            </router-link>
-          </VListItemTitle>  
+          </VListItemTitle>
         </VListItem>
-        <VListItem>
+        <VListItem
+          to="/data-protection"
+          class="tw-no-underline tw-text-white hover:tw-text-yellow"
+        >
           <VListItemTitle class="d-block lineheight borderList pb-2">
-            <router-link to="/data-protection" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Protección de datos</span>
-            </router-link>
-          </VListItemTitle>  
+          </VListItemTitle>
         </VListItem>
-        <VListItem>
+        <VListItem
+            to="/privacy-statement"
+            class="tw-no-underline tw-text-white hover:tw-text-yellow"
+        >
           <VListItemTitle class="d-block lineheight borderList pb-2">
-            <router-link to="/privacy-statement" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Declaración de privacidad</span>
-            </router-link>
-          </VListItemTitle>  
+          </VListItemTitle>
         </VListItem>
-        <VListItem>        
+        <VListItem
+            to="/blogs"
+            class="tw-no-underline tw-text-white hover:tw-text-yellow"
+        >
           <VListItemTitle class="d-block lineheight borderList pb-2">
-            <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Blog</span>
-            </router-link>
           </VListItemTitle>
         </VListItem>
         <VListItem>
