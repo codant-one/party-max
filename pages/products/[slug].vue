@@ -77,7 +77,6 @@ const thumbsSwiper = ref(null);
 const thumbsSwiperModal = ref(null);
 
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
-const apiURL = ref(config.public.APP_DOMAIN_API_URL + '/api/')
 const twitterAccount = ref(config.public.TWITTER_ACCOUNT ?? '')
 const keywords = ref(null)
 
@@ -180,7 +179,7 @@ if (productData.value) {
   keywords.value = productData.value.keywords.join(', ')
 
   imageAux.value = [{ image : productData.value.product.image }]
-  imageMeta.value  = apiURL.value  + 'proxy-image?url=' + baseURL.value + productData.value.product.image
+  imageMeta.value = baseURL.value + productData.value.product.image
 
   productImages.value = productData.value.product.colors[0]?.images
   color.value = productData.value.product.colors[0]?.color.name
@@ -259,23 +258,6 @@ if (productData.value) {
   }
 
   console.log('productUrl', productUrl.value)
-  useSeoMeta({
-    title: productData.value.product.name,
-    description: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'`,
-    ogType: 'product',
-    ogUrl: productUrl.value,
-    ogTitle: productData.value.product.name,
-    ogDescription: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'`,
-    ogSiteName: 'PARTYMAX',
-    ogImage: 'https://partymax.codant.one/_nuxt/festin-footer.CLzmoePj.png',
-    ogImageWidth: '1200',
-    ogImageHeight: '630',
-    twitterCard: 'summary_large_image',
-    twitterTitle: productData.value.product.name,
-    twitterDescription: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'`,
-    twitterImage: 'https://partymax.codant.one/_nuxt/festin-footer.CLzmoePj.png',
-    twitterSite: twitterAccount.value
-  })
 
   useHead({
     link: [
@@ -289,9 +271,17 @@ if (productData.value) {
         name: 'keywords',
         content: productData.value.keywords.join(', ')
       },
-      { property: 'og:title', content: productData.value.product.name },
-      { property: 'og:image', content: 'https://partymax.codant.one/_nuxt/festin-footer.CLzmoePj.png' },
+      { hid: 'description', name: 'description', content:  `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'` },
+      { property: 'og:title', content: productData.value.product.name},
       { property: 'og:description', content: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'` },
+      { property: 'og:type', content: 'product' },
+      { property: 'og:url', content: `https://partymax.codant.one/products/${slug}` },
+      { property: 'og:image', content: imageMeta },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: productData.value.product.name },
+      { name: 'twitter:description', content: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'` },
+      { name: 'twitter:image', content: imageMeta },
+      // Metaetiquetas para Google Shopping (ejemplo)
       { name: 'product:availability', content: 'in stock' },
       { name: 'product:condition', content: 'new' },
       { name: 'product:price:amount', content: productData.value.product.price_for_sale },
