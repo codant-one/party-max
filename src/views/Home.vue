@@ -139,10 +139,9 @@ const tab = ref('0')
 <template>
   <WelcomePopup />
   <Loader :isLoading="isLoading"/>
-  <div class="d-flex flex-column flex-md-row tw--mt-2 md:tw-mt-3 lg:tw-h-[683px]">
+  <div class="d-flex flex-column flex-md-row tw--mt-2 md:tw-mt-3 lg:tw-h-[683px]" v-if="data">
     <div class="lg:tw-w-[75%] lg:tw-h-[683px]">
-     <swiper
-        v-if="data"
+      <swiper
         :pagination="true"
         :navigation="true"
         :modules="modulesSlider"    
@@ -162,7 +161,10 @@ const tab = ref('0')
             :src="baseURL + (isMobile ? item.mobile : item.image)"
             :alt="item.title + ' - Imagen de slider'"
             class="w-100 h-100 tw-object-cover"
-            loading="lazy"
+            :loading="i === 0 ? 'eager' : 'lazy'"
+            :fetchpriority="i === 0 ? 'high' : 'auto'"
+            width="1044"
+            height="683"
           >
           <div class="tw-absolute tw-inset-0 tw-flex tw-flex-col tw-justify-center tw-items-start tw-p-5 md:tw-p-[100px]">
             <h2  
@@ -206,7 +208,7 @@ const tab = ref('0')
       </div>
     </div>
   </div>
-  <VContainer>
+  <VContainer v-if="data">
     <!-- card -->
     <VCard class="mt-7 no-shadown card-information">
       <VCardItem class="p-0">
@@ -613,7 +615,7 @@ const tab = ref('0')
                   subcategory: 'tematica-mexicana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_1" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Mexicana"/>
+              <img :src="t_1" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Mexicana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </router-link>
           </VCol>
@@ -626,7 +628,7 @@ const tab = ref('0')
                   subcategory: 'tematica-hawaiana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Hawaiana"/>
+              <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Hawaiana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
             </router-link>
           </VCol>
@@ -639,7 +641,7 @@ const tab = ref('0')
                   subcategory: 'tematica-vallenata'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_3" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Vallenata"/>
+              <img :src="t_3" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Vallenata"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </router-link>
           </VCol>
@@ -652,7 +654,7 @@ const tab = ref('0')
                   subcategory: 'tematica-metalizada'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_4" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Metalizada"/>
+              <img :src="t_4" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Metalizada"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </router-link>
           </VCol>
@@ -695,7 +697,7 @@ const tab = ref('0')
                   subcategory: 'tematica-mexicana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_1" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Mexicana"/>
+              <img :src="t_1" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Mexicana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </router-link>
           </VCol>
@@ -708,7 +710,7 @@ const tab = ref('0')
                   subcategory: 'tematica-hawaiana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Hawaiana"/>
+              <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Hawaiana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
             </router-link>
           </VCol>
@@ -721,7 +723,7 @@ const tab = ref('0')
                   subcategory: 'tematica-vallenata'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_3" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Vallenata"/>
+              <img :src="t_3" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Vallenata"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </router-link>
           </VCol>
@@ -734,7 +736,7 @@ const tab = ref('0')
                   subcategory: 'tematica-metalizada'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_4" class="d-block size-rect-desktop" width="150" height="150" alt="Fiesta con tematica Metalizada"/>
+              <img :src="t_4" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Metalizada"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </router-link>
           </VCol>
@@ -769,7 +771,7 @@ const tab = ref('0')
     </VCard>
   </VContainer>
 
-  <div class="tw-bg-magenta_100">
+  <div class="tw-bg-magenta_100" v-if="data">
     <VContainer>
       <!-- birthday -->
       <VCard class="mt-7 no-shadown card-information transparent p-0 tw-text-tertiary">

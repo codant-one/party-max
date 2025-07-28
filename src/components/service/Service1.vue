@@ -56,8 +56,9 @@ watchEffect(() => {
                 <img 
                     class="img-prod"
                     :alt="name"
-                    :src="baseURL + image" 
-                     />
+                    :src="baseURL + image"
+                    loading="lazy" 
+                />
             </VCardText>
             <VCardText>
                 <span v-if="name.length > 50 && !isMobile" class="d-block text_2 tw-text-tertiary title-service">

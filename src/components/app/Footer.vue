@@ -58,7 +58,8 @@ async function fetchData() {
      route.name === 'purchases' || route.name === 'coupons' ||
      route.name === 'favorites' || route.name === 'information_client' ||
      route.name === 'security_client' || route.name === 'address' ||
-     route.name === 'detail_pusher' || route.name === 'rating_products') {
+     route.name === 'detail_pusher' || route.name === 'rating_products' ||
+     route.name === 'event_planner') {
     isConnected.value = true
   }
 }
@@ -115,134 +116,136 @@ const onSubmit = () => {
       >
         <span class="mdi mdi-whatsapp whatsapp-icon" aria-hidden="true"></span>
     </a>
-    <div class="tw-flex tw-flex-col md:tw-flex-row my-10 tw-px-5" v-if="!isConnected">
-      <div class="md:tw-w-1/2 text-left tw-pr-0 md:tw-pr-8 border-fix">
-        <h2 class="tw-text-primary tw-font-bold tw-text-4xl">Conecta con Nosotros</h2>
-        <div class="tw-mt-6">
-          <div class="tw-flex tw-flex-col">
-            <div class="tw-flex tw-items-center">
-              <img :src="icophone "class="tw-mr-3" alt="Teléfono" />
-              <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Teléfono</span>
-            </div>
-            <span class="tw-text-gray tw-mt-2 tw-text-sm">Llámanos para asesoría personalizada.</span>
-          </div>
-          <p class="tw-text-tertiary tw-text-2xl tw-mt-2 tw-mb-0">+57 310 4870 310</p>
-        </div>
-        <div class="tw-mt-6">
-          <div class="tw-flex tw-flex-col">
-            <div class="tw-flex tw-items-center">
-              <img :src="icochat" class="tw-mr-3" alt="Chat" />
-              <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Mensaje directo</span>
-            </div>
-            <span class="tw-text-gray tw-mt-2 tw-text-sm">Escríbenos para dudas rápidas y seguimiento.</span>
-          </div>
-          <VBtn
-            class="btn-register tw-text-white tw-bg-primary button-hover tw-normal-case tw-mt-6"
-            href="https://wa.link/wvdoxg"
-            target="_blank"
-          >
-            Mensaje directo
-          </VBtn>
-        </div>
-        <div class="tw-mt-6">
-          <div class="tw-flex tw-flex-col">
-            <div class="tw-flex tw-items-center">
-              <img :src="icomail "class="tw-mr-3" alt="Mail" />
-              <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Correo electrónico</span>
-            </div>
-            <span class="tw-text-gray tw-mt-2 tw-text-sm">Ideal para cotizaciones y ventas mayoristas.</span>
-          </div>
-          <span class="tw-text-tertiary tw-text-2xl tw-mt-2 tw-mb-0">comercial@partymax.co</span>
-        </div>
-        <div class="tw-mt-6">
-          <div class="tw-flex tw-flex-col">
-            <div class="tw-flex tw-items-center">
-              <img :src="icostore "class="tw-mr-3" alt="Store" />
-              <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Tienda</span>
-            </div>
-              <span class="tw-text-gray tw-mt-2 tw-text-sm">Visita nuestra tienda y sorpréndete.</span>
-          </div>
-          <span class="tw-text-tertiary tw-text-2xl tw-mt-2 tw-mb-0">Calle 13 #-06, Bogotá</span>
-        </div>
-        <div class="tw-mt-6 tw-mb-6 md:tw-mb-0">
-          <div class="tw-flex tw-flex-col">
-            <div class="tw-flex tw-items-center">
-              <img :src="icosearch "class="tw-mr-3" alt="Search" />
-              <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Encuentra Inspiración Diaria</span>
-            </div>
-            <span class="tw-text-gray tw-mt-2 tw-text-sm">
-              Síguenos en nuestras redes y descubre ideas, tutoriales y las últimas tendencias para tus celebraciones.
-            </span>
-          </div>
-          <div class="tw-flex tw-mt-3">
-            <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="tw-mr-2" aria-label="instagram">
-              <instagram aria-hidden="true" />
-            </a>
-            <a href="https://www.facebook.com/partymaxcolombia" target="_blank" class="tw-mr-2" aria-label="facebook">
-              <facebook aria-hidden="true" />
-            </a>
-            <a href="https://wa.link/wvdoxg" target="_blank" aria-label="whatsapp">
-              <whatsapp_magenta aria-hidden="true" />
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="md:tw-w-1/2 text-left tw-pl-0 md:tw-pl-8 tw-mt-6 md:tw-mt-0">
-        <h2 class="tw-text-primary tw-font-bold tw-text-4xl tw-mb-2">¡Hablemos, nos encantan las fiestas!</h2>
-        <p class="tw-text-tertiary tw-mt-2 tw-mb-6">Estamos aquí para ayudarte con tus consultas.</p>
-        <VForm
-            ref="refVForm"
-            @submit.prevent="onSubmit"
-            >
-          <div class="tw-mb-1 textinput">
-            <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1" for="name-input">Nombre</label>
-            <VTextField
-              v-model="name"
-              variant="outlined" 
-              density="compact" 
-              :rules="[requiredValidator]"
-              @input="inputChange()"
-              id="name-input" />
-          </div>
-          <div class="tw-mb-1 textinput">
-            <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1" for="email-input">Correo Electrónico</label>
-            <VTextField 
-              v-model="email"
-              type="email"
-              variant="outlined" 
-              density="compact" 
-              :rules="[requiredValidator, emailValidator]"
-              @input="inputChange()" 
-              id="email-input"/>
-          </div>
-          <div class="tw-mb-1">
-            <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1" for="message-input">Mensaje</label>
-            <VTextarea
-              v-model="message"
-              variant="outlined"
-              placeholder="Escribe tu mensaje..."
-              :rules="[requiredValidator]"
-              @input="inputChange()"
-              rows="4"
-              id="message-input"
-            />
-          </div>
-          <VCheckbox v-model="terms" color="primary" class="tw-mb-4" :rules="[requiredValidator]">
-            <template #label>
-              <div class="tw-text-tertiary tw-text-sm">
-                Acepto los
-                <a href="/terms-and-conditions" target="_blank" class="tw-text-primary tw-underline">Términos</a> y el
-                <a href="/data-protection" target="_blank" class="tw-text-primary tw-underline">tratamiento de datos</a>.
+    <div v-show="!isConnected">
+      <div class="tw-flex tw-flex-col md:tw-flex-row my-10 tw-px-5">
+        <div class="md:tw-w-1/2 text-left tw-pr-0 md:tw-pr-8 border-fix">
+          <h2 class="tw-text-primary tw-font-bold tw-text-4xl">Conecta con Nosotros</h2>
+          <div class="tw-mt-6">
+            <div class="tw-flex tw-flex-col">
+              <div class="tw-flex tw-items-center">
+                <img :src="icophone "class="tw-mr-3" alt="Teléfono" width="32" height="32"/>
+                <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Teléfono</span>
               </div>
-            </template>
-          </VCheckbox>
-          <VBtn
-            variant="flat"
-            type="submit"
-            class="btn-register tw-text-white tw-bg-primary button-hover tw-normal-case">
-            Enviar mensaje
-          </VBtn>
-        </VForm>
+              <span class="tw-text-gray tw-mt-2 tw-text-sm">Llámanos para asesoría personalizada.</span>
+            </div>
+            <p class="tw-text-tertiary tw-text-2xl tw-mt-2 tw-mb-0">+57 310 4870 310</p>
+          </div>
+          <div class="tw-mt-6">
+            <div class="tw-flex tw-flex-col">
+              <div class="tw-flex tw-items-center">
+                <img :src="icochat" class="tw-mr-3" alt="Chat" width="32" height="32"/>
+                <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Mensaje directo</span>
+              </div>
+              <span class="tw-text-gray tw-mt-2 tw-text-sm">Escríbenos para dudas rápidas y seguimiento.</span>
+            </div>
+            <VBtn
+              class="btn-register tw-text-white tw-bg-primary button-hover tw-normal-case tw-mt-6"
+              href="https://wa.link/wvdoxg"
+              target="_blank"
+            >
+              Mensaje directo
+            </VBtn>
+          </div>
+          <div class="tw-mt-6">
+            <div class="tw-flex tw-flex-col">
+              <div class="tw-flex tw-items-center">
+                <img :src="icomail "class="tw-mr-3" alt="Mail" width="32" height="32" />
+                <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Correo electrónico</span>
+              </div>
+              <span class="tw-text-gray tw-mt-2 tw-text-sm">Ideal para cotizaciones y ventas mayoristas.</span>
+            </div>
+            <span class="tw-text-tertiary tw-text-2xl tw-mt-2 tw-mb-0">comercial@partymax.co</span>
+          </div>
+          <div class="tw-mt-6">
+            <div class="tw-flex tw-flex-col">
+              <div class="tw-flex tw-items-center">
+                <img :src="icostore "class="tw-mr-3" alt="Store" width="32" height="32"/>
+                <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Tienda</span>
+              </div>
+                <span class="tw-text-gray tw-mt-2 tw-text-sm">Visita nuestra tienda y sorpréndete.</span>
+            </div>
+            <span class="tw-text-tertiary tw-text-2xl tw-mt-2 tw-mb-0">Calle 13 #-06, Bogotá</span>
+          </div>
+          <div class="tw-mt-6 tw-mb-6 md:tw-mb-0">
+            <div class="tw-flex tw-flex-col">
+              <div class="tw-flex tw-items-center">
+                <img :src="icosearch "class="tw-mr-3" alt="Search" width="32" height="32" />
+                <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Encuentra Inspiración Diaria</span>
+              </div>
+              <span class="tw-text-gray tw-mt-2 tw-text-sm">
+                Síguenos en nuestras redes y descubre ideas, tutoriales y las últimas tendencias para tus celebraciones.
+              </span>
+            </div>
+            <div class="tw-flex tw-mt-3">
+              <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="tw-mr-2" aria-label="instagram">
+                <instagram aria-hidden="true" />
+              </a>
+              <a href="https://www.facebook.com/partymaxcolombia" target="_blank" class="tw-mr-2" aria-label="facebook">
+                <facebook aria-hidden="true" />
+              </a>
+              <a href="https://wa.link/wvdoxg" target="_blank" aria-label="whatsapp">
+                <whatsapp_magenta aria-hidden="true" />
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="md:tw-w-1/2 text-left tw-pl-0 md:tw-pl-8 tw-mt-6 md:tw-mt-0">
+          <h2 class="tw-text-primary tw-font-bold tw-text-4xl tw-mb-2">¡Hablemos, nos encantan las fiestas!</h2>
+          <p class="tw-text-tertiary tw-mt-2 tw-mb-6">Estamos aquí para ayudarte con tus consultas.</p>
+          <VForm
+              ref="refVForm"
+              @submit.prevent="onSubmit"
+              >
+            <div class="tw-mb-1 textinput">
+              <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1" for="name-input">Nombre</label>
+              <VTextField
+                v-model="name"
+                variant="outlined" 
+                density="compact" 
+                :rules="[requiredValidator]"
+                @input="inputChange()"
+                id="name-input" />
+            </div>
+            <div class="tw-mb-1 textinput">
+              <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1" for="email-input">Correo Electrónico</label>
+              <VTextField 
+                v-model="email"
+                type="email"
+                variant="outlined" 
+                density="compact" 
+                :rules="[requiredValidator, emailValidator]"
+                @input="inputChange()" 
+                id="email-input"/>
+            </div>
+            <div class="tw-mb-1">
+              <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1" for="message-input">Mensaje</label>
+              <VTextarea
+                v-model="message"
+                variant="outlined"
+                placeholder="Escribe tu mensaje..."
+                :rules="[requiredValidator]"
+                @input="inputChange()"
+                rows="4"
+                id="message-input"
+              />
+            </div>
+            <VCheckbox v-model="terms" color="primary" class="tw-mb-4" :rules="[requiredValidator]">
+              <template #label>
+                <div class="tw-text-tertiary tw-text-sm">
+                  Acepto los
+                  <a href="/terms-and-conditions" target="_blank" class="tw-text-primary tw-underline">Términos</a> y el
+                  <a href="/data-protection" target="_blank" class="tw-text-primary tw-underline">tratamiento de datos</a>.
+                </div>
+              </template>
+            </VCheckbox>
+            <VBtn
+              variant="flat"
+              type="submit"
+              class="btn-register tw-text-white tw-bg-primary button-hover tw-normal-case">
+              Enviar mensaje
+            </VBtn>
+          </VForm>
+        </div>
       </div>
     </div>
     <div class="tw-flex tw-flex-col md:tw-flex-row w-100 tw-p-5 tw-gap-2 md:tw-gap-4 align-center justify-content-center tw-border-t tw-border-solid tw-border-grey_2">

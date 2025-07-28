@@ -58,7 +58,9 @@ watchEffect(() => {
                         :width="100"
                         :src="baseURL + image" 
                         :alt="name"
-                        class="img-prod" />
+                        class="img-prod"
+                        loading="lazy"
+                    />
                 </router-link>
             </VCardText>
             <VCardText class="pl-5 d-block details">

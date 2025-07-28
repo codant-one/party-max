@@ -89,7 +89,7 @@ const onSubmit = () => {
 </script>
 
 <template>
-    <VContainer class="mt-2 mt-md-10">
+    <VContainer class="mt-2 mt-md-10 tw-min-h-[660px]">
         <Loader :isLoading="isLoading" class="d-print-none"/>
         <div class="card-container-generator">
             <div class="d-flex flex-column flex-md-row align-center">

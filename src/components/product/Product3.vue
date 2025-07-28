@@ -67,6 +67,7 @@ watchEffect(() => {
                     class="img-prod"
                     :alt="name"
                     :src="baseURL + image" 
+                    loading="lazy"
                 />
                 
                 <div v-if="in_stock === 0" class="out-of-stock-label">AGOTADO</div>                    

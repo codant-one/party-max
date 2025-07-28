@@ -147,7 +147,9 @@ const decrement = () => {
                             :width="100"
                             :src="baseURL + image" 
                             :alt="name"
-                            class="img-prod" />
+                            class="img-prod"
+                            loading="lazy"
+                          />
                     </VCardText>
                 </VCol>
                 <VCol cols="12" md="5" class="d-flex flex-column py-3 py-md-5 ps-4 ps-md-0 my-auto">
