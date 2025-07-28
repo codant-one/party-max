@@ -542,9 +542,9 @@
       <Loader :isLoading="isLoading"/>
       <!-- 👉 Title -->
       <div class="d-flex align-center pa-4 pa-md-6 pb-1 pb-md-1">
-        <h6 class="text-h6">
+        <h2 class="text-h6">
           Shopping Cart
-        </h6>
+        </h2>
 
         <VSpacer />
 
@@ -643,7 +643,7 @@
                 :class="(name === null) ? 'ms-n70 me-5': 'me-5'" @click="redirect('favorites')">
                 <heart aria-hidden="true" />
             </button>
-            <button icon class="me-3 shoppinp_cart" @click="isDrawerOpen = true">
+            <button aria-label="Abrir carrito de compras" icon class="me-3 shoppinp_cart" @click="isDrawerOpen = true">
               <VBadge
                 color="primary"
                 aria-label="Abrir carrito de compras"
@@ -655,7 +655,7 @@
               </VBadge>
             </button>
             <div class="d-flex user-text">
-              <button v-if="name === null" class="user ms-2">
+              <button v-if="name === null" aria-label="Iniciar Sesion o Registrarse" class="user ms-2">
                 <user aria-hidden="true" />
               </button>
               <VMenu v-else>
