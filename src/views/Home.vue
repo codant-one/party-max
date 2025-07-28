@@ -139,7 +139,7 @@ const tab = ref('0')
 <template>
   <WelcomePopup />
   <Loader :isLoading="isLoading"/>
-  <div class="d-flex flex-column flex-md-row tw--mt-2 md:tw-mt-3 lg:tw-h-[683px]">
+  <div class="d-flex flex-column flex-md-row tw--mt-2 md:tw-mt-3 lg:tw-h-[683px]" v-if="data">
     <div class="lg:tw-w-[75%] lg:tw-h-[683px]">
      <swiper
         v-if="data"
@@ -206,7 +206,7 @@ const tab = ref('0')
       </div>
     </div>
   </div>
-  <VContainer>
+  <VContainer v-if="data">
     <!-- card -->
     <VCard class="mt-7 no-shadown card-information">
       <VCardItem class="p-0">
@@ -769,7 +769,7 @@ const tab = ref('0')
     </VCard>
   </VContainer>
 
-  <div class="tw-bg-magenta_100">
+  <div class="tw-bg-magenta_100" v-if="data">
     <VContainer>
       <!-- birthday -->
       <VCard class="mt-7 no-shadown card-information transparent p-0 tw-text-tertiary">
