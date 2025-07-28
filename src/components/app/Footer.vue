@@ -121,7 +121,7 @@ const onSubmit = () => {
         <div class="tw-mt-6">
           <div class="tw-flex tw-flex-col">
             <div class="tw-flex tw-items-center">
-              <img :src="icophone "class="tw-mr-3" alt="Teléfono" />
+              <img :src="icophone "class="tw-mr-3" alt="Teléfono" width="32" height="32"/>
               <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Teléfono</span>
             </div>
             <span class="tw-text-gray tw-mt-2 tw-text-sm">Llámanos para asesoría personalizada.</span>
@@ -131,7 +131,7 @@ const onSubmit = () => {
         <div class="tw-mt-6">
           <div class="tw-flex tw-flex-col">
             <div class="tw-flex tw-items-center">
-              <img :src="icochat" class="tw-mr-3" alt="Chat" />
+              <img :src="icochat" class="tw-mr-3" alt="Chat" width="32" height="32"/>
               <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Mensaje directo</span>
             </div>
             <span class="tw-text-gray tw-mt-2 tw-text-sm">Escríbenos para dudas rápidas y seguimiento.</span>
@@ -147,7 +147,7 @@ const onSubmit = () => {
         <div class="tw-mt-6">
           <div class="tw-flex tw-flex-col">
             <div class="tw-flex tw-items-center">
-              <img :src="icomail "class="tw-mr-3" alt="Mail" />
+              <img :src="icomail "class="tw-mr-3" alt="Mail" width="32" height="32" />
               <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Correo electrónico</span>
             </div>
             <span class="tw-text-gray tw-mt-2 tw-text-sm">Ideal para cotizaciones y ventas mayoristas.</span>
@@ -157,7 +157,7 @@ const onSubmit = () => {
         <div class="tw-mt-6">
           <div class="tw-flex tw-flex-col">
             <div class="tw-flex tw-items-center">
-              <img :src="icostore "class="tw-mr-3" alt="Store" />
+              <img :src="icostore "class="tw-mr-3" alt="Store" width="32" height="32"/>
               <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Tienda</span>
             </div>
               <span class="tw-text-gray tw-mt-2 tw-text-sm">Visita nuestra tienda y sorpréndete.</span>
@@ -167,7 +167,7 @@ const onSubmit = () => {
         <div class="tw-mt-6 tw-mb-6 md:tw-mb-0">
           <div class="tw-flex tw-flex-col">
             <div class="tw-flex tw-items-center">
-              <img :src="icosearch "class="tw-mr-3" alt="Search" />
+              <img :src="icosearch "class="tw-mr-3" alt="Search" width="32" height="32" />
               <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Encuentra Inspiración Diaria</span>
             </div>
             <span class="tw-text-gray tw-mt-2 tw-text-sm">
