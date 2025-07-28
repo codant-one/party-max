@@ -149,16 +149,54 @@ watch(() =>
 
 const { data: productData } = await useAsyncData(
   `product-${route.params.slug}`,
-  async () => {
-    await miscellaneousStores.getProduct(route.params.slug)
-    return miscellaneousStores.getData
-  },
-  {
-    watch: [() => route.params.slug],
-    cache: false
-  }
+  () => miscellaneousStores.getProduct(route.params.slug)
 )
 
+if (productData.value) {
+  const productUrl = `https://${config.public.MY_DOMAIN}/products/${productData.value.product.slug}`
+  const imageUrl = baseURL.value + productData.value.product.image
+  const descriptionText = `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨`;
+
+  useSeoMeta({
+    title: productData.value.product.name,
+    description: descriptionText,
+    ogType: 'product',
+    ogUrl: productUrl,
+    ogTitle: productData.value.product.name,
+    ogDescription: descriptionText,
+    ogSiteName: 'PARTYMAX',
+    ogImage: imageUrl,
+    ogImageWidth: '1200',
+    ogImageHeight: '630',
+    twitterCard: 'summary_large_image',
+    twitterTitle: productData.value.product.name,
+    twitterDescription: descriptionText,
+    twitterImage: imageUrl,
+    twitterSite: twitterAccount.value
+  })
+
+  useHead({
+    link: [
+      {
+        rel: 'canonical',
+        href: productUrl.value,
+      },
+    ],
+    meta: [
+      {
+        name: 'keywords',
+        content: productData.value.keywords.join(', ')
+      },
+      // Metaetiquetas para Google Shopping (ejemplo)
+      { name: 'product:availability', content: 'in stock' },
+      { name: 'product:condition', content: 'new' },
+      { name: 'product:price:amount', content: productData.value.product.price_for_sale },
+      { name: 'product:price:currency', content: 'COP' },
+    ],
+  })
+}
+
+watchEffect(async () => {
 if (productData.value) {
   isLoading.value = false
   if(process.client && localStorage.getItem('user_data')){
@@ -177,9 +215,7 @@ if (productData.value) {
   productImages.value = []
 
   keywords.value = productData.value.keywords.join(', ')
-
   imageAux.value = [{ image : productData.value.product.image }]
-  imageMeta.value = baseURL.value + productData.value.product.image
 
   productImages.value = productData.value.product.colors[0]?.images
   color.value = productData.value.product.colors[0]?.color.name
@@ -200,16 +236,16 @@ if (productData.value) {
 
   product_id.value = productData.value.product.id
 
-  productUrl.value = `https://${config.public.MY_DOMAIN}/products/${productData.value.product.slug}`
-  const imageUrl = `${config.public.APP_DOMAIN_API_URL}/storage/${productData.value.product.image}`
-  const descriptionText = 'Mira este increíble producto.'
-  const twitterText = `${descriptionText} ${productUrl.value} ${imageUrl}`;
+  const productUrl = `https://${config.public.MY_DOMAIN}/products/${productData.value.product.slug}`;
+  const imageUrl = `${config.public.APP_DOMAIN_API_URL}/storage/${productData.value.product.image}`;
+  const descriptionText = 'Mira este increíble producto.';
+  const twitterText = `${descriptionText} ${productUrl} ${imageUrl}`
 
-  searchWhatsapp.value = `https://wa.me/?text=${productUrl.value}`
-  searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl.value)}`
+  searchWhatsapp.value = `https://wa.me/?text=${encodeURIComponent(productUrl)}`;
+  searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}`;
   searchTwitter.value = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}`;
-  searchLinkendin.value = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(productUrl.value)}`;
-  
+  searchLinkendin.value = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(productUrl)}`;
+
   title.value = productData.value.product.name
   brand.value = productData.value.product.brand.name
   rating.value = productData.value.product.rating
@@ -247,55 +283,15 @@ if (productData.value) {
     thumb: '/assets/video-placeholder.png',
   }))
 
-  if(videos.value.length > 0 ) {
-    await Promise.all(
-      videos.value.map(async slide => {
-        if (slide.type === 'video') {
-            slide.thumb = await loadVideoThumbnail(slide.url);
-        }
-      })
-    )
-  }
-
-  console.log('productUrl', productUrl.value)
-  useSeoMeta({
-    title: productData.value.product.name,
-    description: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨`,
-    ogType: 'product',
-    ogUrl: productUrl.value,
-    ogTitle: productData.value.product.name,
-    ogDescription: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨`,
-    ogSiteName: 'PARTYMAX',
-    ogImage: imageMeta.value,
-    ogImageWidth: '1200',
-    ogImageHeight: '630',
-    twitterCard: 'summary_large_image',
-    twitterTitle: productData.value.product.name,
-    twitterDescription: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨`,
-    twitterImage: imageMeta.value,
-    twitterSite: twitterAccount.value
-  })
-
-  useHead({
-    link: [
-      {
-        rel: 'canonical',
-        href: productUrl.value,
-      },
-    ],
-    meta: [
-      {
-        name: 'keywords',
-        content: productData.value.keywords.join(', ')
-      },
-      // Metaetiquetas para Google Shopping (ejemplo)
-      { name: 'product:availability', content: 'in stock' },
-      { name: 'product:condition', content: 'new' },
-      { name: 'product:price:amount', content: productData.value.product.price_for_sale },
-      { name: 'product:price:currency', content: 'COP' },
-    ],
-  })
+  await Promise.all(
+    videos.value.map(async slide => {
+      if (slide.type === 'video') {
+          slide.thumb = await loadVideoThumbnail(slide.url);
+      }
+    })
+  )
 }
+})
 
 const { data: categoryData } = await useAsyncData(
   `categories`,
