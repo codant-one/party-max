@@ -141,8 +141,7 @@ const tab = ref('0')
   <Loader :isLoading="isLoading"/>
   <div class="d-flex flex-column flex-md-row tw--mt-2 md:tw-mt-3 lg:tw-h-[683px]" v-if="data">
     <div class="lg:tw-w-[75%] lg:tw-h-[683px]">
-     <swiper
-        v-if="data"
+      <swiper
         :pagination="true"
         :navigation="true"
         :modules="modulesSlider"    
@@ -162,7 +161,10 @@ const tab = ref('0')
             :src="baseURL + (isMobile ? item.mobile : item.image)"
             :alt="item.title + ' - Imagen de slider'"
             class="w-100 h-100 tw-object-cover"
-            loading="lazy"
+            :loading="i === 0 ? 'eager' : 'lazy'"
+            :fetchpriority="i === 0 ? 'high' : 'auto'"
+            width="1044"
+            height="683"
           >
           <div class="tw-absolute tw-inset-0 tw-flex tw-flex-col tw-justify-center tw-items-start tw-p-5 md:tw-p-[100px]">
             <h2  

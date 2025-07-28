@@ -27,7 +27,14 @@ function goToRegister() {
     <VDialog v-model="show" max-width="600" transition="dialog-top-transition">
         <VCard class="tw-relative p-0 card-welcome">
         <VCardText class="p-0 line">
-            <img fetchpriority=high :src="isMobile ? popupImageMobile : popupImage" alt="discount" class="w-100"/>
+            <img 
+                fetchpriority=high 
+                :src="isMobile ? popupImageMobile : popupImage" 
+                alt="discount" 
+                class="w-100 h-100" 
+                width="546" 
+                height="621"
+            />
         </VCardText>
         <div class="tw-absolute tw-bottom-4 tw-right-0 tw-z-10">
             <VBtn 
