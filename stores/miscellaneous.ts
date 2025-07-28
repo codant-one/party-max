@@ -96,7 +96,7 @@ export const useMiscellaneousStores = defineStore('miscellaneous', {
             const { product } = Miscellaneous()
             return product(slug)
                 .then((response) => {
-                    return Promise.resolve(response.data.data)
+                    this.data = response.data.data
                 })
                 .catch(error => {
                     return Promise.reject(error)
