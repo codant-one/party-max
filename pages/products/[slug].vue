@@ -275,7 +275,7 @@ if (productData.value) {
       { property: 'og:title', content: productData.value.product.name},
       { property: 'og:description', content: `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'` },
       { property: 'og:type', content: 'product' },
-      { property: 'og:url', content: `https://partymax.codant.one/products/${slug}` },
+      { property: 'og:url', content: productUrl.value },
       { property: 'og:image', content: imageMeta },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: productData.value.product.name },
