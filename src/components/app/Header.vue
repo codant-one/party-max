@@ -818,11 +818,13 @@
                     </VListItem>
                     <VListItem
                       v-for="(item, index) in categories"
-                      :key="index">
+                      :key="index"
+                      role="none" tabindex="-1" >
                         <div class="d-flex align-center hover-icon-right" @mouseover="openCategory(index)">
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
-                            @click="redirect_('categories', item.slug)" @keydown.enter="redirect_('categories', item.slug)">
+                            @click="redirect_('categories', item.slug)" @keydown.enter="redirect_('categories', item.slug)"
+                            role="link" tabindex="0" :aria-label="`Ver categoría ${item.name}`">
                               <component v-if="items_products.filter(e => e.slug === item.slug).length === 1" :is="items_products.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                               <component v-else :is="icon5" class="me-3" />
                               {{ item.name }}
