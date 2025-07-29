@@ -834,7 +834,8 @@
                     <VListItem
                       v-for="(item, index) in categories"
                       :key="index"
-                      role="none" tabindex="-1" >
+                      role="none" tabindex="-1" 
+                      :id="`product-label-${category}`">
                         <div class="d-flex align-center hover-icon-right" @mouseover="openCategory(index)">
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
@@ -863,7 +864,7 @@
                   </VList>
                 </VCol>
                 <VCol cols="12" :md="cols" v-show="cols === 6" class="borderCol py-5">
-                  <VList class="style-submenu mt-8">
+                  <VList class="style-submenu mt-8" :aria-labelledby="`product-label-${category}`" role="menu">
                     <VListItem
                       v-for="(i, index2) in categories[category].children"
                       :key="index2"
@@ -923,8 +924,8 @@
                     </VListItem>
                     <VListItem  
                       v-for="(item, index) in services"
-                      :key="index"
-                      role="none" tabindex="-1" >
+                      :key="index" tabindex="-1" 
+                      :id="`service-label-${index}`" role="menu">
                         <div class="d-flex align-center hover-icon-right" @mouseover="openService(index)">
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
@@ -956,7 +957,8 @@
                     <VListItem 
                       v-for="(i, index2) in services[category].children"
                       :key="index2"
-                      @click="closeMenuS">
+                      @click="closeMenuS"
+                      :aria-labelledby="`service-label-${category}`" role="menu">
                       <router-link
                         :to="{
                           name: 'services',
