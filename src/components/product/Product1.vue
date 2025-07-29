@@ -103,8 +103,8 @@ watchEffect(() => {
                         <template v-slot:item="props">
                             <VIcon
                                 v-bind="props"
-                                color="yellow-darken-2"
-                                active-color="yellow-darken-2"
+                                color="tw-text-tertiary"
+                                active-color="tw-text-tertiary"
                                 :size="isMobile ? 20 : 25"
                             />
                         </template>
