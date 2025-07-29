@@ -808,6 +808,7 @@
                 aria-controls="products-menu"
                 @keydown.enter="menuOpen = true"
                 @keydown.escape="menuOpen = false"
+                aria-label="Menú Productos"
               >
                 <VAppBarNavIcon variant="text" aria-hidden="true" />
                 <h2 class="pt-3 font-size-16 me-7">Productos</h2>
@@ -897,6 +898,7 @@
                 aria-controls="products-menu"
                 @keydown.enter="menuOpen = true"
                 @keydown.escape="menuOpen = false"
+                aria-label="Menú Servicios"
               >
                 <VAppBarNavIcon variant="text" aria-hidden="true" />
                 <h2 class="pt-3 font-size-16 me-7 font-light">Servicios</h2>
@@ -986,19 +988,19 @@
           v-model="textSearch"
           class="me-3"
           placeholder="Quiero..."
-          :color="color"
+          label="Buscar productos" :color="color"
           flat
           variant="solo">
           <template v-slot:append-inner>
-            <VBtn 
+            <VBtn
               aria-label="Buscar"
-              icon="mdi-magnify" 
-              @click="search" 
+              icon="mdi-magnify"
+              @click="search"
               class="tw-bg-primary tw-text-white h-100 search-button button-hover"
             />
           </template>
         </VTextField>
-      </VContainer>
+    </VContainer>
     </VAppBar>
   </section>
 </template>
