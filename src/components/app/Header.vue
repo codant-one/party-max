@@ -559,11 +559,13 @@
 
         <!-- 👉 Close btn -->
         <VBtn
-          icon="mdi-close-circle-outline"
           variant="text"
           color="primary"
           @click="isDrawerOpen = false"
-        />
+          aria-label="Cerrar carrito de compras">
+          <span class="tw-hidden">Cerrar modal</span>  <!-- Texto oculto solo para accesibilidad -->
+          <VIcon icon="mdi-close-circle-outline" />
+        </VBtn>
       </div>
       <VDivider class="mt-2 mt-md-4"/>
       <PerfectScrollbar :options="{ wheelPropagation: false }">
@@ -633,13 +635,16 @@
               <img :src="logo" width="255" alt="Logo de PartyMax - Ir a la página de inicio" cover/>
             </router-link>
             <VSpacer />
+            <!-- <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1 tw-hidden" for="search-input"></label> -->
             <VTextField
               v-model="textSearch"
               class="pt-4 w-100x"
               placeholder="Quiero..."
               :color="color"
               flat
-              variant="solo">
+              variant="solo"
+              id="search-input"
+              aria-label="Buscar...">
               <template v-slot:append-inner>
                 <VBtn @click="search" class="tw-bg-primary tw-text-white h-100 search-button button-hover">Buscar</VBtn>
               </template>
@@ -810,8 +815,8 @@
                 @keydown.escape="menuOpen = false"
                 aria-label="Menú Productos"
               >
-                <VAppBarNavIcon variant="text" aria-hidden="true" />
-                <h2 class="pt-3 font-size-16 me-7">Productos</h2>
+                <VIcon icon="mdi-menu" class="me-3" aria-hidden="true"/>
+                <h2 class="pt-1 font-size-16 me-7">Productos</h2>
               </button>
             </template>
             <VCard class="style-menu" :width="width" @mouseleave="closeMenuOnMouseLeave">
@@ -900,8 +905,8 @@
                 @keydown.escape="menuOpen = false"
                 aria-label="Menú Servicios"
               >
-                <VAppBarNavIcon variant="text" aria-hidden="true" />
-                <h2 class="pt-3 font-size-16 me-7 font-light">Servicios</h2>
+                <VIcon icon="mdi-menu" class="me-3" aria-hidden="true"/>
+                <h2 class="pt-1 font-size-16 me-7 font-light">Servicios</h2>
               </button>
             </template>
             <VCard class="style-menu" :width="width" @mouseleave="closeMenuOnMouseLeave">
@@ -1000,7 +1005,7 @@
             />
           </template>
         </VTextField>
-    </VContainer>
+      </VContainer>
     </VAppBar>
   </section>
 </template>
