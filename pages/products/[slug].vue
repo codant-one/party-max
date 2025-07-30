@@ -83,9 +83,9 @@ const keywords = ref(null)
 const title = ref(null)
 const brand = ref(null)
 const rating = ref(null)
-const reviews = ref(null)
+const reviews = ref([])
 const sku = ref(null)
-const videos = ref('')
+const videos = ref([])
 const wholesale = ref(false)
 const wholesale_price = ref(null)
 const wholesale_min = ref(null)
@@ -111,7 +111,6 @@ const selectedColorId = ref(null)
 const load = ref(false)
 const color = ref('')
 const imageAux = ref('')
-const imageMeta = ref('')
 
 const cant_prod = ref(1)
 const client_id = ref(null)
@@ -156,6 +155,7 @@ if (productData.value) {
   const productUrl = `https://${config.public.MY_DOMAIN}/products/${productData.value.product.slug}`
   const imageUrl = baseURL.value + productData.value.product.image
   const descriptionText = `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨`;
+  imageAux.value = [{ image : productData.value.product.image }]
 
   useSeoMeta({
     title: productData.value.product.name,
@@ -215,7 +215,6 @@ if (productData.value) {
   productImages.value = []
 
   keywords.value = productData.value.keywords.join(', ')
-  imageAux.value = [{ image : productData.value.product.image }]
 
   productImages.value = productData.value.product.colors[0]?.images
   color.value = productData.value.product.colors[0]?.color.name
