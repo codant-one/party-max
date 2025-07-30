@@ -12,7 +12,10 @@ export default defineNuxtConfig({
       },
       link: [
         { rel: 'icon', type: 'image/png', href: '/favicon.png' }
-      ]
+      ],
+      meta: [
+        { property: 'fb:app_id', content: process.env.NUXT_PUBLIC_FACEBOOK_APP_ID }
+      ],
     }
   },
 
@@ -72,6 +75,7 @@ export default defineNuxtConfig({
       MY_DOMAIN: process.env.NUXT_MY_DOMAIN,
       GOOGLE_MANAGER: process.env.NUXT_GOOGLE_MANAGER,
       GOOGLE_TAG_MANAGER: process.env.NUXT_GOOGLE_TAG_MANAGER,
+      FACEBOOK_APP_ID: process.env.NUXT_PUBLIC_FACEBOOK_APP_ID,
       TWITTER_ACCOUNT: process.env.NUXT_TWITTER_ACCOUNT,
       NODE_ENV: process.env.NODE_ENV
     },
