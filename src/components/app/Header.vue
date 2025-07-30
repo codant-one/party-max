@@ -390,7 +390,7 @@
         </VListItem>
       </VList>
 
-      <VList aria-label="Menú de categorías de productos" v-model:opened="panelCat" class="pb-0">
+      <VList aria-label="Menú de categorías de productos" :id="`product-list-label-${index}`" v-model:opened="panelCat" class="pb-0">
         <template v-for="(item, index) in categories">
           <VListItem
             role="none" tabindex="-1"
@@ -398,7 +398,8 @@
             :to="{
               name: 'products',
               query: { category: item.slug }
-            }">
+            }"
+            >
             <VListItemTitle class="d-block title-menu lineheight borderList pb-2">
               {{ item.name }}
             </VListItemTitle> 
@@ -688,31 +689,31 @@
                     <VListItemTitle class="px-5"><b>Hola</b></VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div tw-text-primary">{{name}}</VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard' }">
+                      <router-link class="link-header tw-text-gray " :to=" { name : 'dashboard' }">
                         Dashboard
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'profile' }">
+                      <router-link class="link-header tw-text-gray " :to=" { name : 'profile' }">
                         Mi Perfil
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'purchases' }">
+                      <router-link class="link-header tw-text-gray " :to=" { name : 'purchases' }">
                         Compras
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'coupons' }">
+                      <router-link class="link-header tw-text-gray " :to=" { name : 'coupons' }">
                         Cupones
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'favorites' }">
+                      <router-link class="link-header tw-text-gray " :to=" { name : 'favorites' }">
                         Mis favoritos
                       </router-link>
                     </VListItemTitle>
-                    <VListItemTitle class="px-5 mt-2 tw-text-gray hover:tw-text-primary" @click="logout">Cerrar Sesión</VListItemTitle>
+                    <VListItemTitle class="px-5 mt-2 tw-text-gray " @click="logout">Cerrar Sesión</VListItemTitle>
                   </VListItem>
                 </VList>
               </VMenu>
@@ -762,31 +763,31 @@
                     <VListItemTitle class="px-5"><b>Hola</b></VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div tw-text-primary">{{name}}</VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard' }">
+                      <router-link class="link-header tw-text-gray " :to=" { name : 'dashboard' }">
                         Dashboard
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'profile' }">
+                      <router-link class="link-header tw-text-gray " :to=" { name : 'profile' }">
                         Mi Perfil
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'purchases' }">
+                      <router-link class="link-header tw-text-gray " :to=" { name : 'purchases' }">
                         Compras
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'coupons' }">
+                      <router-link class="link-header tw-text-gray " :to=" { name : 'coupons' }">
                         Cupones
                       </router-link>
                     </VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div">
-                      <router-link class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'favorites' }">
+                      <router-link class="link-header tw-text-gray " :to=" { name : 'favorites' }">
                         Mis favoritos
                       </router-link>
                     </VListItemTitle>
-                    <VListItemTitle class="px-5 mt-2 tw-text-gray hover:tw-text-primary" @click="logout">Cerrar Sesión</VListItemTitle>
+                    <VListItemTitle class="px-5 mt-2 tw-text-gray" @click="logout">Cerrar Sesión</VListItemTitle>
                   </VListItem>
                 </VList>
               </VMenu>
@@ -797,7 +798,7 @@
     </VAppBar>
     <VAppBar flat class="d-print-none tw-border-y tw-border-grey_2" :class="classFixed" ref="fixedSectionRef">
       <VContainer class="p-0 tw-text-tertiary d-flex justify-space-around align-center" v-if="!isMobile">
-        <div class="hover:tw-text-primary">
+        <div>
           <VMenu 
             v-model="menuOpen"
             transition="slide-x-transition" 
@@ -888,7 +889,7 @@
           </VMenu>
         </div>
       <!-----------------------SERVICIOS MENÚ------------------------------->
-        <div class="hover:tw-text-primary">
+        <div class="">
           <VMenu 
             v-model="menuOpenS"
             transition="slide-x-transition" 
@@ -980,11 +981,11 @@
       <!---------FIN SERVICIOS MENÚ--------------------------->
         <VSpacer />
 
-        <router-link to="/about-us" class="ms-5 tw-text-tertiary tw-no-underline hover:tw-text-primary">Quiénes somos</router-link>
+        <router-link to="/about-us" class="ms-5 tw-text-tertiary tw-no-underline ">Quiénes somos</router-link>
         <VDivider class="hr" vertical/>
-        <router-link to="/blogs" class="ms-5 tw-text-tertiary tw-no-underline hover:tw-text-primary">Blog</router-link>
+        <router-link to="/blogs" class="ms-5 tw-text-tertiary tw-no-underline ">Blog</router-link>
         <VDivider class="hr" vertical/>
-        <router-link to="/help" class="ms-5 tw-text-tertiary tw-no-underline me-3 hover:tw-text-primary">Preguntas frecuentes</router-link>
+        <router-link to="/help" class="ms-5 tw-text-tertiary tw-no-underline me-3 ">Preguntas frecuentes</router-link>
 
       </VContainer>
       <VContainer class="p-0 tw-text-white d-flex" v-else>
