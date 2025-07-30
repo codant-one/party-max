@@ -187,6 +187,7 @@ if (productData.value) {
         name: 'keywords',
         content: productData.value.keywords.join(', ')
       },
+      { property: 'og:image', content: imageUrl },
       // Metaetiquetas para Google Shopping (ejemplo)
       { name: 'product:availability', content: 'in stock' },
       { name: 'product:condition', content: 'new' },
