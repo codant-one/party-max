@@ -152,7 +152,9 @@ const { data: productData } = await useAsyncData(
   () => miscellaneousStores.getProduct(route.params.slug)
 )
 
-useHead(() => {
+if (productData.value) {
+
+  useHead(() => {
   // Primero, comprobamos si tenemos datos. Si no, devolvemos un objeto vacío.
   if (!productData.value || !productData.value.product) {
     return {
@@ -160,19 +162,14 @@ useHead(() => {
       meta: [],
     };
   }
+  const productUrl = `https://${config.public.MY_DOMAIN}/products/${productData.value.product.slug}`
+  const imageUrl = 'https://partymax.codant.one/_nuxt/festin-footer.CLzmoePj.png'
+  const descriptionText = `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨`;
 
-  // Si tenemos datos, construimos las URLs y textos de forma segura
-  const product = productData.value.product;
-  const config = useRuntimeConfig(); // Lo llamamos aquí dentro para asegurar el contexto
-
-  const productUrl = `https://...`; // Asegúrate de que la sintaxis es correcta
-  const imageUrl = `https://...`;   // Asegúrate de que la sintaxis es correcta
-  const descriptionText = `Descubre nuestro '${product.name}' en PARTYMAX. ¡El complemento perfecto...`;
-  const twitterAccount = config.public.TWITTER_ACCOUNT ?? '';
 
   // Devolvemos el objeto completo para useHead
   return {
-    title: product.name,
+    title: productData.value.name,
     link: [
       {
         rel: 'canonical',
@@ -187,7 +184,7 @@ useHead(() => {
       // Open Graph (Facebook, etc.)
       { property: 'og:type', content: 'product' },
       { property: 'og:url', content: productUrl },
-      { property: 'og:title', content: product.name },
+      { property: 'og:title', content: productData.value.name},
       { property: 'og:description', content: descriptionText },
       { property: 'og:site_name', content: 'PARTYMAX' },
       { property: 'og:image', content: imageUrl },
@@ -196,7 +193,7 @@ useHead(() => {
       
       // Twitter Cards
       { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: product.name },
+      { name: 'twitter:title', content: productData.value.name},
       { name: 'twitter:description', content: descriptionText },
       { name: 'twitter:image', content: imageUrl },
       { name: 'twitter:site', content: twitterAccount },
@@ -204,12 +201,12 @@ useHead(() => {
       // Google Shopping (si aplica)
       { name: 'product:availability', content: 'in stock' },
       { name: 'product:condition', content: 'new' },
-      { name: 'product:price:amount', content: product.price_for_sale },
+      { name: 'product:price:amount', content: productData.value.price_for_sale },
       { name: 'product:price:currency', content: 'COP' },
     ],
   };
 });
-
+}
 
 watchEffect(async () => {
 if (productData.value) {
