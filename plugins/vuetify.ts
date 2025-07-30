@@ -1,12 +1,7 @@
 import { defineNuxtPlugin } from '#app'
-// Styles
-import '@mdi/font/css/materialdesignicons.css'
-import 'vuetify/styles'
-
-// Vuetify
-import { createVuetify } from 'vuetify'
-import { VApp, VAppBar, VBtn, VIcon, VList, VListItem, VRating } from 'vuetify/components'
-import { aliases, mdi } from 'vuetify/iconsets/mdi'
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/components';
+import * as directives from 'vuetify/directives'; 
 
 const myCustomLightTheme = {
   dark: false,
@@ -27,34 +22,15 @@ const myCustomLightTheme = {
 export default defineNuxtPlugin(nuxtApp => {
   const vuetify = createVuetify({
     ssr: true,
-    defaults: {
-      global: {
-        style: false
-      }
-    },
-    components: {
-      VApp,
-      VAppBar,
-      VBtn,
-      VIcon,
-      VList,
-      VListItem,
-      VRating
-    },
+    components,
+    directives,
     theme: {
       defaultTheme: 'myCustomLightTheme',
       themes: {
         myCustomLightTheme,
       },
       variations: false
-    },
-    icons: {
-      defaultSet: 'mdi',
-      aliases,
-      sets: {
-        mdi,
-      },
-    },
+    }
   })
 
   nuxtApp.vueApp.use(vuetify)

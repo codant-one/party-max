@@ -1,7 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { visualizer } from 'rollup-plugin-visualizer'
 import path from 'path'
 import pluginSvgVue from '@vuetter/vite-plugin-vue-svg';
-import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import vuetify from 'vite-plugin-vuetify'; 
 
 export default defineNuxtConfig({
   app: {
@@ -31,10 +32,10 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@davestewart/nuxt-scrollbar',
     '@nuxtjs/device',
-    (_options, nuxt) => {
-      nuxt.hooks.hook('vite:extendConfig', (config) => {
+    async (options, nuxt) => {
+      nuxt.hooks.hook('vite:extendConfig', config => {
         if (config.plugins) {
-          config.plugins.push(vuetify({ autoImport: true }));
+          config.plugins.push(vuetify());
         }
       });
     },
@@ -60,15 +61,8 @@ export default defineNuxtConfig({
 
   css: [
     '~/assets/main.css',
-    '~/tailwind/tailwind.css'
+    'vuetify/lib/styles/main.sass'
   ],
-
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    },
-  },
 
   runtimeConfig: {
     public: {
@@ -84,11 +78,6 @@ export default defineNuxtConfig({
   },
 
   vite: {
-    vue: {
-      template: {
-        transformAssetUrls,
-      },
-    },
     define: {
       'process.env.DEBUG': false,
     },
@@ -105,7 +94,19 @@ export default defineNuxtConfig({
     },
     plugins: [
       pluginSvgVue()
-    ]
+    ],
+    build: {
+      rollupOptions: {
+        plugins: [
+          visualizer({
+            open: true, // Abre automáticamente el reporte en tu navegador después de compilar
+            filename: 'stats.html', // Nombre del archivo de reporte
+            gzipSize: true,
+            brotliSize: true,
+          }),
+        ],
+      },
+    },
   },
 
   routeRules: {
@@ -117,10 +118,10 @@ export default defineNuxtConfig({
     '/categories/*': { ssr: true, swr: 3600 },
     '/clients/*': { ssr: false },
     '/dashboard/*': { ssr: false },
-    '/products': { prerender: true },
-    '/products/*': { prerender: true },
-    '/services': { prerender: true },
-    '/services/*': { prerender: true },
+    '/products': { ssr: true },
+    '/products/*': { ssr: true, swr: 3600 },
+    '/services': { ssr: true },
+    '/services/*': { ssr: true, swr: 3600 },
   },
 
   compatibilityDate: '2024-07-14'
