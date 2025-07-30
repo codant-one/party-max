@@ -50,8 +50,8 @@ export default defineNuxtConfig({
 
   plugins: [
     '~/plugins/axios.ts',
-    '~/plugins/metapixel.ts',
-    '~/plugins/vuegtag.ts',
+    '~/plugins/metapixel.client.ts',
+    '~/plugins/vuegtag.client.ts',
     '~/plugins/vuetify.ts',
     '~/plugins/webfontloader.client.ts',
     '~/plugins/date-fns.client.ts',
