@@ -1003,7 +1003,7 @@
               aria-label="Buscar"
               icon="mdi-magnify"
               @click="search"
-              class="tw-bg-primary tw-text-white h-100 search-button button-hover"
+              class="tw-bg-primary tw-text-white tw-font-bold h-100 search-button button-hover"
             />
           </template>
         </VTextField>
@@ -1141,6 +1141,7 @@
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     font-size: 11.5px;
+    font-weight: bold;
     padding-top: 2px;
   }
 
