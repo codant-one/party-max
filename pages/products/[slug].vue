@@ -153,23 +153,29 @@ const { data: productData } = await useAsyncData(
 )
 
 if (productData.value) {
-
-  useHead(() => {
-  // Primero, comprobamos si tenemos datos. Si no, devolvemos un objeto vacío.
-  if (!productData.value || !productData.value.product) {
-    return {
-      title: 'Cargando producto...',
-      meta: [],
-    };
-  }
   const productUrl = `https://${config.public.MY_DOMAIN}/products/${productData.value.product.slug}`
-  const imageUrl = 'https://partymax.codant.one/_nuxt/festin-footer.CLzmoePj.png'
+  const imageUrl = baseURL.value + productData.value.product.image
   const descriptionText = `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨`;
 
+  useSeoMeta({
+    title: productData.value.product.name,
+    description: descriptionText,
+    ogType: 'product',
+    ogUrl: productUrl,
+    ogTitle: productData.value.product.name,
+    ogDescription: descriptionText,
+    ogSiteName: 'PARTYMAX',
+    ogImage: imageUrl,
+    ogImageWidth: '1200',
+    ogImageHeight: '630',
+    twitterCard: 'summary_large_image',
+    twitterTitle: productData.value.product.name,
+    twitterDescription: descriptionText,
+    twitterImage: imageUrl,
+    twitterSite: twitterAccount.value
+  })
 
-  // Devolvemos el objeto completo para useHead
-  return {
-    title: productData.value.name,
+  useHead({
     link: [
       {
         rel: 'canonical',
@@ -177,35 +183,17 @@ if (productData.value) {
       },
     ],
     meta: [
-      // Metaetiquetas estándar
-      { name: 'description', content: descriptionText },
-      { name: 'keywords', content: (productData.value.keywords || []).join(', ') },
-
-      // Open Graph (Facebook, etc.)
-      { property: 'og:type', content: 'product' },
-      { property: 'og:url', content: productUrl },
-      { property: 'og:title', content: productData.value.name},
-      { property: 'og:description', content: descriptionText },
-      { property: 'og:site_name', content: 'PARTYMAX' },
-      { property: 'og:image', content: imageUrl },
-      { property: 'og:image:width', content: '1200' },
-      { property: 'og:image:height', content: '630' },
-      
-      // Twitter Cards
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: productData.value.name},
-      { name: 'twitter:description', content: descriptionText },
-      { name: 'twitter:image', content: imageUrl },
-      { name: 'twitter:site', content: twitterAccount },
-
-      // Google Shopping (si aplica)
+      {
+        name: 'keywords',
+        content: productData.value.keywords.join(', ')
+      },
+      // Metaetiquetas para Google Shopping (ejemplo)
       { name: 'product:availability', content: 'in stock' },
       { name: 'product:condition', content: 'new' },
-      { name: 'product:price:amount', content: productData.value.price_for_sale },
+      { name: 'product:price:amount', content: productData.value.product.price_for_sale },
       { name: 'product:price:currency', content: 'COP' },
     ],
-  };
-});
+  })
 }
 
 watchEffect(async () => {
