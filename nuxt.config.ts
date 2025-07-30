@@ -96,7 +96,7 @@ export default defineNuxtConfig({
       alias: {
         '@':  path.resolve(__dirname),
         '@axios':  path.resolve(__dirname, 'plugins/axios'),
-        '@metapixel':  path.resolve(__dirname, 'plugins/metapixel'),
+        '@metapixel':  path.resolve(__dirname, 'plugins/metapixel.client'),
         '@assets':  path.resolve(__dirname, 'assets'),
         '@validators':  path.resolve(__dirname, 'utils/validators'),
         '@formatters':  path.resolve(__dirname, 'utils/formatters'),
