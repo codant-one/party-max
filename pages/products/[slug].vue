@@ -196,7 +196,7 @@ if (productData.value) {
   })
 }
 
-watchEffect(async () => {
+onMounted(async () => {
 if (productData.value) {
   isLoading.value = false
   if(process.client && localStorage.getItem('user_data')){
