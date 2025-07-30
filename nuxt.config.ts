@@ -117,10 +117,10 @@ export default defineNuxtConfig({
     '/categories/*': { ssr: true, swr: 3600 },
     '/clients/*': { ssr: false },
     '/dashboard/*': { ssr: false },
-    '/products': { static: true },
-    '/products/*': { ssr: true, swr: 3600 },
-    '/services': { static: true },
-    '/services/*': { ssr: true, swr: 3600 }
+    '/products': { prerender: true },
+    '/products/*': { prerender: true },
+    '/services': { prerender: true },
+    '/services/*': { prerender: true },
   },
 
   compatibilityDate: '2024-07-14'

@@ -31,6 +31,10 @@ export const Miscellaneous = () => {
         return await $axios.get(`miscellaneous/products/${slug}`)
     }
 
+    const productMeta = async (slug: string) => {
+        return await $axios.get(`miscellaneous/products/meta/${slug}`)
+    }
+
     const colors = async () => {
         return await $axios.get(`miscellaneous/colors`)
     }
@@ -63,6 +67,7 @@ export const Miscellaneous = () => {
         blog,
         products,
         product,
+        productMeta,
         colors,
         services,
         service,

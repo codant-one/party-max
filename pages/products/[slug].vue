@@ -78,6 +78,7 @@ const thumbsSwiperModal = ref(null);
 
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
 const twitterAccount = ref(config.public.TWITTER_ACCOUNT ?? '')
+const data = ref(null)
 const keywords = ref(null)
 
 const title = ref(null)
@@ -149,7 +150,7 @@ watch(() =>
 
 const { data: productData } = await useAsyncData(
   `product-${route.params.slug}`,
-  () => miscellaneousStores.getProduct(route.params.slug)
+  () => miscellaneousStores.getProductMeta(route.params.slug)
 )
 
 if (productData.value) {
@@ -185,7 +186,7 @@ if (productData.value) {
     meta: [
       {
         name: 'keywords',
-        content: productData.value.keywords.join(', ')
+        content: 'asdad'
       },
       // Metaetiquetas para Google Shopping (ejemplo)
       { name: 'product:availability', content: 'in stock' },
@@ -196,9 +197,18 @@ if (productData.value) {
   })
 }
 
-watchEffect(async () => {
-if (productData.value) {
-  isLoading.value = false
+watchEffect(fetchData)
+
+async function fetchData() {
+
+  bread.value = [
+    {
+      title: "Home",
+      disabled: false,
+      href: "/"
+    }
+  ]
+
   if(process.client && localStorage.getItem('user_data')){
     const userData = localStorage.getItem('user_data')
     const userDataJ = JSON.parse(userData)
@@ -207,103 +217,101 @@ if (productData.value) {
     user_id.value = userDataJ.id
   }
 
-  if(route.params.slug && route.path.startsWith('/products/')) {
-    existence_whole.value = route.query.wholesalers === 'true' ? true : false
-  }
-
+  isLoading.value = true
+  
   radioContent.value = []
   productImages.value = []
+  data.value = null
 
-  keywords.value = productData.value.keywords.join(', ')
-  imageAux.value = [{ image : productData.value.product.image }]
+  if(route.params.slug && route.path.startsWith('/products/')) {
+    existence_whole.value = route.query.wholesalers === 'true' ? true : false
 
-  productImages.value = productData.value.product.colors[0]?.images
-  color.value = productData.value.product.colors[0]?.color.name
-  selectedColor.value = productData.value.product.colors[0]?.color.id.toString()
-  selectedColorId.value = productData.value.product.colors[0]?.id
-
-  onlyWholesale.value = cartStores.getWholesale
-
-  productData.value.product.colors.forEach(element => { 
-    var aux = {
-      value: element.color.id.toString(),
-      title: element.color.name,
-      image:  (element.images.length === 0) ? productData.value.product.image : element.images[0].image
-    }
-
-    radioContent.value.push(aux)
-  });
-
-  product_id.value = productData.value.product.id
-
-  const productUrl = `https://${config.public.MY_DOMAIN}/products/${productData.value.product.slug}`;
-  const imageUrl = `${config.public.APP_DOMAIN_API_URL}/storage/${productData.value.product.image}`;
-  const descriptionText = 'Mira este increíble producto.';
-  const twitterText = `${descriptionText} ${productUrl} ${imageUrl}`
-
-  searchWhatsapp.value = `https://wa.me/?text=${encodeURIComponent(productUrl)}`;
-  searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}`;
-  searchTwitter.value = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}`;
-  searchLinkendin.value = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(productUrl)}`;
-
-  title.value = productData.value.product.name
-  brand.value = productData.value.product.brand.name
-  rating.value = productData.value.product.rating
-  reviews.value = productData.value.product.reviews
-  sku.value = productData.value.product.colors[0].sku
-  wholesale.value = productData.value.product.wholesale === 1 ? true : false
-  wholesale_price.value = productData.value.product.wholesale_price
-  cant_prod.value = route.query.wholesalers === 'true' ? productData.value.product.wholesale_min : 1
-  wholesale_min.value = route.query.wholesalers === 'true' ? productData.value.product.wholesale_min : 1
-  price_for_sale.value = productData.value.product.price_for_sale
-  store.value = productData.value.product.user.user_detail.store_name ?? (productData.value.product.user.supplier?.company_name ?? (productData.value.product.user.name + ' ' + (productData.value.product.user.last_name ?? '')))
-  in_stock.value = productData.value.product.colors[0].in_stock
-  color.value = productData.value.product.colors[0].color.name
-  cant_stock.value = parseInt(productData.value.product.colors[0].stock)
-  single_description.value = productData.value.product.single_description
-  description.value = productData.value.product.description ?? ''
-
-  width.value = productData.value.product.detail.width
-  weigth.value = productData.value.product.detail.weigth
-  height.value = productData.value.product.detail.height
-  deep.value = productData.value.product.detail.deep
-  material.value = productData.value.product.detail.material
-
-  tags.value = []
-  productData.value.product.tags.forEach(element => { 
-    tags.value.push(element.tag.name)
-  });
-
-  if(client_id.value)
-    isFavoriteProduct.value = await favoritesStores.show({user_id: user_id.value, product_id: product_id.value })
-
-  videos.value = productData.value.product.videos.map(u => ({
-    type: 'video',
-    url: u.url,
-    thumb: '/assets/video-placeholder.png',
-  }))
-
-  await Promise.all(
-    videos.value.map(async slide => {
-      if (slide.type === 'video') {
-          slide.thumb = await loadVideoThumbnail(slide.url);
-      }
-    })
-  )
-}
-})
-
-const { data: categoryData } = await useAsyncData(
-  `categories`,
-  async () => {
     await homeStores.fetchData();
-    return homeStores.getData.parentCategories
-  }
-)
+    categories.value = homeStores.getData.parentCategories;
 
-if (categoryData.value) {
-  categories.value = categoryData.value
+    await miscellaneousStores.getProduct(route.params.slug)
+    data.value = miscellaneousStores.getData
+
+    console.log('data.value.product', data.value)
+    keywords.value = data.value.keywords?.join(', ')
+
+    imageAux.value = [{ image : data.value.product.image }]
+    imageMeta.value = baseURL.value + data.value.product.image
+
+    productImages.value = data.value.product.colors[0]?.images
+    color.value = data.value.product.colors[0]?.color.name
+    selectedColor.value = data.value.product.colors[0]?.color.id.toString()
+    selectedColorId.value = data.value.product.colors[0]?.id
+
+    onlyWholesale.value = cartStores.getWholesale
+
+    data.value.product.colors.forEach(element => { 
+      var aux = {
+        value: element.color.id.toString(),
+        title: element.color.name,
+        image:  (element.images.length === 0) ? data.value.product.image : element.images[0].image
+      }
+
+      radioContent.value.push(aux)
+    });
+
+    product_id.value = data.value.product.id
+
+    productUrl.value = `https://${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
+    const imageUrl = `${import.meta.env.VITE_APP_DOMAIN_API_URL}/storage/${data.value.product.image}`
+    const descriptionText = 'Mira este increíble producto.'
+    const twitterText = `${descriptionText} ${productUrl.value} ${imageUrl}`;
+
+    searchWhatsapp.value = `https://wa.me/?text=${productUrl.value}`
+    searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl.value)}`
+    searchTwitter.value = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}`;
+    searchLinkendin.value = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(productUrl.value)}`;
     
+    title.value = data.value.product.name
+    brand.value = data.value.product.brand.name
+    rating.value = data.value.product.rating
+    reviews.value = data.value.product.reviews
+    sku.value = data.value.product.colors[0].sku
+    wholesale.value = data.value.product.wholesale === 1 ? true : false
+    wholesale_price.value = data.value.product.wholesale_price
+    cant_prod.value = route.query.wholesalers === 'true' ? data.value.product.wholesale_min : 1
+    wholesale_min.value = route.query.wholesalers === 'true' ? data.value.product.wholesale_min : 1
+    price_for_sale.value = data.value.product.price_for_sale
+    store.value = data.value.product.user.user_detail.store_name ?? (data.value.product.user.supplier?.company_name ?? (data.value.product.user.name + ' ' + (data.value.product.user.last_name ?? '')))
+    in_stock.value = data.value.product.colors[0].in_stock
+    color.value = data.value.product.colors[0].color.name
+    cant_stock.value = parseInt(data.value.product.colors[0].stock)
+    single_description.value = data.value.product.single_description
+    description.value = data.value.product.description ?? ''
+
+    width.value = data.value.product.detail.width
+    weigth.value = data.value.product.detail.weigth
+    height.value = data.value.product.detail.height
+    deep.value = data.value.product.detail.deep
+    material.value = data.value.product.detail.material
+
+    tags.value = []
+    data.value.product.tags.forEach(element => { 
+      tags.value.push(element.tag.name)
+    });
+
+    if(client_id.value)
+      isFavoriteProduct.value = await favoritesStores.show({user_id: user_id.value, product_id: product_id.value })
+
+    videos.value = data.value.product.videos.map(u => ({
+      type: 'video',
+      url: u.url,
+      thumb: '/assets/video-placeholder.png',
+    }))
+
+    await Promise.all(
+      videos.value.map(async slide => {
+        if (slide.type === 'video') {
+            slide.thumb = await loadVideoThumbnail(slide.url);
+        }
+      })
+    );
+
     if (route.query.category) {
       category.value = {
         title: categories.value.filter(item => item.slug === route.query.category)[0].name,
@@ -362,7 +370,9 @@ if (categoryData.value) {
         href: '',
       });
     }
+  }
 
+  isLoading.value = false
 }
 
 const chanceRadio = (value) => {
@@ -545,7 +555,7 @@ const buildEmbedUrl = (url) => {
     <VContainer class="pt-0 m-top">
       <Loader :isLoading="isLoading"/>
       <!-- HEADER -->
-      <VCard class="mt-md-7 no-shadown card-information p-0" v-if="productData">
+      <VCard class="mt-md-7 no-shadown card-information p-0" v-if="!isLoading">
         <VCardTitle class="d-flex p-0 align-end">
           {{ title }}
           <VSpacer />

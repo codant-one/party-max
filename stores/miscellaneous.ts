@@ -96,6 +96,17 @@ export const useMiscellaneousStores = defineStore('miscellaneous', {
             const { product } = Miscellaneous()
             return product(slug)
                 .then((response) => {
+                    this.data = response.data.data
+                })
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
+            
+        },
+        getProductMeta(slug: string) { 
+            const { productMeta } = Miscellaneous()
+            return productMeta(slug)
+                .then((response) => {
                     return Promise.resolve(response.data.data)
                 })
                 .catch(error => {
