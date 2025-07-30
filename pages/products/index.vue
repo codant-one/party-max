@@ -9,12 +9,10 @@ import { useFavoritesStores } from '@/stores/favorites'
 import { useCartStores } from '@/stores/cart'
 import { useFiltersStores } from '@/stores/filters'
 import { formatNumber } from '@formatters'
-import { useRouter, useRoute } from 'vue-router'
-import { useRuntimeConfig } from '#app'
 import Loader from "@/components/common/Loader.vue";
-import icon1 from "@/assets/icons/icon-menu-product.svg";
-import icon2 from "@/assets/icons/icon-menu-product2.svg";
-import icon3 from "@/assets/icons/icon-menu-product3.svg";
+import icon1 from "@/assets/icons/icon-menu-1.svg";
+import icon2 from "@/assets/icons/icon-menu-2.svg";
+import icon3 from "@/assets/icons/icon-menu-3.svg";
 import Product3 from "@/components/product/Product3.vue";
 import Product4 from "@/components/product/Product4.vue";
 import arrow_right from '@assets/icons/arrow_right.svg?inline';
@@ -30,14 +28,12 @@ import 'swiper/css/pagination';
 
 const modules = ref([Navigation, Pagination])
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
 const homeStores = useHomeStores();
 const miscellaneousStores = useMiscellaneousStores();
 const cartStores = useCartStores()
 const favoritesStores = useFavoritesStores()
 const filtersStores = useFiltersStores()
-const config = useRuntimeConfig()
 
 const isLoading = ref(true);
 const categories = ref(null);
@@ -63,8 +59,12 @@ const colorsSelected = ref([]);
 const onlyWholesale = ref(false)
 
 const rating = ref(5)
-const { isMobile } = useDevice();
-const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
+const isMobile = /Mobi/i.test(navigator.userAgent);
+const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
+const twitterAccount = ref(import.meta.env.VITE_TWITTER_ACCOUNT ?? '')
+const title = ref(null)
+const cat = ref(null)
+const image = ref(null)
 
 const isDialogVisible = ref(false)
 const isError = ref(false)
@@ -101,6 +101,7 @@ watchEffect(() => {
 
 watch(() => 
   route.query,(newPath, oldPath) => {
+    currentPage.value = 1
     fetchData()
   }
 );
@@ -129,6 +130,12 @@ watch(() =>
   }
 );
 
+watch(() => 
+  cartStores.getWholesale, async (value) => {
+    onlyWholesale.value = value
+  }
+);
+
 watchEffect(fetchData);
 
 async function fetchData() {
@@ -152,12 +159,13 @@ async function fetchData() {
   categories.value = homeStores.getData.parentCategories;
 
   let info = {
-    orderByField: (route.query.category && route.query.category !== 'all') ? 'pl.order_id' : 'products.order_id',
+    orderByField: route.query.category ? 'pl.order_id' : 'products.order_id',
     orderBy: 'asc',
-    limit: isMobile ? ( tab.value === '1' ? 3 : 6) : rowPerPage.value,
+    limit: isMobile ? 50 : rowPerPage.value,
     page: currentPage.value,
     category: route.query.category ?? null,
     subcategory: route.query.subcategory ?? null,
+    fathercategory: route.query.fathercategory ?? null,
     colorId: route.query.colorId ?? null,
     searchPublic: route.query.search ?? null,
     min: min.value ?? null,
@@ -185,14 +193,15 @@ async function fetchData() {
     }, []);
 
     toggle.value = positions
-  }
-
-  if (route.query.category && route.query.category !== 'all') {
+  } else 
+    toggle.value = []
+  
+  if (route.query.category) {
     panelCat.value = null
     category.value = {
       title: categories.value.filter(item => item.slug === route.query.category)[0].name,
       disabled: false,
-      href: "products?category=" + route.query.category + '&wholesalers=' + route.query.wholesalers ?? 'false'
+      href: `/products?category=${route.query.category}&wholesalers=${route.query.wholesalers ?? 'false'}`
     };
 
     bread.value.push(category.value);
@@ -200,23 +209,24 @@ async function fetchData() {
     if (route.query.fathercategory) {
       const fathercategory = {
         title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name,
-        disabled: true,
-        href: "",
+        disabled: false,
+        href: `/products?category=${route.query.category}&subcategory=${route.query.fathercategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
       };
 
       category.value.fathercategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name
-
+      cat.value = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0]
       bread.value.push(fathercategory);
     }
 
     if (typeof route.query.fathercategory === 'undefined' && route.query.subcategory) {
       const subcategory = {
         title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name,
-        disabled: true,
-        href: "",
+        disabled: false,
+        href: `/products?category=${route.query.category}&subcategory=${route.query.subcategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
       };
 
       category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name
+      cat.value = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0]
 
       bread.value.push(subcategory);
     }
@@ -225,15 +235,15 @@ async function fetchData() {
     if (typeof route.query.fathercategory !== 'undefined' && route.query.subcategory) {
       const subcategory = {
         title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name,
-        disabled: true,
-        href: "",
+        disabled: false,
+        href: `/products?category=${route.query.category}&fathercategory=${route.query.fathercategory}&subcategory=${route.query.subcategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
       };
 
       category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name
+      cat.value = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0]
 
       bread.value.push(subcategory);
     }
-
 
     if(!isMobile) {
       const product_ = {
@@ -246,15 +256,73 @@ async function fetchData() {
     }
   }
 
-  if(process.client && localStorage.getItem('user_data')){
+  if(localStorage.getItem('user_data')){
     const userData = localStorage.getItem('user_data')
     const userDataJ = JSON.parse(userData)
-      
+
     user_id.value = userDataJ.id
+  }
+
+  window.scrollTo({
+    top: 0, // Posición del contenedor de ítems
+    behavior: "smooth"  // Animación suave al hacer scroll
+  });
+
+  //metadescription
+  if(route.query.category || route.query.subcategory || route.query.fathercategory) {
+  
+    title.value = category.value.subcategory ?? category.value.title
+    cat.value = category.value.subcategory ? cat.value : categories.value.filter(item =>item.name === title.value)[0]
+    image.value = (cat.value.icon_subcategory !== null) ? (baseURL.value + cat.value.icon_subcategory) : (import.meta.env.VITE_APP_DOMAIN_API_URL + '/images/categories.jpg')
+
+    setMetaTags({
+      title: title.value + ' | PARTYMAX',
+      description: `Encuentra en PARTYMAX los mejores productos de '${title.value}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉`,
+      image:  image.value,
+      url: `https://${import.meta.env.VITE_MY_DOMAIN}${route.fullPath}` ,
+      keywords: cat.value.keywords
+    });
   }
 
   isLoading.value = false;
 }
+
+const setMetaTags = ({ title, description, image, url, keywords }) => {
+  document.title = title;
+
+  const setMetaTag = (name, content) => {
+    let element = document.querySelector(`meta[name="${name}"]`) || document.createElement('meta');
+    element.setAttribute('name', name);
+    element.setAttribute('content', content);
+    document.head.appendChild(element);
+  };
+
+  const setPropertyMetaTag = (property, content) => {
+    let element = document.querySelector(`meta[property="${property}"]`) || document.createElement('meta');
+    element.setAttribute('property', property);
+    element.setAttribute('content', content);
+    document.head.appendChild(element);
+  };
+
+  setMetaTag('description', description);
+  setMetaTag('keywords', keywords);
+
+  // Open Graph / Facebook / LinkedIn / Pinterest / WhatsApp
+  setPropertyMetaTag('og:type', 'website');
+  setPropertyMetaTag('og:title', title);
+  setPropertyMetaTag('og:description', description);
+  setPropertyMetaTag('og:image', image);
+  setPropertyMetaTag('og:url', url);
+  setPropertyMetaTag('og:site_name', 'PARTYMAX');
+
+  // Twitter
+  setMetaTag('twitter:card', 'summary_large_image');
+  setMetaTag('twitter:title', title);
+  setMetaTag('twitter:description', description);
+  setMetaTag('twitter:image', image);
+  setMetaTag('twitter:site', twitterAccount.value)
+}
+
 
 const changePage = (value) => {
   if(value === 'prev' && currentPage.value !== 1) {
@@ -315,9 +383,6 @@ const colorAction = () => {
   router.push({ 
     name: 'products', 
     query: {
-      category: route.query.category,
-      fathercategory: route.query.fathercategory,
-      subcategory: route.query.subcategory,
       colorId: colorsSelected.value.join(","),
       wholesalers: route.query.wholesalers === 'true' ? true : false
     }
@@ -328,13 +393,19 @@ const addCart = (value) => {
   product_id.value = value.product_id
     
   let isWholesale = route.query.wholesalers === 'true' ? 1 : 0
-
+    
   if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
-
     let data = {
+      date: null,
+      service_id: null,
+      cake_size_id: null,
+      flavor_id: null,
+      filling_id: null,
+      order_file_id: null,
       product_color_id: value.product_color_id,
       quantity: value.cant_prod,
-      wholesale: isWholesale
+      wholesale: isWholesale,
+      type: 0
     }
 
     load.value = true
@@ -350,7 +421,7 @@ const addCart = (value) => {
           isDialogVisible.value = false
           isError.value = false
           message.value = ''
-        }, 3000)
+        }, 1000)
 
       }).catch(err => {
         load.value = false
@@ -381,7 +452,7 @@ const addfavorite = (product_id) => {
         isDialogVisible.value = false
         isError.value = false
         message.value = ''
-      }, 3000)
+      }, 1000)
 
       fetchData()
     
@@ -406,7 +477,7 @@ const addfavorite = (product_id) => {
           <VCard class="mt-7 sidebar-container">
             <VCardItem class="p-0 text-left mt-6"> CATEGORÍAS </VCardItem>
 
-            <VCardItem v-if="route.query.category && route.query.category !== 'all'" class="p-0 text-allcategories tw-font-bold mt-6">
+            <VCardItem v-if="route.query.category" class="p-0 text-allcategories tw-font-bold mt-6">
               <NuxtLink
                 :to="{
                   name: 'products',
@@ -432,7 +503,6 @@ const addfavorite = (product_id) => {
                         name: 'products',
                         query: {
                           category: i.slug.split('/')[0],
-                          colorId: colorsSelected.join(','),
                           wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -448,7 +518,6 @@ const addfavorite = (product_id) => {
                           name: 'products',
                           query: {
                             category: i.slug.split('/')[0],
-                            colorId: colorsSelected.join(','),
                             wholesalers: route.query.wholesalers === 'true' ? true : false
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -474,7 +543,6 @@ const addfavorite = (product_id) => {
                           query: {
                             category: i.slug.split('/')[0],
                             subcategory: j.slug.split('/')[1],
-                            colorId: colorsSelected.join(','),
                             wholesalers: route.query.wholesalers === 'true' ? true : false
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary">
@@ -490,7 +558,6 @@ const addfavorite = (product_id) => {
                               query: {
                                 category: i.slug.split('/')[0],
                                 subcategory: j.slug.split('/')[1],
-                                colorId: colorsSelected.join(','),
                                 wholesalers: route.query.wholesalers === 'true' ? true : false
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -516,7 +583,6 @@ const addfavorite = (product_id) => {
                                 category: i.slug.split('/')[0],
                                 fathercategory: j.slug.split('/')[1],
                                 subcategory: k.slug.split('/')[2],
-                                colorId: colorsSelected.join(','),
                                 wholesalers: route.query.wholesalers === 'true' ? true : false
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -540,7 +606,6 @@ const addfavorite = (product_id) => {
                       name: 'products',
                         query: {
                           category: route.query.category,
-                          colorId: colorsSelected.join(','),
                           wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -558,7 +623,6 @@ const addfavorite = (product_id) => {
                         query: {
                           category: route.query.category,
                           subcategory: route.query.fathercategory,
-                          colorId: colorsSelected.join(','),
                           wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -589,7 +653,6 @@ const addfavorite = (product_id) => {
                       name: 'products',
                         query: {
                           category: route.query.category,
-                          colorId: colorsSelected.join(','),
                           wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -616,7 +679,6 @@ const addfavorite = (product_id) => {
                         category: route.query.category,
                         fathercategory: route.query.subcategory,
                         subcategory: j.slug.split('/')[2],
-                        colorId: colorsSelected.join(','),
                         wholesalers: route.query.wholesalers === 'true' ? true : false
                       },
                     }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -647,7 +709,6 @@ const addfavorite = (product_id) => {
                         query: {
                           category: route.query.category,
                           subcategory: j.slug.split('/')[1],
-                          colorId: colorsSelected.join(','),
                           wholesalers: route.query.wholesalers === 'true' ? true : false
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -663,7 +724,6 @@ const addfavorite = (product_id) => {
                             query: {
                               category: route.query.category,
                               subcategory: j.slug.split('/')[1],
-                              colorId: colorsSelected.join(','),
                               wholesalers: route.query.wholesalers === 'true' ? true : false
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -689,7 +749,6 @@ const addfavorite = (product_id) => {
                               category: route.query.category,
                               fathercategory: j.slug.split('/')[1],
                               subcategory: k.slug.split('/')[2],
-                              colorId: colorsSelected.join(','),
                               wholesalers: route.query.wholesalers === 'true' ? true : false
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
@@ -718,7 +777,7 @@ const addfavorite = (product_id) => {
                     <VAvatar 
                       v-if="color.is_gradient" 
                       size="30" 
-                      class="my-1 tw-cursor-pointer"
+                      class="my-1"
                       :class="(toggle.indexOf(index) !== -1) ? 'color-selected' : 'color-chip'"
                       :style="{ backgroundImage: color.color }"
                     >
@@ -734,7 +793,7 @@ const addfavorite = (product_id) => {
                       v-else 
                       :color="color.color" 
                       size="30" 
-                      class="my-1 tw-cursor-pointer"
+                      class="my-1"
                       :class="(toggle.indexOf(index) !== -1) ? 'color-selected' : 'color-chip'"
                     >
                       <VTooltip
@@ -824,7 +883,7 @@ const addfavorite = (product_id) => {
                 class="filter-mobile d-flex justify-content-end align-center d-lg-none tw-text-right pr-5"
                 @click="filtersStores.changeDrawer"
               >
-                <img :src="icon3" alt="Icono3"/>
+                <img :src="icon3" />
                 <span class="pl-2">Filtros</span>
               </VCol>
 
@@ -837,10 +896,10 @@ const addfavorite = (product_id) => {
                 <span>Vista</span>
                 <VTabs v-model="tab">
                   <VTab value="0">
-                    <img :src="icon1" alt="Icono2"/>
+                    <img :src="icon1" />
                   </VTab>
                   <VTab value="1">
-                    <img :src="icon2" alt="Icono1"/>
+                    <img :src="icon2" />
                   </VTab>
                 </VTabs>
               </VCol>
@@ -861,12 +920,11 @@ const addfavorite = (product_id) => {
                       category: route.query.category,
                       fathercategory: route.query.fathercategory,
                       subcategory: i.slug.split('/')[2],
-                      colorId: colorsSelected.join(','),
                       wholesalers: route.query.wholesalers === 'true' ? true : false
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                    <img alt="Subcategoria" v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <img alt="Subcategoria" v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
                   <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                 </NuxtLink>
               </template>
@@ -874,7 +932,26 @@ const addfavorite = (product_id) => {
             <VCardText 
               v-else
               class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
+                <template v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.length < 4 && isMobile">
+                  <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren">
+                  <NuxtLink
+                    :to="{
+                      name: 'products',
+                      query: {
+                        category: route.query.category,
+                        fathercategory: route.query.fathercategory,
+                        subcategory: i.slug.split('/')[2],
+                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                      }
+                    }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                      <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                      <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                  </NuxtLink>
+                </template>
+              </template>
               <swiper
+                v-else
                 :initialSlide="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.findIndex(item =>item.slug === route.query.category + '/' + route.query.fathercategory + '/' + route.query.subcategory)"
                 :slidesPerView="isMobile ? 3 : 5"
                 :spaceBetween="isMobile ? 1 : 5"
@@ -890,12 +967,11 @@ const addfavorite = (product_id) => {
                         category: route.query.category,
                         fathercategory: route.query.fathercategory,
                         subcategory: i.slug.split('/')[2],
-                        colorId: colorsSelected.join(','),
                         wholesalers: route.query.wholesalers === 'true' ? true : false
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img alt="Subcategoria" v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <img alt="Subcategoria" v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </NuxtLink>
                 </swiper-slide>
@@ -922,12 +998,11 @@ const addfavorite = (product_id) => {
                       category: route.query.category,
                       fathercategory: route.query.subcategory,
                       subcategory: i.slug.split('/')[2],
-                      colorId: colorsSelected.join(','),
                       wholesalers: route.query.wholesalers === 'true' ? true : false
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                  <img alt="Subcategoria" v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                  <img alt="Subcategoria" v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                  <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
                   <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                 </NuxtLink>
               </template>
@@ -935,7 +1010,26 @@ const addfavorite = (product_id) => {
             <VCardText 
               v-else
               class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
+              <template v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length < 4 && isMobile">
+                <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren">
+                  <NuxtLink
+                    :to="{
+                      name: 'products',
+                      query: {
+                        category: route.query.category,
+                        fathercategory: route.query.subcategory,
+                        subcategory: i.slug.split('/')[2],
+                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                      }
+                    }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                  </NuxtLink>
+                </template>
+              </template>
               <swiper
+                v-else
                 :slidesPerView="isMobile ? 3 : 5"
                 :spaceBetween="isMobile ? 1 : 5"
                 :navigation="true"
@@ -950,12 +1044,11 @@ const addfavorite = (product_id) => {
                         category: route.query.category,
                         fathercategory: route.query.subcategory,
                         subcategory: i.slug.split('/')[2],
-                        colorId: colorsSelected.join(','),
                         wholesalers: route.query.wholesalers === 'true' ? true : false
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img alt="Subcategoria" v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <img alt="Subcategoria" v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </NuxtLink>
                 </swiper-slide>
@@ -981,12 +1074,11 @@ const addfavorite = (product_id) => {
                     query: {
                       category: route.query.category,
                       subcategory: i.slug.split('/')[1],
-                      colorId: colorsSelected.join(','),
                       wholesalers: route.query.wholesalers === 'true' ? true : false
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                  <img alt="Subcategoria" v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                  <img alt="Subcategoria" v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                  <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
                   <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                 </NuxtLink>
               </template>
@@ -994,7 +1086,25 @@ const addfavorite = (product_id) => {
             <VCardText 
               v-else
               class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
+              <template v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 4 && isMobile">
+                <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
+                  <NuxtLink
+                    :to="{
+                      name: 'products',
+                      query: {
+                        category: route.query.category,
+                        subcategory: i.slug.split('/')[1],
+                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                      }
+                    }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                  </NuxtLink>
+                </template>
+              </template>
               <swiper
+                v-else
                 :initialSlide="categories.filter(item =>item.slug === route.query.category)[0].children.findIndex(item =>item.slug === route.query.category + '/' + route.query.subcategory)"
                 :slidesPerView="isMobile ? 3 : 5"
                 :spaceBetween="isMobile ? 1 : 5"
@@ -1009,12 +1119,11 @@ const addfavorite = (product_id) => {
                       query: {
                         category: route.query.category,
                         subcategory: i.slug.split('/')[1],
-                        colorId: colorsSelected.join(','),
                         wholesalers: route.query.wholesalers === 'true' ? true : false
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img alt="Subcategoria" v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <img alt="Subcategoria" v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </NuxtLink>
                 </swiper-slide>
@@ -1040,12 +1149,11 @@ const addfavorite = (product_id) => {
                     query: {
                       category: route.query.category,
                       subcategory: i.slug.split('/')[1],
-                      colorId: colorsSelected.join(','),
                       wholesalers: route.query.wholesalers === 'true' ? true : false
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                  <img alt="Subcategoria" v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                  <img alt="Subcategoria" v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                  <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
                   <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                 </NuxtLink>
               </template>
@@ -1053,7 +1161,25 @@ const addfavorite = (product_id) => {
             <VCardText 
               v-else
               class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
+              <template v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 4 && isMobile">
+                <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
+                  <NuxtLink
+                    :to="{
+                      name: 'products',
+                      query: {
+                        category: route.query.category,
+                        subcategory: i.slug.split('/')[1],
+                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                      }
+                    }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                  </NuxtLink>
+                </template>
+              </template>
               <swiper
+                v-else
                 :slidesPerView="isMobile ? 3 : 5"
                 :spaceBetween="isMobile ? 1 : 5"
                 :navigation="true"
@@ -1067,12 +1193,11 @@ const addfavorite = (product_id) => {
                       query: {
                         category: route.query.category,
                         subcategory: i.slug.split('/')[1],
-                        colorId: colorsSelected.join(','),
                         wholesalers: route.query.wholesalers === 'true' ? true : false
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img alt="Subcategoria" v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <img alt="Subcategoria" v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
                     <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </NuxtLink>
                 </swiper-slide>
@@ -1146,8 +1271,8 @@ const addfavorite = (product_id) => {
     <VDialog v-model="isDialogVisible" >
       <VCard
         class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-        <VImg :width="isMobile ? '80' : '100'" :src="isError ? error_circle : (isPending ? festin_pending : check_circle)" class="mx-auto"/>
-        <VCardText class="text-message mb-5 px-0 px-md-5">
+        <VImg :width="isMobile ? '120' : '180'" :src="isError ? error_circle : (isPending ? festin_pending : check_circle)" class="mx-auto"/>
+        <VCardText class="text-message mb-5 px-0 px-md-5 pt-0">
           {{ message }}
         </VCardText>
       </VCard>
@@ -1163,7 +1288,7 @@ const addfavorite = (product_id) => {
     font-size: 24px;
     font-style: normal;
     font-weight: 600;
-    line-height: 30px;
+    line-height: 24px !important;
   }
 
   .card-register {
@@ -1610,6 +1735,5 @@ const addfavorite = (product_id) => {
     .text-message {
       font-size: 18px;
     }
-
   }
 </style>

@@ -1,163 +1,268 @@
 <script setup>
-  
-  import { ref } from 'vue'
-  import icophone from '@assets/icons/ic_phone.svg?inline';
-  import icopayment1 from '@assets/icons/payment-1.svg';
-  import icopayment2 from '@assets/icons/payment-2.svg';
-  import icopayment3 from '@assets/icons/payment-3.svg';
-  import icopayment4 from '@assets/icons/payment-4.svg';
-  import icopayment5 from '@assets/icons/payment-5.svg';
-  import icopayment6 from '@assets/icons/payment-6.svg';
 
-  import instagram from '@assets/icons/instagram.svg?inline';
-  import facebook from '@assets/icons/facebook.svg?inline';
-  import whatsapp_mobile from '@assets/icons/whatsapp_mobile.svg?inline';
+import { ref } from 'vue'
+import { useReCaptcha } from 'vue-recaptcha-v3'
+import { emailValidator, requiredValidator } from '@validators'
+import { useMiscellaneousStores } from "@/stores/miscellaneous"
+import icophone from '@assets/icons/phone-footer.svg'
+import icochat from '@assets/icons/chat_bubble.svg'
+import icomail from '@assets/icons/letter.svg'
+import icostore from '@assets/icons/store_icon.svg'
+import icosearch from '@assets/icons/youtube_icon.svg'
+import instagram from '@assets/icons/instagram_magenta.svg?inline'
+import facebook from '@assets/icons/facebook_magenta.svg?inline'
+import whatsapp_magenta from '@assets/icons/whatsapp_magenta.svg?inline'
+import { VIcon } from 'vuetify/components'
 
-  import festinfooter from '@assets/images/festin-footer.png';
+const recaptchaInstance = useReCaptcha();
+const miscellaneousStores = useMiscellaneousStores()
 
-  const backgroundTemp = ref('tw-bg-white')
-  const currentYear = ref(new Date().getFullYear());
-  const route = useRoute()
-  const isProduct = ref(false)
+const currentYear = ref(new Date().getFullYear())
+const terms = ref(false)
+const background = ref('tw-bg-white')
+const route = useRoute()
+const isConnected = ref(false)
 
-  watchEffect(fetchData)
+const refVForm = ref()
+const name = ref('')
+const email = ref('')
+const message = ref('')
 
-  async function fetchData() {
+const errors = ref({
+  name: undefined,
+  email: undefined,
+  message: undefined
+})
 
-    if(route.name === 'services' || route.name === 'products' || route.name === 'about' || route.name === 'help' ||
-       route.name === 'cart' || route.name === 'serviceDetail' || route.name === 'productDetail' ||
-       route.name === 'detail_wholesalers' || route.name === 'terms_and_conditions' || route.name === 'privacy_statement' ||
-       route.name === 'data_protection') {
-      isProduct.value = true
-      backgroundTemp.value = route.name === 'cart' ? 'tw-bg-white' : 'tw-bg-green'
-    } else {
-      isProduct.value = false
-      backgroundTemp.value = 'tw-bg-white'
-    }
-
+const inputChange = () => {
+  errors.value = {
+    name: undefined,
+    email: undefined,
+    message: undefined
   }
+}
+
+watchEffect(fetchData)
+
+async function fetchData() {
+  isConnected.value = false
+  
+  if(route.name === 'about' || route.name === 'help' || 
+      route.name === 'products' || route.name === 'productDetail' || 
+      route.name === 'services' || route.name === 'serviceDetail') {
+    background.value = 'tw-bg-light_cyan_2'
+  } else {
+    background.value = 'tw-bg-white'
+  }
+
+  if(route.name === 'dashboardHome' || route.name === 'profile' ||
+     route.name === 'purchases' || route.name === 'coupons' ||
+     route.name === 'favorites' || route.name === 'information_client' ||
+     route.name === 'security_client' || route.name === 'address' ||
+     route.name === 'detail_pusher' || route.name === 'rating_products' ||
+     route.name === 'event_planner') {
+    isConnected.value = true
+  }
+}
+
+const recaptcha = async () => {
+    await recaptchaInstance?.recaptchaLoaded();
+
+    const token = await recaptchaInstance?.executeRecaptcha('contact_form');
+
+    return token;
+};
+
+const onSubmit = () => {
+  refVForm.value?.validate().then(async ({ valid: isValid }) => {
+    if (isValid) {
+        miscellaneousStores.setLoading(true)
+        const token = await recaptcha();
+        
+        let data = {
+          email: email.value,
+          name: name.value,
+          message: message.value,
+          recaptcha_token: token
+        }
+
+        miscellaneousStores.contactUs(data)
+          .then(response => {
+              name.value = ''
+              email.value = ''
+              message.value = ''
+              terms.value = false
+              errors.value = {
+                name: '', 
+                email: '',
+                message: ''
+              }
+              miscellaneousStores.setLoading(false)
+              miscellaneousStores.setMessage('¡Gracias por escribirnos! Hemos recibido tu mensaje y te responderemos muy pronto.')
+          }).catch(err => {
+            miscellaneousStores.setLoading(false)
+            miscellaneousStores.setError(true)
+            miscellaneousStores.setMessage(err.response.data.message)
+            errors.value = {
+              name: err, 
+              email: '',
+              password: ''
+            }
+          })
+    }
+  })
+}
 
 </script>
 
 <template>
-  <VFooter class="text-center d-flex flex-column bg p-0 w-100 d-print-none" :class="backgroundTemp">
+  <VFooter class="text-center d-flex flex-column p-0 w-100" :class="background">
     <a href="https://wa.link/wvdoxg"
-        target="_blank"
-        class="whatsapp-float"
-        title="Contáctanos por WhatsApp"
-        >
-            <span class="mdi mdi-whatsapp whatsapp-icon"></span>
+      target="_blank"
+      class="whatsapp-float"
+      title="Contáctanos por WhatsApp"
+      aria-label="Contactar por WhatsApp"
+      >
+        <VIcon icon="mdi-whatsapp" class="whatsapp-icon" aria-hidden="true" />
     </a>
-    <div class="container-footer d-none" :class="isProduct ? 'tw-bg-primary text-colorfooter' : ''">
-      <VContainer class="my-10">
-        <VRow no-gutters class="tw-text-tertiary">
-          <VCol cols="12" md="5" class="d-flex xs:tw-text-center md:tw-text-left mb-4 mb-md-0">
-            <p class="line-p"><span class="text-footer">Conoce todas nuestras ofertas</span> <br>
-            <span class="subtext-footer">Regístrate ahora a nuestro newsletter.</span></p>
-          </VCol> 
-          <VCol cols="12" md="7" class="d-flex align-center dark" v-if="isProduct">  
-            <VTextField
-              class="me-20"
-              placeholder="Email"
-              flat
-              variant="solo">
-              <template v-slot:append-inner>
-                <VBtn class="tw-bg-white tw-text-primary h-100 search-button button-hover">Suscríbete</VBtn>
-              </template>
-            </VTextField>
-          </VCol> 
-          <VCol cols="12" md="7" class="d-flex align-center" v-else>
-            <VTextField
-              class="me-20"
-              placeholder="Email"
-              flat
-              variant="solo">
-              <template v-slot:append-inner>
-                <VBtn class="tw-bg-primary tw-text-white h-100 search-button button-hover">Suscríbete</VBtn>
-              </template>
-            </VTextField>
-          </VCol>  
-        </VRow>  
-      </VContainer>
-    </div>
-    
-    <VDivider class="hr d-none" />
-
-    <VContainer class="mt-5 mt-md-16 borderBottom">
-      <VRow no-gutters class="tw-text-tertiary">
-        <VCol cols="7" md="3" class="d-block align-center text-left">
-          <span class="contact-text">Contactanos</span>
-          <div class="d-flex text-left mt-3 mt-md-12 mb-1 mb-md-5">
-            <icophone class="mt-1 me-2"/>
-              <span class="d-flex align-center tw-text-tertiary font-size-16 pb-2 phone-text">
-                300 4659 997         
+    <div v-show="!isConnected">
+      <div class="tw-flex tw-flex-col md:tw-flex-row my-10 tw-px-5">
+        <div class="md:tw-w-1/2 text-left tw-pr-0 md:tw-pr-8 border-fix">
+          <h2 class="tw-text-primary tw-font-bold tw-text-4xl">Conecta con Nosotros</h2>
+          <div class="tw-mt-6">
+            <div class="tw-flex tw-flex-col">
+              <div class="tw-flex tw-items-center">
+                <img :src="icophone "class="tw-mr-3" alt="Teléfono" width="32" height="32"/>
+                <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Teléfono</span>
+              </div>
+              <span class="tw-text-gray tw-mt-2 tw-text-sm">Llámanos para asesoría personalizada.</span>
+            </div>
+            <p class="tw-text-tertiary tw-text-2xl tw-mt-2 tw-mb-0">+57 310 4870 310</p>
+          </div>
+          <div class="tw-mt-6">
+            <div class="tw-flex tw-flex-col">
+              <div class="tw-flex tw-items-center">
+                <img :src="icochat" class="tw-mr-3" alt="Chat" width="32" height="32"/>
+                <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Mensaje directo</span>
+              </div>
+              <span class="tw-text-gray tw-mt-2 tw-text-sm">Escríbenos para dudas rápidas y seguimiento.</span>
+            </div>
+            <VBtn
+              class="btn-register tw-text-white tw-bg-primary button-hover tw-normal-case tw-mt-6"
+              href="https://wa.link/wvdoxg"
+              target="_blank"
+            >
+              Mensaje directo
+            </VBtn>
+          </div>
+          <div class="tw-mt-6">
+            <div class="tw-flex tw-flex-col">
+              <div class="tw-flex tw-items-center">
+                <img :src="icomail "class="tw-mr-3" alt="Mail" width="32" height="32" />
+                <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Correo electrónico</span>
+              </div>
+              <span class="tw-text-gray tw-mt-2 tw-text-sm">Ideal para cotizaciones y ventas mayoristas.</span>
+            </div>
+            <span class="tw-text-tertiary tw-text-2xl tw-mt-2 tw-mb-0">comercial@partymax.co</span>
+          </div>
+          <div class="tw-mt-6">
+            <div class="tw-flex tw-flex-col">
+              <div class="tw-flex tw-items-center">
+                <img :src="icostore "class="tw-mr-3" alt="Store" width="32" height="32"/>
+                <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Tienda</span>
+              </div>
+                <span class="tw-text-gray tw-mt-2 tw-text-sm">Visita nuestra tienda y sorpréndete.</span>
+            </div>
+            <span class="tw-text-tertiary tw-text-2xl tw-mt-2 tw-mb-0">Calle 13 #-06, Bogotá</span>
+          </div>
+          <div class="tw-mt-6 tw-mb-6 md:tw-mb-0">
+            <div class="tw-flex tw-flex-col">
+              <div class="tw-flex tw-items-center">
+                <img :src="icosearch "class="tw-mr-3" alt="Search" width="32" height="32" />
+                <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Encuentra Inspiración Diaria</span>
+              </div>
+              <span class="tw-text-gray tw-mt-2 tw-text-sm">
+                Síguenos en nuestras redes y descubre ideas, tutoriales y las últimas tendencias para tus celebraciones.
               </span>
+            </div>
+            <div class="tw-flex tw-mt-3">
+              <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="tw-mr-2" aria-label="instagram">
+                <instagram aria-hidden="true" />
+              </a>
+              <a href="https://www.facebook.com/partymaxcolombia" target="_blank" class="tw-mr-2" aria-label="facebook">
+                <facebook aria-hidden="true" />
+              </a>
+              <a href="https://wa.link/wvdoxg" target="_blank" aria-label="whatsapp">
+                <whatsapp_magenta aria-hidden="true" />
+              </a>
+            </div>
           </div>
-          
-          <span class="item-footer-text">Calle 13 # 69 - 06 , Bogotá</span> <br>
-          <span class="item-footer-text">fiesta@partymax.co</span>
-
-          <div class="d-flex align-center text-right mt-3 mt-md-8">
-            <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="m-0" aria-label="instagram">
-              <instagram class="mt-1 me-2"/>
-            </a>
-            <a href="https://www.facebook.com/partymaxcolombia" target="_blank" class="m-0" aria-label="facebook">
-              <facebook class="mt-1 me-2"/>
-            </a>
-            <a href="https://wa.link/wvdoxg" target="_blank" class="m-0" aria-label="whatsapp">
-              <whatsapp_mobile class="mt-1 me-2" />
-            </a>
-          </div>
-        </VCol>
-
-        <VCol cols="12" md="4" class="d-flex align-center col-mobile"></VCol>
-
-        <VCol cols="12" md="2" class="d-flex flex-column align-start text-left tw-gap-3 col-mobile">
-          <NuxtLink to="/about" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
-            Quiénes somos
-          </NuxtLink>
-          <NuxtLink to="/blogs" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
-            Blog
-          </NuxtLink>
-          <NuxtLink to="/help" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
-            Preguntas frecuentes
-          </NuxtLink>
-          <NuxtLink to="/terms-and-conditions" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
-            Términos y condiciones
-          </NuxtLink>
-          <NuxtLink to="/privacy-statement" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
-            Declaración de privacidad
-          </NuxtLink>
-          <NuxtLink to="/data-protection" class="item-footer-text tw-no-underline tw-text-tertiary font-size-20 me-3 hover:tw-text-primary">
-            Protección de datos
-          </NuxtLink>
-        </VCol>
-        <VCol cols="5" md="3" class="align-center text-right">
-          <img :src="festinfooter" class="festin-footer-size" alt="festin-footer" loading="lazy"/>
-        </VCol>
-      </VRow>
-      <VDivider class="hr mt-10 d-none d-md-block" />
-    </VContainer>
-
-    <VContainer class="mt-2">
-      <VRow no-gutters class="tw-text-tertiary">
-        <VCol cols="12" md="6" class="d-block align-center text-left col-copy">
-          <p class="copyright">©{{currentYear}} PartyMax. All Rights Reserved</p>
-        </VCol>
-        <VCol cols="12" md="6" class="d-flex align-center text-right col-mobile">
-          <VSpacer />
-          <span class="copyright">Pagos seguros con</span>
-          <img :src="icopayment1" alt="icopayment1" width="45" class="me-3 ms-8"/>
-          <img :src="icopayment2" alt="icopayment2" width="44" class="me-3"/>
-          <img :src="icopayment3" alt="icopayment3" width="44" class="me-3"/>
-          <img :src="icopayment4" alt="icopayment4" width="46" class="me-3"/>
-          <img :src="icopayment5" alt="icopayment5" width="45" class="me-3"/>
-          <img :src="icopayment6" alt="icopayment6" width="46"/>
-        </VCol>
-      </VRow>
-
-    </VContainer>
-    
+        </div>
+        <div class="md:tw-w-1/2 text-left tw-pl-0 md:tw-pl-8 tw-mt-6 md:tw-mt-0">
+          <h2 class="tw-text-primary tw-font-bold tw-text-4xl tw-mb-2">¡Hablemos, nos encantan las fiestas!</h2>
+          <p class="tw-text-tertiary tw-mt-2 tw-mb-6">Estamos aquí para ayudarte con tus consultas.</p>
+          <VForm
+              ref="refVForm"
+              @submit.prevent="onSubmit"
+              >
+            <div class="tw-mb-1 textinput">
+              <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1" for="name-input">Nombre</label>
+              <VTextField
+                v-model="name"
+                variant="outlined" 
+                density="compact" 
+                :rules="[requiredValidator]"
+                @input="inputChange()"
+                id="name-input" />
+            </div>
+            <div class="tw-mb-1 textinput">
+              <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1" for="email-input">Correo Electrónico</label>
+              <VTextField 
+                v-model="email"
+                type="email"
+                variant="outlined" 
+                density="compact" 
+                :rules="[requiredValidator, emailValidator]"
+                @input="inputChange()" 
+                id="email-input"/>
+            </div>
+            <div class="tw-mb-1">
+              <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1" for="message-input">Mensaje</label>
+              <VTextarea
+                v-model="message"
+                variant="outlined"
+                placeholder="Escribe tu mensaje..."
+                :rules="[requiredValidator]"
+                @input="inputChange()"
+                rows="4"
+                id="message-input"
+              />
+            </div>
+            <VCheckbox v-model="terms" color="primary" class="tw-mb-4" :rules="[requiredValidator]">
+              <template #label>
+                <div class="tw-text-tertiary tw-text-sm">
+                  Acepto los
+                  <a href="/terms-and-conditions" target="_blank" class="tw-text-primary tw-underline">Términos</a> y el
+                  <a href="/data-protection" target="_blank" class="tw-text-primary tw-underline">tratamiento de datos</a>.
+                </div>
+              </template>
+            </VCheckbox>
+            <VBtn
+              variant="flat"
+              type="submit"
+              class="btn-register tw-text-white tw-bg-primary button-hover tw-normal-case">
+              Enviar mensaje
+            </VBtn>
+          </VForm>
+        </div>
+      </div>
+    </div>
+    <div class="tw-flex tw-flex-col md:tw-flex-row w-100 tw-p-5 tw-gap-2 md:tw-gap-4 align-center justify-content-center tw-border-t tw-border-solid tw-border-grey_2">
+      <span class="copyright">©{{currentYear}} PartyMax. Todos los derechos reservados.</span>
+      <NuxtLink to="/terms-and-conditions" class="copyright tw-no-underline tw-text-tertiary hover:tw-text-primary">
+        Términos y Condiciones
+      </NuxtLink>
+    </div>
   </VFooter>
 </template>
 
@@ -170,7 +275,6 @@
     bottom: 20px;
     right: 20px;
     z-index: 1000;
-    cursor: pointer;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     background-color: #25D366;
     padding: 10px;
@@ -185,185 +289,108 @@
     color: white; /* Cambia el color del ícono a blanco */
   }
 
-  .search-button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    font-size: 11.5px;
-    padding-top: 2px;
+  .border-fix {
+    border-right: 1px solid #E1E1E1 !important;
   }
 
-  .v-text-field::v-deep(.v-input__details) { 
-    padding: 0;
-    height: 0;
-    min-height: 0;
-  }
-
-  .dark .v-text-field::v-deep(.v-field) { 
-    border-radius: 100px;
-    border: 1px solid #0A1B33 !important;
-    height: 43px;
-    background-color: #FF0090;
-    border: 1.5px solid #FFFFFF !important;
-  }
-
-  .v-text-field::v-deep(.v-field) { 
-    border-radius: 100px;
-    border: 1px solid #0A1B33 !important;
-    height: 43px;
-  } 
-
-  .dark .v-text-field::v-deep(::placeholder) { 
-    color: #FFFFFF !important;
-    opacity: inherit;
-  }
-
-  .v-text-field::v-deep(::placeholder) { 
-    color: #0A1B33 !important;
-    opacity: inherit;
-  }
-
-  .dark .v-text-field::v-deep(input) { 
-    padding-top: 0 !important;
-    color: #FFFFFF !important;
-  }
-
-  .v-text-field::v-deep(input) { 
-    padding-top: 0 !important;
-  }
-  
-  .dark .button-hover:hover {
-    background-color: #E2F8FC !important;
-    box-shadow: 0px 0px 24px 0px #F3FCFE;
-  }
-
-  .button-hover:hover {
-    background-color: #FF27B3 !important;
-    box-shadow: 0px 0px 24px 0px #FF27B3;
-  }
-
- 
-  .hr {
-    width: 100%;
-    color: #D9EEF2;
-    opacity: 1 !important;
-  }
-  .text-footer {
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 146.3%;
-  }
-
-  .subtext-footer {
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 146.3%; 
-  }
-  .line-p {
-    line-height: 20px;
-  }
-
-  .contact-text {
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  .phone-text {
-    color:  #FF0090!important;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 28.8px; 
-  }
-
-  .item-footer-text {
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22.4px;
-  }
   .copyright {
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
-    line-height: 22.4px;
   }
 
-  .container-footer {
-    width: 100%;
+  .btn-register {
+      font-size: 16px;
+      font-style: normal;
+      font-weight: bold;
+      line-height: 14px;
+      border-radius: 32px;
+      height: 62px;
   }
 
-  .text-colorfooter span {
-    color: #FFFFFF!important;
+  .button-hover:hover {
+      background-color: #FF27B3 !important;
+      box-shadow: 0px 0px 24px 0px #FF27B3;
   }
 
-  .festin-footer-size
-  {
-    width: 228px;
-    height: 286px;
+  .v-checkbox::v-deep(.v-selection-control) {
+    min-height: 30px;
+  }
+  
+  .v-checkbox::v-deep(.v-label){
+      color:#0A1B33;
+      font-size: 13px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 18px; /* 138.462% */
+  }
+    
+  .v-checkbox::v-deep(.v-label) {
+      color:#0A1B33;
+      font-size: 13px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 18px; /* 138.462% */
+      margin-left: 10px;
   }
 
+  .textinput .v-text-field::v-deep(.v-field__outline) { 
+      border-radius: 24px !important;
+      height: 35px;
+      font-size: 14px;
+  }
+
+  .v-text-field::v-deep(.v-field__outline) {
+      border-radius: 8px;
+  }
+
+  .v-text-field::v-deep(.v-field__outline__start) {
+      flex: 0 0 17px !important;
+  }
+
+  .v-text-field::v-deep(::placeholder) { 
+      color: #999999 !important;
+      font-size: 15px;
+      opacity: inherit;
+  }
+
+  .v-text-field::v-deep(input) { 
+      padding-top: 0 !important;
+      padding-left: 20px !important;
+  }
+
+  .textinput .v-text-field::v-deep(.v-input__details) {
+      min-height: 15px !important;
+  }
+
+  .textinput .v-text-field::v-deep(.v-field-label) {
+      top: 33% !important;
+      font-size: 14px !important;
+  }
+
+  .v-textarea::v-deep(.v-field-label) {
+      top: 10% !important;
+      font-size: 14px !important;
+  }
+
+  .v-text-field::v-deep(.v-field__append-inner) { 
+      padding-top: 8px !important;
+      align-items: start !important;
+  }
 
   @media only screen and (max-width: 767px) {
-    .col-mobile {
-      display: none!important;
+    .border-fix {
+      border-right: 0 !important;
+      border-bottom: 1px solid #E1E1E1 !important;
     }
-
-    .phone-text {
-      font-size: 20px;
-      line-height: 28.8px; /* 144% */
-    }
-
-    .col-copy p {
-      text-align: center !important;
-    }
-
-    .line-p {
-      margin: auto;
-    }
-
-    .borderBottom {
-      border-bottom: 1px solid #D9EEF2;
-    }
-
-    .text-footer {
-      font-size: 20px;
-    }
-
-    .subtext-footer {
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 146.3%; 
-    }
-
-    .v-text-field::v-deep(input) {
-      font-size: 14px;
-      padding-top: 4px !important;
-     }
-
-     .search-button {
-      font-size: 10px;
-     }
-
-     .festin-footer-size
-      {
-        width: 150px;
-        height: 188px;
-      }
-
-      .whatsapp-float
-      {
-        width: 40px;
-        height: 40px;
-      }
-
-      .whatsapp-icon {
-        font-size: 28px;
-      }
   }
+
+  @media only screen and (max-width: 960px) {
+
+    .btn-register {
+      width: 100%;
+      height: 48px;
+    }
+  }
+
 </style>

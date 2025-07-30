@@ -11,7 +11,7 @@ import { useFavoritesStores } from '@/stores/favorites'
 import { useHomeStores } from "@/stores/home";
 import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination, Zoom } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useRuntimeConfig } from '#app'
 import VueImageZoomer from 'vue-image-zoomer';
 import CustomRadiosWithIcon from '@/components/app/CustomRadiosWithIcon.vue'
@@ -25,7 +25,6 @@ import whatsapp_mobile from '@assets/icons/whatsapp_mobile.svg?inline';
 import facebook_mobile from '@assets/icons/facebook_mobile.svg?inline';
 import twitter_mobile from '@assets/icons/twitter_mobile.svg?inline';
 import linkendin_mobile from '@assets/icons/linkendin_mobile.svg?inline';
-import iconmayorista from '@assets/icons/Union.svg?inline';
 import heart from '@assets/icons/heart.svg?inline';
 import check_circle from '@assets/icons/check-circle.svg';
 import error_circle from '@assets/icons/error-circle.svg';
@@ -79,7 +78,6 @@ const thumbsSwiperModal = ref(null);
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
 const twitterAccount = ref(config.public.TWITTER_ACCOUNT ?? '')
 const data = ref(null)
-const keywords = ref(null)
 
 const title = ref(null)
 const brand = ref(null)
@@ -156,10 +154,10 @@ const { data: productData } = await useAsyncData(
 if (productData.value) {
   const productUrl = `https://${config.public.MY_DOMAIN}/products/${productData.value.product.slug}`
   const imageUrl = baseURL.value + productData.value.product.image
-  const descriptionText = `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨`;
+  const descriptionText = `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨. ${productData.value.keywords.join(', ')}`;
 
   useSeoMeta({
-    title: productData.value.product.name,
+    title: productData.value.product.name + ' | PARTYMAX',
     description: descriptionText,
     ogType: 'product',
     ogUrl: productUrl,
@@ -169,6 +167,7 @@ if (productData.value) {
     ogImage: imageUrl,
     ogImageWidth: '1200',
     ogImageHeight: '630',
+    ogImageAlt: productData.value.product.name,
     twitterCard: 'summary_large_image',
     twitterTitle: productData.value.product.name,
     twitterDescription: descriptionText,
@@ -177,25 +176,32 @@ if (productData.value) {
   })
 
   useHead({
-    link: [
-      {
-        rel: 'canonical',
-        href: productUrl,
-      },
-    ],
+    link: [ { rel: 'canonical', href: productUrl } ],
     meta: [
-      {
-        name: 'keywords',
-        content: 'asdad'
-      },
-      { property: 'og:image', content: imageUrl },
-      // Metaetiquetas para Google Shopping (ejemplo)
       { name: 'product:availability', content: 'in stock' },
       { name: 'product:condition', content: 'new' },
       { name: 'product:price:amount', content: productData.value.product.price_for_sale },
       { name: 'product:price:currency', content: 'COP' },
     ],
-  })
+    script: [
+      {
+        type: 'application/ld+json',
+        children: () => JSON.stringify({
+          '@context': 'https://schema.org/',
+          '@type': 'Product',
+          'name':  productData.value.product.name,
+          'image': imageUrl,
+          'description': descriptionText,
+          'offers': {
+            '@type': 'Offer',
+            'url': productUrl,
+            'priceCurrency': 'COP',
+            'price': productData.value.product.price_for_sale
+          },
+        }),
+      },
+    ],
+  });
 }
 
 watchEffect(fetchData)
@@ -232,9 +238,6 @@ async function fetchData() {
 
     await miscellaneousStores.getProduct(route.params.slug)
     data.value = miscellaneousStores.getData
-
-    console.log('data.value.product', data.value)
-    keywords.value = data.value.keywords?.join(', ')
 
     imageAux.value = [{ image : data.value.product.image }]
     imageMeta.value = baseURL.value + data.value.product.image
@@ -481,14 +484,6 @@ const addfavorite = () => {
 
 }
 
-const controlCant = () => {
-  if (parseInt(cant_prod.value) > parseInt(cant_stock.value)) { 
-    cant_prod.value = cant_stock.value; 
-  } else if (parseInt(cant_prod.value) < 1) {
-    cant_prod.value = 1;
-  }
-}
-
 const increment = () => {
   if (cant_prod.value < cant_stock.value)
     cant_prod.value++
@@ -558,7 +553,7 @@ const buildEmbedUrl = (url) => {
       <!-- HEADER -->
       <VCard class="mt-md-7 no-shadown card-information p-0" v-if="!isLoading">
         <VCardTitle class="d-flex p-0 align-end">
-          {{ title }}
+          <h1>{{ title }}</h1>
           <VSpacer />
           <div class="align-end redes-title">
             <a :href="searchWhatsapp" target="_blank" class="tw-no-underline hover:tw-text-secondary">
@@ -1530,6 +1525,14 @@ const buildEmbedUrl = (url) => {
 
   .redes-mobile {
     display: none;
+  }
+
+  
+  .v-card-title h1 {
+    white-space: pre-wrap;
+    line-height: 24px;
+    font-weight: 400 !important;
+    font-size: 24px !important;
   }
 
   @media only screen and (max-width: 767px) {

@@ -3,9 +3,8 @@
 import { ref } from 'vue'
 import { useHomeStores } from '@/stores/home'
 import { useMiscellaneousStores } from "@/stores/miscellaneous";
-import { Pagination } from 'swiper/modules';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { useRuntimeConfig } from '#app'
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -33,9 +32,12 @@ import f_2 from '@assets/images/f_2.jpg';
 import f_3 from '@assets/images/f_3.jpg';
 import f_4 from '@assets/images/f_4.jpg';
 
+import check_circle from '@assets/icons/check-circle.svg';
+import error_circle from '@assets/icons/error-circle.svg';
 
 const thumbsSwiper = ref(null);
 const modules = ref([Pagination])
+const modulesSlider = ref([Autoplay, Pagination, Navigation])
 
 const setThumbsSwiper = (swiper) => {
     thumbsSwiper.value = swiper;
@@ -62,6 +64,10 @@ const miscellaneousStores = useMiscellaneousStores()
 
 const data = ref(null)
 const isLoading = ref(true)
+
+const isDialogVisible = ref(false)
+const isError = ref(false)
+const message = ref(false)
 
 watch(() => 
   miscellaneousStores.getLoading, async (value) => {
@@ -90,7 +96,7 @@ watchEffect(fetchData)
 async function fetchData() {
 
   isLoading.value = true
-
+  
   await homeStores.fetchData()
   data.value = homeStores.getData
 
@@ -160,10 +166,14 @@ useHead({
 <template>
   <WelcomePopup />
   <Loader :isLoading="isLoading"/>
+
+  <h1 class="visually-hidden">
+    Partymax, tu aliado ideal para fiestas en Colombia.
+  </h1>
+
   <div class="d-flex flex-column flex-md-row tw--mt-2 md:tw-mt-3 lg:tw-h-[683px]" v-if="data">
     <div class="lg:tw-w-[75%] lg:tw-h-[683px]">
-     <swiper
-        v-if="data"
+      <swiper
         :pagination="true"
         :navigation="true"
         :modules="modulesSlider"    
@@ -181,9 +191,12 @@ useHead({
         >
           <img 
             :src="baseURL + (isMobile ? item.mobile : item.image)"
-            :alt="'slider'+(i+1)"
+            :alt="item.title + ' - Imagen de slider'"
             class="w-100 h-100 tw-object-cover"
-            loading="lazy"
+            :loading="i === 0 ? 'eager' : 'lazy'"
+            :fetchpriority="i === 0 ? 'high' : 'auto'"
+            width="1044"
+            height="683"
           >
           <div class="tw-absolute tw-inset-0 tw-flex tw-flex-col tw-justify-center tw-items-start tw-p-5 md:tw-p-[100px]">
             <h2  
@@ -233,28 +246,28 @@ useHead({
       <VCardItem class="p-0">
         <VRow no-gutters  class="tw-text-tertiary">
           <VCol cols="12" sm="6" md="3" class="d-flex align-center hr">
-            <img :src="motorcycle" width="60" height="60" class="ms-10" alt="motorcycle" loading="lazy"/>
+            <img :src="motorcycle" width="60" height="60" class="ms-10" alt="Icono de motocicleta para envíos gratis" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Envíos gratis</span>
               <span class="d-block card-information-subtitle">A partir de $210.000</span>
             </div>
           </VCol>
           <VCol cols="12" sm="6" md="3" class="d-flex align-center hr no-border">
-            <img :src="location" width="60" height="60" class="ms-10" alt="location" loading="lazy"/>
+            <img :src="location" width="60" height="60" class="ms-10" alt="Icono de ubicación para nuestras tiendas" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Nuestras tiendas</span>
               <span class="d-block card-information-subtitle">En Bogotá</span>
             </div>
           </VCol>
           <VCol cols="12" sm="6" md="3" class="d-flex align-center hr">
-            <img :src="sold" width="60" height="60" class="ms-10" alt="sold" loading="lazy"/>
+            <img :src="sold" width="60" height="60" class="ms-10" alt="Icono de etiqueta de vendido para ventas al por mayor" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Ventas por mayor</span>
               <span class="d-block card-information-subtitle">A los mejores precios</span>
             </div>
           </VCol>
           <VCol cols="12" sm="6" md="3" class="d-flex align-center col-siguecompra">
-            <img :src="tracking" width="60" height="60" class="ms-10" alt="tracking" loading="lazy"/>
+            <img :src="tracking" width="60" height="60" class="ms-10" alt="Icono de seguimiento para seguir tu compra" loading="lazy"/>
             <div class="d-block ms-5">
               <span class="d-block card-information-title mb-1">Sigue tu compra</span>
               <span class="d-block card-information-subtitle">Desde tu cuenta</span>
@@ -320,7 +333,7 @@ useHead({
     <!-- banner 2 -->
     <VCard class="mt-7 no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
-        <img :src="banner_3.image" cover @click="redirectTo(banner_3.url)" class="img-gallery" alt="banner7"/>
+        <img :src="banner_3.image" cover @click="redirectTo(banner_3.url)" class="img-gallery" alt="Banner para animar al usuario a registrarse"/>
       </VCardItem>  
     </VCard>
     
@@ -377,7 +390,7 @@ useHead({
                 <img 
                   :src="banner_4.image" 
                   class="border-img w-100"
-                  alt="banner8"
+                  alt="Lo mas vendido - Se parte de nuestro marketplace"
                   @click="redirectTo(banner_4.url)"
                   />
               </VCardText>
@@ -538,12 +551,12 @@ useHead({
     <VCard class="mt-7 no-shadown card-information p-0 d-flex transparent card-banner34">
         <VCard class="no-shadown card-information p-0 w-50 grid-item w-100">
             <VCardItem class="p-0">
-              <img :src="banner_5.image" cover @click="redirectTo(banner_5.url)"  class="img-gallery" alt="banner9"/>
+              <img :src="banner_5.image" cover @click="redirectTo(banner_5.url)"  class="img-gallery" alt="Tu guia de Inteligencia Artificial para fiestas inoolvidables!"/>
             </VCardItem> 
         </VCard>
         <VCard class="no-shadown card-information p-0 w-50 ms-5 grid-item w-100">
             <VCardItem class="p-0">
-              <img :src="banner_6.image" cover @click="redirectTo(banner_6.url)" class="img-gallery" alt="banner10"/>
+              <img :src="banner_6.image" cover @click="redirectTo(banner_6.url)" class="img-gallery" alt="Haz tu celebracion inolvidable con PartyMax"/>
             </VCardItem>
         </VCard>
     </VCard>
@@ -559,7 +572,8 @@ useHead({
             query: {
               category: 'fiestas-tematicas'
             }
-          }"  
+          }"
+          aria-label="Ver todos los productos de fiestas temáticas"
           class="ms-5 tw-no-underline d-none d-md-flex tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
           Ver todos
         </NuxtLink>
@@ -574,7 +588,7 @@ useHead({
               subcategory: 'tematica-mexicana'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_1" class="d-block size-rect-desktop" loading="lazy" alt=""/>
+          <img :src="t_1" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Mexicana"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
         </NuxtLink>
         <NuxtLink 
@@ -585,7 +599,7 @@ useHead({
               subcategory: 'tematica-hawaiana'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" alt=""/>
+          <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Hawaiana"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Hawaiana</span>
         </NuxtLink>
         <NuxtLink 
@@ -596,7 +610,7 @@ useHead({
               subcategory: 'tematica-vallenata'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_3" class="d-block size-rect-desktop" loading="lazy" alt=""/>
+          <img :src="t_3" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Vallenata"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Vallenata</span>
         </NuxtLink>
         <NuxtLink 
@@ -607,7 +621,7 @@ useHead({
               subcategory: 'tematica-metalizada'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_4" class="d-block size-rect-desktop" loading="lazy" alt=""/>
+          <img :src="t_4" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Metalizada"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Metalizada</span>
         </NuxtLink>
         <NuxtLink 
@@ -618,7 +632,7 @@ useHead({
               subcategory: 'tematica-neon'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_5" class="d-block size-rect-desktop" loading="lazy" alt="neon"/>
+          <img :src="t_5" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Neón"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Neón</span>
         </NuxtLink>
       </VCardText> 
@@ -633,7 +647,7 @@ useHead({
                   subcategory: 'tematica-mexicana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_1" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <img :src="t_1" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Mexicana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </NuxtLink>
           </VCol>
@@ -646,7 +660,7 @@ useHead({
                   subcategory: 'tematica-hawaiana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Hawaiana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
             </NuxtLink>
           </VCol>
@@ -659,7 +673,7 @@ useHead({
                   subcategory: 'tematica-vallenata'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_3" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <img :src="t_3" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Vallenata"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </NuxtLink>
           </VCol>
@@ -672,7 +686,7 @@ useHead({
                   subcategory: 'tematica-metalizada'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_4" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <img :src="t_4" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Metalizada"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </NuxtLink>
           </VCol>
@@ -685,7 +699,7 @@ useHead({
                   subcategory: 'tematica-neon'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_5" class="d-block size-rect-desktop" width="150"  height="150" loading="lazy" alt="neon"/>
+              <img :src="t_5" class="d-block size-rect-desktop" width="150"  height="150" loading="lazy" alt="Fiesta con tematica Neón"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Neón</span>
             </NuxtLink>
           </VCol>
@@ -715,7 +729,7 @@ useHead({
                   subcategory: 'tematica-mexicana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_1" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <img :src="t_1" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Mexicana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </NuxtLink>
           </VCol>
@@ -728,7 +742,7 @@ useHead({
                   subcategory: 'tematica-hawaiana'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Hawaiana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
             </NuxtLink>
           </VCol>
@@ -741,7 +755,7 @@ useHead({
                   subcategory: 'tematica-vallenata'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_3" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <img :src="t_3" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Vallenata"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </NuxtLink>
           </VCol>
@@ -754,7 +768,7 @@ useHead({
                   subcategory: 'tematica-metalizada'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_4" class="d-block size-rect-desktop" width="150" height="150" alt=""/>
+              <img :src="t_4" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Metalizada"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </NuxtLink>
           </VCol>
@@ -767,7 +781,7 @@ useHead({
                   subcategory: 'tematica-neon'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_5" class="d-block size-rect-desktop" width="150"  height="150" loading="lazy" alt="neon"/>
+              <img :src="t_5" class="d-block size-rect-desktop" width="150"  height="150" loading="lazy" alt="Fiesta con tematica Neón"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Neón</span>
             </NuxtLink>
           </VCol>
@@ -804,6 +818,7 @@ useHead({
                 subcategory: 'tematica-cumpleanos'
               }
             }"
+            aria-label="Ver todos los productos de cumpleaños"
             class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-tertiary hover:tw-text-primary">
             Ver todos
           </NuxtLink>
@@ -818,7 +833,7 @@ useHead({
                 subcategory: 'fiestas-ninos'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt="iconos"/>
+            <img :src="f_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Niños"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Niños</span>
           </NuxtLink>
           <NuxtLink 
@@ -829,7 +844,7 @@ useHead({
                 subcategory: 'tematica-ninas'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="icons2"/>
+            <img :src="f_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Niñas"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Niñas</span>
           </NuxtLink>
           <NuxtLink 
@@ -840,7 +855,7 @@ useHead({
                 subcategory: 'tematica-bebes'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="icons3"/>
+            <img :src="f_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Bebes"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Bebes</span>
           </NuxtLink>
           <NuxtLink
@@ -853,7 +868,7 @@ useHead({
               }
             }"
             class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_4" class="border-theme d-white size-circles-desktop" loading="lazy" alt="icons4"/>
+            <img :src="f_4" class="border-theme d-white size-circles-desktop" loading="lazy" alt="Fiesta para Adultos"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Adultos</span>
           </NuxtLink>
         </VCardText>
@@ -866,7 +881,7 @@ useHead({
                 subcategory: 'fiestas-ninos'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt="iconos"/>
+            <img :src="f_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Niños"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Niños</span>
           </NuxtLink>
           <NuxtLink 
@@ -877,7 +892,7 @@ useHead({
                 subcategory: 'tematica-ninas'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="icons2"/>
+            <img :src="f_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Niñas"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Niñas</span>
           </NuxtLink>
           <NuxtLink 
@@ -888,7 +903,7 @@ useHead({
                 subcategory: 'tematica-bebes'
               }
             }" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="icons3"/>
+            <img :src="f_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Bebes"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Bebes</span>
           </NuxtLink>
           <NuxtLink
@@ -901,7 +916,7 @@ useHead({
               }
             }"
             class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_4" class="border-theme d-white size-circles-desktop" loading="lazy" alt="icons4"/>
+            <img :src="f_4" class="border-theme d-white size-circles-desktop" loading="lazy" alt="Fiesta para Adultos"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Adultos</span>
           </NuxtLink>
         </VCardText>
@@ -917,7 +932,7 @@ useHead({
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_1" class="border-theme d-block" width="150" height="150" loading="lazy" alt="iconos"/>
+                <img :src="f_1" class="border-theme d-block" width="150" height="150" loading="lazy" alt="Fiesta para Niños"/>
                 <span class="d-block size-theme tw-text-tertiary mt-2">Niños</span>
               </NuxtLink>
             </VCol>
@@ -931,7 +946,7 @@ useHead({
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_2" class="border-theme d-block" width="150" height="150" loading="lazy" alt="icons2"/>
+                <img :src="f_2" class="border-theme d-block" width="150" height="150" loading="lazy" alt="Fiesta para Niñas"/>
                 <span class="d-block size-theme tw-text-tertiary mt-2">Niñas</span>
               </NuxtLink>
             </VCol>
@@ -945,7 +960,7 @@ useHead({
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_3" class="border-theme d-block" width="150" height="150" loading="lazy" alt="icons3"/>
+                <img :src="f_3" class="border-theme d-block" width="150" height="150" loading="lazy" alt="Fiesta para Bebes"/>
                 <span class="d-block size-theme tw-text-tertiary mt-2">Bebes</span>
               </NuxtLink>
             </VCol>
@@ -960,7 +975,7 @@ useHead({
                   }
                 }"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_4" class="border-theme d-white" width="150" height="150" loading="lazy" alt="icons4"/>
+                <img :src="f_4" class="border-theme d-white" width="150" height="150" loading="lazy" alt="Fiesta para Adultos"/>
                 <span class="d-block size-theme tw-text-tertiary mt-2">Adultos</span>
               </NuxtLink>
             </VCol>
@@ -973,7 +988,7 @@ useHead({
   <VDialog v-model="isDialogVisible" >
     <VCard
       class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-      <VImg :width="isMobile ? '120' : '180'" :src="isError ? error_circle : check_circle" class="mx-auto"/>
+      <VImg :width="isMobile ? '120' : '180'" :src="isError ? error_circle : check_circle" :alt="isError ? 'Icono de error' : 'Icono de éxito'" class="mx-auto"/>
       <VCardText class="text-message mb-5 px-0 px-md-5 pt-0">
         {{ message }}
       </VCardText>
@@ -982,6 +997,18 @@ useHead({
 </template>
 
 <style scoped>
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
 
   .text-message {
     color:  #FF0090;
