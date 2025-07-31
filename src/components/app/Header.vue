@@ -417,6 +417,7 @@
                     : 'mdi-plus'"
                     size="20"
                     @click="toggleGroupFn(index, item.name)"
+                    :aria-label="openedGroups.includes(index) ? `Colapsar ${item.name}` : `Expandir ${item.name}`"
                     :aria-labelledby="`product-label-${category}`"
                   />
                 </template>
@@ -496,7 +497,7 @@
                     : 'mdi-plus'"
                     size="20"
                     @click="toggleGroupFn(index, item.name)"
-                    aria-hidden="true"
+                    :aria-label="openedGroups.includes(index) ? `Colapsar ${item.name}` : `Expandir ${item.name}`"
                   />
                 </template>
               </VListItem>
