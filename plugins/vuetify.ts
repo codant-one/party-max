@@ -1,5 +1,4 @@
 import '@mdi/font/css/materialdesignicons.css'
-import 'vuetify/styles' 
 
 import { defineNuxtPlugin } from '#app'
 import { createVuetify } from 'vuetify';
