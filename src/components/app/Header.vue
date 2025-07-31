@@ -329,84 +329,74 @@
       v-model="drawer"
       class="d-print-none"
       temporary>
-      <VList aria-label="Menú de navegación principal" v-model:opened="panelCat" class="pb-0" :ripple="false" role="list">
-        <VListItem
-          to="/about-us" class="tw-no-underline tw-text-white hover:tw-text-yellow"
-          aria-label="Quiénes somos" 
-        >
-            <VListItemTitle class="d-block lineheight borderList pb-2">
-                <span class="d-block title-menu">Quiénes somos</span>
-            </VListItemTitle>
-        </VListItem>
-        <VListItem
-          to="/help"
-          class="tw-no-underline tw-text-white hover:tw-text-yellow"
-          aria-label="Preguntas frecuentes"
-        >
+      <VList aria-label="Menú de navegación principal" v-model:opened="panelCat" class="pb-0" :ripple="false">
+        <VListItem>
           <VListItemTitle class="d-block lineheight borderList pb-2">
+            <router-link aria-label="item-about-us" to="/about-us" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+              <span class="d-block title-menu">Quiénes somos</span>
+            </router-link>
+          </VListItemTitle>
+        </VListItem>
+        <VListItem>
+          <VListItemTitle class="d-block lineheight borderList pb-2">
+            <router-link aria-label="item-help" to="/help" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Preguntas frecuentes</span>
-          </VListItemTitle>
+            </router-link>
+          </VListItemTitle>  
         </VListItem>
-        <VListItem
-          to="/terms-and-conditions"
-          class="tw-no-underline tw-text-white hover:tw-text-yellow"
-          aria-label="Términos y condiciones"
-        >
+        <VListItem>
           <VListItemTitle class="d-block lineheight borderList pb-2">
+            <router-link aria-label="item-help" to="/terms-and-conditions" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Términos y condiciones</span>
-          </VListItemTitle>
+            </router-link>
+          </VListItemTitle>  
         </VListItem>
-        <VListItem
-          to="/data-protection"
-          class="tw-no-underline tw-text-white hover:tw-text-yellow"
-        >
+        <VListItem>
           <VListItemTitle class="d-block lineheight borderList pb-2">
+            <router-link aria-label="item-help" to="/data-protection" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Protección de datos</span>
-          </VListItemTitle>
+            </router-link>
+          </VListItemTitle>  
         </VListItem>
-        <VListItem
-            to="/privacy-statement"
-            class="tw-no-underline tw-text-white hover:tw-text-yellow"
-        >
+        <VListItem>
           <VListItemTitle class="d-block lineheight borderList pb-2">
+            <router-link aria-label="item-help" to="/privacy-statement" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Declaración de privacidad</span>
-          </VListItemTitle>
+            </router-link>
+          </VListItemTitle>  
         </VListItem>
-        <VListItem
-            to="/blogs"
-            class="tw-no-underline tw-text-white hover:tw-text-yellow"
-        >
+        <VListItem>        
           <VListItemTitle class="d-block lineheight borderList pb-2">
+            <router-link to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Blog</span>
+            </router-link>
           </VListItemTitle>
         </VListItem>
         <VListItem>
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
-            <h2 class="d-block font-light title-menu">PRODUCTOS</h2>
-            <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <h2 class="d-block title-menu">PRODUCTOS</h2>
+            <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
               <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
             </svg>
           </VListItemTitle>
         </VListItem>
       </VList>
 
-      <VList aria-label="Menú de categorías de productos" :id="`product-list-label-${index}`" v-model:opened="panelCat" class="pb-0">
+      <VList role="list" aria-label="Menu de Producto mobile" v-model:opened="panelCat" class="pb-0">
         <template v-for="(item, index) in categories">
-          <VListItem
-            role="none" tabindex="-1"
+          <VListItem role="listitem" aria-label="list-item"
             v-if="categories[index]?.children.length === 0"
             :to="{
               name: 'products',
               query: { category: item.slug }
-            }"
-            >
+            }">
             <VListItemTitle class="d-block title-menu lineheight borderList pb-2">
               {{ item.name }}
             </VListItemTitle> 
           </VListItem>
-          <VListGroup :id="item.name" v-else :value="item.name" :eager="false">
+          <VListGroup v-else :value="item.name" :eager="false">
             <template #activator="{ props }">
-              <VListItem :title="item.name" class="items-list">
+              <VListItem role="listitem" class="items-list">
                 <VListItemTitle class="d-block lineheight borderList pb-2">
                   <router-link
                     :to="{
@@ -416,7 +406,7 @@
                       }
                     }"  
                     class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-                    <span class="d-block title-menu">{{ item.name }}</span>
+                    <span class="d-block title-menu" :id="`product-mobile-${category}`">{{ item.name }}</span>
                   </router-link>
                 </VListItemTitle> 
                 <template #append>
@@ -427,6 +417,7 @@
                     : 'mdi-plus'"
                     size="20"
                     @click="toggleGroupFn(index, item.name)"
+                    :aria-labelledby="`product-label-${category}`"
                   />
                 </template>
               </VListItem>
@@ -435,10 +426,9 @@
               v-if="openedGroups.includes(index)"
               v-for="(k, index2) in categories[index].children"
               :key="index2"
-              :aria-label="'Subcategorías de ' + item.name"
               class="style-menu-mobile">
               <VListItem class="subtitle-menu">
-                <router-link 
+                <router-link
                     :to="{
                       name: 'products',
                       query: {
@@ -458,18 +448,17 @@
       </VList>
         
       <!--MENU SERVICIOS MOBILE-->
-      <VList aria-label="Menú de servicios" v-model:opened="panelCat" class="pb-0" :ripple="false">
+      <VList aria-label="Menu de Servicios mobile" v-model:opened="panelCat" class="pb-0" :ripple="false">
         <VListItem>
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
-            <h2 class="d-block font-light title-menu">SERVICIOS</h2>
+            <h2 class="d-block title-menu">SERVICIOS</h2>
             <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
               <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
             </svg>
           </VListItemTitle>
         </VListItem>
-
-        <div v-for="(item, index) in services" :key="index">
-          <VListItem role="none" tabindex="-1" v-if="services[index]?.children.length === 0">
+        <div v-for="(item, index) in services">
+          <VListItem v-if="services[index]?.children.length === 0">
             <VListItemTitle class="d-block lineheight borderList pb-2">
               <router-link 
                 :to="{
@@ -483,10 +472,9 @@
               </router-link>
             </VListItemTitle> 
           </VListItem>
-
-          <VListGroup :id="item.name" v-else :value="item.name" :eager="false">
+          <VListGroup v-else :value="item.name" :eager="false">
             <template #activator="{ props }">
-              <VListItem :title="item.name" class="items-list">
+              <VListItem class="items-list">
                 <VListItemTitle class="d-block lineheight borderList pb-2">
                   <router-link
                     :to="{
@@ -516,8 +504,7 @@
             <div 
               v-for="(k, index2) in services[index].children"
               :key="index2"
-              class="style-menu-mobile"
-              :aria-label="`Subservicios de ${item.name}`">
+              class="style-menu-mobile">
               <VListItem class="subtitle-menu">
                 <router-link
                   :to="{
@@ -526,7 +513,7 @@
                       category: item.slug,
                       subcategory: k.slug.split('/')[1]
                     }
-                  }"
+                  }"  
                   class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
                   <span class="d-block title-menu">
                     {{ k.name }}
@@ -564,7 +551,7 @@
           color="primary"
           @click="isDrawerOpen = false"
           aria-label="Cerrar carrito de compras">
-          <span class="tw-hidden">Cerrar modal</span>  <!-- Texto oculto solo para accesibilidad -->
+          <span class="tw-hidden">Cerrar modal</span> 
           <VIcon icon="mdi-close-circle-outline" />
         </VBtn>
       </div>
@@ -636,7 +623,6 @@
               <img :src="logo" width="255" alt="Logo de PartyMax - Ir a la página de inicio" cover/>
             </router-link>
             <VSpacer />
-            <!-- <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1 tw-hidden" for="search-input"></label> -->
             <VTextField
               v-model="textSearch"
               class="pt-4 w-100x"
