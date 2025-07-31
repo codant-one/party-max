@@ -1,8 +1,9 @@
+import '@mdi/font/css/materialdesignicons.css'
+import 'vuetify/styles' 
+
 import { defineNuxtPlugin } from '#app'
 import { createVuetify } from 'vuetify';
-import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
-import { h } from 'vue'
-import { Icon } from '@iconify/vue'
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives'; 
 
@@ -27,30 +28,19 @@ export default defineNuxtPlugin(nuxtApp => {
     ssr: true,
     components,
     directives,
-    icons: {
-      defaultSet: 'mdi',
-      aliases: {
-        ...aliases,
-        // Sobrescribe el alias 'component' para forzar el uso de Iconify
-        component: (props) => {
-          return h(Icon, {
-            // Pasa el icono, la etiqueta y la clase al componente de Iconify
-            icon: props.icon,
-            tag: props.tag,
-            class: props.class,
-          })
-        },
-      },
-      sets: {
-        mdi, // Define el conjunto de iconos 'mdi' para que Vuetify lo conozca
-      },
-    },
     theme: {
       defaultTheme: 'myCustomLightTheme',
       themes: {
         myCustomLightTheme,
       },
       variations: false
+    },
+    icons: {
+      defaultSet: 'mdi',
+      aliases,
+      sets: {
+        mdi,
+      },
     }
   })
 

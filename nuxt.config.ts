@@ -2,8 +2,7 @@
 import { visualizer } from 'rollup-plugin-visualizer'
 import path from 'path'
 import pluginSvgVue from '@vuetter/vite-plugin-vue-svg';
-import vuetify from 'vite-plugin-vuetify'; 
-import Icons from 'unplugin-icons/vite'
+import vuetify from 'vite-plugin-vuetify';
 
 export default defineNuxtConfig({
   app: {
@@ -102,11 +101,7 @@ export default defineNuxtConfig({
       }
     },
     plugins: [
-      pluginSvgVue(),
-      Icons({
-        compiler: 'vue3',
-        autoInstall: true
-      })
+      pluginSvgVue()
     ],
     build: {
       rollupOptions: {

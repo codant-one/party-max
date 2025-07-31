@@ -12,7 +12,6 @@ import icosearch from '@assets/icons/youtube_icon.svg'
 import instagram from '@assets/icons/instagram_magenta.svg?inline'
 import facebook from '@assets/icons/facebook_magenta.svg?inline'
 import whatsapp_magenta from '@assets/icons/whatsapp_magenta.svg?inline'
-import { VIcon } from 'vuetify/components'
 
 const recaptchaInstance = useReCaptcha();
 const miscellaneousStores = useMiscellaneousStores()
@@ -123,7 +122,7 @@ const onSubmit = () => {
       title="Contáctanos por WhatsApp"
       aria-label="Contactar por WhatsApp"
       >
-        <VIcon icon="mdi-whatsapp" class="whatsapp-icon" aria-hidden="true" />
+        <span class="mdi mdi-whatsapp whatsapp-icon" aria-hidden="true"></span>
     </a>
     <div v-show="!isConnected">
       <div class="tw-flex tw-flex-col md:tw-flex-row my-10 tw-px-5">
