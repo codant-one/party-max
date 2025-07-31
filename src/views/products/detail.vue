@@ -77,7 +77,6 @@ const thumbsSwiperModal = ref(null);
 const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
 const twitterAccount = ref(import.meta.env.VITE_TWITTER_ACCOUNT ?? '')
 const data = ref(null)
-const keywords = ref(null)
 
 const title = ref(null)
 const brand = ref(null)
@@ -183,8 +182,6 @@ async function fetchData() {
     await miscellaneousStores.getProduct(route.params.slug)
     data.value = miscellaneousStores.getData
 
-    keywords.value = data.value.keywords.join(', ')
-
     imageAux.value = [{ image : data.value.product.image }]
     imageMeta.value = baseURL.value + data.value.product.image
 
@@ -266,8 +263,7 @@ async function fetchData() {
       title: title.value + ' | PARTYMAX',
       description: `Descubre nuestro '${title.value}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨'`,
       image:  imageMeta.value,
-      url: productUrl.value ,
-      keywords: keywords.value
+      url: productUrl.value
     });
 
     if (route.query.category) {
@@ -333,7 +329,7 @@ async function fetchData() {
   isLoading.value = false
 }
 
-const setMetaTags = ({ title, description, image, url, keywords }) => {
+const setMetaTags = ({ title, description, image, url }) => {
   document.title = title;
 
   const setMetaTag = (name, content) => {
@@ -351,7 +347,6 @@ const setMetaTags = ({ title, description, image, url, keywords }) => {
   };
 
   setMetaTag('description', description);
-  setMetaTag('keywords', keywords);
 
   // Open Graph / Facebook / LinkedIn / Pinterest / WhatsApp
   setPropertyMetaTag('og:type', 'website');
