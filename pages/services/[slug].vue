@@ -10,11 +10,11 @@ import { useCartStores } from '@/stores/cart'
 import { useFavoritesStores } from '@/stores/favorites'
 import { useHomeStores } from "@/stores/home";
 import { useOrdersStores } from '@/stores/orders'
-import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination } from 'swiper/modules';
+import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination, Zoom } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Spanish } from 'flatpickr/dist/l10n/es.js';
 import { useRuntimeConfig } from '#app'
-import VueImageZoomer from 'vue-image-zoomer';
+import { Spanish } from 'flatpickr/dist/l10n/es.js';
+import VueImageZoomer from 'vue-image-zoomer'
 import FlatPickr from 'vue-flatpickr-component';
 import Loader from '@/components/common/Loader.vue'
 import Service3 from '@/components/service/Service3.vue'
@@ -33,12 +33,17 @@ import error_circle from '@assets/icons/error-circle.svg';
 import festin_pending from '@assets/icons/festin_pending.svg';
 import playImage from '@assets/images/play.png';
 
+import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
+import arrow_left from '@assets/icons/arrow-left-dark.svg?inline';
+
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/free-mode';
 import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar'
 import 'swiper/css/pagination';
+import 'swiper/css/zoom';
+import 'vue-image-zoomer/dist/style.css';
 import 'flatpickr/dist/flatpickr.css';
 
 const route = useRoute()
@@ -47,6 +52,7 @@ const cartStores = useCartStores()
 const favoritesStores = useFavoritesStores()
 const homeStores = useHomeStores();
 const ordersStores = useOrdersStores()
+const config_ = useRuntimeConfig()
 
 const { isMobile } = useDevice();
 
@@ -68,11 +74,11 @@ const bread = ref([
 ])
 
 const serviceImages = ref([])
-const modules = ref([FreeMode, Navigation, Thumbs, Scrollbar])
+const modules = ref([Pagination, FreeMode, Navigation, Thumbs, Scrollbar, Zoom])
 const modules2 = ref([Pagination])
 const thumbsSwiper = ref(null);
+const thumbsSwiperModal = ref(null);
 
-const config_ = useRuntimeConfig()
 const baseURL = ref(config_.public.APP_DOMAIN_API_URL + '/storage/')
 const twitterAccount = ref(config_.public.TWITTER_ACCOUNT ?? '')
 const data = ref(null)
@@ -147,9 +153,12 @@ const isCupcake = ref([])
 const radioFlavor = ref([])
 const radioFilling = ref([])
 
+const isHoverVisible = ref(false)
+
 watch(() => 
   route.path,(newPath, oldPath) => {
     thumbsSwiper.value.destroy(false, true)
+    thumbsSwiperModal.value.destroy(false, true)
     date.value = null
   }
 );
@@ -157,6 +166,7 @@ watch(() =>
 watch(() => 
   route.query,(newPath, oldPath) => {
     thumbsSwiper.value.destroy(false, true)
+    thumbsSwiperModal.value.destroy(false, true)
     date.value = null
   }
 );
@@ -167,7 +177,7 @@ const { data: serviceData } = await useAsyncData(
 )
 
 if (serviceData.value) {
-  const serviceUrl = `https://${config_.public.MY_DOMAIN}/products/${serviceData.value.service.slug}`
+  const serviceUrl = `https://${config_.public.MY_DOMAIN}/services/${serviceData.value.service.slug}`
   const imageUrl = baseURL.value + serviceData.value.service.image
   const descriptionText = `Descubre nuestro '${serviceData.value.service.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨. ${serviceData.value.keywords.join(', ')}`;
 
@@ -219,7 +229,6 @@ if (serviceData.value) {
   });
 }
 
-
 watchEffect(fetchData)
 
 async function fetchData() {
@@ -241,11 +250,11 @@ async function fetchData() {
   }
 
   isLoading.value = true
-
+  
   serviceImages.value = []
   data.value = null
 
-  if(route.params.slug && route.path.startsWith('/services/')) {
+ if(route.params.slug && route.path.startsWith('/services/')) {
 
     await homeStores.fetchData();
     categories.value = homeStores.getData.parentServices;
@@ -312,6 +321,13 @@ async function fetchData() {
       })
     );
 
+    setMetaTags({
+      title: title.value,
+      description: `Servicio publicado en PARTYMAX como: ${title.value}`,
+      image:  imageMeta.value,
+      url: serviceUrl.value ,
+    });
+
     if (route.query.category) {
       category.value = {
         title: categories.value.filter(item => item.slug === route.query.category)[0].name,
@@ -371,7 +387,7 @@ async function fetchData() {
       });
     }
   }
-
+  
   isLoading.value = false
 }
 
@@ -474,6 +490,41 @@ const chanceFilling = (value) => {
       filling.value = selected?.name
       filling_id.value = selected?.id
   }
+}
+
+const setMetaTags = ({ title, description, image, url }) => {
+  document.title = title;
+
+  const setMetaTag = (name, content) => {
+    let element = document.querySelector(`meta[name="${name}"]`) || document.createElement('meta');
+    element.setAttribute('name', name);
+    element.setAttribute('content', content);
+    document.head.appendChild(element);
+  };
+
+  const setPropertyMetaTag = (property, content) => {
+    let element = document.querySelector(`meta[property="${property}"]`) || document.createElement('meta');
+    element.setAttribute('property', property);
+    element.setAttribute('content', content);
+    document.head.appendChild(element);
+  };
+
+  setMetaTag('description', description);
+
+  // Open Graph / Facebook / LinkedIn / Pinterest / WhatsApp
+  setPropertyMetaTag('og:type', 'website');
+  setPropertyMetaTag('og:title', title);
+  setPropertyMetaTag('og:description', description);
+  setPropertyMetaTag('og:image', image);
+  setPropertyMetaTag('og:url', url);
+  setPropertyMetaTag('og:site_name', 'PARTYMAX');
+
+  // Twitter
+  setMetaTag('twitter:card', 'summary_large_image');
+  setMetaTag('twitter:title', title);
+  setMetaTag('twitter:description', description);
+  setMetaTag('twitter:image', image);
+  setMetaTag('twitter:site', '@SteffaniiPaola');
 }
 
 const setThumbsSwiper = (swiper) => {
@@ -1080,7 +1131,7 @@ const buildEmbedUrl = (url) => {
               <p class="text-lef">Recomendaciones que te pueden interesar</p>
             </VCol>
             <VCol cols="4" md="6" class="text-right">
-              <NuxtLinklink to="/services" class="ms-md-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</NuxtLinklink>
+              <router-link to="/services" class="ms-md-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
             </VCol> 
           </VRow>
         </VCardTitle>
