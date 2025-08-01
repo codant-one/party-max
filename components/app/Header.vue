@@ -797,7 +797,7 @@
                         <div class="d-flex align-center hover-icon-right" @mouseover="openCategory(index)">
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
-                            @click="redirect_('categories', item.slug)" @keydown.enter="redirect_('categories', item.slug)"
+                            @click="redirect_('categories-slug', item.slug)" @keydown.enter="redirect_('categories-slug', item.slug)"
                             role="link" tabindex="0" :aria-label="`Ver categoría ${item.name}`">
                               <component v-if="items_products.filter(e => e.slug === item.slug).length === 1" :is="items_products.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                               <component v-else :is="icon5" class="me-3" />
@@ -887,7 +887,7 @@
                         <div class="d-flex align-center hover-icon-right" @mouseover="openService(index)">
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
-                            @click="redirect_('categories', item.slug)" @keydown.enter="redirect_('categories', item.slug)" aria-label="Subservicios">
+                            @click="redirect_('categories-slug', item.slug)" @keydown.enter="redirect_('categories-slug', item.slug)" aria-label="Subservicios">
                               <component v-if="items_services.filter(e => e.slug === item.slug).length === 1" :is="items_services.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                               <component v-else :is="icon5" class="me-3" />
                               {{ item.name }} 
@@ -953,7 +953,7 @@
           v-model="textSearch"
           class="me-3"
           placeholder="Quiero..."
-          label="Buscar productos" :color="color"
+          label="Quiero..." :color="color"
           flat
           variant="solo">
           <template v-slot:append-inner>
@@ -1275,7 +1275,6 @@
 
     .v-text-field::v-deep(.v-field) { 
       border-radius: 100px;
-      border: 1.5px solid #FFFFFF !important;
       height: 30px;
       top: 35%;
       padding: 0;
@@ -1312,8 +1311,7 @@
 
     .search-button {
       width: 36px;
-      border: 1px solid #0A1B33 !important;
-      height: 27px !important;
+      height: 29px !important;
     }
 
     .button-hover:hover {

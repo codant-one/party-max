@@ -66,7 +66,8 @@ const rating = ref(5)
 const { isMobile } = useDevice();
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
 const twitterAccount = ref(config.public.TWITTER_ACCOUNT ?? '')
-const title = ref(null)
+const title = ref('PRODUCTOS')
+const descriptionText = ref('')
 const cat = ref(null)
 const image = ref(null)
 
@@ -273,60 +274,39 @@ async function fetchData() {
   });
 
   //metadescription
-  if(route.query.category || route.query.subcategory || route.query.fathercategory) {
+  descriptionText.value = `Encuentra en PARTYMAX los mejores productos, ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉 `
   
+  if(route.query.category || route.query.subcategory || route.query.fathercategory) {
     title.value = category.value.subcategory ?? category.value.title
     cat.value = category.value.subcategory ? cat.value : categories.value.filter(item =>item.name === title.value)[0]
-    image.value = (cat.value.icon_subcategory !== null) ? (baseURL.value + cat.value.icon_subcategory) : (import.meta.env.VITE_APP_DOMAIN_API_URL + '/images/categories.jpg')
-
-    setMetaTags({
-      title: title.value + ' | PARTYMAX',
-      description: `Encuentra en PARTYMAX los mejores productos de '${title.value}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉`,
-      image:  image.value,
-      url: `https://${import.meta.env.VITE_MY_DOMAIN}${route.fullPath}` ,
-      keywords: cat.value.keywords
-    });
+    image.value = (cat.value.icon_subcategory !== null) ? (baseURL.value + cat.value.icon_subcategory) : (config.public.APP_DOMAIN_API_URL + '/images/categories.jpg')
+    descriptionText.value = `Encuentra en PARTYMAX los mejores productos de '${title.value}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉 ` + cat.value?.keywords
   }
 
   isLoading.value = false;
 }
 
-const setMetaTags = ({ title, description, image, url, keywords }) => {
-  document.title = title;
 
-  const setMetaTag = (name, content) => {
-    let element = document.querySelector(`meta[name="${name}"]`) || document.createElement('meta');
-    element.setAttribute('name', name);
-    element.setAttribute('content', content);
-    document.head.appendChild(element);
-  };
 
-  const setPropertyMetaTag = (property, content) => {
-    let element = document.querySelector(`meta[property="${property}"]`) || document.createElement('meta');
-    element.setAttribute('property', property);
-    element.setAttribute('content', content);
-    document.head.appendChild(element);
-  };
-
-  setMetaTag('description', description);
-  setMetaTag('keywords', keywords);
-
-  // Open Graph / Facebook / LinkedIn / Pinterest / WhatsApp
-  setPropertyMetaTag('og:type', 'website');
-  setPropertyMetaTag('og:title', title);
-  setPropertyMetaTag('og:description', description);
-  setPropertyMetaTag('og:image', image);
-  setPropertyMetaTag('og:url', url);
-  setPropertyMetaTag('og:site_name', 'PARTYMAX');
-
-  // Twitter
-  setMetaTag('twitter:card', 'summary_large_image');
-  setMetaTag('twitter:title', title);
-  setMetaTag('twitter:description', description);
-  setMetaTag('twitter:image', image);
-  setMetaTag('twitter:site', twitterAccount.value)
-}
-
+useSeoMeta({
+  title: title.value + ' | PARTYMAX',
+  description: descriptionText.value,
+  ogType: 'products',
+  ogUrl:  `https://${config.public.MY_DOMAIN}${route.fullPath}` ,
+  ogTitle: title.value + ' | PARTYMAX',
+  ogDescription: descriptionText.value,
+  ogSiteName: 'PARTYMAX',
+  ogImage: image.value,
+  ogImageWidth: '1200',
+  ogImageHeight: '630',
+  ogImageAlt: title.value + ' | PARTYMAX',
+  twitterCard: 'summary_large_image',
+  twitterTitle: title.value + ' | PARTYMAX',
+  twitterDescription: descriptionText.value,
+  ogDescription: descriptionText.value,
+  twitterImage: image.value,
+  twitterSite: twitterAccount.value
+})
 
 const changePage = (value) => {
   if(value === 'prev' && currentPage.value !== 1) {

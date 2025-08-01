@@ -126,7 +126,7 @@ export const useMiscellaneousStores = defineStore('miscellaneous', {
         },
         services(params: Object) {
             const { services } = Miscellaneous()
-            return services()
+            return services(params)
                 .then((response) => {
                     return Promise.resolve(response.data.data)
                 })
@@ -143,6 +143,16 @@ export const useMiscellaneousStores = defineStore('miscellaneous', {
                 .catch(error => {
                     return Promise.reject(error)
                 }) 
+        },
+        getServiceMeta(slug: string) {
+            const { serviceMeta } = Miscellaneous()
+            return serviceMeta(slug)
+                .then((response) => {
+                    return Promise.resolve(response.data.data)
+                })
+                .catch(error => {
+                    return Promise.reject(error)
+                })
         },
         fetchDataCupcake() {
             const { getDataCupcake } = Miscellaneous()

@@ -92,7 +92,7 @@ console.log('route.name', route.name)
     <VApp> 
       <VLayout >
         <Filters :drawer="drawer" v-if="route.name === 'products'"/>
-        <FilterServices :drawer="drawer" v-else/>
+        <FilterServices :drawer="drawer" v-if="route.name === 'services'"/>
         <Header />
         <VMain :style="backgroundStyle" :class="background">
           <NuxtPage />

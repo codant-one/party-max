@@ -39,12 +39,16 @@ export const Miscellaneous = () => {
         return await $axios.get(`miscellaneous/colors`)
     }
 
-    const services = async () => {
-        return await $axios.get(`miscellaneous/services`)
+    const services = async (params: Object) => {
+        return await $axios.get(`miscellaneous/services`, {params})
     }
 
     const service = async (slug: string) => {
         return await $axios.get(`miscellaneous/services/${slug}`)
+    }
+
+    const serviceMeta = async (slug: string) => {
+        return await $axios.get(`miscellaneous/services/meta/${slug}`)
     }
 
     const getDataCupcake = async () => {
@@ -71,6 +75,7 @@ export const Miscellaneous = () => {
         colors,
         services,
         service,
+        serviceMeta,
         getDataCupcake,
         ips,
         contactUs

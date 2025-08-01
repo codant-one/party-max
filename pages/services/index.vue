@@ -8,7 +8,6 @@ import { useMiscellaneousStores } from "@/stores/miscellaneous";
 import { useFavoritesStores } from '@/stores/favorites'
 import { useFiltersStores } from '@/stores/filters'
 import { formatNumber } from '@formatters'
-import { useRouter, useRoute } from 'vue-router'
 import { useRuntimeConfig } from '#app'
 import Loader from "@/components/common/Loader.vue";
 import icon1 from "@/assets/icons/icon-menu-1.svg";
@@ -29,9 +28,8 @@ import 'swiper/css/pagination';
 
 const modules = ref([Navigation, Pagination])
 
-const router = useRouter()
-const route = useRoute()
 const config = useRuntimeConfig()
+const route = useRoute();
 const homeStores = useHomeStores();
 const miscellaneousStores = useMiscellaneousStores();
 const favoritesStores = useFavoritesStores()
