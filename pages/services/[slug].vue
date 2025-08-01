@@ -14,7 +14,7 @@ import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination, Zoom } from 'swipe
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useRuntimeConfig } from '#app'
 import { Spanish } from 'flatpickr/dist/l10n/es.js';
-import VueImageZoomer from 'vue-image-zoomer'
+import InnerImageZoom from "vue-inner-image-zoom"
 import FlatPickr from 'vue-flatpickr-component';
 import Loader from '@/components/common/Loader.vue'
 import Service3 from '@/components/service/Service3.vue'
@@ -43,7 +43,6 @@ import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar'
 import 'swiper/css/pagination';
 import 'swiper/css/zoom';
-import 'vue-image-zoomer/dist/style.css';
 import 'flatpickr/dist/flatpickr.css';
 
 const route = useRoute()
@@ -77,7 +76,6 @@ const serviceImages = ref([])
 const modules = ref([Pagination, FreeMode, Navigation, Thumbs, Scrollbar, Zoom])
 const modules2 = ref([Pagination])
 const thumbsSwiper = ref(null);
-const thumbsSwiperModal = ref(null);
 
 const baseURL = ref(config_.public.APP_DOMAIN_API_URL + '/storage/')
 const twitterAccount = ref(config_.public.TWITTER_ACCOUNT ?? '')
@@ -158,7 +156,6 @@ const isHoverVisible = ref(false)
 watch(() => 
   route.path,(newPath, oldPath) => {
     thumbsSwiper.value.destroy(false, true)
-    thumbsSwiperModal.value.destroy(false, true)
     date.value = null
   }
 );
@@ -166,7 +163,6 @@ watch(() =>
 watch(() => 
   route.query,(newPath, oldPath) => {
     thumbsSwiper.value.destroy(false, true)
-    thumbsSwiperModal.value.destroy(false, true)
     date.value = null
   }
 );
@@ -531,15 +527,6 @@ const setThumbsSwiper = (swiper) => {
     thumbsSwiper.value = swiper;
 }
 
-const setThumbsSwiperModal = (swiper) => {
-    thumbsSwiperModal.value = swiper;
-}
-
-const closeHoverVisible = () => {
-  isHoverVisible.value = false
-  thumbsSwiperModal.value.destroy(false, true)
-}
-
 const addCart = async() => {
 
   if(date.value !== null) {
@@ -800,10 +787,7 @@ const buildEmbedUrl = (url) => {
             <VCol cols="12" md="4" class="d-flex justify-content-center pb-0 pb-md-2">
               <swiper
                 :pagination="{ type: 'fraction' }"
-                :navigation="{
-                  prevEl: '.button-prev',
-                  nextEl: '.button-next'
-                }"
+                :navigation="true"
                 :spaceBetween="isMobile ? 5 : 10"
                 :thumbs="{ swiper: thumbsSwiper }"
                 :zoom="{ maxRatio: 3, minRatio: 1 }"
@@ -816,9 +800,13 @@ const buildEmbedUrl = (url) => {
                 >
                 <swiper-slide v-for="(slide, index) in mediaSlides" :key="index">
                   <template v-if="slide.type === 'image'">
-                    <div class="swiper-zoom-container">
-                      <img :src="slide.url" :alt="'slide-'+index" class="zoom-in" @click="isHoverVisible = true"/>
-                    </div>
+                    <inner-image-zoom
+                      :src="slide.url"
+                      :zoomSrc="slide.url"
+                      :zoomPreload="true"
+                      zoomScale="2"
+                      zoomType="hover"
+                    />
                   </template>
                   <iframe
                     v-else
@@ -1173,96 +1161,6 @@ const buildEmbedUrl = (url) => {
       </VCard>
     </VDialog>
 
-    <!-- hover -->
-    <VDialog 
-      v-if="!isMobile"
-      v-model="isHoverVisible"   
-      fullscreen
-      transition="dialog-bottom-transition">
-      <div class="d-flex justify-content-end">
-        <VBtn
-          icon="mdi-window-close"
-          variant="text"
-          color="white"
-          @click="closeHoverVisible"
-         />
-      </div>
-      <div class="px-10">
-        <VRow no-gutters>
-          <VCol cols="3" md="2" class="px-1 p-md-2 d-none d-md-block">
-            <swiper
-              :direction="'vertical'"
-              :pagination="{ clickable: true }"
-              :spaceBetween="isMobile ? 3 : 5"
-              :slidesPerView="isMobile ? 3 : 6"
-              :freeMode="true"
-              :watchSlidesProgress="true"
-              @swiper="setThumbsSwiperModal"
-              class="mySwiperModal pt-0 h-100"
-            >
-              <swiper-slide v-for="(slide, index) in mediaSlides" :key="index">
-                  <img 
-                    v-if="slide.type === 'image'"
-                    :src="slide.url" 
-                    :alt="'image-'+index"
-                    width="100"
-                  />
-                  <template  v-else>
-                    <img                         
-                      :src="slide.thumb"
-                      :alt="'thumbnail-'+index"
-                      class="thumb-media-modal"
-                    />
-                    <div class="play-overlay">
-                        <img :src="playImage" />
-                    </div> 
-                  </template>
-              </swiper-slide>
-            </swiper>
-          </VCol>
-          <VCol cols="9" md="10" class="d-flex justify-content-center pb-0 pb-md-2 tw-relative">
-            <swiper
-              :pagination="{ type: 'fraction' }"
-              :navigation="{
-                prevEl: '.button-prev',
-                nextEl: '.button-next'
-              }"
-              :spaceBetween="isMobile ? 5 : 10"
-              :thumbs="{ swiper: thumbsSwiperModal }"
-              :modules="modules"
-              :slidesPerView="1"
-              :watchSlidesProgress="true"
-              :loop="true"
-              class="mySwiper2Modal border-img mx-0 mx-md-auto image-container"
-              v-if="mediaSlides.length > 0"
-              >
-              <swiper-slide v-for="(slide, index) in mediaSlides" :key="index">
-                <template v-if="slide.type === 'image'">
-                  <vue-image-zoomer
-                    :regular="slide.url"
-                    :zoom-amount="3"
-                  />
-                </template>
-                <iframe
-                  v-else
-                  :src="buildEmbedUrl(slide.url)"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
-                />              
-              </swiper-slide>
-              
-            </swiper>
-            <div class="button-prev" v-if="mediaSlides.length > 1">
-                  <arrow_left />
-              </div>
-              <div class="button-next" v-if="mediaSlides.length > 1">
-                <arrow_right />
-              </div>
-          </VCol>
-        </VRow>
-      </div>
-    </VDialog>
   </section>
 </template>
 
@@ -1283,13 +1181,6 @@ const buildEmbedUrl = (url) => {
   .thumb-media {
     width: 60px !important;
     height: 60px !important;
-    object-fit: cover !important;
-    border-radius: 8px !important;
-  }
-
-  .thumb-media-modal {
-    width: 100px !important;
-    height: 100px !important;
     object-fit: cover !important;
     border-radius: 8px !important;
   }
@@ -2051,7 +1942,7 @@ input[altinputclass="inlinePicker"] {
     border-radius: 8px;
   }
 
-  .mySwiper, .mySwiperModal {
+  .mySwiper {
     box-sizing: border-box;
     padding: 10px 5px;
   }
@@ -2063,34 +1954,15 @@ input[altinputclass="inlinePicker"] {
     height: 60px !important;
   }
 
-  .mySwiperModal .swiper-slide {
-    opacity: 1;
-    border: 2px solid #D9D9D9;
-    border-radius: 8px;
-    width: 100px !important;
-    height: 100px !important;
-  }
-    
   .mySwiper .swiper-slide-thumb-active {
     opacity: 1;
     border: 1px solid #D9EEF2;
-  }
-
-  .mySwiperModal .swiper-slide-thumb-active {
-    opacity: 1;
-    border: 2px solid #FF0090;
   }
 
   .mySwiper2 {
     position: relative;
     height: 400px;
     width: 400px;
-  }
-
-  .mySwiper2Modal {
-    position: relative;
-    height: 650px;
-    width: 650px;
   }
 
   .swiper-recomendations .swiper::v-deep(.swiper-pagination-bullet-active) {
@@ -2204,7 +2076,7 @@ input[altinputclass="inlinePicker"] {
       height: 300px !important;
     }
 
-    .mySwiper, .mySwiperModal {
+    .mySwiper {
       padding: 0 5px 10px 5px;
     }
 
@@ -2212,11 +2084,7 @@ input[altinputclass="inlinePicker"] {
       width: 60px;
     }
 
-    .mySwiperModal .swiper-slide {
-      width: 100px;
-    }
-
-    .mySwiper2, .mySwiper2Modal {
+    .mySwiper2 {
       /* max-height: 200px;
       width: 200px; */
       width: 100%;

@@ -41,15 +41,6 @@ export const useAuthStores = defineStore('auth', {
                     return Promise.reject(error)
                 })
         },
-        validate(data: object) {
-            const { validate } = Auth()
-            return validate(data)
-                .then((response) => {
-                    return Promise.resolve(response.data)
-                }).catch(error => {
-                    return Promise.reject(error)
-                })
-        },
         forgot_password(data: object) {
             const { forgot_password } = Auth()
             return forgot_password(data)

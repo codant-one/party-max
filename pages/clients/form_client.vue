@@ -183,11 +183,11 @@ const onSubmit = () => {
                             <VCheckbox color="primary" :rules="[requiredValidator]"/>
                             <div class="text1 ms-5 mt-md-2 mb-3 mb-md-0">
                                 Acepto los 
-                                <a href="/terms_and_conditions" target="_blank" class="text2">
+                                <a href="/terms-and-conditions" target="_blank" class="text2">
                                     Términos y condiciones
                                 </a>
                                 y autorizo el uso de mis datos de acuerdo a la 
-                                <a href="/privacy_statement" target="_blank" class="text2">
+                                <a href="/privacy-statement" target="_blank" class="text2">
                                     Declaración de Privacidad.
                                 </a>
                             </div>

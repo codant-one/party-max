@@ -15,10 +15,6 @@ export const Auth = () => {
         return await $axios.post('auth/logout')
     }
 
-    const validate = async (data: object) => {
-        return await $axios.post('auth/2fa/validate', data)
-    }
-
     const forgot_password = async (data: object) => {
         return await $axios.post('auth/forgot-password', data)
     }
@@ -55,7 +51,6 @@ export const Auth = () => {
         me,
         login,
         logout,
-        validate,
         forgot_password,
         find,
         change,

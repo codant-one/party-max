@@ -24,7 +24,7 @@
     "swiper": "^11.1.4",
     "vue-flatpickr-component": "^12.0.0",
     "vue-gtag-next": "^1.14.0",
-    "vue-image-zoomer": "^2.4.1",
+    "vue-inner-image-zoom": "^3.0.2",
     "vue-recaptcha-v3": "^2.0.1",
     "vue3-loading-overlay": "^0.0.0",
     "webfontloader": "^1.6.28"

@@ -1,5 +1,4 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import { visualizer } from 'rollup-plugin-visualizer'
 import path from 'path'
 import pluginSvgVue from '@vuetter/vite-plugin-vue-svg';
 import vuetify from 'vite-plugin-vuetify';
@@ -103,22 +102,15 @@ export default defineNuxtConfig({
     plugins: [
       pluginSvgVue()
     ],
-    build: {
-      rollupOptions: {
-        plugins: [
-          visualizer({
-            open: true, // Abre automáticamente el reporte en tu navegador después de compilar
-            filename: 'stats.html', // Nombre del archivo de reporte
-            gzipSize: true,
-            brotliSize: true,
-          }),
-        ],
-      },
-    },
+    server: {
+      watch: {
+        usePolling: true,
+      }
+    }
   },
 
   routeRules: {
-    '/': { prerender: true },
+    '/': { prerender: process.env.NODE_ENV === 'development' ? false : true },
     '/.well-known/**': { ssr: false },
     '/blogs': { ssr: true, swr: 3600 },
     '/blogs/*': { ssr: true, swr: 3600 },
