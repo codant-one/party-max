@@ -74,6 +74,7 @@ const thumbsSwiper = ref(null);
 
 const config_ = useRuntimeConfig()
 const baseURL = ref(config_.public.APP_DOMAIN_API_URL + '/storage/')
+const twitterAccount = ref(config.public.TWITTER_ACCOUNT ?? '')
 const data = ref(null)
 
 const title = ref(null)
