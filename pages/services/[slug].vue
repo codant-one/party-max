@@ -12,9 +12,9 @@ import { useHomeStores } from "@/stores/home";
 import { useOrdersStores } from '@/stores/orders'
 import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { VueImageZoomer } from 'vue-image-zoomer'
 import { Spanish } from 'flatpickr/dist/l10n/es.js';
 import { useRuntimeConfig } from '#app'
+import VueImageZoomer from 'vue-image-zoomer';
 import FlatPickr from 'vue-flatpickr-component';
 import Loader from '@/components/common/Loader.vue'
 import Service3 from '@/components/service/Service3.vue'
@@ -39,7 +39,6 @@ import 'swiper/css/free-mode';
 import 'swiper/css/thumbs';
 import 'swiper/css/scrollbar'
 import 'swiper/css/pagination';
-import 'vue-image-zoomer/dist/style.css';
 import 'flatpickr/dist/flatpickr.css';
 
 const route = useRoute()
@@ -161,6 +160,65 @@ watch(() =>
   }
 );
 
+const { data: serviceData } = await useAsyncData(
+  `product-${route.params.slug}`,
+  () => miscellaneousStores.getServiceMeta(route.params.slug)
+)
+
+if (serviceData.value) {
+  const serviceUrl = `https://${config_.public.MY_DOMAIN}/products/${serviceData.value.service.slug}`
+  const imageUrl = baseURL.value + serviceData.value.service.image
+  const descriptionText = `Descubre nuestro '${serviceData.value.service.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨. ${serviceData.value.keywords.join(', ')}`;
+
+  useSeoMeta({
+    title: serviceData.value.service.name + ' | PARTYMAX',
+    description: descriptionText,
+    ogType: 'product',
+    ogUrl: serviceUrl,
+    ogTitle: serviceData.value.service.name,
+    ogDescription: descriptionText,
+    ogSiteName: 'PARTYMAX',
+    ogImage: imageUrl,
+    ogImageWidth: '1200',
+    ogImageHeight: '630',
+    ogImageAlt: serviceData.value.service.name,
+    twitterCard: 'summary_large_image',
+    twitterTitle: serviceData.value.service.name,
+    twitterDescription: descriptionText,
+    twitterImage: imageUrl,
+    twitterSite: twitterAccount.value
+  })
+
+  useHead({
+    link: [ { rel: 'canonical', href: serviceUrl } ],
+    meta: [
+      { name: 'product:availability', content: 'in stock' },
+      { name: 'product:condition', content: 'new' },
+      { name: 'product:price:amount', content: serviceData.value.service.price },
+      { name: 'product:price:currency', content: 'COP' },
+    ],
+    script: [
+      {
+        type: 'application/ld+json',
+        children: () => JSON.stringify({
+          '@context': 'https://schema.org/',
+          '@type': 'Product',
+          'name':  serviceData.value.service.name,
+          'image': imageUrl,
+          'description': descriptionText,
+          'offers': {
+            '@type': 'Offer',
+            'url': serviceUrl,
+            'priceCurrency': 'COP',
+            'price': serviceData.value.service.price
+          },
+        }),
+      },
+    ],
+  });
+}
+
+
 watchEffect(fetchData)
 
 async function fetchData() {
@@ -173,7 +231,7 @@ async function fetchData() {
     }
   ]
 
-  if(localStorage.getItem('user_data')){
+  if(process.client && localStorage.getItem('user_data')){
     const userData = localStorage.getItem('user_data')
     const userDataJ = JSON.parse(userData)
       
@@ -182,11 +240,11 @@ async function fetchData() {
   }
 
   isLoading.value = true
-  
+
   serviceImages.value = []
   data.value = null
 
- if(route.params.slug && route.path.startsWith('/services/')) {
+  if(route.params.slug && route.path.startsWith('/services/')) {
 
     await homeStores.fetchData();
     categories.value = homeStores.getData.parentServices;
@@ -312,7 +370,7 @@ async function fetchData() {
       });
     }
   }
-  
+
   isLoading.value = false
 }
 
@@ -1165,6 +1223,10 @@ const buildEmbedUrl = (url) => {
 </style>
 
 <style scoped>
+
+  .v-selection-control--density-default {
+    --v-selection-control-size: 20px;
+  }
 
   .thumb-media {
     width: 60px !important;

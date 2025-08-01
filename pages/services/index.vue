@@ -57,6 +57,10 @@ const rating = ref(5)
 const { isMobile } = useDevice();
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
 const twitterAccount = ref(config.public.TWITTER_ACCOUNT ?? '')
+const descriptionText = ref('')
+const title = ref('SERVICIOS')
+const cat = ref(null)
+const image = ref(null)
 
 const isDialogVisible = ref(false)
 const isError = ref(false)
@@ -183,7 +187,7 @@ async function fetchData() {
       };
 
       category.value.fathercategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name
-
+      cat.value = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0]
       bread.value.push(fathercategory);
     }
 
@@ -195,7 +199,7 @@ async function fetchData() {
       };
 
       category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name
-
+      cat.value = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0]
       bread.value.push(subcategory);
     }
 
@@ -208,7 +212,7 @@ async function fetchData() {
       };
 
       category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name
-
+      cat.value = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0]
       bread.value.push(subcategory);
     }
 
@@ -224,15 +228,50 @@ async function fetchData() {
     }
   }
 
-  if(localStorage.getItem('user_data')){
+  if(process.client && localStorage.getItem('user_data')){
     const userData = localStorage.getItem('user_data')
     const userDataJ = JSON.parse(userData)
 
     user_id.value = userDataJ.id
   }
 
+  window.scrollTo({
+    top: 0, // Posición del contenedor de ítems
+    behavior: "smooth"  // Animación suave al hacer scroll
+  });
+
+  //metadescription
+  descriptionText.value = `Encuentra en PARTYMAX los mejores servicios, ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉 `
+  
+  if(route.query.category || route.query.subcategory || route.query.fathercategory) {
+    title.value = category.value.subcategory ?? category.value.title
+    cat.value = category.value.subcategory ? cat.value : categories.value.filter(item =>item.name === title.value)[0]
+    image.value = (cat.value.icon_subcategory !== null) ? (baseURL.value + cat.value.icon_subcategory) : (config.public.APP_DOMAIN_API_URL + '/images/categories.jpg')
+    descriptionText.value = `Encuentra en PARTYMAX los mejores servicios de '${title.value}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉 ` + cat.value?.keywords
+  }
+
   isLoading.value = false;
 }
+
+useSeoMeta({
+  title: title.value + ' | PARTYMAX',
+  description: descriptionText.value,
+  ogType: 'products',
+  ogUrl:  `https://${config.public.MY_DOMAIN}${route.fullPath}` ,
+  ogTitle: title.value + ' | PARTYMAX',
+  ogDescription: descriptionText.value,
+  ogSiteName: 'PARTYMAX',
+  ogImage: image.value,
+  ogImageWidth: '1200',
+  ogImageHeight: '630',
+  ogImageAlt: title.value + ' | PARTYMAX',
+  twitterCard: 'summary_large_image',
+  twitterTitle: title.value + ' | PARTYMAX',
+  twitterDescription: descriptionText.value,
+  ogDescription: descriptionText.value,
+  twitterImage: image.value,
+  twitterSite: twitterAccount.value
+})
 
 const changePage = (value) => {
   if(value === 'prev' && currentPage.value !== 1) {

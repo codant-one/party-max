@@ -261,7 +261,7 @@ async function fetchData() {
     }
   }
 
-  if(localStorage.getItem('user_data')){
+  if(process.client && localStorage.getItem('user_data')){
     const userData = localStorage.getItem('user_data')
     const userDataJ = JSON.parse(userData)
 
@@ -285,8 +285,6 @@ async function fetchData() {
 
   isLoading.value = false;
 }
-
-
 
 useSeoMeta({
   title: title.value + ' | PARTYMAX',

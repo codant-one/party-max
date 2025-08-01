@@ -126,9 +126,9 @@ export default defineNuxtConfig({
     '/categories/*': { ssr: true, swr: 3600 },
     '/clients/*': { ssr: false },
     '/dashboard/*': { ssr: false },
-    '/products': { ssr: true },
+    '/products': { ssr: true, swr: 3600 },
     '/products/*': { ssr: true, swr: 3600 },
-    '/services': { ssr: true },
+    '/services': { ssr: true, swr: 3600 },
     '/services/*': { ssr: true, swr: 3600 },
   },
 
