@@ -301,7 +301,6 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
   twitterTitle: title.value + ' | PARTYMAX',
   twitterDescription: descriptionText.value,
-  ogDescription: descriptionText.value,
   twitterImage: image.value,
   twitterSite: twitterAccount.value
 })
