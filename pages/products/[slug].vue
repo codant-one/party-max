@@ -255,14 +255,14 @@ async function fetchData() {
 
     product_id.value = data.value.product.id
 
-    productUrl.value = `https://${import.meta.env.VITE_MY_DOMAIN}/products/${data.value.product.slug}`
-    const imageUrl = `${import.meta.env.VITE_APP_DOMAIN_API_URL}/storage/${data.value.product.image}`
+    productUrl.value = `https://${config.public.MY_DOMAIN}/products/${data.value.product.slug}`
+    const imageUrl = `${config.public.APP_DOMAIN_API_URL}/storage/${data.value.product.image}`
     const descriptionText = 'Mira este increíble producto.'
-    const twitterText = `${descriptionText} ${productUrl.value} ${imageUrl}`;
+    const twitterText = `${descriptionText}`;
 
-    searchWhatsapp.value = `https://wa.me/?text=${productUrl.value}`
+    searchWhatsapp.value = `https://api.whatsapp.com/send?text=${descriptionText} ${encodeURIComponent(productUrl.value)}`
     searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl.value)}`
-    searchTwitter.value = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}`;
+    searchTwitter.value = `https://twitter.com/intent/tweet?url=${encodeURIComponent(productUrl.value)}&text=${encodeURIComponent(twitterText)}`;
     searchLinkendin.value = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(productUrl.value)}`;
     
     title.value = data.value.product.name
@@ -541,16 +541,16 @@ const buildEmbedUrl = (url) => {
           <h1>{{ title }}</h1>
           <VSpacer />
           <div class="align-end redes-title">
-            <a :href="searchWhatsapp" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+            <a :href="searchWhatsapp" target="_blank" class="tw-no-underline hover:tw-text-secondary" rel="noopener noreferrer" data-action="share/whatsapp/share">
               <whatsapp class="me-2" />
             </a>   
-            <a :href="searchFacebook" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+            <a :href="searchFacebook" target="_blank" class="tw-no-underline hover:tw-text-secondary" rel="noopener noreferrer">
               <facebook class="me-2"/>
             </a>
-            <a :href="searchTwitter" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+            <a :href="searchTwitter" target="_blank" class="tw-no-underline hover:tw-text-secondary" rel="noopener noreferrer">
               <twitter class="me-2"/>
             </a>
-            <a :href="searchLinkendin" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+            <a :href="searchLinkendin" target="_blank" class="tw-no-underline hover:tw-text-secondary" rel="noopener noreferrer">
               <linkendin class="me-2"/>               
             </a>
           </div>
@@ -581,16 +581,16 @@ const buildEmbedUrl = (url) => {
             <VCol cols="12" md="6" class="align-right"></VCol>
           </VRow>
           <div class="my-1 align-end redes-mobile">
-            <a :href="searchWhatsapp" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+            <a :href="searchWhatsapp" target="_blank" class="tw-no-underline hover:tw-text-secondary" rel="noopener noreferrer" data-action="share/whatsapp/share">
               <whatsapp_mobile class="me-2" />
             </a>   
-            <a :href="searchFacebook" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+            <a :href="searchFacebook" target="_blank" class="tw-no-underline hover:tw-text-secondary" rel="noopener noreferrer">
               <facebook_mobile class="me-2"/>
             </a>
-            <a :href="searchTwitter" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+            <a :href="searchTwitter" target="_blank" class="tw-no-underline hover:tw-text-secondary" rel="noopener noreferrer">
               <twitter_mobile class="me-2"/>
             </a>
-            <a :href="searchLinkendin" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+            <a :href="searchLinkendin" target="_blank" class="tw-no-underline hover:tw-text-secondary" rel="noopener noreferrer">
               <linkendin_mobile class="me-2"/>               
             </a>
           </div>
