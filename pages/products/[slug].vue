@@ -382,7 +382,7 @@ async function fetchData() {
 const chanceRadio = (value) => {
 
   if (Number.isInteger(Number(value.id))) {        
-      var seleted =  productData.value.product.colors.filter(item => item.color_id === Number(value.id))[0]
+      var seleted =  data.value.product.colors.filter(item => item.color_id === Number(value.id))[0]
       
       productImages.value = (seleted?.images.length === 0) ? imageAux.value : seleted?.images
       color.value = seleted?.color.name
@@ -443,7 +443,7 @@ const addCart = () => {
 
       }).catch(err => {
         load.value = false
-         //console.error(err.message)
+        //console.error(err.message)
       })
   } else {
     isDialogVisible.value = true
@@ -488,7 +488,7 @@ const increment = () => {
   if (cant_prod.value < cant_stock.value)
     cant_prod.value++
 }
-    
+
 const decrement = () => {
   if (cant_prod.value > wholesale_min.value)
     cant_prod.value--
@@ -543,7 +543,7 @@ const buildEmbedUrl = (url) => {
 
 <template>
   <section>
-   <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
+    <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
       <VContainer class="tw-text-tertiary d-flex align-center px-0">
         <v-breadcrumbs :items="bread" class="px-2" />
       </VContainer>
@@ -638,7 +638,7 @@ const buildEmbedUrl = (url) => {
                         class="thumb-media"
                       />
                       <div class="play-overlay">
-                         <img :src="playImage" />
+                        <img :src="playImage" />
                       </div> 
                     </template>
                 </swiper-slide>
@@ -676,7 +676,7 @@ const buildEmbedUrl = (url) => {
                   />              
                 </swiper-slide>
                 <div class="custom-nav-btn button-prev" v-if="mediaSlides.length > 1">
-                   <arrow_left />
+                  <arrow_left />
                 </div>
                 <div class="custom-nav-btn button-next" v-if="mediaSlides.length > 1">
                   <arrow_right />
@@ -868,7 +868,7 @@ const buildEmbedUrl = (url) => {
       </VCard> 
 
       <!-- recommendations -->
-      <VCard class="no-shadown card-information p-0" v-if="productData">
+      <VCard class="no-shadown card-information p-0" v-if="data">
         <VCardTitle class="px-4 px-md-7 py-3 col-recomendaciones">
           <VRow align="center">
             <VCol cols="8" md="6" class="text-left">
@@ -879,14 +879,14 @@ const buildEmbedUrl = (url) => {
             </VCol> 
           </VRow>
         </VCardTitle>
-        <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="productData && !isMobile">
+        <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
           <Product1 
-            v-for="(product, i) in productData.recommendations"
+            v-for="(product, i) in data.recommendations"
             :key="i"
             :product="product"
             :readonly="true"/>
         </VCardText>  
-        <VCardText class="pb-0 px-4 px-md-7 mt-0 mt-md-5 swiper-recomendations" v-if="productData && isMobile">  
+        <VCardText class="pb-0 px-4 px-md-7 mt-0 mt-md-5 swiper-recomendations" v-if="data && isMobile">  
           <swiper
             :pagination="{
               dynamicBullets: true,
@@ -897,7 +897,7 @@ const buildEmbedUrl = (url) => {
             :freeMode="true"
             :watchSlidesProgress="true"
             >
-            <swiper-slide v-for="(product, i) in productData.recommendations" :key="i">
+            <swiper-slide v-for="(product, i) in data.recommendations" :key="i">
               <Product1 
                 :product="product"
                 :readonly="true"/>
@@ -928,7 +928,7 @@ const buildEmbedUrl = (url) => {
           variant="text"
           color="white"
           @click="closeHoverVisible"
-         />
+        />
       </div>
       <div class="px-10">
         <VRow no-gutters>
@@ -981,7 +981,7 @@ const buildEmbedUrl = (url) => {
               >
               <swiper-slide v-for="(slide, index) in mediaSlides" :key="index">
                 <template v-if="slide.type === 'image'">
-                  <VueImageZoomer
+                  <vue-image-zoomer
                     :regular="slide.url"
                     :zoom-amount="3"
                     :hover-message="`Color: ${color}`"
@@ -1368,10 +1368,17 @@ const buildEmbedUrl = (url) => {
   .col-recomendaciones span {
     font-size: 14px;
   }
- 
+  
 </style>
 
 <style scoped>
+
+  .v-card-title h1 {
+    white-space: pre-wrap;
+    line-height: 24px;
+    font-weight: 400 !important;
+    font-size: 24px !important;
+  }
 
   .border-img {
     border-radius: 16px !important;
@@ -1525,14 +1532,6 @@ const buildEmbedUrl = (url) => {
 
   .redes-mobile {
     display: none;
-  }
-
-  
-  .v-card-title h1 {
-    white-space: pre-wrap;
-    line-height: 24px;
-    font-weight: 400 !important;
-    font-size: 24px !important;
   }
 
   @media only screen and (max-width: 767px) {

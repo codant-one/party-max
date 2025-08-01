@@ -134,7 +134,10 @@ const addfavorite = () => {
                             <img 
                                 :width="isMobile ? 135 : 177"
                                 :src="baseURL + image" 
-                                class="img-prod" />
+                                :alt="name"
+                                class="img-prod"
+                                loading="lazy"
+                            />
 
                             <div v-if="in_stock === 0" class="out-of-stock-label">AGOTADO</div>  
                         </NuxtLink>
@@ -192,7 +195,7 @@ const addfavorite = () => {
                         </div>
                     </VCardText>
                     <VCardText class="mt-3 px-1 px-md-2">
-                        <div v-if="client_id" class="d-flex text-center align-center tw-justify-start md:tw-justify-center tw-cursor-pointer heart" @click="addfavorite">
+                        <div v-if="client_id" class="d-flex text-center align-center tw-justify-start md:tw-justify-center heart" @click="addfavorite">
                             <span class="text_2 d-flex align-center">
                                 <span 
                                     class="me-2 pt-1"

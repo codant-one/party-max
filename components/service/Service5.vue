@@ -1,10 +1,11 @@
 <script setup>
 
 import { formatNumber } from '@formatters'
-import calendar_icon from '@assets/icons/calendar.svg?inline'
-import FlatPickr from 'vue-flatpickr-component'
-import 'flatpickr/dist/flatpickr.css'
-import { Spanish } from 'flatpickr/dist/l10n/es.js'
+import { Spanish } from 'flatpickr/dist/l10n/es.js';
+import { useRuntimeConfig } from '#app'
+import FlatPickr from 'vue-flatpickr-component';
+import calendar_icon from '@assets/icons/calendar_edit.svg?inline';
+import 'flatpickr/dist/flatpickr.css';
 
 const props = defineProps({
     service: {
@@ -26,11 +27,9 @@ const props = defineProps({
 })
 
 const emit = defineEmits([
-    'delete',
+    'delete', 
     'addCart'
 ])
-
-const configNuxt = useRuntimeConfig()
 
 const image = ref(null)
 const price = ref(null)
@@ -50,7 +49,8 @@ const filling_id = ref(null)
 const cake_size_id = ref(null)
 const order_file_id = ref(null)
 
-const baseURL = ref(configNuxt.public.APP_DOMAIN_API_URL + '/storage/')
+const config_ = useRuntimeConfig()
+const baseURL = ref(config_.public.APP_DOMAIN_API_URL + '/storage/')
 
 // calendar
 const addDays = (date, days) => {
@@ -98,7 +98,7 @@ watchEffect(() => {
         cake_size_id.value = props.service.cake_size_id
         order_file_id.value = props.service.order_file_id
         is_full.value = props.service.is_full === 1 ? true : false
-        config.value.minDate = addDays(new Date(), Number(data.value.service.estimated_delivery_time) || 0)
+        config.value.minDate = addDays(new Date(), Number(props.service.estimated_delivery_time) || 0)
     }
 })
 
@@ -148,7 +148,10 @@ const decrement = () => {
                         <img 
                             :width="100"
                             :src="baseURL + image" 
-                            class="img-prod" />
+                            :alt="name"
+                            class="img-prod"
+                            loading="lazy"
+                          />
                     </VCardText>
                 </VCol>
                 <VCol cols="12" md="5" class="d-flex flex-column py-3 py-md-5 ps-4 ps-md-0 my-auto">
@@ -162,7 +165,7 @@ const decrement = () => {
                     </VCardText>
                     <VCardText>
                         <span 
-                            class="d-flex tw-text-xs py-1 tw-text-primary title-service tw-cursor-pointer me-3" 
+                            class="d-flex tw-text-xs py-1 tw-text-primary title-service me-3" 
                             @click="emit('delete', service_id)"
                         >
                             Eliminar

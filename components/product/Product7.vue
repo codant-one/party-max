@@ -51,20 +51,23 @@ watchEffect(() => {
                 <NuxtLink
                     :to="{
                         name: 'products-slug',
-                        params: { slug: slug },
+                        params: { slug: slug }
                     }"
                     class="tw-no-underline">
                     <img 
                         :width="100"
                         :src="baseURL + image" 
-                        class="img-prod" />
+                        :alt="name"
+                        class="img-prod"
+                        loading="lazy"
+                    />
                 </NuxtLink>
             </VCardText>
             <VCardText class="pl-5 d-block details">
                 <span class="d-block my-3 my-md-5 text_2 tw-text-tertiary title-product">{{ name }}</span>
                 <span class="d-block my-3 my-md-5 tw-text-tertiary price_prod">${{ formatNumber(price_for_sale) }}</span>
                 <span 
-                    class="d-block my-3 my-md-5 text-left p-0 tw-cursor-pointer tw-text-primary text-delete hover:tw-text-yellow" 
+                    class="d-block my-3 my-md-5 text-left p-0 tw-text-primary text-delete hover:tw-text-yellow" 
                     @click="emit('delete', {is_product: 1, product_id: product_id})">
                     Eliminar
                 </span>

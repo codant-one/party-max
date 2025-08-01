@@ -9,6 +9,8 @@ import { useFavoritesStores } from '@/stores/favorites'
 import { useCartStores } from '@/stores/cart'
 import { useFiltersStores } from '@/stores/filters'
 import { formatNumber } from '@formatters'
+import { useRouter, useRoute } from 'vue-router'
+import { useRuntimeConfig } from '#app'
 import Loader from "@/components/common/Loader.vue";
 import icon1 from "@/assets/icons/icon-menu-1.svg";
 import icon2 from "@/assets/icons/icon-menu-2.svg";
@@ -28,7 +30,9 @@ import 'swiper/css/pagination';
 
 const modules = ref([Navigation, Pagination])
 
-const route = useRoute();
+const router = useRouter()
+const route = useRoute()
+const config = useRuntimeConfig()
 const homeStores = useHomeStores();
 const miscellaneousStores = useMiscellaneousStores();
 const cartStores = useCartStores()
@@ -59,9 +63,9 @@ const colorsSelected = ref([]);
 const onlyWholesale = ref(false)
 
 const rating = ref(5)
-const isMobile = /Mobi/i.test(navigator.userAgent);
-const baseURL = ref(import.meta.env.VITE_APP_DOMAIN_API_URL + '/storage/')
-const twitterAccount = ref(import.meta.env.VITE_TWITTER_ACCOUNT ?? '')
+const { isMobile } = useDevice();
+const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
+const twitterAccount = ref(config.public.TWITTER_ACCOUNT ?? '')
 const title = ref(null)
 const cat = ref(null)
 const image = ref(null)

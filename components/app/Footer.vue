@@ -45,10 +45,10 @@ watchEffect(fetchData)
 
 async function fetchData() {
   isConnected.value = false
-  
+  console.log('route.name', route.name)
   if(route.name === 'about' || route.name === 'help' || 
-      route.name === 'products' || route.name === 'productDetail' || 
-      route.name === 'services' || route.name === 'serviceDetail') {
+      route.name === 'products' || route.name === 'products-slug' || 
+      route.name === 'services' || route.name === 'services-slug') {
     background.value = 'tw-bg-light_cyan_2'
   } else {
     background.value = 'tw-bg-white'

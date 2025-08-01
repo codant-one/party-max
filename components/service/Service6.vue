@@ -18,8 +18,6 @@ const props = defineProps({
     }
 })
 
-const config = useRuntimeConfig()
-
 const image = ref(null)
 const price = ref(null)
 const name = ref(null)
@@ -38,6 +36,7 @@ const filling_id = ref(null)
 const cake_size_id = ref(null)
 const date = ref(null)
 
+const config = useRuntimeConfig()
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
 const { isMobile } = useDevice()
 
@@ -79,7 +78,10 @@ watchEffect(() => {
                         <img
                             :width="100"
                             :src="baseURL + image" 
-                            class="img-prod" />
+                            :alt="name"
+                            class="img-prod"
+                            loading="lazy"
+                        />
                     </VCardText>
                 </VCol>
                 <VCol cols="6" md="12" v-if="isMobile"></VCol>

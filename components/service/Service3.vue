@@ -19,8 +19,7 @@ const props = defineProps({
     }
 })
 
-const cofig = useRuntimeConfig()
-
+const config = useRuntimeConfig()
 const { isMobile } = useDevice()
 const image = ref(null)
 const price = ref(null)
@@ -48,10 +47,8 @@ watchEffect(() => {
 <template>
     <NuxtLink
         :to="{
-            name: 'serviceDetail',
-            params: {
-                slug: slug
-            }
+            name: 'services-slug',
+            params: { slug: slug }
         }"
         class="tw-no-underline zoom-service">
         <VCard class="no-shadown card-information p-0" :width="isMobile ? 'auto' : 230" :class="props.bg">
@@ -59,7 +56,10 @@ watchEffect(() => {
                 <img
                     :width="230"
                     :src="baseURL + image" 
-                    class="img-prod" />
+                    :alt="name"
+                    class="img-prod"
+                    loading="lazy"
+                />
             </VCardText>
             <VCardText class="mt-2">
                 <div class="d-flex">

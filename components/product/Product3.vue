@@ -67,7 +67,9 @@ watchEffect(() => {
             <VCardText class="border-img ms-1 mb-2 p-0">
                 <img 
                     class="img-prod"
+                    :alt="name"
                     :src="baseURL + image" 
+                    loading="lazy"
                 />
                 
                 <div v-if="in_stock === 0" class="out-of-stock-label">AGOTADO</div>                    

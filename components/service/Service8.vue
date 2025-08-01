@@ -19,7 +19,6 @@ const props = defineProps({
 })
 
 const config = useRuntimeConfig()
-
 const image = ref(null)
 const price = ref(null)
 const name = ref(null)
@@ -77,8 +76,10 @@ watchEffect(() => {
                     <VCardText class="border-img p-0">
                         <img
                             :width="100"
-                            :src="baseURL + image" 
-                            class="img-prod" />
+                            :src="baseURL + image"
+                            :alt="name" 
+                            class="img-prod"
+                            loading="lazy"/>
                     </VCardText>
                 </VCol>
                 <VCol cols="6" md="6" class="d-flex justify-content-center align-center my-md-0 ps-3 ps-md-0">

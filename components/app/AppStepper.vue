@@ -66,7 +66,7 @@ watchEffect(() => {
       :value="index"
     >
       <div
-        class="cursor-pointer mx-1"
+        class="mx-1"
         :class="[
           (!props.isActiveStepValid && (isValidationEnabled)) && 'stepper-steps-invalid',
           activeOrCompletedStepsClasses(index),

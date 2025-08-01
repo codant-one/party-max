@@ -104,7 +104,10 @@ const decrement = () => {
                         <img 
                             :width="100"
                             :src="baseURL + image" 
-                            class="img-prod" />
+                            :alt="name"
+                            class="img-prod"
+                            loading="lazy"
+                        />
                         <div v-if="in_stock === 0" class="out-of-stock-label">AGOTADO</div>   
                     </VCardText>
                 </VCol>
@@ -115,7 +118,7 @@ const decrement = () => {
                     </VCardText>
                     <VCardText>
                         <span 
-                            class="d-flex tw-text-xs py-1 tw-text-primary title-product tw-cursor-pointer me-3" 
+                            class="d-flex tw-text-xs py-1 tw-text-primary title-product me-3" 
                             @click="emit('delete', product_color_id)"
                         >
                             Eliminar
@@ -320,4 +323,3 @@ const decrement = () => {
     }
     
 </style>
-

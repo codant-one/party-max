@@ -66,7 +66,9 @@ watchEffect(() => {
                         <img
                             :width="100"
                             :src="baseURL + image"
-                            class="img-prod" 
+                            :alt="name"
+                            class="img-prod"
+                            loading="lazy" 
                         />
                     </VCardText>
                 </VCol>

@@ -26,6 +26,7 @@ const emit = defineEmits([
     'delete'
 ])
 
+const config = useRuntimeConfig()
 
 const image = ref(null)
 const price = ref(null)
@@ -39,10 +40,10 @@ const service_id = ref(null)
 const date = ref(null)
 const size = ref(null)
 
-const config = useRuntimeConfig()
-const baseURL = ref(config.public.appDomainApiUrl + '/storage/')
+const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
 
 watchEffect(() => {
+
     if (!(Object.entries(props.service).length === 0) && props.service.constructor === Object) {
         let cupcake = props.type === 0 ? null : props.service.cupcakes.find(item => item.cake_size_id === props.service.cake_size_id)
 
@@ -59,6 +60,7 @@ watchEffect(() => {
         size.value = props.service.cake_size_id === 0 ? null : cupcake.cake_size.name
     }
 })
+
 </script>
 
 <template>
@@ -72,8 +74,9 @@ watchEffect(() => {
                         <img 
                             :width="100"
                             :src="baseURL + image" 
+                            :alt="name"
                             class="img-prod"
-                            alt="Imagen del servicio"
+                            loading="lazy"
                         />
                     </VCardText>
                 </VCol>
@@ -85,7 +88,7 @@ watchEffect(() => {
                     </VCardText>
                     <VCardText class="px-1">
                         <span 
-                            class="d-flex tw-text-xs py-1 tw-text-primary title-service tw-cursor-pointer me-3" 
+                            class="d-flex tw-text-xs py-1 tw-text-primary title-service me-3" 
                             @click="emit('delete', service_id)"
                         >
                             Eliminar
@@ -103,6 +106,7 @@ watchEffect(() => {
 </template>
 
 <style scoped>
+
     .warning {
         border: 2px solid #FFC549 !important;
     }
@@ -234,4 +238,5 @@ watchEffect(() => {
         font-weight: 400;
         line-height: 8px; /* 80% */ 
     }
+    
 </style>

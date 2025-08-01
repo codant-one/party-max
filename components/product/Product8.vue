@@ -72,8 +72,11 @@ watchEffect(() => {
                     <VCardText class="border-img ms-5 p-0">
                         <img 
                             :width="100"
-                            :src="baseURL + image" 
-                            class="img-prod" />
+                            :src="baseURL + image"
+                            :alt="name"
+                            class="img-prod"
+                            loading="lazy"
+                        />
                     </VCardText>
                 </VCol>
                 <VCol cols="12" md="7" class="d-flex flex-column pt-3 py-md-5 ps-4 ps-md-8 my-auto">
@@ -83,7 +86,7 @@ watchEffect(() => {
                     </VCardText>
                     <VCardText class="px-1">
                         <span 
-                            class="d-flex tw-text-xs py-1 tw-text-primary title-product tw-cursor-pointer me-3" 
+                            class="d-flex tw-text-xs py-1 tw-text-primary title-product me-3" 
                             @click="emit('delete', product_color_id)"
                         >
                             Eliminar

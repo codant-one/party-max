@@ -6,9 +6,9 @@ import { ref } from "vue";
 import { useHomeStores } from "@/stores/home";
 import { useMiscellaneousStores } from "@/stores/miscellaneous";
 import { useFavoritesStores } from '@/stores/favorites'
-import { useCartStores } from '@/stores/cart'
 import { useFiltersStores } from '@/stores/filters'
 import { formatNumber } from '@formatters'
+import { useRouter, useRoute } from 'vue-router'
 import { useRuntimeConfig } from '#app'
 import Loader from "@/components/common/Loader.vue";
 import icon1 from "@/assets/icons/icon-menu-1.svg";
@@ -29,10 +29,11 @@ import 'swiper/css/pagination';
 
 const modules = ref([Navigation, Pagination])
 
-const route = useRoute();
+const router = useRouter()
+const route = useRoute()
+const config = useRuntimeConfig()
 const homeStores = useHomeStores();
 const miscellaneousStores = useMiscellaneousStores();
-const cartStores = useCartStores()
 const favoritesStores = useFavoritesStores()
 const filtersStores = useFiltersStores()
 
@@ -44,7 +45,6 @@ const openedSubGroups = ref([]);
 const services = ref([]);
 const tab = ref('0');
 const category = ref(null);
-const toggle = ref([]);
 
 const rowPerPage = ref(12);
 const currentPage = ref(1);
@@ -57,8 +57,8 @@ const max = ref(null);
 
 const rating = ref(5)
 const { isMobile } = useDevice();
-const config = useRuntimeConfig()
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
+const twitterAccount = ref(config.public.TWITTER_ACCOUNT ?? '')
 
 const isDialogVisible = ref(false)
 const isError = ref(false)
@@ -84,7 +84,7 @@ const sortByItems = ref([
   { id: 1, name : 'Precio: Menor a mayor'},
   { id: 2, name : 'Precio: Mayor a menor'},
   { id: 3, name : 'Mejor Valorados'},
-  { id: 4, name : 'Recientes'}
+  { id: 4, name :  'Recientes'}
 ])
 
 // 👉 watching current page

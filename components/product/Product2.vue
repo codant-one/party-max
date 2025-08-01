@@ -11,6 +11,11 @@ const props = defineProps({
     readonly: {
         type: Boolean,
         required: true
+    },
+    bg: {
+        type: String,
+        default: 'tw-bg-white',
+        required: false
     }
 })
 
@@ -49,15 +54,18 @@ watchEffect(() => {
     <NuxtLink 
         :to="{
             name: 'products-slug',
-            params: { slug: slug },
+            params: { slug: slug }
         }"
-        class="tw-no-underline zoom-product">
-        <VCard class="no-shadown card-information p-0 mb-5">
+        class="tw-no-underline zoom-product w-100">
+        <VCard class="no-shadown card-information p-0 mb-5" :class="props.bg">
             <div class="d-flex">
                 <VCardText class="border-img p-0 my-auto">
                     <img 
-                        :src="baseURL + image" 
-                        class="img-prod" />
+                        :src="baseURL + image"
+                        :alt="name" 
+                        class="img-prod"
+                        loading="lazy" 
+                    />
                 </VCardText>
                 
                 <VCardText class="w-75 d-flex flex-column justify-content-between mb-1">
@@ -92,6 +100,7 @@ watchEffect(() => {
         align-items: center;
         display: flex;
         overflow: hidden;
+        background-color: white;
     }
 
     .zoom-product {
@@ -110,8 +119,8 @@ watchEffect(() => {
 
     .img-prod {
         display: block;
-        width: 70px;
-        height: 70px;
+        width: 70px !important;
+        height: 70px !important;
         object-fit: cover;
         border-radius: 16px;
         transition: transform 0.3s ease-in-out;

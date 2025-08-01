@@ -57,14 +57,17 @@ watchEffect(() => {
     <NuxtLink
         :to="{
             name: 'products-slug',
-            params: { slug: slug },
+            params: { slug: slug }
         }"
         class="tw-no-underline zoom-product">
         <VCard class="no-shadown card-information p-0" :width="isMobile ? 'auto' : 230" :class="props.bg">
             <VCardText class="border-img ms-1 p-0">
                 <img 
                     :src="baseURL + image" 
-                    class="img-prod" />
+                    :alt="name"
+                    class="img-prod"
+                    loading="lazy"
+                />
             </VCardText>
             <VCardText class="mt-2">
                 <div class="d-flex">
@@ -197,4 +200,3 @@ watchEffect(() => {
     }
     
 </style>
-

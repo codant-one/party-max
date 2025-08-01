@@ -2,6 +2,7 @@
 
 import { formatNumber } from '@formatters'
 import { useRuntimeConfig } from '#app'
+import heart from '@assets/icons/heart_gray.svg?inline';
 
 const props = defineProps({
     service: {
@@ -26,6 +27,7 @@ const props = defineProps({
     }
 })
 
+const route = useRoute()
 const config = useRuntimeConfig()
 const emit = defineEmits([
     'addfavorite'
@@ -39,13 +41,13 @@ const store = ref(null)
 const rating = ref(null)
 const single_description = ref(null)
 const slug = ref(null)
+
 const client_id = ref(null)
 const load = ref(props.loading)
 const isFavoriteService = ref(null)
 const service_id = ref(props.serviceId)
-const { isMobile } = useDevice()
-
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
+const { isMobile } = useDevice()
 
 watch(() => 
     props.loading, (data) => {
@@ -63,9 +65,9 @@ watchEffect(() => {
 
     if (!(Object.entries(props.service).length === 0) && props.service.constructor === Object) {
         image.value = props.service.image
-        price.value = props.service.cupcakes.length > 0 ? props.service.cupcakes[0].price : props.service.price
+        price.value = props.service.first_cupcake ? props.service.first_cupcake.price : props.service.price
         name.value = props.service.name.toLowerCase().replace(/(^|\s)\p{L}/gu, (match) => match.toUpperCase());
-        store.value = props.service.user.name + ' ' + (props.service.user.last_name ?? '')
+        store.value = props.service.store ?? (props.service.company ?? props.service.user)
         rating.value = props.service.rating
         single_description.value = props.service.single_description
         slug.value = props.service.slug
@@ -97,7 +99,7 @@ const addfavorite = () => {
                     <VCardText class="border-img ms-md-5 text-center justify-content-center align-center d-flex p-0">
                         <NuxtLink
                             :to="{
-                                name: 'serviceDetail',
+                                name: 'services-slug',
                                 params: { slug: slug },
                                 query: {  
                                     category: route.query.category,
@@ -108,8 +110,10 @@ const addfavorite = () => {
                             class="tw-no-underline">
                             <img 
                                 :width="isMobile ? 135 : 177"
-                                :src="baseURL + image" 
+                                :src="baseURL + image"
+                                :alt="name"
                                 class="img-prod"
+                                loading="lazy"
                             />
                         </NuxtLink>
                     </VCardText>
@@ -145,7 +149,7 @@ const addfavorite = () => {
                         </div>
                     </VCardText>
                     <VCardText class="mt-3 px-1 px-md-2">
-                        <div v-if="client_id" class="d-flex text-center align-center tw-justify-start md:tw-justify-center tw-cursor-pointer heart" @click="addfavorite">
+                        <div v-if="client_id" class="d-flex text-center align-center tw-justify-start md:tw-justify-center heart" @click="addfavorite">
                             <span class="text_2 d-flex align-center">
                                 <span 
                                     class="me-2 pt-1"

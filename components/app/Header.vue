@@ -303,7 +303,7 @@
       v-model="drawer"
       class="d-print-none"
       temporary>
-      <VList role="list" aria-label="Lista de elementos" v-model:opened="panelCat" class="pb-0" :ripple="false">
+      <VList aria-label="Menú de navegación principal" v-model:opened="panelCat" class="pb-0" :ripple="false">
         <VListItem>
           <VListItemTitle class="d-block lineheight borderList pb-2">
             <NuxtLink aria-label="item-about-us" to="/about" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
@@ -348,7 +348,7 @@
         </VListItem>
         <VListItem>
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
-            <span class="d-block title-menu">PRODUCTOS</span>
+            <h2 class="d-block title-menu">PRODUCTOS</h2>
             <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
               <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
             </svg>
@@ -356,13 +356,13 @@
         </VListItem>
       </VList>
 
-      <VList role="list" aria-label="Lista de elementos 2" v-model:opened="panelCat" class="pb-0">
+      <VList role="list" aria-label="Menu de Producto mobile" v-model:opened="panelCat" class="pb-0">
         <template v-for="(item, index) in categories">
           <VListItem role="listitem" aria-label="list-item"
             v-if="categories[index]?.children.length === 0"
             :to="{
-              name: 'products-slug',
-              params: { slug: item.slug }
+              name: 'products',
+              query: { category: item.slug }
             }">
             <VListItemTitle class="d-block title-menu lineheight borderList pb-2">
               {{ item.name }}
@@ -375,10 +375,10 @@
                   <NuxtLink
                     :to="{
                       name: 'categories-slug',
-                      params: { slug: item.slug}
+                      params: { slug: item.slug }
                     }"  
                     class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-                    <span class="d-block title-menu">{{ item.name }}</span>
+                    <span class="d-block title-menu" :id="`product-mobile-${category}`">{{ item.name }}</span>
                   </NuxtLink>
                 </VListItemTitle> 
                 <template #append>
@@ -389,6 +389,8 @@
                     : 'mdi-plus'"
                     size="20"
                     @click="toggleGroupFn(index, item.name)"
+                    :aria-label="openedGroups.includes(index) ? `Colapsar ${item.name}` : `Expandir ${item.name}`"
+                    :aria-labelledby="`product-label-${category}`"
                   />
                 </template>
               </VListItem>
@@ -398,8 +400,8 @@
               v-for="(k, index2) in categories[index].children"
               :key="index2"
               class="style-menu-mobile">
-              <VListItem role="listitem" class="subtitle-menu">
-                <NuxtLink aria-label="item-product"
+              <VListItem class="subtitle-menu">
+                <NuxtLink
                     :to="{
                       name: 'products',
                       query: {
@@ -419,10 +421,10 @@
       </VList>
         
       <!--MENU SERVICIOS MOBILE-->
-      <VList v-model:opened="panelCat" class="pb-0" :ripple="false">
+      <VList aria-label="Menu de Servicios mobile" v-model:opened="panelCat" class="pb-0" :ripple="false">
         <VListItem>
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
-            <span class="d-block title-menu">SERVICIOS</span>
+            <h2 class="d-block title-menu">SERVICIOS</h2>
             <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
               <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
             </svg>
@@ -450,9 +452,10 @@
                   <NuxtLink
                     :to="{
                       name: 'categories-slug',
-                      params: {slug: item.slug}
+                      params: { slug: item.slug }
                     }"  
-                    class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
+                    class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow"
+                    :aria-label="`${item.name}, ${openedGroups.includes(index) ? 'submenú abierto' : 'submenú cerrado'}`">
                     <span class="d-block title-menu">{{ item.name }}</span>
                   </NuxtLink>
                 </VListItemTitle> 
@@ -464,6 +467,7 @@
                     : 'mdi-plus'"
                     size="20"
                     @click="toggleGroupFn(index, item.name)"
+                    :aria-label="openedGroups.includes(index) ? `Colapsar ${item.name}` : `Expandir ${item.name}`"
                   />
                 </template>
               </VListItem>
@@ -506,19 +510,21 @@
       <Loader :isLoading="isLoading"/>
       <!-- 👉 Title -->
       <div class="d-flex align-center pa-4 pa-md-6 pb-1 pb-md-1">
-        <h6 class="text-h6">
+        <h2 class="text-h6">
           Shopping Cart
-        </h6>
+        </h2>
 
         <VSpacer />
 
         <!-- 👉 Close btn -->
         <VBtn
-          icon="mdi-close-circle-outline"
           variant="text"
           color="primary"
           @click="isDrawerOpen = false"
-        />
+          aria-label="Cerrar carrito de compras">
+          <span class="tw-hidden">Cerrar modal</span> 
+          <VIcon icon="mdi-close-circle-outline" />
+        </VBtn>
       </div>
       <VDivider class="mt-2 mt-md-4"/>
       <PerfectScrollbar :options="{ wheelPropagation: false }">
@@ -557,7 +563,7 @@
         <VDivider class="mt-4"/>
         <div class="pa-2">
           <div class="d-flex px-3">
-            <span class="subtotal">SUBTOTAL</span>
+            <span class="tw-text-tertiary subtotal">SUBTOTAL</span>
             <VSpacer />
             <span>${{ formatNumber(subTotal) }}</span>
           </div>
@@ -585,7 +591,7 @@
         <VRow no-gutters v-if="!isMobile">
           <VCol cols="9" class="d-flex">
             <NuxtLink to="/" class="tw-no-underline tw-text-white ms-2 me-8">
-              <img :src="logo" width="255" alt="logo" cover/>
+              <img :src="logo" width="255" alt="Logo de PartyMax - Ir a la página de inicio" cover/>
             </NuxtLink>
             <VSpacer />
             <VTextField
@@ -594,7 +600,9 @@
               placeholder="Quiero..."
               :color="color"
               flat
-              variant="solo">
+              variant="solo"
+              id="search-input"
+              aria-label="Buscar...">
               <template v-slot:append-inner>
                 <VBtn @click="search" class="tw-bg-primary tw-text-white h-100 search-button button-hover">Buscar</VBtn>
               </template>
@@ -602,65 +610,71 @@
           </VCol>
           <VCol cols="3" class="d-flex align-center align-items-stretch flex-shrink-0">
             <VSpacer />
-            <span 
-                class="index heart"
-                :class="(name === null) ? 'ms-n70 me-5': 'me-5'" @click="redirect('dashboard-favorites')">
-                <heart />
-            </span>
-            <span icon class="me-3 shoppinp_cart" @click="isDrawerOpen = true">
+            <button 
+                class="index heart" aria-label="Mis favoritos"
+                :class="(name === null) ? 'ms-n70 me-5': 'me-5'" @click="redirect('favorites')">
+                <heart aria-hidden="true" />
+            </button>
+            <button aria-label="Abrir carrito de compras" icon class="me-3 shoppinp_cart" @click="isDrawerOpen = true">
               <VBadge
                 color="primary"
+                aria-label="Abrir carrito de compras"
                 :content="cart_products"
                 :model-value="!!cart_products"
                 location="end top"
               >
-                <shoppinp_cart />
+                <shoppinp_cart aria-hidden="true" />
               </VBadge>
-            </span>
+            </button>
             <div class="d-flex user-text">
-              <span v-if="name === null" class="user ms-2">
-                <user />
-              </span>
+              <button v-if="name === null" aria-label="Iniciar Sesion o Registrarse" class="user ms-2">
+                <user aria-hidden="true" />
+              </button>
               <VMenu v-else>
                 <template v-slot:activator="{ props }">
-                  <span class="user ms-2 me-3" v-bind="props">
-                    <user />
-                  </span>
+                  <button 
+                    class="user ms-2 me-3" 
+                    v-bind="props"
+                    aria-label="Menú de usuario"
+                    aria-haspopup="true"
+                  >
+                    <user aria-hidden="true" />
+                  </button>
                 </template>
-                <VList>
-                  <VListItem role="listitem" class="px-0">
+                <VList aria-label="Opciones de usuario" class="px-0">
+                  <VListItem class="px-0">
                     <VListItemTitle class="px-5"><b>Hola</b></VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div tw-text-primary">{{name}}</VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard' }">
+                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'dashboard' }">
                         Dashboard
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard-profile' }">
+                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'profile' }">
                         Mi Perfil
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard-purchases' }">
+                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'purchases' }">
                         Compras
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard-coupons' }">
+                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'coupons' }">
                         Cupones
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div">
-                      <NuxtLink class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard-favorites' }">
+                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'favorites' }">
                         Mis favoritos
                       </NuxtLink>
                     </VListItemTitle>
-                    <VListItemTitle class="px-5 mt-2 tw-text-gray hover:tw-text-primary" @click="logout">Cerrar Sesión</VListItemTitle>
+                    <VListItemTitle class="px-5 mt-2 tw-text-gray " @click="logout">Cerrar Sesión</VListItemTitle>
                   </VListItem>
                 </VList>
               </VMenu>
-              <NuxtLink class="link-header" :to="{ name: 'register'}" aria-label="Ingresar o Registrarme">
+              <NuxtLink class="link-header" :to="{ name: 'register'}">
                 <span class="d-flex align-center tw-text-tertiary font-size-14 ms-2 text-regi" v-if="name === null">
                   Ingresar o Registrarme
                 </span>
@@ -671,7 +685,7 @@
         <VRow no-gutters v-else class="px-3">
           <VCol cols="6" class="d-flex">
             <NuxtLink to="/" class="tw-no-underline tw-text-white">
-              <img :src="logo" width="200" height="52" alt="logo" cover/>
+              <img :src="logo" width="200" height="52" alt="Logo de PartyMax - Ir a la página de inicio" cover/>
             </NuxtLink>
           </VCol>
           <VCol cols="6" class="d-flex align-center align-items-stretch flex-shrink-0 iconsMobile">
@@ -702,35 +716,35 @@
                   </span>
                 </template>
                 <VList>
-                  <VListItem role="listitem" class="px-0">
+                  <VListItem class="px-0">
                     <VListItemTitle class="px-5"><b>Hola</b></VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div tw-text-primary">{{name}}</VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard' }">
+                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'dashboard' }">
                         Dashboard
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard-profile' }">
+                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'profile' }">
                         Mi Perfil
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard-purchases' }">
+                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'purchases' }">
                         Compras
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard-coupons' }">
+                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'coupons' }">
                         Cupones
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div">
-                      <NuxtLink class="link-header tw-text-gray hover:tw-text-primary" :to=" { name : 'dashboard-favorites' }">
+                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'favorites' }">
                         Mis favoritos
                       </NuxtLink>
                     </VListItemTitle>
-                    <VListItemTitle class="px-5 mt-2 tw-text-gray hover:tw-text-primary" @click="logout">Cerrar Sesión</VListItemTitle>
+                    <VListItemTitle class="px-5 mt-2 tw-text-gray" @click="logout">Cerrar Sesión</VListItemTitle>
                   </VListItem>
                 </VList>
               </VMenu>
@@ -739,9 +753,9 @@
         </VRow>
       </VContainer>
     </VAppBar>
-    <VAppBar flat class="tw-bg-primary d-print-none" :class="classFixed" ref="fixedSectionRef">
-      <VContainer class="p-0 tw-text-white d-flex justify-space-around align-center" v-if="!isMobile">
-        <div class="hover:tw-text-yellow">
+    <VAppBar flat class="d-print-none tw-border-y tw-border-grey_2" :class="classFixed" ref="fixedSectionRef">
+      <VContainer class="p-0 tw-text-tertiary d-flex justify-space-around align-center" v-if="!isMobile">
+        <div>
           <VMenu 
             v-model="menuOpen"
             transition="slide-x-transition" 
@@ -749,32 +763,42 @@
             :close-on-content-click="false"
             @update:modelValue="chanceMenu">
             <template  v-slot:activator="{ props }">
-              <div v-bind="props" class="d-flex">
-                <VAppBarNavIcon variant="text" />
-                <div class="pt-3">
-                  <span class="font-size-16 me-7">Productos</span>
-                </div>
-              </div>
+              <button 
+                v-bind="props"
+                class="d-flex menu-trigger"
+                aria-haspopup="true"
+                aria-expanded="menuOpen"
+                aria-controls="products-menu"
+                @keydown.enter="menuOpen = true"
+                @keydown.escape="menuOpen = false"
+                aria-label="Menú Productos"
+              >
+                <VIcon icon="mdi-menu" class="me-3" aria-hidden="true"/>
+                <h2 class="pt-1 font-size-16 me-7">Productos</h2>
+              </button>
             </template>
             <VCard class="style-menu" :width="width" @mouseleave="closeMenuOnMouseLeave">
               <VRow no-gutters>
                 <VCol cols="12" :md="cols" class="py-5 pr-3">
-                  <VList role="list" aria-label="Lista de elementos 3" class="pb-0">
-                    <VListItem role="listitem" aria-label="list-item">
+                  <VList class="pb-0">
+                    <VListItem>
                       <VListItemTitle class="d-block lineheight">
-                        <span class="d-block title-menu">PRODUCTOS</span>
+                        <h2 class="d-block title-menu">PRODUCTOS</h2>
                         <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
                         </svg>
                       </VListItemTitle>
                     </VListItem>
-                    <VListItem   role="listitem"
+                    <VListItem
                       v-for="(item, index) in categories"
-                      :key="index">
+                      :key="index"
+                      role="none" tabindex="-1" 
+                      :id="`product-label-${category}`">
                         <div class="d-flex align-center hover-icon-right" @mouseover="openCategory(index)">
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
-                            @click="redirect_('categories-slug', item.slug)">
+                            @click="redirect_('categories', item.slug)" @keydown.enter="redirect_('categories', item.slug)"
+                            role="link" tabindex="0" :aria-label="`Ver categoría ${item.name}`">
                               <component v-if="items_products.filter(e => e.slug === item.slug).length === 1" :is="items_products.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                               <component v-else :is="icon5" class="me-3" />
                               {{ item.name }}
@@ -798,12 +822,12 @@
                   </VList>
                 </VCol>
                 <VCol cols="12" :md="cols" v-show="cols === 6" class="borderCol py-5">
-                  <VList role="list" aria-label="Lista de elementos 4" class="style-submenu mt-8">
-                    <VListItem role="listitem" aria-label="list-item"
+                  <VList class="style-submenu mt-8" :aria-labelledby="`product-label-${category}`" role="menu">
+                    <VListItem
                       v-for="(i, index2) in categories[category].children"
                       :key="index2"
                       @click="closeMenu">
-                      <NuxtLink aria-label="item-menu"
+                      <NuxtLink
                         :to="{
                           name: 'products',
                           query: {
@@ -822,7 +846,7 @@
           </VMenu>
         </div>
       <!-----------------------SERVICIOS MENÚ------------------------------->
-        <div class="hover:tw-text-yellow">
+        <div class="">
           <VMenu 
             v-model="menuOpenS"
             transition="slide-x-transition" 
@@ -830,20 +854,27 @@
             :close-on-content-click="false"
             @update:modelValue="chanceMenuS">
             <template  v-slot:activator="{ props }">
-              <div v-bind="props" class="d-flex">
-                <VAppBarNavIcon variant="text" />
-                <div class="pt-3">
-                  <span class="font-size-16 me-7">Servicios</span>
-                </div>
-              </div>
+              <button 
+                v-bind="props"
+                class="d-flex menu-trigger"
+                aria-haspopup="true"
+                aria-expanded="menuOpen"
+                aria-controls="products-menu"
+                @keydown.enter="menuOpen = true"
+                @keydown.escape="menuOpen = false"
+                aria-label="Menú Servicios"
+              >
+                <VIcon icon="mdi-menu" class="me-3" aria-hidden="true"/>
+                <h2 class="pt-1 font-size-16 me-7 font-light">Servicios</h2>
+              </button>
             </template>
             <VCard class="style-menu" :width="width" @mouseleave="closeMenuOnMouseLeave">
               <VRow no-gutters>
                 <VCol cols="12" :md="cols" class="py-5 pr-3">
                   <VList class="pb-0">
-                    <VListItem>
+                    <VListItem >
                       <VListItemTitle class="d-block lineheight">
-                        <span class="d-block title-menu">SERVICIOS</span>
+                        <h2 class="d-block font-light title-menu">SERVICIOS</h2>
                         <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
                         </svg>
@@ -851,11 +882,12 @@
                     </VListItem>
                     <VListItem  
                       v-for="(item, index) in services"
-                      :key="index">
+                      :key="index" tabindex="-1" 
+                      :id="`service-label-${index}`" role="menu">
                         <div class="d-flex align-center hover-icon-right" @mouseover="openService(index)">
                           <span v-if="item.children.length > 0"
                             class="subtitle-menu d-flex align-center"
-                            @click="redirect_('categories-slug', item.slug)">
+                            @click="redirect_('categories', item.slug)" @keydown.enter="redirect_('categories', item.slug)" aria-label="Subservicios">
                               <component v-if="items_services.filter(e => e.slug === item.slug).length === 1" :is="items_services.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                               <component v-else :is="icon5" class="me-3" />
                               {{ item.name }} 
@@ -866,14 +898,14 @@
                               query: {
                                 category: item.slug
                               }
-                            }" 
+                            }"
                             class="subtitle-menu d-flex align-center tw-no-underline" v-else>
                             <component v-if="items_services.filter(e => e.slug === item.slug).length === 1" :is="items_services.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                             <component v-else :is="icon5" class="me-3" />
                             {{ item.name }}
                           </NuxtLink> 
                           <VSpacer />
-                          <icon_right v-if="item.children.length > 0"/>  
+                          <icon_right v-if="item.children.length > 0" :aria-label="openedGroups.includes(index) ? 'Submenú expandido' : 'Submenú colapsado'"/>  
                         </div>
                     </VListItem>
                   </VList>
@@ -883,7 +915,8 @@
                     <VListItem 
                       v-for="(i, index2) in services[category].children"
                       :key="index2"
-                      @click="closeMenuS">
+                      @click="closeMenuS"
+                      :aria-labelledby="`service-label-${category}`" role="menu">
                       <NuxtLink
                         :to="{
                           name: 'services',
@@ -905,30 +938,30 @@
       <!---------FIN SERVICIOS MENÚ--------------------------->
         <VSpacer />
 
-        <NuxtLink aria-label="item-about" to="/about" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Quiénes somos</NuxtLink>
+        <NuxtLink to="/about" class="ms-5 tw-text-tertiary tw-no-underline ">Quiénes somos</NuxtLink>
         <VDivider class="hr" vertical/>
-        <NuxtLink aria-label="item-blog" to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">Blog</NuxtLink>
+        <NuxtLink to="/blogs" class="ms-5 tw-text-tertiary tw-no-underline ">Blog</NuxtLink>
         <VDivider class="hr" vertical/>
-        <NuxtLink aria-label="item-help" to="/help" class="ms-5 tw-no-underline tw-text-white me-3 hover:tw-text-yellow">Preguntas frecuentes</NuxtLink>
+        <NuxtLink to="/help" class="ms-5 tw-text-tertiary tw-no-underline me-3 ">Preguntas frecuentes</NuxtLink>
 
       </VContainer>
       <VContainer class="p-0 tw-text-white d-flex" v-else>
         <div class="hover:tw-text-yellow">
-          <VAppBarNavIcon variant="text" @click.stop="drawer = !drawer" class="w-100 h-100 me-2" aria-label="menu"/> 
+          <VAppBarNavIcon variant="text" @click.stop="drawer = !drawer" class="w-100 h-100 me-2 tw-text-tertiary" aria-label="menu"/> 
         </div>
         <VTextField
           v-model="textSearch"
           class="me-3"
           placeholder="Quiero..."
-          :color="color"
+          label="Buscar productos" :color="color"
           flat
           variant="solo">
           <template v-slot:append-inner>
-            <VBtn 
-              aria-label="search"
-              icon="mdi-magnify" 
-              @click="search" 
-              class="tw-bg-white tw-text-primary h-100 search-button button-hover"
+            <VBtn
+              aria-label="Buscar"
+              icon="mdi-magnify"
+              @click="search"
+              class="tw-bg-primary tw-text-white tw-font-bold h-100 search-button button-hover"
             />
           </template>
         </VTextField>
@@ -951,10 +984,13 @@
 
 <style scoped>
 
+  h2 {
+    font-weight: normal;
+  }
+
   .subtotal {
     font-size: 16px;
     font-weight: 600;
-    color: #0A1B33;
   }
 
   .btn-register {
@@ -967,7 +1003,7 @@
 
   .btn-order {
     border-radius: 32px;
-    border: 1px solid var(--Maastricht-Blue, #0A1B33);
+    border: 1px solid var(--Maastricht-tertiary, #0A1B33);
     font-size: 14px;
     font-style: normal;
     font-weight: 700;
@@ -976,8 +1012,8 @@
   }
 
   .btn-order:hover {
-    border: 1px solid var(--Maastricht-Blue, #0A1B33) !important;
-    background: var(--Maastricht-Blue, #0A1B33) !important;
+    border: 1px solid var(--Maastricht-tertiary, #0A1B33) !important;
+    background: var(--Maastricht-tertiary, #0A1B33) !important;
     color: #FFFFFF!important;
   }
 
@@ -1063,23 +1099,23 @@
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     font-size: 11.5px;
+    font-weight: bold;
     padding-top: 2px;
   }
 
   .v-text-field::v-deep(.v-field) { 
     border-radius: 100px;
-    border: 1.5px solid #FF0090 !important;
+    border: 1.5px solid #0A1B33 !important;
     height: 43px;
   } 
 
   .v-text-field::v-deep(::placeholder) { 
-    color: #FF0090 !important;
+    color: #999999 !important;
     opacity: inherit;
   }
 
   .v-text-field::v-deep(input) { 
     padding-top: 0 !important;
-    color: #FF0090 !important;
   }
 
   .button-hover:hover {
@@ -1247,11 +1283,11 @@
 
     .v-text-field::v-deep(.v-field__input) { 
       min-height: 27px;
-      background-color: #FF0090;
+      border: 1px solid #0A1B33 !important;
     }
     
     .v-text-field::v-deep(::placeholder) { 
-      color: #FFFFFF !important;
+      color: #0A1B33 !important;
       opacity: inherit;
     }
 
@@ -1275,7 +1311,9 @@
     }
 
     .search-button {
-      width: 36px
+      width: 36px;
+      border: 1px solid #0A1B33 !important;
+      height: 27px !important;
     }
 
     .button-hover:hover {

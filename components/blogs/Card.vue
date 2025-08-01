@@ -207,7 +207,6 @@ watchEffect(() => {
 
         :deep(img)  {
             max-width: 100%;
-            cursor: pointer;
         }
 
         :deep(a){

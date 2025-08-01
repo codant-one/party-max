@@ -19,7 +19,6 @@ const props = defineProps({
 })
 
 const config = useRuntimeConfig()
-
 const image = ref(null)
 const wholesale_price = ref(null)
 const price_for_sale = ref(null)
@@ -31,6 +30,8 @@ const slug = ref(null)
 const color = ref(null)
 const quantity = ref(null)
 const existence_whole = ref(false)
+
+const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
 
 watchEffect(() => {
 
@@ -63,7 +64,10 @@ watchEffect(() => {
                         <img
                             :width="50"
                             :src="baseURL + image" 
-                            class="img-prod" />
+                            :alt="name"
+                            class="img-prod"
+                            loading="lazy"
+                        />
                     </VCardText>
                 </VCol>
                 <VCol cols="6" md="6" class="d-flex justify-content-center align-center my-md-0 ps-3 ps-md-0">

@@ -1,4 +1,4 @@
-<script  setup>
+<script setup>
 
 import { formatNumber } from '@formatters'
 import { useRuntimeConfig } from '#app'
@@ -15,6 +15,7 @@ const props = defineProps({
 })
 
 const route = useRoute()
+const config = useRuntimeConfig()
 
 const { isMobile } = useDevice()
 const image = ref(null)
@@ -24,16 +25,15 @@ const store = ref(null)
 const rating = ref(null)
 const slug = ref(null)
 
-const config = useRuntimeConfig()
-const baseURL = ref(config.public.appDomainApiUrl + '/storage/')
+const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
 
 watchEffect(() => {
 
     if (!(Object.entries(props.service).length === 0) && props.service.constructor === Object) {
         image.value = props.service.image
-        price.value = props.service.cupcakes.length > 0 ? props.service.cupcakes[0].price : props.service.price
+        price.value = props.service.first_cupcake ? props.service.first_cupcake.price : props.service.price
         name.value = props.service.name.toLowerCase().replace(/(^|\s)\p{L}/gu, (match) => match.toUpperCase());
-        store.value = props.service.user.user_detail.store_name ?? (props.service.user.supplier?.company_name ?? (props.service.user.name + ' ' + (props.service.user.last_name ?? '')))
+        store.value = props.service.store ?? (props.service.company ?? props.service.user)
         rating.value = props.service.rating
         slug.value = props.service.slug
     }
@@ -44,7 +44,7 @@ watchEffect(() => {
 <template>
     <NuxtLink
         :to="{
-            name: 'serviceDetail',
+            name: 'services-slug',
             params: { slug: slug },
             query: {  
                 category: route.query.category,
@@ -57,8 +57,10 @@ watchEffect(() => {
             <VCardText class="border-img ms-1 mb-2 p-0">
                 <img 
                     class="img-prod"
-                    :src="baseURL + image" 
-                     />
+                    :alt="name"
+                    :src="baseURL + image"
+                    loading="lazy" 
+                />
             </VCardText>
             <VCardText>
                 <span v-if="name.length > 50 && !isMobile" class="d-block text_2 tw-text-tertiary title-service">
