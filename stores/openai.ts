@@ -15,8 +15,7 @@ export const useOpenaiStores = defineStore('openai', {
             const { show } = Openai();
             return show(data)
                 .then((response) => {
-                    this.data = response.data.data;
-                    return Promise.resolve(response.data.data);
+                    return Promise.resolve(response.data);
                 })
                 .catch((error) => {
                     return Promise.reject(error);

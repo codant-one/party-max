@@ -612,7 +612,7 @@
             <VSpacer />
             <button 
                 class="index heart" aria-label="Mis favoritos"
-                :class="(name === null) ? 'ms-n70 me-5': 'me-5'" @click="redirect('favorites')">
+                :class="(name === null) ? 'ms-n70 me-5': 'me-5'" @click="redirect('dashboard-favorites')">
                 <heart aria-hidden="true" />
             </button>
             <button aria-label="Abrir carrito de compras" icon class="me-3 shoppinp_cart" @click="isDrawerOpen = true">
@@ -651,22 +651,22 @@
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'profile' }">
+                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'dashboard-profile' }">
                         Mi Perfil
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'purchases' }">
+                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'dashboard-purchases' }">
                         Compras
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'coupons' }">
+                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'dashboard-coupons' }">
                         Cupones
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div">
-                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'favorites' }">
+                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'dashboard-favorites' }">
                         Mis favoritos
                       </NuxtLink>
                     </VListItemTitle>
@@ -690,7 +690,7 @@
           </VCol>
           <VCol cols="6" class="d-flex align-center align-items-stretch flex-shrink-0 iconsMobile">
             <VSpacer />
-            <span class="index heart me-3" @click="redirect('favorites')">
+            <span class="index heart me-3" @click="redirect('dashboard-favorites')">
               <heart />
             </span>
             <span icon class="shoppinp_cart me-3" @click="isDrawerOpen = true">
@@ -725,22 +725,22 @@
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'profile' }">
+                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'dashboard-profile' }">
                         Mi Perfil
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'purchases' }">
+                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'dashboard-purchases' }">
                         Compras
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'coupons' }">
+                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'dashboard-coupons' }">
                         Cupones
                       </NuxtLink>
                     </VListItemTitle>
                     <VListItemTitle class="px-5 mb-3 pb-3 line-div">
-                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'favorites' }">
+                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'dashboard-favorites' }">
                         Mis favoritos
                       </NuxtLink>
                     </VListItemTitle>

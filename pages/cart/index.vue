@@ -9,7 +9,7 @@ import { useCountriesStores } from '@/stores/countries'
 import { useProvincesStores } from '@/stores/provinces'
 import { useOrdersStores } from '@/stores/orders'
 import { usePaymentsStores } from '@/stores/payments'
-import { useDocumentTypesStore } from '@/stores/document-types'
+import { useDocumentTypesStores } from '@/stores/document-types'
 import { useMiscellaneousStores } from "@/stores/miscellaneous";
 import { useCouponsStores } from '@/stores/coupons'
 import { Pagination } from 'swiper/modules';
@@ -54,7 +54,7 @@ const provincesStores = useProvincesStores()
 const countriesStores = useCountriesStores()
 const ordersStores = useOrdersStores()
 const paymentsStores = usePaymentsStores()
-const documentTypesStores = useDocumentTypesStore()
+const documentTypesStores = useDocumentTypesStores()
 const miscellaneousStores = useMiscellaneousStores();
 const couponsStores = useCouponsStores();
 const route = useRoute()
@@ -668,7 +668,7 @@ const sendPayU = async (billingDetail) => {
             formData.append('buyerFullName', billingDetail.name + ' ' + billingDetail.last_name);
             formData.append('mobilePhone', billingDetail.phone);
             formData.append('telephone', billingDetail.phone);
-            formData.append('logoUrl', import.meta.env.VITE_APP_DOMAIN_API_URL + '/logos/slogan.png');
+            formData.append('logoUrl', config.public.APP_DOMAIN_API_URL + '/logos/slogan.png');
             formData.append('shippingAddress', billingDetail.address);
             formData.append('shippingCity', billingDetail.city);
             formData.append('shippingCountry', 'CO');

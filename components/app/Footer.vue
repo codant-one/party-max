@@ -45,7 +45,7 @@ watchEffect(fetchData)
 
 async function fetchData() {
   isConnected.value = false
-  console.log('route.name', route.name)
+
   if(route.name === 'about' || route.name === 'help' || 
       route.name === 'products' || route.name === 'products-slug' || 
       route.name === 'services' || route.name === 'services-slug') {
@@ -54,12 +54,12 @@ async function fetchData() {
     background.value = 'tw-bg-white'
   }
 
-  if(route.name === 'dashboardHome' || route.name === 'profile' ||
-     route.name === 'purchases' || route.name === 'coupons' ||
-     route.name === 'favorites' || route.name === 'information_client' ||
-     route.name === 'security_client' || route.name === 'address' ||
-     route.name === 'detail_pusher' || route.name === 'rating_products' ||
-     route.name === 'event_planner') {
+  if(route.name === 'dashboard' || route.name === 'dashboard-profile' ||
+     route.name === 'dashboard-purchases' || route.name === 'dashboard-coupons' ||
+     route.name === 'dashboard-favorites' || route.name === 'dashboard-information' ||
+     route.name === 'dashboard-security' || route.name === 'dashboard-address' ||
+     route.name === 'dashboard-purchases-id' || route.name === 'dashboard-rating-id' ||
+     route.name === 'event-planner') {
     isConnected.value = true
   }
 }

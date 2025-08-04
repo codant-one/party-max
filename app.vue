@@ -39,7 +39,7 @@ async function fetchData() {
 console.log('route.name', route.name)
   if(route.name === 'dashboard' || route.name === 'register_confirm') {
     background.value = 'tw-bg-green'
-  } else if(route.name === 'index' || route.name === 'categories-slug' || route.name === 'blogs' || route.name === 'blogs-slug' || route.name === 'event_planner') {
+  } else if(route.name === 'index' || route.name === 'categories-slug' || route.name === 'blogs' || route.name === 'blogs-slug' || route.name === 'event-planner') {
     background.value = 'tw-bg-light_cyan_2'
   } else {
     background.value = 'tw-bg-white'
@@ -47,9 +47,9 @@ console.log('route.name', route.name)
 
   if(route.name === 'wholesalers')
     bg = categories
-  else if(route.name === 'register' || route.name === 'type_client' || route.name === 'form_client' || 
-          route.name === 'form_supplier' || route.name === 'login' || route.name === 'success_person' || 
-          route.name === 'success_company' || route.name === 'forgot_password' || route.name === 'reset_password') {
+  else if(route.name === 'register' || route.name === 'type_client' || route.name === 'clients-form_client' || 
+          route.name === 'clients-form_supplier' || route.name === 'login' || route.name === 'clients-success_register_person' || 
+          route.name === 'clients-success_register_company' || route.name === 'clients-forgot_password' || route.name === 'clients-reset_password') {
     bg = register
     repeat = 'no-repeat'
     size = 'cover'
