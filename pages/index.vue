@@ -1256,7 +1256,7 @@ useHead({
     &::after {
       content: '';
       position: absolute;
-      top: 43%;
+      top: 45%;
       transform: translate(-50%, -50%);
       width: 6px;  /* Tamaño del círculo rosado */
       height: 6px;
