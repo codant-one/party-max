@@ -533,8 +533,8 @@
           class="mb-10 card-timeline px-0">
           <VCardText class="d-flex flex-column align-center text-center justify-content-center">
             <VCardItem class="d-block align-center text-center justify-content-center cart-svg">
-              <cart v-if="!isMobile" class="d-block mx-auto mb-5"/>
-              <cart_mobile v-else class="d-block mx-auto mb-5"/>
+              <cart v-if="isDesktop" class="d-block mx-auto mb-5"/>
+              <cart_mobile v-if="isMobile" class="d-block mx-auto mb-5"/>
               <span class="d-block cart-empty">Tu carrito esta vacio.</span>
             </VCardItem>
           </VCardText>

@@ -48,7 +48,7 @@ const config = useRuntimeConfig()
 const homeStores = useHomeStores();
 
 const { $metapixel } = useNuxtApp()
-const { isMobile } = useDevice();
+const { isMobile, isDesktop } = useDevice();
 
 const isLoading = ref(true)
 const tab = ref('1')
@@ -363,7 +363,7 @@ async function fetchData() {
         bread.value.push(subcategory);
       }
 
-      if(!isMobile) {
+      if(isDesktop) {
         const product_ = {
           title: "Producto",
           disabled: true,
@@ -656,13 +656,18 @@ const buildEmbedUrl = (url) => {
                 >
                 <swiper-slide v-for="(slide, index) in mediaSlides" :key="index">
                   <template v-if="slide.type === 'image'">
-                    <inner-image-zoom
-                      :src="slide.url"
-                      :zoomSrc="slide.url"
-                      :zoomPreload="true"
-                      zoomScale="2"
-                      zoomType="hover"
-                    />
+                    <div v-if="isDesktop">
+                      <inner-image-zoom
+                        :src="slide.url"
+                        :zoomSrc="slide.url"
+                        :zoomPreload="true"
+                        zoomScale="2"
+                        zoomType="hover"
+                      />
+                    </div>
+                    <div v-if="isMobile" class="swiper-zoom-container">
+                      <img :src="slide.url" :alt="'slide-'+index" class="zoom-in" @click="isHoverVisible = true"/>
+                    </div>
                   </template>
                   <iframe
                     v-else
@@ -870,7 +875,7 @@ const buildEmbedUrl = (url) => {
             </VCol> 
           </VRow>
         </VCardTitle>
-        <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
+        <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && isDesktop">
           <Product1 
             v-for="(product, i) in data.recommendations"
             :key="i"
