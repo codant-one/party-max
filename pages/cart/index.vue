@@ -274,7 +274,7 @@ async function fetchData() {
     await documentTypesStores.fetchDocumentTypes()
     documentTypes.value = documentTypesStores.getData
 
-    const response = await axios.get('http://checkip.amazonaws.com/');
+    const response = await axios.get('https://checkip.amazonaws.com/');
     ip.value = response.data
 
     notAllowedIPs.value = await miscellaneousStores.ips();
