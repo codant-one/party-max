@@ -1223,6 +1223,31 @@ const buildEmbedUrl = (url) => {
     pointer-events: none !important;
   }
 
+  .mySwiper2:deep(.swiper-button-next),
+  .mySwiper2:deep(.swiper-button-prev) {
+    background-color: #FFC549 !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    border-radius: 11px !important;
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .mySwiper2:deep(.swiper-button-next) {
+    background-image: url('@/assets/icons/arrow-square-right.svg') !important;
+    right: 2% !important;
+  }
+
+  .mySwiper2:deep(.swiper-button-prev) {
+    background-image: url('@/assets/icons/arrow-square-left.svg') !important;
+    left: 2% !important;
+  }
+
+  .mySwiper2:deep(.swiper-button-next::after),
+  .mySwiper2:deep(.swiper-button-prev::after) {
+      content: '' !important; /* Elimina flecha default */
+  }
+
   .zoom-in:hover {
     cursor: zoom-in;
   }
