@@ -931,8 +931,9 @@ const buildEmbedUrl = (url) => {
     cursor: zoom-in;
   }
 
-  .MySwiper2:deep(.swiper-button-next),
-  .MySwiper2:deep(.swiper-button-prev) {
+  .mySwiper2:deep(.swiper-button-next),
+  .mySwiper2:deep(.swiper-button-prev) {
+    background-color: #FFC549 !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
     border-radius: 11px !important;
@@ -940,18 +941,18 @@ const buildEmbedUrl = (url) => {
     height: 40px !important;
   }
 
-  .MySwiper2:deep(.swiper-button-next) {
+  .mySwiper2:deep(.swiper-button-next) {
     background-image: url('@/assets/icons/arrow-square-right.svg') !important;
     right: 2% !important;
   }
 
-  .MySwiper2:deep(.swiper-button-prev) {
+  .mySwiper2:deep(.swiper-button-prev) {
     background-image: url('@/assets/icons/arrow-square-left.svg') !important;
     left: 2% !important;
   }
 
-  .MySwiper2:deep(.swiper-button-next::after),
-  .MySwiper2:deep(.swiper-button-prev::after) {
+  .mySwiper2:deep(.swiper-button-next::after),
+  .mySwiper2:deep(.swiper-button-prev::after) {
       content: '' !important; /* Elimina flecha default */
   }
 
