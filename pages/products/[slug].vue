@@ -47,6 +47,7 @@ const favoritesStores = useFavoritesStores()
 const config = useRuntimeConfig()
 const homeStores = useHomeStores();
 
+const { $metapixel } = useNuxtApp()
 const { isMobile } = useDevice();
 
 const isLoading = ref(true)
@@ -196,6 +197,13 @@ if (productData.value) {
       },
     ],
   });
+
+  $metapixel.trackEvent('ViewContent', {
+    content_ids: [productData.value.product.id],
+    content_type: 'product',
+    value: productData.value.product.price_for_sale,
+    currency: 'COP'
+  })
 }
 
 watchEffect(fetchData)
