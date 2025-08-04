@@ -21,16 +21,16 @@ import location from '@assets/icons/location.svg';
 import sold from '@assets/icons/sold.svg';
 import tracking from '@assets/icons/tracking.svg';
 
-import t_1 from '@assets/images/t_1.jpg';
-import t_2 from '@assets/images/t_2.jpg';
-import t_3 from '@assets/images/t_3.jpg';
-import t_4 from '@assets/images/t_4.jpg';
-import t_5 from '@assets/images/t_5.jpg';
+import t_1 from '@assets/images/t_1.webp';
+import t_2 from '@assets/images/t_2.webp';
+import t_3 from '@assets/images/t_3.webp';
+import t_4 from '@assets/images/t_4.webp';
+import t_5 from '@assets/images/t_5.webp';
 
-import f_1 from '@assets/images/f_1.jpg';
-import f_2 from '@assets/images/f_2.jpg';
-import f_3 from '@assets/images/f_3.jpg';
-import f_4 from '@assets/images/f_4.jpg';
+import f_1 from '@assets/images/f_1.webp';
+import f_2 from '@assets/images/f_2.webp';
+import f_3 from '@assets/images/f_3.webp';
+import f_4 from '@assets/images/f_4.webp';
 
 import check_circle from '@assets/icons/check-circle.svg';
 import error_circle from '@assets/icons/error-circle.svg';

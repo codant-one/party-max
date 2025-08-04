@@ -59,7 +59,7 @@
   const isDrawerOpen = ref(false)
 
   const isLoading = ref(false)
-  const { isMobile } = useDevice();
+  const { isMobile, isDesktop } = useDevice();
   const drawer = ref(false)
   const fixedSectionRef = ref(null)
   const classFixed = ref('second-header')
@@ -588,7 +588,7 @@
     </VNavigationDrawer>
     <VAppBar flat class="header d-print-none">
       <VContainer class="tw-bg-white">
-        <VRow no-gutters v-if="!isMobile">
+        <VRow no-gutters v-if="isDesktop">
           <VCol cols="9" class="d-flex">
             <NuxtLink to="/" class="tw-no-underline tw-text-white ms-2 me-8">
               <img :src="logo" width="255" alt="Logo de PartyMax - Ir a la página de inicio" cover/>
@@ -682,7 +682,7 @@
             </div>
           </VCol>
         </VRow>
-        <VRow no-gutters v-else class="px-3">
+        <VRow no-gutters v-if="isMobile" class="px-3">
           <VCol cols="6" class="d-flex">
             <NuxtLink to="/" class="tw-no-underline tw-text-white">
               <img :src="logo" width="200" height="52" alt="Logo de PartyMax - Ir a la página de inicio" cover/>
@@ -754,7 +754,7 @@
       </VContainer>
     </VAppBar>
     <VAppBar flat class="d-print-none tw-border-y tw-border-grey_2" :class="classFixed" ref="fixedSectionRef">
-      <VContainer class="p-0 tw-text-tertiary d-flex justify-space-around align-center" v-if="!isMobile">
+      <VContainer class="p-0 tw-text-tertiary d-flex justify-space-around align-center" v-if="isDesktop">
         <div>
           <VMenu 
             v-model="menuOpen"
@@ -945,7 +945,7 @@
         <NuxtLink to="/help" class="ms-5 tw-text-tertiary tw-no-underline me-3 ">Preguntas frecuentes</NuxtLink>
 
       </VContainer>
-      <VContainer class="p-0 tw-text-white d-flex" v-else>
+      <VContainer class="p-0 tw-text-white d-flex" v-if="isMobile">
         <div class="hover:tw-text-yellow">
           <VAppBarNavIcon variant="text" @click.stop="drawer = !drawer" class="w-100 h-100 me-2 tw-text-tertiary" aria-label="menu"/> 
         </div>
