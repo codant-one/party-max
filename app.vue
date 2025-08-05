@@ -89,22 +89,25 @@ async function fetchData() {
 <template>
   <NuxtLayout>
     <VApp> 
-      <VLayout >
-        <Filters :drawer="drawer" v-if="route.name === 'products'"/>
-        <FilterServices :drawer="drawer" v-if="route.name === 'services'"/>
-        <Header />
-        <VMain :style="backgroundStyle" :class="background">
-          <NuxtPage />
-          <noscript>
-            <iframe src="https://sst.partymax.co/ns.html?id=GTM-MPFBMPB"
-                    height="0"
-                    width="0"
-                    style="display:none;visibility:hidden">
-            </iframe>
-          </noscript>
-        </VMain>
-      </VLayout>
-      <Footer />
+      <ClientOnly>
+        <VLayout >
+        
+          <Filters :drawer="drawer" v-if="route.name === 'products'"/>
+          <FilterServices :drawer="drawer" v-if="route.name === 'services'"/>
+          <Header />
+          <VMain :style="backgroundStyle" :class="background">
+            <NuxtPage />
+            <noscript>
+              <iframe src="https://sst.partymax.co/ns.html?id=GTM-MPFBMPB"
+                      height="0"
+                      width="0"
+                      style="display:none;visibility:hidden">
+              </iframe>
+            </noscript>
+          </VMain>
+        </VLayout>
+        <Footer />
+      </ClientOnly>
     </VApp>
   </NuxtLayout>
 </template>
