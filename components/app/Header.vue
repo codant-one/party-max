@@ -365,10 +365,10 @@
               query: { category: item.slug }
             }">
             <VListItemTitle class="d-block title-menu lineheight borderList pb-2">
-              {{ item.name }}
+              <span :id="`product-mobile-${item.slug}`">{{ item.name }}</span>
             </VListItemTitle> 
           </VListItem>
-          <VListGroup v-else :value="item.name" :eager="false">
+          <VListGroup v-else :value="item.name" :eager="false" :aria-describedby="`product-mobile-${item.slug}`">
             <template #activator="{ props }">
               <VListItem role="listitem" class="items-list">
                 <VListItemTitle class="d-block lineheight borderList pb-2">
@@ -378,7 +378,9 @@
                       params: { slug: item.slug }
                     }"  
                     class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-                    <span class="d-block title-menu" :id="`product-mobile-${category}`">{{ item.name }}</span>
+                    <span class="d-block title-menu" :id="`product-mobile-${item.slug}`">
+                      {{ item.name }}
+                    </span>
                   </NuxtLink>
                 </VListItemTitle> 
                 <template #append>
@@ -390,7 +392,6 @@
                     size="20"
                     @click="toggleGroupFn(index, item.name)"
                     :aria-label="openedGroups.includes(index) ? `Colapsar ${item.name}` : `Expandir ${item.name}`"
-                    :aria-labelledby="`product-label-${category}`"
                   />
                 </template>
               </VListItem>
@@ -456,7 +457,7 @@
                     }"  
                     class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow"
                     :aria-label="`${item.name}, ${openedGroups.includes(index) ? 'submenú abierto' : 'submenú cerrado'}`">
-                    <span class="d-block title-menu">{{ item.name }}</span>
+                    <span class="d-block title-menu" :id="`service-mobile-${item.slug}`">{{ item.name }}</span>
                   </NuxtLink>
                 </VListItemTitle> 
                 <template #append>
