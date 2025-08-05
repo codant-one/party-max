@@ -28,18 +28,6 @@ const guests = ref(null)
 const responseData = ref(null);
 const imageGenerated = ref(null);
 const isLoading = ref(false)
-const listPartyTypes = ref([
-    'Cumpleaños','Halloween','Despedida de soltera','Aniversario','Graduación','Día del niño','Baby shower', 'Jubilación', 'Compromiso',
-    'Revelación de sexo', 'Fiesta de bienvenida', 'Fiesta de empresa', 'Fiesta temática', 'Fiesta sorpresa', 'Navidad', 'Año nuevo',
-    'Pascua', 'Primera comunión', 'Bautizo', 'Fiesta de 15 años', 'Matrimonio / Boda', 'Picnic / Fiesta al aire libre', 'Reencuentro familiar / amigos',
-    'Fiesta de inauguración', 'Fiesta escolar / colegio'
-])
-const listthematic = ref([
-    'Vallenata', 'Mexicana', 'Niños', 'Niñas', 'Bebes', 'Graduación', 'Deportes', 'Vaquera', 'Hora loca', 'Sorpresas', 'Disco',
-    'Superhéroes', 'Princesas', 'Selva / Safari', 'Circo', 'Espacial / Galaxia', 'Arcoíris / Unicornio', 'Piratas', 'Marina / Playa',
-    'Retro / 80s - 90s', 'Películas / Cine', 'Personajes animados', 'Animales', 'Luau / Hawaiana', 'Gamer / Videojuegos', 'Neón / Fluorescente',
-    'Fantasía / Magia', 'Rock & Roll', 'Black & White', 'Carnaval / Tropical', 'Festival de colores / Holi', 'Bosque encantado / Hadas'
-])
 
 const formatText = (text) => {
     if (Array.isArray(text)) {

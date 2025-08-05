@@ -611,11 +611,11 @@ const tab = ref('0')
             name: 'products',
             query: {
               category: 'fiestas-tematicas',
-              subcategory: 'tematica-hawaiana'
+              subcategory: 'tematica-tropical'
             }
           }" class="tw-no-underline d-block text-center zoom">
           <img :src="t_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt=""/>
-          <span class="d-block size-theme tw-text-tertiary mt-5">Hawaiana</span>
+          <span class="d-block size-theme tw-text-tertiary mt-5">Tropical</span>
         </router-link>
         <router-link 
           :to="{
@@ -672,11 +672,11 @@ const tab = ref('0')
                 name: 'products',
                 query: {
                   category: 'fiestas-tematicas',
-                  subcategory: 'tematica-hawaiana'
+                  subcategory: 'tematica-tropical'
                 }
               }" class="tw-no-underline d-block text-center zoom">
               <img :src="t_2" class="border-theme d-block" width="150" height="150" alt=""/>
-              <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Tropical</span>
             </router-link>
           </VCol>
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
