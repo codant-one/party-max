@@ -63,6 +63,7 @@ export default defineNuxtConfig({
     '~/plugins/vuetify.ts',
     '~/plugins/webfontloader.client.ts',
     '~/plugins/date-fns.client.ts',
+    '~/plugins/gtm.client.ts',
     '~/plugins/vue-config.ts'
   ],
 

@@ -95,6 +95,13 @@ async function fetchData() {
         <Header />
         <VMain :style="backgroundStyle" :class="background">
           <NuxtPage />
+          <noscript>
+            <iframe src="https://sst.partymax.co/ns.html?id=GTM-MPFBMPB"
+                    height="0"
+                    width="0"
+                    style="display:none;visibility:hidden">
+            </iframe>
+          </noscript>
         </VMain>
       </VLayout>
       <Footer />
