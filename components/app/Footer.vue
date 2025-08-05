@@ -116,6 +116,9 @@ const onSubmit = () => {
 
 <template>
   <VFooter class="text-center d-flex flex-column p-0 w-100" :class="background">
+    <label for="g-recaptcha-response" style="display: none;">
+      reCAPTCHA response
+    </label>
     <a href="https://wa.link/wvdoxg"
       target="_blank"
       class="whatsapp-float"

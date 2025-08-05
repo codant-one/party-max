@@ -8,10 +8,9 @@ import { useRoute } from 'vue-router'
 import Header from '@/components/app/Header.vue'
 import Footer from '@/components/app/Footer.vue'
 import Filters from '@/components/app/Filters.vue'
-import home from '@assets/images/home.jpg';
+import FilterServices from '@/components/app/FilterServices.vue'
 import categories from '@assets/images/categories.jpg';
 import register from '@assets/images/register.jpg';
-import blogs from '@assets/images/blogs.jpg';
 
 const authStores = useAuthStores()
 const cartStores = useCartStores()
@@ -96,6 +95,13 @@ async function fetchData() {
         <Header />
         <VMain :style="backgroundStyle" :class="background">
           <NuxtPage />
+          <noscript>
+            <iframe src="https://sst.partymax.co/ns.html?id=GTM-MPFBMPB"
+                    height="0"
+                    width="0"
+                    style="display:none;visibility:hidden">
+            </iframe>
+          </noscript>
         </VMain>
       </VLayout>
       <Footer />

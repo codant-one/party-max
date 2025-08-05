@@ -6,6 +6,9 @@ import vuetify from 'vite-plugin-vuetify';
 export default defineNuxtConfig({
   app: {
     head: {
+      htmlAttrs: {
+        lang: 'es'
+      },
       bodyAttrs: {
         class: 'tw-font-switzer_regular'
       },
@@ -60,6 +63,7 @@ export default defineNuxtConfig({
     '~/plugins/vuetify.ts',
     '~/plugins/webfontloader.client.ts',
     '~/plugins/date-fns.client.ts',
+    '~/plugins/gtm.client.ts',
     '~/plugins/vue-config.ts'
   ],
 

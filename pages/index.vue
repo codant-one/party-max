@@ -596,11 +596,11 @@ useHead({
             name: 'products',
             query: {
               category: 'fiestas-tematicas',
-              subcategory: 'tematica-hawaiana'
+              subcategory: 'tematica-tropical'
             }
           }" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Hawaiana"/>
-          <span class="d-block size-theme tw-text-tertiary mt-5">Hawaiana</span>
+          <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Tropical"/>
+          <span class="d-block size-theme tw-text-tertiary mt-5">Tropical</span>
         </NuxtLink>
         <NuxtLink 
           :to="{
@@ -657,11 +657,11 @@ useHead({
                 name: 'products',
                 query: {
                   category: 'fiestas-tematicas',
-                  subcategory: 'tematica-hawaiana'
+                  subcategory: 'tematica-tropical'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Hawaiana"/>
-              <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
+              <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica tropical"/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Tropical</span>
             </NuxtLink>
           </VCol>
           <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
@@ -739,11 +739,11 @@ useHead({
                 name: 'products',
                 query: {
                   category: 'fiestas-tematicas',
-                  subcategory: 'tematica-hawaiana'
+                  subcategory: 'tematica-tropical'
                 }
               }" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Hawaiana"/>
-              <span class="d-block size-theme tw-text-tertiary mt-2">Hawaiana</span>
+              <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Tropical"/>
+              <span class="d-block size-theme tw-text-tertiary mt-2">Tropical</span>
             </NuxtLink>
           </VCol>
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
