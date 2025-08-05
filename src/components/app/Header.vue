@@ -486,7 +486,7 @@
                     }"  
                     class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow"
                     :aria-label="`${item.name}, ${openedGroups.includes(index) ? 'submenú abierto' : 'submenú cerrado'}`">
-                    <span class="d-block title-menu">{{ item.name }}</span>
+                    <span class="d-block title-menu" :id="`service-mobile-${category}`">{{ item.name }}</span>
                   </router-link>
                 </VListItemTitle> 
                 <template #append>
@@ -498,6 +498,7 @@
                     size="20"
                     @click="toggleGroupFn(index, item.name)"
                     :aria-label="openedGroups.includes(index) ? `Colapsar ${item.name}` : `Expandir ${item.name}`"
+                    :aria-labelledby="`service-mobile-${service}`"
                   />
                 </template>
               </VListItem>
