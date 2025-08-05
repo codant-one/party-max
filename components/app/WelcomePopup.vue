@@ -24,7 +24,7 @@ function goToRegister() {
 </script>
 
 <template>
-    <VDialog v-model="show" max-width="600" transition="dialog-top-transition" role="dialog">
+    <VDialog v-model="show" max-width="600" transition="dialog-top-transition" role="dialog" id="welcome" title="Welcome">
         <VCard class="tw-relative p-0 card-welcome">
         <VCardText class="p-0 line">
             <img 
