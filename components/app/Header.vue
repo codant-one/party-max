@@ -953,7 +953,6 @@
           v-model="textSearch"
           class="me-3"
           placeholder="Quiero..."
-          label="Quiero..." :color="color"
           flat
           variant="solo">
           <template v-slot:append-inner>
@@ -1282,7 +1281,6 @@
 
     .v-text-field::v-deep(.v-field__input) { 
       min-height: 27px;
-      border: 1px solid #0A1B33 !important;
     }
     
     .v-text-field::v-deep(::placeholder) { 
@@ -1292,7 +1290,6 @@
 
     .v-text-field::v-deep(input) { 
       padding: 0 0 0 4% !important;
-      color: #FFFFFF !important;
       font-size: 13px;
       border-radius: 100px;
     }
