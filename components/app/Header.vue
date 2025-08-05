@@ -391,6 +391,7 @@
                     size="20"
                     @click="toggleGroupFn(index, item.name)"
                     :aria-label="openedGroups.includes(index) ? `Colapsar ${item.name}` : `Expandir ${item.name}`"
+                    :aria-labelledby="`product-mobile-${item.slug}`"
                   />
                 </template>
               </VListItem>
@@ -467,6 +468,7 @@
                     size="20"
                     @click="toggleGroupFn(index, item.name)"
                     :aria-label="openedGroups.includes(index) ? `Colapsar ${item.name}` : `Expandir ${item.name}`"
+                    :aria-labelledby="`service-mobile-${item.slug}`"
                   />
                 </template>
               </VListItem>
