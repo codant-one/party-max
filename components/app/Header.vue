@@ -368,7 +368,14 @@
               {{ item.name }}
             </VListItemTitle> 
           </VListItem>
-          <VListGroup v-else :value="item.name" :eager="false">
+          <VListGroup 
+            v-else
+            :id="`v-list-group--id-${item.slug}`"
+            :value="item.name"
+            :raw-id="item.slug" 
+            :eager="false"
+            ref="listGroup"
+          >
             <template #activator="{ props }">
               <VListItem class="items-list">
                 <VListItemTitle class="d-block lineheight borderList pb-2">
