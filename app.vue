@@ -89,7 +89,6 @@ async function fetchData() {
 <template>
   <NuxtLayout>
     <VApp> 
-      <ClientOnly>
         <VLayout >
         
           <Filters :drawer="drawer" v-if="route.name === 'products'"/>
@@ -107,7 +106,6 @@ async function fetchData() {
           </VMain>
         </VLayout>
         <Footer />
-      </ClientOnly>
     </VApp>
   </NuxtLayout>
 </template>
