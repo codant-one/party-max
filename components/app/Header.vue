@@ -365,6 +365,7 @@
         </VListItem>
         <template v-for="(item, index) in categories">
           <VListItem
+            role="listitem"
             v-if="categories[index]?.children.length === 0"
             :to="{
               name: 'products',
@@ -392,7 +393,7 @@
                     }"  
                     class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow"
                     :aria-label="`${item.name}, ${openedGroups.includes(index) ? 'submenú abierto' : 'submenú cerrado'}`">
-                    <span class="d-block title-menu" :id="`product-mobile-${item.slug}`">{{ item.name }} yes</span>
+                    <span class="d-block title-menu" :id="`product-mobile-${item.slug}`">{{ item.name }}</span>
                   </NuxtLink>
                 </VListItemTitle> 
                 <template #append>
