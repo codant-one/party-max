@@ -365,7 +365,6 @@
         </VListItem>
         <template v-for="(item, index) in categories">
           <VListItem
-            role="listitem"
             v-if="categories[index]?.children.length === 0"
             :to="{
               name: 'products',
