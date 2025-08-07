@@ -376,7 +376,7 @@
           </VListItem>
           <VListGroup 
             v-else
-            :id="`v-list-group--id-${item.slug}`"
+            :id="`v-list-product-group--id-${item.slug}`"
             :value="item.name"
             :raw-id="item.slug" 
             :eager="false"
@@ -459,7 +459,7 @@
             </VListItemTitle> 
           </VListItem>
           <VListGroup 
-            :id="`v-list-group--id-${item.slug}`"
+            :id="`v-list-service-group--id-${item.slug}`"
             v-else 
             :raw-id="item.slug" 
             :value="item.name" 
