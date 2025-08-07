@@ -354,8 +354,8 @@
         </VListItem>
       </VList>
 
-      <VList aria-label="Menu de Productos mobile" v-model:opened="panelCat" class="pb-0" :ripple="false">
-        <VListItem>
+      <VList role="list" aria-label="Menu de Productos mobile" v-model:opened="panelCat" class="pb-0" :ripple="false">
+        <VListItem role="listitem">
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
             <h2 class="d-block title-menu">PRODUCTOS</h2>
             <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -365,6 +365,7 @@
         </VListItem>
         <template v-for="(item, index) in categories">
           <VListItem
+            role="listitem"
             v-if="categories[index]?.children.length === 0"
             :to="{
               name: 'products',
@@ -434,8 +435,8 @@
       </VList>
         
       <!--MENU SERVICIOS MOBILE-->
-      <VList aria-label="Menu de Servicios mobile" v-model:opened="panelCat" class="pb-0" :ripple="false">
-        <VListItem>
+      <VList role="list" aria-label="Menu de Servicios mobile" v-model:opened="panelCat" class="pb-0" :ripple="false">
+        <VListItem role="listitem">
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
             <h2 class="d-block title-menu">SERVICIOS</h2>
             <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -444,7 +445,7 @@
           </VListItemTitle>
         </VListItem>
         <div v-for="(item, index) in services">
-          <VListItem v-if="services[index]?.children.length === 0">
+          <VListItem role="listitem" v-if="services[index]?.children.length === 0">
             <VListItemTitle class="d-block lineheight borderList pb-2">
               <NuxtLink 
                 :to="{
