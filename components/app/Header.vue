@@ -384,7 +384,7 @@
             ref="listGroup"
           >
             <template #activator="{ props }">
-              <VListItem class="items-list">
+              <VListItem role="listitem" class="items-list">
                 <VListItemTitle class="d-block lineheight borderList pb-2">
                   <NuxtLink
                     :to="{
@@ -414,7 +414,7 @@
               v-for="(k, index2) in categories[index].children"
               :key="index2"
               class="style-menu-mobile">
-              <VListItem class="subtitle-menu">
+              <VListItem role="listitem" class="subtitle-menu">
                 <NuxtLink
                   :to="{
                     name: 'products',
@@ -467,7 +467,7 @@
             :eager="false"
           >
             <template #activator="{ props }">
-              <VListItem class="items-list">
+              <VListItem role="listitem" class="items-list">
                 <VListItemTitle class="d-block lineheight borderList pb-2">
                   <NuxtLink
                     :to="{
@@ -497,7 +497,7 @@
               v-for="(k, index2) in services[index].children"
               :key="index2"
               class="style-menu-mobile">
-              <VListItem class="subtitle-menu">
+              <VListItem role="listitem" class="subtitle-menu">
                 <NuxtLink
                   :to="{
                     name: 'services',
