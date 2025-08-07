@@ -452,7 +452,13 @@
               </NuxtLink>
             </VListItemTitle> 
           </VListItem>
-          <VListGroup v-else :value="item.name" :eager="false">
+          <VListGroup 
+            :id="`v-list-group--id-${item.slug}`"
+            v-else 
+            :raw-id="item.slug" 
+            :value="item.name" 
+            :eager="false"
+          >
             <template #activator="{ props }">
               <VListItem class="items-list">
                 <VListItemTitle class="d-block lineheight borderList pb-2">
