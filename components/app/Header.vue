@@ -366,13 +366,15 @@
         <template v-for="(item, index) in categories">
           <VListItem
             role="listitem"
+            :active="false"
+            selectable="false"
             v-if="categories[index]?.children.length === 0"
             :to="{
               name: 'products',
               query: { category: item.slug }
             }">
             <VListItemTitle class="d-block title-menu lineheight borderList pb-2">
-              {{ item.name }} jeje
+              {{ item.name }}
             </VListItemTitle> 
           </VListItem>
           <VListGroup 
@@ -384,7 +386,9 @@
             ref="listGroup"
           >
             <template #activator="{ props }">
-              <VListItem role="option" class="items-list">
+              <VListItem role="listitem"
+            :active="false"
+            selectable="false" class="items-list">
                 <VListItemTitle class="d-block lineheight borderList pb-2">
                   <NuxtLink
                     :to="{
@@ -393,7 +397,7 @@
                     }"  
                     class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow"
                     :aria-label="`${item.name}, ${openedGroups.includes(index) ? 'submenú abierto' : 'submenú cerrado'}`">
-                    <span class="d-block title-menu" :id="`product-mobile-${item.slug}`">{{ item.name }} juax</span>
+                    <span class="d-block title-menu" :id="`product-mobile-${item.slug}`">{{ item.name }}ss</span>
                   </NuxtLink>
                 </VListItemTitle> 
                 <template #append>
