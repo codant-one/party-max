@@ -798,7 +798,7 @@
                 v-bind="props"
                 class="d-flex menu-trigger"
                 aria-haspopup="true"
-                aria-expanded="menuOpen"
+                :aria-expanded="menuOpen ? 'true' : 'false'"
                 aria-controls="products-menu"
                 @keydown.enter="menuOpen = true"
                 @keydown.escape="menuOpen = false"
@@ -811,8 +811,8 @@
             <VCard class="style-menu" :width="width" @mouseleave="closeMenuOnMouseLeave">
               <VRow no-gutters>
                 <VCol cols="12" :md="cols" class="py-5 pr-3">
-                  <VList class="pb-0">
-                    <VListItem>
+                  <VList role="list" class="pb-0">
+                    <VListItem role="listitem">
                       <VListItemTitle class="d-block lineheight">
                         <h2 class="d-block title-menu">PRODUCTOS</h2>
                         <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -823,7 +823,8 @@
                     <VListItem
                       v-for="(item, index) in categories"
                       :key="index"
-                      role="none" tabindex="-1" 
+                      role="listitem" 
+                      tabindex="-1" 
                       :id="`product-label-${category}`">
                         <div class="d-flex align-center hover-icon-right" @mouseover="openCategory(index)">
                           <span v-if="item.children.length > 0"
@@ -889,7 +890,7 @@
                 v-bind="props"
                 class="d-flex menu-trigger"
                 aria-haspopup="true"
-                aria-expanded="menuOpen"
+                :aria-expanded="menuOpen ? 'true' : 'false'"
                 aria-controls="products-menu"
                 @keydown.enter="menuOpen = true"
                 @keydown.escape="menuOpen = false"
