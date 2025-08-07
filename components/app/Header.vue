@@ -386,9 +386,11 @@
             ref="listGroup"
           >
             <template #activator="{ props }">
-              <VListItem role="listitem"
-            :active="false"
-            selectable="false" class="items-list">
+              <VListItem 
+                role="listitem"
+                :active="false"
+                selectable="false" 
+                class="items-list">
                 <VListItemTitle class="d-block lineheight borderList pb-2">
                   <NuxtLink
                     :to="{
@@ -397,7 +399,7 @@
                     }"  
                     class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow"
                     :aria-label="`${item.name}, ${openedGroups.includes(index) ? 'submenú abierto' : 'submenú cerrado'}`">
-                    <span class="d-block title-menu" :id="`product-mobile-${item.slug}`">{{ item.name }}ss</span>
+                    <span class="d-block title-menu" :id="`product-mobile-${item.slug}`">{{ item.name }}</span>
                   </NuxtLink>
                 </VListItemTitle> 
                 <template #append>
@@ -418,7 +420,11 @@
               v-for="(k, index2) in categories[index].children"
               :key="index2"
               class="style-menu-mobile">
-              <VListItem class="subtitle-menu">
+              <VListItem 
+                role="listitem"
+                :active="false"
+                selectable="false"
+                class="subtitle-menu">
                 <NuxtLink
                   :to="{
                     name: 'products',
