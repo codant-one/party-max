@@ -303,43 +303,49 @@
       v-model="drawer"
       class="d-print-none"
       temporary>
-      <VList aria-label="Menú de navegación principal" v-model:opened="panelCat" class="pb-0" :ripple="false">
-        <VListItem>
+      <VList
+        aria-label="Menú de navegación principal"
+        role="list"
+        class="pb-0"
+        v-model:opened="panelCat"
+        :ripple="false"
+      >
+        <VListItem role="listitem">
           <VListItemTitle class="d-block lineheight borderList pb-2">
             <NuxtLink aria-label="item-about-us" to="/about" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Quiénes somos</span>
             </NuxtLink>
           </VListItemTitle>
         </VListItem>
-        <VListItem>
+        <VListItem role="listitem">
           <VListItemTitle class="d-block lineheight borderList pb-2">
             <NuxtLink aria-label="item-help" to="/help" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Preguntas frecuentes</span>
             </NuxtLink>
           </VListItemTitle>  
         </VListItem>
-        <VListItem>
+        <VListItem role="listitem">
           <VListItemTitle class="d-block lineheight borderList pb-2">
             <NuxtLink aria-label="item-help" to="/terms-and-conditions" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Términos y condiciones</span>
             </NuxtLink>
           </VListItemTitle>  
         </VListItem>
-        <VListItem>
+        <VListItem role="listitem">
           <VListItemTitle class="d-block lineheight borderList pb-2">
             <NuxtLink aria-label="item-help" to="/data-protection" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Protección de datos</span>
             </NuxtLink>
           </VListItemTitle>  
         </VListItem>
-        <VListItem>
+        <VListItem role="listitem">
           <VListItemTitle class="d-block lineheight borderList pb-2">
             <NuxtLink aria-label="item-help" to="/privacy-statement" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Declaración de privacidad</span>
             </NuxtLink>
           </VListItemTitle>  
         </VListItem>
-        <VListItem>        
+        <VListItem role="listitem">        
           <VListItemTitle class="d-block lineheight borderList pb-2">
             <NuxtLink to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Blog</span>
