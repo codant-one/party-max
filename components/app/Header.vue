@@ -719,7 +719,7 @@
             </span>
             <div class="d-flex user-text">
               <span v-if="name === null" class="user">
-                <NuxtLink class="link-header" :to="{ name: 'register' }">
+                <NuxtLink class="link-header" :to="{ name: 'register' }" aria-label="Registrarse">
                   <user />
                 </NuxtLink>
               </span>

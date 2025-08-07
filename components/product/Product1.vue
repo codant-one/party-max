@@ -22,7 +22,7 @@ const props = defineProps({
 const route = useRoute()
 const config = useRuntimeConfig()
 
-const { isMobile } = useDevice()
+const { isMobile, isDesktop } = useDevice()
 const image = ref(null)
 const wholesale_price = ref(null)
 const price_for_sale = ref(null)
@@ -64,7 +64,7 @@ watchEffect(() => {
             <VCardText class="border-img ms-1 p-0">
                 <img 
                     :src="baseURL + image" 
-                    :alt="name"
+                    :alt="`Fotografía del producto ${name}`" 
                     class="img-prod"
                     loading="lazy"
                 />
@@ -76,12 +76,12 @@ watchEffect(() => {
                 </div>
             </VCardText>
             <VCardText>
-                <span v-if="name.length > 50 && !isMobile" class="text-start d-block text_2 tw-text-tertiary title-product">
+                <span v-if="name.length > 50 && isDesktop" class="text-start d-block text_2 tw-text-tertiary title-product">
                     {{ name.slice(0, 50) + '...'}}
                 </span>
                 <span v-else class="text-start d-block text_2 tw-text-tertiary title-product">
                     <span v-if="isMobile"> {{ name.slice(0, 25) + '...'}}</span>
-                    <span v-else> {{ name }}</span>
+                    <span v-if="isDesktop"> {{ name }}</span>
                 </span>
             </VCardText>
             <VCardText>
@@ -92,23 +92,26 @@ watchEffect(() => {
             </VCardText>
             <VCardText class="px-1">
                 <div class="d-flex align-center">
-                    <VRating
-                        v-model="rating"
-                        half-increments
-                        :length="5"
-                        :readonly="readonly"
-                        :ripple="false" 
-                        density="compact"
-                        >
-                        <template v-slot:item="props">
-                            <VIcon
-                                v-bind="props"
-                                color="yellow-darken-2"
-                                active-color="yellow-darken-2"
-                                :size="isMobile ? 20 : 25"
-                            />
-                        </template>
-                    </VRating>
+                    <fieldset class="rating-fieldset border-none">
+                        <legend class="sr-only d-none">Calificación del producto</legend>
+                        <VRating
+                            v-model="rating"
+                            half-increments
+                            :length="5"
+                            :readonly="readonly"
+                            :ripple="false" 
+                            density="compact"
+                            >
+                            <template v-slot:item="props">
+                                <VIcon
+                                    v-bind="props"
+                                    color="yellow-darken-2"
+                                    active-color="yellow-darken-2"
+                                    :size="isMobile ? 20 : 25"
+                                />
+                            </template>
+                        </VRating>
+                    </fieldset>
                     <span class="text_2 ms-2 mt-1">({{ stock }})</span>
                 </div>
             </VCardText>
