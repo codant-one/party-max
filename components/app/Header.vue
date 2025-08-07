@@ -372,7 +372,7 @@
               query: { category: item.slug }
             }">
             <VListItemTitle class="d-block title-menu lineheight borderList pb-2">
-              {{ item.name }}
+              {{ item.name }} jeje
             </VListItemTitle> 
           </VListItem>
           <VListGroup 
@@ -384,7 +384,7 @@
             ref="listGroup"
           >
             <template #activator="{ props }">
-              <VListItem class="items-list">
+              <VListItem role="option" class="items-list">
                 <VListItemTitle class="d-block lineheight borderList pb-2">
                   <NuxtLink
                     :to="{
@@ -393,7 +393,7 @@
                     }"  
                     class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow"
                     :aria-label="`${item.name}, ${openedGroups.includes(index) ? 'submenú abierto' : 'submenú cerrado'}`">
-                    <span class="d-block title-menu" :id="`product-mobile-${item.slug}`">{{ item.name }}</span>
+                    <span class="d-block title-menu" :id="`product-mobile-${item.slug}`">{{ item.name }} juax</span>
                   </NuxtLink>
                 </VListItemTitle> 
                 <template #append>
