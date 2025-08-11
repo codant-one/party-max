@@ -325,23 +325,6 @@ const onSubmit = () => {
     min-height: 30px;
   }
   
-  .v-checkbox::v-deep(.v-label){
-      color:#0A1B33;
-      font-size: 13px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 18px; /* 138.462% */
-  }
-    
-  .v-checkbox::v-deep(.v-label) {
-      color:#0A1B33;
-      font-size: 13px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 18px; /* 138.462% */
-      margin-left: 10px;
-  }
-
   .textinput .v-text-field::v-deep(.v-field__outline) { 
       border-radius: 24px !important;
       height: 35px;
@@ -350,10 +333,6 @@ const onSubmit = () => {
 
   .v-text-field::v-deep(.v-field__outline) {
       border-radius: 8px;
-  }
-
-  .v-text-field::v-deep(.v-field__outline__start) {
-      flex: 0 0 17px !important;
   }
 
   .v-text-field::v-deep(::placeholder) { 
@@ -379,11 +358,6 @@ const onSubmit = () => {
   .v-textarea::v-deep(.v-field-label) {
       top: 10% !important;
       font-size: 14px !important;
-  }
-
-  .v-text-field::v-deep(.v-field__append-inner) { 
-      padding-top: 8px !important;
-      align-items: start !important;
   }
 
   @media only screen and (max-width: 767px) {

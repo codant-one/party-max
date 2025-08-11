@@ -796,7 +796,7 @@
             <template  v-slot:activator="{ props }">
               <button 
                 v-bind="props"
-                class="d-flex menu-trigger"
+                class="d-flex menu-trigger hover:tw-text-primary"
                 aria-haspopup="true"
                 :aria-expanded="menuOpen ? 'true' : 'false'"
                 aria-controls="products-menu"
@@ -888,7 +888,7 @@
             <template  v-slot:activator="{ props }">
               <button 
                 v-bind="props"
-                class="d-flex menu-trigger"
+                class="d-flex menu-trigger hover:tw-text-primary"
                 aria-haspopup="true"
                 :aria-expanded="menuOpen ? 'true' : 'false'"
                 aria-controls="products-menu"
@@ -970,11 +970,11 @@
       <!---------FIN SERVICIOS MENÚ--------------------------->
         <VSpacer />
 
-        <NuxtLink to="/about" class="ms-5 tw-text-tertiary tw-no-underline ">Quiénes somos</NuxtLink>
+        <NuxtLink to="/about" class="ms-5 tw-text-tertiary tw-no-underline hover:tw-text-primary">Quiénes somos</NuxtLink>
         <VDivider class="hr" vertical/>
-        <NuxtLink to="/blogs" class="ms-5 tw-text-tertiary tw-no-underline ">Blog</NuxtLink>
+        <NuxtLink to="/blogs" class="ms-5 tw-text-tertiary tw-no-underline hover:tw-text-primary">Blog</NuxtLink>
         <VDivider class="hr" vertical/>
-        <NuxtLink to="/help" class="ms-5 tw-text-tertiary tw-no-underline me-3 ">Preguntas frecuentes</NuxtLink>
+        <NuxtLink to="/help" class="ms-5 tw-text-tertiary tw-no-underline me-3 hover:tw-text-primary">Preguntas frecuentes</NuxtLink>
 
       </VContainer>
       <VContainer class="p-0 tw-text-white d-flex" v-if="isMobile">
@@ -1085,10 +1085,6 @@
     width: 30%;
   }
 
-  .me-24 {
-    margin-inline-start: 150px !important;
-  }
-
   .v-toolbar::v-deep(.mdi-menu) { 
     font-size: 30px !important;
   }
@@ -1114,10 +1110,6 @@
 
   .text-regi {
     line-height: 16px;
-  }
-
-  .w-30 {
-    width: 30%;
   }
 
   .search-button {
@@ -1164,18 +1156,6 @@
 
   .subtitle-menu:hover {
     color: #FF0090;
-  }
-
-  .wholesalers::v-deep(path) {
-    fill: #FFC549;
-  }
-
-  .hover-icon-arrow-right-white:hover::v-deep(path) {
-    fill: #FFFFFF;
-  }
-
-  .hover-icon-arrow-right:hover::v-deep(path) {
-    fill: #FFC549;
   }
 
   .heart:hover::v-deep(path), .shoppinp_cart:hover::v-deep(path) {
