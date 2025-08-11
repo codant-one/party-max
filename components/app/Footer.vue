@@ -72,6 +72,13 @@ const recaptcha = async () => {
     return token;
 };
 
+const redirectTo = (url) => {
+  if (url) {
+    window.open(url, '_blank');
+    // window.location.href = url
+  }
+}
+
 const onSubmit = () => {
   refVForm.value?.validate().then(async ({ valid: isValid }) => {
     if (isValid) {
@@ -139,7 +146,7 @@ const onSubmit = () => {
               </div>
               <span class="tw-text-gray tw-mt-2 tw-text-sm">Llámanos para asesoría personalizada.</span>
             </div>
-            <p class="tw-text-tertiary tw-text-2xl tw-mt-2 tw-mb-0">+57 310 4870 310</p>
+            <h2 class="tw-text-tertiary tw-text-2xl tw-mt-2 tw-mb-0 tw-font-normal">+57 310 4870 310</h2>
           </div>
           <div class="tw-mt-6">
             <div class="tw-flex tw-flex-col">
@@ -151,8 +158,7 @@ const onSubmit = () => {
             </div>
             <VBtn
               class="btn-register tw-text-white tw-bg-primary button-hover tw-normal-case tw-mt-6"
-              href="https://wa.link/wvdoxg"
-              target="_blank"
+              @click="redirectTo('https://wa.link/wvdoxg')"
             >
               Mensaje directo
             </VBtn>

@@ -303,43 +303,49 @@
       v-model="drawer"
       class="d-print-none"
       temporary>
-      <VList aria-label="Menú de navegación principal" v-model:opened="panelCat" class="pb-0" :ripple="false">
-        <VListItem>
+      <VList
+        aria-label="Menú de navegación principal"
+        role="list"
+        class="pb-0"
+        v-model:opened="panelCat"
+        :ripple="false"
+      >
+        <VListItem role="listitem">
           <VListItemTitle class="d-block lineheight borderList pb-2">
             <NuxtLink aria-label="item-about-us" to="/about" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Quiénes somos</span>
             </NuxtLink>
           </VListItemTitle>
         </VListItem>
-        <VListItem>
+        <VListItem role="listitem">
           <VListItemTitle class="d-block lineheight borderList pb-2">
             <NuxtLink aria-label="item-help" to="/help" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Preguntas frecuentes</span>
             </NuxtLink>
           </VListItemTitle>  
         </VListItem>
-        <VListItem>
+        <VListItem role="listitem">
           <VListItemTitle class="d-block lineheight borderList pb-2">
             <NuxtLink aria-label="item-help" to="/terms-and-conditions" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Términos y condiciones</span>
             </NuxtLink>
           </VListItemTitle>  
         </VListItem>
-        <VListItem>
+        <VListItem role="listitem">
           <VListItemTitle class="d-block lineheight borderList pb-2">
             <NuxtLink aria-label="item-help" to="/data-protection" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Protección de datos</span>
             </NuxtLink>
           </VListItemTitle>  
         </VListItem>
-        <VListItem>
+        <VListItem role="listitem">
           <VListItemTitle class="d-block lineheight borderList pb-2">
             <NuxtLink aria-label="item-help" to="/privacy-statement" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Declaración de privacidad</span>
             </NuxtLink>
           </VListItemTitle>  
         </VListItem>
-        <VListItem>        
+        <VListItem role="listitem">        
           <VListItemTitle class="d-block lineheight borderList pb-2">
             <NuxtLink to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
               <span class="d-block title-menu">Blog</span>
@@ -348,8 +354,8 @@
         </VListItem>
       </VList>
 
-      <VList aria-label="Menu de Productos mobile" v-model:opened="panelCat" class="pb-0" :ripple="false">
-        <VListItem>
+      <VList role="list" aria-label="Menu de Productos mobile" v-model:opened="panelCat" class="pb-0" :ripple="false">
+        <VListItem role="listitem">
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
             <h2 class="d-block title-menu">PRODUCTOS</h2>
             <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -359,6 +365,9 @@
         </VListItem>
         <template v-for="(item, index) in categories">
           <VListItem
+            role="listitem"
+            :active="false"
+            selectable="false"
             v-if="categories[index]?.children.length === 0"
             :to="{
               name: 'products',
@@ -370,14 +379,18 @@
           </VListItem>
           <VListGroup 
             v-else
-            :id="`v-list-group--id-${item.slug}`"
+            :id="`v-list-product-group--id-${item.slug}`"
             :value="item.name"
             :raw-id="item.slug" 
             :eager="false"
             ref="listGroup"
           >
             <template #activator="{ props }">
-              <VListItem class="items-list">
+              <VListItem 
+                role="listitem"
+                :active="false"
+                selectable="false" 
+                class="items-list">
                 <VListItemTitle class="d-block lineheight borderList pb-2">
                   <NuxtLink
                     :to="{
@@ -407,7 +420,11 @@
               v-for="(k, index2) in categories[index].children"
               :key="index2"
               class="style-menu-mobile">
-              <VListItem class="subtitle-menu">
+              <VListItem 
+                role="listitem"
+                :active="false"
+                selectable="false"
+                class="subtitle-menu">
                 <NuxtLink
                   :to="{
                     name: 'products',
@@ -428,8 +445,8 @@
       </VList>
         
       <!--MENU SERVICIOS MOBILE-->
-      <VList aria-label="Menu de Servicios mobile" v-model:opened="panelCat" class="pb-0" :ripple="false">
-        <VListItem>
+      <VList role="list" aria-label="Menu de Servicios mobile" v-model:opened="panelCat" class="pb-0" :ripple="false">
+        <VListItem role="listitem">
           <VListItemTitle class="d-block lineheight pt-6 pb-2">
             <h2 class="d-block title-menu">SERVICIOS</h2>
             <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -438,7 +455,7 @@
           </VListItemTitle>
         </VListItem>
         <div v-for="(item, index) in services">
-          <VListItem v-if="services[index]?.children.length === 0">
+          <VListItem role="listitem" v-if="services[index]?.children.length === 0">
             <VListItemTitle class="d-block lineheight borderList pb-2">
               <NuxtLink 
                 :to="{
@@ -453,14 +470,14 @@
             </VListItemTitle> 
           </VListItem>
           <VListGroup 
-            :id="`v-list-group--id-${item.slug}`"
+            :id="`v-list-service-group--id-${item.slug}`"
             v-else 
             :raw-id="item.slug" 
             :value="item.name" 
             :eager="false"
           >
             <template #activator="{ props }">
-              <VListItem class="items-list">
+              <VListItem role="listitem" class="items-list">
                 <VListItemTitle class="d-block lineheight borderList pb-2">
                   <NuxtLink
                     :to="{
@@ -490,7 +507,7 @@
               v-for="(k, index2) in services[index].children"
               :key="index2"
               class="style-menu-mobile">
-              <VListItem class="subtitle-menu">
+              <VListItem role="listitem" class="subtitle-menu">
                 <NuxtLink
                   :to="{
                     name: 'services',
@@ -719,7 +736,7 @@
             </span>
             <div class="d-flex user-text">
               <span v-if="name === null" class="user">
-                <NuxtLink class="link-header" :to="{ name: 'register' }">
+                <NuxtLink class="link-header" :to="{ name: 'register' }" aria-label="Registrarse">
                   <user />
                 </NuxtLink>
               </span>
@@ -781,7 +798,7 @@
                 v-bind="props"
                 class="d-flex menu-trigger"
                 aria-haspopup="true"
-                aria-expanded="menuOpen"
+                :aria-expanded="menuOpen ? 'true' : 'false'"
                 aria-controls="products-menu"
                 @keydown.enter="menuOpen = true"
                 @keydown.escape="menuOpen = false"
@@ -794,8 +811,8 @@
             <VCard class="style-menu" :width="width" @mouseleave="closeMenuOnMouseLeave">
               <VRow no-gutters>
                 <VCol cols="12" :md="cols" class="py-5 pr-3">
-                  <VList class="pb-0">
-                    <VListItem>
+                  <VList role="list" class="pb-0">
+                    <VListItem role="listitem">
                       <VListItemTitle class="d-block lineheight">
                         <h2 class="d-block title-menu">PRODUCTOS</h2>
                         <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -806,7 +823,8 @@
                     <VListItem
                       v-for="(item, index) in categories"
                       :key="index"
-                      role="none" tabindex="-1" 
+                      role="listitem" 
+                      tabindex="-1" 
                       :id="`product-label-${category}`">
                         <div class="d-flex align-center hover-icon-right" @mouseover="openCategory(index)">
                           <span v-if="item.children.length > 0"
@@ -872,7 +890,7 @@
                 v-bind="props"
                 class="d-flex menu-trigger"
                 aria-haspopup="true"
-                aria-expanded="menuOpen"
+                :aria-expanded="menuOpen ? 'true' : 'false'"
                 aria-controls="products-menu"
                 @keydown.enter="menuOpen = true"
                 @keydown.escape="menuOpen = false"
