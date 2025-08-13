@@ -131,6 +131,8 @@ const onSubmit = () => {
       class="whatsapp-float"
       title="Contáctanos por WhatsApp"
       aria-label="Contactar por WhatsApp"
+      width="60"
+      height="60"
       >
         <span class="mdi mdi-whatsapp whatsapp-icon" aria-hidden="true"></span>
     </a>
@@ -275,6 +277,10 @@ const onSubmit = () => {
 </template>
 
 <style scoped>
+
+  .grecaptcha-badge {
+    visibility: hidden !important;
+  }
 
   .whatsapp-float {
     position: fixed;
