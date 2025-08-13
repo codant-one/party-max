@@ -199,7 +199,6 @@ if (productData.value) {
   });
 
   if ($metapixel && $metapixel.trackEvent) {
-    console.log('entra')
     $metapixel.trackEvent('ViewContent', {
       content_ids: [productData.value.product.id],
       content_type: 'product',

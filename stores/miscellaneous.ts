@@ -37,6 +37,7 @@ export const useMiscellaneousStores = defineStore('miscellaneous', {
             return categories(slug)
                 .then((response) => {
                     this.data = response.data.data
+                    return Promise.resolve(response.data.data)
                 })
                 .catch(error => {
                     return Promise.reject(error)

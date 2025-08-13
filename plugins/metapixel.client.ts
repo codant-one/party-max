@@ -57,7 +57,7 @@ export default defineNuxtPlugin(() => {
   const trackEvent = (event: string, params?: object) => {
     if (process.client && window.fbq) {
       window.fbq('track', event, params)
-      console.log(`Meta Pixel Event: ${event}`, params); 
+      // console.log(`Meta Pixel Event: ${event}`, params); 
     }
   }
 
