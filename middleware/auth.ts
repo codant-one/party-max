@@ -1,6 +1,5 @@
 export default defineNuxtRouteMiddleware((to, from) => {
     const privatePages = [
-      'event-planner',
       '/dashboard',
       '/dashboard/profile',
       '/dashboard/purchases',

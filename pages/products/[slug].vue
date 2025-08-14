@@ -266,7 +266,6 @@ async function fetchData() {
     product_id.value = data.value.product.id
 
     productUrl.value = `https://${config.public.MY_DOMAIN}/products/${data.value.product.slug}`
-    const imageUrl = `${config.public.APP_DOMAIN_API_URL}/storage/${data.value.product.image}`
     const descriptionText = 'Mira este increíble producto.'
     const twitterText = `${descriptionText}`;
 
@@ -665,7 +664,7 @@ const buildEmbedUrl = (url) => {
                       />
                     </div>
                     <div v-if="isMobile" class="swiper-zoom-container">
-                      <img :src="slide.url" :alt="'slide-'+index" class="zoom-in" @click="isHoverVisible = true"/>
+                      <img :src="slide.url" :alt="'slide-'+index" class="zoom-in"/>
                     </div>
                   </template>
                   <iframe

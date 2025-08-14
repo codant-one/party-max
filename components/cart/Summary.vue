@@ -74,7 +74,7 @@ const addCart = (data) => {
         <VCol cols="12" md="4">
             <VCard class="card-products p-0">
                 <VCardTitle class="subtitle-card row-buy mt-4 px-5 px-md-10 pt-4 pb-8">Resumen de compra</VCardTitle>
-                <VCardText class="px-5 px-md-10 mt-5">
+                <VCardText class="px-5 px-md-10 py-5 py-md-6">
                     <VRow>
                         <VCol cols="7" md="6" class="text-left">
                             <span>Productos</span>

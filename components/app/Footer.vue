@@ -58,8 +58,7 @@ async function fetchData() {
      route.name === 'dashboard-purchases' || route.name === 'dashboard-coupons' ||
      route.name === 'dashboard-favorites' || route.name === 'dashboard-information' ||
      route.name === 'dashboard-security' || route.name === 'dashboard-address' ||
-     route.name === 'dashboard-purchases-id' || route.name === 'dashboard-rating-id' ||
-     route.name === 'event-planner') {
+     route.name === 'dashboard-purchases-id' || route.name === 'dashboard-rating-id') {
     isConnected.value = true
   }
 }
