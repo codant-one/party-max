@@ -26,8 +26,6 @@ const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
 const data = ref(null)
 const isLoading = ref(true)
 const twitterAccount = ref(config.public.TWITTER_ACCOUNT ?? '')
-const title = ref(null)
-const image = ref(null)
 
 const image1 = ref(null)
 const image2 = ref(null)
@@ -43,6 +41,7 @@ const category_type_id = ref()
 const icons_categories = ref([])
 
 const { isMobile } = useDevice();
+const { $metapixel } = useNuxtApp()
 
 const thumbsSwiper = ref(null);
 const modules = ref([Pagination])
@@ -58,11 +57,72 @@ watch(() =>
 
       fetchData()
     }, { immediate: true }
-  );
- 
+)
+
+const { data: categoryData } = await useAsyncData(
+  `product-${route.params.slug}`,
+  () => miscellaneousStores.getCategory(route.params.slug),
+  { lazy: false }
+)
+
+const initSeo = () => {
+  const categoryUrl = `https://${config.public.MY_DOMAIN}/categories/${categoryData.value.category.slug}`
+    const imageUrl = (categoryData.value.category.icon_subcategory !== null) ? (baseURL.value + categoryData.value.category.icon_subcategory) : (config.public.APP_DOMAIN_API_URL + '/images/categories.jpg')
+    const descriptionText = `Encuentra en PARTYMAX los mejores productos de '${categoryData.value.category.name}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉`;
+
+    useSeoMeta({
+      title: categoryData.value.category.name + ' | PARTYMAX',
+      description: descriptionText,
+      ogType: 'category',
+      ogUrl: categoryUrl,
+      ogTitle: categoryData.value.category.name,
+      ogDescription: descriptionText,
+      ogSiteName: 'PARTYMAX',
+      ogImage: imageUrl,
+      ogImageWidth: '1200',
+      ogImageHeight: '630',
+      ogImageAlt: categoryData.value.category.name,
+      twitterCard: 'summary_large_image',
+      twitterTitle: categoryData.value.category.name,
+      twitterDescription: descriptionText,
+      twitterImage: imageUrl,
+      twitterSite: twitterAccount.value
+    })
+
+    useHead({
+      link: [ { rel: 'canonical', href: categoryUrl } ],
+      script: [
+        {
+          type: 'application/ld+json',
+          children: () => JSON.stringify({
+            '@context': 'https://schema.org/',
+            '@type': 'category',
+            'name':  categoryData.value.category.name,
+            'image': imageUrl,
+            'description': descriptionText
+          }),
+        },
+      ],
+    })
+
+    if ($metapixel && $metapixel.trackEvent) {
+      $metapixel.trackEvent('ViewContent', {
+        content_ids: [categoryData.value.category.id],
+        content_type: 'category',
+        value: categoryData.value.category.id,
+        currency: 'COP'
+      })
+    }
+}
+
+if (categoryData.value) {
+  initSeo()
+}
+
 watchEffect(fetchData)
 
 async function fetchData() {
+
 
   if(route.params.slug && route.path.startsWith('/categories/') && band.value === 0) {
     isLoading.value = true
@@ -83,40 +143,17 @@ async function fetchData() {
     category_type_id.value = data.value.category.category_type_id
 
     isLoading.value = false
-
-    title.value = data.value.category.name
-    image.value = (data.value.category.icon_subcategory !== null) ? (baseURL.value + data.value.category.icon_subcategory) : (config.public.APP_DOMAIN_API_URL + '/images/categories.jpg')
-
-    useHead({
-      title: title.value + ' | PARTYMAX',
-      meta: [
-        { name: 'description', content: `Encuentra en PARTYMAX los mejores productos de '${title.value}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉` },
-        { name: 'keywords', content: data.value.category.keywords },
-        { name: 'robots', content: 'index, follow' },
-        { name: 'autor', content: 'Partymax' },
-        { name: 'language', content: 'es' },
-
-        // Open Graph
-        { property: 'og:type', content: 'website' },
-        { property: 'og:title', content:  title.value + ' | PARTYMAX' },
-        { property: 'og:description', content: `Encuentra en PARTYMAX los mejores productos de '${title.value}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉` },
-        { property: 'og:image', content: image.value },
-        { property: 'og:url', content: `https://${config.public.MY_DOMAIN}/categories/${data.value.category.slug}` },
-        { property: 'og:site_name', content: 'PARTYMAX' },
-
-        // Twitter
-        { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: title.value + ' | PARTYMAX'},
-        { name: 'twitter:description', content: `Encuentra en PARTYMAX los mejores productos de '${title.value}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉` },
-        { name: 'twitter:image', content: image.value },
-        { name: 'twitter:site', content: twitterAccount.value }
-      ]
-    });
   }
 }
+
 </script>
 
 <template>
+
+  <h1 class="visually-hidden">
+    Partymax, tu aliado ideal para fiestas en Colombia.
+  </h1>
+
   <VContainer class="mt-1 mt-md-10" v-if="data">
     <VCard class="no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
@@ -294,6 +331,18 @@ async function fetchData() {
 </template>
 
 <style scoped>
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
 
   .hr-cyan {
     border-bottom: 1px solid #D9EEF2;
