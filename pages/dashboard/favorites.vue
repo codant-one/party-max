@@ -44,7 +44,7 @@ async function fetchData() {
         const userDataJ = JSON.parse(userData)
 
         user_id.value = userDataJ.id  
-    }
+    } 
 
     let info = {
         user_id: user_id.value,
