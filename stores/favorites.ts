@@ -15,7 +15,7 @@ export const useFavoritesStores = defineStore('favorites',{
             const { get } = Favorites()
             return get(params)
                 .then((response) => {
-                    this.data = response.data.data.favorites.data[0]
+                    this.data = response.data.data.favorites.data
                     return Promise.resolve(response.data.data)
                 })
                 .catch(error => {
