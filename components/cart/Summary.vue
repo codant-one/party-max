@@ -41,6 +41,11 @@ const addCart = (data) => {
     emit('addCart', data)
 }
 
+const couponApply = () => {
+    emit('couponApply', coupon.value)
+}
+
+
 </script>
 
 <template>
