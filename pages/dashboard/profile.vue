@@ -291,8 +291,8 @@ definePageMeta({
     <VDialog v-model="isDialogVisible" >
         <VCard
             class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-            <VImg width="100" :src="isError ? error_circle : check_circle" class="mx-auto"/>
-            <VCardText class="text-message mt-10 mb-5">
+            <VImg :width="isMobile ? '120' : '180'" :src="isError ? error_circle : check_circle" class="mx-auto"/>
+            <VCardText class="text-message mb-5 px-0 px-md-5 pt-0">
                 {{ message }}
             </VCardText>
         </VCard>

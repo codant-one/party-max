@@ -11,6 +11,8 @@ import icon1 from '@assets/icons/Mail.svg';
 const router = useRouter()
 const authStores = useAuthStores()
 
+const { isMobile } = useDevice();
+
 const errors = ref({
   email: undefined
 })
@@ -138,9 +140,9 @@ const onSubmit = () => {
         </VForm>
         <VDialog v-model="isDialogVisible" >
             <VCard
-                class="py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-                <VImg width="100" :src="check_circle" class="mx-auto"/>
-                <VCardText class="text-message mt-10 mb-5">
+                class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
+                <VImg :width="isMobile ? '120' : '180'" :src="check_circle" class="mx-auto"/>
+                <VCardText class="text-message mb-5 px-0 px-md-5 pt-0">
                     Tu solicitud se ha procesado satisfactoriamente.
                 </VCardText>
             </VCard>
@@ -248,7 +250,7 @@ const onSubmit = () => {
     }
 
     .v-text-field::v-deep(.v-field-label) {
-        top: 17% !important;
+        top: 33% !important;
         font-size: 12px !important;
     }
 

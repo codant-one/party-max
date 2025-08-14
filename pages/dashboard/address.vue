@@ -414,7 +414,7 @@ definePageMeta({
         > 
             <VCard class="pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
                 <VCardText class="subtitle-register p-0 mt-0 mt-md-7">
-                    AGREGAR NUEVA DIRECCIÓN
+                    {{ selectedAddress.title ? 'EDITAR DIRECCIÓN' : 'AGREGAR NUEVA DIRECCIÓN' }}
                 </VCardText>           
                 <VCardItem class="pb-0 px-3 px-md-10">
                     <VRow no-gutters class="text-left align-center">
@@ -532,7 +532,7 @@ definePageMeta({
                         type="submit"
                         class="btn-register tw-text-white tw-bg-primary button-hover"
                         >
-                        Enviar
+                        {{ selectedAddress.title ? 'Guardar' : 'Enviar' }}
                         <VProgressCircular
                             v-if="load"
                             indeterminate
@@ -557,8 +557,8 @@ definePageMeta({
     <VDialog v-model="isDialogVisible" >
         <VCard
             class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-            <VImg width="100" :src="isError ? error_circle : check_circle" class="mx-auto"/>
-            <VCardText class="text-message mt-10 mb-5">
+            <VImg :width="isMobile ? '120' : '180'" :src="isError ? error_circle : check_circle" class="mx-auto"/>
+            <VCardText class="text-message mb-5 px-0 px-md-5 pt-0">
                 {{ message }}
             </VCardText>
         </VCard>
@@ -700,7 +700,7 @@ definePageMeta({
     }
 
     .textinput .v-text-field::v-deep(.v-field-label) {
-        top: 17% !important;
+        top: 33% !important;
         font-size: 14px !important;
     }
 

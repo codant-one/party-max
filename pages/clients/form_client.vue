@@ -345,7 +345,7 @@ const onSubmit = () => {
     }
 
     .v-text-field::v-deep(.v-field-label) {
-        top: 17% !important;
+        top: 33% !important;
         font-size: 12px !important;
     }
 

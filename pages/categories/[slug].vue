@@ -59,70 +59,72 @@ watch(() =>
     }, { immediate: true }
 )
 
+/*
 const { data: categoryData } = await useAsyncData(
-  `product-${route.params.slug}`,
+  `category-${route.params.slug}`,
   () => miscellaneousStores.getCategory(route.params.slug),
   { lazy: false }
 )
 
 const initSeo = () => {
   const categoryUrl = `https://${config.public.MY_DOMAIN}/categories/${categoryData.value.category.slug}`
-    const imageUrl = (categoryData.value.category.icon_subcategory !== null) ? (baseURL.value + categoryData.value.category.icon_subcategory) : (config.public.APP_DOMAIN_API_URL + '/images/categories.jpg')
-    const descriptionText = `Encuentra en PARTYMAX los mejores productos de '${categoryData.value.category.name}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉`;
+  const imageUrl = (categoryData.value.category.icon_subcategory !== null) ? (baseURL.value + categoryData.value.category.icon_subcategory) : (config.public.APP_DOMAIN_API_URL + '/images/categories.jpg')
+  const descriptionText = `Encuentra en PARTYMAX los mejores productos de '${categoryData.value.category.name}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉`;
 
-    useSeoMeta({
-      title: categoryData.value.category.name + ' | PARTYMAX',
-      description: descriptionText,
-      ogType: 'category',
-      ogUrl: categoryUrl,
-      ogTitle: categoryData.value.category.name,
-      ogDescription: descriptionText,
-      ogSiteName: 'PARTYMAX',
-      ogImage: imageUrl,
-      ogImageWidth: '1200',
-      ogImageHeight: '630',
-      ogImageAlt: categoryData.value.category.name,
-      twitterCard: 'summary_large_image',
-      twitterTitle: categoryData.value.category.name,
-      twitterDescription: descriptionText,
-      twitterImage: imageUrl,
-      twitterSite: twitterAccount.value
+  useSeoMeta({
+    title: categoryData.value.category.name + ' | PARTYMAX',
+    description: descriptionText,
+    ogType: 'category',
+    ogUrl: categoryUrl,
+    ogTitle: categoryData.value.category.name,
+    ogDescription: descriptionText,
+    ogSiteName: 'PARTYMAX',
+    ogImage: imageUrl,
+    ogImageWidth: '1200',
+    ogImageHeight: '630',
+    ogImageAlt: categoryData.value.category.name,
+    twitterCard: 'summary_large_image',
+    twitterTitle: categoryData.value.category.name,
+    twitterDescription: descriptionText,
+    twitterImage: imageUrl,
+    twitterSite: twitterAccount.value
+  })
+
+  useHead({
+    link: [ { rel: 'canonical', href: categoryUrl } ],
+    script: [
+      {
+        type: 'application/ld+json',
+        children: () => JSON.stringify({
+          '@context': 'https://schema.org/',
+          '@type': 'category',
+          'name':  categoryData.value.category.name,
+          'image': imageUrl,
+          'description': descriptionText
+        }),
+      },
+    ],
+  })
+
+  if ($metapixel && $metapixel.trackEvent) {
+    $metapixel.trackEvent('ViewContent', {
+      content_ids: [categoryData.value.category.id],
+      content_type: 'category',
+      value: categoryData.value.category.id,
+      currency: 'COP'
     })
-
-    useHead({
-      link: [ { rel: 'canonical', href: categoryUrl } ],
-      script: [
-        {
-          type: 'application/ld+json',
-          children: () => JSON.stringify({
-            '@context': 'https://schema.org/',
-            '@type': 'category',
-            'name':  categoryData.value.category.name,
-            'image': imageUrl,
-            'description': descriptionText
-          }),
-        },
-      ],
-    })
-
-    if ($metapixel && $metapixel.trackEvent) {
-      $metapixel.trackEvent('ViewContent', {
-        content_ids: [categoryData.value.category.id],
-        content_type: 'category',
-        value: categoryData.value.category.id,
-        currency: 'COP'
-      })
-    }
+  }
 }
 
 if (categoryData.value) {
   initSeo()
 }
 
+*/
+
 watchEffect(fetchData)
 
 async function fetchData() {
-
 
   if(route.params.slug && route.path.startsWith('/categories/') && band.value === 0) {
     isLoading.value = true

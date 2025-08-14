@@ -151,8 +151,6 @@ const isCupcake = ref([])
 const radioFlavor = ref([])
 const radioFilling = ref([])
 
-const isHoverVisible = ref(false)
-
 watch(() => 
   route.path,(newPath, oldPath) => {
     thumbsSwiper.value.destroy(false, true)
@@ -168,7 +166,7 @@ watch(() =>
 );
 
 const { data: serviceData } = await useAsyncData(
-  `product-${route.params.slug}`,
+  `service-${route.params.slug}`,
   () => miscellaneousStores.getServiceMeta(route.params.slug)
 )
 
@@ -265,14 +263,13 @@ async function fetchData() {
 
     service_id.value = data.value.service.id
 
-    serviceUrl.value = `https://${import.meta.env.VITE_MY_DOMAIN}/services/${data.value.service.slug}`
-    const imageUrl = `${import.meta.env.VITE_APP_DOMAIN_API_URL}/storage/${data.value.service.image}`
+    serviceUrl.value = `https://${config_.public.MY_DOMAIN}/services/${data.value.service.slug}`
     const descriptionText = 'Mira este increíble servicio.'
-    const twitterText = `${descriptionText} ${serviceUrl.value} ${imageUrl}`;
+    const twitterText = `${descriptionText}`;
 
-    searchWhatsapp.value = `https://wa.me/?text=${serviceUrl.value}`
+    searchWhatsapp.value = `https://api.whatsapp.com/send?text=${descriptionText} ${encodeURIComponent(serviceUrl.value)}`
     searchFacebook.value = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(serviceUrl.value)}`
-    searchTwitter.value = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}`;
+    searchTwitter.value = `https://twitter.com/intent/tweet?url=${encodeURIComponent(serviceUrl.value)}&text=${encodeURIComponent(twitterText)}`;
     searchLinkendin.value = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(serviceUrl.value)}`;
     
     title.value = data.value.service.name
@@ -694,19 +691,19 @@ const buildEmbedUrl = (url) => {
       <!-- HEADER -->
       <VCard class="mt-md-7 no-shadown card-information p-0" v-if="!isLoading">
         <VCardTitle class="d-flex p-0 align-end">
-          {{ title }}
+          <h1>{{ title }}</h1>
           <VSpacer />
           <div class="align-end redes-title">
-            <a :href="searchWhatsapp" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+            <a :href="searchWhatsapp" target="_blank" class="tw-no-underline hover:tw-text-secondary" rel="noopener noreferrer" data-action="share/whatsapp/share">
               <whatsapp class="me-2" />
             </a>   
-            <a :href="searchFacebook" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+            <a :href="searchFacebook" target="_blank" class="tw-no-underline hover:tw-text-secondary" rel="noopener noreferrer">
               <facebook class="me-2"/>
             </a>
-            <a :href="searchTwitter" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+            <a :href="searchTwitter" target="_blank" class="tw-no-underline hover:tw-text-secondary" rel="noopener noreferrer">
               <twitter class="me-2"/>
             </a>
-            <a :href="searchLinkendin" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+            <a :href="searchLinkendin" target="_blank" class="tw-no-underline hover:tw-text-secondary" rel="noopener noreferrer">
               <linkendin class="me-2"/>               
             </a>
           </div>
@@ -736,16 +733,16 @@ const buildEmbedUrl = (url) => {
             <VCol cols="12" md="6" class="align-right"></VCol>
           </VRow>
           <div class="my-1 align-end redes-mobile">
-            <a :href="searchWhatsapp" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+            <a :href="searchWhatsapp" target="_blank" class="tw-no-underline hover:tw-text-secondary" rel="noopener noreferrer" data-action="share/whatsapp/share">
               <whatsapp_mobile class="me-2" />
             </a>   
-            <a :href="searchFacebook" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+            <a :href="searchFacebook" target="_blank" class="tw-no-underline hover:tw-text-secondary" rel="noopener noreferrer">
               <facebook_mobile class="me-2"/>
             </a>
-            <a :href="searchTwitter" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+            <a :href="searchTwitter" target="_blank" class="tw-no-underline hover:tw-text-secondary" rel="noopener noreferrer">
               <twitter_mobile class="me-2"/>
             </a>
-            <a :href="searchLinkendin" target="_blank" class="tw-no-underline hover:tw-text-secondary">
+            <a :href="searchLinkendin" target="_blank" class="tw-no-underline hover:tw-text-secondary" rel="noopener noreferrer">
               <linkendin_mobile class="me-2"/>               
             </a>
           </div>
@@ -1173,6 +1170,13 @@ const buildEmbedUrl = (url) => {
 </style>
 
 <style scoped>
+
+  .v-card-title h1 {
+    white-space: pre-wrap;
+    line-height: 24px;
+    font-weight: 400 !important;
+    font-size: 24px !important;
+  }
 
   .v-selection-control--density-default {
     --v-selection-control-size: 20px;
