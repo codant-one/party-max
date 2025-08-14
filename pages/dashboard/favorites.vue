@@ -38,7 +38,7 @@ async function fetchData() {
 
   isLoading.value = true
 
-   if(process.client && localStorage.getItem('user_data')) {
+   if(localStorage.getItem('user_data')) {
         const userData = localStorage.getItem('user_data')
         const userDataJ = JSON.parse(userData)
 
@@ -54,7 +54,7 @@ async function fetchData() {
     }
 
     var aux = await favoritesStores.fetchFavorites(info)
-    products.value = favoritesStores.getData
+    items.value = favoritesStores.getData
     totalPages.value = aux.favorites.last_page;
     totalFavorites.value = aux.favoritesTotalCount;
 
