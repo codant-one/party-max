@@ -177,6 +177,12 @@ if (productData.value) {
       { name: 'product:condition', content: 'new' },
       { name: 'product:price:amount', content: productData.value.product.price_for_sale },
       { name: 'product:price:currency', content: 'COP' },
+      { name: 'product:availability', content: 'in stock' },
+      { name: 'product:condition', content: 'new' },
+      { name: 'product:price:amount', content: productData.value.product.price_for_sale },
+      { name: 'product:price:currency', content: 'COP' },
+      // También puedes añadirlo como una meta tag para mayor compatibilidad
+      { name: 'google_product_category', content: '212' }
     ],
     script: [
       {
@@ -197,19 +203,6 @@ if (productData.value) {
       },
     ],
   });
-
-  if ($metapixel && $metapixel.trackEvent) {
-    $metapixel.trackEvent('ViewContent', {
-      content_ids: [productData.value.product.id],
-      content_name: productData.value.product.name,
-      content_type: 'product',
-      availability: 'in stock',
-      image_link: imageUrl,
-      price: Number(productData.value.product.price_for_sale),
-      currency: 'COP',
-      description: descriptionText
-    })
-  }
 }
 
 watchEffect(fetchData)
@@ -380,6 +373,24 @@ async function fetchData() {
         disabled: true,
         href: '',
       });
+    }
+
+    const categoryNames = data.value.product.colors[0].categories
+    ?.map(cat => cat.category?.name) // Extrae solo el nombre
+    .filter(Boolean);
+
+    if ($metapixel && $metapixel.trackEvent) {
+      $metapixel.trackEvent('ViewContent', {
+        content_ids: [data.value.product.id],
+        content_name: data.value.product.name,
+        content_category: categoryNames.join(', '),
+        content_type: 'product',
+        availability: 'in stock',
+        image_link: baseURL.value + data.value.product.image,
+        price: Number(data.value.product.price_for_sale),
+        currency: 'COP',
+        description: `Descubre nuestro '${data.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨. ${data.value.keywords.join(', ')}`
+      })
     }
   }
 
