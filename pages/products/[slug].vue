@@ -201,9 +201,13 @@ if (productData.value) {
   if ($metapixel && $metapixel.trackEvent) {
     $metapixel.trackEvent('ViewContent', {
       content_ids: [productData.value.product.id],
+      content_name: productData.value.product.name,
       content_type: 'product',
-      value: productData.value.product.price_for_sale,
-      currency: 'COP'
+      availability: 'in stock',
+      image_link: imageUrl,
+      price: Number(productData.value.product.price_for_sale),
+      currency: 'COP',
+      description: descriptionText
     })
   }
 }
