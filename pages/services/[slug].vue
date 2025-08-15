@@ -53,7 +53,7 @@ const homeStores = useHomeStores();
 const ordersStores = useOrdersStores()
 const config_ = useRuntimeConfig()
 
-const { isMobile } = useDevice();
+const { isMobile, isDesktop } = useDevice();
 
 const isLoading = ref(true)
 const tab = ref('0')
@@ -314,13 +314,6 @@ async function fetchData() {
       })
     );
 
-    setMetaTags({
-      title: title.value,
-      description: `Servicio publicado en PARTYMAX como: ${title.value}`,
-      image:  imageMeta.value,
-      url: serviceUrl.value ,
-    });
-
     if (route.query.category) {
       category.value = {
         title: categories.value.filter(item => item.slug === route.query.category)[0].name,
@@ -363,7 +356,7 @@ async function fetchData() {
         bread.value.push(subcategory);
       }
 
-      if(!isMobile) {
+      if(isDesktop) {
         const service_ = {
           title: "Servicio",
           disabled: true,
@@ -483,41 +476,6 @@ const chanceFilling = (value) => {
       filling.value = selected?.name
       filling_id.value = selected?.id
   }
-}
-
-const setMetaTags = ({ title, description, image, url }) => {
-  document.title = title;
-
-  const setMetaTag = (name, content) => {
-    let element = document.querySelector(`meta[name="${name}"]`) || document.createElement('meta');
-    element.setAttribute('name', name);
-    element.setAttribute('content', content);
-    document.head.appendChild(element);
-  };
-
-  const setPropertyMetaTag = (property, content) => {
-    let element = document.querySelector(`meta[property="${property}"]`) || document.createElement('meta');
-    element.setAttribute('property', property);
-    element.setAttribute('content', content);
-    document.head.appendChild(element);
-  };
-
-  setMetaTag('description', description);
-
-  // Open Graph / Facebook / LinkedIn / Pinterest / WhatsApp
-  setPropertyMetaTag('og:type', 'website');
-  setPropertyMetaTag('og:title', title);
-  setPropertyMetaTag('og:description', description);
-  setPropertyMetaTag('og:image', image);
-  setPropertyMetaTag('og:url', url);
-  setPropertyMetaTag('og:site_name', 'PARTYMAX');
-
-  // Twitter
-  setMetaTag('twitter:card', 'summary_large_image');
-  setMetaTag('twitter:title', title);
-  setMetaTag('twitter:description', description);
-  setMetaTag('twitter:image', image);
-  setMetaTag('twitter:site', '@SteffaniiPaola');
 }
 
 const setThumbsSwiper = (swiper) => {
@@ -797,13 +755,18 @@ const buildEmbedUrl = (url) => {
                 >
                 <swiper-slide v-for="(slide, index) in mediaSlides" :key="index">
                   <template v-if="slide.type === 'image'">
-                    <inner-image-zoom
-                      :src="slide.url"
-                      :zoomSrc="slide.url"
-                      :zoomPreload="true"
-                      zoomScale="2"
-                      zoomType="hover"
-                    />
+                    <div v-if="isDesktop">
+                      <inner-image-zoom
+                        :src="slide.url"
+                        :zoomSrc="slide.url"
+                        :zoomPreload="true"
+                        zoomScale="2"
+                        zoomType="hover"
+                      />
+                    </div>
+                    <div v-if="isMobile" class="swiper-zoom-container">
+                      <img :src="slide.url" :alt="'slide-'+index" class="zoom-in"/>
+                    </div>
                   </template>
                   <iframe
                     v-else
@@ -1120,7 +1083,7 @@ const buildEmbedUrl = (url) => {
             </VCol> 
           </VRow>
         </VCardTitle>
-        <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
+        <VCardText class="px-4 px-md-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && isDesktop">
           <Service3 
             v-for="(service, i) in data.recommendations"
             :key="i"
@@ -1216,11 +1179,6 @@ const buildEmbedUrl = (url) => {
     z-index: 10;
     display: flex;
     padding: 8px;
-  }
-
-  .mySwiper2:hover .custom-nav-btn {
-    opacity: 1;
-    pointer-events: auto;
   }
 
   .mySwiper2 iframe {
@@ -2113,15 +2071,15 @@ input[altinputclass="inlinePicker"] {
       width: 60px;
     }
 
+    .MySwiper2:deep(.swiper-button-next),
+    .MySwiper2:deep(.swiper-button-prev) {
+        display: none;
+    }
+
     .mySwiper2 {
       /* max-height: 200px;
       width: 200px; */
       width: 100%;
-    }
-
-    .mySwiper2 {
-      max-height: 200px;
-      width: 200px;
     }
     
     .btn-register {
