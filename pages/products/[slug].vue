@@ -379,6 +379,7 @@ async function fetchData() {
     ?.map(cat => cat.category?.name) // Extrae solo el nombre
     .filter(Boolean);
 
+    // console.log('categoryNames', categoryNames.join(', '))
     if ($metapixel && $metapixel.trackEvent) {
       $metapixel.trackEvent('ViewContent', {
         content_ids: [data.value.product.id],
@@ -389,7 +390,7 @@ async function fetchData() {
         image_link: baseURL.value + data.value.product.image,
         price: Number(data.value.product.price_for_sale),
         currency: 'COP',
-        description: `Descubre nuestro '${data.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨. ${data.value.keywords.join(', ')}`
+        description: `Descubre nuestro '${data.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar ✨}`
       })
     }
   }
