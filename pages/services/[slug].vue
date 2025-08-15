@@ -54,6 +54,7 @@ const ordersStores = useOrdersStores()
 const config_ = useRuntimeConfig()
 
 const { isMobile, isDesktop } = useDevice();
+const { $metapixel } = useNuxtApp()
 
 const isLoading = ref(true)
 const tab = ref('0')
@@ -221,6 +222,20 @@ if (serviceData.value) {
       },
     ],
   });
+
+  if ($metapixel && $metapixel.trackEvent) {
+    $metapixel.trackEvent('ViewContent', {
+      content_ids: [serviceData.value.service.id],
+      content_name: serviceData.value.service.name,
+      content_type: 'product',
+      availability: 'in stock',
+      image_link: imageUrl,
+      price: Number(serviceData.value.service.price),
+      currency: 'COP',
+      description: descriptionText
+    })
+  }
+
 }
 
 watchEffect(fetchData)
@@ -651,7 +666,7 @@ const buildEmbedUrl = (url) => {
         <VCardTitle class="d-flex p-0 align-end">
           <h1>{{ title }}</h1>
           <VSpacer />
-          <div class="align-end redes-title">
+          <div class="align-end redes-title d-none">
             <a :href="searchWhatsapp" target="_blank" class="tw-no-underline hover:tw-text-secondary" rel="noopener noreferrer" data-action="share/whatsapp/share">
               <whatsapp class="me-2" />
             </a>   
@@ -690,7 +705,7 @@ const buildEmbedUrl = (url) => {
             </VCol>
             <VCol cols="12" md="6" class="align-right"></VCol>
           </VRow>
-          <div class="my-1 align-end redes-mobile">
+          <div class="my-1 align-end redes-mobile_ d-none">
             <a :href="searchWhatsapp" target="_blank" class="tw-no-underline hover:tw-text-secondary" rel="noopener noreferrer" data-action="share/whatsapp/share">
               <whatsapp_mobile class="me-2" />
             </a>   
