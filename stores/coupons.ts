@@ -17,7 +17,7 @@ export const useCouponsStores = defineStore("coupons", {
         const { show_by_client } = Coupons();
         return show_by_client(data, id)
             .then((response) => {
-                this.data = response.data.data;
+                this.data = response.data.data.coupons;
                 return Promise.resolve(response.data.data);
             })
             .catch((error) => {
@@ -28,8 +28,8 @@ export const useCouponsStores = defineStore("coupons", {
         const { show_by_code } = Coupons();
         return show_by_code(code)
             .then((response) => {
-                this.data = response.data.data;
-                return Promise.resolve(response.data.data);
+                this.data = response.data.data.coupon;
+                return Promise.resolve(response.data.data.coupon);
             })
             .catch((error) => {
                 return Promise.reject(error);
