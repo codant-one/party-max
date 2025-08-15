@@ -580,9 +580,6 @@ const sendPayU = async (billingDetail) => {
         type = (product_type === 1) ? 0 : 1
     
     let checkIp = await checkUserIP()
-
-
-    let response = await cartStores.checkAvailability()
     
     if(!checkIp) {
         let response = await cartStores.checkAvailability()

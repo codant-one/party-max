@@ -32,14 +32,14 @@ const emit = defineEmits([
     'changeAddreess',
     'dialog',
     'dialog_error',
-    'send',
+    'send'
 ])
 
 const error_address = ref('Debes agregar una dirección de envio')
 const province = ref(props.province_id)
 const id = ref(props.address_id)
 
-const send_array = ref(['Envío Nacional: $19.000.00', 'Envío Bogotá: $12.000.00 '])
+const send_array = ref(['Envío gratis', 'Envío Nacional: $19.000.00', 'Envío Bogotá: $12.000.00 '])
 const sendId = ref(props.send_id)
 
 watch(() => 
@@ -204,7 +204,6 @@ const isDisabled = (i) => {
                 </VCardText>
                 <VCardText class="row-cardp3">
                     <span
-                        class="tw-cursor-pointer" 
                         @click="emit('dialog', true)">
                         Agregar domicilio
                     </span>
