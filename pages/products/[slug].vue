@@ -387,7 +387,7 @@ async function fetchData() {
     .filter(Boolean);
 
     if ($metapixel && $metapixel.trackEvent) {
-      console.log('categoryNames', categoryNames.join(', '))
+      // console.log('categoryNames', categoryNames.join(', '))
       $metapixel.trackEvent('ViewContent', {
         content_ids: [data.value.product.id],
         content_name: data.value.product.name,

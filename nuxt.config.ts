@@ -59,11 +59,9 @@ export default defineNuxtConfig({
     '~/plugins/axios.ts',
     '~/plugins/metapixel.client.ts',
     '~/plugins/recaptcha.client.ts',
-    '~/plugins/vuegtag.client.ts',
     '~/plugins/vuetify.ts',
     '~/plugins/webfontloader.client.ts',
     '~/plugins/date-fns.client.ts',
-    '~/plugins/gtm.client.ts',
     '~/plugins/vue-config.ts'
   ],
 

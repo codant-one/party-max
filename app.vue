@@ -19,14 +19,30 @@ const route = useRoute()
 
 const backgroundStyle = ref({})
 const background = ref('tw-bg-white')
-const { isMobile } = useDevice();
 const drawer = ref(false)
+
+const { isMobile } = useDevice()
+const { $metapixel } = useNuxtApp()
+
+onMounted(() => {
+  $metapixel.init();
+})
+
+watch(
+  () => route.fullPath,
+  () => {
+    if (process.client && window.fbq) {
+      $metapixel.trackEvent('PageView');
+    }
+  },
+  { immediate: true }
+)
 
 watch(() => 
   filtersStores.getDrawer, (data) => {
     drawer.value = data
   }
-);
+)
 
 watchEffect(fetchData)
 
