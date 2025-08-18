@@ -193,11 +193,18 @@ if (productData.value) {
           'name':  productData.value.product.name,
           'image': imageUrl,
           'description': descriptionText,
+          'sku': productData.value.id,
+          'brand': {
+            '@type': 'Brand',
+            'name': 'PARTYMAX'
+          },
           'offers': {
             '@type': 'Offer',
             'url': productUrl,
             'priceCurrency': 'COP',
-            'price': productData.value.product.price_for_sale
+            'price': productData.value.product.price_for_sale,
+            'availability': 'https://schema.org/InStock',
+            'itemCondition': 'https://schema.org/NewCondition'
           },
         }),
       },
@@ -379,8 +386,8 @@ async function fetchData() {
     ?.map(cat => cat.category?.name) // Extrae solo el nombre
     .filter(Boolean);
 
-    // console.log('categoryNames', categoryNames.join(', '))
     if ($metapixel && $metapixel.trackEvent) {
+      console.log('categoryNames', categoryNames.join(', '))
       $metapixel.trackEvent('ViewContent', {
         content_ids: [data.value.product.id],
         content_name: data.value.product.name,
@@ -388,9 +395,9 @@ async function fetchData() {
         content_type: 'product',
         availability: 'in stock',
         image_link: baseURL.value + data.value.product.image,
-        price: Number(data.value.product.price_for_sale),
+        value: Number(data.value.product.price_for_sale),
         currency: 'COP',
-        description: `Descubre nuestro '${data.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar ✨}`
+        description: `Descubre nuestro '${data.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar ✨`
       })
     }
   }
