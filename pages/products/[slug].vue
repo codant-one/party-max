@@ -384,7 +384,7 @@ async function fetchData() {
       });
     }
 
-    if ($metapixel && $metapixel.trackEvent && categoryNames.value === null) {
+    if ($metapixel && $metapixel.trackEvent && categoryNames.value === null && title.value !== null) {
       categoryNames.value = data.value.product.colors[0].categories
         ?.map(cat => cat.category?.name) // Extrae solo el nombre
         .filter(Boolean);
