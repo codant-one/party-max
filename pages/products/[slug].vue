@@ -143,6 +143,15 @@ watch(() =>
   }
 );
 
+const toSentenceCase = (str) => {
+  if (!str) return '';
+  // 1. Convierte toda la cadena a minúsculas
+  // 2. Toma la primera letra y la convierte a mayúscula
+  // 3. Une la primera letra mayúscula con el resto de la cadena en minúscula
+  const lower = str.toLowerCase();
+  return lower.charAt(0).toUpperCase() + lower.slice(1);
+}
+
 const { data: productData } = await useAsyncData(
   `product-${route.params.slug}`,
   () => miscellaneousStores.getProductMeta(route.params.slug)
@@ -190,9 +199,9 @@ if (productData.value) {
         innerHTML: JSON.stringify({
           '@context': 'https://schema.org/',
           '@type': 'Product',
-          'name':  productData.value.product.name,
+          'name':  toSentenceCase(productData.value.product.name),
           'image': imageUrl,
-          'description': descriptionText,
+          'description': toSentenceCase(descriptionText),
           'productID': productData.value.product.id.toString(),
           'sku': productData.value.product.id,
           'brand': {
@@ -404,15 +413,6 @@ async function fetchData() {
   }
 
   isLoading.value = false
-}
-
-const toSentenceCase = (str) => {
-  if (!str) return '';
-  // 1. Convierte toda la cadena a minúsculas
-  // 2. Toma la primera letra y la convierte a mayúscula
-  // 3. Une la primera letra mayúscula con el resto de la cadena en minúscula
-  const lower = str.toLowerCase();
-  return lower.charAt(0).toUpperCase() + lower.slice(1);
 }
 
 const chanceRadio = (value) => {
