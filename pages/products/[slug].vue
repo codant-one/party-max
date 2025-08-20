@@ -143,6 +143,15 @@ watch(() =>
   }
 );
 
+const toSentenceCase = (str) => {
+  if (!str) return '';
+  // 1. Convierte toda la cadena a minúsculas
+  // 2. Toma la primera letra y la convierte a mayúscula
+  // 3. Une la primera letra mayúscula con el resto de la cadena en minúscula
+  const lower = str.toLowerCase();
+  return lower.charAt(0).toUpperCase() + lower.slice(1);
+}
+
 const { data: productData } = await useAsyncData(
   `product-${route.params.slug}`,
   () => miscellaneousStores.getProductMeta(route.params.slug)
@@ -158,16 +167,16 @@ if (productData.value) {
     description: descriptionText,
     ogType: 'product',
     ogUrl: productUrl,
-    ogTitle: productData.value.product.name,
-    ogDescription: descriptionText,
+    ogTitle: toSentenceCase(productData.value.product.name),
+    ogDescription: toSentenceCase(descriptionText),
     ogSiteName: 'PARTYMAX',
     ogImage: imageUrl,
     ogImageWidth: '1200',
     ogImageHeight: '630',
     ogImageAlt: productData.value.product.name,
     twitterCard: 'summary_large_image',
-    twitterTitle: productData.value.product.name,
-    twitterDescription: descriptionText,
+    twitterTitle: toSentenceCase(productData.value.product.name),
+    twitterDescription: toSentenceCase(descriptionText),
     twitterImage: imageUrl,
     twitterSite: twitterAccount.value
   })
@@ -404,15 +413,6 @@ async function fetchData() {
   }
 
   isLoading.value = false
-}
-
-const toSentenceCase = (str) => {
-  if (!str) return '';
-  // 1. Convierte toda la cadena a minúsculas
-  // 2. Toma la primera letra y la convierte a mayúscula
-  // 3. Une la primera letra mayúscula con el resto de la cadena en minúscula
-  const lower = str.toLowerCase();
-  return lower.charAt(0).toUpperCase() + lower.slice(1);
 }
 
 const chanceRadio = (value) => {
