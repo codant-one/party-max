@@ -123,6 +123,8 @@ const isDialogVisible = ref(false)
 const isError = ref(false)
 const isPending = ref(false)
 
+const categoryNames = ref(null)
+
 watch(() => 
   route.path,(newPath, oldPath) => {
     thumbsSwiper.value.destroy(false, true)
@@ -382,16 +384,16 @@ async function fetchData() {
       });
     }
 
-    const categoryNames = data.value.product.colors[0].categories
-    ?.map(cat => cat.category?.name) // Extrae solo el nombre
-    .filter(Boolean);
+    if ($metapixel && $metapixel.trackEvent && categoryNames.value === null) {
+      categoryNames.value = data.value.product.colors[0].categories
+        ?.map(cat => cat.category?.name) // Extrae solo el nombre
+        .filter(Boolean);
 
-    if ($metapixel && $metapixel.trackEvent) {
-      // console.log('categoryNames', categoryNames.join(', '))
+      // console.log('categoryNames', categoryNames.value.join(', '))
       $metapixel.trackEvent('ViewContent', {
         content_ids: [data.value.product.id],
         content_name: data.value.product.name,
-        content_category: categoryNames.join(', '),
+        content_category: categoryNames.value.join(', '),
         content_type: 'product',
         availability: 'in stock',
         image_link: baseURL.value + data.value.product.image,

@@ -4,7 +4,7 @@ import festin_success from '@assets/icons/festin_success.svg';
 import festin_error from '@assets/icons/festin_error.svg';
 import festin_pending from '@assets/icons/festin_pending.svg';
 import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
-import metapixel from '@metapixel'
+import { useRuntimeConfig } from '#app'
 
 const route = useRoute()
 
@@ -34,7 +34,10 @@ const subMessage = ref()
 const isError = ref(false)
 const isPending = ref(false)
 
+const config = useRuntimeConfig()
+
 const { isMobile } = useDevice();
+const { $metapixel } = useNuxtApp()
 
 watchEffect(() => {
     merchant_id.value = route.query.merchantId
@@ -56,12 +59,14 @@ watchEffect(() => {
         case '1':
             message.value = 'Transacción aprobada'
             subMessage.value = 'Para nosotros es un placer acompañarte en tus momentos más especiales, ahora a disfrutar de la fiesta.'
-            if(import.meta.env.VITE_ENV !== 'development') {//solo para produccion
-                metapixel.trackEvent('Purchase', { 
-                    value: TX_VALUE.value, 
-                    currency: currency.value,
-                    description: extra1.value
-                });//SEGUIMIENTO META OJO
+            if(config.public.NODE_ENV !== 'development') {//solo para produccion
+                if ($metapixel && $metapixel.trackEvent) {
+                    $metapixel.trackEvent('Purchase', { 
+                        value: TX_VALUE.value, 
+                        currency: currency.value,
+                        description: extra1.value
+                    });//SEGUIMIENTO META OJO
+                }
             }
             emit('deleteAll')
             break;
