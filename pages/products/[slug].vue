@@ -183,19 +183,18 @@ if (productData.value) {
       { name: 'product:condition', content: 'new' },
       { name: 'product:price:amount', content: productData.value.product.price_for_sale },
       { name: 'product:price:currency', content: 'COP' },
-      // También puedes añadirlo como una meta tag para mayor compatibilidad
-      { name: 'google_product_category', content: '212' }
     ],
     script: [
       {
         type: 'application/ld+json',
-        children: () => JSON.stringify({
+        innerHTML: JSON.stringify({
           '@context': 'https://schema.org/',
           '@type': 'Product',
           'name':  productData.value.product.name,
           'image': imageUrl,
           'description': descriptionText,
-          'sku': productData.value.id,
+          'productID': productData.value.product.id.toString(),
+          'sku': productData.value.product.id,
           'brand': {
             '@type': 'Brand',
             'name': 'PARTYMAX'
@@ -392,19 +391,28 @@ async function fetchData() {
       // console.log('categoryNames', categoryNames.value.join(', '))
       $metapixel.trackEvent('ViewContent', {
         content_ids: [data.value.product.id],
-        content_name: data.value.product.name,
+        content_name: toSentenceCase(data.value.product.name),
         content_category: categoryNames.value.join(', '),
         content_type: 'product',
         availability: 'in stock',
         image_link: baseURL.value + data.value.product.image,
         value: Number(data.value.product.price_for_sale),
         currency: 'COP',
-        description: `Descubre nuestro '${data.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar ✨`
+        description: toSentenceCase(`Descubre nuestro '${data.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar ✨`)
       })
     }
   }
 
   isLoading.value = false
+}
+
+const toSentenceCase = (str) => {
+  if (!str) return '';
+  // 1. Convierte toda la cadena a minúsculas
+  // 2. Toma la primera letra y la convierte a mayúscula
+  // 3. Une la primera letra mayúscula con el resto de la cadena en minúscula
+  const lower = str.toLowerCase();
+  return lower.charAt(0).toUpperCase() + lower.slice(1);
 }
 
 const chanceRadio = (value) => {
