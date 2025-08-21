@@ -173,7 +173,7 @@ if (productData.value) {
     ogImage: imageUrl,
     ogImageWidth: '1200',
     ogImageHeight: '630',
-    ogImageAlt: productData.value.product.name,
+    ogImageAlt: toSentenceCase(productData.value.product.name),
     twitterCard: 'summary_large_image',
     twitterTitle: toSentenceCase(productData.value.product.name),
     twitterDescription: toSentenceCase(descriptionText),

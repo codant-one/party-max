@@ -172,7 +172,7 @@ const onSubmit = () => {
               </div>
               <span class="tw-text-gray tw-mt-2 tw-text-sm">Ideal para cotizaciones y ventas mayoristas.</span>
             </div>
-            <span class="tw-text-tertiary tw-text-2xl tw-mt-2 tw-mb-0">comercial@partymax.co</span>
+            <span class="tw-text-tertiary tw-text-2xl tw-mt-2 tw-mb-0">fiesta@partymax.co</span>
           </div>
           <div class="tw-mt-6">
             <div class="tw-flex tw-flex-col">
@@ -180,9 +180,9 @@ const onSubmit = () => {
                 <img :src="icostore "class="tw-mr-3" alt="Store" width="32" height="32"/>
                 <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Tienda</span>
               </div>
-                <span class="tw-text-gray tw-mt-2 tw-text-sm">Visita nuestra tienda y sorpréndete.</span>
+                <span class="tw-text-gray tw-mt-2 tw-text-sm">Nuestra oficina principal está ubicada en</span>
             </div>
-            <span class="tw-text-tertiary tw-text-2xl tw-mt-2 tw-mb-0">Calle 13 #-06, Bogotá</span>
+            <span class="tw-text-tertiary tw-text-2xl tw-mt-2 tw-mb-0">Calle 13 #69-06</span>
           </div>
           <div class="tw-mt-6 tw-mb-6 md:tw-mb-0">
             <div class="tw-flex tw-flex-col">

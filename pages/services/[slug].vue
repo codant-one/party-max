@@ -152,6 +152,8 @@ const isCupcake = ref([])
 const radioFlavor = ref([])
 const radioFilling = ref([])
 
+const categoryNames = ref(null)
+
 watch(() => 
   route.path,(newPath, oldPath) => {
     thumbsSwiper.value.destroy(false, true)
@@ -165,6 +167,15 @@ watch(() =>
     date.value = null
   }
 );
+
+const toSentenceCase = (str) => {
+  if (!str) return '';
+  // 1. Convierte toda la cadena a minúsculas
+  // 2. Toma la primera letra y la convierte a mayúscula
+  // 3. Une la primera letra mayúscula con el resto de la cadena en minúscula
+  const lower = str.toLowerCase();
+  return lower.charAt(0).toUpperCase() + lower.slice(1);
+}
 
 const { data: serviceData } = await useAsyncData(
   `service-${route.params.slug}`,
@@ -181,16 +192,16 @@ if (serviceData.value) {
     description: descriptionText,
     ogType: 'product',
     ogUrl: serviceUrl,
-    ogTitle: serviceData.value.service.name,
-    ogDescription: descriptionText,
+    ogTitle: toSentenceCase(serviceData.value.service.name),
+    ogDescription: toSentenceCase(descriptionText),
     ogSiteName: 'PARTYMAX',
     ogImage: imageUrl,
     ogImageWidth: '1200',
     ogImageHeight: '630',
-    ogImageAlt: serviceData.value.service.name,
+    ogImageAlt: toSentenceCase(serviceData.value.service.name),
     twitterCard: 'summary_large_image',
-    twitterTitle: serviceData.value.service.name,
-    twitterDescription: descriptionText,
+    twitterTitle: toSentenceCase(serviceData.value.service.name),
+    twitterDescription: toSentenceCase(descriptionText),
     twitterImage: imageUrl,
     twitterSite: twitterAccount.value
   })
@@ -202,39 +213,38 @@ if (serviceData.value) {
       { name: 'product:condition', content: 'new' },
       { name: 'product:price:amount', content: serviceData.value.service.price },
       { name: 'product:price:currency', content: 'COP' },
+      { name: 'product:availability', content: 'in stock' },
+      { name: 'product:condition', content: 'new' },
+      { name: 'product:price:amount', content: serviceData.value.service.price },
+      { name: 'product:price:currency', content: 'COP' },
     ],
     script: [
       {
         type: 'application/ld+json',
-        children: () => JSON.stringify({
+        innerHTML: JSON.stringify({
           '@context': 'https://schema.org/',
           '@type': 'Product',
-          'name':  serviceData.value.service.name,
+          'name':  serviceData.value.service.name.toLowerCase(),
           'image': imageUrl,
-          'description': descriptionText,
+          'description': descriptionText.toLowerCase(),
+          'productID': serviceData.value.service.id.toString(),
+          'sku': serviceData.value.service.id,
+          'brand': {
+            '@type': 'Brand',
+            'name': 'PARTYMAX'
+          },
           'offers': {
             '@type': 'Offer',
             'url': serviceUrl,
             'priceCurrency': 'COP',
-            'price': serviceData.value.service.price
+            'price': serviceData.value.service.price,
+            'availability': 'https://schema.org/InStock',
+            'itemCondition': 'https://schema.org/NewCondition'
           },
         }),
       },
     ],
   });
-
-  if ($metapixel && $metapixel.trackEvent) {
-    $metapixel.trackEvent('ViewContent', {
-      content_ids: [serviceData.value.service.id],
-      content_name: serviceData.value.service.name,
-      content_type: 'product',
-      availability: 'in stock',
-      image_link: imageUrl,
-      price: Number(serviceData.value.service.price),
-      currency: 'COP',
-      description: descriptionText
-    })
-  }
 
 }
 
@@ -388,6 +398,25 @@ async function fetchData() {
       });
     }
   }
+
+  if ($metapixel && $metapixel.trackEvent && categoryNames.value === null && title.value !== null) {
+      categoryNames.value = data.value.service.categories
+        ?.map(cat => cat.category?.name) // Extrae solo el nombre
+        .filter(Boolean);
+
+      //console.log('categoryNames', categoryNames.value.join(', '))
+      $metapixel.trackEvent('ViewContent', {
+        content_ids: [data.value.service.id],
+        content_name: toSentenceCase(data.value.service.name),
+        content_category: categoryNames.value.join(', '),
+        content_type: 'product',
+        availability: 'in stock',
+        image_link: baseURL.value + data.value.service.image,
+        value: Number(data.value.service.price),
+        currency: 'COP',
+        description: toSentenceCase(`Descubre nuestro '${data.value.service.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar ✨`)
+      })
+    }
   
   isLoading.value = false
 }
