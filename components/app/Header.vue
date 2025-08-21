@@ -121,7 +121,6 @@
 
           sum += (parseFloat(value) * element.quantity)
 
-          console.log('name', name)
           if ($metapixel && $metapixel.trackEvent) {
             $metapixel.trackEvent('AddToCart', {
               content_ids: [id], 

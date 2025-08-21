@@ -5,8 +5,10 @@ import festin_error from '@assets/icons/festin_error.svg';
 import festin_pending from '@assets/icons/festin_pending.svg';
 import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
 import { useRuntimeConfig } from '#app'
+import { useCartStores } from '~/stores/cart'
 
 const route = useRoute()
+const cartStores = useCartStores()
 
 const emit = defineEmits([
     'refresh',
@@ -35,6 +37,11 @@ const isError = ref(false)
 const isPending = ref(false)
 
 const config = useRuntimeConfig()
+const products = ref([])
+const content_ids = ref([])
+const contents = ref([])
+const num_items = ref(0)
+const sum = ref(0)
 
 const { isMobile } = useDevice();
 const { $metapixel } = useNuxtApp()
@@ -59,12 +66,31 @@ watchEffect(() => {
         case '1':
             message.value = 'Transacción aprobada'
             subMessage.value = 'Para nosotros es un placer acompañarte en tus momentos más especiales, ahora a disfrutar de la fiesta.'
+
             if(config.public.NODE_ENV !== 'development') {//solo para produccion
-                if ($metapixel && $metapixel.trackEvent) {
+                if ($metapixel && $metapixel.trackEvent && content_ids.value.length === 0) {
+                    products.value = cartStores.getData
+                    content_ids.value = products.value.map(item => item.type === 0 ? `PRODUCT-${item.id}` : `SERVICE-${item.id}`)
+                    contents.value = products.value.map(item => ({id: item.type === 0 ? `PRODUCT-${item.id}` : `SERVICE-${item.id}`, quantity: item.quantity}))
+                    num_items.value = products.value.reduce((total, item) => total + (Number(item.quantity) || 0), 0)
+
+                    products.value.forEach(element => {
+                    
+                        let cupcake = element.type === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
+                        let value = 
+                            element.type === 0 ? 
+                            (element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale) :
+                            (element.cake_size_id === 0 ? element.price : cupcake.price)
+
+                        sum.value += (parseFloat(value) * element.quantity)
+                    })
                     $metapixel.trackEvent('Purchase', { 
-                        value: TX_VALUE.value, 
-                        currency: currency.value,
-                        description: extra1.value
+                        content_ids: content_ids.value,
+                        contents: contents.value,
+                        content_type: 'product',
+                        value: sum.value,
+                        currency: 'COP',
+                        num_items: num_items.value,
                     });//SEGUIMIENTO META OJO
                 }
             }
