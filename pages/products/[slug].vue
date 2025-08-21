@@ -202,8 +202,8 @@ if (productData.value) {
           'name':  productData.value.product.name.toLowerCase(),
           'image': imageUrl,
           'description': descriptionText.toLowerCase(),
-          'productID': productData.value.product.id.toString(),
-          'sku': productData.value.product.id,
+          'productID': 'PRODUCT_' + productData.value.product.id.toString(),
+          'sku': 'PRODUCT_' + productData.value.product.id,
           'brand': {
             '@type': 'Brand',
             'name': 'PARTYMAX'
@@ -399,7 +399,7 @@ async function fetchData() {
 
       // console.log('categoryNames', categoryNames.value.join(', '))
       $metapixel.trackEvent('ViewContent', {
-        content_ids: [data.value.product.id],
+        content_ids: ['PRODUCT_' + data.value.product.id],
         content_name: toSentenceCase(data.value.product.name),
         content_category: categoryNames.value.join(', '),
         content_type: 'product',

@@ -34,6 +34,7 @@ export default defineNuxtPlugin(() => {
 
   const trackEvent = (event: string, params?: object) => {
     if (process.client && window.fbq) {
+      // console.log('track', event, params)
       window.fbq('track', event, params);
     }
   }

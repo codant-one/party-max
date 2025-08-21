@@ -48,7 +48,7 @@
   const subTotal = ref('0.00')
   const name = ref(null)
 
-   const cols = ref(12)
+  const cols = ref(12)
   const colse = ref(12)
   const category = ref(1)
   const service = ref(1)
@@ -59,13 +59,15 @@
   const isDrawerOpen = ref(false)
 
   const isLoading = ref(false)
-  const { isMobile, isDesktop } = useDevice();
   const drawer = ref(false)
   const fixedSectionRef = ref(null)
   const classFixed = ref('second-header')
 
   const openedGroups = ref([]);
   const panelCat = ref(null);
+
+  const { isMobile, isDesktop } = useDevice();
+  const { $metapixel } = useNuxtApp()
 
   const items_products = ref([
     { text: 'Fiestas infantiles', icon: markRaw(icon1), slug: 'fiestas-infantiles' },
@@ -114,8 +116,21 @@
             element.type === 0 ? 
               (element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale) :
               (element.cake_size_id === 0 ? element.price : cupcake.price)
+          let name =  element.type === 0 ? element.product.name : element.name
+          let id =  element.type === 0 ? 'PRODUCT_' + element.id : 'SERVICE_' + element.id
 
           sum += (parseFloat(value) * element.quantity)
+
+          console.log('name', name)
+          if ($metapixel && $metapixel.trackEvent) {
+            $metapixel.trackEvent('AddToCart', {
+              content_ids: [id], 
+              content_name: toSentenceCase(name),
+              content_type: 'product',
+              value: value,
+              currency: 'COP'
+            })
+          }
         });
 
         subTotal.value = sum.toFixed(2)
@@ -154,6 +169,15 @@
     categories_.value = [{ id: 0, name: 'Todos' }, ...categories.value];
 
     color.value = (isMobile.value) ? '#FFFFFF' : '#FF0090'
+  }
+
+  const toSentenceCase = (str) => {
+    if (!str) return '';
+    // 1. Convierte toda la cadena a minúsculas
+    // 2. Toma la primera letra y la convierte a mayúscula
+    // 3. Une la primera letra mayúscula con el resto de la cadena en minúscula
+    const lower = str.toLowerCase();
+    return lower.charAt(0).toUpperCase() + lower.slice(1);
   }
 
   const toggleGroupFn = (index, cat) => {

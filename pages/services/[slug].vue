@@ -227,8 +227,8 @@ if (serviceData.value) {
           'name':  serviceData.value.service.name.toLowerCase(),
           'image': imageUrl,
           'description': descriptionText.toLowerCase(),
-          'productID': serviceData.value.service.id.toString(),
-          'sku': serviceData.value.service.id,
+          'productID': 'SERVICE_' + serviceData.value.service.id.toString(),
+          'sku': 'SERVICE_' + serviceData.value.service.id,
           'brand': {
             '@type': 'Brand',
             'name': 'PARTYMAX'
@@ -406,7 +406,7 @@ async function fetchData() {
 
       //console.log('categoryNames', categoryNames.value.join(', '))
       $metapixel.trackEvent('ViewContent', {
-        content_ids: [data.value.service.id],
+        content_ids: ['SERVICE_' + data.value.service.id],
         content_name: toSentenceCase(data.value.service.name),
         content_category: categoryNames.value.join(', '),
         content_type: 'product',
