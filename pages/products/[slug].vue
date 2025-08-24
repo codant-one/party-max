@@ -241,29 +241,31 @@ watch(productData, (newData) => {
       ],
     });
 
-    console.log('🚀 Preparando para enviar ViewContent con ID:', [finalContentId]);
-     
-    categoryNames.value = newData.product.colors[0].categories
-      ?.map(cat => cat.category?.name) // Extrae solo el nombre
-      .filter(Boolean);
+    if ($metapixel && $metapixel.trackEvent) {
+      
+      categoryNames.value = newData.product.colors[0].categories
+        ?.map(cat => cat.category?.name) // Extrae solo el nombre
+        .filter(Boolean);
 
-    console.log('categoryNames', categoryNames.value.join(', '))
-    $metapixel.trackEvent('ViewContent', {
-      content_ids: [finalContentId], 
-      content_name: toSentenceCase(newData.product.name),
-      content_category: categoryNames.value.join(', '),
-      content_type: 'product',
-      availability: 'in stock',
-      image_link: baseURL.value + newData.product.image,
-      value: Number(newData.product.price_for_sale),
-      currency: 'COP',
-      description: toSentenceCase(`Descubre nuestro '${newData.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar ✨`)
-    })
+      console.log('categoryNames', categoryNames.value.join(', '))
+      $metapixel.trackEvent('ViewContent', {
+        content_ids: [finalContentId], 
+        content_name: toSentenceCase(newData.product.name),
+        content_category: categoryNames.value.join(', '),
+        content_type: 'product',
+        availability: 'in stock',
+        image_link: baseURL.value + newData.product.image,
+        value: Number(newData.product.price_for_sale),
+        currency: 'COP',
+        description: toSentenceCase(`Descubre nuestro '${newData.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar ✨`)
+      })
 
-    sideEffectsExecuted.value = true
+      sideEffectsExecuted.value = true;
+    }
+    
   }
-
 }, { immediate: true });
+
 
 watchEffect(fetchData)
 
