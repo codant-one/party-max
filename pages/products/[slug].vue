@@ -123,7 +123,6 @@ const isDialogVisible = ref(false)
 const isError = ref(false)
 const isPending = ref(false)
 
-const categoryNames = ref(null)
 const sideEffectsExecuted = ref(false)
 
 watch(() => 
@@ -180,8 +179,12 @@ watch(productData, (newData) => {
     const originalDescriptionText = `Descubre nuestro '${newData.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨. ${newData.keywords.join(', ')}`
     const cleanDescriptionText = cleanText(originalDescriptionText);
     
-    const cleanId = String(newData.product.id).trim().replace(/["']/g, "");
+    const cleanId = String(newData.product.id).replace(/"/g, '');
     const finalContentId = `PRODUCT_${cleanId}`;
+
+    const priceAsNumber = Number(newData.product.price_for_sale)
+    const formattedPrice = Number(priceAsNumber.toFixed(2))
+
 
     useSeoMeta({
       title: cleanName+ ' | PARTYMAX',
@@ -207,11 +210,11 @@ watch(productData, (newData) => {
       meta: [
         { name: 'product:availability', content: 'in stock' },
         { name: 'product:condition', content: 'new' },
-        { name: 'product:price:amount', content: Number(newData.product.price_for_sale) },
+        { name: 'product:price:amount', content: formattedPrice },
         { name: 'product:price:currency', content: 'COP' },
         { name: 'product:availability', content: 'in stock' },
         { name: 'product:condition', content: 'new' },
-        { name: 'product:price:amount', content: Number(newData.product.price_for_sale) },
+        { name: 'product:price:amount', content: formattedPrice },
         { name: 'product:price:currency', content: 'COP' },
       ],
       script: [
@@ -233,7 +236,7 @@ watch(productData, (newData) => {
               '@type': 'Offer',
               'url': productUrl,
               'priceCurrency': 'COP',
-              'price': Number(newData.product.price_for_sale),
+              'price': formattedPrice,
               'availability': 'https://schema.org/InStock',
               'itemCondition': 'https://schema.org/NewCondition'
             },
@@ -242,29 +245,18 @@ watch(productData, (newData) => {
       ],
     });
 
-    if ($metapixel && $metapixel.trackEvent && categoryNames.value === null) {
-      
-      categoryNames.value = newData.product.colors[0].categories
-        ?.map(cat => cat.category?.name) // Extrae solo el nombre
-        .filter(Boolean);
-
-      console.log('categoryNames', categoryNames.value.join(', '))
+    if ($metapixel && $metapixel.trackEvent) {
+      console.log('product.id:', newData.product.id, typeof newData.product.id)
       $metapixel.trackEvent('ViewContent', {
-        content_ids: [finalContentId], 
-        content_name: toSentenceCase(cleanName),
-        content_category: categoryNames.value.join(', '),
+        content_ids: [finalContentId],
         content_type: 'product',
-        availability: 'in stock',
-        image_link: imageUrl,
-        value: Number(newData.product.price_for_sale),
-        currency: 'COP',
-        description: toSentenceCase(cleanDescriptionText),
+        value: formattedPrice,
+        currency: 'COP'
       })
     }
     
   }
 }, { immediate: true });
-
 
 watchEffect(fetchData)
 
