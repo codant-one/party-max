@@ -189,25 +189,33 @@ const { data: productData } = await useAsyncData(
 )
 
 if (productData.value) {
+  const cleanTextForJson = (text) => {
+    if (!text) return "";
+    return text.replace(/[\n\r]/g, ' ').replace(/"/g, "'");
+  }
+
   const productUrl = `https://${config.public.MY_DOMAIN}/products/${productData.value.product.slug}`
   const imageUrl = baseURL.value + productData.value.product.image
-  const descriptionText = `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨. ${productData.value.keywords.join(', ')}`;
+  const originalDescriptionText = `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨. ${productData.value.keywords.join(', ')}`
+
+  const cleanName = cleanTextForJson(productData.value.product.name);
+  const cleanDescriptionText = cleanTextForJson(originalDescriptionText);
 
   useSeoMeta({
-    title: productData.value.product.name + ' | PARTYMAX',
-    description: descriptionText,
+    title: cleanName+ ' | PARTYMAX',
+    description: cleanDescriptionText,
     ogType: 'product',
     ogUrl: productUrl,
-    ogTitle: toSentenceCase(productData.value.product.name),
-    ogDescription: toSentenceCase(descriptionText),
+    ogTitle: toSentenceCase(cleanName),
+    ogDescription: toSentenceCase(cleanDescriptionText),
     ogSiteName: 'PARTYMAX',
     ogImage: imageUrl,
     ogImageWidth: '1200',
     ogImageHeight: '630',
-    ogImageAlt: toSentenceCase(productData.value.product.name),
+    ogImageAlt: toSentenceCase(cleanName),
     twitterCard: 'summary_large_image',
-    twitterTitle: toSentenceCase(productData.value.product.name),
-    twitterDescription: toSentenceCase(descriptionText),
+    twitterTitle: toSentenceCase(cleanName),
+    twitterDescription: toSentenceCase(cleanDescriptionText),
     twitterImage: imageUrl,
     twitterSite: twitterAccount.value
   })
@@ -230,11 +238,11 @@ if (productData.value) {
         innerHTML: JSON.stringify({
           '@context': 'https://schema.org/',
           '@type': 'Product',
-          'name':  productData.value.product.name.toLowerCase(),
+          'name':  cleanName,
           'image': imageUrl,
-          'description': descriptionText.toLowerCase(),
-          'productID': 'PRODUCT_' + productData.value.product.id.toString(),
-          'sku': 'PRODUCT_' + productData.value.product.id,
+          'description': cleanDescriptionText,
+          'productID': 'PRODUCT_' + productData.value.product.id.toString().trim().replace(/["']/g, ""),
+          'sku': 'PRODUCT_' + productData.value.product.id.toString().trim().replace(/["']/g, ""),
           'brand': {
             '@type': 'Brand',
             'name': 'PARTYMAX'
