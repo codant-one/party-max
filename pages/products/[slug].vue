@@ -124,7 +124,7 @@ const isError = ref(false)
 const isPending = ref(false)
 
 const categoryNames = ref(null)
-const viewContentEventSent = ref(false)
+const sideEffectsExecuted = ref(false)
 
 watch(() => 
   route.path,(newPath, oldPath) => {
@@ -158,103 +158,112 @@ const { data: productData } = await useAsyncData(
   () => miscellaneousStores.getProductMeta(route.params.slug)
 )
 
-if (productData.value) {
-  const cleanTextForJson = (text) => {
-    if (!text) return "";
-    return text.replace(/[\n\r]/g, ' ').replace(/"/g, "'");
-  }
+watch(productData, (newData) => { 
+  // 'newData' aquí ya es el valor desempaquetado, es decir, el contenido de la caja.
+  console.log('¡EL WATCH FUNCIONÓ!', newData); 
 
-  const productUrl = `https://${config.public.MY_DOMAIN}/products/${productData.value.product.slug}`
-  const imageUrl = baseURL.value + productData.value.product.image
-  const originalDescriptionText = `Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨. ${productData.value.keywords.join(', ')}`
+  if (newData && newData.product && !sideEffectsExecuted.value) {
 
-  const cleanName = cleanTextForJson(productData.value.product.name);
-  const cleanDescriptionText = cleanTextForJson(originalDescriptionText);
+    console.log("✅ Datos recibidos. El WATCH funciona. Ejecutando efectos secundarios...");
 
-  useSeoMeta({
-    title: cleanName+ ' | PARTYMAX',
-    description: cleanDescriptionText,
-    ogType: 'product',
-    ogUrl: productUrl,
-    ogTitle: toSentenceCase(cleanName),
-    ogDescription: toSentenceCase(cleanDescriptionText),
-    ogSiteName: 'PARTYMAX',
-    ogImage: imageUrl,
-    ogImageWidth: '1200',
-    ogImageHeight: '630',
-    ogImageAlt: toSentenceCase(cleanName),
-    twitterCard: 'summary_large_image',
-    twitterTitle: toSentenceCase(cleanName),
-    twitterDescription: toSentenceCase(cleanDescriptionText),
-    twitterImage: imageUrl,
-    twitterSite: twitterAccount.value
-  })
+    // --- A. PREPARACIÓN DE DATOS LIMPIOS ---
+    const productUrl = `https://${config.public.MY_DOMAIN}/products/${newData.product.slug}`
+    const imageUrl = baseURL.value + newData.product.image
 
-  useHead({
-    link: [ { rel: 'canonical', href: productUrl } ],
-    meta: [
-      { name: 'product:availability', content: 'in stock' },
-      { name: 'product:condition', content: 'new' },
-      { name: 'product:price:amount', content: productData.value.product.price_for_sale },
-      { name: 'product:price:currency', content: 'COP' },
-      { name: 'product:availability', content: 'in stock' },
-      { name: 'product:condition', content: 'new' },
-      { name: 'product:price:amount', content: productData.value.product.price_for_sale },
-      { name: 'product:price:currency', content: 'COP' },
-    ],
-    script: [
-      {
-        type: 'application/ld+json',
-        innerHTML: JSON.stringify({
-          '@context': 'https://schema.org/',
-          '@type': 'Product',
-          'name':  cleanName,
-          'image': imageUrl,
-          'description': cleanDescriptionText,
-          'productID': 'PRODUCT_' + productData.value.product.id.toString().trim().replace(/["']/g, ""),
-          'sku': 'PRODUCT_' + productData.value.product.id.toString().trim().replace(/["']/g, ""),
-          'brand': {
-            '@type': 'Brand',
-            'name': 'PARTYMAX'
-          },
-          'offers': {
-            '@type': 'Offer',
-            'url': productUrl,
-            'priceCurrency': 'COP',
-            'price': productData.value.product.price_for_sale,
-            'availability': 'https://schema.org/InStock',
-            'itemCondition': 'https://schema.org/NewCondition'
-          },
-        }),
-      },
-    ],
-  });
+    const cleanText = (text) => {
+      if (!text) return "";
+      return String(text).replace(/[\n\r]/g, ' ').replace(/"/g, "'");
+    };
 
-  if (productData.value.product.price_for_sale && !viewContentEventSent.value) {
+    const cleanName = cleanText(newData.product.name);
+    const originalDescriptionText = `Descubre nuestro '${newData.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨. ${newData.keywords.join(', ')}`
+    const cleanDescriptionText = cleanText(originalDescriptionText);
+    
+    const cleanId = String(newData.product.id).trim().replace(/["']/g, "");
+    const finalContentId = `PRODUCT_${cleanId}`;
+
+    useSeoMeta({
+      title: cleanName+ ' | PARTYMAX',
+      description: cleanDescriptionText,
+      ogType: 'product',
+      ogUrl: productUrl,
+      ogTitle: toSentenceCase(cleanName),
+      ogDescription: toSentenceCase(cleanDescriptionText),
+      ogSiteName: 'PARTYMAX',
+      ogImage: imageUrl,
+      ogImageWidth: '1200',
+      ogImageHeight: '630',
+      ogImageAlt: toSentenceCase(cleanName),
+      twitterCard: 'summary_large_image',
+      twitterTitle: toSentenceCase(cleanName),
+      twitterDescription: toSentenceCase(cleanDescriptionText),
+      twitterImage: imageUrl,
+      twitterSite: twitterAccount.value
+    })
+
+    useHead({
+      link: [ { rel: 'canonical', href: productUrl } ],
+      meta: [
+        { name: 'product:availability', content: 'in stock' },
+        { name: 'product:condition', content: 'new' },
+        { name: 'product:price:amount', content: newData.product.price_for_sale },
+        { name: 'product:price:currency', content: 'COP' },
+        { name: 'product:availability', content: 'in stock' },
+        { name: 'product:condition', content: 'new' },
+        { name: 'product:price:amount', content: newData.product.price_for_sale },
+        { name: 'product:price:currency', content: 'COP' },
+      ],
+      script: [
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify({
+            '@context': 'https://schema.org/',
+            '@type': 'Product',
+            'name':  cleanName,
+            'image': imageUrl,
+            'description': cleanDescriptionText,
+            'productID': finalContentId,
+            'sku': finalContentId,
+            'brand': {
+              '@type': 'Brand',
+              'name': 'PARTYMAX'
+            },
+            'offers': {
+              '@type': 'Offer',
+              'url': productUrl,
+              'priceCurrency': 'COP',
+              'price': newData.product.price_for_sale,
+              'availability': 'https://schema.org/InStock',
+              'itemCondition': 'https://schema.org/NewCondition'
+            },
+          }),
+        },
+      ],
+    });
+
     if ($metapixel && $metapixel.trackEvent && categoryNames.value === null) {
-      viewContentEventSent.value = true;
-      categoryNames.value = productData.value.product.colors[0].categories
+      sideEffectsExecuted.value = true;
+      categoryNames.value = newData.product.colors[0].categories
         ?.map(cat => cat.category?.name) // Extrae solo el nombre
         .filter(Boolean);
-      
-      const rawId = String(productData.value.product.id); // Forzar a que sea un string
-      const cleanId = rawId.trim().replace(/["']/g, ""); 
 
-      // console.log('categoryNames', categoryNames.value.join(', '))
+      console.log('categoryNames', categoryNames.value.join(', '))
       $metapixel.trackEvent('ViewContent', {
-        content_ids: [`PRODUCT_${cleanId}`], 
-        content_name: toSentenceCase(productData.value.product.name),
+        content_ids: [finalContentId], 
+        content_name: toSentenceCase(newData.product.name),
         content_category: categoryNames.value.join(', '),
         content_type: 'product',
         availability: 'in stock',
-        image_link: baseURL.value + productData.value.product.image,
-        value: Number(productData.value.product.price_for_sale),
+        image_link: baseURL.value + newData.product.image,
+        value: Number(newData.product.price_for_sale),
         currency: 'COP',
-        description: toSentenceCase(`Descubre nuestro '${productData.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar ✨`)
+        description: toSentenceCase(`Descubre nuestro '${newData.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar ✨`)
       })
     }
+    
   }
-}
+}, { immediate: true });
+
 
 watchEffect(fetchData)
 
