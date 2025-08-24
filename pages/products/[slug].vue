@@ -124,6 +124,7 @@ const isError = ref(false)
 const isPending = ref(false)
 
 const categoryNames = ref(null)
+const viewContentEventSent = ref(false)
 
 watch(() => 
   route.path,(newPath, oldPath) => {
@@ -142,6 +143,33 @@ watch(() =>
     onlyWholesale.value = value
   }
 );
+
+watch(() => 
+  data.value,(newData, oldData) => {
+
+  if (newData && newData.product && newData.product.price_for_sale && !viewContentEventSent.value) {
+    if ($metapixel && $metapixel.trackEvent && categoryNames.value === null) {
+      viewContentEventSent.value = true;
+      categoryNames.value = newData.product.colors[0].categories
+        ?.map(cat => cat.category?.name) // Extrae solo el nombre
+        .filter(Boolean);
+
+      // console.log('categoryNames', categoryNames.value.join(', '))
+      $metapixel.trackEvent('ViewContent', {
+        content_ids: ['PRODUCT_' + newData.product.id],
+        content_name: toSentenceCase(newData.product.name),
+        content_category: categoryNames.value.join(', '),
+        content_type: 'product',
+        availability: 'in stock',
+        image_link: baseURL.value + newData.product.image,
+        value: Number(newData.product.price_for_sale),
+        currency: 'COP',
+        description: toSentenceCase(`Descubre nuestro '${newData.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar ✨`)
+      })
+    }
+  }
+
+}, { immediate: true });
 
 const toSentenceCase = (str) => {
   if (!str) return '';
@@ -246,8 +274,7 @@ async function fetchData() {
   
   radioContent.value = []
   productImages.value = []
-  data.value = null
-
+  
   if(route.params.slug && route.path.startsWith('/products/')) {
     existence_whole.value = route.query.wholesalers === 'true' ? true : false
 
@@ -390,25 +417,6 @@ async function fetchData() {
         disabled: true,
         href: '',
       });
-    }
-
-    if ($metapixel && $metapixel.trackEvent && categoryNames.value === null && title.value !== null) {
-      categoryNames.value = data.value.product.colors[0].categories
-        ?.map(cat => cat.category?.name) // Extrae solo el nombre
-        .filter(Boolean);
-
-      // console.log('categoryNames', categoryNames.value.join(', '))
-      $metapixel.trackEvent('ViewContent', {
-        content_ids: ['PRODUCT_' + data.value.product.id],
-        content_name: toSentenceCase(data.value.product.name),
-        content_category: categoryNames.value.join(', '),
-        content_type: 'product',
-        availability: 'in stock',
-        image_link: baseURL.value + data.value.product.image,
-        value: Number(data.value.product.price_for_sale),
-        currency: 'COP',
-        description: toSentenceCase(`Descubre nuestro '${data.value.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar ✨`)
-      })
     }
   }
 
