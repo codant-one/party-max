@@ -38,6 +38,7 @@ const isPending = ref(false)
 
 const config = useRuntimeConfig()
 const products = ref([])
+const purchaseEventSent = ref(false)
 const content_ids = ref([])
 const contents = ref([])
 const num_items = ref(0)
@@ -68,7 +69,63 @@ watchEffect(() => {
             subMessage.value = 'Para nosotros es un placer acompañarte en tus momentos más especiales, ahora a disfrutar de la fiesta.'
 
             if(config.public.NODE_ENV !== 'development') {//solo para produccion
-                if ($metapixel && $metapixel.trackEvent && content_ids.value.length === 0) {
+                if ($metapixel && $metapixel.trackEvent && !purchaseEventSent.value) {
+
+                    products.value = cartStores.getData;
+
+                    // Si no hay artículos, no hacemos nada.
+                    if (!products.value || products.value.length === 0) {
+                        return; 
+                    }
+
+                    // Usamos .reduce() para recorrer el array UNA SOLA VEZ y calcular todo.
+                    const purchaseData = products.value.reduce((acc, item) => {
+                        // --- 1. LIMPIEZA Y CONSTRUCCIÓN DEL ID ---
+                        const rawId = item.id.toString();
+                        const cleanId = rawId.trim().replace(/["']/g, "");
+                        const finalId = item.type === 0 ? `PRODUCT_${cleanId}` : `SERVICE_${cleanId}`;
+                        
+                        // --- 2. CÁLCULO DEL PRECIO DEL ARTÍCULO INDIVIDUAL ---
+                        const cupcake = item.type === 0 ? null : item.cupcakes.find(c => c.cake_size_id === item.cake_size_id);
+                        const itemPrice = 
+                            item.type === 0 ? 
+                            (item.wholesale === 1 ? item.product.wholesale_price : item.product.price_for_sale) :
+                            (item.cake_size_id === 0 ? item.price : cupcake.price);
+                        
+                        // --- 3. ACTUALIZAMOS EL ACUMULADOR ---
+                        acc.content_ids.push(finalId);
+                        acc.contents.push({ id: finalId, quantity: item.quantity });
+                        acc.num_items += (Number(item.quantity) || 0);
+                        acc.total_value += (Number(itemPrice) || 0) * (Number(item.quantity) || 0);
+
+                        return acc; // Devolvemos el acumulador para la siguiente iteración
+                    }, {
+                        // Estado inicial del acumulador
+                        content_ids: [],
+                        contents: [],
+                        num_items: 0,
+                        total_value: 0
+                    });
+
+                    // --- 4. LLAMADA AL PÍXEL CON LOS DATOS AGREGADOS ---
+                    console.log('🛍️ Enviando Purchase:', purchaseData);
+
+                    $metapixel.trackEvent('Purchase', {
+                        content_ids: purchaseData.content_ids,
+                        contents: purchaseData.contents,
+                        content_type: 'product',
+                        value: purchaseData.total_value, // El valor ya es un número y es la suma total
+                        currency: 'COP',
+                        num_items: purchaseData.num_items,
+                    });
+
+                    // --- 5. CERRAMOS EL CERROJO ---
+                    purchaseEventSent.value = true;
+
+                    // Opcional: Limpia el carrito para evitar reenvíos
+                    // cartStores.clearCart();
+                    }
+                /*if ($metapixel && $metapixel.trackEvent && content_ids.value.length === 0) {
                     products.value = cartStores.getData
                     content_ids.value = products.value.map(item => item.type === 0 ? `PRODUCT_${item.id}` : `SERVICE_${item.id}`)
                     contents.value = products.value.map(item => ({id: item.type === 0 ? `PRODUCT_${item.id}` : `SERVICE_${item.id}`, quantity: item.quantity}))
@@ -92,7 +149,7 @@ watchEffect(() => {
                         currency: 'COP',
                         num_items: num_items.value,
                     });//SEGUIMIENTO META OJO
-                }
+                }*/
             }
             emit('deleteAll')
             break;

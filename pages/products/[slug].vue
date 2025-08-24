@@ -154,9 +154,12 @@ watch(() =>
         ?.map(cat => cat.category?.name) // Extrae solo el nombre
         .filter(Boolean);
 
+      const rawId = String(newData.product.id); // Forzar a que sea un string
+      const cleanId = rawId.trim().replace(/["']/g, ""); 
+
       // console.log('categoryNames', categoryNames.value.join(', '))
       $metapixel.trackEvent('ViewContent', {
-        content_ids: ['PRODUCT_' + newData.product.id],
+        content_ids: [`PRODUCT_${cleanId}`], 
         content_name: toSentenceCase(newData.product.name),
         content_category: categoryNames.value.join(', '),
         content_type: 'product',
