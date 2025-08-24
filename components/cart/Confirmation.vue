@@ -68,7 +68,7 @@ watchEffect(() => {
             message.value = 'Transacción aprobada'
             subMessage.value = 'Para nosotros es un placer acompañarte en tus momentos más especiales, ahora a disfrutar de la fiesta.'
 
-            if(config.public.NODE_ENV !== 'development') {//solo para produccion
+            if(config.public.NODE_ENV === 'development') {//solo para produccion
                 if ($metapixel && $metapixel.trackEvent && !purchaseEventSent.value) {
 
                     products.value = cartStores.getData;
@@ -81,8 +81,7 @@ watchEffect(() => {
                     // Usamos .reduce() para recorrer el array UNA SOLA VEZ y calcular todo.
                     const purchaseData = products.value.reduce((acc, item) => {
                         // --- 1. LIMPIEZA Y CONSTRUCCIÓN DEL ID ---
-                        const rawId = item.id.toString();
-                        const cleanId = rawId.trim().replace(/["']/g, "");
+                        const cleanId = String(item.id).replace(/"/g, '')
                         const finalId = item.type === 0 ? `PRODUCT_${cleanId}` : `SERVICE_${cleanId}`;
                         
                         // --- 2. CÁLCULO DEL PRECIO DEL ARTÍCULO INDIVIDUAL ---

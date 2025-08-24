@@ -179,12 +179,13 @@ watch(productData, (newData) => {
     const originalDescriptionText = `Descubre nuestro '${newData.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨. ${newData.keywords.join(', ')}`
     const cleanDescriptionText = cleanText(originalDescriptionText);
     
-    const cleanId = String(newData.product.id).replace(/"/g, '');
+    //data.value.product.colors[0]?.id
+    console.log('newData.product', newData.product.colors[0]?.id)
+    const cleanId = String(newData.product.colors[0]?.id).replace(/"/g, '');
     const finalContentId = `PRODUCT_${cleanId}`;
 
     const priceAsNumber = Number(newData.product.price_for_sale)
     const formattedPrice = Number(priceAsNumber.toFixed(2))
-
 
     useSeoMeta({
       title: cleanName+ ' | PARTYMAX',
@@ -246,7 +247,6 @@ watch(productData, (newData) => {
     });
 
     if ($metapixel && $metapixel.trackEvent) {
-      console.log('product.id:', newData.product.id, typeof newData.product.id)
       $metapixel.trackEvent('ViewContent', {
         content_ids: [finalContentId],
         content_type: 'product',

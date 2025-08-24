@@ -111,25 +111,25 @@
 
         let sum = 0
         products.value.forEach(element => {
-          const rawId = element.id.toString();
-          const cleanId = rawId.trim().replace(/["']/g, ""); 
-          const finalId = element.type === 0 ? `PRODUCT_${cleanId}` : `SERVICE_${cleanId}`;
+          const cleanId =  String(element.id).replace(/"/g, '')
+          const finalContentId = element.type === 0 ? `PRODUCT_${cleanId}` : `SERVICE_${cleanId}`;
 
           let cupcake = element.type === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
           let value = 
             element.type === 0 ? 
               (element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale) :
               (element.cake_size_id === 0 ? element.price : cupcake.price)
-          let name =  element.type === 0 ? element.product.name : element.name
 
           sum += (parseFloat(value) * element.quantity)
 
+          const priceAsNumber = Number(value)
+          const formattedPrice = Number(priceAsNumber.toFixed(2))
+
           if ($metapixel && $metapixel.trackEvent) {
             $metapixel.trackEvent('AddToCart', {
-              content_ids: [finalId], 
-              content_name: toSentenceCase(name),
+              content_ids: [finalContentId], 
               content_type: 'product',
-              value: Number(value),
+              value: formattedPrice,
               currency: 'COP'
             })
           }
