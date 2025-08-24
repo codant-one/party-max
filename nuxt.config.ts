@@ -14,6 +14,9 @@ export default defineNuxtConfig({
       },
       link: [
         { rel: 'icon', type: 'image/png', href: '/favicon.png' }
+      ],
+      meta: [
+        { property: 'fb:app_id', content: '399759509371752' }
       ]
     }
   },
