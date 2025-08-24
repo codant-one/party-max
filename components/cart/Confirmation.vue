@@ -70,8 +70,8 @@ watchEffect(() => {
             if(config.public.NODE_ENV !== 'development') {//solo para produccion
                 if ($metapixel && $metapixel.trackEvent && content_ids.value.length === 0) {
                     products.value = cartStores.getData
-                    content_ids.value = products.value.map(item => item.type === 0 ? `PRODUCT-${item.id}` : `SERVICE-${item.id}`)
-                    contents.value = products.value.map(item => ({id: item.type === 0 ? `PRODUCT-${item.id}` : `SERVICE-${item.id}`, quantity: item.quantity}))
+                    content_ids.value = products.value.map(item => item.type === 0 ? `PRODUCT_${item.id}` : `SERVICE_${item.id}`)
+                    contents.value = products.value.map(item => ({id: item.type === 0 ? `PRODUCT_${item.id}` : `SERVICE_${item.id}`, quantity: item.quantity}))
                     num_items.value = products.value.reduce((total, item) => total + (Number(item.quantity) || 0), 0)
 
                     products.value.forEach(element => {
