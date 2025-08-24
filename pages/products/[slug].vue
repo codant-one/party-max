@@ -163,6 +163,7 @@ watch(productData, (newData) => {
   console.log('¡EL WATCH FUNCIONÓ!', newData); 
 
   if (newData && newData.product && !sideEffectsExecuted.value) {
+    sideEffectsExecuted.value = true;
 
     console.log("✅ Datos recibidos. El WATCH funciona. Ejecutando efectos secundarios...");
 
@@ -206,11 +207,11 @@ watch(productData, (newData) => {
       meta: [
         { name: 'product:availability', content: 'in stock' },
         { name: 'product:condition', content: 'new' },
-        { name: 'product:price:amount', content: newData.product.price_for_sale },
+        { name: 'product:price:amount', content: Number(newData.product.price_for_sale) },
         { name: 'product:price:currency', content: 'COP' },
         { name: 'product:availability', content: 'in stock' },
         { name: 'product:condition', content: 'new' },
-        { name: 'product:price:amount', content: newData.product.price_for_sale },
+        { name: 'product:price:amount', content: Number(newData.product.price_for_sale) },
         { name: 'product:price:currency', content: 'COP' },
       ],
       script: [
@@ -232,7 +233,7 @@ watch(productData, (newData) => {
               '@type': 'Offer',
               'url': productUrl,
               'priceCurrency': 'COP',
-              'price': newData.product.price_for_sale,
+              'price': Number(newData.product.price_for_sale),
               'availability': 'https://schema.org/InStock',
               'itemCondition': 'https://schema.org/NewCondition'
             },
@@ -241,7 +242,7 @@ watch(productData, (newData) => {
       ],
     });
 
-    if ($metapixel && $metapixel.trackEvent) {
+    if ($metapixel && $metapixel.trackEvent && categoryNames.value === null) {
       
       categoryNames.value = newData.product.colors[0].categories
         ?.map(cat => cat.category?.name) // Extrae solo el nombre
@@ -250,17 +251,15 @@ watch(productData, (newData) => {
       console.log('categoryNames', categoryNames.value.join(', '))
       $metapixel.trackEvent('ViewContent', {
         content_ids: [finalContentId], 
-        content_name: toSentenceCase(newData.product.name),
+        content_name: toSentenceCase(cleanName),
         content_category: categoryNames.value.join(', '),
         content_type: 'product',
         availability: 'in stock',
-        image_link: baseURL.value + newData.product.image,
+        image_link: imageUrl,
         value: Number(newData.product.price_for_sale),
         currency: 'COP',
-        description: toSentenceCase(`Descubre nuestro '${newData.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar ✨`)
+        description: toSentenceCase(cleanDescriptionText),
       })
-
-      sideEffectsExecuted.value = true;
     }
     
   }
@@ -310,7 +309,7 @@ async function fetchData() {
     selectedColorId.value = data.value.product.colors[0]?.id
 
     onlyWholesale.value = cartStores.getWholesale
-
+    console.log('en que moment?')
     data.value.product.colors.forEach(element => { 
       var aux = {
         value: element.color.id.toString(),
