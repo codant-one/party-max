@@ -79,7 +79,7 @@ watchEffect(() => {
                     }
 
                     const purchaseData = products.value.reduce((acc, item) => {
-                        const cleanId = String(item.id).replace(/"/g, '')
+                        const cleanId = item.type === 0 ? String(item.product_id).replace(/"/g, '') : String(item.id).replace(/"/g, '')
                         const finalId = item.type === 0 ? `PRODUCT_${cleanId}` : `SERVICE_${cleanId}`;
                         const cupcake = item.type === 0 ? null : item.cupcakes.find(c => c.cake_size_id === item.cake_size_id);
                         const itemPrice = 

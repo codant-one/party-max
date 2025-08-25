@@ -175,7 +175,7 @@ watch(productData, (newData) => {
     const originalDescriptionText = `Descubre nuestro '${newData.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨. ${newData.keywords.join(', ')}`
     const cleanDescriptionText = cleanText(originalDescriptionText);
     
-    const cleanId = String(newData.product.colors[0]?.id).replace(/"/g, '');
+    const cleanId = String(newData.product.id).replace(/"/g, '');
     const finalContentId = `PRODUCT_${cleanId}`;
 
     const priceAsNumber = Number(newData.product.price_for_sale)

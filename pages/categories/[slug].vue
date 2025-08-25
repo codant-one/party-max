@@ -105,15 +105,6 @@ const initSeo = () => {
       },
     ],
   })
-
-  if ($metapixel && $metapixel.trackEvent) {
-    $metapixel.trackEvent('ViewContent', {
-      content_ids: [categoryData.value.category.id],
-      content_type: 'category',
-      value: categoryData.value.category.id,
-      currency: 'COP'
-    })
-  }
 }
 
 if (categoryData.value) {

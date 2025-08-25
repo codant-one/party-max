@@ -111,7 +111,7 @@
 
         let sum = 0
         products.value.forEach(element => {
-          const cleanId =  String(element.id).replace(/"/g, '')
+          const cleanId = element.type === 0 ? String(element.product_id).replace(/"/g, '') : String(element.id).replace(/"/g, '')
           const finalContentId = element.type === 0 ? `PRODUCT_${cleanId}` : `SERVICE_${cleanId}`;
 
           let cupcake = element.type === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
