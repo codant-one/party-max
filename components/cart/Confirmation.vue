@@ -78,52 +78,40 @@ watchEffect(() => {
                         return; 
                     }
 
-                    // Usamos .reduce() para recorrer el array UNA SOLA VEZ y calcular todo.
                     const purchaseData = products.value.reduce((acc, item) => {
-                        // --- 1. LIMPIEZA Y CONSTRUCCIÓN DEL ID ---
                         const cleanId = String(item.id).replace(/"/g, '')
                         const finalId = item.type === 0 ? `PRODUCT_${cleanId}` : `SERVICE_${cleanId}`;
-                        
-                        // --- 2. CÁLCULO DEL PRECIO DEL ARTÍCULO INDIVIDUAL ---
                         const cupcake = item.type === 0 ? null : item.cupcakes.find(c => c.cake_size_id === item.cake_size_id);
                         const itemPrice = 
                             item.type === 0 ? 
                             (item.wholesale === 1 ? item.product.wholesale_price : item.product.price_for_sale) :
                             (item.cake_size_id === 0 ? item.price : cupcake.price);
                         
-                        // --- 3. ACTUALIZAMOS EL ACUMULADOR ---
                         acc.content_ids.push(finalId);
                         acc.contents.push({ id: finalId, quantity: item.quantity });
                         acc.num_items += (Number(item.quantity) || 0);
                         acc.total_value += (Number(itemPrice) || 0) * (Number(item.quantity) || 0);
 
-                        return acc; // Devolvemos el acumulador para la siguiente iteración
+                        return acc;
                     }, {
-                        // Estado inicial del acumulador
                         content_ids: [],
                         contents: [],
                         num_items: 0,
                         total_value: 0
                     });
 
-                    // --- 4. LLAMADA AL PÍXEL CON LOS DATOS AGREGADOS ---
-                    console.log('🛍️ Enviando Purchase:', purchaseData);
-
                     $metapixel.trackEvent('Purchase', {
                         content_ids: purchaseData.content_ids,
                         contents: purchaseData.contents,
                         content_type: 'product',
-                        value: purchaseData.total_value, // El valor ya es un número y es la suma total
+                        value: purchaseData.total_value, 
                         currency: 'COP',
                         num_items: purchaseData.num_items,
                     });
 
-                    // --- 5. CERRAMOS EL CERROJO ---
                     purchaseEventSent.value = true;
 
-                    // Opcional: Limpia el carrito para evitar reenvíos
-                    // cartStores.clearCart();
-                    }
+                }
                 /*if ($metapixel && $metapixel.trackEvent && content_ids.value.length === 0) {
                     products.value = cartStores.getData
                     content_ids.value = products.value.map(item => item.type === 0 ? `PRODUCT_${item.id}` : `SERVICE_${item.id}`)

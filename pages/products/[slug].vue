@@ -157,14 +157,10 @@ const { data: productData } = await useAsyncData(
   () => miscellaneousStores.getProductMeta(route.params.slug)
 )
 
-watch(productData, (newData) => { 
-  // 'newData' aquí ya es el valor desempaquetado, es decir, el contenido de la caja.
-  console.log('¡EL WATCH FUNCIONÓ!', newData); 
+watch(productData, (newData) => {
 
   if (newData && newData.product && !sideEffectsExecuted.value) {
     sideEffectsExecuted.value = true;
-
-    console.log("✅ Datos recibidos. El WATCH funciona. Ejecutando efectos secundarios...");
 
     // --- A. PREPARACIÓN DE DATOS LIMPIOS ---
     const productUrl = `https://${config.public.MY_DOMAIN}/products/${newData.product.slug}`
@@ -179,8 +175,6 @@ watch(productData, (newData) => {
     const originalDescriptionText = `Descubre nuestro '${newData.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨. ${newData.keywords.join(', ')}`
     const cleanDescriptionText = cleanText(originalDescriptionText);
     
-    //data.value.product.colors[0]?.id
-    console.log('newData.product', newData.product.colors[0]?.id)
     const cleanId = String(newData.product.colors[0]?.id).replace(/"/g, '');
     const finalContentId = `PRODUCT_${cleanId}`;
 
@@ -301,7 +295,7 @@ async function fetchData() {
     selectedColorId.value = data.value.product.colors[0]?.id
 
     onlyWholesale.value = cartStores.getWholesale
-    console.log('en que moment?')
+
     data.value.product.colors.forEach(element => { 
       var aux = {
         value: element.color.id.toString(),
