@@ -110,10 +110,12 @@ watchEffect(() => {
                     console.log('🛍️ Enviando Purchase:', purchaseData);
 
                     $metapixel.trackEvent('Purchase', {
+                        content_ids: purchaseData.content_ids,
                         contents: purchaseData.contents,
                         content_type: 'product',
                         value: purchaseData.total_value, // El valor ya es un número y es la suma total
-                        currency: 'COP'
+                        currency: 'COP',
+                        num_items: purchaseData.num_items,
                     });
 
                     // --- 5. CERRAMOS EL CERROJO ---
