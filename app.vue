@@ -22,21 +22,6 @@ const background = ref('tw-bg-white')
 const drawer = ref(false)
 
 const { isMobile } = useDevice()
-const { $metapixel } = useNuxtApp()
-
-onMounted(() => {
-  $metapixel.init();
-})
-
-watch(
-  () => route.fullPath,
-  () => {
-    if (process.client && window.fbq) {
-      $metapixel.trackEvent('PageView');
-    }
-  },
-  { immediate: true }
-)
 
 watch(() => 
   filtersStores.getDrawer, (data) => {
@@ -112,13 +97,6 @@ async function fetchData() {
           <Header />
           <VMain :style="backgroundStyle" :class="background">
             <NuxtPage />
-            <noscript>
-              <iframe src="https://sst.partymax.co/ns.html?id=GTM-MPFBMPB"
-                      height="0"
-                      width="0"
-                      style="display:none;visibility:hidden">
-              </iframe>
-            </noscript>
           </VMain>
         </VLayout>
         <Footer />
@@ -130,13 +108,6 @@ async function fetchData() {
           <Header />
           <VMain :style="backgroundStyle" :class="background">
             <NuxtPage />
-            <noscript>
-              <iframe src="https://sst.partymax.co/ns.html?id=GTM-MPFBMPB"
-                      height="0"
-                      width="0"
-                      style="display:none;visibility:hidden">
-              </iframe>
-            </noscript>
           </VMain>
         </VLayout>
         <Footer />
