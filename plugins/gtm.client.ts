@@ -58,10 +58,3 @@ export default defineNuxtPlugin((nuxtApp) => {
         console.warn('Google Tag Manager ID not configured. Please set NUXT_PUBLIC_GTM_ID environment variable.');
     }
 });
-
-// Add TypeScript declarations for global window object
-declare global {
-  interface Window {
-    dataLayer: any[];
-  }
-}
