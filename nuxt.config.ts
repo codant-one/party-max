@@ -76,7 +76,7 @@ export default defineNuxtConfig({
       APP_DOMAIN_API_URL: process.env.NUXT_APP_DOMAIN_API_URL,
       APP_DOMAIN_ADMIN_URL: process.env.NUXT_APP_DOMAIN_ADMIN_URL,
       MY_DOMAIN: process.env.NUXT_MY_DOMAIN,
-      GOOGLE_MANAGER: process.env.NUXT_GOOGLE_MANAGER,
+      GOOGLE_ANALYTICS: process.env.NUXT_GOOGLE_ANALYTICS,
       GOOGLE_TAG_MANAGER: process.env.NUXT_GOOGLE_TAG_MANAGER,
       TWITTER_ACCOUNT: process.env.NUXT_TWITTER_ACCOUNT,
       NODE_ENV: process.env.NODE_ENV,
