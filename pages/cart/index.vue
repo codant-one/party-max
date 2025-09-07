@@ -216,7 +216,7 @@ async function fetchData() {
             if(coupon.value.is_percentage)// es porcentaje
                 summary.value.discount = ((summary.value.subTotal * coupon.value.amount) / 100).toFixed(2)
             else
-                summary.value.value.discount = coupon.value.amount.toFixed(2)
+                summary.value.discount = Number(coupon.value.amount).toFixed(2)
 
             summary.value.subTotalDiscount = (summary.value.subTotal - summary.value.discount).toFixed(2)
         }
@@ -380,11 +380,10 @@ const couponApply = async (code) => {
         message.value = 'Este cupón no es válido, ya fue canjeado. ¡Pero no te preocupes! Revisa tu correo o nuestras redes sociales para más promociones.'
         isError.value = true
     } else {
-
         if(coupon.value.is_percentage)// es porcentaje
             summary.value.discount = ((summary.value.subTotal * coupon.value.amount) / 100).toFixed(2)
         else
-            summary.value.value.discount = coupon.value.amount.toFixed(2)
+            summary.value.discount = Number(coupon.value.amount).toFixed(2)
 
         summary.value.subTotalDiscount = (summary.value.subTotal - summary.value.discount).toFixed(2)
         summary.value.total = (summary.value.total - summary.value.discount).toFixed(2)

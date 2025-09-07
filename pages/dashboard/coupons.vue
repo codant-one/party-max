@@ -147,7 +147,7 @@ const copy = (data) => {
                     <NuxtLink
                     v-if="coupon.is_used"
                     :to="{
-                        name: 'detail-purchase',
+                        name: 'dashboard-purchases-id',
                         params: { id: coupon.order_id }
                     }"
                     class="tw-no-underline">
