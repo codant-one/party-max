@@ -37,7 +37,7 @@ async function fetchData() {
   var repeat = 'repeat'
   var size = (isMobile) ? 'auto' : 'contain'
 
-  if(route.name === 'dashboard' || route.name === 'register_confirm') {
+  if(route.name === 'dashboard' || route.name === 'register-confirm') {
     background.value = 'tw-bg-green'
   } else if(route.name === 'index' || route.name === 'categories-slug' || route.name === 'blogs' || route.name === 'blogs-slug' || route.name === 'event-planner') {
     background.value = 'tw-bg-light_cyan_2'
