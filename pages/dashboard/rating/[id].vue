@@ -20,6 +20,7 @@ const client_id = ref(null)
 const data = ref(null)
 const isLoading = ref(true)
 const product = ref(null)
+const service = ref(null)
 const review = ref(null)
 const rating = ref(null)
 const comments = ref(null)
@@ -41,7 +42,8 @@ async function fetchData() {
         isLoading.value = true
         data.value = await reviewsStores.show_by_client({client_id: client_id.value}, route.params.id)
 
-        product.value = data.value.product
+        product.value = data.value.product ?? null
+        service.value = data.value.product ?? null
         review.value = data.value.review
 
         if(review.value) {
@@ -66,9 +68,14 @@ const save = () => {
 
             let data = {
                 client_id: client_id.value,
-                product_id: route.params.id,
                 rating: rating.value,
                 comments: comments.value
+            }
+
+            if (product.value) {
+                data.product_id = route.params.id
+            } else if (service.value) {
+                data.service_id = route.params.id
             }
 
             if(review_id.value) {//update
@@ -153,7 +160,17 @@ const save = () => {
 const remove = () => {
 
     isLoading.value = true
-    reviewsStores.deleteReview({ ids: [review_id.value], product_id: route.params.id })
+    let payload = {
+        ids: [review_id.value]
+    }
+
+    if (product.value) {
+        payload.product_id = route.params.id
+    } else if (service.value) {
+        payload.service_id = route.params.id
+    }
+
+    reviewsStores.deleteReview(payload)
         .then(response => {
 
             isDialogVisible.value = true
@@ -207,9 +224,20 @@ definePageMeta({
             > 
             <VCard class="card-profile mb-5 p-0 pt-5 mx-auto">
                 <VCardText class="px-3 px-md-10 d-flex flex-column justify-content-center align-center text-center">
-                    <VImg :src="baseURL + product.image" class="image-product"/>
-                    <span class="text-question tw-text-primary my-5">¿Qué te pareció tu producto?</span>
-                    <span class="name-product tw-text-tertiary">{{ product.name}}</span>
+                    <VImg
+                        v-if="product"
+                        :src="baseURL + product.image"
+                        class="image-product"
+                    />
+                    <VImg
+                        v-else-if="service"
+                        :src="baseURL + service.image"
+                        class="image-product"
+                    />
+                    <span class="text-question tw-text-primary my-5">¿Qué te pareció tu {{ product ? 'producto' : 'servicio' }}?</span>
+                    <span class="name-product tw-text-tertiary">
+                        {{ product ? product.name : service ? service.name : '' }}
+                    </span>
                 </VCardText>
                 <VCardText class="p-rating justify-content-center align-center text-center">
                     <VRating
@@ -231,7 +259,7 @@ definePageMeta({
 
             <VCard class="card-profile my-5 p-0 pt-5 mx-auto">
                 <VCardText class="px-5 px-md-10 d-flex flex-column justify-content-center align-center text-center">
-                    <span class="text-question tw-text-primary my-3">Cuéntanos más acerca de tu producto</span>
+                    <span class="text-question tw-text-primary my-3">Cuéntanos más acerca de tu {{ product ? 'producto' : 'servicio' }}</span>
                     <span class="text-status mb-3">Opcional</span>
                     <VTextarea
                         v-model="comments"
