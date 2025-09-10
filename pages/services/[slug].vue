@@ -300,8 +300,7 @@ async function fetchData() {
     title.value = data.value.service.name
     brand.value = data.value.service.brand.name
     rating.value = data.value.service.rating
-    reviews.value = []
-    // reviews.value = data.value.service.reviews
+    reviews.value = data.value.service.reviews
     sku.value = data.value.service.sku
     price.value = data.value.service.cupcakes.length > 0 ? data.value.service.cupcakes[0].price : data.value.service.price
     store.value = data.value.service.user.user_detail.store_name ?? (data.value.service.user.supplier?.company_name ?? (data.value.service.user.name + ' ' + (data.value.service.user.last_name ?? '')))

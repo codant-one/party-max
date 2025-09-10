@@ -43,7 +43,7 @@ async function fetchData() {
         data.value = await reviewsStores.show_by_client({client_id: client_id.value}, route.params.id)
 
         product.value = data.value.product ?? null
-        service.value = data.value.product ?? null
+        service.value = data.value.service ?? null
         review.value = data.value.review
 
         if(review.value) {
