@@ -6,7 +6,6 @@ import festin_pending from '@assets/icons/festin_pending.svg';
 import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
 import { useRuntimeConfig } from '#app'
 import { useCartStores } from '~/stores/cart'
-import { useGtag } from 'vue-gtag-next'
 
 const route = useRoute()
 const cartStores = useCartStores()
@@ -43,7 +42,7 @@ const purchaseEventSent = ref(false)
 
 const { isMobile } = useDevice();
 const { $metapixel } = useNuxtApp()
-const gtag = useGtag()
+const { $gtag } = useNuxtApp()
 
 watchEffect(() => {
     merchant_id.value = route.query.merchantId
@@ -66,7 +65,7 @@ watchEffect(() => {
             message.value = 'Transacción aprobada'
             subMessage.value = 'Para nosotros es un placer acompañarte en tus momentos más especiales, ahora a disfrutar de la fiesta.'
 
-            if(config.public.NODE_ENV !== 'development') {//solo para produccion
+            if(config.public.NODE_ENV === 'development') {//solo para produccion
                 if ($metapixel && $metapixel.trackEvent && !purchaseEventSent.value) {
 
                     products.value = cartStores.getData;
@@ -107,7 +106,7 @@ watchEffect(() => {
                         num_items: purchaseData.num_items,
                     });
 
-                    gtag('event', 'conversion', {
+                    $gtag('event', 'conversion', {
                         send_to: 'AW-811340497/K-1tCJj-z5MbENGl8IID',
                         value: purchaseData.total_value,
                         currency: 'COP',
