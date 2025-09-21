@@ -29,6 +29,12 @@ const responseData = ref(null);
 const imageGenerated = ref(null);
 const isLoading = ref(false)
 
+const paginationConfig = {
+  clickable: true,
+  dynamicBullets: true, // Activar paginación dinámica
+  dynamicMainBullets: 3 // Número máximo de puntos visibles
+}
+
 
 const formatText = (text) => {
     if (Array.isArray(text)) {
@@ -161,7 +167,7 @@ const onSubmit = () => {
                                         
                                         <VCardText class="py-0 px-0 px-md-4 mb-2">  
                                             <swiper
-                                                :pagination="true"
+                                                :pagination="paginationConfig"
                                                 :navigation="true"
                                                 :modules="modules"
                                                 :spaceBetween="2"
