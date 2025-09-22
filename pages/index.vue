@@ -209,7 +209,7 @@ useHead({
 
             <VBtn
               variant="flat"
-              class="tw-capitalize btn-register tw-text-white tw-bg-primary button-hover my-2 mt-md-5"
+              class="tw-normal-case btn-register tw-text-white tw-bg-primary button-hover my-2 mt-md-5"
               @click="redirectTo(item.url)"
             >
               {{ item.button_text }}
