@@ -29,13 +29,6 @@ const responseData = ref(null);
 const imageGenerated = ref(null);
 const isLoading = ref(false)
 
-const paginationConfig = {
-  clickable: true,
-  dynamicBullets: true, // Activar paginación dinámica
-  dynamicMainBullets: 3 // Número máximo de puntos visibles
-}
-
-
 const formatText = (text) => {
     if (Array.isArray(text)) {
         text = text.join('\n') // Convertimos el array a texto plano
@@ -167,13 +160,14 @@ const onSubmit = () => {
                                         
                                         <VCardText class="py-0 px-0 px-md-4 mb-2">  
                                             <swiper
-                                                :pagination="paginationConfig"
+                                                :pagination="{
+                                                    dynamicBullets: true,
+                                                }"
                                                 :navigation="true"
                                                 :modules="modules"
                                                 :spaceBetween="2"
                                                 :slidesPerView="isMobile ? 2 : 5"
                                                 :freeMode="true"
-                                                :loop="true"
                                                 :watchSlidesProgress="true"
                                                 :style="{ height: isMobile ? '340px' : '455px' }"
                                                 >
