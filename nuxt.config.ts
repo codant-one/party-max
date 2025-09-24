@@ -78,6 +78,7 @@ export default defineNuxtConfig({
       MY_DOMAIN: process.env.NUXT_MY_DOMAIN,
       GOOGLE_ANALYTICS: process.env.NUXT_GOOGLE_ANALYTICS,
       GOOGLE_TAG_MANAGER: process.env.NUXT_GOOGLE_TAG_MANAGER,
+      GOOGLE_ADS: process.env.NUXT_GOOGLE_ADS,
       TWITTER_ACCOUNT: process.env.NUXT_TWITTER_ACCOUNT,
       NODE_ENV: process.env.NODE_ENV,
       PUBLIC_RECAPTCHA_SITE_KEY: process.env.NUXT_PUBLIC_RECAPTCHA_SITE_KEY,

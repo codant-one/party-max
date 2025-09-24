@@ -18,7 +18,7 @@ const emit = defineEmits([
 
 const merchant_id = ref(null)
 const TX_VALUE = ref(null)
-const New_value = ref(null)
+const new_value = ref(null)
 const currency = ref(null)
 const transactionState = ref(null)
 const polResponseCode = ref(null)
@@ -39,19 +39,16 @@ const isPending = ref(false)
 const config = useRuntimeConfig()
 const products = ref([])
 const purchaseEventSent = ref(false)
-const content_ids = ref([])
-const contents = ref([])
-const num_items = ref(0)
-const sum = ref(0)
 
 const { isMobile } = useDevice();
 const { $metapixel } = useNuxtApp()
+const { $gtag } = useNuxtApp()
 
 watchEffect(() => {
     merchant_id.value = route.query.merchantId
     referenceCode.value = route.query.referenceCode
     TX_VALUE.value = route.query.TX_VALUE
-    New_value.value = TX_VALUE.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    new_value.value = TX_VALUE.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     currency.value = route.query.currency
     transactionState.value = route.query.transactionState
     polResponseCode.value = route.query.polResponseCode
@@ -109,34 +106,17 @@ watchEffect(() => {
                         num_items: purchaseData.num_items,
                     });
 
+                    $gtag('event', 'conversion', {
+                        send_to: 'AW-811340497/K-1tCJj-z5MbENGl8IID',
+                        value: purchaseData.total_value,
+                        currency: 'COP',
+                        transaction_id: referenceCode.value
+                    })
+
                     purchaseEventSent.value = true;
 
                 }
-                /*if ($metapixel && $metapixel.trackEvent && content_ids.value.length === 0) {
-                    products.value = cartStores.getData
-                    content_ids.value = products.value.map(item => item.type === 0 ? `PRODUCT_${item.id}` : `SERVICE_${item.id}`)
-                    contents.value = products.value.map(item => ({id: item.type === 0 ? `PRODUCT_${item.id}` : `SERVICE_${item.id}`, quantity: item.quantity}))
-                    num_items.value = products.value.reduce((total, item) => total + (Number(item.quantity) || 0), 0)
-
-                    products.value.forEach(element => {
-                    
-                        let cupcake = element.type === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
-                        let value = 
-                            element.type === 0 ? 
-                            (element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale) :
-                            (element.cake_size_id === 0 ? element.price : cupcake.price)
-
-                        sum.value += (parseFloat(value) * element.quantity)
-                    })
-                    $metapixel.trackEvent('Purchase', { 
-                        content_ids: content_ids.value,
-                        contents: contents.value,
-                        content_type: 'product',
-                        value: sum.value,
-                        currency: 'COP',
-                        num_items: num_items.value,
-                    });//SEGUIMIENTO META OJO
-                }*/
+               
             }
             emit('deleteAll')
             break;
