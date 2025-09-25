@@ -160,9 +160,6 @@ const onSubmit = () => {
                                         
                                         <VCardText class="py-0 px-0 px-md-4 mb-2">  
                                             <swiper
-                                                :pagination="{
-                                                    dynamicBullets: true,
-                                                }"
                                                 :navigation="true"
                                                 :modules="modules"
                                                 :spaceBetween="2"
