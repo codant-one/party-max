@@ -416,7 +416,10 @@ const onSubmit = () => {
 
         :deep(.swiper-button-next),
         :deep(.swiper-button-prev) {
-            display: none;
+            border-radius: 7px !important;
+            width: 25px !important;
+            height: 25px !important;
+            top: 8% !important;
         }
     }
 </style>
