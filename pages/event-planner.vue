@@ -150,7 +150,7 @@ const onSubmit = () => {
                                     :key="key"
                                     cols="12"
                                     md="12"
-                                    class="mt-2"
+                                    class="mb-2"
                                     >
 
                                     <div v-html="formatText(value)" v-if="key === 'recommendations'" class="prose prose-sm max-w-none card-ia"/>
@@ -166,7 +166,7 @@ const onSubmit = () => {
                                                 :slidesPerView="isMobile ? 2 : 5"
                                                 :freeMode="true"
                                                 :watchSlidesProgress="true"
-                                                :style="{ height: isMobile ? '340px' : '455px' }"
+                                                :style="{ height: isMobile ? '390px' : '455px' }"
                                                 >
                                                 <swiper-slide
                                                     v-for="(item, i) in value"
@@ -417,8 +417,6 @@ const onSubmit = () => {
         :deep(.swiper-button-next),
         :deep(.swiper-button-prev) {
             border-radius: 7px !important;
-            width: 25px !important;
-            height: 25px !important;
             top: 8% !important;
         }
     }
