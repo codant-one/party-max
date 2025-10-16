@@ -654,7 +654,8 @@
               flat
               variant="solo"
               id="search-input"
-              aria-label="Buscar...">
+              aria-label="Buscar..."
+              @keydown.enter="search">
               <template v-slot:append-inner>
                 <VBtn @click="search" class="tw-bg-primary tw-text-white h-100 search-button button-hover">Buscar</VBtn>
               </template>
@@ -1007,7 +1008,8 @@
           class="me-3"
           placeholder="Quiero..."
           flat
-          variant="solo">
+          variant="solo"
+          @keydown.enter="search">
           <template v-slot:append-inner>
             <VBtn
               aria-label="Buscar"
