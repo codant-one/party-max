@@ -19,7 +19,7 @@ onMounted(() => {
 
 function goToRegister() {
   show.value = false
-  router.push('/register/form_client')
+  router.push('/clients/form_client')
 }
 </script>
 
