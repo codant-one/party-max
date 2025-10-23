@@ -1,13 +1,22 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+
+// Cargar variables de entorno
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configuración
-const baseUrl = process.env.NUXT_MY_DOMAIN || 'https://partymax.com';
-const apiUrl = process.env.NUXT_APP_DOMAIN_API_URL || 'https://api.partymax.com';
+const baseUrl = process.env.NUXT_MY_DOMAIN || 'https://partymax.co';
+const apiUrl = process.env.NUXT_APP_DOMAIN_API_URL + '/api/miscellaneous' || 'https://backend.partymax.co/api/miscellaneous';
+
+// Debug: Mostrar configuración
+console.log('🔧 Configuración del sitemap:');
+console.log('Base URL:', baseUrl);
+console.log('API URL:', apiUrl);
 
 // Rutas estáticas
 const staticRoutes = [
@@ -27,21 +36,27 @@ const staticRoutes = [
 // Función para hacer fetch a la API
 async function fetchFromAPI(endpoint) {
   try {
-    const response = await fetch(`${apiUrl}${endpoint}`, {
+    const fullUrl = `${apiUrl}${endpoint}`;
+    console.log(`🌐 Intentando conectar a: ${fullUrl}`);
+    
+    const response = await fetch(fullUrl, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
+      timeout: 10000 // 10 segundos timeout
     });
     
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
     }
     
     const data = await response.json();
+    console.log(`✅ ${endpoint} `);
     return data;
   } catch (error) {
-    console.warn(`Error fetching ${endpoint}:`, error.message);
+    console.error(`❌ Error fetching ${endpoint}:`, error.message);
+    console.error(`   URL intentada: ${apiUrl}${endpoint}`);
     return null;
   }
 }
@@ -63,9 +78,11 @@ async function generateSitemap() {
   });
 
   // Obtener productos
-  const productsData = await fetchFromAPI('/products');
-  if (productsData && productsData.data) {
-    productsData.data.forEach(product => {
+  const productsData = await fetchFromAPI('/products?limit=-1');
+  if (productsData && productsData.data && productsData.data.products) {
+    const products = productsData.data.products;
+    console.log(`📦 Procesando ${products.length} productos`);
+    products.forEach(product => {
       if (product.slug) {
         sitemap += `
   <url>
@@ -76,12 +93,16 @@ async function generateSitemap() {
   </url>`;
       }
     });
+  } else {
+    console.log(`📦 No se encontraron productos o no es un array`);
   }
 
   // Obtener servicios
-  const servicesData = await fetchFromAPI('/services');
-  if (servicesData && servicesData.data) {
-    servicesData.data.forEach(service => {
+  const servicesData = await fetchFromAPI('/services?limit=-1');
+  if (servicesData && servicesData.data && servicesData.data.services) {
+    const services = servicesData.data.services;
+    console.log(`🔧 Procesando ${services.length} servicios`);
+    services.forEach(service => {
       if (service.slug) {
         sitemap += `
   <url>
@@ -92,12 +113,16 @@ async function generateSitemap() {
   </url>`;
       }
     });
+  } else {
+    console.log(`🔧 No se encontraron servicios o no es un array`);
   }
 
   // Obtener categorías
-  const categoriesData = await fetchFromAPI('/categories');
-  if (categoriesData && categoriesData.data) {
-    categoriesData.data.forEach(category => {
+  const categoriesData = await fetchFromAPI('/categoriesAll');
+  if (categoriesData && categoriesData.data && categoriesData.data.categories && Array.isArray(categoriesData.data.categories)) {
+    const categories = categoriesData.data.categories;
+    console.log(`📂 Procesando ${categories.length} categorías`);
+    categories.forEach(category => {
       if (category.slug) {
         sitemap += `
   <url>
@@ -108,23 +133,27 @@ async function generateSitemap() {
   </url>`;
       }
     });
+  } else {
+    console.log(`📂 No se encontraron categorías o no es un array`);
   }
 
-  // Obtener blogs
-  const blogsData = await fetchFromAPI('/blogs');
-  if (blogsData && blogsData.data) {
-    blogsData.data.forEach(blog => {
-      if (blog.slug) {
-        sitemap += `
-  <url>
-    <loc>${baseUrl}/blogs/${blog.slug}</loc>
-    <lastmod>${blog.updated_at || new Date().toISOString()}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>`;
-      }
-    });
-  }
+  // Obtener blogs (comentado hasta que se confirme el endpoint)
+  const blogsData = await fetchFromAPI('/blogs/populars');
+  if (blogsData && blogsData.data && blogsData.data.blogs) {
+     const blogs = blogsData.data.blogs;
+     console.log(`📝 Procesando ${blogs.length} blogs`);
+     blogs.forEach(blog => {
+       if (blog.slug) {
+         sitemap += `
+   <url>
+     <loc>${baseUrl}/blogs/${blog.slug}</loc>
+     <lastmod>${blog.updated_at || new Date().toISOString()}</lastmod>
+     <changefreq>weekly</changefreq>
+     <priority>0.6</priority>
+   </url>`;
+       }
+     });
+   }
 
   sitemap += `
 </urlset>`;
