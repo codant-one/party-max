@@ -9,7 +9,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "start": "nuxt start",
-    "type-check": "vue-tsc --noEmit"
+    "type-check": "vue-tsc --noEmit",
+    "sitemap": "node scripts/generate-sitemap.js"
   },
   "dependencies": {
     "@davestewart/nuxt-scrollbar": "^1.0.0",
