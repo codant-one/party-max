@@ -10,7 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configuración
-const baseUrl = process.env.NUXT_MY_DOMAIN || 'https://partymax.co';
+const baseUrl = 'https://' + (process.env.NUXT_MY_DOMAIN || 'partymax.com');
 const apiUrl = process.env.NUXT_APP_DOMAIN_API_URL + '/api/miscellaneous' || 'https://backend.partymax.co/api/miscellaneous';
 
 // Debug: Mostrar configuración
@@ -125,12 +125,31 @@ async function generateSitemap() {
     categories.forEach(category => {
       if (category.slug) {
         sitemap += `
-  <url>
-    <loc>${baseUrl}/categories/${category.slug}</loc>
-    <lastmod>${category.updated_at || new Date().toISOString()}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>`;
+            <url>
+              <loc>${baseUrl}/categories/${category.slug}</loc>
+              <lastmod>${category.updated_at || new Date().toISOString()}</lastmod>
+              <changefreq>daily</changefreq>
+              <priority>1.0</priority>
+            </url>`;
+
+        if(category.category_type_id === 1) {
+          sitemap += `
+            <url>
+              <loc>${baseUrl}/products/categories/${category.slug}</loc>
+              <lastmod>${category.updated_at || new Date().toISOString()}</lastmod>
+              <changefreq>daily</changefreq>
+              <priority>1.0</priority>
+            </url>`;
+        }
+        if(category.category_type_id === 2) {
+          sitemap += `
+            <url>
+              <loc>${baseUrl}/services/categories/${category.slug}</loc>
+              <lastmod>${category.updated_at || new Date().toISOString()}</lastmod>
+              <changefreq>daily</changefreq>
+              <priority>1.0</priority>
+            </url>`;
+        }
       }
     });
   } else {

@@ -1591,7 +1591,7 @@ const onBreadcrumbClick = (item, index) => {
 
   @media only screen and (max-width: 767px) {
     .v-breadcrumbs {
-      font-size: 13px !important;
+      font-size: 10px !important;
     }
 
     .text-left {
