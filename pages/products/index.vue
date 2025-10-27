@@ -536,11 +536,11 @@ const onBreadcrumbClick = (item, index) => {
       <VContainer class="tw-text-tertiary d-flex align-center px-0">
         <v-breadcrumbs :items="bread" class="px-2">
           <template #item="{ item, index }">
-            <span v-if="index === bread.length - 1" class="tw-text-gray">{{ item.title }}</span>
+            <span v-if="index === bread.length - 1" class="tw-text-gray v-breadcrumbs-item">{{ item.title }}</span>
             <NuxtLink
               v-else
               :to="item.href"
-              class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
+              class="tw-no-underline tw-text-tertiary hover:tw-text-primary v-breadcrumbs-item"
               @click.prevent="onBreadcrumbClick(item, index)"
             >
               {{ item.title }}
@@ -1590,9 +1590,6 @@ const onBreadcrumbClick = (item, index) => {
   }
 
   @media only screen and (max-width: 767px) {
-    .v-breadcrumbs {
-      font-size: 10px !important;
-    }
 
     .text-left {
       color: var(--Maastricht-Blue, #0a1b33);
