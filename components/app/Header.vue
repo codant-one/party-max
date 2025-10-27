@@ -116,8 +116,7 @@
 
           let cupcake = element.type === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
           let value = 
-            element.type === 0 ? 
-              (element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale) :
+            element.type === 0 ? element.product.price_for_sale :
               (element.cake_size_id === 0 ? element.price : cupcake.price)
 
           sum += (parseFloat(value) * element.quantity)

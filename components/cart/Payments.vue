@@ -36,10 +36,6 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    iswholesale: {
-        type: Boolean,
-        required: true
-    },
     step: {
         type: Number,
         required: true
@@ -341,7 +337,7 @@ const getFlagCountry = country => {
 
                 <VCard class="card-products mx-auto px-0">
                     <h1 class="title-summary border-title pb-4">Resumen de compra</h1>
-                    <h2 class="title-card px-5 px-md-16 my-3">Productos {{ props.iswholesale ? '(al mayor)' : ''}}</h2>
+                    <h2 class="title-card px-5 px-md-16 my-3">Productos</h2>
                     <VCardText class="row-cardp p-0">
                         <template v-for="(item, i) in props.products" :key="i">
                             <Product6

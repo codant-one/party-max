@@ -82,9 +82,6 @@ const rating = ref(null)
 const reviews = ref(null)
 const sku = ref(null)
 const videos = ref('')
-const wholesale = ref(false)
-const wholesale_price = ref(null)
-const wholesale_min = ref(null)
 const price_for_sale = ref(null)
 const store = ref(null)
 const in_stock = ref(null)
@@ -98,8 +95,6 @@ const deep = ref('')
 const weigth = ref('')
 const material = ref('')
 const cant_stock = ref(1)
-
-const existence_whole = ref(false)
 
 const radioContent = ref([])
 const selectedColor = ref(null)
@@ -117,7 +112,6 @@ const user_id = ref(null)
 const isFavorite = ref(null)
 const isFavoriteProduct = ref(null)
 const message = ref('')
-const onlyWholesale = ref(0)
 
 const isDialogVisible = ref(false)
 const isError = ref(false)
@@ -136,12 +130,6 @@ watch(() =>
     thumbsSwiper.value.destroy(false, true)
   }
 );
-
-watch(() => 
-  cartStores.getWholesale, async (value) => {
-    onlyWholesale.value = value
-  }
-)
 
 const toSentenceCase = (str) => {
   if (!str) return '';
@@ -278,7 +266,6 @@ async function fetchData() {
   productImages.value = []
   
   if(route.params.slug && route.path.startsWith('/products/')) {
-    existence_whole.value = route.query.wholesalers === 'true' ? true : false
 
     await homeStores.fetchData();
     categories.value = homeStores.getData.parentCategories;
@@ -293,8 +280,6 @@ async function fetchData() {
     color.value = data.value.product.colors[0]?.color.name
     selectedColor.value = data.value.product.colors[0]?.color.id.toString()
     selectedColorId.value = data.value.product.colors[0]?.id
-
-    onlyWholesale.value = cartStores.getWholesale
 
     data.value.product.colors.forEach(element => { 
       var aux = {
@@ -322,10 +307,7 @@ async function fetchData() {
     rating.value = data.value.product.rating
     reviews.value = data.value.product.reviews
     sku.value = data.value.product.colors[0].sku
-    wholesale.value = data.value.product.wholesale === 1 ? true : false
-    wholesale_price.value = data.value.product.wholesale_price
-    cant_prod.value = route.query.wholesalers === 'true' ? data.value.product.wholesale_min : 1
-    wholesale_min.value = route.query.wholesalers === 'true' ? data.value.product.wholesale_min : 1
+    cant_prod.value = 1
     price_for_sale.value = data.value.product.price_for_sale
     store.value = data.value.product.user.user_detail.store_name ?? (data.value.product.user.supplier?.company_name ?? (data.value.product.user.name + ' ' + (data.value.product.user.last_name ?? '')))
     in_stock.value = data.value.product.colors[0].in_stock
@@ -366,7 +348,7 @@ async function fetchData() {
       category.value = {
         title: categories.value.filter(item => item.slug === route.query.category)[0].name,
         disabled: false,
-        href: `/products?category=${route.query.category}&wholesalers=${route.query.wholesalers ?? 'false'}`
+        href: `/products?category=${route.query.category}`
       };
 
       bread.value.push(category.value);
@@ -375,7 +357,7 @@ async function fetchData() {
         const fathercategory = {
           title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name,
           disabled: false,
-          href: `/products?category=${route.query.category}&subcategory=${route.query.fathercategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
+          href: `/products?category=${route.query.category}&subcategory=${route.query.fathercategory}`
         };
 
         category.value.fathercategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name
@@ -386,7 +368,7 @@ async function fetchData() {
         const subcategory = {
           title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name,
           disabled: false,
-          href: `/products?category=${route.query.category}&subcategory=${route.query.subcategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
+          href: `/products?category=${route.query.category}&subcategory=${route.query.subcategory}`
         };
 
         category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name
@@ -397,7 +379,7 @@ async function fetchData() {
         const subcategory = {
           title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name,
           disabled: false,
-          href: `/products?category=${route.query.category}&fathercategory=${route.query.fathercategory}&subcategory=${route.query.subcategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
+          href: `/products?category=${route.query.category}&fathercategory=${route.query.fathercategory}&subcategory=${route.query.subcategory}`
         };
 
         category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name
@@ -447,52 +429,38 @@ const setThumbsSwiper = (swiper) => {
 }
 
 const addCart = () => {
-  let isWholesale = route.query.wholesalers === 'true' ? 1 : 0
-
-  if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
-    let data = {
-      date: null,
-      service_id: null,
-      cake_size_id: null,
-      flavor_id: null,
-      filling_id: null,
-      order_file_id: null,
-      product_color_id: selectedColorId.value,
-      quantity: cant_prod.value,
-      wholesale: isWholesale,
-      type: 0
-    }
-
-    load.value = true
-
-    cartStores.add(data)
-      .then(response => {
-
-        isDialogVisible.value = true
-        message.value = 'Agregado al carrito'
-        load.value = false
-
-        setTimeout(() => {
-          isDialogVisible.value = false
-          isError.value = false
-          message.value = ''
-        }, 1000)
-
-      }).catch(err => {
-        load.value = false
-        //console.error(err.message)
-      })
-  } else {
-    isDialogVisible.value = true
-    message.value = 'Debes agregar al carrito productos ' + (isWholesale ? 'al detal' : 'al mayor') + ' debido a tu selección anterior'
-    isError.value = true
-
-    setTimeout(() => {
-      isDialogVisible.value = false
-      isError.value = false
-      message.value = ''
-    }, 3000)
+  let data = {
+    date: null,
+    service_id: null,
+    cake_size_id: null,
+    flavor_id: null,
+    filling_id: null,
+    order_file_id: null,
+    product_color_id: selectedColorId.value,
+    quantity: cant_prod.value,
+    type: 0
   }
+
+  load.value = true
+
+  cartStores.add(data)
+    .then(response => {
+
+      isDialogVisible.value = true
+      message.value = 'Agregado al carrito'
+      load.value = false
+
+      setTimeout(() => {
+        isDialogVisible.value = false
+        isError.value = false
+        message.value = ''
+      }, 1000)
+
+    }).catch(err => {
+      load.value = false
+      //console.error(err.message)
+    })
+  
 }
 
 const addfavorite = () => {
@@ -527,7 +495,7 @@ const increment = () => {
 }
 
 const decrement = () => {
-  if (cant_prod.value > wholesale_min.value)
+  if (cant_prod.value > 1)
     cant_prod.value--
 }
 
@@ -723,8 +691,7 @@ const buildEmbedUrl = (url) => {
             <VCol cols="12" md="7">
               <VCardText class="p-0">
                 <div class="d-flex py-2">
-                  <span class="text_1" v-if="existence_whole">$ {{ formatNumber(wholesale_price) }}</span>
-                  <span class="text_1" v-else>$ {{ formatNumber(price_for_sale) }}</span>
+                  <span class="text_1">$ {{ formatNumber(price_for_sale) }}</span>
                 </div>
               </VCardText>
               <VCardText class="p-0 d-flex border-title">

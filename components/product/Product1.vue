@@ -24,13 +24,11 @@ const config = useRuntimeConfig()
 
 const { isMobile, isDesktop } = useDevice()
 const image = ref(null)
-const wholesale_price = ref(null)
 const price_for_sale = ref(null)
 const name = ref(null)
 const store = ref(null)
 const rating = ref(null)
 const slug = ref(null)
-const existence_whole = ref(false)
 const stock = ref(null)
 
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
@@ -39,7 +37,6 @@ watchEffect(() => {
 
     if (!(Object.entries(props.product).length === 0) && props.product.constructor === Object) {
         image.value = props.product.image
-        wholesale_price.value = props.product.wholesale_price ?? '0.00'
         price_for_sale.value = props.product.price_for_sale
         name.value = props.product.name.toLowerCase().replace(/(^|\s)\p{L}/gu, (match) => match.toUpperCase());
         store.value = props.product.user.user_detail.store_name ?? (props.product.supplier?.company_name ?? (props.product.user.name + ' ' + (props.product.user.last_name ?? '')))
@@ -47,8 +44,6 @@ watchEffect(() => {
         slug.value = props.product.slug
         stock.value = props.product.first_color.stock
     }
-
-    existence_whole.value = route.query.wholesalers === 'true' ? true : false;
 })
 
 </script>
@@ -72,7 +67,6 @@ watchEffect(() => {
             <VCardText class="mt-2">
                 <div class="d-flex">
                 <span class="text_1">${{ formatNumber(price_for_sale) }}</span>
-                <span v-if="existence_whole" class="text_2 ms-2">${{ formatNumber(wholesale_price) }}</span>
                 </div>
             </VCardText>
             <VCardText>

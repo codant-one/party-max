@@ -342,7 +342,7 @@ async function fetchData() {
       category.value = {
         title: categories.value.filter(item => item.slug === route.query.category)[0].name,
         disabled: false,
-        href: `/services?category=${route.query.category}&wholesalers=${route.query.wholesalers ?? 'false'}`
+        href: `/services?category=${route.query.category}`
       };
 
       bread.value.push(category.value);
@@ -351,7 +351,7 @@ async function fetchData() {
         const fathercategory = {
           title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name,
           disabled: false,
-          href: `/services?category=${route.query.category}&subcategory=${route.query.fathercategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
+          href: `/services?category=${route.query.category}&subcategory=${route.query.fathercategory}`
         };
 
         category.value.fathercategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name
@@ -362,7 +362,7 @@ async function fetchData() {
         const subcategory = {
           title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name,
           disabled: false,
-          href: `/services?category=${route.query.category}&subcategory=${route.query.subcategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
+          href: `/services?category=${route.query.category}&subcategory=${route.query.subcategory}`
         };
 
         category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name
@@ -373,7 +373,7 @@ async function fetchData() {
         const subcategory = {
           title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name,
           disabled: false,
-          href: `/services?category=${route.query.category}&fathercategory=${route.query.fathercategory}&subcategory=${route.query.subcategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
+          href: `/services?category=${route.query.category}&fathercategory=${route.query.fathercategory}&subcategory=${route.query.subcategory}`
         };
 
         category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name
@@ -559,7 +559,6 @@ const addCart = async() => {
         order_file_id: order_file_id.value ?? 0,
         product_color_id: null,
         quantity: cant_prod.value,
-        wholesale: null,
         type: 1
       }
 

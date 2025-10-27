@@ -32,7 +32,6 @@ const data = ref(null)
 const products = ref([])
 const documentTypes = ref([])
 const isLoading = ref(false)
-const iswholesale = ref(false)
 const refVForm = ref()
 const quotationGenerated = ref(false)
 const quoteId = ref(1)
@@ -84,11 +83,9 @@ async function fetchData() {
         products.value.forEach(element => {
             let cupcake = element.type === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
             let value = 
-            element.type === 0 ? 
-              (element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale) :
+            element.type === 0 ?  element.product.price_for_sale :
               (element.cake_size_id === 0 ? element.price : cupcake.price)
 
-            iswholesale.value = element.wholesale === 1 ? true : false
             sum += (parseFloat(value) * element.quantity)
         });
 
@@ -184,7 +181,7 @@ const onSubmit = () => {
 
                 if(element.type === 0) {
                     product_color_id.push(element.product_color_id)
-                    price_product.push(iswholesale.value === true ? element.product.wholesale_price : element.product.price_for_sale)
+                    price_product.push(element.product.price_for_sale)
                     quantity_product.push(element.quantity)
                     product_type = 1
                 } else {
@@ -283,7 +280,7 @@ const onSubmit = () => {
                             <VCardText class="row-cardp p-0">
                                 <VRow no-gutters class="px-5 px-md-12 mt-1 pb-1">
                                     <VCol cols="7" md="7" class="d-flex justify-content-start align-start">
-                                        <h4 class="text_2">Productos {{ iswholesale ? '(al mayor)' : ''}}</h4>
+                                        <h4 class="text_2">Productos</h4>
                                     </VCol>
                                     <VCol cols="2" md="1" class="d-flex justify-content-end tw-items-end">
                                         <h4 class="text_2">Cant.</h4>
@@ -442,7 +439,7 @@ const onSubmit = () => {
                             <VCardText class="row-cardp p-0 border-top">
                                 <VRow no-gutters class="px-5 px-md-12 mt-1 pb-1">
                                     <VCol cols="7" md="7" class="d-flex justify-content-start align-start">
-                                        <h4 class="text_2">Productos {{ iswholesale ? '(al mayor)' : ''}}</h4>
+                                        <h4 class="text_2">Productos</h4>
                                     </VCol>
                                     <VCol cols="2" md="1" class="d-flex justify-content-end tw-items-end">
                                         <h4 class="text_2">Cant.</h4>

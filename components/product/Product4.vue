@@ -37,7 +37,6 @@ const emit = defineEmits([
 
 const id = ref(null)
 const image = ref(null)
-const wholesale_price = ref(null)
 const price_for_sale = ref(null)
 const name = ref(null)
 const store = ref(null)
@@ -47,7 +46,6 @@ const slug = ref(null)
 const in_stock = ref(null)
 const cant_prod = ref(1)
 const cant_stock = ref(1)
-const existence_whole = ref(false)
 
 const client_id = ref(null)
 const product_color_id = ref(null)
@@ -71,7 +69,6 @@ watchEffect(() => {
 
     if (!(Object.entries(props.product).length === 0) && props.product.constructor === Object) {
         image.value = props.product.image
-        wholesale_price.value = props.product.wholesale_price
         price_for_sale.value = props.product.price_for_sale
         name.value = props.product.name.toLowerCase().replace(/(^|\s)\p{L}/gu, (match) => match.toUpperCase());
         store.value = props.product.store ?? (props.product.company ?? props.product.user)
@@ -82,7 +79,7 @@ watchEffect(() => {
         id.value = props.product.id
         product_color_id.value =  props.product.first_color.id
         in_stock.value = props.product.first_color.in_stock
-        cant_prod.value = route.query.wholesalers === 'true' ? props.product.wholesale_min : 1
+        cant_prod.value = 1
         cant_stock.value = parseInt(props.product.first_color.stock)
 
         if(localStorage.getItem('user_data')){
@@ -92,8 +89,6 @@ watchEffect(() => {
             client_id.value = userDataJ.client.id
         }
     }
-
-    existence_whole.value = route.query.wholesalers === 'true' ? true : false;
 })
 
 const addCart = () => {
@@ -126,8 +121,7 @@ const addfavorite = () => {
                                 query: {  
                                     category: route.query.category,
                                     fathercategory: route.query.fathercategory,
-                                    subcategory: route.query.subcategory,
-                                    wholesalers: route.query.wholesalers
+                                    subcategory: route.query.subcategory
                                 }
                             }"
                             class="tw-no-underline">
@@ -174,8 +168,7 @@ const addfavorite = () => {
                 <VCol cols="12" md="3" class="align-center text-center pb-0">
                     <VCardText class="px-1 px-md-2">
                         <div class="d-flex text-center align-center tw-justify-start md:tw-justify-center">
-                            <span v-if="!existence_whole" class="text_1 tw-text-tertiary">${{formatNumber(price_for_sale) }}</span>
-                            <span v-if="existence_whole" class="text_1 tw-text-tertiary">${{formatNumber(wholesale_price) }}</span>
+                            <span class="text_1 tw-text-tertiary">${{formatNumber(price_for_sale) }}</span>
                         </div>
                     </VCardText>
                     <VCardText class="mt-3 px-1 px-md-2">

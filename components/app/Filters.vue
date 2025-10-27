@@ -75,7 +75,7 @@ async function fetchData() {
     category.value = {
         title: categories.value.filter(item => item.slug === route.query.category)[0].name,
         disabled: false,
-        href: "products?category=" + route.query.category + '&wholesalers=' + route.query.wholesalers ?? 'false'
+        href: "products?category=" + route.query.category
     };
 
     if (route.query.fathercategory)
@@ -100,8 +100,7 @@ const colorAction = () => {
     router.push({ 
         name: 'products', 
         query: {
-          colorId: colorsSelected.value.join(","),
-          wholesalers: route.query.wholesalers === 'true' ? true : false
+          colorId: colorsSelected.value.join(",")
         }
     })
 }
@@ -156,10 +155,7 @@ const toggleSubGroupFn = (index, subCat) => {
           <VCardItem v-if="route.query.category" class="p-0 text-allcategories tw-font-bold mt-6">
             <NuxtLink
               :to="{
-                name: 'products',
-                query: {
-                  wholesalers: route.query.wholesalers === 'true' ? true : false
-                }
+                name: 'products'
               }"
               class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
             >
@@ -177,8 +173,7 @@ const toggleSubGroupFn = (index, subCat) => {
                     :to="{
                       name: 'products',
                       query: {
-                        category: i.slug.split('/')[0],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        category: i.slug.split('/')[0]
                       },
                     }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                     {{ i.name }}
@@ -192,8 +187,7 @@ const toggleSubGroupFn = (index, subCat) => {
                       :to="{
                         name: 'products',
                         query: {
-                          category: i.slug.split('/')[0],
-                          wholesalers: route.query.wholesalers === 'true' ? true : false
+                          category: i.slug.split('/')[0]
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       <VListItemTitle>{{ i.name }}</VListItemTitle>
@@ -217,8 +211,7 @@ const toggleSubGroupFn = (index, subCat) => {
                         name: 'products',
                         query: {
                           category: i.slug.split('/')[0],
-                          subcategory: j.slug.split('/')[1],
-                          wholesalers: route.query.wholesalers === 'true' ? true : false
+                          subcategory: j.slug.split('/')[1]
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary">
                       <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -232,8 +225,7 @@ const toggleSubGroupFn = (index, subCat) => {
                             name: 'products',
                             query: {
                               category: i.slug.split('/')[0],
-                              subcategory: j.slug.split('/')[1],
-                              wholesalers: route.query.wholesalers === 'true' ? true : false
+                              subcategory: j.slug.split('/')[1]
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -257,8 +249,7 @@ const toggleSubGroupFn = (index, subCat) => {
                             query: {
                               category: i.slug.split('/')[0],
                               fathercategory: j.slug.split('/')[1],
-                              subcategory: k.slug.split('/')[2],
-                              wholesalers: route.query.wholesalers === 'true' ? true : false
+                              subcategory: k.slug.split('/')[2]
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           {{ k.name }}
@@ -280,8 +271,7 @@ const toggleSubGroupFn = (index, subCat) => {
                   :to="{
                     name: 'products',
                       query: {
-                        category: route.query.category,
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        category: route.query.category
                       },
                     }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                     {{ category.title }}
@@ -297,8 +287,7 @@ const toggleSubGroupFn = (index, subCat) => {
                     name: 'products',
                       query: {
                         category: route.query.category,
-                        subcategory: route.query.fathercategory,
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: route.query.fathercategory
                       },
                     }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                     {{ category.fathercategory }}
@@ -327,8 +316,7 @@ const toggleSubGroupFn = (index, subCat) => {
                   :to="{
                     name: 'products',
                       query: {
-                        category: route.query.category,
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        category: route.query.category
                       },
                     }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                     {{ category.title }}
@@ -353,8 +341,7 @@ const toggleSubGroupFn = (index, subCat) => {
                     query: {
                       category: route.query.category,
                       fathercategory: route.query.subcategory,
-                      subcategory: j.slug.split('/')[2],
-                      wholesalers: route.query.wholesalers === 'true' ? true : false
+                      subcategory: j.slug.split('/')[2]
                     },
                   }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                     {{ j.name }}
@@ -383,8 +370,7 @@ const toggleSubGroupFn = (index, subCat) => {
                       name: 'products',
                       query: {
                         category: route.query.category,
-                        subcategory: j.slug.split('/')[1],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: j.slug.split('/')[1]
                       },
                     }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ j.name }}
@@ -398,8 +384,7 @@ const toggleSubGroupFn = (index, subCat) => {
                           name: 'products',
                           query: {
                             category: route.query.category,
-                            subcategory: j.slug.split('/')[1],
-                            wholesalers: route.query.wholesalers === 'true' ? true : false
+                            subcategory: j.slug.split('/')[1]
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -423,8 +408,7 @@ const toggleSubGroupFn = (index, subCat) => {
                           query: {
                             category: route.query.category,
                             fathercategory: j.slug.split('/')[1],
-                            subcategory: k.slug.split('/')[2],
-                            wholesalers: route.query.wholesalers === 'true' ? true : false
+                            subcategory: k.slug.split('/')[2]
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         {{ k.name }}

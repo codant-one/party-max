@@ -8,6 +8,7 @@ import { useMiscellaneousStores } from "@/stores/miscellaneous";
 import { useFavoritesStores } from '@/stores/favorites'
 import { useCartStores } from '@/stores/cart'
 import { useFiltersStores } from '@/stores/filters'
+import { useCategoriesStores } from '@/stores/categories'
 import { formatNumber } from '@formatters'
 import { useRouter, useRoute } from 'vue-router'
 import { useRuntimeConfig } from '#app'
@@ -35,6 +36,7 @@ const route = useRoute()
 const config = useRuntimeConfig()
 const homeStores = useHomeStores();
 const miscellaneousStores = useMiscellaneousStores();
+const categoriesStores = useCategoriesStores()
 const cartStores = useCartStores()
 const favoritesStores = useFavoritesStores()
 const filtersStores = useFiltersStores()
@@ -60,7 +62,6 @@ const max = ref(null);
 
 const colors = ref([]);
 const colorsSelected = ref([]);
-const onlyWholesale = ref(false)
 
 const rating = ref(5)
 const { isMobile } = useDevice();
@@ -135,12 +136,6 @@ watch(() =>
   }
 );
 
-watch(() => 
-  cartStores.getWholesale, async (value) => {
-    onlyWholesale.value = value
-  }
-);
-
 watchEffect(fetchData);
 
 async function fetchData() {
@@ -176,7 +171,6 @@ async function fetchData() {
     min: min.value ?? null,
     max: max.value ?? null,
     sortBy: sortBy.value,
-    wholesalers: route.query.wholesalers === 'true' ? true : false,
     rating: rating.value
   };
 
@@ -186,7 +180,6 @@ async function fetchData() {
   totalProducts.value = aux.productsTotalCount;
 
   colors.value = aux.colors
-  onlyWholesale.value = cartStores.getWholesale
 
   if(route.query.colorId) {
     const colorsQuery = route.query.colorId.split(',').map(Number);
@@ -206,7 +199,7 @@ async function fetchData() {
     category.value = {
       title: categories.value.filter(item => item.slug === route.query.category)[0].name,
       disabled: false,
-      href: `/products?category=${route.query.category}&wholesalers=${route.query.wholesalers ?? 'false'}`
+      href: `/products?category=${route.query.category}`
     };
 
     bread.value.push(category.value);
@@ -215,7 +208,7 @@ async function fetchData() {
       const fathercategory = {
         title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name,
         disabled: false,
-        href: `/products?category=${route.query.category}&subcategory=${route.query.fathercategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
+        href: `/products?category=${route.query.category}&subcategory=${route.query.fathercategory}`
       };
 
       category.value.fathercategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name
@@ -227,7 +220,7 @@ async function fetchData() {
       const subcategory = {
         title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name,
         disabled: false,
-        href: `/products?category=${route.query.category}&subcategory=${route.query.subcategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
+        href: `/products?category=${route.query.category}&subcategory=${route.query.subcategory}`
       };
 
       category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name
@@ -241,7 +234,7 @@ async function fetchData() {
       const subcategory = {
         title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name,
         disabled: false,
-        href: `/products?category=${route.query.category}&fathercategory=${route.query.fathercategory}&subcategory=${route.query.subcategory}&wholesalers=${route.query.wholesalers ?? 'false'}`
+        href: `/products?category=${route.query.category}&fathercategory=${route.query.fathercategory}&subcategory=${route.query.subcategory}`
       };
 
       category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name
@@ -364,8 +357,7 @@ const colorAction = () => {
   router.push({ 
     name: 'products', 
     query: {
-      colorId: colorsSelected.value.join(","),
-      wholesalers: route.query.wholesalers === 'true' ? true : false
+      colorId: colorsSelected.value.join(",")
     }
   })
 }
@@ -373,52 +365,37 @@ const colorAction = () => {
 const addCart = (value) => {
   product_id.value = value.product_id
     
-  let isWholesale = route.query.wholesalers === 'true' ? 1 : 0
-    
-  if(isWholesale === onlyWholesale.value || onlyWholesale.value === -1 ) {
-    let data = {
-      date: null,
-      service_id: null,
-      cake_size_id: null,
-      flavor_id: null,
-      filling_id: null,
-      order_file_id: null,
-      product_color_id: value.product_color_id,
-      quantity: value.cant_prod,
-      wholesale: isWholesale,
-      type: 0
-    }
-
-    load.value = true
-
-    cartStores.add(data)
-      .then(response => {
-
-        isDialogVisible.value = true
-        message.value = 'Agregado al carrito'
-        load.value = false
-
-        setTimeout(() => {
-          isDialogVisible.value = false
-          isError.value = false
-          message.value = ''
-        }, 1000)
-
-      }).catch(err => {
-        load.value = false
-        //console.error(err.message)
-      })
-  } else {
-    isDialogVisible.value = true
-    message.value = 'Debes agregar al carrito productos ' + (isWholesale ? 'al detal' : 'al mayor') + ' debido a tu selección anterior'
-    isError.value = true
-
-    setTimeout(() => {
-      isDialogVisible.value = false
-      isError.value = false
-      message.value = ''
-    }, 3000)
+  let data = {
+    date: null,
+    service_id: null,
+    cake_size_id: null,
+    flavor_id: null,
+    filling_id: null,
+    order_file_id: null,
+    product_color_id: value.product_color_id,
+    quantity: value.cant_prod,
+    type: 0
   }
+
+  load.value = true
+
+  cartStores.add(data)
+    .then(response => {
+
+      isDialogVisible.value = true
+      message.value = 'Agregado al carrito'
+      load.value = false
+
+      setTimeout(() => {
+        isDialogVisible.value = false
+        isError.value = false
+        message.value = ''
+      }, 1000)
+
+    }).catch(err => {
+      load.value = false
+      //console.error(err.message)
+    })
 }
 
 const addfavorite = (product_id) => {
@@ -461,10 +438,7 @@ const addfavorite = (product_id) => {
             <VCardItem v-if="route.query.category" class="p-0 text-allcategories tw-font-bold mt-6">
               <NuxtLink
                 :to="{
-                  name: 'products',
-                  query: {
-                    wholesalers: route.query.wholesalers === 'true' ? true : false
-                  }
+                  name: 'products'
                 }"
                 class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
               >
@@ -483,8 +457,7 @@ const addfavorite = (product_id) => {
                       :to="{
                         name: 'products',
                         query: {
-                          category: i.slug.split('/')[0],
-                          wholesalers: route.query.wholesalers === 'true' ? true : false
+                          category: i.slug.split('/')[0]
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ i.name }}
@@ -498,8 +471,7 @@ const addfavorite = (product_id) => {
                         :to="{
                           name: 'products',
                           query: {
-                            category: i.slug.split('/')[0],
-                            wholesalers: route.query.wholesalers === 'true' ? true : false
+                            category: i.slug.split('/')[0]
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         <VListItemTitle>{{ i.name }}</VListItemTitle>
@@ -523,8 +495,7 @@ const addfavorite = (product_id) => {
                           name: 'products',
                           query: {
                             category: i.slug.split('/')[0],
-                            subcategory: j.slug.split('/')[1],
-                            wholesalers: route.query.wholesalers === 'true' ? true : false
+                            subcategory: j.slug.split('/')[1]
                           },
                         }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary">
                         <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -538,8 +509,7 @@ const addfavorite = (product_id) => {
                               name: 'products',
                               query: {
                                 category: i.slug.split('/')[0],
-                                subcategory: j.slug.split('/')[1],
-                                wholesalers: route.query.wholesalers === 'true' ? true : false
+                                subcategory: j.slug.split('/')[1]
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                             <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -563,8 +533,7 @@ const addfavorite = (product_id) => {
                               query: {
                                 category: i.slug.split('/')[0],
                                 fathercategory: j.slug.split('/')[1],
-                                subcategory: k.slug.split('/')[2],
-                                wholesalers: route.query.wholesalers === 'true' ? true : false
+                                subcategory: k.slug.split('/')[2]
                               },
                             }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                             {{ k.name }}
@@ -586,8 +555,7 @@ const addfavorite = (product_id) => {
                     :to="{
                       name: 'products',
                         query: {
-                          category: route.query.category,
-                          wholesalers: route.query.wholesalers === 'true' ? true : false
+                          category: route.query.category
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.title }}
@@ -603,8 +571,7 @@ const addfavorite = (product_id) => {
                       name: 'products',
                         query: {
                           category: route.query.category,
-                          subcategory: route.query.fathercategory,
-                          wholesalers: route.query.wholesalers === 'true' ? true : false
+                          subcategory: route.query.fathercategory
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.fathercategory }}
@@ -633,8 +600,7 @@ const addfavorite = (product_id) => {
                     :to="{
                       name: 'products',
                         query: {
-                          category: route.query.category,
-                          wholesalers: route.query.wholesalers === 'true' ? true : false
+                          category: route.query.category
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.title }}
@@ -659,8 +625,7 @@ const addfavorite = (product_id) => {
                       query: {
                         category: route.query.category,
                         fathercategory: route.query.subcategory,
-                        subcategory: j.slug.split('/')[2],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: j.slug.split('/')[2]
                       },
                     }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ j.name }}
@@ -689,8 +654,7 @@ const addfavorite = (product_id) => {
                         name: 'products',
                         query: {
                           category: route.query.category,
-                          subcategory: j.slug.split('/')[1],
-                          wholesalers: route.query.wholesalers === 'true' ? true : false
+                          subcategory: j.slug.split('/')[1]
                         },
                       }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         {{ j.name }}
@@ -704,8 +668,7 @@ const addfavorite = (product_id) => {
                             name: 'products',
                             query: {
                               category: route.query.category,
-                              subcategory: j.slug.split('/')[1],
-                              wholesalers: route.query.wholesalers === 'true' ? true : false
+                              subcategory: j.slug.split('/')[1]
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           <VListItemTitle> {{ j.name }} </VListItemTitle>
@@ -729,8 +692,7 @@ const addfavorite = (product_id) => {
                             query: {
                               category: route.query.category,
                               fathercategory: j.slug.split('/')[1],
-                              subcategory: k.slug.split('/')[2],
-                              wholesalers: route.query.wholesalers === 'true' ? true : false
+                              subcategory: k.slug.split('/')[2]
                             },
                           }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           {{ k.name }}
@@ -900,8 +862,7 @@ const addfavorite = (product_id) => {
                     query: {
                       category: route.query.category,
                       fathercategory: route.query.fathercategory,
-                      subcategory: i.slug.split('/')[2],
-                      wholesalers: route.query.wholesalers === 'true' ? true : false
+                      subcategory: i.slug.split('/')[2]
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
@@ -921,8 +882,7 @@ const addfavorite = (product_id) => {
                       query: {
                         category: route.query.category,
                         fathercategory: route.query.fathercategory,
-                        subcategory: i.slug.split('/')[2],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: i.slug.split('/')[2]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
                       <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
@@ -947,8 +907,7 @@ const addfavorite = (product_id) => {
                       query: {
                         category: route.query.category,
                         fathercategory: route.query.fathercategory,
-                        subcategory: i.slug.split('/')[2],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: i.slug.split('/')[2]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
@@ -978,8 +937,7 @@ const addfavorite = (product_id) => {
                     query: {
                       category: route.query.category,
                       fathercategory: route.query.subcategory,
-                      subcategory: i.slug.split('/')[2],
-                      wholesalers: route.query.wholesalers === 'true' ? true : false
+                      subcategory: i.slug.split('/')[2]
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
                   <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
@@ -999,8 +957,7 @@ const addfavorite = (product_id) => {
                       query: {
                         category: route.query.category,
                         fathercategory: route.query.subcategory,
-                        subcategory: i.slug.split('/')[2],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: i.slug.split('/')[2]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
@@ -1024,8 +981,7 @@ const addfavorite = (product_id) => {
                       query: {
                         category: route.query.category,
                         fathercategory: route.query.subcategory,
-                        subcategory: i.slug.split('/')[2],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: i.slug.split('/')[2]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
@@ -1054,8 +1010,7 @@ const addfavorite = (product_id) => {
                     name: 'products',
                     query: {
                       category: route.query.category,
-                      subcategory: i.slug.split('/')[1],
-                      wholesalers: route.query.wholesalers === 'true' ? true : false
+                      subcategory: i.slug.split('/')[1]
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
                   <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
@@ -1074,8 +1029,7 @@ const addfavorite = (product_id) => {
                       name: 'products',
                       query: {
                         category: route.query.category,
-                        subcategory: i.slug.split('/')[1],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: i.slug.split('/')[1]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
@@ -1099,8 +1053,7 @@ const addfavorite = (product_id) => {
                       name: 'products',
                       query: {
                         category: route.query.category,
-                        subcategory: i.slug.split('/')[1],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: i.slug.split('/')[1]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
@@ -1129,8 +1082,7 @@ const addfavorite = (product_id) => {
                     name: 'products',
                     query: {
                       category: route.query.category,
-                      subcategory: i.slug.split('/')[1],
-                      wholesalers: route.query.wholesalers === 'true' ? true : false
+                      subcategory: i.slug.split('/')[1]
                     }
                   }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
                   <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
@@ -1149,8 +1101,7 @@ const addfavorite = (product_id) => {
                       name: 'products',
                       query: {
                         category: route.query.category,
-                        subcategory: i.slug.split('/')[1],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: i.slug.split('/')[1]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
@@ -1173,8 +1124,7 @@ const addfavorite = (product_id) => {
                       name: 'products',
                       query: {
                         category: route.query.category,
-                        subcategory: i.slug.split('/')[1],
-                        wholesalers: route.query.wholesalers === 'true' ? true : false
+                        subcategory: i.slug.split('/')[1]
                       }
                     }" class="tw-no-underline d-block text-center justify-content-center zoom">
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>

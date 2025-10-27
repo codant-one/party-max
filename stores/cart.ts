@@ -5,7 +5,6 @@ export const useCartStores = defineStore('cart', {
     state: () => ({
         data: [] as any[],
         count: 0,
-        wholesale: -1,
         CURRENT_VERSION: '2.0.0'
     }),
     getters:{
@@ -14,15 +13,9 @@ export const useCartStores = defineStore('cart', {
         },
         getCount(): any {
             return this.count
-        },
-        getWholesale(): any {
-            return this.wholesale
         }
     },
     actions: {
-        setWholesale(value: any){
-            this.wholesale = value
-        },
         fetchCart() { 
             if (process.client) {            
                 const storedVersion = localStorage.getItem('shoppingCartVersion');
@@ -30,8 +23,6 @@ export const useCartStores = defineStore('cart', {
                 if (!storedVersion || storedVersion !== this.CURRENT_VERSION) {
                     localStorage.removeItem('shoppingCart');
                     localStorage.setItem('shoppingCartVersion', this.CURRENT_VERSION);
-
-                    this.wholesale = -1
                 }
 
                 let shoppingCart = localStorage.getItem('shoppingCart')
@@ -57,10 +48,6 @@ export const useCartStores = defineStore('cart', {
                     const fileIdsString = fileIds.join(',')
                     const typeIds = shoppingCart.map((item: { type: number }) => item.type)
                     const typeIdsString = typeIds.join(',')
-                    const wholesale = shoppingCart.map((item: { wholesale: number }) => item.wholesale)[0] ?? -1
-
-                    const wholesaleIds = shoppingCart.map((item: { wholesale: number }) => item.wholesale)
-                    const wholesaleIdsString = wholesaleIds.join(',')
                     
                     const params = { 
                         service_id: servicesIdsString,
@@ -70,8 +57,7 @@ export const useCartStores = defineStore('cart', {
                         order_file_id: fileIdsString,
                         date: dateIdsString,
                         product_color_id: productColorIdsString, 
-                        quantity: quantityIdsIdsString, 
-                        wholesale:  wholesaleIdsString,
+                        quantity: quantityIdsIdsString,
                         type: typeIdsString
                     }
 
@@ -79,11 +65,6 @@ export const useCartStores = defineStore('cart', {
                         .then((response) => {
                             this.data = response.data.data.cart
                             this.count = response.data.data.cart.length
-                            
-                            if(this.count > 0)
-                                this.wholesale = wholesale
-                            else 
-                                this.wholesale = -1
 
                             return Promise.resolve(response.data.data)
                         })
@@ -175,10 +156,6 @@ export const useCartStores = defineStore('cart', {
 
                     setTimeout(() => {
                         this.count = shoppingCart.length
-                        
-                        if(this.count === 0) {
-                            this.wholesale = -1
-                        }
                     }, 1000)
                     
                     localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart))
@@ -191,7 +168,6 @@ export const useCartStores = defineStore('cart', {
         },
         refreshData() {
             this.count = 0
-            this.wholesale = -1
         },
         checkAvailability() {  
 

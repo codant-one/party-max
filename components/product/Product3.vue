@@ -19,13 +19,11 @@ const config = useRuntimeConfig()
 
 const { isMobile } = useDevice();
 const image = ref(null)
-const wholesale_price = ref(null)
 const price_for_sale = ref(null)
 const name = ref(null)
 const store = ref(null)
 const rating = ref(null)
 const slug = ref(null)
-const existence_whole = ref(false)
 const stock = ref(null)
 const in_stock = ref(null)
 
@@ -35,7 +33,6 @@ watchEffect(() => {
 
     if (!(Object.entries(props.product).length === 0) && props.product.constructor === Object) {
         image.value = props.product.image
-        wholesale_price.value = props.product.wholesale_price
         price_for_sale.value = props.product.price_for_sale
         name.value = props.product.name.toLowerCase().replace(/(^|\s)\p{L}/gu, (match) => match.toUpperCase());
         store.value = props.product.store ?? (props.product.company ?? props.product.user)
@@ -44,8 +41,6 @@ watchEffect(() => {
         stock.value = props.product.first_color.stock
         in_stock.value = props.product.first_color.in_stock
     }
-
-    existence_whole.value = route.query.wholesalers === 'true' ? true : false;
 })
 
 </script>
@@ -58,8 +53,7 @@ watchEffect(() => {
             query: {  
                 category: route.query.category,
                 fathercategory: route.query.fathercategory,
-                subcategory: route.query.subcategory,
-                wholesalers: route.query.wholesalers
+                subcategory: route.query.subcategory
             }
         }"
         class="tw-no-underline zoom-product">
@@ -105,8 +99,7 @@ watchEffect(() => {
             </VCardText>
             <VCardText>
                 <div class="d-flex align-center">
-                    <span v-if="!existence_whole" class="text_1">${{ formatNumber(price_for_sale) }}</span>
-                    <span v-if="existence_whole" class="text_1">${{ formatNumber(wholesale_price) }}</span>
+                    <span class="text_1">${{ formatNumber(price_for_sale) }}</span>
                     <strong class="tw-text-gray tw-text-base ms-3">
                         {{ (in_stock === 1) ? ''  : 'AGOTADO' }}
                     </strong>

@@ -25,8 +25,6 @@ const emit = defineEmits([
 ])
 
 const image = ref(null)
-const wholesale_price = ref(null)
-const wholesale_min = ref(null)
 const price_for_sale = ref(null)
 const name = ref(null)
 const color = ref(null)
@@ -38,7 +36,6 @@ const stock = ref(null)
 const quantity = ref(null)
 const product_id = ref(null)
 const product_color_id = ref(null)
-const existence_whole = ref(false)
 const in_stock = ref(null)
 
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
@@ -47,7 +44,6 @@ watchEffect(() => {
 
     if (!(Object.entries(props.product).length === 0) && props.product.constructor === Object) {
         image.value = (props.product.images.length === 0) ? props.product.product.image : props.product.images[0]?.image
-        wholesale_price.value = props.product.product.wholesale_price ?? '0.00'
         price_for_sale.value = props.product.product.price_for_sale
         name.value = props.product.product.name.toLowerCase().replace(/\b\w/g, (match) => match.toUpperCase())
         store.value = props.product.user.user_detail.store_name ?? (props.product.supplier?.company_name ?? (props.product.user.name + ' ' + (props.product.user.last_name ?? '')))
@@ -59,8 +55,6 @@ watchEffect(() => {
         product_id.value = props.product.product.id
         product_color_id.value = props.product.product_color_id
         color.value = props.product.color.name
-        existence_whole.value = props.product.wholesale === 1 ? true : false;
-        wholesale_min.value = props.product.wholesale === 1 ? props.product.product.wholesale_min : 1
         in_stock.value = props.product.in_stock
     }
 })
@@ -70,7 +64,6 @@ const onChange = () => {
     let data = {
         quantity: quantity.value,
         product_color_id: parseInt(product_color_id.value),
-        wholesale: existence_whole.value ? 1 : 0,
         type: 0
     }
 
@@ -85,7 +78,7 @@ const increment = () => {
 }
     
 const decrement = () => {
-    if (quantity.value > wholesale_min.value) {
+    if (quantity.value > 1) {
         quantity.value--
         onChange()
     }
@@ -153,8 +146,7 @@ const decrement = () => {
                 <VCol cols="6" md="2" class="align-center text-center pb-0 py-md-5 mt-auto my-md-auto pe-4">
                     <VCardText class="mt-1">
                         <div class="d-flex text-center align-center tw-justify-end md:tw-justify-center">
-                            <span v-if="existence_whole" class="text_1 tw-text-tertiary">${{ formatNumber(wholesale_price) }}</span>
-                            <span v-if="!existence_whole" class="text_1 tw-text-tertiary">${{ formatNumber(price_for_sale) }}</span>
+                            <span class="text_1 tw-text-tertiary">${{ formatNumber(price_for_sale) }}</span>
                         </div>
                     </VCardText>
                 </VCol>

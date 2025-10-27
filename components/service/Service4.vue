@@ -80,7 +80,7 @@ watchEffect(() => {
                         />
                     </VCardText>
                 </VCol>
-                <VCol cols="12" md="7" class="d-flex flex-column pt-3 py-md-5 ps-4 ps-md-2 my-auto">
+                <VCol cols="12" md="7" class="d-flex flex-column pt-3 py-md-5 ps-4 ps-md-3 my-auto">
                     <VCardText class="px-1">
                         <span class="d-block text_2 py-1 tw-text-tertiary title-service">{{ name }}</span>
                         <span class="d-block py-0 tw-text-gray">Fecha: {{ date }}</span>

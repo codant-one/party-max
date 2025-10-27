@@ -80,8 +80,7 @@ watchEffect(() => {
                         const finalId = item.type === 0 ? `PRODUCT_${cleanId}` : `SERVICE_${cleanId}`;
                         const cupcake = item.type === 0 ? null : item.cupcakes.find(c => c.cake_size_id === item.cake_size_id);
                         const itemPrice = 
-                            item.type === 0 ? 
-                            (item.wholesale === 1 ? item.product.wholesale_price : item.product.price_for_sale) :
+                            item.type === 0 ?  item.product.price_for_sale :
                             (item.cake_size_id === 0 ? item.price : cupcake.price);
                         
                         acc.content_ids.push(finalId);

@@ -20,7 +20,6 @@ const props = defineProps({
 
 const config = useRuntimeConfig()
 const image = ref(null)
-const wholesale_price = ref(null)
 const price_for_sale = ref(null)
 const name = ref(null)
 const store = ref(null)
@@ -29,7 +28,6 @@ const single_description = ref(null)
 const slug = ref(null)
 const color = ref(null)
 const quantity = ref(null)
-const existence_whole = ref(false)
 
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
 
@@ -37,7 +35,6 @@ watchEffect(() => {
 
     if (!(Object.entries(props.product).length === 0) && props.product.constructor === Object) {
         image.value = (props.product.images.length === 0) ? props.product.product.image : props.product.images[0]?.image
-        wholesale_price.value = props.product.product.wholesale_price ?? '0.00'
         price_for_sale.value = props.product.product.price_for_sale
         name.value = props.product.product.name.toLowerCase().replace(/(^|\s)\p{L}/gu, (match) => match.toUpperCase());
         store.value = props.product.user.user_detail.store_name ?? (props.product.supplier?.company_name ?? (props.product.user.name + ' ' + (props.product.user.last_name ?? '')))
@@ -46,8 +43,6 @@ watchEffect(() => {
         slug.value = props.product.product.slug
         color.value = props.product.color.name
         quantity.value = props.product.quantity
-
-        existence_whole.value = props.product.wholesale === 1 ? true : false;
     }
 })
 
@@ -80,12 +75,10 @@ watchEffect(() => {
                     <span class="text_1 tw-text-tertiary">{{ quantity }}</span>
                 </VCol>
                 <VCol cols="2" md="2" class="d-none d-md-flex justify-content-end tw-items-center">
-                    <span v-if="existence_whole" class="text_1 tw-text-tertiary">${{ formatNumber(wholesale_price) }}</span>
-                    <span v-if="!existence_whole" class="text_1 tw-text-tertiary">${{ formatNumber(price_for_sale) }}</span>
+                    <span class="text_1 tw-text-tertiary">${{ formatNumber(price_for_sale) }}</span>
                 </VCol>
                 <VCol cols="3" md="2" class="d-flex justify-content-end tw-items-center">
-                    <span v-if="existence_whole" class="text_1 tw-text-tertiary">${{ formatNumber(wholesale_price * quantity) }}</span>
-                    <span v-if="!existence_whole" class="text_1 tw-text-tertiary">${{ formatNumber(price_for_sale * quantity) }}</span>
+                    <span class="text_1 tw-text-tertiary">${{ formatNumber(price_for_sale * quantity) }}</span>
                 </VCol>
             </VRow>
         </VCard>

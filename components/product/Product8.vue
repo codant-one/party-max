@@ -24,8 +24,6 @@ const emit = defineEmits([
 ])
 
 const image = ref(null)
-const wholesale_price = ref(null)
-const wholesale_min = ref(null)
 const price_for_sale = ref(null)
 const name = ref(null)
 const color = ref(null)
@@ -36,7 +34,6 @@ const slug = ref(null)
 const quantity = ref(null)
 const product_id = ref(null)
 const product_color_id = ref(null)
-const existence_whole = ref(false)
 
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
 
@@ -44,7 +41,6 @@ watchEffect(() => {
 
     if (!(Object.entries(props.product).length === 0) && props.product.constructor === Object) {
         image.value = (props.product.images.length === 0) ? props.product.product.image : props.product.images[0]?.image
-        wholesale_price.value = props.product.product.wholesale_price ?? '0.00'
         price_for_sale.value = props.product.product.price_for_sale
         name.value = props.product.product.name.toLowerCase().replace(/\b\w/g, (match) => match.toUpperCase())
         store.value = props.product.user.user_detail.store_name ?? (props.product.supplier?.company_name ?? (props.product.user.name + ' ' + (props.product.user.last_name ?? '')))
@@ -55,8 +51,6 @@ watchEffect(() => {
         product_id.value = props.product.product.id
         product_color_id.value = props.product.product_color_id
         color.value = props.product.color.name
-        existence_whole.value = props.product.wholesale === 1 ? true : false;
-        wholesale_min.value = props.product.wholesale === 1 ? props.product.product.wholesale_min : 1
     }
 })
 
@@ -79,7 +73,7 @@ watchEffect(() => {
                         />
                     </VCardText>
                 </VCol>
-                <VCol cols="12" md="7" class="d-flex flex-column pt-3 py-md-5 ps-4 ps-md-8 my-auto">
+                <VCol cols="12" md="7" class="d-flex flex-column pt-3 py-md-5 ps-4 ps-md-0 my-auto">
                     <VCardText class="px-1">
                         <span class="d-block text_2 py-1 tw-text-tertiary title-product">{{ name }}</span>
                         <span class="d-block py-0 tw-text-gray">Color: {{ color }}</span>
@@ -94,8 +88,7 @@ watchEffect(() => {
                     </VCardText>
                     <VCardText class="px-1">
                         <span class="d-block py-0 tw-text-gray">{{ quantity }} x 
-                            <span v-if="existence_whole" class="tw-text-tertiary">${{ formatNumber(wholesale_price) }}</span>
-                            <span v-if="!existence_whole" class="tw-text-tertiary">${{ formatNumber(price_for_sale) }}</span>
+                            <span class="tw-text-tertiary">${{ formatNumber(price_for_sale) }}</span>
                         </span>
                     </VCardText>
 

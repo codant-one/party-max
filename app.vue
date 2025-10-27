@@ -45,9 +45,7 @@ async function fetchData() {
     background.value = 'tw-bg-white'
   }
 
-  if(route.name === 'wholesalers')
-    bg = categories
-  else if(route.name === 'register' || route.name === 'type_client' || route.name === 'clients-form_client' || 
+  if(route.name === 'register' || route.name === 'type_client' || route.name === 'clients-form_client' || 
           route.name === 'clients-form_supplier' || route.name === 'login' || route.name === 'clients-success_register_person' || 
           route.name === 'clients-success_register_company' || route.name === 'clients-forgot_password' || route.name === 'clients-reset_password') {
     bg = register

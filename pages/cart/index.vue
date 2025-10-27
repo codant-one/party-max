@@ -144,7 +144,6 @@ const documentTypes = ref([])
 const currentStep = ref(0)
 const isLoading = ref(false)
 const isActiveStepValid = ref(false)
-const iswholesale = ref(false)
 
 const getProvinces = computed(() => {
   return listProvincesByCountry.value.map((province) => {
@@ -203,11 +202,9 @@ async function fetchData() {
          products.value.forEach(element => {
             let cupcake = element.type === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
             let value = 
-            element.type === 0 ? 
-              (element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale) :
+            element.type === 0 ? element.product.price_for_sale :
               (element.cake_size_id === 0 ? element.price : cupcake.price)
 
-            iswholesale.value = element.wholesale === 1 ? true : false
             sum += (parseFloat(value) * element.quantity)
         });
         summary.value.subTotal = sum.toFixed(2)
@@ -415,7 +412,6 @@ const addCart = (data) =>{
             order_file_id: null,
             product_color_id: data.product_color_id,
             quantity: data.quantity,
-            wholesale: data.wholesale,
             type: 0
         }
     } else {
@@ -428,7 +424,6 @@ const addCart = (data) =>{
             order_file_id: data.order_file_id,
             product_color_id: null,
             quantity: data.quantity,
-            wholesale: null,
             type: 1
         }
     }
@@ -554,7 +549,7 @@ const sendPayU = async (billingDetail) => {
 
         if(element.type === 0) {
             product_color_id.push(element.product_color_id)
-            price_product.push(iswholesale.value === true ? element.product.wholesale_price : element.product.price_for_sale)
+            price_product.push(element.product.price_for_sale)
             quantity_product.push(element.quantity)
             product_type = 1
         } else {
@@ -634,7 +629,6 @@ const sendPayU = async (billingDetail) => {
                 city: billingDetail.city,
                 postal_code: billingDetail.postal_code,
                 note: billingDetail.note,
-                wholesale: iswholesale.value === true ? 1 : 0,
                 type: type,
                 ip: ip.value,
                 user_agent: navigator.userAgent,
@@ -697,7 +691,6 @@ const sendPayU = async (billingDetail) => {
 const deleteAll = async () => {
     if(process.client) {
         localStorage.removeItem('shoppingCart') 
-        cartStores.setWholesale(-1)
     }
 }
 
@@ -796,11 +789,9 @@ const chanceSend = value => {
     products.value.forEach(element => {
         let cupcake = element.type === 0 ? null : element.cupcakes.find(item => item.cake_size_id === element.cake_size_id)
         let value = 
-            element.type === 0 ? 
-              (element.wholesale === 1 ? element.product.wholesale_price : element.product.price_for_sale) :
+            element.type === 0 ? element.product.price_for_sale :
               (element.cake_size_id === 0 ? element.price : cupcake.price)
               
-        iswholesale.value = element.wholesale === 1 ? true : false
         sum += (parseFloat(value) * element.quantity)
     });
 
@@ -875,7 +866,6 @@ const chanceSend = value => {
                         :countries="listCountries"
                         :provinces="listProvinces"
                         :document_types="getDocumentTypes"
-                        :iswholesale="iswholesale"
                         :step="currentStep"
                         @submit="sendPayU"
                         @send="chanceSend"
