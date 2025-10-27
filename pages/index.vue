@@ -333,7 +333,7 @@ useHead({
     <!-- banner 2 -->
     <VCard class="mt-7 no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
-        <img :src="banner_3.image" cover @click="redirectTo(banner_3.url)" class="img-gallery" alt="Banner para animar al usuario a registrarse"/>
+        <img :src="banner_3.image" cover @click="redirectTo(banner_3.url)" class="img-gallery cursor-pointer" alt="Banner para animar al usuario a registrarse"/>
       </VCardItem>  
     </VCard>
     
@@ -551,12 +551,12 @@ useHead({
     <VCard class="mt-7 no-shadown card-information p-0 d-flex transparent card-banner34">
         <VCard class="no-shadown card-information p-0 w-50 grid-item w-100">
             <VCardItem class="p-0">
-              <img :src="banner_5.image" cover @click="redirectTo(banner_5.url)"  class="img-gallery" alt="Tu guia de Inteligencia Artificial para fiestas inoolvidables!"/>
+              <img :src="banner_5.image" cover @click="redirectTo(banner_5.url)"  class="img-gallery cursor-pointer" alt="Tu guia de Inteligencia Artificial para fiestas inoolvidables!"/>
             </VCardItem> 
         </VCard>
         <VCard class="no-shadown card-information p-0 w-50 ms-5 grid-item w-100">
             <VCardItem class="p-0">
-              <img :src="banner_6.image" cover @click="redirectTo(banner_6.url)" class="img-gallery" alt="Haz tu celebracion inolvidable con PartyMax"/>
+              <img :src="banner_6.image" cover @click="redirectTo(banner_6.url)" class="img-gallery cursor-pointer" alt="Haz tu celebracion inolvidable con PartyMax"/>
             </VCardItem>
         </VCard>
     </VCard>

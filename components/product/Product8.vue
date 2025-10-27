@@ -86,7 +86,7 @@ watchEffect(() => {
                     </VCardText>
                     <VCardText class="px-1">
                         <span 
-                            class="d-flex tw-text-xs py-1 tw-text-primary title-product me-3" 
+                            class="d-flex tw-text-xs py-1 tw-text-primary title-product me-3 cursor-pointer" 
                             @click="emit('delete', product_color_id)"
                         >
                             Eliminar

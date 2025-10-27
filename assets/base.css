@@ -21,7 +21,6 @@ html {
 body {
   font-family: 'Switzer Regular', Arial, sans-serif !important;
   line-height: 14px;
-  cursor: url('/cursor.svg') 10 0, pointer !important;
 }
 
 *[style*="cursor: pointer"],
@@ -29,19 +28,15 @@ body {
 [disabled],
 button,
 a,
-textarea,
-.v-select .v-field .v-text-field__prefix, .v-select .v-field .v-text-field__suffix, .v-select .v-field .v-field__input, .v-select .v-field.v-field,
+.v-select, .v-select .v-field .v-text-field__suffix, .v-select .v-field .v-field__input, .v-select .v-field.v-field,
 .v-btn,
 .v-list-item,
 .v-icon,
 [role="button"],
 [tabindex],
-input,
 label,
-.v-card,
-.v-chip,
-.v-avatar {
-  cursor: url('/cursor.svg') 10 0, pointer !important;
+.v-chip {
+  cursor: pointer !important;
 }
 
 .align-right {
