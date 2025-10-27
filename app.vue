@@ -1,21 +1,23 @@
 <script setup>
 
-import { ref } from 'vue'
+import { ref, computed, onBeforeMount, watch as vueWatch } from 'vue'
 import { useCartStores } from '~/stores/cart'
 import { useAuthStores } from '~/stores/auth'
 import { useFiltersStores } from '~/stores/filters'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useCategoriesStores } from '~/stores/categories'
 import Header from '@/components/app/Header.vue'
 import Footer from '@/components/app/Footer.vue'
 import Filters from '@/components/app/Filters.vue'
 import FilterServices from '@/components/app/FilterServices.vue'
-import categories from '@assets/images/categories.jpg';
 import register from '@assets/images/register.jpg';
 
 const authStores = useAuthStores()
 const cartStores = useCartStores()
 const filtersStores = useFiltersStores()
 const route = useRoute()
+const router = useRouter()
+const categoriesStores = useCategoriesStores()
 
 const backgroundStyle = ref({})
 const background = ref('tw-bg-white')
@@ -23,11 +25,73 @@ const drawer = ref(false)
 
 const { isMobile } = useDevice()
 
+const isProductsRoute = computed(() => route.path?.startsWith('/products'))
+const isServicesRoute = computed(() => route.path?.startsWith('/services'))
+
+const hydrateCategoriesFromStorage = () => {
+  if (!process.client) return
+  const inPS = route.path?.startsWith('/products') || route.path?.startsWith('/services')
+  if (!inPS) return
+  if (!categoriesStores.getCategory) {
+    const cat = localStorage.getItem('products_category')
+    const sub = localStorage.getItem('products_subcategory')
+    const father = localStorage.getItem('products_fathercategory')
+    if (cat) {
+      categoriesStores.setCategory(cat)
+      if (father) categoriesStores.setFathercategory(father)
+      if (sub) categoriesStores.setSubcategory(sub)
+    }
+  }
+}
+
+const persistCategoriesToStorage = () => {
+  if (!process.client) return
+  if (categoriesStores.getCategory) {
+    localStorage.setItem('products_category', categoriesStores.getCategory)
+    if (categoriesStores.getFathercategory) localStorage.setItem('products_fathercategory', categoriesStores.getFathercategory)
+    else localStorage.removeItem('products_fathercategory')
+    if (categoriesStores.getSubcategory) localStorage.setItem('products_subcategory', categoriesStores.getSubcategory)
+    else localStorage.removeItem('products_subcategory')
+  }
+}
+
 watch(() => 
   filtersStores.getDrawer, (data) => {
     drawer.value = data
   }
 )
+
+// Reset categories store only when leaving products/services to other views
+router.afterEach((to, from) => {
+  const fromPS = from.path?.startsWith('/products') || from.path?.startsWith('/services')
+  const toPS = to.path?.startsWith('/products') || to.path?.startsWith('/services')
+  if (fromPS && !toPS) {
+    categoriesStores.reset()
+    categoriesStores.resetColorId()
+    if (process.client) {
+      localStorage.removeItem('products_colorId')
+      localStorage.removeItem('products_category')
+      localStorage.removeItem('products_subcategory')
+      localStorage.removeItem('products_fathercategory')
+    }
+  }
+})
+
+onBeforeMount(() => {
+  hydrateCategoriesFromStorage()
+})
+
+vueWatch(() => route.path, () => {
+  hydrateCategoriesFromStorage()
+})
+
+vueWatch(() => [
+  categoriesStores.getCategory,
+  categoriesStores.getSubcategory,
+  categoriesStores.getFathercategory,
+], () => {
+  persistCategoriesToStorage()
+})
 
 watchEffect(fetchData)
 
@@ -90,8 +154,8 @@ async function fetchData() {
     <VApp> 
       <ClientOnly v-if="route.name === 'index'">
         <VLayout >
-          <Filters :drawer="drawer" v-if="route.name === 'products'"/>
-          <FilterServices :drawer="drawer" v-if="route.name === 'services'"/>
+          <Filters :drawer="drawer" v-if="isProductsRoute"/>
+          <FilterServices :drawer="drawer" v-if="isServicesRoute"/>
           <Header />
           <VMain :style="backgroundStyle" :class="background">
             <NuxtPage />
@@ -101,8 +165,8 @@ async function fetchData() {
       </ClientOnly>
       <template v-else>
         <VLayout >
-          <Filters :drawer="drawer" v-if="route.name === 'products'"/>
-          <FilterServices :drawer="drawer" v-if="route.name === 'services'"/>
+          <Filters :drawer="drawer" v-if="isProductsRoute"/>
+          <FilterServices :drawer="drawer" v-if="isServicesRoute"/>
           <Header />
           <VMain :style="backgroundStyle" :class="background">
             <NuxtPage />

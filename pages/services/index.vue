@@ -5,6 +5,7 @@ import { Navigation, Pagination } from 'swiper/modules';
 import { ref } from "vue";
 import { useHomeStores } from "@/stores/home";
 import { useMiscellaneousStores } from "@/stores/miscellaneous";
+import { useCategoriesStores } from '@/stores/categories'
 import { useFavoritesStores } from '@/stores/favorites'
 import { useFiltersStores } from '@/stores/filters'
 import { formatNumber } from '@formatters'
@@ -30,10 +31,12 @@ const modules = ref([Navigation, Pagination])
 
 const config = useRuntimeConfig()
 const route = useRoute();
+const router = useRouter();
 const homeStores = useHomeStores();
 const miscellaneousStores = useMiscellaneousStores();
 const favoritesStores = useFavoritesStores()
 const filtersStores = useFiltersStores()
+const categoriesStores = useCategoriesStores()
 
 const isLoading = ref(true);
 const categories = ref(null);
@@ -95,11 +98,14 @@ watchEffect(() => {
     currentPage.value = totalPages.value;
 });
 
-watch(() => 
-  route.query,(newPath, oldPath) => {
+// react to store changes instead of route query
+watch(() => [
+  categoriesStores.getCategory,
+  categoriesStores.getSubcategory,
+  categoriesStores.getFathercategory,
+], () => {
     fetchData()
-  }
-);
+})
 
 watch(() => 
   tab.value,(value) => {
@@ -148,13 +154,13 @@ async function fetchData() {
   categories.value = homeStores.getData.parentServices;
 
   let info = {
-    orderByField: route.query.category ? 'sl.order_id' : 'services.order_id',
+    orderByField: categoriesStores.getCategory ? 'sl.order_id' : 'services.order_id',
     orderBy: 'asc',
     limit: isMobile ? 20 : rowPerPage.value,
     page: currentPage.value,
-    category: route.query.category ?? null,
-    subcategory: route.query.subcategory ?? null,
-    fathercategory: route.query.fathercategory ?? null,
+    category: categoriesStores.getCategory ?? null,
+    subcategory: categoriesStores.getSubcategory ?? null,
+    fathercategory: categoriesStores.getFathercategory ?? null,
     searchPublic: route.query.search ?? null,
     min: min.value ?? null,
     max: max.value ?? null,
@@ -168,65 +174,45 @@ async function fetchData() {
   totalPages.value = aux.services.last_page;
   totalServices.value = aux.servicesTotalCount;
 
+  // deterministic breadcrumb rebuild
+  const crumbs = [
+    { title: "Home", disabled: false, href: "/" }
+  ]
+  if (categoriesStores.getCategory) {
+    const catNode = categories.value.find(it => it.slug === categoriesStores.getCategory)
+    const catTitle = catNode?.name || categoriesStores.getCategory
+    // initialize category and cat for downstream usage
+    category.value = { title: catTitle, disabled: false, href: `/services/categories/${categoriesStores.getCategory}` }
+    crumbs.push({ title: catTitle, disabled: false, href: `/services/categories/${categoriesStores.getCategory}` })
 
-  if (route.query.category) {
-    panelCat.value = null
-    category.value = {
-      title: categories.value.filter(item => item.slug === route.query.category)[0].name,
-      disabled: false,
-      href: `/services?category=${route.query.category}`
-    };
-
-    bread.value.push(category.value);
-
-    if (route.query.fathercategory) {
-      const fathercategory = {
-        title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name,
-        disabled: false,
-        href: `/services?category=${route.query.category}&subcategory=${route.query.fathercategory}`
-      };
-
-      category.value.fathercategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name
-      cat.value = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0]
-      bread.value.push(fathercategory);
+    if (categoriesStores.getFathercategory && categoriesStores.getSubcategory) {
+      const fatherNode = catNode?.children?.find(it => it.slug === `${categoriesStores.getCategory}/${categoriesStores.getFathercategory}`)
+      const fatherTitle = fatherNode?.name || categoriesStores.getFathercategory
+      category.value.fathercategory = fatherTitle
+      crumbs.push({ title: fatherTitle, disabled: false, href: `/services/categories/${categoriesStores.getCategory}/${categoriesStores.getFathercategory}` })
+      const subNode = fatherNode?.grandchildren?.find(it => it.slug === `${categoriesStores.getCategory}/${categoriesStores.getFathercategory}/${categoriesStores.getSubcategory}`)
+      const subTitle = subNode?.name || categoriesStores.getSubcategory
+      category.value.subcategory = subTitle
+      cat.value = subNode || fatherNode || catNode
+      crumbs.push({ title: subTitle, disabled: false, href: `/services/categories/${categoriesStores.getCategory}/${categoriesStores.getFathercategory}/${categoriesStores.getSubcategory}` })
+    } else if (!categoriesStores.getFathercategory && categoriesStores.getSubcategory) {
+      const subNode = catNode?.children?.find(it => it.slug === `${categoriesStores.getCategory}/${categoriesStores.getSubcategory}`)
+      const subTitle = subNode?.name || categoriesStores.getSubcategory
+      category.value.subcategory = subTitle
+      cat.value = subNode || catNode
+      crumbs.push({ title: subTitle, disabled: false, href: `/services/categories/${categoriesStores.getCategory}/${categoriesStores.getSubcategory}` })
+    } else {
+      cat.value = catNode
     }
-
-    if (typeof route.query.fathercategory === 'undefined' && route.query.subcategory) {
-      const subcategory = {
-        title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name,
-        disabled: false,
-        href: `/services?category=${route.query.category}&subcategory=${route.query.subcategory}`
-      };
-
-      category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name
-      cat.value = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0]
-      bread.value.push(subcategory);
-    }
-
-    
-    if (typeof route.query.fathercategory !== 'undefined' && route.query.subcategory) {
-      const subcategory = {
-        title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name,
-        disabled: false,
-        href: `/services?category=${route.query.category}&fathercategory=${route.query.fathercategory}&subcategory=${route.query.subcategory}`
-      };
-
-      category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name
-      cat.value = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0]
-      bread.value.push(subcategory);
-    }
-
 
     if(!isMobile) {
-      const service_ = {
-        title: "Servicios",
-        disabled: true,
-        href: "",
-      };
-
-      bread.value.push(service_);
+      crumbs.push({ title: "Servicios", disabled: true, href: "" })
     }
+  } else {
+    category.value = null
+    cat.value = null
   }
+  bread.value = crumbs
 
   if(process.client && localStorage.getItem('user_data')){
     const userData = localStorage.getItem('user_data')
@@ -243,11 +229,14 @@ async function fetchData() {
   //metadescription
   descriptionText.value = `Encuentra en PARTYMAX los mejores servicios, ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉 `
   
-  if(route.query.category || route.query.subcategory || route.query.fathercategory) {
-    title.value = category.value.subcategory ?? category.value.title
-    cat.value = category.value.subcategory ? cat.value : categories.value.filter(item =>item.name === title.value)[0]
-    image.value = (cat.value.icon_subcategory !== null) ? (baseURL.value + cat.value.icon_subcategory) : (config.public.APP_DOMAIN_API_URL + '/images/categories.jpg')
-    descriptionText.value = `Encuentra en PARTYMAX los mejores servicios de '${title.value}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉 ` + cat.value?.keywords
+  if(categoriesStores.getCategory || categoriesStores.getSubcategory || categoriesStores.getFathercategory) {
+    const currentTitle = category.value?.subcategory ?? category.value?.title
+    if (currentTitle) {
+      title.value = currentTitle
+      const iconPath = cat.value?.icon_subcategory ?? null
+      image.value = iconPath ? (baseURL.value + iconPath) : (config.public.APP_DOMAIN_API_URL + '/images/categories.jpg')
+      descriptionText.value = `Encuentra en PARTYMAX los mejores servicios de '${title.value}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉 ` + (cat.value?.keywords || '')
+    }
   }
 
   isLoading.value = false;
@@ -320,6 +309,79 @@ const toggleSubGroupFn = (index, subCat) => {
   }
 };
 
+const buildPrettyPath = (category, subcategory = null, fathercategory = null) => {
+  if (category && subcategory && fathercategory)
+    return `/services/categories/${category}/${fathercategory}/${subcategory}`
+  if (category && subcategory)
+    return `/services/categories/${category}/${subcategory}`
+  if (category)
+    return `/services/categories/${category}`
+  return '/services'
+}
+
+const handleCategoryClick = (category, subcategory = null, fathercategory = null) => {
+  categoriesStores.reset()
+  if (category) categoriesStores.setCategory(category)
+  if (subcategory) categoriesStores.setSubcategory(subcategory)
+  if (fathercategory) categoriesStores.setFathercategory(fathercategory)
+  router.push(buildPrettyPath(category, subcategory, fathercategory))
+}
+
+const syncStoreWithPath = () => {
+  const p = route.params || {}
+  const pCat = typeof p.category === 'string' ? p.category : undefined
+  const pSub = typeof p.subcategory === 'string' ? p.subcategory : undefined
+  const pFather = typeof p.fathercategory === 'string' ? p.fathercategory : undefined
+
+  if (pCat) {
+    const needsUpdate = (
+      categoriesStores.getCategory !== pCat ||
+      categoriesStores.getSubcategory !== (pFather ? pSub : (pSub || null)) ||
+      categoriesStores.getFathercategory !== (pFather || null)
+    )
+    if (needsUpdate) {
+      categoriesStores.reset()
+      categoriesStores.setCategory(pCat)
+      if (pFather && pSub) {
+        categoriesStores.setFathercategory(pFather)
+        categoriesStores.setSubcategory(pSub)
+      } else if (pSub) {
+        categoriesStores.setSubcategory(pSub)
+      }
+    }
+    return
+  }
+
+  const path = route.path || ''
+  const base = '/services/categories/'
+  if (!path.startsWith(base)) return
+
+  const parts = path.slice(base.length).split('/').filter(Boolean)
+  if (parts.length === 0) return
+  const [cat, a, b] = parts
+  const curCat = categoriesStores.getCategory
+  const curSub = categoriesStores.getSubcategory
+  const curFather = categoriesStores.getFathercategory
+  const target = {
+    cat,
+    sub: parts.length === 2 ? a : parts.length === 3 ? b : null,
+    father: parts.length === 3 ? a : null,
+  }
+  const needsUpdate = (
+    curCat !== target.cat || curSub !== target.sub || curFather !== target.father
+  )
+  if (needsUpdate) {
+    categoriesStores.reset()
+    categoriesStores.setCategory(target.cat)
+    if (target.father) categoriesStores.setFathercategory(target.father)
+    if (target.sub) categoriesStores.setSubcategory(target.sub)
+  }
+}
+
+onBeforeMount(syncStoreWithPath)
+watch(() => route.path, () => syncStoreWithPath())
+watch(() => route.params, () => syncStoreWithPath(), { deep: true })
+
 const addfavorite = (service_id) => {
   favoritesStores.add({user_id: user_id.value, service_id: service_id })
     .then(response => {
@@ -341,13 +403,44 @@ const addfavorite = (service_id) => {
   
 }
 
+const onBreadcrumbClickServices = (item, index) => {
+  const href = item?.href || ''
+  const base = '/services/categories/'
+  if (!href.startsWith(base)) {
+    categoriesStores.reset()
+    router.push('/services')
+    return
+  }
+  const parts = href.slice(base.length).split('/').filter(Boolean)
+  categoriesStores.reset()
+  if (parts.length >= 1) categoriesStores.setCategory(parts[0])
+  if (parts.length === 2) categoriesStores.setSubcategory(parts[1])
+  if (parts.length === 3) {
+    categoriesStores.setFathercategory(parts[1])
+    categoriesStores.setSubcategory(parts[2])
+  }
+  router.push(href)
+}
+
 </script>
 
 <template>
   <section>
     <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
       <VContainer class="tw-text-tertiary d-flex align-center px-0">
-        <v-breadcrumbs :items="bread" class="px-2"/>
+        <v-breadcrumbs :items="bread" class="px-2">
+          <template #item="{ item, index }">
+            <span v-if="index === bread.length - 1" class="tw-text-gray">{{ item.title }}</span>
+            <NuxtLink
+              v-else
+              :to="item.href"
+              class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
+              @click.prevent="onBreadcrumbClickServices(item, index)"
+            >
+              {{ item.title }}
+            </NuxtLink>
+          </template>
+        </v-breadcrumbs>
       </VContainer>
     </VAppBar>
     <VContainer class="pt-0 container-mobile">
@@ -357,11 +450,10 @@ const addfavorite = (service_id) => {
           <VCard class="mt-7 sidebar-container">
             <VCardItem class="p-0 text-left mt-6"> CATEGORÍAS </VCardItem>
 
-            <VCardItem v-if="route.query.category" class="p-0 text-allcategories tw-font-bold mt-6">
+            <VCardItem v-if="categoriesStores.getCategory" class="p-0 text-allcategories tw-font-bold mt-6">
               <NuxtLink
-                :to="{
-                  name: 'services'
-                }"
+                to="/services"
+                @click="categoriesStores.reset()"
                 class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
               >
                 <span>
@@ -376,12 +468,9 @@ const addfavorite = (service_id) => {
                 <VListItem v-if="i.children.length === 0" class="px-2">
                   <VListItemTitle>
                     <NuxtLink
-                      :to="{
-                        name: 'services',
-                        query: {
-                          category: i.slug.split('/')[0]
-                        },
-                      }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                      :to="buildPrettyPath(i.slug.split('/')[0])"
+                      @click="handleCategoryClick(i.slug.split('/')[0])"
+                      class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ i.name }}
                     </NuxtLink> 
                   </VListItemTitle>
@@ -390,12 +479,9 @@ const addfavorite = (service_id) => {
                   <template #activator="{ props }">
                     <VListItem class="px-2">
                       <NuxtLink
-                        :to="{
-                          name: 'services',
-                          query: {
-                            category: i.slug.split('/')[0]
-                          },
-                        }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                        :to="buildPrettyPath(i.slug.split('/')[0])"
+                        @click="handleCategoryClick(i.slug.split('/')[0])"
+                        class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         <VListItemTitle>{{ i.name }}</VListItemTitle>
                       </NuxtLink>
                       <template #append>
@@ -413,13 +499,9 @@ const addfavorite = (service_id) => {
                   <div v-for="(j, jIndex) in i.children" :key="jIndex">
                     <VListItem v-if="j.grandchildren.length === 0">
                       <NuxtLink
-                        :to="{
-                          name: 'services',
-                          query: {
-                            category: i.slug.split('/')[0],
-                            subcategory: j.slug.split('/')[1]
-                          },
-                        }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary">
+                        :to="buildPrettyPath(i.slug.split('/')[0], j.slug.split('/')[1])"
+                        @click="handleCategoryClick(i.slug.split('/')[0], j.slug.split('/')[1])"
+                        class="tw-no-underline tw-text-tertiary hover:tw-text-primary">
                         <VListItemTitle> {{ j.name }} </VListItemTitle>
                       </NuxtLink>
                     </VListItem>
@@ -427,13 +509,9 @@ const addfavorite = (service_id) => {
                       <template #activator="{ props }">
                         <VListItem>
                           <NuxtLink
-                            :to="{
-                              name: 'services',
-                              query: {
-                                category: i.slug.split('/')[0],
-                                subcategory: j.slug.split('/')[1]
-                              },
-                            }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                            :to="buildPrettyPath(i.slug.split('/')[0], j.slug.split('/')[1])"
+                            @click="handleCategoryClick(i.slug.split('/')[0], j.slug.split('/')[1])"
+                            class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                             <VListItemTitle> {{ j.name }} </VListItemTitle>
                           </NuxtLink>
                           <template #append>
@@ -450,14 +528,9 @@ const addfavorite = (service_id) => {
                       <div v-for="k in j.grandchildren" :key="k">
                         <VListItem>
                           <NuxtLink
-                            :to="{
-                              name: 'services',
-                              query: {
-                                category: i.slug.split('/')[0],
-                                fathercategory: j.slug.split('/')[1],
-                                subcategory: k.slug.split('/')[2]
-                              },
-                            }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                          :to="buildPrettyPath(i.slug.split('/')[0], k.slug.split('/')[2], j.slug.split('/')[1])"
+                          @click="handleCategoryClick(i.slug.split('/')[0], k.slug.split('/')[2], j.slug.split('/')[1])"
+                          class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                             {{ k.name }}
                           </NuxtLink> 
                         </VListItem>
@@ -469,17 +542,14 @@ const addfavorite = (service_id) => {
             </VList>
 
             <!-- padres, hijos y nietos -->
-            <VList v-if="route.query.fathercategory && category" v-model:opened="panelCat">
+            <VList v-if="categoriesStores.getFathercategory && category" v-model:opened="panelCat">
               <VListItem class="tw-font-bold hover:tw-text-primary tw-uppercase px-0">
                 <span>
                   <VIcon icon="mdi-chevron-left" />
                   <NuxtLink
-                    :to="{
-                      name: 'services',
-                        query: {
-                          category: route.query.category
-                        },
-                      }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                    :to="buildPrettyPath(categoriesStores.getCategory)"
+                    @click="handleCategoryClick(categoriesStores.getCategory)"
+                    class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.title }}
                   </NuxtLink> 
                 </span>
@@ -489,13 +559,9 @@ const addfavorite = (service_id) => {
                 <span>
                   <VIcon icon="mdi-chevron-left" />
                   <NuxtLink
-                    :to="{
-                      name: 'services',
-                        query: {
-                          category: route.query.category,
-                          subcategory: route.query.fathercategory
-                        },
-                      }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                    :to="buildPrettyPath(categoriesStores.getCategory, categoriesStores.getFathercategory)"
+                    @click="handleCategoryClick(categoriesStores.getCategory, categoriesStores.getFathercategory)"
+                    class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.fathercategory }}
                   </NuxtLink> 
                 </span>
@@ -510,21 +576,18 @@ const addfavorite = (service_id) => {
 
             <!-- solo padres e hijos -->
             <VList 
-              v-if="typeof route.query.fathercategory === 'undefined' && 
-              typeof route.query.subcategory !== 'undefined' 
-              && route.query.category && category" 
+              v-if="!categoriesStores.getFathercategory && 
+              categoriesStores.getSubcategory 
+              && categoriesStores.getCategory && category" 
               v-model:opened="panelCat">
 
               <VListItem class="tw-font-bold hover:tw-text-primary tw-uppercase px-0">
                 <span>
                   <VIcon icon="mdi-chevron-left" />
                   <NuxtLink
-                    :to="{
-                      name: 'services',
-                        query: {
-                          category: route.query.category
-                        },
-                      }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                    :to="buildPrettyPath(categoriesStores.getCategory)"
+                    @click="handleCategoryClick(categoriesStores.getCategory)"
+                    class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ category.title }}
                   </NuxtLink> 
                 </span>
@@ -538,18 +601,13 @@ const addfavorite = (service_id) => {
 
               <div 
                 v-for="(j, jIndex) in 
-                categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren" 
+                categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.filter(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getSubcategory)[0].grandchildren" 
                 :key="jIndex">
                 <VListItem>
                   <NuxtLink
-                    :to="{
-                      name: 'services',
-                      query: {
-                        category: route.query.category,
-                        fathercategory: route.query.subcategory,
-                        subcategory: j.slug.split('/')[2]
-                      },
-                    }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                    :to="buildPrettyPath(categoriesStores.getCategory, j.slug.split('/')[2], categoriesStores.getSubcategory)"
+                    @click="handleCategoryClick(categoriesStores.getCategory, j.slug.split('/')[2], categoriesStores.getSubcategory)"
+                    class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ j.name }}
                   </NuxtLink> 
                 </VListItem>
@@ -558,9 +616,9 @@ const addfavorite = (service_id) => {
 
             <!-- Solo padres -->
             <VList 
-              v-if="typeof route.query.fathercategory === 'undefined' && 
-              typeof route.query.subcategory === 'undefined' 
-              && route.query.category && category" 
+              v-if="!categoriesStores.getFathercategory && 
+              !categoriesStores.getSubcategory 
+              && categoriesStores.getCategory && category" 
               v-model:opened="panelCat">
 
               <VListItem class="px-2">
@@ -569,16 +627,12 @@ const addfavorite = (service_id) => {
                 </VListItemTitle>
               </VListItem>
 
-              <div v-for="(j, jIndex) in categories.filter(item =>item.slug === route.query.category)[0].children" :key="jIndex">
+              <div v-for="(j, jIndex) in categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children" :key="jIndex">
                   <VListItem v-if="j.grandchildren.length === 0">
                     <NuxtLink
-                      :to="{
-                        name: 'services',
-                        query: {
-                          category: route.query.category,
-                          subcategory: j.slug.split('/')[1]
-                        },
-                      }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                      :to="buildPrettyPath(categoriesStores.getCategory, j.slug.split('/')[1])"
+                      @click="handleCategoryClick(categoriesStores.getCategory, j.slug.split('/')[1])"
+                      class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         {{ j.name }}
                     </NuxtLink> 
                   </VListItem>
@@ -586,13 +640,9 @@ const addfavorite = (service_id) => {
                     <template #activator="{ props }">
                       <VListItem>
                         <NuxtLink
-                          :to="{
-                            name: 'services',
-                            query: {
-                              category: route.query.category,
-                              subcategory: j.slug.split('/')[1]
-                            },
-                          }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                          :to="buildPrettyPath(categoriesStores.getCategory, j.slug.split('/')[1])"
+                          @click="handleCategoryClick(categoriesStores.getCategory, j.slug.split('/')[1])"
+                          class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           <VListItemTitle> {{ j.name }} </VListItemTitle>
                         </NuxtLink>
                         <template #append>
@@ -609,14 +659,9 @@ const addfavorite = (service_id) => {
                     <div v-for="k in j.grandchildren" :key="k">
                       <VListItem>
                         <NuxtLink
-                          :to="{
-                            name: 'services',
-                            query: {
-                              category: route.query.category,
-                              fathercategory: j.slug.split('/')[1],
-                              subcategory: k.slug.split('/')[2]
-                            },
-                          }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                          :to="buildPrettyPath(categoriesStores.getCategory, k.slug.split('/')[2], j.slug.split('/')[1])"
+                          @click="handleCategoryClick(categoriesStores.getCategory, k.slug.split('/')[2], j.slug.split('/')[1])"
+                          class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           {{ k.name }}
                         </NuxtLink> 
                       </VListItem>
@@ -726,69 +771,54 @@ const addfavorite = (service_id) => {
           </VCard>
 
           <!-- padres, hijos y nietos -->
-          <VCard class="no-shadown mt-5 card-icons tw-bg-green" v-if="route.query.fathercategory && category">
+          <VCard class="no-shadown mt-5 card-icons tw-bg-green" v-if="categoriesStores.getFathercategory && category">
             <VCardText 
-              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.length < 6 && !isMobile"
+              v-if="categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.filter(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getFathercategory)[0].grandchildren.length < 6 && !isMobile"
               class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
-              :class="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
-              <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren">
+              :class="categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.filter(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getFathercategory)[0].grandchildren.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
+              <template v-for="(i, index) in categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.filter(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getFathercategory)[0].grandchildren">
                 <NuxtLink
-                  :to="{
-                    name: 'services',
-                    query: {
-                      category: route.query.category,
-                      fathercategory: route.query.fathercategory,
-                      subcategory: i.slug.split('/')[2]
-                    }
-                  }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                  <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                  :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getFathercategory)"
+                  @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getFathercategory)"
+                  class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                  <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                 </NuxtLink>
               </template>
             </VCardText>
             <VCardText 
               v-else
               class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
-              <template v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.length < 4 && isMobile">
-                <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren">
+              <template v-if="categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.filter(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getFathercategory)[0].grandchildren.length < 4 && isMobile">
+                <template v-for="(i, index) in categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.filter(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getFathercategory)[0].grandchildren">
                   <NuxtLink
-                    :to="{
-                      name: 'services',
-                      query: {
-                        category: route.query.category,
-                        fathercategory: route.query.fathercategory,
-                        subcategory: i.slug.split('/')[2]
-                      }
-                    }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                      <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                      <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                    :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getFathercategory)"
+                    @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getFathercategory)"
+                    class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                      <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                      <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </NuxtLink>
                 </template>
               </template>
               <swiper
                 v-else
-                :initialSlide="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.findIndex(item =>item.slug === route.query.category + '/' + route.query.fathercategory + '/' + route.query.subcategory)"
+                :initialSlide="categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.filter(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getFathercategory)[0].grandchildren.findIndex(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getFathercategory + '/' + categoriesStores.getSubcategory)"
                 :slidesPerView="isMobile ? 3 : 5"
                 :spaceBetween="isMobile ? 1 : 5"
                 :navigation="true"
                 :loop="true"
                 :modules="modules"
                 class="mySwiper">
-                <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren" class="py-2">
+                <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.filter(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getFathercategory)[0].grandchildren" class="py-2">
                   <NuxtLink
-                    :to="{
-                      name: 'services',
-                      query: {
-                        category: route.query.category,
-                        fathercategory: route.query.fathercategory,
-                        subcategory: i.slug.split('/')[2]
-                      }
-                    }" class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                    :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getFathercategory)"
+                    @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getFathercategory)"
+                    class="tw-no-underline d-block text-center justify-content-center zoom">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </NuxtLink>
                 </swiper-slide>
               </swiper>
@@ -798,47 +828,37 @@ const addfavorite = (service_id) => {
           <!-- solo padres e hijos -->
           <VCard 
             class="no-shadown mt-5 card-icons tw-bg-green" 
-            v-if="typeof route.query.fathercategory === 'undefined' && 
-            typeof route.query.subcategory !== 'undefined' 
-            && route.query.category && category
-            && categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length > 0">
+            v-if="!categoriesStores.getFathercategory && 
+            categoriesStores.getSubcategory 
+            && categoriesStores.getCategory && category
+            && categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.filter(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getSubcategory)[0].grandchildren.length > 0">
             <VCardText 
-              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length < 6 && !isMobile"
+              v-if="categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.filter(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getSubcategory)[0].grandchildren.length < 6 && !isMobile"
               class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
-              :class="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
-              <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren">
+              :class="categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.filter(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getSubcategory)[0].grandchildren.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
+              <template v-for="(i, index) in categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.filter(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getSubcategory)[0].grandchildren">
                 <NuxtLink
-                  :to="{
-                    name: 'services',
-                    query: {
-                      category: route.query.category,
-                      fathercategory: route.query.subcategory,
-                      subcategory: i.slug.split('/')[2]
-                    }
-                  }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                  <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                  <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                  :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getSubcategory)"
+                  @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getSubcategory)"
+                  class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                  <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                  <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                 </NuxtLink>
               </template>
             </VCardText> 
             <VCardText 
               v-else
               class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
-              <template v-if="categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length < 4 && isMobile">
-                <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren">
+              <template v-if="categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.filter(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getSubcategory)[0].grandchildren.length < 4 && isMobile">
+                <template v-for="(i, index) in categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.filter(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getSubcategory)[0].grandchildren">
                   <NuxtLink
-                    :to="{
-                      name: 'services',
-                      query: {
-                        category: route.query.category,
-                        fathercategory: route.query.subcategory,
-                        subcategory: i.slug.split('/')[2]
-                      }
-                    }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                    :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getSubcategory)"
+                    @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getSubcategory)"
+                    class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </NuxtLink>
                 </template>
               </template>
@@ -850,91 +870,14 @@ const addfavorite = (service_id) => {
                 :loop="true"
                 :modules="modules"
                 class="mySwiper">
-                <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren" class="py-2">
+                <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.filter(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getSubcategory)[0].grandchildren" class="py-2">
                   <NuxtLink
-                    :to="{
-                      name: 'services',
-                      query: {
-                        category: route.query.category,
-                        fathercategory: route.query.subcategory,
-                        subcategory: i.slug.split('/')[2]
-                      }
-                    }" class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                  </NuxtLink>
-                </swiper-slide>
-              </swiper>
-            </VCardText> 
-          </VCard>
-
-          <!-- solo padres e hijos sin nietos -->
-          <VCard 
-            class="no-shadown mt-5 card-icons tw-bg-green" 
-            v-if="typeof route.query.fathercategory === 'undefined' && 
-            typeof route.query.subcategory !== 'undefined' 
-            && route.query.category && category
-            && categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren.length === 0">
-            <VCardText 
-              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 6 && !isMobile"
-              class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
-              :class="categories.filter(item =>item.slug === route.query.category)[0].children.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
-              <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
-                <NuxtLink
-                  :to="{
-                    name: 'services',
-                    query: {
-                      category: route.query.category,
-                      subcategory: i.slug.split('/')[1]
-                    }
-                  }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                  <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                  <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                </NuxtLink>
-              </template>
-            </VCardText> 
-            <VCardText 
-              v-else
-              class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
-              <template v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 4 && isMobile">
-                <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
-                  <NuxtLink
-                    :to="{
-                      name: 'services',
-                      query: {
-                        category: route.query.category,
-                        subcategory: i.slug.split('/')[1]
-                      }
-                    }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
-                  </NuxtLink>
-                </template>
-              </template>
-              <swiper
-                v-else
-                :initialSlide="categories.filter(item =>item.slug === route.query.category)[0].children.findIndex(item =>item.slug === route.query.category + '/' + route.query.subcategory)"
-                :slidesPerView="isMobile ? 3 : 5"
-                :spaceBetween="isMobile ? 1 : 5"
-                :navigation="true"
-                :loop="true"
-                :modules="modules"
-                class="mySwiper">
-                <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children" class="py-2">
-                  <NuxtLink
-                    :to="{
-                      name: 'services',
-                      query: {
-                        category: route.query.category,
-                        subcategory: i.slug.split('/')[1]
-                      }
-                    }" class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                    :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getSubcategory)"
+                    @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getSubcategory)"
+                    class="tw-no-underline d-block text-center justify-content-center zoom">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </NuxtLink>
                 </swiper-slide>
               </swiper>
@@ -944,68 +887,57 @@ const addfavorite = (service_id) => {
           <!-- solo padres -->
           <VCard 
             class="no-shadown mt-5 card-icons tw-bg-green" 
-            v-if="typeof route.query.fathercategory === 'undefined' && 
-            typeof route.query.subcategory === 'undefined' 
-            && route.query.category && category
-            && categories.filter(item =>item.slug === route.query.category)[0].children.length > 0">
+            v-if="!categoriesStores.getFathercategory && 
+            !categoriesStores.getSubcategory 
+            && categoriesStores.getCategory && category
+            && categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.length > 0">
             <VCardText 
-              v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 6 && !isMobile"
+              v-if="categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.length < 6 && !isMobile"
               class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
-              :class="categories.filter(item =>item.slug === route.query.category)[0].children.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
-              <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
+              :class="categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
+              <template v-for="(i, index) in categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children">
                 <NuxtLink
-                  :to="{
-                    name: 'services',
-                    query: {
-                      category: route.query.category,
-                      subcategory: i.slug.split('/')[1]
-                    }
-                  }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                  <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                  <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                  :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[1])"
+                  @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[1])"
+                  class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                  <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                  <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                 </NuxtLink>
               </template>
             </VCardText> 
             <VCardText 
               v-else
               class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
-              <template v-if="categories.filter(item =>item.slug === route.query.category)[0].children.length < 4 && isMobile">
-                <template v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children">
+              <template v-if="categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.length < 4 && isMobile">
+                <template v-for="(i, index) in categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children">
                   <NuxtLink
-                    :to="{
-                      name: 'services',
-                      query: {
-                        category: route.query.category,
-                        subcategory: i.slug.split('/')[1]
-                      }
-                    }" class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                    :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[1])"
+                    @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[1])"
+                    class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </NuxtLink>
                 </template>
               </template>
               <swiper
                 v-else
+                :initialSlide="categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.findIndex(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getSubcategory)"
                 :slidesPerView="isMobile ? 3 : 5"
                 :spaceBetween="isMobile ? 1 : 5"
                 :navigation="true"
                 :loop="true"
                 :modules="modules"
                 class="mySwiper">
-                <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === route.query.category)[0].children" class="py-2">
+                <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children" class="py-2">
                   <NuxtLink
-                    :to="{
-                      name: 'services',
-                      query: {
-                        category: route.query.category,
-                        subcategory: i.slug.split('/')[1]
-                      }
-                    }" class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="route.query.subcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <span class="d-block size-theme mt-2" :class="route.query.subcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                    :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[1])"
+                    @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[1])"
+                    class="tw-no-underline d-block text-center justify-content-center zoom">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </NuxtLink>
                 </swiper-slide>
               </swiper>
@@ -1446,6 +1378,10 @@ const addfavorite = (service_id) => {
   }
 
   @media only screen and (max-width: 767px) {
+    .v-breadcrumbs {
+      font-size: 13px !important;
+    }
+    
     .text-left {
       color: var(--Maastricht-Blue, #0a1b33);
       font-size: 14px;

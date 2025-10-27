@@ -4,6 +4,8 @@ import { useFiltersStores } from '@/stores/filters'
 import { useHomeStores } from "@/stores/home";
 import { useMiscellaneousStores } from "@/stores/miscellaneous";
 import { formatNumber } from '@formatters'
+import { useRouter, useRoute } from 'vue-router'
+import { useCategoriesStores } from '@/stores/categories'
 
 const props = defineProps({
     drawer: {
@@ -13,8 +15,10 @@ const props = defineProps({
 })
 
 const route = useRoute();
+const router = useRouter();
 const filtersStores = useFiltersStores()
 const homeStores = useHomeStores();
+const categoriesStores = useCategoriesStores()
 
 const categories = ref(null);
 const drawer_ = ref(props.drawer)
@@ -46,22 +50,23 @@ async function fetchData() {
     openedSubGroups.value = []
     category.value = null 
 
-    if (route.query.category && route.name === 'services') {
+    if (categoriesStores.getCategory) {
         panelCat.value = null
+        const catNode = categories.value.filter(item => item.slug === categoriesStores.getCategory)[0]
         category.value = {
-            title: categories.value.filter(item => item.slug === route.query.category)[0].name,
+            title: catNode?.name,
             disabled: false,
-            href: "services?category=" + route.query.category
+            href: `/services/categories/${categoriesStores.getCategory}`
         };
 
-        if (route.query.fathercategory)
-            category.value.fathercategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name
+        if (categoriesStores.getFathercategory)
+            category.value.fathercategory = catNode?.children.filter(item => item.slug === `${categoriesStores.getCategory}/${categoriesStores.getFathercategory}`)[0]?.name
 
-        if (typeof route.query.fathercategory === 'undefined' && route.query.subcategory)
-            category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name
+        if (!categoriesStores.getFathercategory && categoriesStores.getSubcategory)
+            category.value.subcategory = catNode?.children.filter(item => item.slug === `${categoriesStores.getCategory}/${categoriesStores.getSubcategory}`)[0]?.name
 
-        if (typeof route.query.fathercategory !== 'undefined' && route.query.subcategory) 
-            category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name
+        if (categoriesStores.getFathercategory && categoriesStores.getSubcategory) 
+            category.value.subcategory = catNode?.children.filter(item => item.slug === `${categoriesStores.getCategory}/${categoriesStores.getFathercategory}`)[0]?.grandchildren.filter(item => item.slug === `${categoriesStores.getCategory}/${categoriesStores.getFathercategory}/${categoriesStores.getSubcategory}`)[0]?.name
     }
 }
 
@@ -100,6 +105,24 @@ const toggleSubGroupFn = (index, subCat) => {
     }
 };
 
+const buildPrettyPath = (category, subcategory = null, fathercategory = null) => {
+  if (category && subcategory && fathercategory)
+    return `/services/categories/${category}/${fathercategory}/${subcategory}`
+  if (category && subcategory)
+    return `/services/categories/${category}/${subcategory}`
+  if (category)
+    return `/services/categories/${category}`
+  return '/services'
+}
+
+const handleCategoryClick = (category, subcategory = null, fathercategory = null) => {
+  categoriesStores.reset()
+  if (category) categoriesStores.setCategory(category)
+  if (subcategory) categoriesStores.setSubcategory(subcategory)
+  if (fathercategory) categoriesStores.setFathercategory(fathercategory)
+  router.push(buildPrettyPath(category, subcategory, fathercategory))
+}
+
 </script>
 
 <template>
@@ -112,11 +135,10 @@ const toggleSubGroupFn = (index, subCat) => {
       <VCard class="px-0 transparent no-shadown">
           <VCardItem class="px-2 p-0 text-left mt-2"> CATEGORÍAS </VCardItem>
 
-          <VCardItem v-if="route.query.category" class="p-0 text-allcategories tw-font-bold mt-6">
+          <VCardItem v-if="categoriesStores.getCategory" class="p-0 text-allcategories tw-font-bold mt-6">
             <NuxtLink
-              :to="{
-                name: 'services'
-              }"
+              to="/services"
+              @click="categoriesStores.reset()"
               class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
             >
               <span>
@@ -130,12 +152,9 @@ const toggleSubGroupFn = (index, subCat) => {
               <VListItem v-if="i.children.length === 0" class="px-2">
                 <VListItemTitle>
                   <NuxtLink
-                    :to="{
-                      name: 'services',
-                      query: {
-                        category: i.slug.split('/')[0]
-                      },
-                    }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                    :to="buildPrettyPath(i.slug.split('/')[0])"
+                    @click="handleCategoryClick(i.slug.split('/')[0])"
+                    class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                     {{ i.name }}
                   </NuxtLink> 
                 </VListItemTitle>
@@ -144,12 +163,9 @@ const toggleSubGroupFn = (index, subCat) => {
                 <template #activator="{ props }">
                   <VListItem class="px-2">
                     <NuxtLink
-                      :to="{
-                        name: 'services',
-                        query: {
-                          category: i.slug.split('/')[0]
-                        },
-                      }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                      :to="buildPrettyPath(i.slug.split('/')[0])"
+                      @click="handleCategoryClick(i.slug.split('/')[0])"
+                      class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       <VListItemTitle>{{ i.name }}</VListItemTitle>
                     </NuxtLink>
                     <template #append>
@@ -167,13 +183,9 @@ const toggleSubGroupFn = (index, subCat) => {
                 <div v-for="(j, jIndex) in i.children" :key="jIndex">
                   <VListItem v-if="j.grandchildren.length === 0">
                     <NuxtLink
-                      :to="{
-                        name: 'services',
-                        query: {
-                          category: i.slug.split('/')[0],
-                          subcategory: j.slug.split('/')[1]
-                        },
-                      }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary">
+                      :to="buildPrettyPath(i.slug.split('/')[0], j.slug.split('/')[1])"
+                      @click="handleCategoryClick(i.slug.split('/')[0], j.slug.split('/')[1])"
+                      class="tw-no-underline tw-text-tertiary hover:tw-text-primary">
                       <VListItemTitle> {{ j.name }} </VListItemTitle>
                     </NuxtLink>
                   </VListItem>
@@ -181,13 +193,9 @@ const toggleSubGroupFn = (index, subCat) => {
                     <template #activator="{ props }">
                       <VListItem>
                         <NuxtLink
-                          :to="{
-                            name: 'services',
-                            query: {
-                              category: i.slug.split('/')[0],
-                              subcategory: j.slug.split('/')[1]
-                            },
-                          }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                          :to="buildPrettyPath(i.slug.split('/')[0], j.slug.split('/')[1])"
+                          @click="handleCategoryClick(i.slug.split('/')[0], j.slug.split('/')[1])"
+                          class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           <VListItemTitle> {{ j.name }} </VListItemTitle>
                         </NuxtLink>
                         <template #append>
@@ -204,14 +212,9 @@ const toggleSubGroupFn = (index, subCat) => {
                     <div v-for="k in j.grandchildren" :key="k">
                       <VListItem>
                         <NuxtLink
-                          :to="{
-                            name: 'services',
-                            query: {
-                              category: i.slug.split('/')[0],
-                              fathercategory: j.slug.split('/')[1],
-                              subcategory: k.slug.split('/')[2]
-                            },
-                          }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                          :to="buildPrettyPath(i.slug.split('/')[0], k.slug.split('/')[2], j.slug.split('/')[1])"
+                          @click="handleCategoryClick(i.slug.split('/')[0], k.slug.split('/')[2], j.slug.split('/')[1])"
+                          class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                           {{ k.name }}
                         </NuxtLink> 
                       </VListItem>
@@ -223,17 +226,14 @@ const toggleSubGroupFn = (index, subCat) => {
           </VList>
 
           <!-- padres, hijos y nietos -->
-          <VList v-if="route.query.fathercategory && category" v-model:opened="panelCat" class="pt-1">
+          <VList v-if="categoriesStores.getFathercategory && category" v-model:opened="panelCat" class="pt-1">
             <VListItem class="tw-font-bold hover:tw-text-primary tw-uppercase px-0">
               <span>
                 <VIcon icon="mdi-chevron-left" />
                 <NuxtLink
-                  :to="{
-                    name: 'services',
-                      query: {
-                        category: route.query.category
-                      },
-                    }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                  :to="buildPrettyPath(categoriesStores.getCategory)"
+                  @click="handleCategoryClick(categoriesStores.getCategory)"
+                  class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                     {{ category.title }}
                 </NuxtLink> 
               </span>
@@ -243,13 +243,9 @@ const toggleSubGroupFn = (index, subCat) => {
               <span>
                 <VIcon icon="mdi-chevron-left" />
                 <NuxtLink
-                  :to="{
-                    name: 'services',
-                      query: {
-                        category: route.query.category,
-                        subcategory: route.query.fathercategory
-                      },
-                    }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                  :to="buildPrettyPath(categoriesStores.getCategory, categoriesStores.getFathercategory)"
+                  @click="handleCategoryClick(categoriesStores.getCategory, categoriesStores.getFathercategory)"
+                  class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                     {{ category.fathercategory }}
                 </NuxtLink> 
               </span>
@@ -264,21 +260,18 @@ const toggleSubGroupFn = (index, subCat) => {
 
           <!-- solo padres e hijos -->
           <VList 
-            v-if="typeof route.query.fathercategory === 'undefined' && 
-            typeof route.query.subcategory !== 'undefined' 
-            && route.query.category && category" 
+            v-if="!categoriesStores.getFathercategory && 
+            categoriesStores.getSubcategory &&
+            categoriesStores.getCategory && category" 
             v-model:opened="panelCat">
 
             <VListItem class="tw-font-bold hover:tw-text-primary tw-uppercase px-0">
               <span>
                 <VIcon icon="mdi-chevron-left" />
                 <NuxtLink
-                  :to="{
-                    name: 'services',
-                      query: {
-                        category: route.query.category
-                      },
-                    }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                  :to="buildPrettyPath(categoriesStores.getCategory)"
+                  @click="handleCategoryClick(categoriesStores.getCategory)"
+                  class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                     {{ category.title }}
                 </NuxtLink> 
               </span>
@@ -292,18 +285,13 @@ const toggleSubGroupFn = (index, subCat) => {
 
             <div 
               v-for="(j, jIndex) in 
-              categories.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].grandchildren" 
+              categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.filter(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getSubcategory)[0].grandchildren" 
               :key="jIndex">
               <VListItem>
                 <NuxtLink
-                  :to="{
-                    name: 'services',
-                    query: {
-                      category: route.query.category,
-                      fathercategory: route.query.subcategory,
-                      subcategory: j.slug.split('/')[2]
-                    },
-                  }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                  :to="buildPrettyPath(categoriesStores.getCategory, j.slug.split('/')[2], categoriesStores.getSubcategory)"
+                  @click="handleCategoryClick(categoriesStores.getCategory, j.slug.split('/')[2], categoriesStores.getSubcategory)"
+                  class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                     {{ j.name }}
                 </NuxtLink> 
               </VListItem>
@@ -312,9 +300,9 @@ const toggleSubGroupFn = (index, subCat) => {
 
           <!-- Solo padres -->
           <VList 
-            v-if="typeof route.query.fathercategory === 'undefined' && 
-            typeof route.query.subcategory === 'undefined' 
-            && route.query.category && category" 
+            v-if="!categoriesStores.getFathercategory && 
+            !categoriesStores.getSubcategory && 
+            categoriesStores.getCategory && category" 
             v-model:opened="panelCat">
 
             <VListItem class="px-2">
@@ -323,16 +311,12 @@ const toggleSubGroupFn = (index, subCat) => {
               </VListItemTitle>
             </VListItem>
 
-            <div v-for="(j, jIndex) in categories.filter(item =>item.slug === route.query.category)[0].children" :key="jIndex">
+            <div v-for="(j, jIndex) in categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children" :key="jIndex">
                 <VListItem v-if="j.grandchildren.length === 0">
                   <NuxtLink
-                    :to="{
-                      name: 'services',
-                      query: {
-                        category: route.query.category,
-                        subcategory: j.slug.split('/')[1]
-                      },
-                    }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                    :to="buildPrettyPath(categoriesStores.getCategory, j.slug.split('/')[1])"
+                    @click="handleCategoryClick(categoriesStores.getCategory, j.slug.split('/')[1])"
+                    class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                       {{ j.name }}
                   </NuxtLink> 
                 </VListItem>
@@ -340,13 +324,9 @@ const toggleSubGroupFn = (index, subCat) => {
                   <template #activator="{ props }">
                     <VListItem>
                       <NuxtLink
-                        :to="{
-                          name: 'services',
-                          query: {
-                            category: route.query.category,
-                            subcategory: j.slug.split('/')[1]
-                          },
-                        }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                        :to="buildPrettyPath(categoriesStores.getCategory, j.slug.split('/')[1])"
+                        @click="handleCategoryClick(categoriesStores.getCategory, j.slug.split('/')[1])"
+                        class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         <VListItemTitle> {{ j.name }} </VListItemTitle>
                       </NuxtLink>
                       <template #append>
@@ -363,14 +343,9 @@ const toggleSubGroupFn = (index, subCat) => {
                   <div v-for="k in j.grandchildren" :key="k">
                     <VListItem>
                       <NuxtLink
-                        :to="{
-                          name: 'services',
-                          query: {
-                            category: route.query.category,
-                            fathercategory: j.slug.split('/')[1],
-                            subcategory: k.slug.split('/')[2]
-                          },
-                        }" class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                        :to="buildPrettyPath(categoriesStores.getCategory, k.slug.split('/')[2], j.slug.split('/')[1])"
+                        @click="handleCategoryClick(categoriesStores.getCategory, k.slug.split('/')[2], j.slug.split('/')[1])"
+                        class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
                         {{ k.name }}
                       </NuxtLink> 
                     </VListItem>

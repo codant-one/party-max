@@ -46,6 +46,9 @@ export const useCategoriesStores = defineStore('categories', {
             this.category = null
             this.subcategory = null
             this.fathercategory = null
+        },
+        resetColorId(){
+            this.colorId = null
         }
     }
 })

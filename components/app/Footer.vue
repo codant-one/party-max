@@ -47,8 +47,8 @@ async function fetchData() {
   isConnected.value = false
 
   if(route.name === 'about' || route.name === 'help' || 
-      route.name === 'products' || route.name === 'products-slug' || 
-      route.name === 'services' || route.name === 'services-slug') {
+      route.path?.startsWith('/products') ||
+      route.path?.startsWith('/services')) {
     background.value = 'tw-bg-light_cyan_2'
   } else {
     background.value = 'tw-bg-white'

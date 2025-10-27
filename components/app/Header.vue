@@ -6,6 +6,7 @@
   import { markRaw } from 'vue';
   import { formatNumber } from '@formatters'
   import { useRouter, useRoute } from 'vue-router'
+  import { useCategoriesStores } from '@/stores/categories'
   import Loader from '@/components/common/Loader.vue'
   import Product8 from '@/components/product/Product8.vue'
   import Service4 from '@/components/service/Service4.vue'
@@ -37,6 +38,7 @@
   const homeStores = useHomeStores()
   const authStores = useAuthStores()
   const cartStores = useCartStores()
+  const categoriesStores = useCategoriesStores()
 
   const categories = ref([])
   const categories_ = ref([])
@@ -170,6 +172,42 @@
     categories_.value = [{ id: 0, name: 'Todos' }, ...categories.value];
 
     color.value = (isMobile.value) ? '#FFFFFF' : '#FF0090'
+  }
+
+  const buildPrettyPathProducts = (category, subcategory = null, fathercategory = null) => {
+    if (category && subcategory && fathercategory)
+      return `/products/categories/${category}/${fathercategory}/${subcategory}`
+    if (category && subcategory)
+      return `/products/categories/${category}/${subcategory}`
+    if (category)
+      return `/products/categories/${category}`
+    return '/products'
+  }
+
+  const buildPrettyPathServices = (category, subcategory = null, fathercategory = null) => {
+    if (category && subcategory && fathercategory)
+      return `/services/categories/${category}/${fathercategory}/${subcategory}`
+    if (category && subcategory)
+      return `/services/categories/${category}/${subcategory}`
+    if (category)
+      return `/services/categories/${category}`
+    return '/services'
+  }
+
+  const handleCategoryClickProducts = (category, subcategory = null, fathercategory = null) => {
+    categoriesStores.reset()
+    if (category) categoriesStores.setCategory(category)
+    if (subcategory) categoriesStores.setSubcategory(subcategory)
+    if (fathercategory) categoriesStores.setFathercategory(fathercategory)
+    router.push(buildPrettyPathProducts(category, subcategory, fathercategory))
+  }
+
+  const handleCategoryClickServices = (category, subcategory = null, fathercategory = null) => {
+    categoriesStores.reset()
+    if (category) categoriesStores.setCategory(category)
+    if (subcategory) categoriesStores.setSubcategory(subcategory)
+    if (fathercategory) categoriesStores.setFathercategory(fathercategory)
+    router.push(buildPrettyPathServices(category, subcategory, fathercategory))
   }
 
   const toSentenceCase = (str) => {
@@ -389,10 +427,7 @@
             :active="false"
             selectable="false"
             v-if="categories[index]?.children.length === 0"
-            :to="{
-              name: 'products',
-              query: { category: item.slug }
-            }">
+            :to="buildPrettyPathProducts(item.slug)">
             <VListItemTitle class="d-block title-menu lineheight borderList pb-2">
               {{ item.name }}
             </VListItemTitle> 
@@ -446,13 +481,8 @@
                 selectable="false"
                 class="subtitle-menu">
                 <NuxtLink
-                  :to="{
-                    name: 'products',
-                    query: {
-                      category: item.slug,
-                      subcategory: k.slug.split('/')[1]
-                    }
-                  }"  
+                  :to="buildPrettyPathProducts(item.slug, k.slug.split('/')[1])"
+                  @click.prevent="handleCategoryClickProducts(item.slug, k.slug.split('/')[1])"  
                   class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
                   <span class="d-block title-menu">
                     {{ k.name }}
@@ -478,12 +508,8 @@
           <VListItem role="listitem" v-if="services[index]?.children.length === 0">
             <VListItemTitle class="d-block lineheight borderList pb-2">
               <NuxtLink 
-                :to="{
-                  name: 'services',
-                  query: {
-                    category: item.slug
-                  }
-                }" 
+                :to="buildPrettyPathServices(item.slug)"
+                @click.prevent="handleCategoryClickServices(item.slug)"
                 class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
                 <span class="d-block title-menu">{{ item.name }}</span>
               </NuxtLink>
@@ -529,13 +555,8 @@
               class="style-menu-mobile">
               <VListItem role="listitem" class="subtitle-menu">
                 <NuxtLink
-                  :to="{
-                    name: 'services',
-                    query: {
-                      category: item.slug,
-                      subcategory: k.slug.split('/')[1]
-                    }
-                  }"  
+                  :to="buildPrettyPathServices(item.slug, k.slug.split('/')[1])"
+                  @click.prevent="handleCategoryClickServices(item.slug, k.slug.split('/')[1])"  
                   class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
                   <span class="d-block title-menu">
                     {{ k.name }}
@@ -857,12 +878,8 @@
                               {{ item.name }}
                           </span>
                           <NuxtLink 
-                            :to="{
-                              name: 'products',
-                              query: {
-                                category: item.slug
-                              }
-                            }" 
+                            :to="buildPrettyPathProducts(item.slug)"
+                            @click.prevent="handleCategoryClickProducts(item.slug)"
                             class="subtitle-menu d-flex align-center tw-no-underline" v-else>
                             <component v-if="items_products.filter(e => e.slug === item.slug).length === 1" :is="items_products.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                             <component v-else :is="icon5" class="me-3" />
@@ -880,17 +897,12 @@
                       v-for="(i, index2) in categories[category].children"
                       :key="index2"
                       @click="closeMenu">
-                      <NuxtLink
-                        :to="{
-                          name: 'products',
-                          query: {
-                            category: i.slug.split('/')[0],
-                            subcategory: i.slug.split('/')[1]
-                          }
-                        }"
-                        class="tw-no-underline tw-text-tertiary">
-                        <span class="subtitle-menu">{{ i.name }}</span>
-                      </NuxtLink>
+                    <NuxtLink 
+                      :to="buildPrettyPathProducts(i.slug.split('/')[0], i.slug.split('/')[1])"
+                      @click.prevent="handleCategoryClickProducts(i.slug.split('/')[0], i.slug.split('/')[1])"
+                      class="tw-no-underline tw-text-tertiary">
+                      <span class="subtitle-menu">{{ i.name }}</span>
+                    </NuxtLink>
                     </VListItem>
                   </VList>
                 </VCol>
@@ -946,12 +958,8 @@
                               {{ item.name }} 
                           </span>
                           <NuxtLink 
-                            :to="{
-                              name: 'services',
-                              query: {
-                                category: item.slug
-                              }
-                            }"
+                            :to="buildPrettyPathServices(item.slug)"
+                            @click.prevent="handleCategoryClickServices(item.slug)"
                             class="subtitle-menu d-flex align-center tw-no-underline" v-else>
                             <component v-if="items_services.filter(e => e.slug === item.slug).length === 1" :is="items_services.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
                             <component v-else :is="icon5" class="me-3" />
@@ -971,13 +979,8 @@
                       @click="closeMenuS"
                       :aria-labelledby="`service-label-${category}`" role="menu">
                       <NuxtLink
-                        :to="{
-                          name: 'services',
-                          query: {
-                            category: i.slug.split('/')[0],
-                            subcategory: i.slug.split('/')[1]
-                          }
-                        }"
+                        :to="buildPrettyPathServices(i.slug.split('/')[0], i.slug.split('/')[1])"
+                        @click.prevent="handleCategoryClickServices(i.slug.split('/')[0], i.slug.split('/')[1])"
                         class="tw-no-underline tw-text-tertiary">
                         <span class="subtitle-menu">{{ i.name }}</span>
                       </NuxtLink>

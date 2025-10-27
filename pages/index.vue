@@ -13,6 +13,7 @@ import Product1 from '@/components/product/Product1.vue'
 import Product2 from '@/components/product/Product2.vue'
 import Loader from '@/components/common/Loader.vue'
 import WelcomePopup from '@/components/app/WelcomePopup.vue'
+import { useCategoriesStores } from '@/stores/categories'
 
 import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
 
@@ -61,6 +62,23 @@ const banners = ref([])
 
 const homeStores = useHomeStores()
 const miscellaneousStores = useMiscellaneousStores()
+const categoriesStores = useCategoriesStores()
+const buildPrettyPathProducts = (category, subcategory = null, fathercategory = null) => {
+  if (category && subcategory && fathercategory)
+    return `/products/categories/${category}/${fathercategory}/${subcategory}`
+  if (category && subcategory)
+    return `/products/categories/${category}/${subcategory}`
+  if (category)
+    return `/products/categories/${category}`
+  return '/products'
+}
+
+const handleCategoryClickProducts = (category, subcategory = null, fathercategory = null) => {
+  categoriesStores.reset()
+  if (category) categoriesStores.setCategory(category)
+  if (subcategory) categoriesStores.setSubcategory(subcategory)
+  if (fathercategory) categoriesStores.setFathercategory(fathercategory)
+}
 
 const data = ref(null)
 const isLoading = ref(true)
@@ -567,12 +585,8 @@ useHead({
         <span>Fiestas temáticas</span>
         <VSpacer />
         <NuxtLink 
-          :to="{
-            name: 'products',
-            query: {
-              category: 'fiestas-tematicas'
-            }
-          }"
+          :to="buildPrettyPathProducts('fiestas-tematicas')"
+          @click.prevent="handleCategoryClickProducts('fiestas-tematicas')"
           aria-label="Ver todos los productos de fiestas temáticas"
           class="ms-5 tw-no-underline d-none d-md-flex tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
           Ver todos
@@ -581,57 +595,32 @@ useHead({
       <VDivider class="hr-primary"/>
       <VCardText class="px-4 px-md-7 mt-5 mb-5 d-none d-md-flex align-items-stretch justify-content-between">
         <NuxtLink
-          :to="{
-            name: 'products',
-            query: {
-              category: 'fiestas-tematicas',
-              subcategory: 'tematica-mexicana'
-            }
-          }" class="tw-no-underline d-block text-center zoom">
+          :to="buildPrettyPathProducts('fiestas-tematicas','tematica-mexicana')"
+          @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-mexicana')" class="tw-no-underline d-block text-center zoom">
           <img :src="t_1" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Mexicana"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
         </NuxtLink>
         <NuxtLink 
-          :to="{
-            name: 'products',
-            query: {
-              category: 'fiestas-tematicas',
-              subcategory: 'tematica-tropical'
-            }
-          }" class="tw-no-underline d-block text-center zoom">
+          :to="buildPrettyPathProducts('fiestas-tematicas','tematica-tropical')"
+          @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-tropical')" class="tw-no-underline d-block text-center zoom">
           <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Tropical"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Tropical</span>
         </NuxtLink>
         <NuxtLink 
-          :to="{
-            name: 'products',
-            query: {
-              category: 'fiestas-tematicas',
-              subcategory: 'tematica-vallenata'
-            }
-          }" class="tw-no-underline d-block text-center zoom">
+          :to="buildPrettyPathProducts('fiestas-tematicas','tematica-vallenata')"
+          @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-vallenata')" class="tw-no-underline d-block text-center zoom">
           <img :src="t_3" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Vallenata"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Vallenata</span>
         </NuxtLink>
         <NuxtLink 
-          :to="{
-            name: 'products',
-            query: {
-              category: 'fiestas-tematicas',
-              subcategory: 'tematica-metalizada'
-            }
-          }" class="tw-no-underline d-block text-center zoom">
+          :to="buildPrettyPathProducts('fiestas-tematicas','tematica-metalizada')"
+          @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-metalizada')" class="tw-no-underline d-block text-center zoom">
           <img :src="t_4" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Metalizada"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Metalizada</span>
         </NuxtLink>
         <NuxtLink 
-          :to="{
-            name: 'products',
-            query: {
-              category: 'fiestas-tematicas',
-              subcategory: 'tematica-neon'
-            }
-          }" class="tw-no-underline d-block text-center zoom">
+          :to="buildPrettyPathProducts('fiestas-tematicas','tematica-neon')"
+          @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-neon')" class="tw-no-underline d-block text-center zoom">
           <img :src="t_5" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Neón"/>
           <span class="d-block size-theme tw-text-tertiary mt-5">Neón</span>
         </NuxtLink>
@@ -640,77 +629,42 @@ useHead({
         <VRow no-gutters class="transparent">
           <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
             <NuxtLink 
-              :to="{
-                name: 'products',
-                query: {
-                  category: 'fiestas-tematicas',
-                  subcategory: 'tematica-mexicana'
-                }
-              }" class="tw-no-underline d-block text-center zoom">
+              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-mexicana')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-mexicana')" class="tw-no-underline d-block text-center zoom">
               <img :src="t_1" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Mexicana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </NuxtLink>
           </VCol>
           <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
             <NuxtLink 
-              :to="{
-                name: 'products',
-                query: {
-                  category: 'fiestas-tematicas',
-                  subcategory: 'tematica-tropical'
-                }
-              }" class="tw-no-underline d-block text-center zoom">
+              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-tropical')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-tropical')" class="tw-no-underline d-block text-center zoom">
               <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica tropical"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Tropical</span>
             </NuxtLink>
           </VCol>
           <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
             <NuxtLink 
-              :to="{
-                name: 'products',
-                query: {
-                  category: 'fiestas-tematicas',
-                  subcategory: 'tematica-vallenata'
-                }
-              }" class="tw-no-underline d-block text-center zoom">
+              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-vallenata')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-vallenata')" class="tw-no-underline d-block text-center zoom">
               <img :src="t_3" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Vallenata"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </NuxtLink>
           </VCol>
           <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
             <NuxtLink 
-              :to="{
-                name: 'products',
-                query: {
-                  category: 'fiestas-tematicas',
-                  subcategory: 'tematica-metalizada'
-                }
-              }" class="tw-no-underline d-block text-center zoom">
+              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-metalizada')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-metalizada')" class="tw-no-underline d-block text-center zoom">
               <img :src="t_4" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Metalizada"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </NuxtLink>
           </VCol>
           <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
             <NuxtLink 
-              :to="{
-                name: 'products',
-                query: {
-                  category: 'fiestas-tematicas',
-                  subcategory: 'tematica-neon'
-                }
-              }" class="tw-no-underline d-block text-center zoom">
+              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-neon')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-neon')" class="tw-no-underline d-block text-center zoom">
               <img :src="t_5" class="d-block size-rect-desktop" width="150"  height="150" loading="lazy" alt="Fiesta con tematica Neón"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Neón</span>
             </NuxtLink>
           </VCol>
           <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
             <NuxtLink
-              :to="{
-                name: 'products',
-                query: {
-                  category: 'fiestas-tematicas'
-                }
-              }" 
+              :to="buildPrettyPathProducts('fiestas-tematicas')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas')" 
               class="tw-no-underline d-block text-center zoom mt-0">
               <span class="d-block size-rect-desktop tw-bg-primary"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Todos</span>
@@ -722,77 +676,42 @@ useHead({
         <VRow no-gutters class="transparent">
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
             <NuxtLink 
-              :to="{
-                name: 'products',
-                query: {
-                  category: 'fiestas-tematicas',
-                  subcategory: 'tematica-mexicana'
-                }
-              }" class="tw-no-underline d-block text-center zoom">
+              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-mexicana')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-mexicana')" class="tw-no-underline d-block text-center zoom">
               <img :src="t_1" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Mexicana"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
             </NuxtLink>
           </VCol>
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
             <NuxtLink 
-              :to="{
-                name: 'products',
-                query: {
-                  category: 'fiestas-tematicas',
-                  subcategory: 'tematica-tropical'
-                }
-              }" class="tw-no-underline d-block text-center zoom">
+              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-tropical')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-tropical')" class="tw-no-underline d-block text-center zoom">
               <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Tropical"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Tropical</span>
             </NuxtLink>
           </VCol>
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
             <NuxtLink 
-              :to="{
-                name: 'products',
-                query: {
-                  category: 'fiestas-tematicas',
-                  subcategory: 'tematica-vallenata'
-                }
-              }" class="tw-no-underline d-block text-center zoom">
+              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-vallenata')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-vallenata')" class="tw-no-underline d-block text-center zoom">
               <img :src="t_3" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Vallenata"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
             </NuxtLink>
           </VCol>
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
             <NuxtLink 
-              :to="{
-                name: 'products',
-                query: {
-                  category: 'fiestas-tematicas',
-                  subcategory: 'tematica-metalizada'
-                }
-              }" class="tw-no-underline d-block text-center zoom">
+              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-metalizada')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-metalizada')" class="tw-no-underline d-block text-center zoom">
               <img :src="t_4" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Metalizada"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
             </NuxtLink>
           </VCol>
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
             <NuxtLink 
-              :to="{
-                name: 'products',
-                query: {
-                  category: 'fiestas-tematicas',
-                  subcategory: 'tematica-neon'
-                }
-              }" class="tw-no-underline d-block text-center zoom">
+              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-neon')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-neon')" class="tw-no-underline d-block text-center zoom">
               <img :src="t_5" class="d-block size-rect-desktop" width="150"  height="150" loading="lazy" alt="Fiesta con tematica Neón"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Neón</span>
             </NuxtLink>
           </VCol>
           <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
             <NuxtLink
-              :to="{
-                name: 'products',
-                query: {
-                  category: 'fiestas-tematicas'
-                }
-              }" 
+              :to="buildPrettyPathProducts('fiestas-tematicas')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas')" 
               class="tw-no-underline d-block text-center zoom mt-0">
               <span class="d-block size-rect-desktop tw-bg-primary"/>
               <span class="d-block size-theme tw-text-tertiary mt-2">Todos</span>
@@ -810,63 +729,33 @@ useHead({
         <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center cardtitles">
           <span>Cumpleaños</span>
           <VSpacer />
-          <NuxtLink
-            :to="{
-              name: 'products',
-              query: {
-                category: 'fiestas-tematicas',
-                subcategory: 'tematica-cumpleanos'
-              }
-            }"
-            aria-label="Ver todos los productos de cumpleaños"
-            class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-tertiary hover:tw-text-primary">
+        <NuxtLink 
+          :to="buildPrettyPathProducts('fiestas-tematicas','tematica-cumpleanos')"
+          @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-cumpleanos')"
+          aria-label="Ver todos los productos de cumpleaños"
+          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-tertiary hover:tw-text-primary">
             Ver todos
           </NuxtLink>
         </VCardTitle>
         <VDivider class="hr-secondary"/>
         <VCardText class="px-4 px-md-7 mt-5 mb-5 d-none d-md-flex align-items-stretch justify-content-between">
           <NuxtLink 
-            :to="{
-              name: 'products',
-              query: {
-                category: 'fiestas-infantiles',
-                subcategory: 'fiestas-ninos'
-              }
-            }" class="tw-no-underline d-block text-center img-zoom">
+            :to="buildPrettyPathProducts('fiestas-infantiles','fiestas-ninos')" @click.prevent="handleCategoryClickProducts('fiestas-infantiles','fiestas-ninos')" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Niños"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Niños</span>
           </NuxtLink>
           <NuxtLink 
-            :to="{
-              name: 'products',
-              query: {
-                category: 'fiestas-infantiles',
-                subcategory: 'tematica-ninas'
-              }
-            }" class="tw-no-underline d-block text-center img-zoom">
+            :to="buildPrettyPathProducts('fiestas-infantiles','tematica-ninas')" @click.prevent="handleCategoryClickProducts('fiestas-infantiles','tematica-ninas')" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Niñas"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Niñas</span>
           </NuxtLink>
           <NuxtLink 
-            :to="{
-              name: 'products',
-              query: {
-                category: 'fiestas-infantiles',
-                subcategory: 'tematica-bebes'
-              }
-            }" class="tw-no-underline d-block text-center img-zoom">
+            :to="buildPrettyPathProducts('fiestas-infantiles','tematica-bebes')" @click.prevent="handleCategoryClickProducts('fiestas-infantiles','tematica-bebes')" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Bebes"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Bebes</span>
           </NuxtLink>
           <NuxtLink
-            :to="{
-              name: 'products',
-              query: {
-                category: 'globos',
-                fathercategory: 'globos-metalizados',
-                subcategory: 'globos-metalizados-tematicas-adultos'
-              }
-            }"
+            :to="buildPrettyPathProducts('globos','globos-metalizados-tematicas-adultos','globos-metalizados')" @click.prevent="handleCategoryClickProducts('globos','globos-metalizados-tematicas-adultos','globos-metalizados')"
             class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_4" class="border-theme d-white size-circles-desktop" loading="lazy" alt="Fiesta para Adultos"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Adultos</span>
@@ -874,47 +763,22 @@ useHead({
         </VCardText>
         <VCardText class="px-4 px-md-7 mt-5 mb-5 xs:tw-hidden md:tw-flex lg:tw-hidden align-items-stretch justify-content-between">
           <NuxtLink 
-            :to="{
-              name: 'products',
-              query: {
-                category: 'fiestas-infantiles',
-                subcategory: 'fiestas-ninos'
-              }
-            }" class="tw-no-underline d-block text-center img-zoom">
+            :to="buildPrettyPathProducts('fiestas-infantiles','fiestas-ninos')" @click.prevent="handleCategoryClickProducts('fiestas-infantiles','fiestas-ninos')" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Niños"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Niños</span>
           </NuxtLink>
           <NuxtLink 
-            :to="{
-              name: 'products',
-              query: {
-                category: 'fiestas-infantiles',
-                subcategory: 'tematica-ninas'
-              }
-            }" class="tw-no-underline d-block text-center img-zoom">
+            :to="buildPrettyPathProducts('fiestas-infantiles','tematica-ninas')" @click.prevent="handleCategoryClickProducts('fiestas-infantiles','tematica-ninas')" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Niñas"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Niñas</span>
           </NuxtLink>
           <NuxtLink 
-            :to="{
-              name: 'products',
-              query: {
-                category: 'fiestas-infantiles',
-                subcategory: 'tematica-bebes'
-              }
-            }" class="tw-no-underline d-block text-center img-zoom">
+            :to="buildPrettyPathProducts('fiestas-infantiles','tematica-bebes')" @click.prevent="handleCategoryClickProducts('fiestas-infantiles','tematica-bebes')" class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Bebes"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Bebes</span>
           </NuxtLink>
           <NuxtLink
-            :to="{
-              name: 'products',
-              query: {
-                category: 'globos',
-                fathercategory: 'globos-metalizados',
-                subcategory: 'globos-metalizados-tematicas-adultos'
-              }
-            }"
+            :to="buildPrettyPathProducts('globos','globos-metalizados-tematicas-adultos','globos-metalizados')" @click.prevent="handleCategoryClickProducts('globos','globos-metalizados-tematicas-adultos','globos-metalizados')"
             class="tw-no-underline d-block text-center img-zoom">
             <img :src="f_4" class="border-theme d-white size-circles-desktop" loading="lazy" alt="Fiesta para Adultos"/>
             <span class="d-block size-theme tw-text-tertiary mt-5">Adultos</span>
@@ -923,28 +787,18 @@ useHead({
         <VCardText class="px-0 mt-2 mb-2 xs:tw-block md:tw-hidden align-items-stretch justify-content-between">
           <VRow no-gutters class="transparent">
             <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
-              <NuxtLink
-                :to="{
-                  name: 'products',
-                  query: {
-                    category: 'fiestas-infantiles',
-                    subcategory: 'fiestas-ninos'
-                  }
-                }"
-                class="tw-no-underline d-block text-center img-zoom mt-0">
+            <NuxtLink
+              :to="buildPrettyPathProducts('fiestas-infantiles','fiestas-ninos')"
+              @click.prevent="handleCategoryClickProducts('fiestas-infantiles','fiestas-ninos')"
+              class="tw-no-underline d-block text-center img-zoom mt-0">
                 <img :src="f_1" class="border-theme d-block" width="150" height="150" loading="lazy" alt="Fiesta para Niños"/>
                 <span class="d-block size-theme tw-text-tertiary mt-2">Niños</span>
               </NuxtLink>
             </VCol>
             <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
               <NuxtLink
-                :to="{
-                  name: 'products',
-                  query: {
-                    category: 'fiestas-infantiles',
-                    subcategory: 'tematica-ninas'
-                  }
-                }"
+                :to="buildPrettyPathProducts('fiestas-infantiles','tematica-ninas')"
+                @click.prevent="handleCategoryClickProducts('fiestas-infantiles','tematica-ninas')"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
                 <img :src="f_2" class="border-theme d-block" width="150" height="150" loading="lazy" alt="Fiesta para Niñas"/>
                 <span class="d-block size-theme tw-text-tertiary mt-2">Niñas</span>
@@ -952,13 +806,8 @@ useHead({
             </VCol>
             <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
               <NuxtLink
-                :to="{
-                  name: 'products',
-                  query: {
-                    category: 'fiestas-infantiles',
-                    subcategory: 'tematica-bebes'
-                  }
-                }"
+                :to="buildPrettyPathProducts('fiestas-infantiles','tematica-bebes')"
+                @click.prevent="handleCategoryClickProducts('fiestas-infantiles','tematica-bebes')"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
                 <img :src="f_3" class="border-theme d-block" width="150" height="150" loading="lazy" alt="Fiesta para Bebes"/>
                 <span class="d-block size-theme tw-text-tertiary mt-2">Bebes</span>
@@ -966,14 +815,8 @@ useHead({
             </VCol>
             <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
               <NuxtLink
-                :to="{
-                  name: 'products',
-                  query: {
-                    category: 'globos',
-                    fathercategory: 'globos-metalizados',
-                    subcategory: 'globos-metalizados-tematicas-adultos'
-                  }
-                }"
+                :to="buildPrettyPathProducts('globos','globos-metalizados-tematicas-adultos','globos-metalizados')"
+                @click.prevent="handleCategoryClickProducts('globos','globos-metalizados-tematicas-adultos','globos-metalizados')"
                 class="tw-no-underline d-block text-center img-zoom mt-0">
                 <img :src="f_4" class="border-theme d-white" width="150" height="150" loading="lazy" alt="Fiesta para Adultos"/>
                 <span class="d-block size-theme tw-text-tertiary mt-2">Adultos</span>

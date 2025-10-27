@@ -4,7 +4,7 @@ import { formatNumber } from '@formatters'
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { avatarText} from '@formatters'
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useMiscellaneousStores } from '@/stores/miscellaneous'
 import { useCartStores } from '@/stores/cart'
 import { useFavoritesStores } from '@/stores/favorites'
@@ -13,6 +13,7 @@ import { useOrdersStores } from '@/stores/orders'
 import { FreeMode, Navigation, Thumbs, Scrollbar, Pagination, Zoom } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useRuntimeConfig } from '#app'
+import { useCategoriesStores } from '@/stores/categories'
 import { Spanish } from 'flatpickr/dist/l10n/es.js';
 import InnerImageZoom from "vue-inner-image-zoom"
 import FlatPickr from 'vue-flatpickr-component';
@@ -52,6 +53,7 @@ const favoritesStores = useFavoritesStores()
 const homeStores = useHomeStores();
 const ordersStores = useOrdersStores()
 const config_ = useRuntimeConfig()
+const categoriesStores = useCategoriesStores()
 
 const { isMobile, isDesktop } = useDevice();
 const { $metapixel } = useNuxtApp()
@@ -338,63 +340,44 @@ async function fetchData() {
       })
     );
 
-    if (route.query.category) {
-      category.value = {
-        title: categories.value.filter(item => item.slug === route.query.category)[0].name,
-        disabled: false,
-        href: `/services?category=${route.query.category}`
-      };
+    // Build breadcrumbs using categories store and pretty URLs
+    const buildPrettyPath = (category, subcategory = null, fathercategory = null) => {
+      if (category && subcategory && fathercategory)
+        return `/services/categories/${category}/${fathercategory}/${subcategory}`
+      if (category && subcategory)
+        return `/services/categories/${category}/${subcategory}`
+      if (category)
+        return `/services/categories/${category}`
+      return '/services'
+    }
 
-      bread.value.push(category.value);
+    if (categoriesStores.getCategory) {
+      const catNode = categories.value.find(it => it.slug === categoriesStores.getCategory)
+      const catTitle = catNode?.name || categoriesStores.getCategory
+      category.value = { title: catTitle, disabled: false, href: buildPrettyPath(categoriesStores.getCategory) }
+      bread.value.push(category.value)
 
-      if (route.query.fathercategory) {
-        const fathercategory = {
-          title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name,
-          disabled: false,
-          href: `/services?category=${route.query.category}&subcategory=${route.query.fathercategory}`
-        };
-
-        category.value.fathercategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].name
-        bread.value.push(fathercategory);
+      if (categoriesStores.getFathercategory && categoriesStores.getSubcategory) {
+        const fatherNode = catNode?.children?.find(it => it.slug === `${categoriesStores.getCategory}/${categoriesStores.getFathercategory}`)
+        const fatherTitle = fatherNode?.name || categoriesStores.getFathercategory
+        category.value.fathercategory = fatherTitle
+        bread.value.push({ title: fatherTitle, disabled: false, href: buildPrettyPath(categoriesStores.getCategory, categoriesStores.getFathercategory) })
+        const subNode = fatherNode?.grandchildren?.find(it => it.slug === `${categoriesStores.getCategory}/${categoriesStores.getFathercategory}/${categoriesStores.getSubcategory}`)
+        const subTitle = subNode?.name || categoriesStores.getSubcategory
+        category.value.subcategory = subTitle
+        bread.value.push({ title: subTitle, disabled: false, href: buildPrettyPath(categoriesStores.getCategory, categoriesStores.getSubcategory, categoriesStores.getFathercategory) })
+      } else if (!categoriesStores.getFathercategory && categoriesStores.getSubcategory) {
+        const subNode = catNode?.children?.find(it => it.slug === `${categoriesStores.getCategory}/${categoriesStores.getSubcategory}`)
+        const subTitle = subNode?.name || categoriesStores.getSubcategory
+        category.value.subcategory = subTitle
+        bread.value.push({ title: subTitle, disabled: false, href: buildPrettyPath(categoriesStores.getCategory, categoriesStores.getSubcategory) })
       }
 
-      if (typeof route.query.fathercategory === 'undefined' && route.query.subcategory) {
-        const subcategory = {
-          title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name,
-          disabled: false,
-          href: `/services?category=${route.query.category}&subcategory=${route.query.subcategory}`
-        };
-
-        category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.subcategory)[0].name
-        bread.value.push(subcategory);
-      }
-
-      if (typeof route.query.fathercategory !== 'undefined' && route.query.subcategory) {
-        const subcategory = {
-          title: categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name,
-          disabled: false,
-          href: `/services?category=${route.query.category}&fathercategory=${route.query.fathercategory}&subcategory=${route.query.subcategory}`
-        };
-
-        category.value.subcategory = categories.value.filter(item =>item.slug === route.query.category)[0].children.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory)[0].grandchildren.filter(item =>item.slug === route.query.category + '/' + route.query.fathercategory+ '/' + route.query.subcategory)[0].name
-        bread.value.push(subcategory);
-      }
-
-      if(isDesktop) {
-        const service_ = {
-          title: "Servicio",
-          disabled: true,
-          href: "",
-        };
-
-        bread.value.push(service_);
+      if (isDesktop) {
+        bread.value.push({ title: 'Servicio', disabled: true, href: '' })
       }
     } else {
-      bread.value.push({
-        title: 'Servicio',
-        disabled: true,
-        href: '',
-      });
+      bread.value.push({ title: 'Servicio', disabled: true, href: '' })
     }
   }
 
@@ -650,6 +633,26 @@ const mediaSlides = computed(() => {
   }
     return [...vids, main, ...imgs];
 });
+
+const buildPrettyPath = (category, subcategory = null, fathercategory = null) => {
+  if (category && subcategory && fathercategory)
+    return `/services/categories/${category}/${fathercategory}/${subcategory}`
+  if (category && subcategory)
+    return `/services/categories/${category}/${subcategory}`
+  if (category)
+    return `/services/categories/${category}`
+  return '/services'
+}
+
+const servicesListPath = computed(() => {
+  const cat = categoriesStores.getCategory
+  const sub = categoriesStores.getSubcategory
+  const father = categoriesStores.getFathercategory
+  if (!cat) return '/services'
+  if (father && sub) return buildPrettyPath(cat, sub, father)
+  if (sub) return buildPrettyPath(cat, sub)
+  return buildPrettyPath(cat)
+})
 
 const loadVideoThumbnail = async (url) => {
     const yt = url.match(
@@ -1121,7 +1124,7 @@ const buildEmbedUrl = (url) => {
               <p class="text-lef">Recomendaciones que te pueden interesar</p>
             </VCol>
             <VCol cols="4" md="6" class="text-right">
-              <router-link to="/services" class="ms-md-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
+              <router-link :to="servicesListPath" class="ms-md-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</router-link>
             </VCol> 
           </VRow>
         </VCardTitle>

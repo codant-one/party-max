@@ -4,6 +4,8 @@ import { useMiscellaneousStores } from '@/stores/miscellaneous'
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useRuntimeConfig } from '#app'
+import { useCategoriesStores } from '@/stores/categories'
+import { useRouter } from 'vue-router'
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -19,6 +21,8 @@ import t_7 from '@assets/images/t_7.jpg';
 
 const route = useRoute()
 const miscellaneousStores = useMiscellaneousStores()
+const categoriesStores = useCategoriesStores()
+const router = useRouter()
 
 const config = useRuntimeConfig()
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
@@ -139,6 +143,42 @@ async function fetchData() {
   }
 }
 
+const buildPrettyPathProducts = (category, subcategory = null, fathercategory = null) => {
+  if (category && subcategory && fathercategory)
+    return `/products/categories/${category}/${fathercategory}/${subcategory}`
+  if (category && subcategory)
+    return `/products/categories/${category}/${subcategory}`
+  if (category)
+    return `/products/categories/${category}`
+  return '/products'
+}
+
+const buildPrettyPathServices = (category, subcategory = null, fathercategory = null) => {
+  if (category && subcategory && fathercategory)
+    return `/services/categories/${category}/${fathercategory}/${subcategory}`
+  if (category && subcategory)
+    return `/services/categories/${category}/${subcategory}`
+  if (category)
+    return `/services/categories/${category}`
+  return '/services'
+}
+
+const handleCategoryClickProducts = (category, subcategory = null, fathercategory = null) => {
+  categoriesStores.reset()
+  if (category) categoriesStores.setCategory(category)
+  if (fathercategory) categoriesStores.setFathercategory(fathercategory)
+  if (subcategory) categoriesStores.setSubcategory(subcategory)
+  router.push(buildPrettyPathProducts(category, subcategory, fathercategory))
+}
+
+const handleCategoryClickServices = (category, subcategory = null, fathercategory = null) => {
+  categoriesStores.reset()
+  if (category) categoriesStores.setCategory(category)
+  if (fathercategory) categoriesStores.setFathercategory(fathercategory)
+  if (subcategory) categoriesStores.setSubcategory(subcategory)
+  router.push(buildPrettyPathServices(category, subcategory, fathercategory))
+}
+
 </script>
 
 <template>
@@ -151,13 +191,8 @@ async function fetchData() {
     <VCard class="no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
         <NuxtLink
-          :to="{
-            name: category_type_id === 1 ? 'products' : 'services',
-            query: {
-                category: route.params.slug,
-                subcategory: slug1
-            }
-          }">
+          :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug1) : buildPrettyPathServices(route.params.slug, slug1)"
+          @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug1) : handleCategoryClickServices(route.params.slug, slug1)">
           <VImg :src="image1" cover class="img-style"/>
         </NuxtLink>
       </VCardItem>  
@@ -173,12 +208,8 @@ async function fetchData() {
         <span>¡Encuentra exactamente lo que necesitas!</span>
         <VSpacer />
         <NuxtLink
-          :to="{
-            name: category_type_id === 1 ? 'products' : 'services',
-            query: {
-              category: route.params.slug
-            }
-          }"
+          :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug) : buildPrettyPathServices(route.params.slug)"
+          @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug) : handleCategoryClickServices(route.params.slug)"
           class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary" v-if="!isMobile">Ver todos</NuxtLink>
       </VCardTitle>
       <VDivider class="hr-primary"/>
@@ -187,13 +218,9 @@ async function fetchData() {
         :class="icons_categories.length === 3 ? 'justify-content-between' : 'justify-content-center'">
         <template v-for="(i, index) in icons_categories">
           <NuxtLink            
-            :to="{
-              name: category_type_id === 1 ? 'products' : 'services',
-              query: {
-                category: route.params.slug,
-                subcategory: i.slug.split('/')[1]
-              }
-            }" class="tw-no-underline d-block text-center justify-content-center zoom router-icons">
+            :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, i.slug.split('/')[1]) : buildPrettyPathServices(route.params.slug, i.slug.split('/')[1])"
+            @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, i.slug.split('/')[1]) : handleCategoryClickServices(route.params.slug, i.slug.split('/')[1])"
+            class="tw-no-underline d-block text-center justify-content-center zoom router-icons">
             <img :src="baseURL + i.icon_subcategory" alt="Icono" width="192" class="border-theme d-block" v-if="i.icon_subcategory !== null"/>
             <img :src="t_7" alt="Icono" width="192" class="border-theme d-block" v-else/>
             <span class="d-block size-theme tw-text-tertiary mt-5 mb-5">{{i.name}}</span>
@@ -201,12 +228,8 @@ async function fetchData() {
         </template>
         <NuxtLink
           v-if="isMobile"
-          :to="{
-            name: category_type_id === 1 ? 'products' : 'services',
-            query: {
-              category: route.params.slug
-            }
-          }" 
+          :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug) : buildPrettyPathServices(route.params.slug)" 
+          @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug) : handleCategoryClickServices(route.params.slug)"
           class="tw-no-underline d-block text-center justify-content-center zoom router-icons">
           <img :src="t_6" alt="Producto" class="border-theme d-block"/>
           <span class="d-block size-theme tw-text-tertiary mt-5 mb-5 transparentColor">.</span>
@@ -220,12 +243,8 @@ async function fetchData() {
         <span>Novedades</span>
         <VSpacer />
         <NuxtLink
-          :to="{
-            name: category_type_id === 1 ? 'products' : 'services',
-            query: {
-              category: route.params.slug
-            }
-          }"
+          :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug) : buildPrettyPathServices(route.params.slug)"
+          @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug) : handleCategoryClickServices(route.params.slug)"
           class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">Ver todos</NuxtLink>
       </VCardTitle>
       <VCardText class="px-7 mt-5 mb-5 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
@@ -262,13 +281,8 @@ async function fetchData() {
     <VCard class="mt-7 no-shadown card-information p-0 d-block d-md-flex transparent">
         <VCard class="no-shadown card-information p-0 w-100 w-md-50">
           <NuxtLink
-            :to="{
-              name: category_type_id === 1 ? 'products' : 'services',
-              query: {
-                category: route.params.slug,
-                subcategory: slug2
-              }
-            }"
+            :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug2) : buildPrettyPathServices(route.params.slug, slug2)"
+            @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug2) : handleCategoryClickServices(route.params.slug, slug2)"
             class="tw-no-underline">
             <VCardItem class="p-0">
               <VImg :src="image2" cover class="img-style"/>
@@ -277,13 +291,8 @@ async function fetchData() {
         </VCard>
         <VCard class="no-shadown card-information p-0 w-100 w-md-50 ms-0 ms-md-5 mt-7 mt-md-0">
           <NuxtLink
-            :to="{
-              name: category_type_id === 1 ? 'products' : 'services',
-              query: {
-                category: route.params.slug,
-                subcategory: slug3
-              }
-            }"
+            :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug3) : buildPrettyPathServices(route.params.slug, slug3)"
+            @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug3) : handleCategoryClickServices(route.params.slug, slug3)"
             class="tw-no-underline">
             <VCardItem class="p-0">
               <VImg :src="image3" cover class="img-style"/>
@@ -296,25 +305,16 @@ async function fetchData() {
     <VCard class="mt-7 no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
         <NuxtLink
-          :to="{
-            name: category_type_id === 1 ? 'products' : 'services',
-            query: {
-              category: route.params.slug,
-              subcategory: slug4
-            }
-          }">
+          :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug4) : buildPrettyPathServices(route.params.slug, slug4)"
+          @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug4) : handleCategoryClickServices(route.params.slug, slug4)">
           <VImg :src="image4" cover class="img-style"/>
         </NuxtLink>
       </VCardItem>  
     </VCard>
 
     <NuxtLink 
-      :to="{
-        name: category_type_id === 1 ? 'products' : 'services',
-          query: {
-            category: route.params.slug
-          }
-      }"
+      :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug) : buildPrettyPathServices(route.params.slug)"
+      @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug) : handleCategoryClickServices(route.params.slug)"
       class="link-button">
       <VBtn class="mt-7 mb-5 tw-bg-primary tw-text-white button-product" rounded="xl" block>Ver todos los productos</VBtn>
     </NuxtLink>

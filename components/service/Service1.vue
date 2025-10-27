@@ -45,12 +45,7 @@ watchEffect(() => {
     <NuxtLink
         :to="{
             name: 'services-slug',
-            params: { slug: slug },
-            query: {  
-                category: route.query.category,
-                fathercategory: route.query.fathercategory,
-                subcategory: route.query.subcategory
-            }
+            params: { slug: slug }
         }"
         class="tw-no-underline zoom-service">
         <VCard class="no-shadown card-information p-0">
