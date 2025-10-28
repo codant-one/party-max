@@ -412,6 +412,7 @@ const addCart = (data) =>{
             order_file_id: null,
             product_color_id: data.product_color_id,
             quantity: data.quantity,
+            wholesale: 0,
             type: 0
         }
     } else {
@@ -424,6 +425,7 @@ const addCart = (data) =>{
             order_file_id: data.order_file_id,
             product_color_id: null,
             quantity: data.quantity,
+            wholesale: null,
             type: 1
         }
     }
