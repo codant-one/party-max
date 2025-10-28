@@ -164,6 +164,21 @@ const handleCategoryClick = (category, subcategory = null, fathercategory = null
   router.push(buildPrettyPath(category, subcategory, fathercategory))
 }
 
+const onAllCategoriesClick = () => {
+  categoriesStores.reset()
+  if (typeof filtersStores.reset === 'function') {
+    filtersStores.reset()
+  }
+
+  if (process.client) {
+    localStorage.removeItem('products_category')
+    localStorage.removeItem('products_subcategory')
+    localStorage.removeItem('products_fathercategory')
+    localStorage.removeItem('products_colorId')
+    window.location.href = '/products'
+  }
+}
+
 const toggleSubGroupFn = (index, subCat) => {
     if (openedSubGroups.value.includes(index)) {
         openedSubGroups.value = [];
@@ -188,7 +203,7 @@ const toggleSubGroupFn = (index, subCat) => {
           <VCardItem v-if="categoriesStores.getCategory" class="p-0 text-allcategories tw-font-bold mt-6">
             <NuxtLink
               to="/products"
-              @click="categoriesStores.reset()"
+              @click.prevent="onAllCategoriesClick"
               class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
             >
               <span>

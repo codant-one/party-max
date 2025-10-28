@@ -28,6 +28,11 @@ export const useFiltersStores = defineStore('filters', {
         changeRating(value: any) {
             this.rating = value
             this.drawer = false
+        },
+        reset() {
+            this.drawer = false
+            this.prices = {}
+            this.rating = 5
         }
     }
 })

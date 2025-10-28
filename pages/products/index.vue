@@ -142,6 +142,8 @@ watch(() =>
   }
 );
 
+// Ensure initial sync with URL before first data fetch
+syncStoreWithPath()
 watchEffect(fetchData);
 
 async function fetchData() {
@@ -440,7 +442,7 @@ const handleCategoryClick = (category, subcategory = null, fathercategory = null
   router.push(buildPrettyPath(category, subcategory, fathercategory))
 }
 
-const syncStoreWithPath = () => {
+function syncStoreWithPath() {
   // Prefer dynamic route params if available
   const p = route.params || {}
   const pCat = typeof p.category === 'string' ? p.category : undefined
@@ -469,7 +471,13 @@ const syncStoreWithPath = () => {
   // Fallback: parse from path
   const path = route.path || ''
   const base = '/products/categories/'
-  if (!path.startsWith(base)) return
+  if (!path.startsWith(base)) {
+    const hasAny = !!(categoriesStores.getCategory || categoriesStores.getSubcategory || categoriesStores.getFathercategory)
+    if (hasAny) {
+      categoriesStores.reset()
+    }
+    return
+  }
 
   const parts = path.slice(base.length).split('/').filter(Boolean)
   if (parts.length === 0) return
@@ -528,6 +536,38 @@ const onBreadcrumbClick = (item, index) => {
   router.push(href)
 }
 
+const onAllCategoriesClick = () => {
+  categoriesStores.reset()
+  if (typeof filtersStores.reset === 'function') {
+    filtersStores.reset()
+  }
+
+  sortBy.value = 0
+  tab.value = '0'
+  rangPrice.value = [0, 50000]
+  min.value = null
+  max.value = null
+  rating.value = 5
+  currentPage.value = 1
+  products.value = []
+  openedGroups.value = []
+  openedSubGroups.value = []
+  panelCat.value = null
+  category.value = null
+  cat.value = null
+  bread.value = [
+    { title: 'Home', disabled: false, href: '/' }
+  ]
+
+  if (process.client) {
+    localStorage.removeItem('products_category')
+    localStorage.removeItem('products_subcategory')
+    localStorage.removeItem('products_fathercategory')
+    localStorage.removeItem('products_colorId')
+    window.location.href = '/products'
+  }
+}
+
 </script>
 
 <template>
@@ -559,7 +599,7 @@ const onBreadcrumbClick = (item, index) => {
             <VCardItem v-if="categoriesStores.getCategory" class="p-0 text-allcategories tw-font-bold mt-6">
               <NuxtLink
                 to="/products"
-                @click="categoriesStores.reset()"
+                @click.prevent="onAllCategoriesClick"
                 class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
               >
                 <span>

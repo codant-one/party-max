@@ -132,6 +132,8 @@ watch(() =>
   }
 );
 
+// Ensure initial sync with URL before the first data fetch
+syncStoreWithPath()
 watchEffect(fetchData);
 
 async function fetchData() {
@@ -328,7 +330,7 @@ const handleCategoryClick = (category, subcategory = null, fathercategory = null
   router.push(buildPrettyPath(category, subcategory, fathercategory))
 }
 
-const syncStoreWithPath = () => {
+function syncStoreWithPath() {
   const p = route.params || {}
   const pCat = typeof p.category === 'string' ? p.category : undefined
   const pSub = typeof p.subcategory === 'string' ? p.subcategory : undefined
@@ -355,7 +357,13 @@ const syncStoreWithPath = () => {
 
   const path = route.path || ''
   const base = '/services/categories/'
-  if (!path.startsWith(base)) return
+  if (!path.startsWith(base)) {
+    const hasAny = !!(categoriesStores.getCategory || categoriesStores.getSubcategory || categoriesStores.getFathercategory)
+    if (hasAny) {
+      categoriesStores.reset()
+    }
+    return
+  }
 
   const parts = path.slice(base.length).split('/').filter(Boolean)
   if (parts.length === 0) return
@@ -423,6 +431,39 @@ const onBreadcrumbClickServices = (item, index) => {
   router.push(href)
 }
 
+const onAllCategoriesClick = () => {
+  categoriesStores.reset()
+  if (typeof filtersStores.reset === 'function') {
+    filtersStores.reset()
+  }
+
+  sortBy.value = 0
+  tab.value = '0'
+  rangPrice.value = [0, 50000]
+  min.value = null
+  max.value = null
+  rating.value = 5
+  currentPage.value = 1
+  services.value = []
+  openedGroups.value = []
+  openedSubGroups.value = []
+  panelCat.value = null
+  category.value = null
+  cat.value = null
+  bread.value = [
+    { title: 'Home', disabled: false, href: '/' }
+  ]
+
+  if (process.client) {
+    // Clear persisted category state used by app.vue hydrators
+    localStorage.removeItem('products_category')
+    localStorage.removeItem('products_subcategory')
+    localStorage.removeItem('products_fathercategory')
+    localStorage.removeItem('products_colorId')
+    window.location.href = '/services'
+  }
+}
+
 </script>
 
 <template>
@@ -454,7 +495,7 @@ const onBreadcrumbClickServices = (item, index) => {
             <VCardItem v-if="categoriesStores.getCategory" class="p-0 text-allcategories tw-font-bold mt-6">
               <NuxtLink
                 to="/services"
-                @click="categoriesStores.reset()"
+                @click.prevent="onAllCategoriesClick"
                 class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
               >
                 <span>
