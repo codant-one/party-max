@@ -104,8 +104,9 @@ watch(() => [
   categoriesStores.getSubcategory,
   categoriesStores.getFathercategory,
 ], () => {
+    currentPage.value = 1
     fetchData()
-})
+}, { deep: true })
 
 watch(() => 
   tab.value,(value) => {
@@ -819,6 +820,66 @@ const onBreadcrumbClickServices = (item, index) => {
                     <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
                     <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
                     <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                  </NuxtLink>
+                </swiper-slide>
+              </swiper>
+            </VCardText> 
+          </VCard>
+
+          <!-- solo padres e hijos sin nietos -->
+          <VCard 
+            class="no-shadown mt-5 card-icons tw-bg-green" 
+            v-if="!categoriesStores.getFathercategory && 
+            categoriesStores.getSubcategory 
+            && categoriesStores.getCategory && category
+            && categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.filter(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getSubcategory)[0].grandchildren.length === 0">
+            <VCardText 
+              v-if="categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.length < 6 && !isMobile"
+              class="px-2 px-md-4 px-md-7 d-flex align-items-stretch"
+              :class="categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.length > 1 ? 'justify-content-between' : 'justify-content-center'">        
+              <template v-for="(i, index) in categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children">
+                <NuxtLink
+                  :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[1])"
+                  @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[1])"
+                  class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                  <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                  <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                </NuxtLink>
+              </template>
+            </VCardText> 
+            <VCardText 
+              v-else
+              class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
+              <template v-if="categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.length < 4 && isMobile">
+                <template v-for="(i, index) in categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children">
+                  <NuxtLink
+                    :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[1])"
+                    @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[1])"
+                    class="tw-no-underline d-block text-center justify-content-center zoom w-50">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
+                  </NuxtLink>
+                </template>
+              </template>
+              <swiper
+                v-else
+                :initialSlide="categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children.findIndex(item =>item.slug === categoriesStores.getCategory + '/' + categoriesStores.getSubcategory)"
+                :slidesPerView="isMobile ? 3 : 5"
+                :spaceBetween="isMobile ? 1 : 5"
+                :navigation="true"
+                :loop="true"
+                :modules="modules"
+                class="mySwiper">
+                <swiper-slide v-for="(i, index) in categories.filter(item =>item.slug === categoriesStores.getCategory)[0].children" class="py-2">
+                  <NuxtLink
+                    :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[1])"
+                    @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[1])"
+                    class="tw-no-underline d-block text-center justify-content-center zoom">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </NuxtLink>
                 </swiper-slide>
               </swiper>
