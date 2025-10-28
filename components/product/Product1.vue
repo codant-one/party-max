@@ -55,7 +55,8 @@ watchEffect(() => {
             params: { slug: slug }
         }"
         class="tw-no-underline zoom-product">
-        <VCard class="no-shadown card-information p-0" :width="isMobile ? 'auto' : 230" :class="props.bg">
+        <!-- <VCard class="no-shadown card-information p-0" :width="isMobile ? 'auto' : 230" :class="props.bg"> -->
+        <VCard class="no-shadown card-information p-0" :class="props.bg">
             <VCardText class="border-img ms-1 p-0">
                 <img 
                     :src="baseURL + image" 
@@ -196,4 +197,15 @@ watchEffect(() => {
         }
     }
     
+    /* *********** B: PRODUCTS RECOMMENDED STYLES *********** */
+    
+    .prodrecommended-grid-6-4-2 .v-card-text.border-img {
+        width: calc(100% - 5px) !important;
+    }
+
+    .prodrecommended-grid-6-4-2 .img-prod {
+        object-fit: scale-down;
+    }
+    
+    /* *********** E: PRODUCTS RECOMMENDED STYLES *********** */
 </style>

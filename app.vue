@@ -103,7 +103,7 @@ async function fetchData() {
 
   if(route.name === 'dashboard' || route.name === 'register-confirm') {
     background.value = 'tw-bg-green'
-  } else if(route.name === 'index' || route.name === 'categories-slug' || route.name === 'blogs' || route.name === 'blogs-slug' || route.name === 'event-planner') {
+  } else if(route.name === 'categories-slug' || route.name === 'blogs' || route.name === 'blogs-slug' || route.name === 'event-planner') {
     background.value = 'tw-bg-light_cyan_2'
   } else {
     background.value = 'tw-bg-white'

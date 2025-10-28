@@ -12,6 +12,24 @@ import icosearch from '@assets/icons/youtube_icon.svg'
 import instagram from '@assets/icons/instagram_magenta.svg?inline'
 import facebook from '@assets/icons/facebook_magenta.svg?inline'
 import whatsapp_magenta from '@assets/icons/whatsapp_magenta.svg?inline'
+import partymax_logo from '@assets/images/logo.svg';
+
+import payu from '@assets/images/payu/payu.svg'
+import bancodebogota from '@assets/images/payu/bancodebogota.svg'
+import visa from '@assets/images/payu/visa.png'
+import pagobancolombia from '@assets/images/payu/pagobancolombia.png'
+import pse from '@assets/images/payu/pse.png'
+import sured from '@assets/images/payu/sured.png'
+import nequi from '@assets/images/payu/nequi.png'
+import mastercard from '@assets/images/payu/mastercard.png'
+import gpay from '@assets/images/payu/gpay.png'
+import efecty from '@assets/images/payu/efecty.png'
+import diners from '@assets/images/payu/diners.png'
+import davivienda from '@assets/images/payu/davivienda.png'
+import codensa from '@assets/images/payu/codensa.png'
+import breb from '@assets/images/payu/bre-b.png'
+import bancolombia from '@assets/images/payu/bancolombia.png'
+import amex from '@assets/images/payu/amex.svg'
 
 const recaptchaInstance = useReCaptcha();
 const miscellaneousStores = useMiscellaneousStores()
@@ -135,147 +153,110 @@ const onSubmit = () => {
       >
         <span class="mdi mdi-whatsapp whatsapp-icon" aria-hidden="true"></span>
     </a>
-    <div v-show="!isConnected">
-      <div class="tw-flex tw-flex-col md:tw-flex-row my-10 tw-px-5">
-        <div class="md:tw-w-1/2 text-left tw-pr-0 md:tw-pr-8 border-fix">
-          <h2 class="tw-text-primary tw-font-bold tw-text-4xl">Conecta con Nosotros</h2>
-          <div class="tw-mt-6">
-            <div class="tw-flex tw-flex-col">
-              <div class="tw-flex tw-items-center">
-                <img :src="icophone "class="tw-mr-3" alt="Teléfono" width="32" height="32"/>
-                <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Teléfono</span>
-              </div>
-              <span class="tw-text-gray tw-mt-2 tw-text-sm">Llámanos para asesoría personalizada.</span>
-            </div>
-            <h2 class="tw-text-tertiary tw-text-2xl tw-mt-2 tw-mb-0 tw-font-normal">+57 300 4659 997</h2>
+
+    <!-- ***************** E: NEW FOOTER ***************** -->
+    <div class="partymax-footer tw-py-10 w-100 tw-mt-5 tw-bg-[#eef0ef]">
+      <img :src="partymax_logo" alt="PartyMax" width="250" height="auto" />
+      <div class="tw-flex tw-mt-8 justify-content-center">
+        <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="tw-mr-2" aria-label="instagram">
+          <instagram aria-hidden="true" />
+        </a>
+        <a href="https://www.facebook.com/partymaxcolombia" target="_blank" class="tw-mr-2" aria-label="facebook">
+          <facebook aria-hidden="true" />
+        </a>
+        <a href="https://wa.link/wvdoxg" target="_blank" aria-label="whatsapp">
+          <whatsapp_magenta aria-hidden="true" />
+        </a>
+      </div>
+      <h2 class="tw-text-primary tw-font-bold tw-text-xl tw-mt-8 text-center">Conecta con Nosotros</h2>
+      <p class="tw-text-black tw-text-xl tw-m-0 tw-mt-1 text-center">
+        <NuxtLink 
+            to="tel:+573004659997" 
+            target="_blank"
+            class="tw-no-underline tw-text-inherit tw-block lg:tw-inline tw-mb-2 lg:tw-mb-0"
+            rel="nofollow noopener noreferrer"
+          >
+          +57 300 4659 997
+        </NuxtLink>
+        <span class="tw-hidden lg:tw-inline">&nbsp;|&nbsp;</span>
+        <NuxtLink 
+            to="mailto:fiesta@partymax.co" 
+            target="_blank"
+            class="tw-no-underline tw-text-inherit tw-block lg:tw-inline tw-mb-2 lg:tw-mb-0"
+            rel="nofollow noopener noreferrer"
+          >
+          fiesta@partymax.co
+        </NuxtLink>
+      </p>
+      <p class="tw-text-black tw-text-xl tw-m-0 tw-mt-8 text-center">
+        <NuxtLink 
+            to="#" 
+            class="tw-no-underline tw-text-inherit tw-block lg:tw-inline tw-mb-2 lg:tw-mb-0"
+            rel="nofollow"
+          >
+          Términos y Condiciones
+        </NuxtLink>
+        <span class="tw-hidden lg:tw-inline">&nbsp;|&nbsp;</span>
+        <NuxtLink 
+            to="#" 
+            class="tw-no-underline tw-text-inherit tw-block lg:tw-inline tw-mb-2 lg:tw-mb-0"
+            rel="nofollow"
+          >
+          Política de Cookies
+        </NuxtLink>
+        <span class="tw-hidden lg:tw-inline">&nbsp;|&nbsp;</span>
+        <NuxtLink 
+            to="#" 
+            class="tw-no-underline tw-text-inherit tw-block lg:tw-inline tw-mb-2 lg:tw-mb-0"
+            rel="nofollow"
+          >
+          Política de Envío
+        </NuxtLink>
+        <span class="tw-hidden lg:tw-inline">&nbsp;|&nbsp;</span>
+        <NuxtLink 
+            to="#" 
+            class="tw-no-underline tw-text-inherit tw-block lg:tw-inline tw-mb-2 lg:tw-mb-0"
+            rel="nofollow"
+          >
+          Política de Privacidad
+        </NuxtLink>
+      </p>
+      <div class="tw-mt-8">
+        <p class="tw-text-black tw-text-xl tw-m-0 tw-mt-1 text-center tw-flex tw-items-center tw-justify-center tw-gap-2">
+          <span>Pagos <strong class="tw-uppercase">confiables</strong> a traves de</span><img :src="payu" alt="PayU" width="100" height="auto"/>
+        </p>
+        <div class="tw-mt-1 tw-flex tw-items-center tw-justify-center tw-gap-1 lg:tw-gap-5 tw-flex-no-wrap tw-flex-col lg:tw-flex-row">
+          <div class="payu-creditcards tw-flex tw-items-center tw-justify-center tw-gap-1 tw-flex-no-wrap">
+            <img :src="visa" alt="Visa" width="50" height="auto"/>
+            <img :src="mastercard" alt="Mastercard" width="40" height="auto"/>
+            <img :src="diners" alt="Diners Club" width="50" height="auto"/>
+            <img :src="amex" alt="American Express" width="30" height="auto"/>
+            <img :src="codensa" alt="Codensa" width="50" height="auto"/>
           </div>
-          <div class="tw-mt-6">
-            <div class="tw-flex tw-flex-col">
-              <div class="tw-flex tw-items-center">
-                <img :src="icochat" class="tw-mr-3" alt="Chat" width="32" height="32"/>
-                <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Mensaje directo</span>
-              </div>
-              <span class="tw-text-gray tw-mt-2 tw-text-sm">Escríbenos para dudas rápidas y seguimiento.</span>
-            </div>
-            <VBtn
-              class="btn-register tw-text-white tw-bg-primary button-hover tw-normal-case tw-mt-6"
-              @click="redirectTo('https://wa.link/wvdoxg')"
-            >
-              Mensaje directo
-            </VBtn>
+          <div class="payu-creditcards tw-flex tw-items-center tw-justify-center tw-gap-1 tw-flex-no-wrap tw-mt-3 lg:tw-mt-0">
+            <img :src="sured" alt="SuRed" width="50" height="auto"/>
+            <img :src="efecty" alt="Efecty" width="50" height="auto"/>
+            <img :src="davivienda" alt="Davivienda" width="25" height="auto"/>
+            <img :src="bancodebogota" alt="Banco de Bogotá" width="25" height="auto"/>
+            <img :src="bancolombia" alt="Bancolombia" width="30" height="auto"/>
           </div>
-          <div class="tw-mt-6">
-            <div class="tw-flex tw-flex-col">
-              <div class="tw-flex tw-items-center">
-                <img :src="icomail "class="tw-mr-3" alt="Mail" width="32" height="32" />
-                <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Correo electrónico</span>
-              </div>
-              <span class="tw-text-gray tw-mt-2 tw-text-sm">Ideal para cotizaciones y ventas mayoristas.</span>
-            </div>
-            <span class="tw-text-tertiary tw-text-2xl tw-mt-2 tw-mb-0">fiesta@partymax.co</span>
+          <div class="payu-creditcards tw-flex tw-items-center tw-justify-center tw-gap-1 tw-flex-no-wrap">
+            <img :src="pse" alt="PSE" width="30" height="auto"/>
+            <img :src="breb" alt="Breb" width="50" height="auto"/>
+            <img :src="nequi" alt="Nequi" width="50" height="auto"/>
+            <img :src="gpay" alt="Google Pay" width="50" height="auto" class="tw-ml-1"/>
           </div>
-          <div class="tw-mt-6">
-            <div class="tw-flex tw-flex-col">
-              <div class="tw-flex tw-items-center">
-                <img :src="icostore "class="tw-mr-3" alt="Store" width="32" height="32"/>
-                <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Tienda</span>
-              </div>
-                <span class="tw-text-gray tw-mt-2 tw-text-sm">Nuestra oficina principal está ubicada en</span>
-            </div>
-            <span class="tw-text-tertiary tw-text-2xl tw-mt-2 tw-mb-0">Calle 13 #69-06</span>
-          </div>
-          <div class="tw-mt-6 tw-mb-6 md:tw-mb-0">
-            <div class="tw-flex tw-flex-col">
-              <div class="tw-flex tw-items-center">
-                <img :src="icosearch "class="tw-mr-3" alt="Search" width="32" height="32" />
-                <span class="tw-text-tertiary tw-font-semibold tw-text-lg tw-m-0">Encuentra Inspiración Diaria</span>
-              </div>
-              <span class="tw-text-gray tw-mt-2 tw-text-sm">
-                Síguenos en nuestras redes y descubre ideas, tutoriales y las últimas tendencias para tus celebraciones.
-              </span>
-            </div>
-            <div class="tw-flex tw-mt-3">
-              <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="tw-mr-2" aria-label="instagram">
-                <instagram aria-hidden="true" />
-              </a>
-              <a href="https://www.facebook.com/partymaxcolombia" target="_blank" class="tw-mr-2" aria-label="facebook">
-                <facebook aria-hidden="true" />
-              </a>
-              <a href="https://wa.link/wvdoxg" target="_blank" aria-label="whatsapp">
-                <whatsapp_magenta aria-hidden="true" />
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="md:tw-w-1/2 text-left tw-pl-0 md:tw-pl-8 tw-mt-6 md:tw-mt-0">
-          <h2 class="tw-text-primary tw-font-bold tw-text-4xl tw-mb-2">¡Hablemos, nos encantan las fiestas!</h2>
-          <p class="tw-text-tertiary tw-mt-2 tw-mb-6">Estamos aquí para ayudarte con tus consultas.</p>
-          <VForm
-              ref="refVForm"
-              @submit.prevent="onSubmit"
-              >
-            <div class="tw-mb-1 textinput">
-              <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1" for="name-input">Nombre</label>
-              <VTextField
-                v-model="name"
-                variant="outlined" 
-                density="compact" 
-                :rules="[requiredValidator]"
-                @input="inputChange()"
-                id="name-input" />
-            </div>
-            <div class="tw-mb-1 textinput">
-              <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1" for="email-input">Correo Electrónico</label>
-              <VTextField 
-                v-model="email"
-                type="email"
-                variant="outlined" 
-                density="compact" 
-                :rules="[requiredValidator, emailValidator]"
-                @input="inputChange()" 
-                id="email-input"/>
-            </div>
-            <div class="tw-mb-1">
-              <label class="tw-text-tertiary tw-text-sm tw-block tw-mb-1" for="message-input">Mensaje</label>
-              <VTextarea
-                v-model="message"
-                variant="outlined"
-                placeholder="Escribe tu mensaje..."
-                :rules="[requiredValidator]"
-                @input="inputChange()"
-                rows="4"
-                id="message-input"
-              />
-            </div>
-            <VCheckbox v-model="terms" color="primary" class="tw-mb-4" :rules="[requiredValidator]">
-              <template #label>
-                <div class="tw-text-tertiary tw-text-sm">
-                  Acepto los
-                  <a href="/terms-and-conditions" target="_blank" class="tw-text-primary tw-underline">Términos</a> y el
-                  <a href="/data-protection" target="_blank" class="tw-text-primary tw-underline">tratamiento de datos</a>.
-                </div>
-              </template>
-            </VCheckbox>
-            <VBtn
-              variant="flat"
-              type="submit"
-              class="btn-register tw-text-white tw-bg-primary button-hover tw-normal-case">
-              Enviar mensaje
-            </VBtn>
-          </VForm>
         </div>
       </div>
     </div>
-    <div class="tw-flex tw-flex-col md:tw-flex-row w-100 tw-p-5 tw-gap-2 md:tw-gap-4 align-center justify-content-center tw-border-t tw-border-solid tw-border-grey_2">
-      <span class="copyright">©{{currentYear}} PartyMax. Todos los derechos reservados.</span>
-      <NuxtLink to="/terms-and-conditions" class="copyright tw-no-underline tw-text-tertiary hover:tw-text-primary">
-        Términos y Condiciones
-      </NuxtLink>
-    </div>
+    <!-- ***************** B: NEW FOOTER ***************** -->
   </VFooter>
 </template>
 
 <style scoped>
+  .partymax-footer {
+    font-family: 'poppins', sans-serif;
+  }
 
   .whatsapp-float {
     position: fixed;

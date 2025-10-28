@@ -33,11 +33,19 @@ import f_2 from '@assets/images/f_2.webp';
 import f_3 from '@assets/images/f_3.webp';
 import f_4 from '@assets/images/f_4.webp';
 
+import t_7 from '@assets/images/t_7.jpg';
+
+import mb_1 from '@assets/images/pmhb-01-envio-express.svg';
+import mb_2 from '@assets/images/pmhb-02-lo-mas-nuevo.svg';
+import mb_3 from '@assets/images/pmhb-03-oferta-del-dia.svg';
+import mb_4 from '@assets/images/pmhb-04-mas-vendidos.svg';
+import mb_5 from '@assets/images/pmhb-05-aliados.svg';
+
 import check_circle from '@assets/icons/check-circle.svg';
 import error_circle from '@assets/icons/error-circle.svg';
 
 const thumbsSwiper = ref(null);
-const modules = ref([Pagination])
+const modules = ref([Navigation, Pagination])
 const modulesSlider = ref([Autoplay, Pagination, Navigation])
 
 const setThumbsSwiper = (swiper) => {
@@ -54,6 +62,9 @@ const banner_3 = ref([])
 const banner_4 = ref([])
 const banner_5 = ref([])
 const banner_6 = ref([])
+const banner_products = ref([])
+const banner_services = ref([])
+const homeFeaturedBanners = ref({})
 
 const { isMobile } = useDevice();
 
@@ -87,6 +98,8 @@ const isDialogVisible = ref(false)
 const isError = ref(false)
 const message = ref(false)
 
+const categories = ref([]);
+
 watch(() => 
   miscellaneousStores.getLoading, async (value) => {
     isLoading.value = value
@@ -109,13 +122,16 @@ watch(() =>
   }
 )
 
-watchEffect(fetchData)
+// watchEffect(fetchData)
 
 async function fetchData() {
 
   isLoading.value = true
   
   await homeStores.fetchData()
+
+  categories.value = homeStores.getData.parentCategories;
+
   data.value = homeStores.getData
 
   sliders.value = data.value.images.filter(item => item.is_slider === 1);
@@ -141,8 +157,41 @@ async function fetchData() {
   banner_6.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 6).mobile : banners.value.find(item => item.order_id === 6).image);
   banner_6.value.url = banners.value.find(item => item.order_id === 6).url;
 
+  const tempBanners = {};
+  const specialBanners = [
+    { id: 7, prop: 'products' },
+    { id: 8, prop: 'services' }
+  ];
+  const sequentialIds = { start: 9, end: 16 };
+  for (const { id, prop } of specialBanners) {
+    const foundBanner = banners.value.find(item => item.order_id === id);
+    
+    if (foundBanner) {
+        tempBanners[prop] = {
+            image: baseURL.value + (isMobile ? foundBanner.mobile : foundBanner.image),
+            url: foundBanner.url,
+            title: foundBanner.title
+        };
+    }
+  }
+  for (let id = sequentialIds.start; id <= sequentialIds.end; id++) {
+    const propName = `banner${id}`;
+    const foundBanner = banners.value.find(item => item.order_id === id);
+
+    if (foundBanner) {
+        tempBanners[propName] = {
+            image: baseURL.value + (isMobile ? foundBanner.mobile : foundBanner.image),
+            url: foundBanner.url,
+            title: foundBanner.title
+        };
+    }
+  }
+  homeFeaturedBanners.value = tempBanners;
+
   isLoading.value = false
 }
+
+await useAsyncData('homeData', fetchData);
 
 const redirectTo = (url) => {
   if (url) {
@@ -179,6 +228,25 @@ useHead({
   ]
 });
 
+const featuredCategory = 'fiestas-tematicas'
+const featuredCategorySwiperOptions = reactive({
+  slidesPerView: 2,
+  spaceBetween: 2,
+  breakpoints: {
+    501: {
+      slidesPerView: 3,
+      spaceBetween: 3,
+    },
+    768: {
+      slidesPerView: 4, 
+      spaceBetween: 4, 
+    },
+    1280: {
+      slidesPerView: 6, 
+      spaceBetween: 6, 
+    },
+  },
+});
 </script>
 
 <template>
@@ -189,15 +257,16 @@ useHead({
     Partymax, tu aliado ideal para fiestas en Colombia.
   </h1>
 
-  <div class="d-flex flex-column flex-md-row tw--mt-2 md:tw-mt-3 lg:tw-h-[683px]" v-if="data">
-    <div class="lg:tw-w-[75%] lg:tw-h-[683px]">
+  <!-- B: NEW MAIN BANNER SLIDER -->
+  <section id="main-banner">
+    <div class="tw--mt-2 md:tw-mt-3">
       <swiper
         :pagination="true"
         :navigation="true"
-        :modules="modulesSlider"    
+        :modules="modulesSlider"
         :loop="true"
         :autoplay="{
-          delay: 2500,
+          delay: 5000,
           disableOnInteraction: false,
         }"
         class="MySwiper"
@@ -205,628 +274,331 @@ useHead({
         <swiper-slide
           v-for="(item,i) in sliders"
           :key="i"
-          class="w-100 tw-h-[683px] tw-relative"
+          class="w-100 tw-relative"
         >
-          <img 
-            :src="baseURL + (isMobile ? item.mobile : item.image)"
-            :alt="item.title + ' - Imagen de slider'"
-            class="w-100 h-100 tw-object-cover"
-            :loading="i === 0 ? 'eager' : 'lazy'"
-            :fetchpriority="i === 0 ? 'high' : 'auto'"
-            width="1044"
-            height="683"
+          <NuxtLink 
+            :to="item.url" 
+            class="tw-block tw-w-full tw-h-full"
+            rel="noopener"
           >
-          <div class="tw-absolute tw-inset-0 tw-flex tw-flex-col tw-justify-center tw-items-start tw-p-5 md:tw-p-[100px]">
-            <h2  
-              class="tw-text-white tw-font-bold tw-leading-[48px] tw-text-[36px] md:tw-text-[40px] tw-mb-4 md:tw-w-[45%]">
-              {{ item.title }}
-            </h2>
-
-            <span v-html="item.text" class="tw-text-white tw-leading-[24px] tw-text-[16px] tw-max-w-lg tw-mb-6 md:tw-w-[45%]">
-            </span>
-
-            <VBtn
-              variant="flat"
-              class="tw-normal-case btn-register tw-text-white tw-bg-primary button-hover my-2 mt-md-5"
-              @click="redirectTo(item.url)"
+            <img 
+              :src="baseURL + (isMobile ? item.mobile : item.image)"
+              :alt="item.title"
+              class="w-100"
+              :loading="i === 0 ? 'eager' : 'lazy'"
+              :fetchpriority="i === 0 ? 'high' : 'auto'"
             >
-              {{ item.button_text }}
-            </VBtn>
-
-          </div>
+          </NuxtLink>
         </swiper-slide>
       </swiper>
     </div>
-    <div class="lg:tw-w-[25%] d-flex tw-flex-col md:tw-flex-row lg:tw-flex-col lg:tw-h-[683px] tw-relative">
-      <div
-          class="absolute tw-p-5 tw-h-[309px] lg:tw-h-[50%] w-100 tw-cursor-pointer tw-bg-cover tw-bg-center img-gallery"
-          :style="{ backgroundImage: 'url(' + banner_1.image + ')' }"
-          @click="redirectTo(banner_1.url)"
-          role="img"
-          :aria-label="banner_1.title">
-          <span v-html="banner_1.title" class="tw-text-tertiary tw-leading-[36px] tw-text-[24px]">
-          </span>
-      </div>
-      <div
-        class="absolute tw-p-5 tw-h-[309px] lg:tw-h-[50%] w-100 tw-cursor-pointer tw-bg-cover tw-bg-center img-gallery"
-        :style="{ backgroundImage: 'url(' + banner_2.image + ')' }"
-        @click="redirectTo(banner_2.url)"
-        role="img"
-        :aria-label="banner_2.title">
-        <span v-html="banner_2.title" class="tw-text-tertiary tw-leading-[36px] tw-text-[24px]">
-        </span>
-      </div>
-    </div>
-  </div>
-  <VContainer v-if="data">
-    <!-- card -->
-    <VCard class="mt-7 no-shadown card-information">
-      <VCardItem class="p-0">
-        <VRow no-gutters  class="tw-text-tertiary">
-          <VCol cols="12" sm="6" md="3" class="d-flex align-center hr">
-            <img :src="motorcycle" width="60" height="60" class="ms-10" alt="Icono de motocicleta para envíos gratis" loading="lazy"/>
-            <div class="d-block ms-5">
-              <span class="d-block card-information-title mb-1">Envíos gratis</span>
-              <span class="d-block card-information-subtitle">A partir de $210.000</span>
-            </div>
-          </VCol>
-          <VCol cols="12" sm="6" md="3" class="d-flex align-center hr no-border">
-            <img :src="location" width="60" height="60" class="ms-10" alt="Icono de ubicación para nuestras tiendas" loading="lazy"/>
-            <div class="d-block ms-5">
-              <span class="d-block card-information-title mb-1">Nuestras tiendas</span>
-              <span class="d-block card-information-subtitle">En Bogotá</span>
-            </div>
-          </VCol>
-          <VCol cols="12" sm="6" md="3" class="d-flex align-center hr">
-            <img :src="sold" width="60" height="60" class="ms-10" alt="Icono de etiqueta de vendido para ventas al por mayor" loading="lazy"/>
-            <div class="d-block ms-5">
-              <span class="d-block card-information-title mb-1">Ventas por mayor</span>
-              <span class="d-block card-information-subtitle">A los mejores precios</span>
-            </div>
-          </VCol>
-          <VCol cols="12" sm="6" md="3" class="d-flex align-center col-siguecompra">
-            <img :src="tracking" width="60" height="60" class="ms-10" alt="Icono de seguimiento para seguir tu compra" loading="lazy"/>
-            <div class="d-block ms-5">
-              <span class="d-block card-information-title mb-1">Sigue tu compra</span>
-              <span class="d-block card-information-subtitle">Desde tu cuenta</span>
-            </div>
-          </VCol>
-        </VRow>
-      </VCardItem>  
-    </VCard>
+  </section>
+  <!-- E: NEW MAIN BANNER SLIDER -->
 
-    <!-- recommendations -->
-    <VCard class="mt-7 no-shadown card-information p-0">
-      <VCardTitle class="px-4 px-md-7 py-3 cardtitles hr-cyan">Recomendaciones según tus búsquedas</VCardTitle>
-      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-none d-md-flex align-items-stretch justify-content-between" v-if="data">
-        <Product1 
-          v-for="(product, i) in data.recommendations"
-          :key="i"
-          :product="product"
-          :readonly="true"/>
-      </VCardText>  
-      <VCardText class="pb-0 px-4 px-md-7 mt-5 mb-2 xs:tw-hidden md:tw-block lg:tw-hidden align-items-stretch justify-content-between" v-if="data">  
-        <swiper
-          :pagination="{
-            dynamicBullets: true,
-          }"
-          :modules="modules"
-          :spaceBetween="5"
-          :slidesPerView="3"
-          :freeMode="true"
-          :watchSlidesProgress="true"
-          @swiper="setThumbsSwiper"
-          class="MySwiper3"
-          >
-          <swiper-slide v-for="(product, i) in data.recommendations" :key="i">
-            <Product1 
-              :product="product"
-              :readonly="true"/>
-          </swiper-slide>
-        </swiper>
-      </VCardText> 
-      <VCardText class="pb-0 px-4 px-md-7 mt-5 mb-2 xs:tw-block md:tw-hidden align-items-stretch justify-content-between" v-if="data">  
-        <swiper
-          :pagination="{
-            dynamicBullets: true,
-          }"
-          :modules="modules"
-          :spaceBetween="5"
-          :slidesPerView="2"
-          :freeMode="true"
-          :watchSlidesProgress="true"
-          @swiper="setThumbsSwiper"
-          :style="{ height: isMobile ? '340px' : '370px' }"
-          class="MySwiper2"
-          >
-          <swiper-slide v-for="(product, i) in data.recommendations" :key="i">
-            <Product1 
-              :product="product"
-              :readonly="true"/>
-          </swiper-slide>
-        </swiper>
-      </VCardText> 
-    </VCard>
-
-    <!-- banner 2 -->
-    <VCard class="mt-7 no-shadown card-information p-0 transparent">
-      <VCardItem class="p-0">
-        <img :src="banner_3.image" cover @click="redirectTo(banner_3.url)" class="img-gallery cursor-pointer" alt="Banner para animar al usuario a registrarse"/>
-      </VCardItem>  
-    </VCard>
-    
-    <!-- the most sold -->
-    <VCard class="mt-7 no-shadown card-information p-0 tw-bg-yellow_happiness_100">
-      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center card-vendido cardtitles hr-cyan tw-border-b tw-border-tertiary">
-        <span>Lo más vendido</span>
-        <VSpacer />
-        <NuxtLink 
-          :to="{
-            name: 'categories-slug',
-            params: {
-              slug: 'globos'
-            }
-          }"
-          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-1 me-md-3 hover:tw-text-primary vendido-globos">Globos
-        </NuxtLink>
-        <NuxtLink 
-          :to="{
-            name: 'categories-slug',
-            params: {
-              slug: 'hora-loca'
-            }
-          }"
-          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-1 me-md-3 hover:tw-text-primary vendido-globos">
-          Piñatas
-        </NuxtLink>
-        <NuxtLink 
-          :to="{
-            name: 'categories-slug',
-            params: {
-              slug: 'sorpresas'
-            }
-          }"
-          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-1 me-md-3 hover:tw-text-primary vendido-globos">
-          Sorpresas
-        </NuxtLink>
-        <NuxtLink 
-          :to="{
-            name: 'categories-slug',
-            params: {
-              slug: 'decoracion'
-            }
-          }"
-          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-1 me-md-3 hover:tw-text-primary vendido-globos">
-          Decoración
-        </NuxtLink>
-      </VCardTitle>
-      <VCardText class="px-4 px-md-7 pb-0 mt-2 mt-md-5 mb-2 mb-md-5 d-flex align-items-stretch justify-content-between card-banner5" v-if="data">
-        <VRow no-gutters class="transparent tw-w-[-webkit-fill-available]">
-          <VCol cols="12" lg="9">
-            <VCard class="no-shadown tw-bg-yellow_happiness_100">
-              <VCardText class="p-0">
-                <img 
-                  :src="banner_4.image" 
-                  class="border-img w-100"
-                  alt="Lo mas vendido - Se parte de nuestro marketplace"
-                  @click="redirectTo(banner_4.url)"
-                  />
-              </VCardText>
-              <VCardText class="p-0">
-                <VTabs v-model="tab" class="mt-3 mt-7 tw-text-tertiary">
-                  <VTab value="0">Agregados recientemente</VTab>
-                  <VTab value="1">Lo  mejor de lo mejor</VTab>
-                </VTabs>
-                <v-window v-model="tab" disabled>
-                  <v-window-item value="0">
-                    <VCardText class="px-0 mt-5 d-none d-md-flex align-items-stretch justify-content-between">
-                      <Product1 
-                        v-for="(product, index) in data.mostSold.latestProducts"
-                        v-show="index < 4"
-                        :key="index"
-                        :product="product"
-                        :readonly="true"
-                        :bg="`tw-bg-yellow_happiness_100`"/>
-                    </VCardText>
-                    <VCardText class="pb-0 px-0 mt-5 xs:tw-hidden md:tw-block lg:tw-hidden align-items-stretch justify-content-between">
-                      <swiper
-                        :pagination="{
-                          dynamicBullets: true,
-                        }"
-                        :modules="modules"
-                        :spaceBetween="5"
-                        :slidesPerView="3"
-                        :freeMode="true"
-                        :watchSlidesProgress="true"
-                        @swiper="setThumbsSwiper"
-                        :style="{ height: '400px !important' }"
-                        class="MySwiper3"
-                        >
-                        <swiper-slide v-for="(product, i) in data.mostSold.latestProducts" :key="i">
-                          <Product1 
-                            :product="product"
-                            :readonly="true"
-                            :bg="`tw-bg-yellow_happiness_100`"/>
-                        </swiper-slide>
-                      </swiper>
-                    </VCardText>
-                    <VCardText class="pb-0 px-0 mt-5 xs:tw-block md:tw-hidden align-items-stretch justify-content-between">
-                      <swiper
-                        :pagination="{
-                          dynamicBullets: true,
-                        }"
-                        :modules="modules"
-                        :spaceBetween="5"
-                        :slidesPerView="2"
-                        :freeMode="true"
-                        :watchSlidesProgress="true"
-                        @swiper="setThumbsSwiper"
-                        :style="{ height: isMobile ? '330px' : '370px' }"
-                        class="MySwiper2"
-                        >
-                        <swiper-slide v-for="(product, i) in data.mostSold.latestProducts" :key="i">
-                          <Product1 
-                            :product="product"
-                            :readonly="true"
-                            :bg="`tw-bg-yellow_happiness_100`"/>
-                        </swiper-slide>
-                      </swiper>
-                    </VCardText>
-                  </v-window-item>
-
-                  <v-window-item value="1">
-                    <VCardText class="px-0 mt-5 d-none d-md-flex align-items-stretch justify-content-between">
-                      <Product1 
-                        v-for="(product, index) in data.mostSold.bestSellers"
-                        v-show="index < 4"
-                        :key="index"
-                        :product="product"
-                        :readonly="true"
-                        :bg="`tw-bg-yellow_happiness_100`"/>
-                    </VCardText>
-                    <VCardText class="pb-0 px-0 mt-5 xs:tw-hidden md:tw-block lg:tw-hidden align-items-stretch justify-content-between">
-                      <swiper
-                        :pagination="{
-                          dynamicBullets: true,
-                        }"
-                        :modules="modules"
-                        :spaceBetween="5"
-                        :slidesPerView="3"
-                        :freeMode="true"
-                        :watchSlidesProgress="true"
-                        @swiper="setThumbsSwiper"
-                        :style="{ height: '400px !important' }"
-                        class="MySwiper3"
-                        >
-                        <swiper-slide v-for="(product, i) in data.mostSold.bestSellers" :key="i">
-                          <Product1 
-                            :product="product"
-                            :readonly="true"
-                            :bg="`tw-bg-yellow_happiness_100`"/>
-                        </swiper-slide>
-                      </swiper>
-                    </VCardText>
-                    <VCardText class="pb-0 px-0 mt-5 xs:tw-block md:tw-hidden align-items-stretch justify-content-between">
-                      <swiper
-                        :pagination="{
-                          dynamicBullets: true,
-                        }"
-                        :modules="modules"
-                        :spaceBetween="5"
-                        :slidesPerView="2"
-                        :freeMode="true"
-                        :watchSlidesProgress="true"
-                        @swiper="setThumbsSwiper"
-                        :style="{ height: isMobile ? '330px' : '370px' }"
-                        class="MySwiper2"
-                        >
-                        <swiper-slide v-for="(product, i) in data.mostSold.bestSellers" :key="i">
-                          <Product1 
-                            :product="product"
-                            :readonly="true"
-                            :bg="`tw-bg-yellow_happiness_100`"/>
-                        </swiper-slide>
-                      </swiper>
-                    </VCardText>
-                  </v-window-item>
-                </v-window>
-              </VCardText>
-            </VCard>
-          </VCol>
-          <VCol cols="12" lg="3" class="d-none d-md-flex flex-column col-mobile">
-            <VCardText class="p-0 ms-3">
-              <div v-if="tab === '0'">
-                <Product2 
-                  v-for="(product, index) in data.mostSold.latestProducts"
-                  v-show="index >= 4"
-                  :key="index"
-                  :product="product"
-                  :readonly="true"
-                  :bg="`tw-bg-yellow_happiness_100`"/>
-              </div>
-              <div v-else>
-                <Product2 
-                  v-for="(product, index) in data.mostSold.bestSellers"
-                  v-show="index >= 4"
-                  :key="index"
-                  :product="product"
-                  :readonly="true"
-                  :bg="`tw-bg-yellow_happiness_100`"/>
-              </div>
-            </VCardText>
-            <VCardText class="p-0 more">
-              <NuxtLink to="/products" class="d-flex tw-no-underline tw-text-tertiary hover:tw-text-primary hover-icon-arrow-right justify-content-end align-center">
-                <span class="ms-5">Ver más</span>
-                <arrow_right class="ms-2" />
-              </NuxtLink>
-            </VCardText>
-          </VCol>
-        </VRow>
-      </VCardText>  
-    </VCard>
-
-    <!-- banner 2 , banner 3-->
-    <VCard class="mt-7 no-shadown card-information p-0 d-flex transparent card-banner34">
+  <!-- B: PRODUCTS / SERVICES CARDS CTA | MISC CARDS -->
+  <section id="main-banner" class="mt-3">
+    <VContainer>
+      <!-- B: PRODUCTS / SERVICES CARDS CTA -->
+      <VCard class="no-shadown card-information p-0 d-flex transparent card-banner34">
         <VCard class="no-shadown card-information p-0 w-50 grid-item w-100">
             <VCardItem class="p-0">
-              <img :src="banner_5.image" cover @click="redirectTo(banner_5.url)"  class="img-gallery cursor-pointer" alt="Tu guia de Inteligencia Artificial para fiestas inoolvidables!"/>
+              <NuxtLink 
+                :to="homeFeaturedBanners.products?.url" 
+                class="tw-block tw-w-full tw-h-full"
+                rel="noopener"
+              >
+                <img :src="homeFeaturedBanners.products?.image" cover  class="img-gallery" :alt="homeFeaturedBanners.products?.title"/>
+              </NuxtLink>
             </VCardItem> 
         </VCard>
         <VCard class="no-shadown card-information p-0 w-50 ms-5 grid-item w-100">
             <VCardItem class="p-0">
-              <img :src="banner_6.image" cover @click="redirectTo(banner_6.url)" class="img-gallery cursor-pointer" alt="Haz tu celebracion inolvidable con PartyMax"/>
+              <NuxtLink 
+                :to="homeFeaturedBanners.services?.url" 
+                class="tw-block tw-w-full tw-h-full"
+                rel="noopener"
+              >
+                <img :src="homeFeaturedBanners.services?.image" cover class="img-gallery" :alt="homeFeaturedBanners.services?.title"/>
+              </NuxtLink>
             </VCardItem>
         </VCard>
-    </VCard>
-
-    <!-- theme parties -->
-    <VCard class="mt-7 no-shadown card-information transparent p-0">
-      <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center cardtitles">
-        <span>Fiestas temáticas</span>
-        <VSpacer />
-        <NuxtLink 
-          :to="buildPrettyPathProducts('fiestas-tematicas')"
-          @click.prevent="handleCategoryClickProducts('fiestas-tematicas')"
-          aria-label="Ver todos los productos de fiestas temáticas"
-          class="ms-5 tw-no-underline d-none d-md-flex tw-text-tertiary font-size-16 me-3 hover:tw-text-primary">
-          Ver todos
-        </NuxtLink>
-      </VCardTitle>
-      <VDivider class="hr-primary"/>
-      <VCardText class="px-4 px-md-7 mt-5 mb-5 d-none d-md-flex align-items-stretch justify-content-between">
-        <NuxtLink
-          :to="buildPrettyPathProducts('fiestas-tematicas','tematica-mexicana')"
-          @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-mexicana')" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_1" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Mexicana"/>
-          <span class="d-block size-theme tw-text-tertiary mt-5">Mexicana</span>
-        </NuxtLink>
-        <NuxtLink 
-          :to="buildPrettyPathProducts('fiestas-tematicas','tematica-tropical')"
-          @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-tropical')" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Tropical"/>
-          <span class="d-block size-theme tw-text-tertiary mt-5">Tropical</span>
-        </NuxtLink>
-        <NuxtLink 
-          :to="buildPrettyPathProducts('fiestas-tematicas','tematica-vallenata')"
-          @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-vallenata')" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_3" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Vallenata"/>
-          <span class="d-block size-theme tw-text-tertiary mt-5">Vallenata</span>
-        </NuxtLink>
-        <NuxtLink 
-          :to="buildPrettyPathProducts('fiestas-tematicas','tematica-metalizada')"
-          @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-metalizada')" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_4" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Metalizada"/>
-          <span class="d-block size-theme tw-text-tertiary mt-5">Metalizada</span>
-        </NuxtLink>
-        <NuxtLink 
-          :to="buildPrettyPathProducts('fiestas-tematicas','tematica-neon')"
-          @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-neon')" class="tw-no-underline d-block text-center zoom">
-          <img :src="t_5" class="d-block size-rect-desktop" loading="lazy" alt="Fiesta con tematica Neón"/>
-          <span class="d-block size-theme tw-text-tertiary mt-5">Neón</span>
-        </NuxtLink>
-      </VCardText> 
-      <VCardText class="px-0 mt-2 mb-2 xs:tw-hidden md:tw-block lg:tw-hidden align-items-stretch justify-content-between">
-        <VRow no-gutters class="transparent">
-          <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
-            <NuxtLink 
-              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-mexicana')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-mexicana')" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_1" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Mexicana"/>
-              <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
-            </NuxtLink>
-          </VCol>
-          <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
-            <NuxtLink 
-              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-tropical')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-tropical')" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica tropical"/>
-              <span class="d-block size-theme tw-text-tertiary mt-2">Tropical</span>
-            </NuxtLink>
-          </VCol>
-          <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
-            <NuxtLink 
-              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-vallenata')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-vallenata')" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_3" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Vallenata"/>
-              <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
-            </NuxtLink>
-          </VCol>
-          <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
-            <NuxtLink 
-              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-metalizada')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-metalizada')" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_4" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Metalizada"/>
-              <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
-            </NuxtLink>
-          </VCol>
-          <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
-            <NuxtLink 
-              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-neon')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-neon')" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_5" class="d-block size-rect-desktop" width="150"  height="150" loading="lazy" alt="Fiesta con tematica Neón"/>
-              <span class="d-block size-theme tw-text-tertiary mt-2">Neón</span>
-            </NuxtLink>
-          </VCol>
-          <VCol cols="4" class="d-flex align-center text-center justify-content-center mb-5">
-            <NuxtLink
-              :to="buildPrettyPathProducts('fiestas-tematicas')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas')" 
-              class="tw-no-underline d-block text-center zoom mt-0">
-              <span class="d-block size-rect-desktop tw-bg-primary"/>
-              <span class="d-block size-theme tw-text-tertiary mt-2">Todos</span>
-            </NuxtLink>
-          </VCol>
-        </VRow>
-      </VCardText>
-      <VCardText class="px-0 mt-2 mb-2 xs:tw-block md:tw-hidden align-items-stretch justify-content-between">
-        <VRow no-gutters class="transparent">
-          <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
-            <NuxtLink 
-              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-mexicana')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-mexicana')" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_1" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Mexicana"/>
-              <span class="d-block size-theme tw-text-tertiary mt-2">Mexicana</span>
-            </NuxtLink>
-          </VCol>
-          <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
-            <NuxtLink 
-              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-tropical')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-tropical')" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_2" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Tropical"/>
-              <span class="d-block size-theme tw-text-tertiary mt-2">Tropical</span>
-            </NuxtLink>
-          </VCol>
-          <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
-            <NuxtLink 
-              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-vallenata')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-vallenata')" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_3" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Vallenata"/>
-              <span class="d-block size-theme tw-text-tertiary mt-2">Vallenata</span>
-            </NuxtLink>
-          </VCol>
-          <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
-            <NuxtLink 
-              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-metalizada')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-metalizada')" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_4" class="d-block size-rect-desktop" loading="lazy" width="150" height="150" alt="Fiesta con tematica Metalizada"/>
-              <span class="d-block size-theme tw-text-tertiary mt-2">Metalizada</span>
-            </NuxtLink>
-          </VCol>
-          <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
-            <NuxtLink 
-              :to="buildPrettyPathProducts('fiestas-tematicas','tematica-neon')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-neon')" class="tw-no-underline d-block text-center zoom">
-              <img :src="t_5" class="d-block size-rect-desktop" width="150"  height="150" loading="lazy" alt="Fiesta con tematica Neón"/>
-              <span class="d-block size-theme tw-text-tertiary mt-2">Neón</span>
-            </NuxtLink>
-          </VCol>
-          <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
-            <NuxtLink
-              :to="buildPrettyPathProducts('fiestas-tematicas')" @click.prevent="handleCategoryClickProducts('fiestas-tematicas')" 
-              class="tw-no-underline d-block text-center zoom mt-0">
-              <span class="d-block size-rect-desktop tw-bg-primary"/>
-              <span class="d-block size-theme tw-text-tertiary mt-2">Todos</span>
-            </NuxtLink>
-          </VCol>
-        </VRow>
-      </VCardText>     
-    </VCard>
-  </VContainer>
-
-  <div class="tw-bg-magenta_100" v-if="data">
-    <VContainer>
-      <!-- birthday -->
-      <VCard class="mt-7 no-shadown card-information transparent p-0 tw-text-tertiary">
-        <VCardTitle class="px-4 px-md-7 py-3 d-flex align-center cardtitles">
-          <span>Cumpleaños</span>
-          <VSpacer />
-        <NuxtLink 
-          :to="buildPrettyPathProducts('fiestas-tematicas','tematica-cumpleanos')"
-          @click.prevent="handleCategoryClickProducts('fiestas-tematicas','tematica-cumpleanos')"
-          aria-label="Ver todos los productos de cumpleaños"
-          class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 tw-text-tertiary hover:tw-text-primary">
-            Ver todos
-          </NuxtLink>
-        </VCardTitle>
-        <VDivider class="hr-secondary"/>
-        <VCardText class="px-4 px-md-7 mt-5 mb-5 d-none d-md-flex align-items-stretch justify-content-between">
-          <NuxtLink 
-            :to="buildPrettyPathProducts('fiestas-infantiles','fiestas-ninos')" @click.prevent="handleCategoryClickProducts('fiestas-infantiles','fiestas-ninos')" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Niños"/>
-            <span class="d-block size-theme tw-text-tertiary mt-5">Niños</span>
-          </NuxtLink>
-          <NuxtLink 
-            :to="buildPrettyPathProducts('fiestas-infantiles','tematica-ninas')" @click.prevent="handleCategoryClickProducts('fiestas-infantiles','tematica-ninas')" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Niñas"/>
-            <span class="d-block size-theme tw-text-tertiary mt-5">Niñas</span>
-          </NuxtLink>
-          <NuxtLink 
-            :to="buildPrettyPathProducts('fiestas-infantiles','tematica-bebes')" @click.prevent="handleCategoryClickProducts('fiestas-infantiles','tematica-bebes')" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Bebes"/>
-            <span class="d-block size-theme tw-text-tertiary mt-5">Bebes</span>
-          </NuxtLink>
-          <NuxtLink
-            :to="buildPrettyPathProducts('globos','globos-metalizados-tematicas-adultos','globos-metalizados')" @click.prevent="handleCategoryClickProducts('globos','globos-metalizados-tematicas-adultos','globos-metalizados')"
-            class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_4" class="border-theme d-white size-circles-desktop" loading="lazy" alt="Fiesta para Adultos"/>
-            <span class="d-block size-theme tw-text-tertiary mt-5">Adultos</span>
-          </NuxtLink>
-        </VCardText>
-        <VCardText class="px-4 px-md-7 mt-5 mb-5 xs:tw-hidden md:tw-flex lg:tw-hidden align-items-stretch justify-content-between">
-          <NuxtLink 
-            :to="buildPrettyPathProducts('fiestas-infantiles','fiestas-ninos')" @click.prevent="handleCategoryClickProducts('fiestas-infantiles','fiestas-ninos')" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_1" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Niños"/>
-            <span class="d-block size-theme tw-text-tertiary mt-5">Niños</span>
-          </NuxtLink>
-          <NuxtLink 
-            :to="buildPrettyPathProducts('fiestas-infantiles','tematica-ninas')" @click.prevent="handleCategoryClickProducts('fiestas-infantiles','tematica-ninas')" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_2" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Niñas"/>
-            <span class="d-block size-theme tw-text-tertiary mt-5">Niñas</span>
-          </NuxtLink>
-          <NuxtLink 
-            :to="buildPrettyPathProducts('fiestas-infantiles','tematica-bebes')" @click.prevent="handleCategoryClickProducts('fiestas-infantiles','tematica-bebes')" class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_3" class="border-theme d-block size-circles-desktop" loading="lazy" alt="Fiesta para Bebes"/>
-            <span class="d-block size-theme tw-text-tertiary mt-5">Bebes</span>
-          </NuxtLink>
-          <NuxtLink
-            :to="buildPrettyPathProducts('globos','globos-metalizados-tematicas-adultos','globos-metalizados')" @click.prevent="handleCategoryClickProducts('globos','globos-metalizados-tematicas-adultos','globos-metalizados')"
-            class="tw-no-underline d-block text-center img-zoom">
-            <img :src="f_4" class="border-theme d-white size-circles-desktop" loading="lazy" alt="Fiesta para Adultos"/>
-            <span class="d-block size-theme tw-text-tertiary mt-5">Adultos</span>
-          </NuxtLink>
-        </VCardText>
-        <VCardText class="px-0 mt-2 mb-2 xs:tw-block md:tw-hidden align-items-stretch justify-content-between">
-          <VRow no-gutters class="transparent">
-            <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
-            <NuxtLink
-              :to="buildPrettyPathProducts('fiestas-infantiles','fiestas-ninos')"
-              @click.prevent="handleCategoryClickProducts('fiestas-infantiles','fiestas-ninos')"
-              class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_1" class="border-theme d-block" width="150" height="150" loading="lazy" alt="Fiesta para Niños"/>
-                <span class="d-block size-theme tw-text-tertiary mt-2">Niños</span>
-              </NuxtLink>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
-              <NuxtLink
-                :to="buildPrettyPathProducts('fiestas-infantiles','tematica-ninas')"
-                @click.prevent="handleCategoryClickProducts('fiestas-infantiles','tematica-ninas')"
-                class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_2" class="border-theme d-block" width="150" height="150" loading="lazy" alt="Fiesta para Niñas"/>
-                <span class="d-block size-theme tw-text-tertiary mt-2">Niñas</span>
-              </NuxtLink>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
-              <NuxtLink
-                :to="buildPrettyPathProducts('fiestas-infantiles','tematica-bebes')"
-                @click.prevent="handleCategoryClickProducts('fiestas-infantiles','tematica-bebes')"
-                class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_3" class="border-theme d-block" width="150" height="150" loading="lazy" alt="Fiesta para Bebes"/>
-                <span class="d-block size-theme tw-text-tertiary mt-2">Bebes</span>
-              </NuxtLink>
-            </VCol>
-            <VCol cols="6" class="d-flex align-center text-center justify-content-center mb-5">
-              <NuxtLink
-                :to="buildPrettyPathProducts('globos','globos-metalizados-tematicas-adultos','globos-metalizados')"
-                @click.prevent="handleCategoryClickProducts('globos','globos-metalizados-tematicas-adultos','globos-metalizados')"
-                class="tw-no-underline d-block text-center img-zoom mt-0">
-                <img :src="f_4" class="border-theme d-white" width="150" height="150" loading="lazy" alt="Fiesta para Adultos"/>
-                <span class="d-block size-theme tw-text-tertiary mt-2">Adultos</span>
-              </NuxtLink>
-            </VCol>
-          </VRow>
-        </VCardText>   
       </VCard>
+      <!-- E: PRODUCTS / SERVICES CARDS CTA -->
+
+      <!-- B: MISC CARDS -->
+      <VCard 
+      class="home-misc-card-container mt-10 no-shadown p-0 transparent"
+      :class="[
+        'tw-w-full', 
+        'tw-grid tw-gap-4', 
+        'tw-grid-cols-2', 
+        'md:tw-grid-cols-5' 
+      ]"
+      >
+        <VCard class="tw-p-0 tw-shadow-none home-misc-card">
+            <VCardItem class="tw-p-0 tw-text-center"> 
+              <NuxtLink 
+                  to="#" 
+                  class="tw-block tw-w-full tw-h-full"
+                  rel="noopener"
+                >
+                  <img :src="mb_1" class="" loading="lazy" alt="Envío Express ¡Recibe Hoy!"/>
+              </NuxtLink>
+            </VCardItem> 
+        </VCard>
+        <VCard class="tw-p-0 tw-shadow-none home-misc-card">
+            <VCardItem class="tw-p-0 tw-text-center"> 
+              <NuxtLink 
+                  to="#" 
+                  class="tw-block tw-w-full tw-h-full"
+                  rel="noopener"
+                >
+                  <img :src="mb_2" class="" loading="lazy" alt="¡Si Llegaron! Lo Más Nuevo"/>
+                </NuxtLink>
+            </VCardItem> 
+        </VCard>
+        <VCard class="tw-p-0 tw-shadow-none home-misc-card">
+            <VCardItem class="tw-p-0 tw-text-center"> 
+              <NuxtLink 
+                  to="#" 
+                  class="tw-block tw-w-full tw-h-full"
+                  rel="noopener"
+                >
+                  <img :src="mb_3" class="" loading="lazy" alt="Descubre La Oferta Del Día"/>
+                </NuxtLink>
+            </VCardItem> 
+        </VCard>
+        <VCard class="tw-p-0 tw-shadow-none home-misc-card">
+            <VCardItem class="tw-p-0 tw-text-center"> 
+              <NuxtLink 
+                  to="#" 
+                  class="tw-block tw-w-full tw-h-full"
+                  rel="noopener"
+                >
+                  <img :src="mb_4" class="" loading="lazy" alt="Productos Más Vendidos"/>
+                </NuxtLink>
+            </VCardItem> 
+        </VCard>
+        <VCard class="tw-p-0 tw-shadow-none home-misc-card">
+            <VCardItem class="tw-p-0 tw-text-center"> 
+              <NuxtLink 
+                  to="#" 
+                  class="tw-block tw-w-full tw-h-full"
+                  rel="noopener"
+                >
+                  <img :src="mb_5" class="" loading="lazy" alt="Quiero Ser Aliado"/>
+                </NuxtLink>
+            </VCardItem> 
+        </VCard>
+      </VCard>
+      <!-- E: MISC CARDS -->
     </VContainer>
-  </div>
+  </section>
+  <!-- E: PRODUCTS / SERVICES CARDS CTA | MISC CARDS -->
+
+  <section id="most-popular">
+    <h2 class="home-section-title tw-text-center tw-uppercase tw-leading-[48px] tw-text-[36px] md:tw-text-[40px] tw-mt-10 tw-mb-0">¡Los Más Elegidos!</h2>
+    <VContainer>
+      <!-- B: MOST POPULAR 1 -->
+      <VCard 
+        class="mt-7 no-shadown p-0 transparent"
+        :class="[
+          'tw-w-full', 
+          'tw-grid tw-gap-4', 
+          'tw-grid-cols-2', 
+          'md:tw-grid-cols-4' 
+        ]"
+      >
+        <VCard class="no-shadown card-information p-0">
+            <VCardItem class="p-0">
+              <NuxtLink 
+                :to="homeFeaturedBanners.banner9?.url" 
+                class="tw-block tw-w-full tw-h-full"
+                rel="noopener"
+              >
+                <img :src="homeFeaturedBanners.banner9?.image" cover  class="img-gallery" :alt="homeFeaturedBanners.banner9?.title"/>
+              </NuxtLink>
+            </VCardItem> 
+        </VCard>
+        <VCard class="no-shadown card-information p-0">
+            <VCardItem class="p-0">
+              <NuxtLink 
+                :to="homeFeaturedBanners.banner10?.url" 
+                class="tw-block tw-w-full tw-h-full"
+                rel="noopener"
+              >
+                <img :src="homeFeaturedBanners.banner10?.image" cover  class="img-gallery" :alt="homeFeaturedBanners.banner10?.title"/>
+              </NuxtLink>
+            </VCardItem> 
+        </VCard>
+        <VCard class="no-shadown card-information p-0">
+            <VCardItem class="p-0">
+              <NuxtLink 
+                :to="homeFeaturedBanners.banner11?.url" 
+                class="tw-block tw-w-full tw-h-full"
+                rel="noopener"
+              >
+                <img :src="homeFeaturedBanners.banner11?.image" cover  class="img-gallery" :alt="homeFeaturedBanners.banner11?.title"/>
+              </NuxtLink>
+            </VCardItem> 
+        </VCard>
+        <VCard class="no-shadown card-information p-0">
+            <VCardItem class="p-0">
+              <NuxtLink 
+                :to="homeFeaturedBanners.banner12?.url" 
+                class="tw-block tw-w-full tw-h-full"
+                rel="noopener"
+              >
+                <img :src="homeFeaturedBanners.banner12?.image" cover  class="img-gallery" :alt="homeFeaturedBanners.banner12?.title"/>
+              </NuxtLink>
+            </VCardItem> 
+        </VCard>
+      </VCard>
+      <!-- E: MOST POPULAR 1 -->
+      <!-- B: MOST POPULAR 2 -->
+      <VCard class="mt-7 no-shadown p-0 d-flex transparent card-banner34">
+          <VCard class="no-shadown p-0 w-50 grid-item w-100 card-information">
+              <VCardItem class="p-0">
+              <NuxtLink 
+                :to="homeFeaturedBanners.banner13?.url" 
+                class="tw-block tw-w-full tw-h-full"
+                rel="noopener"
+              >
+                <img :src="homeFeaturedBanners.banner13?.image" cover  class="img-gallery" :alt="homeFeaturedBanners.banner13?.title"/>
+              </NuxtLink>
+            </VCardItem> 
+          </VCard>
+          <VCard class="no-shadown p-0 w-50 ms-5 grid-item w-100 card-information">
+              <VCardItem class="p-0">
+              <NuxtLink 
+                :to="homeFeaturedBanners.banner14?.url" 
+                class="tw-block tw-w-full tw-h-full"
+                rel="noopener"
+              >
+                <img :src="homeFeaturedBanners.banner14?.image" cover  class="img-gallery" :alt="homeFeaturedBanners.banner14?.title"/>
+              </NuxtLink>
+            </VCardItem> 
+          </VCard>
+      </VCard>
+      <!-- E: MOST POPULAR 2 -->
+    </VContainer>
+  </section>
+
+  <!-- B: FEATURED CATEGORY A -->
+  <section id="featured-category-a">
+    <div class="tw-bg-green featured-category-container">
+      <h2 class="home-section-title tw-text-center tw-uppercase tw-leading-[48px] tw-text-[36px] md:tw-text-[40px] tw-mt-10 tw-mb-0">Compra por Temática</h2>
+      <VContainer class="mt-3">
+        <VCard 
+          class="no-shadown card-icons tw-bg-green" 
+          v-if="categories && categories.length > 0 && categories.filter(item => item.slug === featuredCategory)[0]?.children?.length > 0">
+          
+          <VCardText class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
+            <swiper
+              :slides-per-view="featuredCategorySwiperOptions.slidesPerView"
+              :space-between="featuredCategorySwiperOptions.spaceBetween"
+              :breakpoints="featuredCategorySwiperOptions.breakpoints"
+
+              :navigation="true"
+              :loop="true"
+              :modules="modules"
+              class="mySwiper">
+              
+              <swiper-slide 
+                v-for="(i, index) in (categories?.filter(item => item.slug === featuredCategory)[0]?.children || [])"
+                :key="index"
+                class="py-2">
+                
+                <NuxtLink
+                  :to="{
+                    name: 'products',
+                    query: {
+                      category: featuredCategory,
+                      subcategory: i.slug.split('/')[1],
+                      wholesalers: false
+                    }
+                  }"
+                  class="tw-no-underline d-block text-center justify-content-center zoom">
+                  
+                  <img 
+                    v-if="i.icon_subcategory" 
+                    :src="baseURL + i.icon_subcategory"
+                    class="d-block border-theme"
+                  />
+                  <img 
+                    v-else 
+                    :src="t_7"
+                    class="d-block border-theme"
+                  />
+                  <span 
+                    class="d-block mt-2 tw-text-tertiary" 
+                  >
+                    {{ i.name }}
+                  </span>
+                </NuxtLink>
+              </swiper-slide>
+            </swiper>
+          </VCardText> 
+        </VCard>
+      </VContainer>
+    </div>
+  </section>
+  <!-- E: FEATURED CATEGORY A -->
+
+  <!-- B: MOST WANTED / RECOMMENDATIONS -->
+  <section id="most-wanted">
+    <h2 class="home-section-title tw-text-center tw-uppercase text-yellow-darken-2 tw-leading-[48px] tw-text-[36px] md:tw-text-[40px] tw-mt-10 tw-mb-0">Los Más Buscados</h2>
+    <VContainer>
+      <VCard class="no-shadown card-information p-0">
+        <!-- d-none d-md-flex align-items-stretch justify-content-between -->
+        <VCardText class="px-4 px-md-7 mt-5 mb-5 prodrecommended-grid-6-4-2" v-if="data"> 
+          <Product1 
+            v-for="(product, i) in data.recommendations"
+            :key="i"
+            :product="product"
+            :readonly="true"/>
+        </VCardText>
+      </VCard>
+      
+      <!-- B: MOST WANTED BANNERS -->
+      <VCard class="mt-7 no-shadown card-information p-0 transparent most-wanted-banners">
+        <VRow no-gutters class="tw-w-full">
+          
+          <VCol cols="12" lg="5" md="5" sm="5" xs="12">
+            <VCard class="no-shadown p-0 tw-w-full card-information">
+              <VCardItem class="p-0">
+                <NuxtLink 
+                  :to="homeFeaturedBanners.banner15?.url" 
+                  class="tw-block tw-w-full tw-h-full"
+                  rel="noopener"
+                >
+                  <img :src="homeFeaturedBanners.banner15?.image" cover class="img-gallery" :alt="homeFeaturedBanners.banner15?.title"/>
+                </NuxtLink>
+              </VCardItem> 
+            </VCard>
+          </VCol>
+
+          <VCol cols="12" lg="7" md="7" sm="7" xs="12" class="tw-h-full tw-mt-0 tw-pl-5">
+            <VCard class="no-shadown p-0 tw-w-full card-information">
+              <VCardItem class="p-0">
+                <NuxtLink 
+                  :to="homeFeaturedBanners.banner16?.url" 
+                  class="tw-block tw-w-full tw-h-full"
+                  rel="noopener"
+                >
+                  <img :src="homeFeaturedBanners.banner16?.image" cover class="img-gallery" :alt="homeFeaturedBanners.banner16?.title"/>
+                </NuxtLink>
+              </VCardItem> 
+            </VCard>
+          </VCol>
+        </VRow>
+      </VCard>
+      <!-- E: MOST WANTED BANNERS -->
+    </VContainer>
+  </section>
+  <!-- E: MOST WANTED / RECOMMENDATIONS -->
+
+<!-- **************************************************************** OLD HOMEPAGE **************************************************************** -->
 
   <VDialog v-model="isDialogVisible" >
     <VCard
@@ -840,6 +612,14 @@ useHead({
 </template>
 
 <style scoped>
+
+  .home-section-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 38.4px;
+  }
 
   .visually-hidden {
     position: absolute;
@@ -1015,7 +795,7 @@ useHead({
   }
 
   .MySwiper::v-deep(.swiper-pagination-bullet-active) {
-    background: transparent !important;
+    /* background: transparent !important; */
     border: 2px double #FF0090 !important;
     width: 16px; 
     height: 16px;
@@ -1084,9 +864,99 @@ useHead({
     background: #FF0090 !important;
   }
 
+  .home-misc-card-container {
+    overflow: unset;
+  }
+  .home-misc-card {
+    transition: transform ease-in-out .2s; 
+  }
+  .home-misc-card:hover {
+    -webkit-transform: scale(1.05);
+    -moz-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    -o-transform: scale(1.05);
+    transform: scale(1.05);
+  }
+
+  #featured-category-a .swiper {
+    width: 100%;
+    height: 100%;
+  }
+
+  #featured-category-a .swiper::v-deep(.swiper-wrapper)  {
+    align-items: center !important;
+  }
+
+  #featured-category-a .swiper::v-deep(.swiper-slide) {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #featured-category-a .swiper-slide img {
+    display: block;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+  }
+
+  #featured-category-a .swiper::v-deep(.swiper-button-prev), 
+  #featured-category-a .swiper::v-deep(.swiper-button-next) {
+    color: #0A1B33 !important;
+    width: 6px !important;
+  }
+
+  #featured-category-a .swiper::v-deep(.swiper-button-prev) {
+    left: 5px;
+  }
+
+  #featured-category-a .swiper::v-deep(.swiper-button-next) {
+    right: 5px;
+  }
+
+  #featured-category-a .swiper::v-deep(.swiper-button-prev:after), 
+  #featured-category-a .swiper::v-deep(.swiper-button-next:after) {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .featured-category-container {
+    padding-top: 150px;
+    margin-top: -150px;
+  }
+
+  .most-wanted-banners .v-card {
+    max-height: 280px;
+  }
   /* .swiper::v-deep(.swiper-pagination-horizontal ) {
     top: 92%;
   }     */
+
+  @media only screen and (max-width: 1280px) {
+    .most-wanted-banners .v-card {
+      max-height: 180px;
+    }
+  }
+  @media only screen and (max-width: 869px) {
+    .most-wanted-banners .v-card {
+      max-height: 150px;
+    }
+  }
+  @media only screen and (max-width: 768px) {
+    .most-wanted-banners .v-card {
+      max-height: 125px;
+    }
+  }
+  @media only screen and (max-width: 600px) {
+    .most-wanted-banners .v-card {
+      max-height: unset;
+    }
+    .most-wanted-banners .v-col-12 {
+      padding-left: 0 !important;
+      margin-top: 1rem !important;
+    }
+  }
 
   @media only screen and (min-width: 768px) and (max-width: 1023px) {
     .size-circles-desktop {
@@ -1196,4 +1066,37 @@ useHead({
       font-size: 18px;
     }
   }
+
+
+  /* *********** B: PRODUCTS RECOMMENDED STYLES *********** */
+
+  .prodrecommended-grid-6-4-2 {
+    /* Móvil (sm/xs) -> 2 columnas */
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  /* Tablet (md/sm) -> 3 columnas */
+  @media (min-width: 501px) {
+    .prodrecommended-grid-6-4-2 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* Tablet (md) -> 4 columnas */
+  @media (min-width: 768px) {
+    .prodrecommended-grid-6-4-2 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* Desktop (lg) -> 6 columnas */
+  @media (min-width: 1280px) {
+    .prodrecommended-grid-6-4-2 {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+  }
+  /* *********** E: PRODUCTS RECOMMENDED STYLES *********** */
+
 </style>
