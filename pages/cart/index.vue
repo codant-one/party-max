@@ -412,7 +412,6 @@ const addCart = (data) =>{
             order_file_id: null,
             product_color_id: data.product_color_id,
             quantity: data.quantity,
-            wholesale: 0,
             type: 0
         }
     } else {
@@ -425,7 +424,6 @@ const addCart = (data) =>{
             order_file_id: data.order_file_id,
             product_color_id: null,
             quantity: data.quantity,
-            wholesale: null,
             type: 1
         }
     }
@@ -634,7 +632,8 @@ const sendPayU = async (billingDetail) => {
                 type: type,
                 ip: ip.value,
                 user_agent: navigator.userAgent,
-                coupon_id: summary.value.coupon_id
+                coupon_id: summary.value.coupon_id,
+                wholesale: 0
             }
 
             isLoading.value = true 
