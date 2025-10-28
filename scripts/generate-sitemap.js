@@ -124,13 +124,16 @@ async function generateSitemap() {
     console.log(`📂 Procesando ${categories.length} categorías`);
     categories.forEach(category => {
       if (category.slug) {
-        sitemap += `
+
+        if(category.category_id === null) {
+          sitemap += `
             <url>
               <loc>${baseUrl}/categories/${category.slug}</loc>
               <lastmod>${category.updated_at || new Date().toISOString()}</lastmod>
               <changefreq>daily</changefreq>
               <priority>1.0</priority>
             </url>`;
+        }
 
         if(category.category_type_id === 1) {
           sitemap += `
@@ -141,6 +144,7 @@ async function generateSitemap() {
               <priority>1.0</priority>
             </url>`;
         }
+        
         if(category.category_type_id === 2) {
           sitemap += `
             <url>
