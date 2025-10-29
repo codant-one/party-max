@@ -169,7 +169,7 @@ const onSubmit = () => {
         </a>
       </div>
       <h2 class="tw-text-primary tw-font-bold tw-text-xl tw-mt-8 text-center">Conecta con Nosotros</h2>
-      <p class="tw-text-black tw-text-xl tw-m-0 tw-mt-1 text-center">
+      <p class="tw-text-black tw-text-[18px] tw-m-0 tw-mt-1 text-center">
         <NuxtLink 
             to="tel:+573004659997" 
             target="_blank"
@@ -188,9 +188,9 @@ const onSubmit = () => {
           fiesta@partymax.co
         </NuxtLink>
       </p>
-      <p class="tw-text-black tw-text-xl tw-m-0 tw-mt-8 text-center">
+      <p class="misclinks tw-text-black tw-text-[16px] tw-m-0 tw-mt-8 text-center">
         <NuxtLink 
-            to="#" 
+            to="/terms-and-conditions" 
             class="tw-no-underline tw-text-inherit tw-block lg:tw-inline tw-mb-2 lg:tw-mb-0"
             rel="nofollow"
           >
@@ -198,27 +198,35 @@ const onSubmit = () => {
         </NuxtLink>
         <span class="tw-hidden lg:tw-inline">&nbsp;|&nbsp;</span>
         <NuxtLink 
-            to="#" 
+            to="/data-protection" 
             class="tw-no-underline tw-text-inherit tw-block lg:tw-inline tw-mb-2 lg:tw-mb-0"
             rel="nofollow"
           >
-          Política de Cookies
+          Política de Protección de Datos
         </NuxtLink>
         <span class="tw-hidden lg:tw-inline">&nbsp;|&nbsp;</span>
         <NuxtLink 
-            to="#" 
-            class="tw-no-underline tw-text-inherit tw-block lg:tw-inline tw-mb-2 lg:tw-mb-0"
-            rel="nofollow"
-          >
-          Política de Envío
-        </NuxtLink>
-        <span class="tw-hidden lg:tw-inline">&nbsp;|&nbsp;</span>
-        <NuxtLink 
-            to="#" 
+            to="/privacy-statement" 
             class="tw-no-underline tw-text-inherit tw-block lg:tw-inline tw-mb-2 lg:tw-mb-0"
             rel="nofollow"
           >
           Política de Privacidad
+        </NuxtLink>
+        <span class="tw-hidden lg:tw-inline">&nbsp;|&nbsp;</span>
+        <NuxtLink 
+            to="/returns-and-refunds-policy" 
+            class="tw-no-underline tw-text-inherit tw-block lg:tw-inline tw-mb-2 lg:tw-mb-0"
+            rel="nofollow"
+          >
+          Política de Devoluciones y Reembolsos
+        </NuxtLink>
+        <span class="tw-hidden lg:tw-inline">&nbsp;|&nbsp;</span>
+        <NuxtLink 
+            to="/help" 
+            class="tw-no-underline tw-text-inherit tw-block lg:tw-inline tw-mb-2 lg:tw-mb-0"
+            rel="nofollow"
+          >
+          Preguntas Frecuentes
         </NuxtLink>
       </p>
       <div class="tw-mt-8">
@@ -256,6 +264,9 @@ const onSubmit = () => {
 <style scoped>
   .partymax-footer {
     font-family: 'poppins', sans-serif;
+  }
+  .partymax-footer .misclinks {
+    line-height: 24px;
   }
 
   .whatsapp-float {

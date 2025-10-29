@@ -338,7 +338,7 @@ const featuredCategorySwiperOptions = reactive({
         <VCard class="tw-p-0 tw-shadow-none home-misc-card">
             <VCardItem class="tw-p-0 tw-text-center"> 
               <NuxtLink 
-                  to="#" 
+                  to="/help" 
                   class="tw-block tw-w-full tw-h-full"
                   rel="noopener"
                 >
@@ -382,7 +382,7 @@ const featuredCategorySwiperOptions = reactive({
         <VCard class="tw-p-0 tw-shadow-none home-misc-card">
             <VCardItem class="tw-p-0 tw-text-center"> 
               <NuxtLink 
-                  to="#" 
+                  to="/clients/form_supplier" 
                   class="tw-block tw-w-full tw-h-full"
                   rel="noopener"
                 >
