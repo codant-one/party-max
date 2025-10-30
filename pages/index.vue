@@ -503,23 +503,14 @@ const featuredCategorySwiperOptions = reactive({
               :loop="true"
               :modules="modules"
               class="mySwiper">
-              
               <swiper-slide 
                 v-for="(i, index) in (categories?.filter(item => item.slug === featuredCategory)[0]?.children || [])"
                 :key="index"
                 class="py-2">
                 
                 <NuxtLink
-                  :to="{
-                    name: 'products',
-                    query: {
-                      category: featuredCategory,
-                      subcategory: i.slug.split('/')[1],
-                      wholesalers: false
-                    }
-                  }"
+                  :to="'/products/categories/' + featuredCategory + '/' + i.slug.split('/')[1]"
                   class="tw-no-underline d-block text-center justify-content-center zoom">
-                  
                   <img 
                     v-if="i.icon_subcategory" 
                     :src="baseURL + i.icon_subcategory"
