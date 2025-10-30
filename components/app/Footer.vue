@@ -67,7 +67,8 @@ async function fetchData() {
   if(route.name === 'about' || route.name === 'help' || 
       route.path?.startsWith('/products') ||
       route.path?.startsWith('/services')) {
-    background.value = 'tw-bg-light_cyan_2'
+    // background.value = 'tw-bg-light_cyan_2'
+    background.value = 'tw-bg-white'
   } else {
     background.value = 'tw-bg-white'
   }
