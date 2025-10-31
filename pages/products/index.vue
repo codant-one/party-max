@@ -144,7 +144,14 @@ watch(() =>
 
 // Ensure initial sync with URL before first data fetch
 syncStoreWithPath()
-watchEffect(fetchData);
+watch(
+  () => route.query.search,
+  () => {
+    currentPage.value = 1
+    fetchData()
+  },
+  { immediate: true }
+);
 
 async function fetchData() {
 
