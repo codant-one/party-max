@@ -259,7 +259,7 @@ const featuredCategorySwiperOptions = reactive({
 
   <!-- B: NEW MAIN BANNER SLIDER -->
   <section id="main-banner">
-    <div class="tw--mt-2 md:tw-mt-3">
+    <div class="">
       <swiper
         :pagination="true"
         :navigation="true"
@@ -296,7 +296,7 @@ const featuredCategorySwiperOptions = reactive({
   <!-- E: NEW MAIN BANNER SLIDER -->
 
   <!-- B: PRODUCTS / SERVICES CARDS CTA | MISC CARDS -->
-  <section id="main-banner" class="mt-3">
+  <section id="misc-banner" class="mt-3">
     <VContainer>
       <!-- B: PRODUCTS / SERVICES CARDS CTA -->
       <VCard class="no-shadown card-information p-0 d-flex transparent card-banner34">
@@ -552,7 +552,7 @@ const featuredCategorySwiperOptions = reactive({
       </VCard>
       
       <!-- B: MOST WANTED BANNERS -->
-      <VCard class="mt-7 no-shadown card-information p-0 transparent most-wanted-banners">
+      <VCard class="mt-7 mb-10 no-shadown card-information p-0 transparent most-wanted-banners">
         <VRow no-gutters class="tw-w-full">
           
           <VCol cols="12" lg="5" md="5" sm="5" xs="12">

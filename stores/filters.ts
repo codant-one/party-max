@@ -19,7 +19,7 @@ export const useFiltersStores = defineStore('filters', {
     },
     actions: {
         changeDrawer() {
-            this.drawer = !this.drawer       
+            this.drawer = !this.drawer
         },
         changePrices(data: object) {
             this.prices = data

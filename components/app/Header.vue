@@ -10,7 +10,9 @@
   import Loader from '@/components/common/Loader.vue'
   import Product8 from '@/components/product/Product8.vue'
   import Service4 from '@/components/service/Service4.vue'
+  import HoverIcon from '@/components/app/HoverIcon.vue'
   import logo from '@assets/images/logo.svg';
+  import logo_short from '@assets/images/logo-short.png';
   import heart from '@assets/icons/heart.svg?inline';
   import shoppinp_cart from '@assets/icons/shoppinp_cart.svg?inline';
   import user from '@assets/icons/user.svg?inline';
@@ -18,6 +20,14 @@
 
   import cart from '@assets/icons/cart.svg?inline'
   import cart_mobile from '@assets/icons/cart_mobile.svg?inline'
+  import menu_alt from '@assets/icons/menu-alt.svg?inline'
+  import home_alt from '@assets/icons/home-icon.svg?inline'
+  import favorite_alt from '@assets/icons/fav-icon.svg?inline'
+  import favorite_solid from '@assets/icons/fav-icon-solid.svg?inline'
+  import user_alt from '@assets/icons/user-icon.svg?inline'
+  import user_solid from '@assets/icons/user-icon-solid.svg?inline'
+  import cart_alt from '@assets/icons/cart-icon.svg?inline'
+  import cart_solid from '@assets/icons/cart-icon-solid.svg?inline'
 
   import icon1 from '@assets/icons/fiestas-infantiles.svg?inline';
   import icon2 from '@assets/icons/fiestas-tematicas.svg?inline';
@@ -65,11 +75,21 @@
   const fixedSectionRef = ref(null)
   const classFixed = ref('second-header')
 
+  const drawerType = ref('')
+  const isGuest = computed(() => name.value === null)
+  // const isGuest = ref(false)
+
   const openedGroups = ref([]);
   const panelCat = ref(null);
 
   const { isMobile, isDesktop } = useDevice();
   const { $metapixel } = useNuxtApp()
+
+  const windowWidth = ref(0);
+  const isSmallViewport = computed(() => windowWidth.value < 768);
+  const isSearchFixed = ref(false)
+
+  const isHydrating = ref(true);
 
   const items_products = ref([
     { text: 'Fiestas infantiles', icon: markRaw(icon1), slug: 'fiestas-infantiles' },
@@ -104,8 +124,8 @@
       subTotal.value = '0.00'
 
       if(cart_products.value > 0) {
-        if(route.path.startsWith('/products') || route.path.startsWith('/services'))
-          isDrawerOpen.value = true
+        // if(route.path.startsWith('/products') || route.path.startsWith('/services'))
+        //   isDrawerOpen.value = true
         
         isLoading.value = true
         await cartStores.fetchCart()
@@ -304,14 +324,37 @@
 
   onMounted(() => {
     window.addEventListener('scroll', handleScroll);
+    if (process.client) {
+        updateWindowWidth();
+        window.addEventListener('resize', updateWindowWidth);
+    }
+    nextTick(() => {
+      isHydrating.value = false;
+    });
   });
+
+  onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll);
+    if (process.client) {
+        window.removeEventListener('resize', updateWindowWidth);
+    }
+  });
+
+  const updateWindowWidth = () => {
+      if (process.client) {
+          windowWidth.value = window.innerWidth;
+      }
+  };
 
   const handleScroll = () => {
 
-    if (fixedSectionRef.value && isMobile) {
+   if (fixedSectionRef.value && isSmallViewport.value) {
       const scrollY = window.scrollY || window.pageYOffset;
-    
-      classFixed.value = (scrollY === 0 ) ? 'second-header' : 'topFixed';
+      if (scrollY > 60) {
+        isSearchFixed.value = 'fixed';
+      } else if (scrollY <= 60) {
+        isSearchFixed.value = '';
+      }
     }
   };
 
@@ -353,229 +396,369 @@
   const handleDrawerModelValueUpdate = val => {
     isDrawerOpen.value = val
   }
+
+  const toggleDrawer = (dt) => {
+    if (drawer.value && drawerType.value === dt) {
+      drawer.value = false;
+    } else {
+      drawer.value = true;
+    }
+    drawerType.value = dt;
+    isDrawerOpen.value = false;
+  };
+
+  const toggleDrawerCart = () => {
+    drawer.value = false; 
+    isDrawerOpen.value = !isDrawerOpen.value;
+  };
+
+  /* const isActive = computed(() => {
+    return route.path === '/' || route.path === '/dashboard/favorites';
+  }); */
+  const isActive = computed(() => {
+    return route.path === '/';
+  });
+
+  const isLinkActive = (targetPath) => {
+    const currentPath = route.path;
+    if (currentPath === targetPath) {
+        return true;
+    }
+    return false;
+  };
 </script>
 
 <template>
   <section>
+    <!-- B: MENU MOBILE -->
     <VNavigationDrawer
       v-model="drawer"
-      class="d-print-none"
-      temporary>
-      <VList
-        aria-label="Menú de navegación principal"
-        role="list"
-        class="pb-0"
-        v-model:opened="panelCat"
-        :ripple="false"
+      class="d-print-none pm-menu-mobile"
+      temporary
+      :width="300"
       >
-        <VListItem role="listitem">
-          <VListItemTitle class="d-block lineheight borderList pb-2">
-            <NuxtLink aria-label="item-about-us" to="/about" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-              <span class="d-block title-menu">Quiénes somos</span>
-            </NuxtLink>
-          </VListItemTitle>
-        </VListItem>
-        <VListItem role="listitem">
-          <VListItemTitle class="d-block lineheight borderList pb-2">
-            <NuxtLink aria-label="item-help" to="/help" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-              <span class="d-block title-menu">Preguntas frecuentes</span>
-            </NuxtLink>
-          </VListItemTitle>  
-        </VListItem>
-        <VListItem role="listitem">
-          <VListItemTitle class="d-block lineheight borderList pb-2">
-            <NuxtLink aria-label="item-help" to="/terms-and-conditions" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-              <span class="d-block title-menu">Términos y condiciones</span>
-            </NuxtLink>
-          </VListItemTitle>  
-        </VListItem>
-        <VListItem role="listitem">
-          <VListItemTitle class="d-block lineheight borderList pb-2">
-            <NuxtLink aria-label="item-help" to="/data-protection" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-              <span class="d-block title-menu">Protección de datos</span>
-            </NuxtLink>
-          </VListItemTitle>  
-        </VListItem>
-        <VListItem role="listitem">
-          <VListItemTitle class="d-block lineheight borderList pb-2">
-            <NuxtLink aria-label="item-help" to="/privacy-statement" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-              <span class="d-block title-menu">Declaración de privacidad</span>
-            </NuxtLink>
-          </VListItemTitle>  
-        </VListItem>
-        <VListItem role="listitem">        
-          <VListItemTitle class="d-block lineheight borderList pb-2">
-            <NuxtLink to="/blogs" class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-              <span class="d-block title-menu">Blog</span>
-            </NuxtLink>
-          </VListItemTitle>
-        </VListItem>
-      </VList>
 
-      <VList role="list" aria-label="Menu de Productos mobile" v-model:opened="panelCat" class="pb-0" :ripple="false">
-        <VListItem role="listitem">
-          <VListItemTitle class="d-block lineheight pt-6 pb-2">
-            <h2 class="d-block title-menu">PRODUCTOS</h2>
-            <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
-            </svg>
-          </VListItemTitle>
-        </VListItem>
-        <template v-for="(item, index) in categories">
-          <VListItem
-            role="listitem"
-            :active="false"
-            selectable="false"
-            v-if="categories[index]?.children.length === 0"
-            :to="buildPrettyPathProducts(item.slug)">
-            <VListItemTitle class="d-block title-menu lineheight borderList pb-2">
-              {{ item.name }}
-            </VListItemTitle> 
-          </VListItem>
-          <VListGroup 
-            v-else
-            :id="`v-list-product-group--id-${item.slug}`"
-            :value="item.name"
-            :raw-id="item.slug" 
-            :eager="false"
-            ref="listGroup"
-          >
-            <template #activator="{ props }">
-              <VListItem 
-                role="listitem"
-                :active="false"
-                selectable="false" 
-                class="items-list">
-                <VListItemTitle class="d-block lineheight borderList pb-2">
-                  <NuxtLink
-                    :to="{
-                      name: 'categories-slug',
-                      params: { slug: item.slug }
-                    }"  
-                    class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow"
-                    :aria-label="`${item.name}, ${openedGroups.includes(index) ? 'submenú abierto' : 'submenú cerrado'}`">
-                    <span class="d-block title-menu" :id="`product-mobile-${item.slug}`">{{ item.name }}</span>
-                  </NuxtLink>
-                </VListItemTitle> 
-                <template #append>
-                  <VIcon
-                    v-bind="props"
-                    :icon="openedGroups.includes(index) 
-                    ? 'mdi-minus' 
-                    : 'mdi-plus'"
-                    size="20"
-                    @click="toggleGroupFn(index, item.name)"
-                    :aria-label="openedGroups.includes(index) ? `Colapsar ${item.name}` : `Expandir ${item.name}`"
-                    :aria-labelledby="`product-mobile-${item.slug}`"
-                  />
-                </template>
-              </VListItem>
-            </template>
-            <div 
-              v-for="(k, index2) in categories[index].children"
-              :key="index2"
-              class="style-menu-mobile">
-              <VListItem 
-                role="listitem"
-                :active="false"
-                selectable="false"
-                class="subtitle-menu">
-                <NuxtLink
-                  :to="buildPrettyPathProducts(item.slug, k.slug.split('/')[1])"
-                  @click.prevent="handleCategoryClickProducts(item.slug, k.slug.split('/')[1])"  
-                  class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-                  <span class="d-block title-menu">
-                    {{ k.name }}
-                  </span>
-                </NuxtLink>
-              </VListItem>
-            </div>
-          </VListGroup>
-        </template>
-      </VList>
-        
-      <!--MENU SERVICIOS MOBILE-->
-      <VList role="list" aria-label="Menu de Servicios mobile" v-model:opened="panelCat" class="pb-0" :ripple="false">
-        <VListItem role="listitem">
-          <VListItemTitle class="d-block lineheight pt-6 pb-2">
-            <h2 class="d-block title-menu">SERVICIOS</h2>
-            <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
-            </svg>
-          </VListItemTitle>
-        </VListItem>
-        <div v-for="(item, index) in services">
-          <VListItem role="listitem" v-if="services[index]?.children.length === 0">
-            <VListItemTitle class="d-block lineheight borderList pb-2">
-              <NuxtLink 
-                :to="buildPrettyPathServices(item.slug)"
-                @click.prevent="handleCategoryClickServices(item.slug)"
-                class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-                <span class="d-block title-menu">{{ item.name }}</span>
-              </NuxtLink>
-            </VListItemTitle> 
-          </VListItem>
-          <VListGroup 
-            :id="`v-list-service-group--id-${item.slug}`"
-            v-else 
-            :raw-id="item.slug" 
-            :value="item.name" 
-            :eager="false"
-          >
-            <template #activator="{ props }">
-              <VListItem role="listitem" class="items-list">
-                <VListItemTitle class="d-block lineheight borderList pb-2">
-                  <NuxtLink
-                    :to="{
-                      name: 'categories-slug',
-                      params: { slug: item.slug }
-                    }"  
-                    class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow"
-                    :aria-label="`${item.name}, ${openedGroups.includes(index) ? 'submenú abierto' : 'submenú cerrado'}`">
-                    <span class="d-block title-menu" :id="`service-mobile-${item.slug}`">{{ item.name }}</span>
-                  </NuxtLink>
-                </VListItemTitle> 
-                <template #append>
-                  <VIcon
-                    v-bind="props"
-                    :icon="openedGroups.includes(index) 
-                    ? 'mdi-minus' 
-                    : 'mdi-plus'"
-                    size="20"
-                    @click="toggleGroupFn(index, item.name)"
-                    :aria-label="openedGroups.includes(index) ? `Colapsar ${item.name}` : `Expandir ${item.name}`"
-                    :aria-labelledby="`service-mobile-${item.slug}`"
-                  />
-                </template>
-              </VListItem>
-            </template>
-            <div 
-              v-for="(k, index2) in services[index].children"
-              :key="index2"
-              class="style-menu-mobile">
-              <VListItem role="listitem" class="subtitle-menu">
-                <NuxtLink
-                  :to="buildPrettyPathServices(item.slug, k.slug.split('/')[1])"
-                  @click.prevent="handleCategoryClickServices(item.slug, k.slug.split('/')[1])"  
-                  class="ms-5 tw-no-underline tw-text-white hover:tw-text-yellow">
-                  <span class="d-block title-menu">
-                    {{ k.name }}
-                  </span>
-                </NuxtLink>
-              </VListItem>
-            </div>
-          </VListGroup>
+      <div id="pm-menu-logo">
+        <span class="">
+          <img :src="logo_short" width="50" alt="PartyMax - The Party Market" cover/>
+        </span>
+      </div>
+      
+      <div 
+        id="pm-menu-profile" 
+        :class="drawerType == 'mainmenu' ? 'pma-hidden' : ''"
+      >
+        <div style="padding: 4px 16px;">
+          <h2 class="d-block title-menu tw-uppercase pt-6 pb-2">Hola</h2>
+          <span class="d-block tw-text-primary pm-username-mobile">Arturo Guarin</span>
         </div>
-      </VList>
-      <!--FIN MENU SERVICIOS MOBILE-->
-   
+
+        <!-- B: PROFILE MENU -->
+        <VList
+          aria-label="Menú de navegación de perfil"
+          role="list"
+          class="p-0 mt-5"
+          :ripple="false"
+        >
+          <VListItem role="listitem" class="pm-menu-item tw-border-0">
+            <VListItemTitle class="d-block lineheight">
+              <NuxtLink 
+                :to="{ name : 'dashboard' }"
+                class="tw-no-underline item-link"
+                aria-label="item-about-us"
+              >
+                <span class="d-block title-menu">Dashboard</span>
+              </NuxtLink>
+            </VListItemTitle>
+          </VListItem>
+          <VListItem role="listitem" class="pm-menu-item tw-border-0">
+            <VListItemTitle class="d-block lineheight">
+              <NuxtLink 
+                :to="{ name : 'dashboard-profile' }"
+                class="tw-no-underline item-link"
+                aria-label="item-about-us"
+              >
+                <span class="d-block title-menu">Mi Perfil</span>
+              </NuxtLink>
+            </VListItemTitle>
+          </VListItem>
+          <VListItem role="listitem" class="pm-menu-item tw-border-0">
+            <VListItemTitle class="d-block lineheight">
+              <NuxtLink 
+                :to="{ name : 'dashboard-purchases' }"
+                class="tw-no-underline item-link"
+                aria-label="item-about-us"
+              >
+                <span class="d-block title-menu">Compras</span>
+              </NuxtLink>
+            </VListItemTitle>
+          </VListItem>
+          <VListItem role="listitem" class="pm-menu-item tw-border-0">
+            <VListItemTitle class="d-block lineheight">
+              <NuxtLink 
+                :to="{ name : 'dashboard-coupons' }"
+                class="tw-no-underline item-link"
+                aria-label="item-about-us"
+              >
+                <span class="d-block title-menu">Cupones</span>
+              </NuxtLink>
+            </VListItemTitle>
+          </VListItem>
+          <VListItem role="listitem" class="pm-menu-item tw-border-0">
+            <VListItemTitle class="d-block lineheight">
+              <NuxtLink 
+                :to="{ name : 'dashboard-favorites' }"
+                class="tw-no-underline item-link"
+                aria-label="item-about-us"
+              >
+                <span class="d-block title-menu">Mis favoritos</span>
+              </NuxtLink>
+            </VListItemTitle>
+          </VListItem>
+          <VListItem role="listitem" class="pm-menu-item logout tw-border-0 mt-8">
+            <VListItemTitle class="d-block lineheight">
+              <NuxtLink 
+                class="tw-no-underline item-link"
+                aria-label="item-logout"
+                @click="logout"
+              >
+                <span class="d-block">Cerrar Sesión</span>
+              </NuxtLink>
+            </VListItemTitle>
+          </VListItem>
+        </VList>
+        <!-- E: PROFILE MENU -->
+      </div>
+
+      <div 
+        id="pm-menu-noprofile"
+        :class="drawerType != 'mainmenu' ? 'pma-hidden' : ''"
+      >
+        <VList id="pm-products" role="list" aria-label="Menu de Productos Móviles" v-model:opened="panelCat" class="pb-0" :ripple="false">
+          <VListItem role="listitem">
+            <VListItemTitle class="d-block lineheight pt-6 pb-2">
+              <h2 class="d-block title-menu tw-uppercase">Productos</h2>
+            </VListItemTitle>
+          </VListItem>
+          <template v-for="(item, index) in categories">
+            <VListItem
+              class="pm-menu-item"
+              role="listitem"
+              :active="false"
+              selectable="false"
+              v-if="categories[index]?.children.length === 0"
+              :to="buildPrettyPathProducts(item.slug)"
+            >
+              <VListItemTitle class="d-block title-menu lineheight item-link">
+                {{ item.name }}
+              </VListItemTitle> 
+            </VListItem>
+            <VListGroup 
+              v-else
+              :id="`v-list-product-group--id-${item.slug}`"
+              :value="item.name"
+              :raw-id="item.slug" 
+              :eager="false"
+              class="pm-menu-item"
+              ref="listGroup"
+            >
+              <template #activator="{ props }">
+                <VListItem 
+                  role="listitem"
+                  :active="false"
+                  selectable="false" 
+                  class="items-list">
+                  <VListItemTitle class="d-block lineheight">
+                    <NuxtLink
+                      :to="{
+                        name: 'categories-slug',
+                        params: { slug: item.slug }
+                      }"  
+                      class="tw-no-underline item-link"
+                      :aria-label="`${item.name}, ${openedGroups.includes(index) ? 'submenú abierto' : 'submenú cerrado'}`">
+                      <span class="d-block title-menu" :id="`product-mobile-${item.slug}`">{{ item.name }}</span>
+                    </NuxtLink>
+                  </VListItemTitle> 
+                  <template #append>
+                    <VIcon
+                      v-bind="props"
+                      :icon="openedGroups.includes(index) 
+                      ? 'mdi-minus' 
+                      : 'mdi-plus'"
+                      size="45"
+                      class="pm-menu-icon"
+                      @click="toggleGroupFn(index, item.name)"
+                      :aria-label="openedGroups.includes(index) ? `Colapsar ${item.name}` : `Expandir ${item.name}`"
+                      :aria-labelledby="`product-mobile-${item.slug}`"
+                    />
+                  </template>
+                </VListItem>
+              </template>
+              <div 
+                v-for="(k, index2) in categories[index].children"
+                :key="index2"
+                class="style-menu-mobile">
+                <VListItem 
+                  role="listitem"
+                  :active="false"
+                  selectable="false"
+                  class="subtitle-menu">
+                  <NuxtLink
+                    :to="buildPrettyPathProducts(item.slug, k.slug.split('/')[1])"
+                    @click.prevent="handleCategoryClickProducts(item.slug, k.slug.split('/')[1])"  
+                    class="tw-no-underline item-link">
+                    <span class="d-block title-menu">
+                      {{ k.name }}
+                    </span>
+                  </NuxtLink>
+                </VListItem>
+              </div>
+            </VListGroup>
+          </template>
+        </VList>
+          
+        <!--MENU SERVICIOS MOBILE-->
+        <VList id="pm-services" role="list" aria-label="Menu de Servicios Móviles" v-model:opened="panelCat" class="pb-0" :ripple="false">
+          <VListItem role="listitem">
+            <VListItemTitle class="d-block lineheight pt-6">
+              <h2 class="d-block title-menu tw-uppercase">Servicios</h2>
+            </VListItemTitle>
+          </VListItem>
+          <template v-for="(item, index) in services">
+            <VListItem class="pm-menu-item" role="listitem" v-if="services[index]?.children.length === 0">
+              <VListItemTitle class="d-block lineheight">
+                <NuxtLink 
+                  :to="buildPrettyPathServices(item.slug)"
+                  @click.prevent="handleCategoryClickServices(item.slug)"
+                  class="tw-no-underline item-link">
+                  <span class="d-block title-menu">{{ item.name }}</span>
+                </NuxtLink>
+              </VListItemTitle> 
+            </VListItem>
+            <VListGroup 
+              class="pm-menu-item" 
+              :id="`v-list-service-group--id-${item.slug}`"
+              v-else 
+              :raw-id="item.slug" 
+              :value="item.name" 
+              :eager="false"
+            >
+              <template #activator="{ props }">
+                <VListItem role="listitem" class="items-list">
+                  <VListItemTitle class="d-block lineheight">
+                    <NuxtLink
+                      :to="{
+                        name: 'categories-slug',
+                        params: { slug: item.slug }
+                      }"  
+                      class="tw-no-underline item-link"
+                      :aria-label="`${item.name}, ${openedGroups.includes(index) ? 'submenú abierto' : 'submenú cerrado'}`">
+                      <span class="d-block title-menu" :id="`service-mobile-${item.slug}`">{{ item.name }}</span>
+                    </NuxtLink>
+                  </VListItemTitle> 
+                  <template #append>
+                    <VIcon
+                      v-bind="props"
+                      :icon="openedGroups.includes(index) 
+                      ? 'mdi-minus' 
+                      : 'mdi-plus'"
+                      size="45"
+                      class="pm-menu-icon"
+                      @click="toggleGroupFn(index, item.name)"
+                      :aria-label="openedGroups.includes(index) ? `Colapsar ${item.name}` : `Expandir ${item.name}`"
+                      :aria-labelledby="`service-mobile-${item.slug}`"
+                    />
+                  </template>
+                </VListItem>
+              </template>
+              <div 
+                v-for="(k, index2) in services[index].children"
+                :key="index2"
+                class="style-menu-mobile">
+                <VListItem role="listitem" class="subtitle-menu">
+                  <NuxtLink
+                    :to="buildPrettyPathServices(item.slug, k.slug.split('/')[1])"
+                    @click.prevent="handleCategoryClickServices(item.slug, k.slug.split('/')[1])"  
+                    class="tw-no-underline item-link">
+                    <span class="d-block title-menu">
+                      {{ k.name }}
+                    </span>
+                  </NuxtLink>
+                </VListItem>
+              </div>
+            </VListGroup>
+          </template>
+        </VList>
+        <!--FIN MENU SERVICIOS MOBILE-->
+  
+        <div class="pm-menu-separator my-5"></div>
+  
+        <!-- B: MISCELANEOUS MENU -->
+        <VList
+          aria-label="Menú de navegación principal"
+          role="list"
+          class="p-0 mb-10"
+          v-model:opened="panelCat"
+          :ripple="false"
+        >
+          <VListItem role="listitem" class="pm-menu-item tw-border-0">
+            <VListItemTitle class="d-block lineheight">
+              <NuxtLink aria-label="item-about-us" to="/about" class="tw-no-underline item-link">
+                <span class="d-block title-menu">Quiénes somos</span>
+              </NuxtLink>
+            </VListItemTitle>
+          </VListItem>
+          <VListItem role="listitem" class="pm-menu-item tw-border-0">
+            <VListItemTitle class="d-block lineheight">
+              <NuxtLink aria-label="item-help" to="/help" class="tw-no-underline item-link">
+                <span class="d-block title-menu">Preguntas frecuentes</span>
+              </NuxtLink>
+            </VListItemTitle>  
+          </VListItem>
+          <VListItem role="listitem" class="pm-menu-item tw-border-0">
+            <VListItemTitle class="d-block lineheight">
+              <NuxtLink aria-label="item-help" to="/terms-and-conditions" class="tw-no-underline item-link">
+                <span class="d-block title-menu">Términos y condiciones</span>
+              </NuxtLink>
+            </VListItemTitle>  
+          </VListItem>
+          <VListItem role="listitem" class="pm-menu-item tw-border-0">
+            <VListItemTitle class="d-block lineheight">
+              <NuxtLink aria-label="item-help" to="/data-protection" class="tw-no-underline item-link">
+                <span class="d-block title-menu">Protección de datos</span>
+              </NuxtLink>
+            </VListItemTitle>  
+          </VListItem>
+          <VListItem role="listitem" class="pm-menu-item tw-border-0">
+            <VListItemTitle class="d-block lineheight">
+              <NuxtLink aria-label="item-help" to="/privacy-statement" class="tw-no-underline item-link">
+                <span class="d-block title-menu">Declaración de privacidad</span>
+              </NuxtLink>
+            </VListItemTitle>  
+          </VListItem>
+          <VListItem role="listitem" class="pm-menu-item tw-border-0">        
+            <VListItemTitle class="d-block lineheight">
+              <NuxtLink to="/blogs" class="tw-no-underline item-link">
+                <span class="d-block title-menu">Blog</span>
+              </NuxtLink>
+            </VListItemTitle>
+          </VListItem>
+        </VList>
+        <!-- E: MISCELANEOUS MENU -->
+      </div>
+
+
     </VNavigationDrawer>
+    <!-- E: MENU MOBILE -->
+
+    <!-- :width="isMobile ? 300 : 300"
+      :height="isMobile ? '80vh' : '100vh'" -->
     <VNavigationDrawer
       :model-value="isDrawerOpen"
-      :width="isMobile ? 280 : 380"
-      :height="isMobile ? '80vh' : '100vh'"
+      width="300"
+      height="100vh"
       location="end"
-      class="scrollable-content drawer d-print-none"
+      :class="['scrollable-content', 'drawer', 'd-print-none', 'pm-drawer-cart', { 'pm-hide-on-hydration': isHydrating }]"
       temporary
       @update:model-value="handleDrawerModelValueUpdate"
     >
@@ -583,7 +766,7 @@
       <!-- 👉 Title -->
       <div class="d-flex align-center pa-4 pa-md-6 pb-1 pb-md-1">
         <h2 class="text-h6">
-          Shopping Cart
+          Carrito
         </h2>
 
         <VSpacer />
@@ -605,8 +788,7 @@
           class="mb-10 card-timeline px-0">
           <VCardText class="d-flex flex-column align-center text-center justify-content-center">
             <VCardItem class="d-block align-center text-center justify-content-center cart-svg">
-              <cart v-if="isDesktop" class="d-block mx-auto mb-5"/>
-              <cart_mobile v-if="isMobile" class="d-block mx-auto mb-5"/>
+              <cart_alt class="d-block mx-auto mb-5 w-50" style="fill: #FF0090;"/>
               <span class="d-block cart-empty">Tu carrito esta vacio.</span>
             </VCardItem>
           </VCardText>
@@ -658,35 +840,39 @@
         </div>
       </template>
     </VNavigationDrawer>
-    <VAppBar flat class="header d-print-none">
+
+    <VAppBar flat class="header d-print-none pm-header-desktop">
       <VContainer class="tw-bg-white">
-        <VRow no-gutters v-if="isDesktop">
-          <VCol cols="9" class="d-flex">
-            <NuxtLink to="/" class="tw-no-underline tw-text-white ms-2 me-8">
-              <img :src="logo" width="255" alt="Logo de PartyMax - Ir a la página de inicio" cover/>
-            </NuxtLink>
-            <VSpacer />
-            <VTextField
-              v-model="textSearch"
-              class="pt-4 w-100x"
-              placeholder="Quiero..."
-              :color="color"
-              flat
-              variant="solo"
-              id="search-input"
-              aria-label="Buscar..."
-              @keydown.enter="search">
-              <template v-slot:append-inner>
-                <VBtn @click="search" class="tw-bg-primary tw-text-white h-100 search-button button-hover">Buscar</VBtn>
-              </template>
-            </VTextField>
-          </VCol>
-          <VCol cols="3" class="d-flex align-center align-items-stretch flex-shrink-0">
-            <VSpacer />
+        <!-- B: HEADER DESKTOP -->
+        <div no-gutters class="container d-flex justify-content-center align-center tw-gap-4 w-100">
+          <NuxtLink to="/" class="tw-no-underline tw-text-white me-0 me-sm-8">
+            <img :src="logo" class="pm-logo-header" width="200" alt="PartyMax - The Party Market" cover/>
+          </NuxtLink>
+          <VBtn class="pm-menu-button desktop" @click.prevent="toggleDrawer('mainmenu')"></VBtn>
+          <VTextField
+            v-model="textSearch"
+            ref="fixedSectionRef"
+            class="pm-searchfield-desktop pt-4 w-100x"
+            :class="isSearchFixed ? 'fixed' : ''"
+            placeholder="Encuentra el producto que buscas..."
+            :color="color"
+            flat
+            variant="solo"
+            id="search-input"
+            aria-label="Encuentra el producto que buscas..."
+            @keydown.enter="search">
+            <template v-slot:append-inner>
+              <VBtn @click="search" class="tw-text-white h-100 search-button"></VBtn>
+            </template>
+          </VTextField>
+          <div class="d-flex align-center align-items-stretch flex-shrink-0 pm-user-functions">
             <button 
-                class="index heart" aria-label="Mis favoritos"
-                :class="(name === null) ? 'ms-n70 me-5': 'me-5'" @click="redirect('dashboard-favorites')">
-                <heart aria-hidden="true" />
+                class="index heart me-5" aria-label="Mis favoritos"
+                @click="redirect('dashboard-favorites')">
+                <HoverIcon
+                  :icon-alt="favorite_alt"
+                  :icon-solid="favorite_solid"
+                />
             </button>
             <button aria-label="Abrir carrito de compras" icon class="me-3 shoppinp_cart" @click="isDrawerOpen = true">
               <VBadge
@@ -696,22 +882,31 @@
                 :model-value="!!cart_products"
                 location="end top"
               >
-                <shoppinp_cart aria-hidden="true" />
+                <HoverIcon
+                  :icon-alt="cart_alt"
+                  :icon-solid="cart_solid"
+                />
               </VBadge>
             </button>
             <div class="d-flex user-text">
-              <button v-if="name === null" aria-label="Iniciar Sesion o Registrarse" class="user ms-2">
-                <user aria-hidden="true" />
+              <button v-if="name === null" aria-label="Iniciar Sesion o Registrarse" class="user ms-2" @click="redirect('register')">
+                <HoverIcon
+                  :icon-alt="user_alt"
+                  :icon-solid="user_solid"
+                />
               </button>
               <VMenu v-else>
                 <template v-slot:activator="{ props }">
                   <button 
-                    class="user ms-2 me-3" 
+                    class="user ms-2" 
                     v-bind="props"
                     aria-label="Menú de usuario"
                     aria-haspopup="true"
                   >
-                    <user aria-hidden="true" />
+                    <HoverIcon
+                      :icon-alt="user_alt"
+                      :icon-solid="user_solid"
+                    />
                   </button>
                 </template>
                 <VList aria-label="Opciones de usuario" class="px-0">
@@ -747,282 +942,75 @@
                   </VListItem>
                 </VList>
               </VMenu>
-              <NuxtLink class="link-header" :to="{ name: 'register'}">
-                <span class="d-flex align-center tw-text-tertiary font-size-14 ms-2 text-regi" v-if="name === null">
-                  Ingresar o Registrarme
-                </span>
-              </NuxtLink>
             </div>
-          </VCol>
-        </VRow>
-        <VRow no-gutters v-if="isMobile" class="px-3">
-          <VCol cols="6" class="d-flex">
-            <NuxtLink to="/" class="tw-no-underline tw-text-white">
-              <img :src="logo" width="200" height="52" alt="Logo de PartyMax - Ir a la página de inicio" cover/>
-            </NuxtLink>
-          </VCol>
-          <VCol cols="6" class="d-flex align-center align-items-stretch flex-shrink-0 iconsMobile">
-            <VSpacer />
-            <span class="index heart me-3" @click="redirect('dashboard-favorites')">
-              <heart />
-            </span>
-            <span icon class="shoppinp_cart me-3" @click="isDrawerOpen = true">
+          </div>
+        </div>
+        <!-- E: HEADER DESKTOP -->
+      </VContainer>
+    </VAppBar>
+
+    <section class="pm-floating-functions-mobile">
+      <VContainer class="py-0 h-100">
+        <div class="d-flex align-items-center justify-content-center tw-gap-6 h-100">
+          <NuxtLink 
+            to="/" 
+            class="pm-ff-link tw-no-underline d-flex align-items-center justify-content-center tw-gap-6 h-100"
+            :class="{ 'active': isLinkActive('/') }"
+            >
+            <home_alt class="pm-ff-icon" />
+          </NuxtLink>
+          <NuxtLink 
+            class="pm-ff-link tw-no-underline d-flex align-items-center justify-content-center tw-gap-6 h-100"
+            :class="{ 'active': isLinkActive('/dashboard/favorites') }"
+            @click="redirect('dashboard-favorites')"
+            >
+            <favorite_alt class="pm-ff-icon" />
+          </NuxtLink>
+          <NuxtLink 
+            class="pm-ff-link featured tw-no-underline d-flex align-items-center justify-content-center tw-gap-6 h-100"
+            :class="{ 'active': isDrawerOpen }"
+            @click.prevent="toggleDrawerCart"
+          >
               <VBadge
-                color="primary"
+                aria-label="Abrir carrito de compras"
                 :content="cart_products"
                 :model-value="!!cart_products"
                 location="end top"
               >
-                <shoppinp_cart />
               </VBadge>
-            </span>
-            <div class="d-flex user-text">
-              <span v-if="name === null" class="user">
-                <NuxtLink class="link-header" :to="{ name: 'register' }" aria-label="Registrarse">
-                  <user />
-                </NuxtLink>
-              </span>
-              <VMenu v-else>
-                <template v-slot:activator="{ props }">
-                  <span class="user" v-bind="props">
-                    <user />
-                  </span>
-                </template>
-                <VList>
-                  <VListItem class="px-0">
-                    <VListItemTitle class="px-5"><b>Hola</b></VListItemTitle>
-                    <VListItemTitle class="px-5 mb-3 pb-3 line-div tw-text-primary">{{name}}</VListItemTitle>
-                    <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'dashboard' }">
-                        Dashboard
-                      </NuxtLink>
-                    </VListItemTitle>
-                    <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'dashboard-profile' }">
-                        Mi Perfil
-                      </NuxtLink>
-                    </VListItemTitle>
-                    <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'dashboard-purchases' }">
-                        Compras
-                      </NuxtLink>
-                    </VListItemTitle>
-                    <VListItemTitle class="px-5">
-                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'dashboard-coupons' }">
-                        Cupones
-                      </NuxtLink>
-                    </VListItemTitle>
-                    <VListItemTitle class="px-5 mb-3 pb-3 line-div">
-                      <NuxtLink class="link-header tw-text-gray " :to=" { name : 'dashboard-favorites' }">
-                        Mis favoritos
-                      </NuxtLink>
-                    </VListItemTitle>
-                    <VListItemTitle class="px-5 mt-2 tw-text-gray" @click="logout">Cerrar Sesión</VListItemTitle>
-                  </VListItem>
-                </VList>
-              </VMenu>
-            </div>
-          </VCol>
-        </VRow>
-      </VContainer>
-    </VAppBar>
-    <VAppBar flat class="d-print-none tw-border-y tw-border-grey_2" :class="classFixed" ref="fixedSectionRef">
-      <VContainer class="p-0 tw-text-tertiary d-flex justify-space-around align-center" v-if="isDesktop">
-        <div>
-          <VMenu 
-            v-model="menuOpen"
-            transition="slide-x-transition" 
-            location="bottom"
-            :close-on-content-click="false"
-            @update:modelValue="chanceMenu">
-            <template  v-slot:activator="{ props }">
-              <button 
-                v-bind="props"
-                class="d-flex menu-trigger hover:tw-text-primary"
-                aria-haspopup="true"
-                :aria-expanded="menuOpen ? 'true' : 'false'"
-                aria-controls="products-menu"
-                @keydown.enter="menuOpen = true"
-                @keydown.escape="menuOpen = false"
-                aria-label="Menú Productos"
-              >
-                <VIcon icon="mdi-menu" class="me-3" aria-hidden="true"/>
-                <h2 class="pt-1 font-size-16 me-7">Productos</h2>
-              </button>
-            </template>
-            <VCard class="style-menu" :width="width" @mouseleave="closeMenuOnMouseLeave">
-              <VRow no-gutters>
-                <VCol cols="12" :md="cols" class="py-5 pr-3">
-                  <VList role="list" class="pb-0">
-                    <VListItem role="listitem">
-                      <VListItemTitle class="d-block lineheight">
-                        <h2 class="d-block title-menu">PRODUCTOS</h2>
-                        <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
-                        </svg>
-                      </VListItemTitle>
-                    </VListItem>
-                    <VListItem
-                      v-for="(item, index) in categories"
-                      :key="index"
-                      role="listitem" 
-                      tabindex="-1" 
-                      :id="`product-label-${category}`">
-                        <div class="d-flex align-center hover-icon-right" @mouseover="openCategory(index)">
-                          <span v-if="item.children.length > 0"
-                            class="subtitle-menu d-flex align-center"
-                            @click="redirect_('categories-slug', item.slug)" @keydown.enter="redirect_('categories-slug', item.slug)"
-                            role="link" tabindex="0" :aria-label="`Ver categoría ${item.name}`">
-                              <component v-if="items_products.filter(e => e.slug === item.slug).length === 1" :is="items_products.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
-                              <component v-else :is="icon5" class="me-3" />
-                              {{ item.name }}
-                          </span>
-                          <NuxtLink 
-                            :to="buildPrettyPathProducts(item.slug)"
-                            @click.prevent="handleCategoryClickProducts(item.slug)"
-                            class="subtitle-menu d-flex align-center tw-no-underline" v-else>
-                            <component v-if="items_products.filter(e => e.slug === item.slug).length === 1" :is="items_products.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
-                            <component v-else :is="icon5" class="me-3" />
-                            {{ item.name }}
-                          </NuxtLink> 
-                          <VSpacer />
-                          <icon_right v-if="item.children.length > 0"/>  
-                        </div>
-                    </VListItem>
-                  </VList>
-                </VCol>
-                <VCol cols="12" :md="cols" v-show="cols === 6" class="borderCol py-5">
-                  <VList class="style-submenu mt-8" :aria-labelledby="`product-label-${category}`" role="menu">
-                    <VListItem
-                      v-for="(i, index2) in categories[category].children"
-                      :key="index2"
-                      @click="closeMenu">
-                    <NuxtLink 
-                      :to="buildPrettyPathProducts(i.slug.split('/')[0], i.slug.split('/')[1])"
-                      @click.prevent="handleCategoryClickProducts(i.slug.split('/')[0], i.slug.split('/')[1])"
-                      class="tw-no-underline tw-text-tertiary">
-                      <span class="subtitle-menu">{{ i.name }}</span>
-                    </NuxtLink>
-                    </VListItem>
-                  </VList>
-                </VCol>
-              </VRow>
-            </VCard>
-          </VMenu>
-        </div>
-      <!-----------------------SERVICIOS MENÚ------------------------------->
-        <div class="">
-          <VMenu 
-            v-model="menuOpenS"
-            transition="slide-x-transition" 
-            location="bottom"
-            :close-on-content-click="false"
-            @update:modelValue="chanceMenuS">
-            <template  v-slot:activator="{ props }">
-              <button 
-                v-bind="props"
-                class="d-flex menu-trigger hover:tw-text-primary"
-                aria-haspopup="true"
-                :aria-expanded="menuOpen ? 'true' : 'false'"
-                aria-controls="products-menu"
-                @keydown.enter="menuOpen = true"
-                @keydown.escape="menuOpen = false"
-                aria-label="Menú Servicios"
-              >
-                <VIcon icon="mdi-menu" class="me-3" aria-hidden="true"/>
-                <h2 class="pt-1 font-size-16 me-7 font-light">Servicios</h2>
-              </button>
-            </template>
-            <VCard class="style-menu" :width="width" @mouseleave="closeMenuOnMouseLeave">
-              <VRow no-gutters>
-                <VCol cols="12" :md="cols" class="py-5 pr-3">
-                  <VList class="pb-0">
-                    <VListItem >
-                      <VListItemTitle class="d-block lineheight">
-                        <h2 class="d-block font-light title-menu">SERVICIOS</h2>
-                        <svg width="59" height="3" viewBox="0 0 59 3" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <line y1="1.5" x2="58.8589" y2="1.5" stroke="#0A1B33" stroke-width="3"/>
-                        </svg>
-                      </VListItemTitle>
-                    </VListItem>
-                    <VListItem  
-                      v-for="(item, index) in services"
-                      :key="index" tabindex="-1" 
-                      :id="`service-label-${index}`" role="menu">
-                        <div class="d-flex align-center hover-icon-right" @mouseover="openService(index)">
-                          <span v-if="item.children.length > 0"
-                            class="subtitle-menu d-flex align-center"
-                            @click="redirect_('categories-slug', item.slug)" @keydown.enter="redirect_('categories-slug', item.slug)" aria-label="Subservicios">
-                              <component v-if="items_services.filter(e => e.slug === item.slug).length === 1" :is="items_services.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
-                              <component v-else :is="icon5" class="me-3" />
-                              {{ item.name }} 
-                          </span>
-                          <NuxtLink 
-                            :to="buildPrettyPathServices(item.slug)"
-                            @click.prevent="handleCategoryClickServices(item.slug)"
-                            class="subtitle-menu d-flex align-center tw-no-underline" v-else>
-                            <component v-if="items_services.filter(e => e.slug === item.slug).length === 1" :is="items_services.filter(e => e.slug === item.slug)[0].icon" class="me-3" />
-                            <component v-else :is="icon5" class="me-3" />
-                            {{ item.name }}
-                          </NuxtLink> 
-                          <VSpacer />
-                          <icon_right v-if="item.children.length > 0" :aria-label="openedGroups.includes(index) ? 'Submenú expandido' : 'Submenú colapsado'"/>  
-                        </div>
-                    </VListItem>
-                  </VList>
-                </VCol>
-                <VCol cols="12" :md="cols" v-show="cols === 6" class="borderCol py-5">
-                  <VList class="style-submenu mt-8">
-                    <VListItem 
-                      v-for="(i, index2) in services[category].children"
-                      :key="index2"
-                      @click="closeMenuS"
-                      :aria-labelledby="`service-label-${category}`" role="menu">
-                      <NuxtLink
-                        :to="buildPrettyPathServices(i.slug.split('/')[0], i.slug.split('/')[1])"
-                        @click.prevent="handleCategoryClickServices(i.slug.split('/')[0], i.slug.split('/')[1])"
-                        class="tw-no-underline tw-text-tertiary">
-                        <span class="subtitle-menu">{{ i.name }}</span>
-                      </NuxtLink>
-                    </VListItem>
-                  </VList>
-                </VCol>
-              </VRow>
-            </VCard>
-          </VMenu>
-        </div>
-      <!---------FIN SERVICIOS MENÚ--------------------------->
-        <VSpacer />
+            <cart_alt class="pm-ff-icon" />
+          </NuxtLink>
 
-        <NuxtLink to="/about" class="ms-5 tw-text-tertiary tw-no-underline hover:tw-text-primary">Quiénes somos</NuxtLink>
-        <VDivider class="hr" vertical/>
-        <NuxtLink to="/blogs" class="ms-5 tw-text-tertiary tw-no-underline hover:tw-text-primary">Blog</NuxtLink>
-        <VDivider class="hr" vertical/>
-        <NuxtLink to="/help" class="ms-5 tw-text-tertiary tw-no-underline me-3 hover:tw-text-primary">Preguntas frecuentes</NuxtLink>
 
-      </VContainer>
-      <VContainer class="p-0 tw-text-white d-flex" v-if="isMobile">
-        <div class="hover:tw-text-yellow">
-          <VAppBarNavIcon variant="text" @click.stop="drawer = !drawer" class="w-100 h-100 me-2 tw-text-tertiary" aria-label="menu"/> 
+          <NuxtLink 
+            v-if="!isGuest"
+            class="pm-ff-link tw-no-underline d-flex align-items-center justify-content-center tw-gap-6 h-100"
+            :class="{ 'active': (drawer && drawerType === 'profile') }"
+            @click.prevent="toggleDrawer('profile')"
+          >
+            <user_alt class="pm-ff-icon" />
+          </NuxtLink>
+          <NuxtLink 
+            v-else
+            class="pm-ff-link tw-no-underline d-flex align-items-center justify-content-center tw-gap-6 h-100"
+            :class="{ 'active': isLinkActive('/register') }"
+            @click="redirect('register')"
+          >
+            <user_alt class="pm-ff-icon" />
+          </NuxtLink>
+
+
+          <NuxtLink 
+            class="pm-ff-link tw-no-underline d-flex align-items-center justify-content-center tw-gap-6 h-100" 
+            :class="{ 'active': (drawer && drawerType === 'mainmenu') }"
+            @click.prevent="toggleDrawer('mainmenu')"
+          >
+            <menu_alt class="pm-ff-icon" />
+          </NuxtLink> 
         </div>
-        <VTextField
-          v-model="textSearch"
-          class="me-3"
-          placeholder="Quiero..."
-          flat
-          variant="solo"
-          @keydown.enter="search">
-          <template v-slot:append-inner>
-            <VBtn
-              aria-label="Buscar"
-              icon="mdi-magnify"
-              @click="search"
-              class="tw-bg-primary tw-text-white tw-font-bold h-100 search-button button-hover"
-            />
-          </template>
-        </VTextField>
       </VContainer>
-    </VAppBar>
+    </section>
+
   </section>
 </template>
 
@@ -1039,6 +1027,14 @@
 </style>
 
 <style scoped>
+  .pma-hidden {
+    display: none;
+  }
+
+  .pm-hide-on-hydration {
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
 
   h2 {
     font-weight: normal;
@@ -1139,6 +1135,11 @@
 
   .search-button {
     position: absolute;
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cpath d='M480 272C480 317.9 465.1 360.3 440 394.7L566.6 521.4C579.1 533.9 579.1 554.2 566.6 566.7C554.1 579.2 533.8 579.2 521.3 566.7L394.7 440C360.3 465.1 317.9 480 272 480C157.1 480 64 386.9 64 272C64 157.1 157.1 64 272 64C386.9 64 480 157.1 480 272zM272 416C351.5 416 416 351.5 416 272C416 192.5 351.5 128 272 128C192.5 128 128 192.5 128 272C128 351.5 192.5 416 272 416z' style='fill:%23999999'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 50%;
+    
     top: 0;
     right: 0;
     bottom: 0;
@@ -1148,13 +1149,23 @@
     border-bottom-left-radius: 0;
     font-size: 11.5px;
     font-weight: bold;
-    padding-top: 2px;
+    padding: 0;
+    min-width: 60px;
+  }
+  .search-button:hover {
+    background-size: 55%;
+  }
+
+  .pm-searchfield-desktop {
+    height: 43px;
+    padding: 0 !important;
   }
 
   .v-text-field::v-deep(.v-field) { 
-    border-radius: 100px;
-    border: 1.5px solid #0A1B33 !important;
+    border-radius: 3px;
+    border: 1.5px solid rgb(var(--v-theme-primary)) !important;
     height: 43px;
+    padding: 0 !important;
   } 
 
   .v-text-field::v-deep(::placeholder) { 
@@ -1163,7 +1174,8 @@
   }
 
   .v-text-field::v-deep(input) { 
-    padding-top: 0 !important;
+    padding: 0 60px 0 10px;
+    min-height: 39px;
   }
 
   .button-hover:hover {
@@ -1201,11 +1213,19 @@
 
   .title-menu {
     color: #0A1B33;
-    font-size: 20px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 18px;
     font-style: normal;
-    font-weight: 700;
-    line-height: 16px; /* 80% */
   }
+
+    h2.title-menu {
+      font-family: 'Poppins', sans-serif;
+      /* font-size: 32px; */
+      font-style: normal;
+      font-weight: 900;
+      color: #777;
+    }
 
   .subtitle-menu {
     color:#0A1B33;
@@ -1252,13 +1272,11 @@
     border-radius: 10px;
   }
  
-  .v-list-item--density-default.v-list-item--one-line {
-    min-height: 44px !important;
-  }
+  /* 
 
   .style-submenu .v-list-item--density-default.v-list-item--one-line {
     min-height: 35px !important;
-  }
+  } */
 
   .style-submenu:hover .v-list-item--density-default.v-list-item--one-line {
     color: white !important;
@@ -1268,132 +1286,332 @@
     border-bottom: 1px solid var(--Light-Cyan-3, #D9EEF2)!important;
   }
 
+  .pm-menu-button {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='%23ff0090'%3E%3Cpath%20d='M4%206h16v2H4zM4%2011h16v2H4zM4%2016h16v2H4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    padding: 0px;
+    border: 1px solid transparent;
+    width: 43px;
+    height: 43px;
+    min-width: 43px;
+  }
+
+  .btn-register, .btn-order {
+    width: 100%;
+  }
+
+  .drawer {
+    height: auto !important; /* Ocupa el 100% de la altura de la ventana */
+  }
+
+  .drawer::v-deep(.v-navigation-drawer__content) {
+    padding: 0 !important;
+  }
+
+  .cart-svg::v-deep(path) {
+      fill: #FF0090 !important;
+  }
+
+  .second-header {
+    top: 80px !important;
+    position: fixed !important;
+  }
+  
+  .topFixed {
+    top: 0 !important;
+    position: fixed !important;
+  }
+
+  .v-list::v-deep(.v-list-item--active .v-list-item__overlay) {
+    background-color: #D9EEF2 !important;
+  }
+
+  .v-list::v-deep(.v-list-item--variant-text .v-list-item__overlay) {
+    background-color: transparent;
+  }
+
+  /* .items-list::v-deep(.v-list-item__append) {
+    border-bottom: 1px solid #D9EEF2 !important;
+    padding-bottom: 4px !important;
+  } */
+
+  /* .v-text-field::v-deep(.v-field) { 
+    border-radius: 100px;
+    height: 30px;
+    top: 35%;
+    padding: 0;
+  } 
+
+  .v-text-field::v-deep(.v-field__input) { 
+    min-height: 27px;
+  }
+  
+  .v-text-field::v-deep(::placeholder) { 
+    color: #0A1B33 !important;
+    opacity: inherit;
+  }
+
+  .v-text-field::v-deep(input) { 
+    padding: 0 0 0 4% !important;
+    font-size: 13px;
+    border-radius: 100px;
+  } */
+
+  /* .w-100x {
+    width: 68%;
+  }
+
+  .w-15 {
+    width: 32%;
+  } */
+
+  .iconsMobile .v-btn--icon.v-btn--density-default {
+    width: calc(var(--v-btn-height) + 6px) !important;
+  }
+
+  /* .search-button {
+    width: 36px;
+    height: 29px !important;
+  }
+
+  .button-hover:hover {
+    color: #FFFFFF !important;
+  } */
+
+  .v-navigation-drawer {
+    position: fixed !important;
+  }
+
+  /* .v-navigation-drawer::v-deep(.v-navigation-drawer__content) {
+    padding: 10px 10px 0 10px;
+  } */
+
+  .v-navigation-drawer::v-deep(.v-expansion-panel-text__wrapper) {
+    padding: 10px;
+  }
+
+  .borderList {
+    border-bottom: 1px solid #D9EEF2;
+  }
+
+  .v-expansion-panel--active > .v-expansion-panel-title:not(.v-expansion-panel-title--static) {
+    min-height: 30px;
+  }
+
+  .v-expansion-panels--variant-inset > .v-expansion-panel--active {
+    max-width: 100%;
+  }
+
+  .subtitle-menu {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    padding-inline: 25px !important;
+  }
+
+  .style-menu-mobile .v-list-item--density-default.v-list-item--one-line {
+    /* min-height: 35px !important; */
+  }
+  
+  .pm-header-desktop {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+  }
+
+  #pm-menu-logo {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    top: 0;
+    width: 100%;
+    height: 84px;
+    z-index: 1;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+  }
+
+  #pm-menu-logo span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #e1f9fb;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+  }
+
+  #pm-menu-logo span img {
+    width: 80%;
+    object-fit: scale-down;
+  }
+
+  .pm-menu-mobile {
+    padding-top: 83px;
+  }
+
+  .pm-menu-item {
+    position: relative;
+    transform: .2s !important;
+    border-bottom: 1px solid #f7f8f9;
+    padding: 0 !important;
+  }
+  .pm-menu-item:hover {
+    background: #f7f8f9;
+  }
+  .pm-menu-item:hover:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 5px;
+    background-color: #FF0090;
+    transition: transform .3s;
+    transform-origin: top;
+  }
+  .pm-menu-item:last-child {
+      border: 0;
+  }
+
+  .pm-menu-item .v-list-item--density-default.v-list-item--one-line {
+    min-height: unset;
+    padding: 0 0;
+  }
+
+  .pm-menu-item .item-link {
+    display: flex !important;
+    height: 45px;
+    align-items: center;
+    padding: 0 0 0 16px;
+  }
+
+  .pm-menu-item.logout {
+    padding: 0 16px !important;
+  }
+  .pm-menu-item.logout .item-link {
+    background-color: #FF0090;
+    border-radius: 3px;;
+    justify-content: center;
+    font-family: 'poppins', sans-serif;
+    font-weight: 600;
+    color: #FFFFFF !important;
+   }
+
+  .pm-menu-item :deep(.pm-menu-icon) {
+    font-size: 25px !important;
+  }
+
+  .pm-menu-item :deep(.v-list-item__spacer) {
+    display: none;
+  }
+
+  .pm-menu-separator {
+    background-color: #EEE;
+    height: 5px;
+  }
+
+  .pm-floating-functions-mobile {
+    display: none;
+    position: fixed !important;
+    background-color: #FFFFFF;
+    border: 2px solid #EEE;
+    bottom: -1px !important;
+    width: 100%;
+    height: 60px;
+    z-index: 1100;
+  }
+
+  .pm-floating-functions-mobile .pm-ff-icon {
+    width: 32px !important;
+    height: auto !important;
+    color: #777;
+  }
+
+  .pm-floating-functions-mobile .pm-ff-link {
+    position: relative;
+    background: #FFFFFF;
+    width: 60px;
+  }
+
+  .pm-floating-functions-mobile .pm-ff-link.active .pm-ff-icon {
+    color: #FF0090 !important;
+  }
+
+  .pm-ff-link.featured {
+      border: 2px solid #EEE;
+      border-radius: 50%;
+      margin-top: -15px;
+      width: 58px;
+      height: 58px;
+      min-width: 58px;
+      min-height: 58px;
+      transform: scale(1.2);
+  }
+
+  .pm-ff-link.featured .v-badge {
+    position: absolute;
+    /* top: 5px;
+    right: 5px; */
+    top: 24px;
+    right: 24px;
+  }
+  .pm-ff-link.featured .pm-ff-icon {
+    width: 40px !important;
+  }
+
+  .pm-username-mobile {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 20px;
+  }
+
+  .pm-drawer-cart {
+    /* display: none; */
+  }
+
   @media only screen and (max-width: 767px) {
-
-    .btn-register, .btn-order {
-      width: 100%;
-    }
-
-    .drawer {
-      height: auto !important; /* Ocupa el 100% de la altura de la ventana */
-    }
-
-    .drawer::v-deep(.v-navigation-drawer__content) {
-      padding: 0 !important;
-    }
-
-    .cart-svg::v-deep(path) {
-        fill: #FF0090 !important;
-    }
-
-    .second-header {
-      top: 80px !important;
-      position: fixed !important;
+    .pm-header-desktop .v-container {
+      display: flex;
     }
     
-    .topFixed {
-      top: 0 !important;
-      position: fixed !important;
+    .pm-header-desktop .container {
+      flex-direction: column;
+      gap: 10px !important;
     }
 
-    .v-list::v-deep(.v-list-item--active .v-list-item__overlay) {
-      background-color: #D9EEF2 !important;
+    .pm-logo-header {
+      width: 180px;
     }
 
-    .v-list::v-deep(.v-list-item--variant-text .v-list-item__overlay) {
-      background-color: transparent;
+    .pm-searchfield-desktop {
+      width: 100% !important;
     }
 
-    .items-list::v-deep(.v-list-item__append) {
-      border-bottom: 1px solid #D9EEF2 !important;
-      padding-bottom: 4px !important;
+    .pm-searchfield-desktop.fixed {
+        width: 100% !important;
+        padding: 13px 15px 11px !important;
+        position: fixed;
+        top: 0;
+        background: #fff;
+        height: 66px;
     }
 
-    .v-text-field::v-deep(.v-field) { 
-      border-radius: 100px;
-      height: 30px;
-      top: 35%;
-      padding: 0;
-    } 
-
-    .v-text-field::v-deep(.v-field__input) { 
-      min-height: 27px;
+    .pm-menu-mobile {
+      padding-bottom: 37px;
     }
-    
-    .v-text-field::v-deep(::placeholder) { 
-      color: #0A1B33 !important;
-      opacity: inherit;
+    .pm-drawer-cart .v-navigation-drawer__append {
+      padding-bottom: 80px !important;
     }
 
-    .v-text-field::v-deep(input) { 
-      padding: 0 0 0 4% !important;
-      font-size: 13px;
-      border-radius: 100px;
+    .pm-menu-button.desktop, .pm-user-functions {
+      display: none !important;
     }
 
-    .w-100x {
-      width: 68%;
+    .pm-floating-functions-mobile {
+      display: block !important;
     }
-
-    .w-15 {
-      width: 32%;
-    }
-
-    .iconsMobile .v-btn--icon.v-btn--density-default {
-      width: calc(var(--v-btn-height) + 6px) !important;
-    }
-
-    .search-button {
-      width: 36px;
-      height: 29px !important;
-    }
-
-    .button-hover:hover {
-      color: #FFFFFF !important;
-    }
-
-    .v-navigation-drawer {
-      position: fixed !important;
-    }
-
-    .v-navigation-drawer::v-deep(.v-navigation-drawer__content) {
-      padding: 10px 10px 0 10px;
-    }
-
-    .v-navigation-drawer::v-deep(.v-expansion-panel-text__wrapper) {
-      padding: 10px;
-    }
-
-    .title-menu {
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 16px;
-    }
-
-    .borderList {
-      border-bottom: 1px solid #D9EEF2;
-    }
-
-    .v-expansion-panel--active > .v-expansion-panel-title:not(.v-expansion-panel-title--static) {
-      min-height: 30px;
-    }
-
-    .v-expansion-panels--variant-inset > .v-expansion-panel--active {
-      max-width: 100%;
-    }
-
-    .subtitle-menu {
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 16px;
-      padding-inline: 25px !important;
-    }
-
-    .style-menu-mobile .v-list-item--density-default.v-list-item--one-line {
-      min-height: 35px !important;
-    }
-
   }
 </style>

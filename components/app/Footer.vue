@@ -156,7 +156,7 @@ const onSubmit = () => {
     </a>
 
     <!-- ***************** E: NEW FOOTER ***************** -->
-    <div class="partymax-footer tw-py-10 w-100 tw-mt-5 tw-bg-[#eef0ef]">
+    <div class="partymax-footer tw-py-10 w-100 tw-bg-[#eef0ef]">
       <img :src="partymax_logo" alt="PartyMax" width="250" height="auto" />
       <div class="tw-flex tw-mt-8 justify-content-center">
         <a href="https://www.instagram.com/partymaxcolombia" target="_blank" class="tw-mr-2" aria-label="instagram">
@@ -276,7 +276,7 @@ const onSubmit = () => {
     height: 60px;
     bottom: 20px;
     right: 20px;
-    z-index: 1000;
+    z-index: 500;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     background-color: #25D366;
     padding: 10px;
@@ -384,6 +384,12 @@ const onSubmit = () => {
     .border-fix {
       border-right: 0 !important;
       border-bottom: 1px solid #E1E1E1 !important;
+    }
+    .whatsapp-float {
+      bottom: 80px;
+    }
+    .partymax-footer {
+      padding-bottom: 100px !important;
     }
   }
 

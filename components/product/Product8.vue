@@ -171,8 +171,10 @@ watchEffect(() => {
     }
 
     .border-img {
-        width: 130px;
-        height: 130px;
+        /* width: 130px;
+        height: 130px; */
+        width: 80px;
+        height: 80px;
         border-radius: 16px !important;
         border: 1px solid #E1E1E1;
         text-align: center;
@@ -197,9 +199,10 @@ watchEffect(() => {
 
     .img-prod {
         display: block;
-        width: 130px;
-        height: 130px;
-        object-fit: cover;
+        /* width: 130px;
+        height: 130px; */
+        width: 100%;
+        object-fit: scale-down;
         border-radius: 16px;
         transition: transform 0.3s ease-in-out;
     }

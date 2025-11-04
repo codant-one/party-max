@@ -162,6 +162,10 @@ body {
   line-height: 14px;
 }
 
+/* .v-layout {
+  z-index: 100 !important;
+} */
+
 *[style*="cursor: pointer"],
 [aria-controls],
 [disabled],
@@ -178,6 +182,43 @@ label,
   cursor: pointer !important;
 }
 
+.v-layout {
+  z-index: unset !important;
+}
+
+.pm-main {
+  padding-top: 83px !important;
+  top: 0 !important;
+  position: relative !important;
+}
+
+.pm-header-desktop {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+  transform: unset !important;
+}
+
+.pm-breadcrumb {
+  position: relative !important;
+  top: unset !important;
+}
+
+.pm-breadcrumb .v-container {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.pm-breadcrumb .v-toolbar__content {
+  height: auto !important;
+}
+
+.pm-breadcrumb .v-breadcrumbs--density-default {
+  padding: 15px 16px !important;
+}
+
+.v-navigation-drawer__scrim {
+  position: fixed !important;
+}
+
 .align-right {
   text-align: right;
 }
@@ -187,7 +228,11 @@ label,
 }
 
 .header .v-toolbar__content, .header .v-container {
-  height: 96px !important;
+  height: 83px !important;
+}
+
+.header .v-container {
+  padding: 13px 15px !important;
 }
 
 .second-header .v-toolbar__content, .topFixed .v-toolbar__content {
@@ -211,10 +256,6 @@ label,
   justify-content: center;
 }
 
-.header .v-container {
-  padding: 13px 0 !important;
-}
-
 .font-size-16 {
   font-size: 16px;
   line-height: 20px;
@@ -232,7 +273,22 @@ label,
 }
 
 .grecaptcha-badge {
-  bottom: 90px !important;
+  bottom: 160px !important;
+  /* z-index: 105; */
+}
+
+.pm-ff-link.featured .v-badge .v-badge__badge {
+  background: transparent !important;
+  font-size: 12px !important;
+  color: rgb(var(--v-theme-primary)) !important;
+  text-align: center !important;
+  width: 25px;
+}
+
+.pm-hide-on-hydration {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  transform: none !important;
 }
 
 @media (min-width: 1280px) {
@@ -242,12 +298,20 @@ label,
 }
 
 @media (max-width: 768px) {
-  .header .v-container {
+  /* .header .v-container {
     padding: 13px 0 0 0!important;
+  } */
+
+  .pm-main {
+    padding-top: 126px !important;
   }
 
   .header .v-toolbar__content, .header .v-container {
-    height: 80px !important;
+    height: 125px !important;
+  }
+
+  .pm-drawer-cart .v-navigation-drawer__append {
+    padding-bottom: 80px !important;
   }
 
   .font-size-16 {

@@ -157,7 +157,7 @@ async function fetchData() {
           <Filters :drawer="drawer" v-if="isProductsRoute"/>
           <FilterServices :drawer="drawer" v-if="isServicesRoute"/>
           <Header />
-          <VMain :style="backgroundStyle" :class="background">
+          <VMain :style="backgroundStyle" class="pm-main" :class="background">
             <NuxtPage />
           </VMain>
         </VLayout>
@@ -168,7 +168,7 @@ async function fetchData() {
           <Filters :drawer="drawer" v-if="isProductsRoute"/>
           <FilterServices :drawer="drawer" v-if="isServicesRoute"/>
           <Header />
-          <VMain :style="backgroundStyle" :class="background">
+          <VMain :style="backgroundStyle" class="pm-main" :class="background">
             <NuxtPage />
           </VMain>
         </VLayout>

@@ -468,7 +468,7 @@ const onAllCategoriesClick = () => {
 
 <template>
   <section>
-    <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
+    <VAppBar flat class="breadcumb pm-breadcrumb">
       <VContainer class="tw-text-tertiary d-flex align-center px-0">
         <v-breadcrumbs :items="bread" class="px-2">
           <template #item="{ item, index }">
@@ -489,7 +489,7 @@ const onAllCategoriesClick = () => {
       <Loader :isLoading="isLoading" />
       <VRow no-gutters v-if="categories" class="services-structure">
         <VCol cols="12" md="3" class="d-none d-md-block">
-          <VCard class="mt-7 sidebar-container">
+          <VCard class="sidebar-container">
             <VCardItem class="p-0 text-left mt-6"> CATEGORÍAS </VCardItem>
 
             <VCardItem v-if="categoriesStores.getCategory" class="p-0 text-allcategories tw-font-bold mt-6">
@@ -755,7 +755,7 @@ const onAllCategoriesClick = () => {
 
         <VCol cols="12" md="9" class="col-menuservice d-flex flex-column">
           <!-- filters -->
-          <VCard class="mt-7 menu-prod pt-0 pt-md-2 px-0 px-md-5">
+          <VCard class="mt-7 mt-sm-0 menu-prod pt-0 pt-md-2 px-0 px-md-5">
             <VRow no-gutters class="align-center">
               <VCol
                 cols="6"
@@ -1412,9 +1412,9 @@ const onAllCategoriesClick = () => {
     opacity: 1 !important;
   }
 
-  .breadcumb {
+  /* .breadcumb {
     height: 55px !important;
-  }
+  } */
 
   .v-btn--size-default {
     padding: 0 10px !important;
@@ -1497,7 +1497,7 @@ const onAllCategoriesClick = () => {
       padding-left: 0px !important;
     }
 
-    .breadcumb {
+    /* .breadcumb {
       height: 50px !important;
       margin-top: -5px !important;
     }
@@ -1505,15 +1505,15 @@ const onAllCategoriesClick = () => {
     .v-breadcrumbs {
       padding-top: 0 !important;
       margin-top: -5px !important;
-    }
+    } */
 
     .v-breadcrumbs::v-deep(.v-breadcrumbs-item) {
-      font-size: 10px;
+      font-size: 13px;
     }
 
-    .v-breadcrumbs::v-deep(.v-breadcrumbs-divider){
+    /* .v-breadcrumbs::v-deep(.v-breadcrumbs-divider){
       padding: 0 2px !important;
-    }
+    } */
 
     .container-mobile {
       margin-top: -25px !important;
