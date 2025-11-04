@@ -551,7 +551,7 @@ const buildEmbedUrl = (url) => {
 
 <template>
   <section>
-    <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
+    <VAppBar flat class="breadcumb pm-breadcrumb">
       <VContainer class="tw-text-tertiary d-flex align-center px-0">
         <v-breadcrumbs :items="bread" class="px-2" />
       </VContainer>
@@ -946,9 +946,9 @@ const buildEmbedUrl = (url) => {
     bottom: 30px !important;
   } 
 
-  .m-top {
+  /* .m-top {
     margin-top: -10px;
-  }
+  } */
 
   .mySwiper2 iframe {
     pointer-events: none !important;
@@ -1186,9 +1186,9 @@ const buildEmbedUrl = (url) => {
     box-shadow: 0px 0px 24px 0px #FF27B3;
   }
 
-  .breadcumb {
+  /* .breadcumb {
     height: 55px !important;
-  }
+  } */
 
   .hearth-icon path {
     fill:#0A1B33;
@@ -1416,6 +1416,16 @@ const buildEmbedUrl = (url) => {
     display: none;
   }
 
+  .pm-main {
+    padding-top: 83px !important;
+    top: 0 !important;
+    position: relative !important;
+  }
+  .pm-breadcrumb {
+    position: relative !important;
+    top: unset !important;
+  }
+
   @media only screen and (max-width: 767px) {
 
     .MySwiper2:deep(.swiper-button-next),
@@ -1501,23 +1511,23 @@ const buildEmbedUrl = (url) => {
       font-size: 10px !important;
     }
 
-    .breadcumb {
+    /* .breadcumb {
       height: 50px !important;
       margin-top: -5px !important;
-    }
+    } */
       
-    .v-breadcrumbs {
+    /* .v-breadcrumbs {
       padding-top: 0 !important;
       margin-top: -5px !important;
-    }
+    } */
 
     .v-breadcrumbs::v-deep(.v-breadcrumbs-item) {
-      font-size: 10px;
+      font-size: 13px;
     }
 
-    .v-breadcrumbs::v-deep(.v-breadcrumbs-divider){
+    /* .v-breadcrumbs::v-deep(.v-breadcrumbs-divider){
       padding: 0 2px !important;
-    }
+    } */
 
     .v-card-title {
       white-space: pre-wrap;
