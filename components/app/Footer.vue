@@ -231,7 +231,7 @@ const onSubmit = () => {
         </NuxtLink>
       </p>
       <div class="tw-mt-8">
-        <p class="tw-text-black tw-text-xl tw-m-0 tw-mt-1 text-center tw-flex tw-items-center tw-justify-center tw-gap-2">
+        <p class="pm-payu-legend tw-text-black tw-text-xl tw-m-0 tw-mt-1 text-center tw-flex tw-items-center tw-justify-center tw-gap-2">
           <span>Pagos <strong class="tw-uppercase">confiables</strong> a traves de</span><img :src="payu" alt="PayU" width="100" height="auto"/>
         </p>
         <div class="tw-mt-1 tw-flex tw-items-center tw-justify-center tw-gap-1 lg:tw-gap-5 tw-flex-no-wrap tw-flex-col lg:tw-flex-row">
@@ -390,6 +390,12 @@ const onSubmit = () => {
     }
     .partymax-footer {
       padding-bottom: 100px !important;
+    }
+    .pm-payu-legend {
+      flex-direction: column;
+      font-size: 18px !important;
+      gap: 0px !important;
+      margin-bottom: 20px !important;
     }
   }
 

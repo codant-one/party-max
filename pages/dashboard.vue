@@ -146,7 +146,7 @@ definePageMeta({
 
     .card-information {
         padding: 24px 32px;
-        margin-top: 24px;
+        margin-top: 22px;
         border-radius: 16px;
     }
 
@@ -275,7 +275,7 @@ definePageMeta({
 
         .card-information {
             border-radius: 0px;
-            margin-top: 0px;
+            /* margin-top: 0px; */
             padding: 24px 0px;
         }
 

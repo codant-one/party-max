@@ -1,257 +1,293 @@
 <script setup>
+  import { ref } from 'vue'
+  import { useHomeStores } from '@/stores/home'
+  import { useMiscellaneousStores } from "@/stores/miscellaneous";
+  import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+  import { Swiper, SwiperSlide } from 'swiper/vue';
 
-import { ref } from 'vue'
-import { useHomeStores } from '@/stores/home'
-import { useMiscellaneousStores } from "@/stores/miscellaneous";
-import { Autoplay, Navigation, Pagination } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/vue';
+  import 'swiper/css';
+  import 'swiper/css/pagination';
 
-import 'swiper/css';
-import 'swiper/css/pagination';
+  import Product1 from '@/components/product/Product1.vue'
+  import Product2 from '@/components/product/Product2.vue'
+  import Loader from '@/components/common/Loader.vue'
+  import WelcomePopup from '@/components/app/WelcomePopup.vue'
+  import { useCategoriesStores } from '@/stores/categories'
 
-import Product1 from '@/components/product/Product1.vue'
-import Product2 from '@/components/product/Product2.vue'
-import Loader from '@/components/common/Loader.vue'
-import WelcomePopup from '@/components/app/WelcomePopup.vue'
-import { useCategoriesStores } from '@/stores/categories'
+  import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
 
-import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
+  import motorcycle from '@assets/icons/motorcycle.svg';
+  import location from '@assets/icons/location.svg';
+  import sold from '@assets/icons/sold.svg';
+  import tracking from '@assets/icons/tracking.svg';
 
-import motorcycle from '@assets/icons/motorcycle.svg';
-import location from '@assets/icons/location.svg';
-import sold from '@assets/icons/sold.svg';
-import tracking from '@assets/icons/tracking.svg';
+  import t_1 from '@assets/images/t_1.webp';
+  import t_2 from '@assets/images/t_2.webp';
+  import t_3 from '@assets/images/t_3.webp';
+  import t_4 from '@assets/images/t_4.webp';
+  import t_5 from '@assets/images/t_5.webp';
 
-import t_1 from '@assets/images/t_1.webp';
-import t_2 from '@assets/images/t_2.webp';
-import t_3 from '@assets/images/t_3.webp';
-import t_4 from '@assets/images/t_4.webp';
-import t_5 from '@assets/images/t_5.webp';
+  import f_1 from '@assets/images/f_1.webp';
+  import f_2 from '@assets/images/f_2.webp';
+  import f_3 from '@assets/images/f_3.webp';
+  import f_4 from '@assets/images/f_4.webp';
 
-import f_1 from '@assets/images/f_1.webp';
-import f_2 from '@assets/images/f_2.webp';
-import f_3 from '@assets/images/f_3.webp';
-import f_4 from '@assets/images/f_4.webp';
+  import t_7 from '@assets/images/t_7.jpg';
 
-import t_7 from '@assets/images/t_7.jpg';
+  import mb_1 from '@assets/images/pmhb-01-envio-express.svg';
+  import mb_2 from '@assets/images/pmhb-02-lo-mas-nuevo.svg';
+  import mb_3 from '@assets/images/pmhb-03-oferta-del-dia.svg';
+  import mb_4 from '@assets/images/pmhb-04-mas-vendidos.svg';
+  import mb_5 from '@assets/images/pmhb-05-aliados.svg';
 
-import mb_1 from '@assets/images/pmhb-01-envio-express.svg';
-import mb_2 from '@assets/images/pmhb-02-lo-mas-nuevo.svg';
-import mb_3 from '@assets/images/pmhb-03-oferta-del-dia.svg';
-import mb_4 from '@assets/images/pmhb-04-mas-vendidos.svg';
-import mb_5 from '@assets/images/pmhb-05-aliados.svg';
+  import check_circle from '@assets/icons/check-circle.svg';
+  import error_circle from '@assets/icons/error-circle.svg';
 
-import check_circle from '@assets/icons/check-circle.svg';
-import error_circle from '@assets/icons/error-circle.svg';
+  const thumbsSwiper = ref(null);
+  const modules = ref([Navigation, Pagination])
+  const modulesSlider = ref([Autoplay, Pagination, Navigation])
 
-const thumbsSwiper = ref(null);
-const modules = ref([Navigation, Pagination])
-const modulesSlider = ref([Autoplay, Pagination, Navigation])
-
-const setThumbsSwiper = (swiper) => {
-    thumbsSwiper.value = swiper;
-}
-
-const config = useRuntimeConfig()
-const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
-const twitterAccount = ref(config.public.TWITTER_ACCOUNT ?? '')
-
-const banner_1 = ref([])
-const banner_2 = ref([])
-const banner_3 = ref([])
-const banner_4 = ref([])
-const banner_5 = ref([])
-const banner_6 = ref([])
-const banner_products = ref([])
-const banner_services = ref([])
-const homeFeaturedBanners = ref({})
-
-const { isMobile } = useDevice();
-
-const sliders = ref([])
-const banners = ref([])
-
-const homeStores = useHomeStores()
-const miscellaneousStores = useMiscellaneousStores()
-const categoriesStores = useCategoriesStores()
-const buildPrettyPathProducts = (category, subcategory = null, fathercategory = null) => {
-  if (category && subcategory && fathercategory)
-    return `/products/categories/${category}/${fathercategory}/${subcategory}`
-  if (category && subcategory)
-    return `/products/categories/${category}/${subcategory}`
-  if (category)
-    return `/products/categories/${category}`
-  return '/products'
-}
-
-const handleCategoryClickProducts = (category, subcategory = null, fathercategory = null) => {
-  categoriesStores.reset()
-  if (category) categoriesStores.setCategory(category)
-  if (subcategory) categoriesStores.setSubcategory(subcategory)
-  if (fathercategory) categoriesStores.setFathercategory(fathercategory)
-}
-
-const data = ref(null)
-const isLoading = ref(true)
-
-const isDialogVisible = ref(false)
-const isError = ref(false)
-const message = ref(false)
-
-const categories = ref([]);
-
-watch(() => 
-  miscellaneousStores.getLoading, async (value) => {
-    isLoading.value = value
+  const setThumbsSwiper = (swiper) => {
+      thumbsSwiper.value = swiper;
   }
-)
 
-watch(() => 
-  miscellaneousStores.getMessage, async (value) => {
-    if(value !== '') {
-      isError.value = miscellaneousStores.getError
-      isDialogVisible.value = true
-      message.value = value
-      setTimeout(() => {
-        miscellaneousStores.setError(false)
-        isDialogVisible.value = false
-        isError.value = false
-        message.value = ''
-      }, 2000)
-    }
-  }
-)
+  const config = useRuntimeConfig()
+  const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
+  const twitterAccount = ref(config.public.TWITTER_ACCOUNT ?? '')
 
-// watchEffect(fetchData)
+  useSeoMeta({
+    // ----------------------------------------------------
+    // META-TAGS BÁSICOS
+    // ----------------------------------------------------
+    title: 'PARTYMAX | THE PARTY MARKET', // Título conciso, incluye la palabra clave principal si aplica
+    description: 'Partymax, tu aliado ideal para fiestas en Colombia. Conectamos tus ideas con los mejores proveedores. ¡Haz tu celebración inolvidable de forma fácil y económica!',
+    keywords: 'eventos en Colombia, marketplace de fiestas, proveedores de eventos, organización de eventos, planificación de fiestas, catering, decoración de fiestas, entretenimiento para eventos, servicios para bodas, fiestas infantiles, despedidas de soltera, tecnología para eventos, Partymax',
+    robots: 'index, follow',
+    author: 'Partymax',
+    language: 'es',
 
-async function fetchData() {
-
-  isLoading.value = true
-  
-  await homeStores.fetchData()
-
-  categories.value = homeStores.getData.parentCategories;
-
-  data.value = homeStores.getData
-
-  sliders.value = data.value.images.filter(item => item.is_slider === 1);
-  banners.value = data.value.images.filter(item => item.is_slider === 0);
-
-  banner_1.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 1).mobile : banners.value.find(item => item.order_id === 1).image);
-  banner_1.value.url = banners.value.find(item => item.order_id === 1).url;
-  banner_1.value.title = banners.value.find(item => item.order_id === 1).title;
-
-  banner_2.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 2).mobile : banners.value.find(item => item.order_id === 2).image);
-  banner_2.value.url = banners.value.find(item => item.order_id === 2).url;
-  banner_2.value.title = banners.value.find(item => item.order_id === 2).title;
-
-  banner_3.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 3).mobile : banners.value.find(item => item.order_id === 3).image);
-  banner_3.value.url = banners.value.find(item => item.order_id === 3).url;
-
-  banner_4.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 4).mobile : banners.value.find(item => item.order_id === 4).image);
-  banner_4.value.url = banners.value.find(item => item.order_id === 4).url;
-
-  banner_5.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 5).mobile : banners.value.find(item => item.order_id === 5).image);
-  banner_5.value.url = banners.value.find(item => item.order_id === 5).url;
-
-  banner_6.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 6).mobile : banners.value.find(item => item.order_id === 6).image);
-  banner_6.value.url = banners.value.find(item => item.order_id === 6).url;
-
-  const tempBanners = {};
-  const specialBanners = [
-    { id: 7, prop: 'products' },
-    { id: 8, prop: 'services' }
-  ];
-  const sequentialIds = { start: 9, end: 16 };
-  for (const { id, prop } of specialBanners) {
-    const foundBanner = banners.value.find(item => item.order_id === id);
+    // ----------------------------------------------------
+    // OPEN GRAPH (Facebook, WhatsApp, etc.)
+    // ----------------------------------------------------
+    ogType: 'website',
+    ogTitle: 'PARTYMAX | THE PARTY MARKET',
+    ogDescription: 'Organiza tu evento ideal con Partymax. Encuentra los mejores proveedores de decoración, catering, entretenimiento y más en un solo lugar.',
+    ogImage: `${config.public.APP_DOMAIN_API_URL}/logos/R_ORIGINAL@2x.png`,
+    ogUrl: `https://${config.public.MY_DOMAIN}`,
+    ogSiteName: 'PARTYMAX',
     
-    if (foundBanner) {
-        tempBanners[prop] = {
-            image: baseURL.value + (isMobile ? foundBanner.mobile : foundBanner.image),
-            url: foundBanner.url,
-            title: foundBanner.title
-        };
+    // ----------------------------------------------------
+    // TWITTER
+    // ----------------------------------------------------
+    twitterCard: 'summary_large_image',
+    twitterTitle: 'PARTYMAX | THE PARTY MARKET',
+    twitterDescription: 'Organiza tu evento ideal con Partymax. Encuentra los mejores proveedores de decoración, catering, entretenimiento y más en un solo lugar.',
+    twitterImage: `${config.public.APP_DOMAIN_API_URL}/logos/R_ORIGINAL@2x.png`,
+    twitterSite: twitterAccount.value // Ya estás usando la variable de configuración
+  });
+
+  const banner_1 = ref([])
+  const banner_2 = ref([])
+  const banner_3 = ref([])
+  const banner_4 = ref([])
+  const banner_5 = ref([])
+  const banner_6 = ref([])
+  const banner_products = ref([])
+  const banner_services = ref([])
+  const homeFeaturedBanners = ref({})
+
+  const { isMobile } = useDevice();
+
+  const sliders = ref([])
+  const banners = ref([])
+
+  const homeStores = useHomeStores()
+  const miscellaneousStores = useMiscellaneousStores()
+  const categoriesStores = useCategoriesStores()
+
+
+  const buildPrettyPathProducts = (category, subcategory = null, fathercategory = null) => {
+    if (category && subcategory && fathercategory)
+      return `/products/categories/${category}/${fathercategory}/${subcategory}`
+    if (category && subcategory)
+      return `/products/categories/${category}/${subcategory}`
+    if (category)
+      return `/products/categories/${category}`
+    return '/products'
+  }
+
+  const handleCategoryClickProducts = (category, subcategory = null, fathercategory = null) => {
+    categoriesStores.reset()
+    if (category) categoriesStores.setCategory(category)
+    if (subcategory) categoriesStores.setSubcategory(subcategory)
+    if (fathercategory) categoriesStores.setFathercategory(fathercategory)
+  }
+
+  const data = ref(null)
+  const isLoading = ref(true)
+
+  const isDialogVisible = ref(false)
+  const isError = ref(false)
+  const message = ref(false)
+
+  const categories = ref([]);
+
+  watch(() => 
+    miscellaneousStores.getLoading, async (value) => {
+      isLoading.value = value
+    }
+  )
+
+  watch(() => 
+    miscellaneousStores.getMessage, async (value) => {
+      if(value !== '') {
+        isError.value = miscellaneousStores.getError
+        isDialogVisible.value = true
+        message.value = value
+        setTimeout(() => {
+          miscellaneousStores.setError(false)
+          isDialogVisible.value = false
+          isError.value = false
+          message.value = ''
+        }, 2000)
+      }
+    }
+  )
+
+  // watchEffect(fetchData)
+
+  async function fetchData() {
+
+    isLoading.value = true
+    
+    await homeStores.fetchData()
+
+    categories.value = homeStores.getData.parentCategories;
+
+    data.value = homeStores.getData
+
+    sliders.value = data.value.images.filter(item => item.is_slider === 1);
+    banners.value = data.value.images.filter(item => item.is_slider === 0);
+
+    banner_1.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 1).mobile : banners.value.find(item => item.order_id === 1).image);
+    banner_1.value.url = banners.value.find(item => item.order_id === 1).url;
+    banner_1.value.title = banners.value.find(item => item.order_id === 1).title;
+
+    banner_2.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 2).mobile : banners.value.find(item => item.order_id === 2).image);
+    banner_2.value.url = banners.value.find(item => item.order_id === 2).url;
+    banner_2.value.title = banners.value.find(item => item.order_id === 2).title;
+
+    banner_3.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 3).mobile : banners.value.find(item => item.order_id === 3).image);
+    banner_3.value.url = banners.value.find(item => item.order_id === 3).url;
+
+    banner_4.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 4).mobile : banners.value.find(item => item.order_id === 4).image);
+    banner_4.value.url = banners.value.find(item => item.order_id === 4).url;
+
+    banner_5.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 5).mobile : banners.value.find(item => item.order_id === 5).image);
+    banner_5.value.url = banners.value.find(item => item.order_id === 5).url;
+
+    banner_6.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 6).mobile : banners.value.find(item => item.order_id === 6).image);
+    banner_6.value.url = banners.value.find(item => item.order_id === 6).url;
+
+    const tempBanners = {};
+    const specialBanners = [
+      { id: 7, prop: 'products' },
+      { id: 8, prop: 'services' }
+    ];
+    const sequentialIds = { start: 9, end: 16 };
+    for (const { id, prop } of specialBanners) {
+      const foundBanner = banners.value.find(item => item.order_id === id);
+      
+      if (foundBanner) {
+          tempBanners[prop] = {
+              image: baseURL.value + (isMobile ? foundBanner.mobile : foundBanner.image),
+              url: foundBanner.url,
+              title: foundBanner.title
+          };
+      }
+    }
+    for (let id = sequentialIds.start; id <= sequentialIds.end; id++) {
+      const propName = `banner${id}`;
+      const foundBanner = banners.value.find(item => item.order_id === id);
+
+      if (foundBanner) {
+          tempBanners[propName] = {
+              image: baseURL.value + (isMobile ? foundBanner.mobile : foundBanner.image),
+              url: foundBanner.url,
+              title: foundBanner.title
+          };
+      }
+    }
+    homeFeaturedBanners.value = tempBanners;
+
+    isLoading.value = false
+  }
+
+  await useAsyncData('homeData', fetchData);
+
+  const redirectTo = (url) => {
+    if (url) {
+      window.open(url, '_blank');
+      // window.location.href = url
     }
   }
-  for (let id = sequentialIds.start; id <= sequentialIds.end; id++) {
-    const propName = `banner${id}`;
-    const foundBanner = banners.value.find(item => item.order_id === id);
 
-    if (foundBanner) {
-        tempBanners[propName] = {
-            image: baseURL.value + (isMobile ? foundBanner.mobile : foundBanner.image),
-            url: foundBanner.url,
-            title: foundBanner.title
-        };
-    }
-  }
-  homeFeaturedBanners.value = tempBanners;
+  const tab = ref('0')
 
-  isLoading.value = false
-}
+  /* useHead({
+    title: 'PARTYMAX | THE PARTY MARKET',
+    meta: [
+      { name: 'description', content: 'Partymax, tu aliado ideal para fiestas en Colombia. Conectamos tus ideas con los mejores proveedores.¡Haz tu celebración inolvidable de forma fácil y económica!' },
+      { name: 'keywords', content: 'eventos en Colombia, marketplace de fiestas, proveedores de eventos, organización de eventos, planificación de fiestas, catering, decoración de fiestas, entretenimiento para eventos, servicios para bodas, fiestas infantiles, despedidas de soltera, tecnología para eventos, Partymax' },
+      { name: 'robots', content: 'index, follow' },
+      { name: 'autor', content: 'Partymax' },
+      { name: 'language', content: 'es' },
 
-await useAsyncData('homeData', fetchData);
+      // Open Graph
+      { property: 'og:type', content: 'website' },
+      { property: 'og:title', content: 'PARTYMAX | THE PARTY MARKET' },
+      { property: 'og:description', content: 'Organiza tu evento ideal con Partymax. Encuentra los mejores proveedores de decoración, catering, entretenimiento y más en un solo lugar.' },
+      { property: 'og:image', content: config.public.APP_DOMAIN_API_URL + '/logos/R_ORIGINAL@2x.png' },
+      { property: 'og:url', content: `https://${config.public.MY_DOMAIN}` },
+      { property: 'og:site_name', content: 'PARTYMAX' },
 
-const redirectTo = (url) => {
-  if (url) {
-    window.open(url, '_blank');
-    // window.location.href = url
-  }
-}
+      // Twitter
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: 'PARTYMAX | THE PARTY MARKET' },
+      { name: 'twitter:description', content: 'Organiza tu evento ideal con Partymax. Encuentra los mejores proveedores de decoración, catering, entretenimiento y más en un solo lugar.' },
+      { name: 'twitter:image', content: config.public.APP_DOMAIN_API_URL + '/logos/R_ORIGINAL@2x.png' },
+      { name: 'twitter:site', content: twitterAccount.value }
+    ]
+  }); */
 
-const tab = ref('0')
-
-useHead({
-  title: 'PARTYMAX | THE PARTY MARKET',
-  meta: [
-    { name: 'description', content: 'Partymax, tu aliado ideal para fiestas en Colombia. Conectamos tus ideas con los mejores proveedores.¡Haz tu celebración inolvidable de forma fácil y económica!' },
-    { name: 'keywords', content: 'eventos en Colombia, marketplace de fiestas, proveedores de eventos, organización de eventos, planificación de fiestas, catering, decoración de fiestas, entretenimiento para eventos, servicios para bodas, fiestas infantiles, despedidas de soltera, tecnología para eventos, Partymax' },
-    { name: 'robots', content: 'index, follow' },
-    { name: 'autor', content: 'Partymax' },
-    { name: 'language', content: 'es' },
-
-    // Open Graph
-    { property: 'og:type', content: 'website' },
-    { property: 'og:title', content: 'PARTYMAX | THE PARTY MARKET' },
-    { property: 'og:description', content: 'Organiza tu evento ideal con Partymax. Encuentra los mejores proveedores de decoración, catering, entretenimiento y más en un solo lugar.' },
-    { property: 'og:image', content: config.public.APP_DOMAIN_API_URL + '/logos/R_ORIGINAL@2x.png' },
-    { property: 'og:url', content: `https://${config.public.MY_DOMAIN}` },
-    { property: 'og:site_name', content: 'PARTYMAX' },
-
-    // Twitter
-    { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: 'PARTYMAX | THE PARTY MARKET' },
-    { name: 'twitter:description', content: 'Organiza tu evento ideal con Partymax. Encuentra los mejores proveedores de decoración, catering, entretenimiento y más en un solo lugar.' },
-    { name: 'twitter:image', content: config.public.APP_DOMAIN_API_URL + '/logos/R_ORIGINAL@2x.png' },
-    { name: 'twitter:site', content: twitterAccount.value }
-  ]
-});
-
-const featuredCategory = 'fiestas-tematicas'
-const featuredCategorySwiperOptions = reactive({
-  slidesPerView: 2,
-  spaceBetween: 2,
-  breakpoints: {
-    501: {
-      slidesPerView: 3,
-      spaceBetween: 3,
+  const featuredCategory = 'fiestas-tematicas'
+  const featuredCategorySwiperOptions = reactive({
+    slidesPerView: 2,
+    spaceBetween: 2,
+    breakpoints: {
+      501: {
+        slidesPerView: 3,
+        spaceBetween: 3,
+      },
+      768: {
+        slidesPerView: 4, 
+        spaceBetween: 4, 
+      },
+      1280: {
+        slidesPerView: 6, 
+        spaceBetween: 6, 
+      },
     },
-    768: {
-      slidesPerView: 4, 
-      spaceBetween: 4, 
-    },
-    1280: {
-      slidesPerView: 6, 
-      spaceBetween: 6, 
-    },
-  },
-});
+  });
 </script>
 
 <template>
-  <WelcomePopup />
-  <Loader :isLoading="isLoading"/>
+  <ClientOnly>
+    <WelcomePopup />
+  </ClientOnly>
+  <ClientOnly>
+    <Loader :isLoading="isLoading"/>
+  </ClientOnly>
 
   <h1 class="visually-hidden">
     Partymax, tu aliado ideal para fiestas en Colombia.
@@ -260,37 +296,39 @@ const featuredCategorySwiperOptions = reactive({
   <!-- B: NEW MAIN BANNER SLIDER -->
   <section id="main-banner">
     <div class="">
-      <swiper
-        :pagination="true"
-        :navigation="true"
-        :modules="modulesSlider"
-        :loop="true"
-        :autoplay="{
-          delay: 5000,
-          disableOnInteraction: false,
-        }"
-        class="MySwiper"
-      >
-        <swiper-slide
-          v-for="(item,i) in sliders"
-          :key="i"
-          class="w-100 tw-relative"
+      <ClientOnly>
+        <swiper
+          :pagination="true"
+          :navigation="true"
+          :modules="modulesSlider"
+          :loop="true"
+          :autoplay="{
+            delay: 5000,
+            disableOnInteraction: false,
+          }"
+          class="MySwiper"
         >
-          <NuxtLink 
-            :to="item.url" 
-            class="tw-block tw-w-full tw-h-full"
-            rel="noopener"
+          <swiper-slide
+            v-for="(item,i) in sliders"
+            :key="i"
+            class="w-100 tw-relative"
           >
-            <img 
-              :src="baseURL + (isMobile ? item.mobile : item.image)"
-              :alt="item.title"
-              class="w-100"
-              :loading="i === 0 ? 'eager' : 'lazy'"
-              :fetchpriority="i === 0 ? 'high' : 'auto'"
+            <NuxtLink 
+              :to="item.url" 
+              class="tw-block tw-w-full tw-h-full"
+              rel="noopener"
             >
-          </NuxtLink>
-        </swiper-slide>
-      </swiper>
+              <img 
+                :src="baseURL + (isMobile ? item.mobile : item.image)"
+                :alt="item.title"
+                class="w-100"
+                :loading="i === 0 ? 'eager' : 'lazy'"
+                :fetchpriority="i === 0 ? 'high' : 'auto'"
+              >
+            </NuxtLink>
+          </swiper-slide>
+        </swiper>
+      </ClientOnly>
     </div>
   </section>
   <!-- E: NEW MAIN BANNER SLIDER -->
@@ -307,7 +345,13 @@ const featuredCategorySwiperOptions = reactive({
                 class="tw-block tw-w-full tw-h-full"
                 rel="noopener"
               >
-                <img :src="homeFeaturedBanners.products?.image" cover  class="img-gallery" :alt="homeFeaturedBanners.products?.title"/>
+                <img 
+                  :src="homeFeaturedBanners.products?.image" 
+                  :loading="i === 0 ? 'eager' : 'lazy'"
+                  :fetchpriority="i === 0 ? 'high' : 'auto'"
+                  cover 
+                  class="img-gallery" 
+                  :alt="homeFeaturedBanners.products?.title"/>
               </NuxtLink>
             </VCardItem> 
         </VCard>
@@ -491,44 +535,45 @@ const featuredCategorySwiperOptions = reactive({
       <VContainer class="mt-3">
         <VCard 
           class="no-shadown card-icons tw-bg-green" 
-          v-if="categories && categories.length > 0 && categories.filter(item => item.slug === featuredCategory)[0]?.children?.length > 0">
-          
+          v-if="categories && categories.length > 0 && categories.filter(item => item.slug === featuredCategory)[0]?.children?.length > 0">          
           <VCardText class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
-            <swiper
-              :slides-per-view="featuredCategorySwiperOptions.slidesPerView"
-              :space-between="featuredCategorySwiperOptions.spaceBetween"
-              :breakpoints="featuredCategorySwiperOptions.breakpoints"
+            <ClientOnly>
+              <swiper
+                :slides-per-view="featuredCategorySwiperOptions.slidesPerView"
+                :space-between="featuredCategorySwiperOptions.spaceBetween"
+                :breakpoints="featuredCategorySwiperOptions.breakpoints"
 
-              :navigation="true"
-              :loop="true"
-              :modules="modules"
-              class="mySwiper">
-              <swiper-slide 
-                v-for="(i, index) in (categories?.filter(item => item.slug === featuredCategory)[0]?.children || [])"
-                :key="index"
-                class="py-2">
-                
-                <NuxtLink
-                  :to="'/products/categories/' + featuredCategory + '/' + i.slug.split('/')[1]"
-                  class="tw-no-underline d-block text-center justify-content-center zoom">
-                  <img 
-                    v-if="i.icon_subcategory" 
-                    :src="baseURL + i.icon_subcategory"
-                    class="d-block border-theme"
-                  />
-                  <img 
-                    v-else 
-                    :src="t_7"
-                    class="d-block border-theme"
-                  />
-                  <span 
-                    class="d-block mt-2 tw-text-tertiary" 
-                  >
-                    {{ i.name }}
-                  </span>
-                </NuxtLink>
-              </swiper-slide>
-            </swiper>
+                :navigation="true"
+                :loop="true"
+                :modules="modules"
+                class="mySwiper">
+                <swiper-slide 
+                  v-for="(i, index) in (categories?.filter(item => item.slug === featuredCategory)[0]?.children || [])"
+                  :key="index"
+                  class="py-2">
+                  
+                  <NuxtLink
+                    :to="'/products/categories/' + featuredCategory + '/' + i.slug.split('/')[1]"
+                    class="tw-no-underline d-block text-center justify-content-center zoom">
+                    <img 
+                      v-if="i.icon_subcategory" 
+                      :src="baseURL + i.icon_subcategory"
+                      class="d-block border-theme"
+                    />
+                    <img 
+                      v-else 
+                      :src="t_7"
+                      class="d-block border-theme"
+                    />
+                    <span 
+                      class="d-block mt-2 tw-text-tertiary" 
+                    >
+                      {{ i.name }}
+                    </span>
+                  </NuxtLink>
+                </swiper-slide>
+              </swiper>
+            </ClientOnly>
           </VCardText> 
         </VCard>
       </VContainer>
@@ -590,16 +635,17 @@ const featuredCategorySwiperOptions = reactive({
   <!-- E: MOST WANTED / RECOMMENDATIONS -->
 
 <!-- **************************************************************** OLD HOMEPAGE **************************************************************** -->
-
-  <VDialog v-model="isDialogVisible" >
-    <VCard
-      class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
-      <VImg :width="isMobile ? '120' : '180'" :src="isError ? error_circle : check_circle" :alt="isError ? 'Icono de error' : 'Icono de éxito'" class="mx-auto"/>
-      <VCardText class="text-message mb-5 px-0 px-md-5 pt-0">
-        {{ message }}
-      </VCardText>
-    </VCard>
-  </VDialog>
+  <ClientOnly>
+    <VDialog v-model="isDialogVisible" >
+      <VCard
+        class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
+        <VImg :width="isMobile ? '120' : '180'" :src="isError ? error_circle : check_circle" :alt="isError ? 'Icono de error' : 'Icono de éxito'" class="mx-auto"/>
+        <VCardText class="text-message mb-5 px-0 px-md-5 pt-0">
+          {{ message }}
+        </VCardText>
+      </VCard>
+    </VDialog>
+  </ClientOnly>
 </template>
 
 <style scoped>
