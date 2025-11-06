@@ -39,6 +39,7 @@
   import mb_3 from '@assets/images/pmhb-03-oferta-del-dia.svg';
   import mb_4 from '@assets/images/pmhb-04-mas-vendidos.svg';
   import mb_5 from '@assets/images/pmhb-05-aliados.svg';
+  import mb_6 from '@assets/images/pmhb-06-nuestro-blog.svg';
 
   import check_circle from '@assets/icons/check-circle.svg';
   import error_circle from '@assets/icons/error-circle.svg';
@@ -393,7 +394,7 @@
         <VCard class="tw-p-0 tw-shadow-none home-misc-card">
             <VCardItem class="tw-p-0 tw-text-center"> 
               <NuxtLink 
-                  to="#" 
+                  to="/products?n" 
                   class="tw-block tw-w-full tw-h-full"
                   rel="noopener"
                 >
@@ -404,7 +405,7 @@
         <VCard class="tw-p-0 tw-shadow-none home-misc-card">
             <VCardItem class="tw-p-0 tw-text-center"> 
               <NuxtLink 
-                  to="#" 
+                  to="/products/muneco-decorativo-raton-parado-de-62-cm" 
                   class="tw-block tw-w-full tw-h-full"
                   rel="noopener"
                 >
@@ -415,7 +416,7 @@
         <VCard class="tw-p-0 tw-shadow-none home-misc-card">
             <VCardItem class="tw-p-0 tw-text-center"> 
               <NuxtLink 
-                  to="#" 
+                  to="/products?r" 
                   class="tw-block tw-w-full tw-h-full"
                   rel="noopener"
                 >
@@ -431,6 +432,17 @@
                   rel="noopener"
                 >
                   <img :src="mb_5" class="" loading="lazy" alt="Quiero Ser Aliado"/>
+                </NuxtLink>
+            </VCardItem> 
+        </VCard>
+        <VCard class="tw-p-0 tw-shadow-none home-misc-card mb-blog-card">
+            <VCardItem class="tw-p-0 tw-text-center"> 
+              <NuxtLink 
+                  to="/blogs" 
+                  class="tw-block tw-w-full tw-h-full"
+                  rel="noopener"
+                >
+                  <img :src="mb_6" class="" loading="lazy" alt="Inspírate con Nuestro Blog"/>
                 </NuxtLink>
             </VCardItem> 
         </VCard>
@@ -530,11 +542,11 @@
 
   <!-- B: FEATURED CATEGORY A -->
   <section id="featured-category-a">
-    <div class="tw-bg-green featured-category-container">
+    <div class="pm-bg-softgray featured-category-container">
       <h2 class="home-section-title tw-text-center tw-uppercase tw-leading-[48px] tw-text-[36px] md:tw-text-[40px] tw-mt-10 tw-mb-0">Compra por Temática</h2>
       <VContainer class="mt-3">
         <VCard 
-          class="no-shadown card-icons tw-bg-green" 
+          class="no-shadown card-icons pm-bg-softgray" 
           v-if="categories && categories.length > 0 && categories.filter(item => item.slug === featuredCategory)[0]?.children?.length > 0">          
           <VCardText class="pt-2 pb-1 px-0 px-md-4 d-flex align-items-stretch justify-content-center">
             <ClientOnly>
@@ -915,6 +927,10 @@
     transform: scale(1.05);
   }
 
+  .pm-bg-softgray {
+    background-color: #f2f2f2 !important;
+  }
+
   #featured-category-a .swiper {
     width: 100%;
     height: 100%;
@@ -970,6 +986,10 @@
     top: 92%;
   }     */
 
+  .mb-blog-card {
+    display: none;
+  }
+
   @media only screen and (max-width: 1280px) {
     .most-wanted-banners .v-card {
       max-height: 180px;
@@ -1006,8 +1026,11 @@
     }
   }
 
-  @media only screen and (max-width: 767px) {
-  
+  @media only screen and (max-width: 767px) {    
+    .mb-blog-card {
+      display: block;
+    }
+
     .size-circles-desktop {
       width: 160px;
       height: 160px;

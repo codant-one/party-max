@@ -53,7 +53,7 @@ const tab = ref('0');
 const category = ref(null);
 const toggle = ref([]);
 
-const rowPerPage = ref(12);
+const rowPerPage = ref(50);
 const currentPage = ref(1);
 const totalPages = ref(1);
 const totalProducts = ref(0);
@@ -148,6 +148,22 @@ watch(
   () => route.query.search,
   () => {
     currentPage.value = 1
+
+    // Check for 'n' parameter in URL and set sortBy if present
+    if (route.query.hasOwnProperty('n')) {
+      const item = sortByItems.value.find(item => item.name.trim() === 'Recientes'.trim());
+      if (item) {
+        sortBy.value = item.id;
+      }
+    }
+    // Check for 'r' parameter in URL and set sortBy if present
+    if (route.query.hasOwnProperty('r')) {
+      const item = sortByItems.value.find(item => item.name.trim() === 'Mejor Valorados'.trim());
+      if (item) {
+        sortBy.value = item.id;
+      }
+    }
+
     fetchData()
   },
   { immediate: true }
@@ -176,7 +192,7 @@ async function fetchData() {
   let info = {
     orderByField: categoriesStores.getCategory ? 'pl.order_id' : 'products.order_id',
     orderBy: 'asc',
-    limit: isMobile ? 50 : rowPerPage.value,
+    limit: rowPerPage.value,
     page: currentPage.value,
     category: categoriesStores.getCategory ?? null,
     subcategory: categoriesStores.getSubcategory ?? null,

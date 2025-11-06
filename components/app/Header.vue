@@ -1515,7 +1515,7 @@
   .pm-floating-functions-mobile {
     display: none;
     position: fixed !important;
-    background-color: #FFFFFF;
+    background-color: #F8F8F8;
     border: 2px solid #EEE;
     bottom: -1px !important;
     width: 100%;
@@ -1531,7 +1531,7 @@
 
   .pm-floating-functions-mobile .pm-ff-link {
     position: relative;
-    background: #FFFFFF;
+    background: #F8F8F8;
     width: 60px;
   }
 
