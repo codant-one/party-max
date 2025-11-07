@@ -148,11 +148,11 @@ const isDisabled = (i) => {
             @update:modelValue="onChangeDifferentAddress"
         >
             <template #label>
-                <span class="ms-2">Envia a una dirección diferente</span>
+                <span class="ms-2 tw-text-tertiary tw-font-normal">Envia a una dirección diferente</span>
             </template>
         </VCheckbox>
     </VCardText>
-    <VCardText class="row-cardp3 px-5 px-md-8 py-0">
+    <VCardText class="row-cardp3 px-5 px-md-8 py-0 mt-5">
         <span>Forma de envio</span>
     </VCardText>
     <VCardText class="pt-2">
