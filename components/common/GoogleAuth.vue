@@ -148,7 +148,7 @@ function cancelAuth() {
         </button>
     </VCardText>
   <VDialog v-model="waitingAuth" persistent max-width="400">
-    <VCard class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
+    <VCard class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-none text-center mx-auto">
       <VImg :width="isMobile ? '100' : '180'" :src="festin_pending" class="mx-auto"/>
       <VCardText class="text-message p-0 px-md-5">
         <VProgressCircular indeterminate color="primary" class="my-4" />
