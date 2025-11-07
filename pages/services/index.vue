@@ -47,7 +47,7 @@ const services = ref([]);
 const tab = ref('0');
 const category = ref(null);
 
-const rowPerPage = ref(12);
+const rowPerPage = ref(50);
 const currentPage = ref(1);
 const totalPages = ref(1);
 const totalServices = ref(0);
@@ -159,7 +159,7 @@ async function fetchData() {
   let info = {
     orderByField: categoriesStores.getCategory ? 'sl.order_id' : 'services.order_id',
     orderBy: 'asc',
-    limit: isMobile ? 20 : rowPerPage.value,
+    limit: rowPerPage.value,
     page: currentPage.value,
     category: categoriesStores.getCategory ?? null,
     subcategory: categoriesStores.getSubcategory ?? null,
