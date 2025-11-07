@@ -1,6 +1,7 @@
 <script setup>
 
 import { useRuntimeConfig } from '#app'
+import festin_pending from '@assets/icons/festin_mantenimiento.svg';
 
 const props = defineProps({
   validated: {
@@ -11,6 +12,7 @@ const props = defineProps({
 
 const config = useRuntimeConfig()
 const baseURL = ref(config.public.APP_DOMAIN_API_URL)
+const { isMobile } = useDevice();
 
 const emit = defineEmits(['google-auth-error'])
 
@@ -44,7 +46,7 @@ const onValidate = () => {
 
     const redirectUrl = baseURL.value + '/auth/google/redirect?prompt=select_account&force_auth=1'
     popupRef = window.open(redirectUrl, 'google_oauth', features)
-    console.log('redirectUrl =', redirectUrl)
+
     waitingAuth.value = true
 
     // Listener para recibir credenciales desde callback
@@ -89,6 +91,21 @@ function handleAuthMessage(event) {
   }
 }
 
+function cancelAuth() {
+  try {
+    if (popupRef) {
+      try { popupRef.opener = null } catch (e) {}
+      try { popupRef.location.replace('about:blank') } catch (e) {}
+      setTimeout(() => {
+        try { popupRef.close() } catch (e) {}
+      }, 50)
+    }
+  } finally {
+    waitingAuth.value = false
+    window.removeEventListener('message', handleAuthMessage)
+  }
+}
+
 </script>
 
 <template>
@@ -120,13 +137,14 @@ function handleAuthMessage(event) {
         </button>
     </VCardText>
   <VDialog v-model="waitingAuth" persistent max-width="400">
-    <VCard class="px-6 py-6">
-      <VCardText class="text-center">
-        <VProgressCircular indeterminate color="primary" class="mb-4" />
+    <VCard class="px-10 py-14 pb-2 pb-md-4 no-shadown card-register d-block text-center mx-auto">
+      <VImg :width="isMobile ? '100' : '180'" :src="festin_pending" class="mx-auto"/>
+      <VCardText class="text-message p-0 px-md-5">
+        <VProgressCircular indeterminate color="primary" class="my-4" />
         <div>Conectando con Google…</div>
       </VCardText>
-      <VCardActions class="justify-end">
-        <VBtn color="primary" variant="outlined" @click="waitingAuth = false">Cancelar</VBtn>
+      <VCardActions class="justify-center">
+        <VBtn color="primary" variant="outlined" @click="cancelAuth">Cancelar</VBtn>
       </VCardActions>
     </VCard>
   </VDialog>
@@ -134,6 +152,21 @@ function handleAuthMessage(event) {
 </template>
 
 <style scoped>
+
+  .card-register {
+    width: 500px;
+    border-radius: 32px!important;
+    line-height: 20px;
+  }
+
+  .text-message {
+    color:  #FF0090;
+    text-align: center;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px !important;
+  }
 
   .gsi-material-button {
     width: 100%;
@@ -169,6 +202,17 @@ function handleAuthMessage(event) {
     width: 100%;
     height: 80vh;
     border: 0;
+  }
+
+  @media only screen and (max-width: 767px) {
+    .card-register {
+        padding: 20px;
+        width: auto;
+    }
+
+    .text-message {
+      font-size: 18px;
+    }
   }
 
 </style>
