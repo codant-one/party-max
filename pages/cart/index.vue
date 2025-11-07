@@ -727,6 +727,16 @@ const refresh = () => {
     window.location.href = router.resolve({ name: 'cart' }).href
 }
 
+const handleLoggedIn = () => {
+    try {
+        if (process.client && localStorage.getItem('user_data')) {
+            const userDataJ = JSON.parse(localStorage.getItem('user_data'))
+            client_id.value = userDataJ?.client?.id || client_id.value
+        }
+    } catch (e) {}
+    fetchData()
+}
+
 const closeDialog = () => {
     dialog.value = false
     selectedAddress.value = {
@@ -821,17 +831,18 @@ const chanceSend = value => {
 
 
 <template>
-   <div class="checkout-page">
+    <Loader :isLoading="isLoading"/>
+    <div class="checkout-page">
         <VContainer 
             class="mt-2 checkout-card"
             :class="currentStep === 2 ? 'w-60': ''">
-            <Loader :isLoading="isLoading"/>
-
-            <VRow  v-if="products.length > 0 || (typeof route.query.merchantId !== 'undefined')">
+            <h1 v-if="products.length > 0 || (typeof route.query.merchantId !== 'undefined')" class="tw-text-2xl tw-font-bold tw-text-primary">
+                GENIAL, ¡FINALIZA TU COMPRA!
+            </h1>     
+            <VRow v-if="products.length > 0 || (typeof route.query.merchantId !== 'undefined')">
                 <VCol cols="12" md="8">
-                <h1 class="tw-text-2xl tw-font-bold tw-text-primary">GENIAL, ¡FINALIZA TU COMPRA!</h1>     
                     <VCard class="card-products p-0">
-                        <User />
+                        <User @logged-in="handleLoggedIn" />
                         
                         <Payments 
                             ref="paymentsRef"
@@ -861,9 +872,8 @@ const chanceSend = value => {
                             @dialog_error = "dialog_error"
                             @send="chanceSend"
                         />
-
                         
-                        <h3 class="text-h6 font-weight-bold mb-2 px-5 pt-4">Medios de pago</h3>
+                        <h3 class="text-h6 font-weight-bold mb-0 px-5">Medios de pago</h3>
                         <VCardText class="d-block row-payu align-center text-center mb-10 px-5">
                             <div class="payu-option">
                                 <span class="payu-bullet" aria-hidden="true"></span>
@@ -873,7 +883,7 @@ const chanceSend = value => {
                         </VCardText>
                     </VCard>
 
-                    <div class="d-flex justify-end px-5">
+                    <div class="d-flex justify-end px-5" v-if="client_id">
                         <VBtn
                             variant="flat"
                             class="btn-pay"

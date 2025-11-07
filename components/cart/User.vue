@@ -3,14 +3,21 @@
   import HoverIcon from '@/components/app/HoverIcon.vue'
   import user_alt from '@assets/icons/user-icon.svg?inline'
   import user_solid from '@assets/icons/user-icon-solid.svg?inline'
+  import { useAuthStores } from '@/stores/auth'
+  import { emailValidator, requiredValidator } from '@validators'
+  import GoogleAuth from '/components/common/GoogleAuth.vue'
 
-  const emit = defineEmits(['login'])
+  const emit = defineEmits(['login', 'logged-in'])
 
   const password = ref('')
   const showPassword = ref(false)
   const isLoggedIn = ref(false)
   const userName = ref('')
   const userEmail = ref('')
+  const email = ref('')
+  const load = ref(false)
+  const errors = ref({ email: undefined, password: undefined })
+  const authStores = useAuthStores()
 
   const maskedEmail = computed(() => {
     const email = userEmail.value || ''
@@ -22,8 +29,61 @@
   })
 
   const onSubmit = () => {
-    if (password.value.trim().length === 0) return
-    emit('login', password.value)
+    errors.value = { email: undefined, password: undefined }
+    const emailRulesOk = emailValidator(email.value) === true && requiredValidator(email.value) === true
+    const passRulesOk = requiredValidator(password.value) === true
+    if (!emailRulesOk || !passRulesOk) {
+      if (!emailRulesOk) errors.value.email = 'E-mail inválido'
+      if (!passRulesOk) errors.value.password = 'La contraseña es requerida'
+      return
+    }
+
+    load.value = true
+    const data = { email: email.value, password: password.value, panel: 'client' }
+    authStores.login(data)
+      .then(response => {
+        load.value = false
+        const { qr, token, accessToken, user_data, userAbilities } = response.data
+        const two_factor = { generate_qr: (response.message === '2fa-generate') ? true : false }
+        if (process.client) {
+          localStorage.setItem('userAbilities', JSON.stringify(userAbilities))
+          localStorage.setItem('user_data', JSON.stringify(user_data))
+          localStorage.setItem('accessToken', accessToken)
+          localStorage.setItem('qr', qr)
+          localStorage.setItem('token', token)
+          localStorage.setItem('two_factor', JSON.stringify(two_factor))
+        }
+        isLoggedIn.value = true
+        userName.value = user_data?.name || ''
+        userEmail.value = user_data?.email || ''
+        password.value = ''
+        emit('logged-in')
+      })
+      .catch(err => {
+        load.value = false
+        errors.value = { email: err.response?.data?.errors || 'Credenciales inválidas', password: '' }
+      })
+  }
+
+  const onGoogleError = () => {
+    errors.value = { email: 'No fue posible iniciar sesión con Google', password: '' }
+  }
+
+  function handleAuthMessage(event) {
+    try {
+      const data = event?.data || {}
+      if (data.type === 'google-auth-success') {
+        const tokenData = data.payload || {}
+        const u = tokenData.user_data || (process.client ? JSON.parse(localStorage.getItem('user_data') || '{}') : {})
+        if (u && (u.name || u.email)) {
+          isLoggedIn.value = true
+          userName.value = u.name || ''
+          userEmail.value = u.email || ''
+          email.value = userEmail.value
+          emit('logged-in')
+        }
+      }
+    } catch (e) {}
   }
 
   onMounted(() => {
@@ -33,17 +93,23 @@
         isLoggedIn.value = true
         userName.value = userDataJ?.name || ''
         userEmail.value = userDataJ?.email || ''
+        email.value = userEmail.value
       } catch (e) {
         // ignore parse errors
       }
     }
+    if (process.client) window.addEventListener('message', handleAuthMessage)
+  })
+
+  onBeforeUnmount(() => {
+    if (process.client) window.removeEventListener('message', handleAuthMessage)
   })
 
 </script>
 
 <template>
 
-  <VCardText v-if="isLoggedIn" class="p-0 mt-3 px-5 d-flex align-center">
+  <VCardText v-if="isLoggedIn" class="p-0 mt-3 pb-0 px-5 d-flex align-center">
     <HoverIcon :icon-alt="user_alt" :icon-solid="user_solid" class="me-3 cursor-no-pointer" />
     <div class="d-block">
       <div class="tw-text-gray">Hola,</div>
@@ -51,28 +117,48 @@
     </div>
   </VCardText>
 
-  <VCardText v-else class="px-5 pt-2">
-    <VRow no-gutters class="align-center">
+  <VCardText v-else class="px-5 pb-0 pt-2 mt-3">
+    <VRow no-gutters class="align-end">
       <VCol cols="12" md="8" class="pr-md-3">
+        <VTextField
+          v-model="email"
+          type="email"
+          variant="outlined"
+          density="compact"
+          placeholder="Ingresa tu E-mail"
+          class="textinput mb-2"
+          hide-details
+          :error-messages="errors.email"
+        />  
+
         <VTextField
           v-model="password"
           :type="showPassword ? 'text' : 'password'"
           variant="outlined"
+          density="compact"
           placeholder="Ingresa tu Contraseña"
           class="textinput"
+          hide-details
+          :error-messages="errors.password"
           :append-inner-icon="showPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
           @click:append-inner="showPassword = !showPassword"
         />
       </VCol>
       <VCol cols="12" md="4" class="pt-2 pt-md-0">
-        <VBtn
-          block
-          variant="flat"
-          class="btn-register tw-text-white tw-bg-primary button-hover"
-          @click="onSubmit"
-        >
-          INICIAR SESIÓN
-        </VBtn>
+            <VBtn
+                block
+                variant="flat"
+                class="btn-register tw-text-white tw-bg-primary button-hover font-bold"
+                @click="onSubmit"
+            >
+            INICIAR SESIÓN
+            <VProgressCircular v-if="load" indeterminate color="#fff" class="ms-2" />
+            </VBtn>
+
+      </VCol>
+      <VCol cols="12" md="12" class="pt-2 pt-md-0 pb-0">
+        <GoogleAuth :validated="true" :showText="false" redirect-to="/cart" @google-auth-error="onGoogleError" />
+
       </VCol>
     </VRow>
   </VCardText>
@@ -103,7 +189,7 @@
         fill: #FFFFFF;
     }
 
-    .textinput .v-text-field::v-deep(.v-field) { 
+    .textinput::v-deep(.v-field) { 
         border-radius: 8px;
         height: 35px;
         font-size: 14px;
@@ -129,12 +215,12 @@
         padding-left: 20px !important;
     }
 
-    .textinput .v-text-field::v-deep(.v-input__details) {
+    .textinput::v-deep(.v-input__details) {
         min-height: 15px !important;
     }
 
 
-    .textinput .v-text-field::v-deep(.v-field-label) {
+    .textinput::v-deep(.v-field-label) {
         top: 33% !important;
         font-size: 14px !important;
     }
@@ -348,6 +434,13 @@
         font-size: 16px;
         font-style: normal;
         font-weight: 400;
+        line-height: 14px;
+    }
+    
+    .btn-register {
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
         line-height: 14px;
     }
 

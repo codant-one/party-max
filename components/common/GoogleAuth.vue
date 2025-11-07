@@ -4,9 +4,19 @@ import { useRuntimeConfig } from '#app'
 import festin_pending from '@assets/icons/festin_mantenimiento.svg';
 
 const props = defineProps({
+  showText: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
   validated: {
     type: Boolean,
     required: true,
+  },
+  redirectTo: {
+    type: String,
+    required: false,
+    default: '/dashboard/profile'
   }
 })
 
@@ -75,8 +85,9 @@ function handleAuthMessage(event) {
       if (tokenData.userAbilities) localStorage.setItem('userAbilities', JSON.stringify(tokenData.userAbilities))
       waitingAuth.value = false
       window.removeEventListener('message', handleAuthMessage)
-      // Redirigir a dashboard
-      window.location.assign('/dashboard/profile')
+      // Redirigir a ruta configurada
+      const target = props.redirectTo || '/dashboard/profile'
+      window.location.assign(target)
     }
     if (data && data.type === 'google-auth-error') {
       waitingAuth.value = false
@@ -109,7 +120,7 @@ function cancelAuth() {
 </script>
 
 <template>
-    <div cols="12" class="d-block">
+    <div v-if="showText" cols="12" class="d-block">
         <span class="text-client text-left">ó</span> <br>
     </div>
 

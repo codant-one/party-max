@@ -173,11 +173,11 @@ const getFlagCountry = country => {
     <VForm
         ref="refVForm" class="form-payment"
         @submit.prevent="onSubmit">     
-        <VCardText class="row-cardp3 px-5">
+        <VCardText class="row-cardp3 px-5 pb-0">
             <span class="tw-text-tertiary tw-font-bold"> Facturación y Envío  </span>
         </VCardText>
 
-        <VCardText class="p-0 mt-3 px-5">
+        <VCardText class="p-0 mt-3 px-5 px-md-8">
             <VCardItem class="p-0">
                 <VRow no-gutters class="text-left align-center">
                     <VCol cols="12" md="4" class="textinput mb-0 mb-md-2">
@@ -301,12 +301,13 @@ const getFlagCountry = country => {
                             :rules="[requiredValidator]"
                         />
                     </VCol> 
-                    <VCol cols="12" md="12" class="textinput mb-0 mb-md-2">
+                    <VCol cols="12" md="12" class="textinput mb-0 mb-md-2 pb-0">
                         <VTextField
                             v-model="billingDetail.note"
                             label="Nota"
                             placeholder="Notas sobre tu pedido, por ejemplo, notas especiales para la entrega."
                             variant="outlined"
+                            class="pb-0"
                         />
                     </VCol>
                 </VRow>

@@ -256,6 +256,10 @@ const isDisabled = (i) => {
         margin-top: 2px;
     }
 
+    .v-checkbox::v-deep(.v-selection-control) {
+        min-height: 15px !important;
+    }
+
     /* Selected state */
     ::v-deep(.custom-radio.v-selection-control--dirty) {
         background: #FF0090;
