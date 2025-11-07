@@ -173,8 +173,8 @@ const getFlagCountry = country => {
     <VForm
         ref="refVForm" class="form-payment"
         @submit.prevent="onSubmit">     
-        <VCardText class="row-cardp3 px-5 px-md-8 pb-0">
-            <span> Facturación y envío  </span>
+        <VCardText class="row-cardp3 px-5">
+            <span class="tw-text-tertiary tw-font-bold"> Facturación y Envío  </span>
         </VCardText>
 
         <VCardText class="p-0 mt-3 px-5">

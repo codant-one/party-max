@@ -15,7 +15,7 @@ import { useCouponsStores } from '@/stores/coupons'
 import { Pagination } from 'swiper/modules';
 import { useRuntimeConfig } from '#app'
 import axios from 'axios'
-import Payu from '@/assets/icons/payu.svg'
+import Payu from '@/assets/icons/logo-Payu.png'
 import 'swiper/css';
 import 'swiper/css/pagination';
 
@@ -828,7 +828,8 @@ const chanceSend = value => {
             <Loader :isLoading="isLoading"/>
 
             <VRow  v-if="products.length > 0 || (typeof route.query.merchantId !== 'undefined')">
-                <VCol cols="12" md="8">     
+                <VCol cols="12" md="8">
+                <h1 class="tw-text-2xl tw-font-bold tw-text-primary">GENIAL, ¡FINALIZA TU COMPRA!</h1>     
                     <VCard class="card-products p-0">
                         <User />
                         
@@ -862,24 +863,24 @@ const chanceSend = value => {
                         />
 
                         
-
-                        <VCardText class="d-block row-payu align-center text-center px-5">
+                        <h3 class="text-h6 font-weight-bold mb-2 px-5 pt-4">Medios de pago</h3>
+                        <VCardText class="d-block row-payu align-center text-center mb-10 px-5">
                             <div class="payu-option">
                                 <span class="payu-bullet" aria-hidden="true"></span>
                                 <img :src="Payu" class="payu-logo"/>
                                 <p class="payu-desc">Paga con tarjeta de crédito, debito o transacción bancaria de forma segura a través de los servidores seguros de PayU.</p>
                             </div>
                         </VCardText>
-                        <VCardText class="d-flex title-card w-100 px-5 px-md-16 pb-4">
-                            <VBtn
-                                block
-                                variant="flat"
-                                class="btn-pay"
-                                @click="handlePayClick">
-                                    IR A PAGAR
-                            </VBtn>
-                        </VCardText>
                     </VCard>
+
+                    <div class="d-flex justify-end px-5">
+                        <VBtn
+                            variant="flat"
+                            class="btn-pay"
+                            @click="handlePayClick">
+                                IR A PAGAR
+                        </VBtn>
+                    </div>
                 </VCol>
                 <VCol cols="12" md="4">
                     <Summary
@@ -1091,7 +1092,7 @@ const chanceSend = value => {
     }
 
     .payu-logo {
-        height: 28px;
+        height: 72px;
     }
 
     .payu-desc {
@@ -1150,30 +1151,34 @@ const chanceSend = value => {
     }
 
     .btn-pay {
-        display: flex;
-        width: 100%;
-        height: 54px;
-        padding: 0 32px;
-        justify-content: center;
-        align-items: center;
-        border-radius: 32px;
-        background: #FF0090 !important;
-        color: #FFF !important;
-        font-size: 16px;
-        font-weight: 700;
-        line-height: 14px;
+    display: flex;
+    width: 50%;
+    padding: 24px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    background: #FF0090 !important;
+    color: #FFF !important;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 24px;
+    box-shadow: 0px 0px 24px 0px rgba(255, 39, 179, 0.5);
+    z-index: 1000;
+    margin-top: -25px;
     }
 
     .btn-pay:hover {
         background: #FF27B3 !important;
-        box-shadow: 0px 0px 24px 0px #FF27B3;
+        box-shadow: 0px 0px 28px 4px rgba(255, 39, 179, 0.6);
     }
 
     .checkout-card {
         margin-block-end: 2rem;
         margin-block-start: 9.75rem;
     }
-
+    .form-payment .v-card-item .v-card-item__content {
+        overflow: visible;
+        }
     @media (max-width: 960px) and (min-width: 600px) {
         .checkout-page {
             .v-container {
@@ -1186,6 +1191,14 @@ const chanceSend = value => {
         .checkout-card {
             margin-block-start: 6rem;
             margin-block-end: 0 !important;
+        }
+
+        .btn-pay{
+            font-size: 16px;
+        }
+
+        .payu-logo {
+            height: 48px;
         }
     }
 </style>
