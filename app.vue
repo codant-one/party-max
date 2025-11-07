@@ -123,6 +123,8 @@ async function fetchData() {
       bg = register
       repeat = 'no-repeat'
       size = 'cover'
+    } if(route.name === 'cart') {
+      background.value = 'tw-bg-[#eef0ef]'
     } else {
       background.value = 'tw-bg-green'
     }

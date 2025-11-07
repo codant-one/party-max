@@ -89,13 +89,13 @@ const decrement = () => {
 <template>
     <div class="tw-no-underline zoom-product w-100">
         <VCard 
-            class="no-shadown px-0 w-100 py-5 py-md-7" 
+            class="no-shadown py-5 px-5 w-100" 
             :class="props.isLastItem ? '' : 'card-information'">
             <VRow no-gutters>
-                <VCol cols="6" md="3" class="d-flex flex-column my-auto">
-                    <VCardText class="border-img ms-5 ms-md-10 p-0">
+                <VCol cols="3" md="4" class="d-flex flex-column my-auto">
+                    <VCardText class="border-img p-0">
                         <img 
-                            :width="100"
+                            :width="60"
                             :src="baseURL + image" 
                             :alt="name"
                             class="img-prod"
@@ -104,50 +104,47 @@ const decrement = () => {
                         <div v-if="in_stock === 0" class="out-of-stock-label">AGOTADO</div>   
                     </VCardText>
                 </VCol>
-                <VCol cols="12" md="5" class="d-flex flex-column py-3 py-md-5 ps-4 ps-md-0 my-auto">
-                    <VCardText>
-                        <span class="d-block text_2 py-1 tw-text-tertiary title-product">{{ name }}</span>
-                        <span class="d-block py-0 tw-text-gray">Color: {{ color }}</span>
-                    </VCardText>
-                    <VCardText>
-                        <span 
-                            class="d-flex tw-text-xs py-1 tw-text-primary title-product me-3" 
-                            @click="emit('delete', product_color_id)"
-                        >
-                            Eliminar
-                        </span>
-                    </VCardText>
-
-                </VCol>
-                <VCol cols="6" md="2" class="d-flex flex-column py-md-5 my-auto">
-                    <VCardText class="d-flex text-center align-center ps-7 ps-md-2 tw-justify-start md:tw-justify-center"> 
-                        <div class="number-input-wrapper" :class="(quantity > stock) ? 'warning' : ''">
-                            <VBtn icon size="x-small" @click="decrement" variant="plain" color="#0A1B33">
-                                <VIcon>mdi-minus</VIcon>
-                            </VBtn>
-                            <VTextField
-                                v-model="quantity"
-                                variant="solo"
-                                type="text"
-                                readonly
-                                style="height: 30px;"
-                            />
-                            <VBtn icon size="x-small" @click="increment" variant="plain" color="#0A1B33">
-                                <VIcon>mdi-plus</VIcon>
-                            </VBtn>
-                        </div>
-                    </VCardText>
-                    <VCardText class="d-flex text-center align-center mt-2 ps-8 ps-md-2 tw-justify-start md:tw-justify-center">
-                        <span class="tw-text-xs" :class="(quantity > stock) ? 'tw-text-yellow' : 'tw-text-gray'">
-                            {{ (in_stock === 1) ? stock + ( stock > 1 ? ' disponibles' : ' disponible')  : 'AGOTADO' }}
-                        </span>
-                    </VCardText>
-                  </VCol>
-                <VCol cols="6" md="2" class="align-center text-center pb-0 py-md-5 mt-auto my-md-auto pe-4">
-                    <VCardText class="mt-1">
-                        <div class="d-flex text-center align-center tw-justify-end md:tw-justify-center">
-                            <span class="text_1 tw-text-tertiary">${{ formatNumber(price_for_sale) }}</span>
-                        </div>
+                <VCol cols="9" md="8" class="d-flex flex-column my-auto">
+                    <VCardText class="px-0">
+                        <span class="d-block text_2 py-md-1 tw-text-tertiary title-product">{{ name }}</span>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <span class="d-block py-0 tw-text-gray text_2">Color: {{ color }}</span>
+                                <span 
+                                    class="d-flex tw-text-xs tw-text-primary title-product me-3 cursor-pointer" 
+                                    @click="emit('delete', product_color_id)"
+                                >
+                                    Eliminar
+                                </span>
+                                <span class="d-block py-0 tw-text-gray text_2">{{ quantity }} x 
+                                    <span class="tw-text-tertiary text_2">${{ formatNumber(price_for_sale) }}</span>
+                                </span>
+                            </div>
+                            <div>
+                                <div class="d-flex text-center align-center ps-7 ps-md-2 tw-justify-start md:tw-justify-center"> 
+                                    <div class="number-input-wrapper" :class="(quantity > stock) ? 'warning' : ''">
+                                        <VBtn icon size="x-small" @click="decrement" variant="plain" color="#0A1B33">
+                                            <VIcon>mdi-minus</VIcon>
+                                        </VBtn>
+                                        <VTextField
+                                            v-model="quantity"
+                                            variant="solo"
+                                            type="text"
+                                            readonly
+                                            class="h-text-field"
+                                        />
+                                        <VBtn icon size="x-small" @click="increment" variant="plain" color="#0A1B33">
+                                            <VIcon>mdi-plus</VIcon>
+                                        </VBtn>
+                                    </div>
+                                </div>
+                                <div class="d-flex text-center align-center mt-md-2 ps-8 ps-md-2 tw-justify-start md:tw-justify-center">
+                                    <span class="tw-text-xs text_2" :class="(quantity > stock) ? 'tw-text-yellow' : 'tw-text-gray'">
+                                        {{ (in_stock === 1) ? stock + ( stock > 1 ? ' disponibles' : ' disponible')  : 'AGOTADO' }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>                        
                     </VCardText>
                 </VCol>
             </VRow>
@@ -244,8 +241,8 @@ const decrement = () => {
     }
 
     .border-img {
-        width: 130px;
-        height: 130px;
+        width: 100px;
+        height: 100px;
         border-radius: 16px !important;
         border: 1px solid #E1E1E1;
         text-align: center;
@@ -270,8 +267,8 @@ const decrement = () => {
 
     .img-prod {
         display: block;
-        width: 130px;
-        height: 130px;
+        width: 100px;
+        height: 100px;
         object-fit: cover;
         border-radius: 16px;
         transition: transform 0.3s ease-in-out;
@@ -305,7 +302,41 @@ const decrement = () => {
         line-height: 8px; /* 80% */ 
     }
 
+    .h-text-field {
+        height: 30px;
+    }
+
     @media only screen and (max-width: 767px) {
+
+        .text_2 {
+            font-size: 12px;
+        }
+
+        .number-input-wrapper{
+            height: 30px;
+        }
+
+        .v-text-field::v-deep(.v-field) { 
+            font-size: 12px;
+            height: 20px;
+        } 
+
+        .v-text-field::v-deep(.v-field__field) { 
+            height: 20px;
+        }
+
+        .v-text-field::v-deep(.v-field__input){
+            min-height: 20px;
+        }
+
+        .h-text-field {
+            height: 20px;
+        }
+
+        .border-img, .img-prod {
+            width: 75px;
+            height: 75px;
+        }
 
         .out-of-stock-label {
             font-size: 16px;

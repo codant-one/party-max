@@ -463,7 +463,7 @@ definePageMeta({
                             <VAutocomplete
                                 variant="outlined"
                                 v-model="selectedAddress.province_id"
-                                label="Estado"
+                                label="Departamento"
                                 :rules="[requiredValidator]"
                                 :items="getProvinces"
                                 :menu-props="{ maxHeight: '200px' }"

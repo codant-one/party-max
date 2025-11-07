@@ -1,9 +1,5 @@
 <script setup>
 
-import { formatNumber } from '@formatters'
-import arrow_left from '@assets/icons/Arrow_left.svg?inline';
-import info from '@assets/icons/info-circle.svg?inline';
-
 const props = defineProps({
     addresses: {
         type: Object,
@@ -25,22 +21,26 @@ const props = defineProps({
         type: Number,
         required: true
     },
+    isDialogOpen: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
 })
 
 const emit = defineEmits([
-    'update:currentStep',
     'changeAddreess',
     'dialog',
     'dialog_error',
     'send'
 ])
 
-const error_address = ref('Debes agregar una dirección de envio')
 const province = ref(props.province_id)
 const id = ref(props.address_id)
 
 const send_array = ref(['Envío gratis', 'Envío Nacional: $19.000.00', 'Envío Bogotá: $12.000.00 '])
 const sendId = ref(props.send_id)
+const sendDifferentAddress = ref(false)
 
 watch(() => 
     props.address_id, (data) => {
@@ -57,37 +57,11 @@ watch(() =>
         province.value = data
     });
  
-const next = () => {
-
-    if (id.value > 0) {
-        emit('update:currentStep', 2)
-        emit('changeAddreess', id.value)
-
-    } else {
-        emit('dialog_error', error_address.value)
+watch(() => props.isDialogOpen, (val) => {
+    if (!val) {
+        sendDifferentAddress.value = false
     }
-    
-}
-
-const chanceSend = () => {
-    if (id.value !== 0)  {
-        province.value = props.addresses.filter(address => address.id === id.value)[0].province_id
-
-        if(province.value === 293 && parseFloat(props.summary.subTotal) <= parseFloat('210000')) {
-            emit('send', 'sendToBogota')
-            sendId.value = 2
-        }  else if(province.value === 293 && parseFloat(props.summary.subTotal) > parseFloat('210000')) {
-            emit('send', 'free') 
-            sendId.value = 0
-        } else if(province.value !== 293 && parseFloat(props.summary.subTotal) <= parseFloat('210000')) {
-            emit('send', 'send') 
-            sendId.value = 1
-        } else if(province.value !== 293 && parseFloat(props.summary.subTotal) > parseFloat('210000')) {
-            emit('send', 'free') 
-            sendId.value = 0
-        }
-    }
-}   
+}); 
 
 const chanceExpress = () => {
     if(sendId.value === 3)
@@ -101,6 +75,12 @@ const chanceExpress = () => {
             emit('send', 'send')
         else if(province.value !== 293 && parseFloat(props.summary.subTotal) > parseFloat('210000'))
             emit('send', 'free')
+    }
+}
+
+const onChangeDifferentAddress = (val) => {
+    if (val) {
+        emit('dialog', true)
     }
 }
 
@@ -158,141 +138,64 @@ const isDisabled = (i) => {
 
 </script>
 
-<template>
-    <VRow>
-        <VCol cols="12" md="8">
-            <VCard class="card-products p-0">
-                <VCardTitle class="title-card border-line mt-4 px-5 px-md-10">Elige la dirección de entrega</VCardTitle>
-                <VCardText class="home pb-0 mt-3 mb-0 my-md-3 px-5 px-md-10 d-block">
-                    <span class="d-block">Enviar a domicilio</span>
-                    <span class="text-address d-block tw-text-gray d-flex align-center mb-2">
-                        <info />
-                        <span class="ms-1"> El envío express solo está disponible para Bogotá D.C. </span>
-                    </span>
-                </VCardText>
-                <VCardText class="p-0 border-line">
-                    <VRadioGroup
-                        v-model="id"
-                        false-icon="mdi-circle-outline"
-                        true-icon="mdi-circle-slice-8"
-                        @update:modelValue="chanceSend"
-                    >
-                        <VRadio
-                            v-for="(address, i) in props.addresses"
-                            :key="i"
-                            :value="address.id"
-                            color="primary"
-                            class="ps-5 ps-md-10 border-line">
-                            <template v-slot:label>
-                                <VCardText class="d-flex my-1">
-                                    <div class="d-block">
-                                        <span class="d-block text-address ms-1 me-auto tw-font-semibold">{{ address.title }}</span>
-                                        <span class="d-block text-address ms-1 me-auto">
-                                            {{ address.address }} ,
-                                            {{ address.street }} <span v-if="address.street !== null">,</span>
-                                            {{ address.city }} ,
-                                            {{ address.province.name }}.
-                                            <span v-if="address.postal_code">Código Postal: {{ address.postal_code }}.</span> 
-                                        </span>
-                                    </div>
-                                    <VSpacer />
-                                    <!-- <span class="text-address my-auto">${{ formatNumber(props.summary.send) }}</span> -->
-                                </VCardText>
-                            </template>
-                        </VRadio>
-                    </VRadioGroup>
-                </VCardText>
-                <VCardText class="row-cardp3">
-                    <span
-                        @click="emit('dialog', true)">
-                        Agregar domicilio
-                    </span>
-                </VCardText>
-            </VCard>
-            <VCardText class="d-md-flex pt-5 pb-0 px-0">
-                <VSpacer />
-                <VBtn
-                    variant="flat"
-                    class="btn-order tw-bg-green tw-text-tertiary my-2 mt-md-5 me-2"
-                    @click="emit('update:currentStep', 0)">
-                    <arrow_left class="me-2" />
-                    Regresar
-                </VBtn>
-                <VBtn
-                    variant="flat"
-                    class="btn-register tw-text-white tw-bg-primary button-hover my-2 mt-md-5"
-                    @click="next">
-                    Continuar
-                </VBtn>
-            </VCardText>
-        </VCol>
-        <VCol cols="12" md="4">
-            <VCard class="card-products p-0 tw-bg-cyan">
-                <VCardTitle class="subtitle-card row-buy mt-4 ps-10 pt-0 pt-md-4 pb-5">Resumen de compra</VCardTitle>
-                <VCardText class="px-10 mt-5 mb-2">
-                    <VRow align="center">
-                        <VCol cols="7" md="6" class="text-left">
-                            <span>Productos</span>
-                        </VCol>
-                        <VCol cols="5" md="6" class="text-right">
-                            <span>${{ formatNumber(props.summary.subTotal) }}</span>
-                        </VCol>
-                        <VCol cols="7" md="6" class="text-left" v-if="props.summary.discount > 0">
-                            <span class="tw-text-yellow">Descuento</span>
-                        </VCol>
-                        <VCol cols="5" md="6" class="text-right" v-if="props.summary.discount > 0">
-                            <span class="tw-text-yellow">-${{ formatNumber(props.summary.discount) }}</span>
-                        </VCol>
-                        <VCol cols="3" md="4" class="text-left py-0">
-                            <span>Envío</span>
-                        </VCol>
-                        <VCol cols="9" md="8" class="text-right py-0">
-                            <VRadioGroup
-                                v-model="sendId"
-                                false-icon="mdi-circle-outline"
-                                true-icon="mdi-circle-slice-8"
-                                @update:modelValue="chanceExpress"
-                                class="radioGroupCustom"
-                            >
-                                <VRadio
-                                    v-for="(item, i) in send_array"
-                                    color="primary"
-                                    :key="i"
-                                    :value="i"
-                                    :disabled="isDisabled(i)"
-                                    :class="(send_array.length - 1 === i && province !== 293) ? '' : 'border-line'"
-                                    class="custom-radio">
-                                    <template v-slot:label>
-                                        <span class="d-flex pl-1 pr-0 text-right text-send tw-font-semibold py-2 me-1 me-md-2">
-                                            {{ item }}
-                                        </span>
-                                    </template>
-                                </VRadio>
-                                <VRadio
-                                    v-show="province === 293"
-                                    color="primary"
-                                    :key="3"
-                                    :value="3"
-                                    class="custom-radio">
-                                    <template v-slot:label>
-                                        <span class="d-flex pl-1 pr-0 text-right text-send tw-font-semibold py-2 me-1 me-md-2">
-                                            Envío Express (Solo a Bogotá): $17.000.00
-                                        </span>
-                                    </template>
-                                </VRadio>
-                            </VRadioGroup>
-                        </VCol>
-                        <VCol cols="7" md="6" class="text-left">
-                            <h4>Total</h4>
-                        </VCol>
-                        <VCol cols="5" md="6" class="text-right">
-                            <h4>${{ formatNumber(props.summary.total) }}</h4>
-                        </VCol>
-                    </VRow>
-                </VCardText>
-            </VCard>
-        </VCol>
-    </VRow>
+<template>              
+    <VCardText class="row-cardp3 px-5 px-md-8 py-0">
+        <VCheckbox
+            v-model="sendDifferentAddress"
+            class="different-checkbox"
+            color="primary"
+            hide-details
+            @update:modelValue="onChangeDifferentAddress"
+        >
+            <template #label>
+                <span class="ms-2">Envia a una dirección diferente</span>
+            </template>
+        </VCheckbox>
+    </VCardText>
+    <VCardText class="row-cardp3 px-5 px-md-8 py-0">
+        <span>Forma de envio</span>
+    </VCardText>
+    <VCardText class="pt-2">
+        <VRadioGroup
+            v-model="sendId"
+            false-icon="mdi-circle-outline"
+            true-icon="mdi-circle-slice-8"
+            @update:modelValue="chanceExpress"
+            class="radioGroupCustom"
+            inline>
+            <VRadio
+                v-for="(item, i) in send_array"
+                color="primary"
+                :key="i"
+                :value="i"
+                :readonly="isDisabled(i)"
+                :class="[(send_array.length - 1 === i && province !== 293) ? '' : 'border-line', 'custom-radio', { 'is-readonly': isDisabled(i) }]">
+                <template v-slot:label>
+                    <div class="ship-option">
+                        <div class="ship-title">
+                            {{ i === 0 ? 'Envío Bogotá Gratis' : i === 1 ? 'Envío Nacional $19.000' : 'Envío Bogotá $12.000' }}
+                        </div>
+                        <div class="ship-sub" v-if="i === 0">(De 2 a 3 días hábiles)</div>
+                        <div class="ship-sub" v-else-if="i === 1">(De 1 a 2 días hábiles)</div>
+                        <div class="ship-sub" v-else>(De 1 a 2 días hábiles)</div>
+                    </div>
+                </template>
+            </VRadio>
+            <VRadio
+                v-show="province === 293"
+                color="primary"
+                :key="3"
+                :value="3"
+                class="custom-radio">
+                <template v-slot:label>
+                    <div class="ship-option">
+                        <div class="ship-title">Envío Express $17.000</div>
+                        <div class="ship-sub">(Menos de 24 horas )</div>
+                    </div>
+                </template>
+            </VRadio>
+        </VRadioGroup>
+    </VCardText>       
 </template>
 
 <style scoped>
@@ -303,10 +206,16 @@ const isDisabled = (i) => {
         min-height: 0;
     }
     
-    .custom-radio {
+    ::v-deep(.custom-radio) {
         display: flex;
-        flex-direction: row-reverse;
+        flex-direction: row;
         align-items: center;
+        background: #eef0ef;
+        border-radius: 12px;
+        padding: 10px 14px;
+        margin-inline-end: 5px;
+        transition: background-color .2s ease;
+        cursor: pointer;
     }
 
     .text-send {
@@ -315,6 +224,120 @@ const isDisabled = (i) => {
         font-style: normal;
         font-weight: 400;
         line-height: 16px;
+    }
+
+    .radioGroupCustom {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    ::v-deep(.custom-radio .v-selection-control__wrapper) {
+        margin-inline-end: 5px;
+    }
+
+    .ship-option {
+        text-align: left;
+    }
+
+    .ship-title {
+        color: #0A1B33;
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 18px;
+    }
+
+    .ship-sub {
+        color: #6B7280;
+        font-size: 12px;
+        font-style: italic;
+        line-height: 14px;
+        margin-top: 2px;
+    }
+
+    /* Selected state */
+    ::v-deep(.custom-radio.v-selection-control--dirty) {
+        background: #FF0090;
+    }
+
+    ::v-deep(.custom-radio.v-selection-control--dirty) .ship-title,
+    ::v-deep(.custom-radio.v-selection-control--dirty) .ship-sub {
+        color: #FFFFFF;
+    }
+
+    /* Replace default icon with custom white ring + fuchsia inner dot */
+    ::v-deep(.custom-radio.v-selection-control--dirty .v-selection-control__wrapper .v-icon) {
+        display: none;
+    }
+
+    ::v-deep(.custom-radio.v-selection-control--dirty .v-selection-control__wrapper) {
+        width: 22px;
+        height: 22px;
+        min-width: 22px;
+        border: 3px solid #FFFFFF;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+    }
+
+    ::v-deep(.custom-radio.v-selection-control--dirty .v-selection-control__wrapper)::after {
+        content: '';
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #FF0090;
+        display: block;
+    }
+
+    /* Disabled */
+    ::v-deep(.custom-radio.v-selection-control--disabled) {
+        opacity: .5;
+        cursor: not-allowed !important;
+    }
+
+    ::v-deep(.custom-radio.v-selection-control--disabled:hover) {
+        cursor: not-allowed !important;
+    }
+
+    ::v-deep(.custom-radio.v-selection-control--disabled .v-selection-control__wrapper),
+    ::v-deep(.custom-radio.v-selection-control--disabled .v-label),
+    ::v-deep(.custom-radio.v-selection-control--disabled .ship-option) {
+        cursor: not-allowed !important;
+    }
+
+    /* Readonly state (treat like disabled for UX) */
+    ::v-deep(.custom-radio.v-input--readonly),
+    ::v-deep(.custom-radio.v-selection-control--readonly) {
+        opacity: .5;
+        cursor: not-allowed !important;
+    }
+
+    ::v-deep(.custom-radio.v-input--readonly:hover),
+    ::v-deep(.custom-radio.v-selection-control--readonly:hover) {
+        cursor: not-allowed !important;
+    }
+
+    ::v-deep(.custom-radio.v-input--readonly .v-selection-control__wrapper),
+    ::v-deep(.custom-radio.v-input--readonly .v-label),
+    ::v-deep(.custom-radio.v-input--readonly .ship-option),
+    ::v-deep(.custom-radio.v-selection-control--readonly .v-selection-control__wrapper),
+    ::v-deep(.custom-radio.v-selection-control--readonly .v-label),
+    ::v-deep(.custom-radio.v-selection-control--readonly .ship-option) {
+        cursor: not-allowed !important;
+    }
+
+    /* Fallback: explicit class when item is readonly */
+    ::v-deep(.custom-radio.is-readonly) {
+        opacity: .5;
+        cursor: not-allowed !important;
+    }
+    ::v-deep(.custom-radio.is-readonly .v-selection-control__wrapper),
+    ::v-deep(.custom-radio.is-readonly .v-label),
+    ::v-deep(.custom-radio.is-readonly .ship-option) {
+        cursor: not-allowed !important;
     }
 
     .text-address {
@@ -390,13 +413,6 @@ const isDisabled = (i) => {
         fill: #FFFFFF;
     }
 
-    .card-products {
-        background-color:#FFFFFF;
-        padding:16px 32px;
-        border-radius: 24px;
-        box-shadow: none;
-    }
-
     .card-buy {
         background-color:#FFFFFF;
         padding:24px 32px;
@@ -441,11 +457,31 @@ const isDisabled = (i) => {
     }
 
     .row-cardp3 span {
+        font-family: 'Poppins', sans-serif;
         color: #FF0090;
         font-size: 16px;
         font-style: normal;
-        font-weight: 400;
+        font-weight: 700;
         line-height: normal;
+    }
+
+    /* Different address checkbox styles */
+    ::v-deep(.different-checkbox .v-selection-control__wrapper .v-icon) {
+        display: none;
+    }
+    ::v-deep(.different-checkbox .v-selection-control__wrapper) {
+        width: 18px;
+        height: 18px;
+        min-width: 18px;
+        border: 2px solid #CFCFCF;
+        border-radius: 2px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    ::v-deep(.different-checkbox.v-selection-control--dirty .v-selection-control__wrapper) {
+        border-color: #FF0090;
+        background: #FF0090;
     }
 
     .row-cardp3 h4 {
@@ -491,6 +527,17 @@ const isDisabled = (i) => {
 
         .text-send {
             font-size: 12px !important;
+        }
+
+        /* Stack shipping options and make them full width on mobile */
+        .radioGroupCustom {
+            display: block;
+        }
+
+        ::v-deep(.custom-radio) {
+            width: 100%;
+            margin-inline-end: 0;
+            margin-bottom: 8px;
         }
     }
 

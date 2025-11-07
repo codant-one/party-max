@@ -38,7 +38,7 @@ const currentYear = ref(new Date().getFullYear())
 const terms = ref(false)
 const background = ref('tw-bg-white')
 const route = useRoute()
-const isConnected = ref(false)
+const hideFooter = ref(false)
 
 const refVForm = ref()
 const name = ref('')
@@ -62,7 +62,7 @@ const inputChange = () => {
 watchEffect(fetchData)
 
 async function fetchData() {
-  isConnected.value = false
+  hideFooter.value = false
 
   if(route.name === 'about' || route.name === 'help' || 
       route.path?.startsWith('/products') ||
@@ -78,7 +78,11 @@ async function fetchData() {
      route.name === 'dashboard-favorites' || route.name === 'dashboard-information' ||
      route.name === 'dashboard-security' || route.name === 'dashboard-address' ||
      route.name === 'dashboard-purchases-id' || route.name === 'dashboard-rating-id') {
-    isConnected.value = true
+    hideFooter.value = true
+  }
+
+  if(route.name === 'cart') {
+    hideFooter.value = true
   }
 }
 
@@ -140,7 +144,7 @@ const onSubmit = () => {
 </script>
 
 <template>
-  <VFooter class="text-center d-flex flex-column p-0 w-100" :class="background">
+  <VFooter class="text-center d-flex flex-column p-0 w-100" :class="background" v-if="!hideFooter">
     <label for="g-recaptcha-response" style="display: none;">
       reCAPTCHA response
     </label>

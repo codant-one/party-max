@@ -1,6 +1,7 @@
 import { useNuxtApp } from '#app'
 
 export const Miscellaneous = () => {
+    
     const { $axios } = useNuxtApp()
 
     const categories = async (slug: string) => {

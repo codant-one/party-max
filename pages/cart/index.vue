@@ -13,9 +13,9 @@ import { useDocumentTypesStores } from '@/stores/document-types'
 import { useMiscellaneousStores } from "@/stores/miscellaneous";
 import { useCouponsStores } from '@/stores/coupons'
 import { Pagination } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useRuntimeConfig } from '#app'
 import axios from 'axios'
+import Payu from '@/assets/icons/payu.svg'
 import 'swiper/css';
 import 'swiper/css/pagination';
 
@@ -156,6 +156,7 @@ const getProvinces = computed(() => {
 
 const thumbsSwiper = ref(null);
 const modules = ref([Pagination])
+const paymentsRef = ref(null)
 
 const setThumbsSwiper = (swiper) => {
     thumbsSwiper.value = swiper;
@@ -337,18 +338,14 @@ const changeAddreess = (id) => {
     address_id.value = id
 }
 
-const deleteProduct = (product_color_id) => {
-
-    cartStores.delete({product_color_id: product_color_id})
-    fetchData()   
-
+const deleteProduct = async (product_color_id) => {
+    await cartStores.delete({ type: 0, product_color_id: Number(product_color_id) })
+    await fetchData()
 }
 
-const deleteService = (service_id) => {
-
-    cartStores.delete({type: 1, service_id: parseInt(service_id)})
-    fetchData()   
-
+const deleteService = async (service_id) => {
+    await cartStores.delete({type: 1, service_id: parseInt(service_id)})
+    await fetchData()   
 }
 
 const couponApply = async (code) => {
@@ -689,6 +686,26 @@ const sendPayU = async (billingDetail) => {
     }
 }
 
+const handlePayClick = async () => {
+    try {
+        const res = await paymentsRef.value?.validateAndGetBillingDetail()
+        if (res && res.valid) {
+            await sendPayU(res.data)
+        } else {
+            isDialogVisible.value = true
+            message.value = 'Por favor completa los datos de facturación.'
+            isError.value = true
+            setTimeout(() => {
+                isDialogVisible.value = false
+                message.value = ''
+                isError.value = false
+            }, 2000)
+        }
+    } catch (e) {
+        // no-op
+    }
+}
+
 const deleteAll = async () => {
     if(process.client) {
         localStorage.removeItem('shoppingCart') 
@@ -806,31 +823,63 @@ const chanceSend = value => {
 <template>
    <div class="checkout-page">
         <VContainer 
-            class="mt-2 mt-md-10 checkout-card"
+            class="mt-2 checkout-card"
             :class="currentStep === 2 ? 'w-60': ''">
             <Loader :isLoading="isLoading"/>
 
-            <VCard class="mb-5 mb-md-10 card-timeline px-0">
-                <VCardText class="px-0 py-0 py-md-5">
-                    <!-- 👉 Stepper -->
-                    <Stepper
-                        v-model:current-step="currentStep"
-                        class="checkout-stepper"
-                        :isActiveStepValid="(products.length === 0 || isActiveStepValid) ? true : undefined"
-                        :items="checkoutSteps"
-                    />
-                </VCardText>
-               
-            </VCard>
+            <VRow  v-if="products.length > 0 || (typeof route.query.merchantId !== 'undefined')">
+                <VCol cols="12" md="8">     
+                    <VCard class="card-products p-0">
+                        <Payments 
+                            ref="paymentsRef"
+                            v-model:current-step="currentStep"
+                            :address_id="address_id"
+                            :addresses="addresses"
+                            :products="products"
+                            :summary="summary"
+                            :countries="listCountries"
+                            :provinces="listProvinces"
+                            :document_types="getDocumentTypes"
+                            :step="currentStep"
+                            @send="chanceSend"
+                            @dialog_error = "dialog_error"
+                        />
 
-            <!-- 👉 stepper content -->
-            <VWindow
-                v-if="products.length > 0 || (typeof route.query.merchantId !== 'undefined')"
-                v-model="currentStep"
-                class="disable-tab-transition mb-5"
-                :touch="false"
-                >
-                <VWindowItem>
+                        <Location 
+                            v-model:current-step="currentStep"
+                            :address_id="address_id"
+                            :province_id="province_id"
+                            :send_id="send_id"
+                            :is-dialog-open="dialog"
+                            :addresses="addresses"
+                            :summary="summary"
+                            @changeAddreess="changeAddreess"
+                            @dialog="dialog = true"
+                            @dialog_error = "dialog_error"
+                            @send="chanceSend"
+                        />
+
+                        
+
+                        <VCardText class="d-block row-payu align-center text-center px-5">
+                            <div class="payu-option">
+                                <span class="payu-bullet" aria-hidden="true"></span>
+                                <img :src="Payu" class="payu-logo"/>
+                                <p class="payu-desc">Paga con tarjeta de crédito, debito o transacción bancaria de forma segura a través de los servidores seguros de PayU.</p>
+                            </div>
+                        </VCardText>
+                        <VCardText class="d-flex title-card w-100 px-5 px-md-16 pb-4">
+                            <VBtn
+                                block
+                                variant="flat"
+                                class="btn-pay"
+                                @click="handlePayClick">
+                                    IR A PAGAR
+                            </VBtn>
+                        </VCardText>
+                    </VCard>
+                </VCol>
+                <VCol cols="12" md="4">
                     <Summary
                         v-model:current-step="currentStep"
                         :products="products"
@@ -842,45 +891,19 @@ const chanceSend = value => {
                         @addCart="addCart"
                         @couponApply="couponApply"
                     />
-                </VWindowItem>
-                <VWindowItem>
-                    <Location 
-                        v-model:current-step="currentStep"
-                        :address_id="address_id"
-                        :province_id="province_id"
-                        :send_id="send_id"
-                        :addresses="addresses"
-                        :summary="summary"
-                        @changeAddreess="changeAddreess"
-                        @dialog="dialog = true"
-                        @dialog_error = "dialog_error"
-                        @send="chanceSend"
-                        />
-                </VWindowItem>
-                <VWindowItem>
-                    <Payments 
-                        v-model:current-step="currentStep"
-                        :address_id="address_id"
-                        :addresses="addresses"
-                        :products="products"
-                        :summary="summary"
-                        :countries="listCountries"
-                        :provinces="listProvinces"
-                        :document_types="getDocumentTypes"
-                        :step="currentStep"
-                        @submit="sendPayU"
-                        @send="chanceSend"
-                        @dialog_error = "dialog_error"
-                    />
-                </VWindowItem>
-                <VWindowItem>
+                </VCol>         
+                
+            </VRow>
+                 <!--  
+              
+                   
+                
                    <Confirmation 
                         @refresh="refresh"
                         @completed="completed"
                         @updatePaymentState="updatePaymentState"
                         @deleteAll="deleteAll"/>
-                </VWindowItem>
-            </VWindow>
+                -->
 
             <VCard 
                 v-if="products.length === 0 && (typeof route.query.merchantId === 'undefined')"
@@ -893,55 +916,6 @@ const chanceSend = value => {
                     </VCardItem>
                </VCardText>
             </VCard>
-
-            <!--SECCIÓN PRODUCTOS RECOMENDADOS-->
-            <VRow class="px-3 px-md-5 mt-5" v-if="currentStep === 0 && products.length > 0">
-                <VCol cols="12" style="border-bottom: 1px solid #0A1B33;">
-                    <VRow>
-                        <VCol cols="9" md="6" class="text-left">
-                            <h3>Recomendaciones que te pueden interesar</h3>
-                        </VCol>
-                        <VCol cols="3" md="6" class="text-right d-flex align-center justify-content-end pl-0 pr-1 pr-md-5">
-                            <router-link to="/products" class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-0 me-md-3 hover:tw-text-primary">Ver todos</router-link>
-                        </VCol>
-                    </VRow>
-                </VCol>
-            
-                <VCol cols="12">
-                        <VCard class="mt-1 no-shadown card-information p-0" style="background:none;">
-                            <VCardText class="px-0 mt-3 mb-3 d-flex align-items-stretch justify-content-between" v-if="data && !isMobile">
-                                <Product1 
-                                    v-for="(product, i) in data.recommendations"
-                                    :key="i"
-                                    :product="product"
-                                    :readonly="true"
-                                    :bg="bg"/>
-                            </VCardText> 
-
-                            <VCardText class="p-0 d-md-flex align-items-stretch justify-content-between" v-if="data && isMobile">
-                                <swiper
-                                    :pagination="{
-                                        dynamicBullets: true,
-                                    }"
-                                    :modules="modules"
-                                    :spaceBetween="5"
-                                    :slidesPerView="2"
-                                    :freeMode="true"
-                                    :watchSlidesProgress="true"
-                                    @swiper="setThumbsSwiper"
-                                    :style="{ height: isMobile ? '340px' : '370px' }"
-                                    >
-                                    <swiper-slide v-for="(product, i) in data.recommendations" :key="i">
-                                        <Product1 
-                                            :product="product"
-                                            :readonly="true"
-                                            :bg="bg"/>
-                                    </swiper-slide>
-                                </swiper>
-                            </VCardText>
-                        </VCard> 
-                </VCol>
-            </VRow>
 
         </VContainer>
         <!--MODAL ADD ADDRESS-->
@@ -991,7 +965,7 @@ const chanceSend = value => {
                                 <VAutocomplete
                                     variant="outlined"
                                     v-model="selectedAddress.province_id"
-                                    label="Estado"
+                                    label="Departamento"
                                     :rules="[requiredValidator]"
                                     :items="getProvinces"
                                     :menu-props="{ maxHeight: '200px' }"
@@ -1104,6 +1078,57 @@ const chanceSend = value => {
 
 <style lang="scss">
 
+    /* PayU option styled like selected radio */
+    .payu-option {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background: #EEF0EF;
+        border-radius: 16px;
+        padding: 16px 20px;
+    }
+
+    .payu-logo {
+        height: 28px;
+    }
+
+    .payu-desc {
+        margin: 0;
+        color: #0A1B33;
+        text-align: left;
+    }
+
+    .payu-bullet {
+        width: 22px;
+        height: 22px;
+        min-width: 22px;
+        border: 3px solid #FFFFFF;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        position: relative;
+    }
+
+    .payu-bullet::after {
+        content: '';
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #FF0090;
+        display: block;
+    }
+
+
+    .card-products {
+        background-color:#FFFFFF;
+        padding:16px 32px;
+        border-radius: 24px;
+        margin-top:16px;
+        box-shadow: none;
+    }
+
     .cart-empty {
         color: #FF0090;
         text-align: center;
@@ -1120,6 +1145,26 @@ const chanceSend = value => {
         padding: 16px 0px;
         border-radius: 24px;
         box-shadow: none;
+    }
+
+    .btn-pay {
+        display: flex;
+        width: 100%;
+        height: 54px;
+        padding: 0 32px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 32px;
+        background: #FF0090 !important;
+        color: #FFF !important;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 14px;
+    }
+
+    .btn-pay:hover {
+        background: #FF27B3 !important;
+        box-shadow: 0px 0px 24px 0px #FF27B3;
     }
 
     .checkout-stepper {
@@ -1258,6 +1303,9 @@ const chanceSend = value => {
     }
 
     @media only screen and (max-width: 767px) {
+        .card-products {
+            padding: 16px 10px;
+        }
 
         .cart-svg::v-deep(path) {
             fill: #FF0090 !important;
