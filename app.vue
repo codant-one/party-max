@@ -110,8 +110,9 @@ async function fetchData() {
   }
 
   if(route.name === 'register' || route.name === 'type_client' || route.name === 'clients-form_client' || 
-          route.name === 'clients-form_supplier' || route.name === 'login' || route.name === 'clients-success_register_person' || 
-          route.name === 'clients-success_register_company' || route.name === 'clients-forgot_password' || route.name === 'clients-reset_password') {
+    route.name === 'clients-form_supplier' || route.name === 'login' || route.name === 'callback' || 
+    route.name === 'clients-success_register_person' || route.name === 'clients-success_register_company' ||
+    route.name === 'clients-forgot_password' || route.name === 'clients-reset_password') {
     bg = register
     repeat = 'no-repeat'
     size = 'cover'

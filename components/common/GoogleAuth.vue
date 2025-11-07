@@ -1,8 +1,6 @@
 <script setup>
 
-import { useAuthStores } from '@/stores/auth'
 import { useRuntimeConfig } from '#app'
-import { useNuxtApp } from '#app'
 
 const props = defineProps({
   validated: {
@@ -13,9 +11,11 @@ const props = defineProps({
 
 const config = useRuntimeConfig()
 const baseURL = ref(config.public.APP_DOMAIN_API_URL)
-const { $axios } = useNuxtApp()
 
 const emit = defineEmits(['google-auth-error'])
+
+const waitingAuth = ref(false)
+let popupRef = null
 
 const onValidate = () => {
   if(! props.validated ){
@@ -23,11 +23,69 @@ const onValidate = () => {
     //console.error('error', "Check Terminos " + props.validated)
     emit('google-auth-error')
   } else {
-    // Emitir evento de éxito para continuar con Google Auth
-    //emit('google-auth-success')
-    //console.error('error', "Check Terminos OK. Base: " + baseURL.value)
-    window.open(baseURL.value + '/auth/google/redirect', '_blank');
-    //$axios.get(`auth/google/redirect`)
+    // Abrir popup centrado y mostrar overlay
+    // Forzar un nuevo flujo: limpiar cualquier token previo
+    try {
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('token')
+      localStorage.removeItem('user_data')
+      localStorage.removeItem('userAbilities')
+    } catch (e) {}
+
+    const width = 520
+    const height = 640
+    const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX
+    const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY
+    const screenWidth = window.innerWidth || document.documentElement.clientWidth || screen.width
+    const screenHeight = window.innerHeight || document.documentElement.clientHeight || screen.height
+    const left = screenWidth / 2 - width / 2 + dualScreenLeft
+    const top = screenHeight / 2 - height / 2 + dualScreenTop
+    const features = `scrollbars=yes,width=${width},height=${height},top=${top},left=${left},noopener=no,noreferrer=no,resizable=yes`
+
+    const redirectUrl = baseURL.value + '/auth/google/redirect?prompt=select_account&force_auth=1'
+    popupRef = window.open(redirectUrl, 'google_oauth', features)
+    console.log('redirectUrl =', redirectUrl)
+    waitingAuth.value = true
+
+    // Listener para recibir credenciales desde callback
+    window.addEventListener('message', handleAuthMessage, false)
+
+    // Fallback timeout para evitar overlay infinito si no llega mensaje
+    setTimeout(() => {
+      if (waitingAuth.value) {
+        waitingAuth.value = false
+        window.removeEventListener('message', handleAuthMessage)
+      }
+    }, 60000)
+  }
+}
+
+function handleAuthMessage(event) {
+  try {
+    // Opcional: validar event.origin si tu backend está en el mismo dominio público
+    const data = event.data || {}
+    if (data && data.type === 'google-auth-success') {
+      // Guardar tokens en localStorage para mantener coherencia con el resto del flujo
+      const tokenData = data.payload || {}
+      if (tokenData.accessToken) localStorage.setItem('accessToken', tokenData.accessToken)
+      if (tokenData.token) localStorage.setItem('token', tokenData.token)
+      if (tokenData.user_data) localStorage.setItem('user_data', JSON.stringify(tokenData.user_data))
+      if (tokenData.userAbilities) localStorage.setItem('userAbilities', JSON.stringify(tokenData.userAbilities))
+      waitingAuth.value = false
+      window.removeEventListener('message', handleAuthMessage)
+      // Redirigir a dashboard
+      window.location.assign('/dashboard/profile')
+    }
+    if (data && data.type === 'google-auth-error') {
+      waitingAuth.value = false
+      try { if (popupRef) popupRef.close() } catch (e) {}
+      window.removeEventListener('message', handleAuthMessage)
+      emit('google-auth-error')
+    }
+  } catch (e) {
+    waitingAuth.value = false
+    window.removeEventListener('message', handleAuthMessage)
+    emit('google-auth-error')
   }
 }
 
@@ -41,7 +99,7 @@ const onValidate = () => {
     <VCardText class="d-block align-center text-center justify-content-center">
         
         <button 
-            class="gsi-material-button"
+            class="gsi-material-button w-100"
             type="button"
             @click="onValidate()"
         >
@@ -56,9 +114,61 @@ const onValidate = () => {
                     <path fill="none" d="M0 0h48v48H0z"></path>
                 </svg>
                 </div>
-                <span class="gsi-material-button-contents">Continuar con Google</span>
-                <span style="display: none;">Continuar con Google</span>
+                <span class="gsi-material-button-contents">Iniciar sesión con Google</span>
+                <span style="display: none;">Iniciar sesión con Google</span>
             </div>
         </button>
     </VCardText>
+  <VDialog v-model="waitingAuth" persistent max-width="400">
+    <VCard class="px-6 py-6">
+      <VCardText class="text-center">
+        <VProgressCircular indeterminate color="primary" class="mb-4" />
+        <div>Conectando con Google…</div>
+      </VCardText>
+      <VCardActions class="justify-end">
+        <VBtn color="primary" variant="outlined" @click="waitingAuth = false">Cancelar</VBtn>
+      </VCardActions>
+    </VCard>
+  </VDialog>
+  
 </template>
+
+<style scoped>
+
+  .gsi-material-button {
+    width: 100%;
+    border: 1px solid #D9EEF2;
+    border-radius: 32px;
+    background-color: #ffffff;
+    padding: 10px 16px;
+  }
+
+  .gsi-material-button-content-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .gsi-material-button-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+  }
+
+  .gsi-material-button-contents {
+    text-align: center;
+    font-weight: 600;
+    color: #0A1B33;
+  }
+
+  .oauth-frame {
+    width: 100%;
+    height: 80vh;
+    border: 0;
+  }
+
+</style>
