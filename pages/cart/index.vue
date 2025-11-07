@@ -22,10 +22,10 @@ import 'swiper/css/pagination';
 import { useRouter, useRoute } from 'vue-router'
 import dayjs from 'dayjs';
 
-import Stepper from '@/components/cart/Stepper.vue'
 import Summary from '@/components/cart/Summary.vue'
 import Location from '@/components/cart/Location.vue'
 import Payments from '@/components/cart/Payments.vue'
+import User from '@/components/cart/User.vue'
 import Confirmation from '@/components/cart/Confirmation.vue'
 
 import check_circle from '@assets/icons/check-circle.svg';
@@ -830,6 +830,8 @@ const chanceSend = value => {
             <VRow  v-if="products.length > 0 || (typeof route.query.merchantId !== 'undefined')">
                 <VCol cols="12" md="8">     
                     <VCard class="card-products p-0">
+                        <User />
+                        
                         <Payments 
                             ref="paymentsRef"
                             v-model:current-step="currentStep"
@@ -1165,14 +1167,6 @@ const chanceSend = value => {
     .btn-pay:hover {
         background: #FF27B3 !important;
         box-shadow: 0px 0px 24px 0px #FF27B3;
-    }
-
-    .checkout-stepper {
-        .stepper-icon-step {
-            .step-wrapper + svg {
-                margin-inline: 1.5rem !important;
-            }
-        }
     }
 
     .checkout-card {

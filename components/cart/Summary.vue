@@ -97,12 +97,12 @@ const couponApply = () => {
                 <VCol cols="7" md="6" class="text-left">
                     <h4>Total</h4>
                 </VCol>
-                <VCol cols="5" md="6" class="text-right">
+                <VCol cols="5" md="6" class="text-right pb-5">
                     <h4>${{ formatNumber(props.summary.total) }}</h4>
                 </VCol>
             </VRow>
         </VCardText>
-        <VCardText class="card-bono px-5 py-5" v-if="props.client_id && props.summary.discount === 0">
+        <VCardText class="card-bono px-5 pb-5" v-if="props.client_id && props.summary.discount === 0">
             <VCardTitle class="text-center d-flex title-bono align-center p-0">
                Cupón de descuento
             </VCardTitle>

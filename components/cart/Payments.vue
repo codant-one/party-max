@@ -85,12 +85,15 @@ const getProvinces = computed(() => {
   })
 })
 
+const isLoggedIn = ref(false)
+
 onMounted(async () => {
     selectCountry(billingDetail.value.country_id)
 
     if(localStorage.getItem('user_data')){
         const userData = localStorage.getItem('user_data')
         const userDataJ = JSON.parse(userData)
+        isLoggedIn.value = true
         
         billingDetail.value.name = userDataJ.name
         billingDetail.value.last_name = userDataJ.last_name
@@ -207,7 +210,7 @@ const getFlagCountry = country => {
                     </VCol> 
                     <VCol cols="12" md="4" class="textinput mb-0 mb-md-2">
                         <VTextField
-                            disabled
+                            :disabled="isLoggedIn"
                             v-model="billingDetail.email"
                             label="Dirección de E-mail"
                             variant="outlined"
