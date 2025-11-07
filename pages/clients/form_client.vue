@@ -7,6 +7,7 @@ import icon1 from '@assets/icons/Mail.svg';
 import icon2 from '@assets/icons/input-user.svg';
 import icon3 from '@assets/icons/Phone.svg';
 import icon4 from '@assets/icons/icon-password.svg';
+import GoogleAuth from '/components/common/GoogleAuth.vue'
 
 const router = useRouter()
 const authStores = useAuthStores()
@@ -25,6 +26,8 @@ const name = ref('')
 const phone = ref('')
 const password = ref('')
 const load = ref(false)
+const terms = ref(false)
+const refTermsCheckbox = ref()
 
 const inputChange = () => {
   errors.value = {
@@ -84,6 +87,11 @@ const onSubmit = () => {
             register()
         }
     })
+}
+
+const googleAuthValidateError = () => {
+  // Validar solo el checkbox de términos y condiciones
+  refTermsCheckbox.value?.validate()
 }
 
 </script>
@@ -180,7 +188,12 @@ const onSubmit = () => {
                             />
                         </VCol>
                         <VCol cols="12" class="d-flex text-start p-0">
-                            <VCheckbox color="primary" :rules="[requiredValidator]"/>
+                            <VCheckbox 
+                                ref="refTermsCheckbox"
+                                color="primary" 
+                                :rules="[requiredValidator]" 
+                                v-model="terms"
+                            />
                             <div class="text1 ms-5 mt-md-2 mb-3 mb-md-0">
                                 Acepto los 
                                 <a href="/terms-and-conditions" target="_blank" class="text2">
@@ -211,6 +224,12 @@ const onSubmit = () => {
                         />
                     </VBtn>
                 </VCardText>                  
+
+                <GoogleAuth 
+                    :validated="terms" 
+                    @google-auth-error="googleAuthValidateError" 
+                />
+                
             </VCard>
         </VForm>
     </VContainer>

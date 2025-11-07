@@ -7,6 +7,7 @@ import check_circle from '@assets/icons/check-circle.svg';
 import festin_image2 from '@assets/images/festin-register.jpg';
 import icon2 from '@assets/icons/input-user.svg';
 import icon4 from '@assets/icons/icon-password.svg';
+import GoogleAuth from '/components/common/GoogleAuth.vue'
 
 const router = useRouter()
 const authStores = useAuthStores()
@@ -198,6 +199,11 @@ const onSubmit = () => {
                             />
                         </VBtn>
                     </VCardText>
+
+                    <GoogleAuth 
+                    :validated="true" 
+                    @google-auth-error="null" 
+                />
                     
                 </VCard>
             </VRow>
