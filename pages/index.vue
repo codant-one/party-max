@@ -235,32 +235,6 @@
 
   const tab = ref('0')
 
-  /* useHead({
-    title: 'PARTYMAX | THE PARTY MARKET',
-    meta: [
-      { name: 'description', content: 'Partymax, tu aliado ideal para fiestas en Colombia. Conectamos tus ideas con los mejores proveedores.¡Haz tu celebración inolvidable de forma fácil y económica!' },
-      { name: 'keywords', content: 'eventos en Colombia, marketplace de fiestas, proveedores de eventos, organización de eventos, planificación de fiestas, catering, decoración de fiestas, entretenimiento para eventos, servicios para bodas, fiestas infantiles, despedidas de soltera, tecnología para eventos, Partymax' },
-      { name: 'robots', content: 'index, follow' },
-      { name: 'autor', content: 'Partymax' },
-      { name: 'language', content: 'es' },
-
-      // Open Graph
-      { property: 'og:type', content: 'website' },
-      { property: 'og:title', content: 'PARTYMAX | THE PARTY MARKET' },
-      { property: 'og:description', content: 'Organiza tu evento ideal con Partymax. Encuentra los mejores proveedores de decoración, catering, entretenimiento y más en un solo lugar.' },
-      { property: 'og:image', content: config.public.APP_DOMAIN_API_URL + '/logos/R_ORIGINAL@2x.png' },
-      { property: 'og:url', content: `https://${config.public.MY_DOMAIN}` },
-      { property: 'og:site_name', content: 'PARTYMAX' },
-
-      // Twitter
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: 'PARTYMAX | THE PARTY MARKET' },
-      { name: 'twitter:description', content: 'Organiza tu evento ideal con Partymax. Encuentra los mejores proveedores de decoración, catering, entretenimiento y más en un solo lugar.' },
-      { name: 'twitter:image', content: config.public.APP_DOMAIN_API_URL + '/logos/R_ORIGINAL@2x.png' },
-      { name: 'twitter:site', content: twitterAccount.value }
-    ]
-  }); */
-
   const featuredCategory = 'fiestas-tematicas'
   const featuredCategorySwiperOptions = reactive({
     slidesPerView: 2,
@@ -383,7 +357,7 @@
         <VCard class="tw-p-0 tw-shadow-none home-misc-card">
             <VCardItem class="tw-p-0 tw-text-center"> 
               <NuxtLink 
-                  to="/help" 
+                  to="/shipping-policies#express_shipping" 
                   class="tw-block tw-w-full tw-h-full"
                   rel="noopener"
                 >
