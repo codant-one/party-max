@@ -50,6 +50,10 @@ const { $metapixel } = useNuxtApp()
 const thumbsSwiper = ref(null);
 const modules = ref([Pagination])
 
+const isProductsSlug = computed(() => route.params.slug === 'products')
+const isServicesSlug = computed(() => route.params.slug === 'services')
+const isSpecialSlug = computed(() => isProductsSlug.value || isServicesSlug.value)
+
 const setThumbsSwiper = (swiper) => {
     thumbsSwiper.value = swiper;
 }
@@ -122,22 +126,58 @@ watchEffect(fetchData)
 async function fetchData() {
 
   if(route.params.slug && route.path.startsWith('/categories/') && band.value === 0) {
+    
     isLoading.value = true
     band.value = 1
 
-    await miscellaneousStores.getCategory(route.params.slug)
-    data.value = miscellaneousStores.getData
-    icons_categories.value = data.value.category.children
+    if (isSpecialSlug.value) {
+      await miscellaneousStores.getBanners(route.params.slug === 'products' ? 'productos' : 'servicios')
+      
+      data.value = miscellaneousStores.getData
+      data.value.products = []
+      icons_categories.value = Array.isArray(data.value?.categories) ? data.value.categories : []
 
-    image1.value = (data.value.category.banner === null) ? banner1 : baseURL.value + data.value.category.banner
-    slug1.value = data.value.category.banner1?.slug.split('/')[1]
-    image2.value = (data.value.category.banner_2 === null) ? banner2 : baseURL.value + data.value.category.banner_2
-    slug2.value = data.value.category.banner2?.slug.split('/')[1]
-    image3.value = (data.value.category.banner_3 === null) ? banner3 : baseURL.value + data.value.category.banner_3
-    slug3.value = data.value.category.banner3?.slug.split('/')[1]
-    image4.value = (data.value.category.banner_4 === null) ? banner4 : baseURL.value + data.value.category.banner_4
-    slug4.value = data.value.category.banner4?.slug.split('/')[1]
-    category_type_id.value = data.value.category.category_type_id
+      const banners = data.value?.banners ?? null
+
+      image1.value = banners?.banner ? baseURL.value + banners.banner : banner1
+      slug1.value = banners?.banner1?.slug ? banners.banner1.slug.split('/')[1] : null
+      image2.value = banners?.banner_2 ? baseURL.value + banners.banner_2 : banner2
+      slug2.value = banners?.banner2?.slug ? banners.banner2.slug.split('/')[1] : null
+      image3.value = banners?.banner_3 ? baseURL.value + banners.banner_3 : banner3
+      slug3.value = banners?.banner3?.slug ? banners.banner3.slug.split('/')[1] : null
+      image4.value = banners?.banner_4 ? baseURL.value + banners.banner_4 : banner4
+      slug4.value = banners?.banner4?.slug ? banners.banner4.slug.split('/')[1] : null
+      category_type_id.value = banners?.category_type_id ?? (isProductsSlug.value ? 1 : 2)
+    } else {
+      await miscellaneousStores.getCategory(route.params.slug)
+      
+      data.value = miscellaneousStores.getData
+      icons_categories.value = data.value?.category?.children ?? []
+
+      if (!data.value?.category) {
+        image1.value = banner1
+        image2.value = banner2
+        image3.value = banner3
+        image4.value = banner4
+        slug1.value = null
+        slug2.value = null
+        slug3.value = null
+        slug4.value = null
+        category_type_id.value = 1
+        isLoading.value = false
+        return
+      }
+
+      image1.value = (data.value.category.banner === null) ? banner1 : baseURL.value + data.value.category.banner
+      slug1.value = data.value.category.banner1?.slug.split('/')[1]
+      image2.value = (data.value.category.banner_2 === null) ? banner2 : baseURL.value + data.value.category.banner_2
+      slug2.value = data.value.category.banner2?.slug.split('/')[1]
+      image3.value = (data.value.category.banner_3 === null) ? banner3 : baseURL.value + data.value.category.banner_3
+      slug3.value = data.value.category.banner3?.slug.split('/')[1]
+      image4.value = (data.value.category.banner_4 === null) ? banner4 : baseURL.value + data.value.category.banner_4
+      slug4.value = data.value.category.banner4?.slug.split('/')[1]
+      category_type_id.value = data.value.category.category_type_id
+    }
 
     isLoading.value = false
   }
@@ -191,8 +231,8 @@ const handleCategoryClickServices = (category, subcategory = null, fathercategor
     <VCard class="no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
         <NuxtLink
-          :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug1) : buildPrettyPathServices(route.params.slug, slug1)"
-          @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug1) : handleCategoryClickServices(route.params.slug, slug1)">
+          :to="isSpecialSlug ? `/${route.params.slug}` : (category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug1) : buildPrettyPathServices(route.params.slug, slug1))"
+          @click.prevent="isSpecialSlug ? router.push(`/${route.params.slug}`) : (category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug1) : handleCategoryClickServices(route.params.slug, slug1))">
           <VImg :src="image1" cover class="img-style"/>
         </NuxtLink>
       </VCardItem>  
@@ -208,8 +248,8 @@ const handleCategoryClickServices = (category, subcategory = null, fathercategor
         <span>¡Encuentra exactamente lo que necesitas!</span>
         <VSpacer />
         <NuxtLink
-          :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug) : buildPrettyPathServices(route.params.slug)"
-          @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug) : handleCategoryClickServices(route.params.slug)"
+          :to="isSpecialSlug ? `/${route.params.slug}` : (category_type_id === 1 ? buildPrettyPathProducts(route.params.slug) : buildPrettyPathServices(route.params.slug))"
+          @click.prevent="isSpecialSlug ? router.push(`/${route.params.slug}`) : (category_type_id === 1 ? handleCategoryClickProducts(route.params.slug) : handleCategoryClickServices(route.params.slug))"
           class="ms-5 tw-no-underline tw-text-tertiary font-size-16 me-3 hover:tw-text-primary" v-if="!isMobile">Ver todos</NuxtLink>
       </VCardTitle>
       <VDivider class="hr-primary"/>
@@ -218,8 +258,8 @@ const handleCategoryClickServices = (category, subcategory = null, fathercategor
         :class="icons_categories.length === 3 ? 'justify-content-between' : 'justify-content-center'">
         <template v-for="(i, index) in icons_categories">
           <NuxtLink            
-            :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, i.slug.split('/')[1]) : buildPrettyPathServices(route.params.slug, i.slug.split('/')[1])"
-            @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, i.slug.split('/')[1]) : handleCategoryClickServices(route.params.slug, i.slug.split('/')[1])"
+            :to="isSpecialSlug ? `/${route.params.slug}/categories/${i.slug}` : (category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, i.slug.split('/')[1]) : buildPrettyPathServices(route.params.slug, i.slug.split('/')[1]))"
+            @click.prevent="isSpecialSlug ? router.push(`/${route.params.slug}/categories/${i.slug}`) : (category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, i.slug.split('/')[1]) : handleCategoryClickServices(route.params.slug, i.slug.split('/')[1]))"
             class="tw-no-underline d-block text-center justify-content-center zoom router-icons">
             <img :src="baseURL + i.icon_subcategory" alt="Icono" width="192" class="border-theme d-block" v-if="i.icon_subcategory !== null"/>
             <img :src="t_7" alt="Icono" width="192" class="border-theme d-block" v-else/>
@@ -238,7 +278,7 @@ const handleCategoryClickServices = (category, subcategory = null, fathercategor
     </VCard>
 
     <!-- novedades -->
-    <VCard class="mt-7 no-shadown card-information p-0" v-if="data.products.length > 0">
+    <VCard class="mt-7 no-shadown card-information p-0" v-if="data.products.length > 0 && !isSpecialSlug">
       <VCardTitle class="px-7 py-3 d-flex align-center cardtitles hr-cyan">
         <span>Novedades</span>
         <VSpacer />
@@ -281,8 +321,8 @@ const handleCategoryClickServices = (category, subcategory = null, fathercategor
     <VCard class="mt-7 no-shadown card-information p-0 d-block d-md-flex transparent">
         <VCard class="no-shadown card-information p-0 w-100 w-md-50">
           <NuxtLink
-            :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug2) : buildPrettyPathServices(route.params.slug, slug2)"
-            @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug2) : handleCategoryClickServices(route.params.slug, slug2)"
+            :to="isSpecialSlug ? `/${route.params.slug}` : (category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug2) : buildPrettyPathServices(route.params.slug, slug2))"
+            @click.prevent="isSpecialSlug ? router.push(`/${route.params.slug}`) : (category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug2) : handleCategoryClickServices(route.params.slug, slug2))"
             class="tw-no-underline">
             <VCardItem class="p-0">
               <VImg :src="image2" cover class="img-style"/>
@@ -291,8 +331,8 @@ const handleCategoryClickServices = (category, subcategory = null, fathercategor
         </VCard>
         <VCard class="no-shadown card-information p-0 w-100 w-md-50 ms-0 ms-md-5 mt-7 mt-md-0">
           <NuxtLink
-            :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug3) : buildPrettyPathServices(route.params.slug, slug3)"
-            @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug3) : handleCategoryClickServices(route.params.slug, slug3)"
+            :to="isSpecialSlug ? `/${route.params.slug}` : (category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug3) : buildPrettyPathServices(route.params.slug, slug3))"
+            @click.prevent="isSpecialSlug ? router.push(`/${route.params.slug}`) : (category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug3) : handleCategoryClickServices(route.params.slug, slug3))"
             class="tw-no-underline">
             <VCardItem class="p-0">
               <VImg :src="image3" cover class="img-style"/>
@@ -305,18 +345,20 @@ const handleCategoryClickServices = (category, subcategory = null, fathercategor
     <VCard class="mt-7 no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
         <NuxtLink
-          :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug4) : buildPrettyPathServices(route.params.slug, slug4)"
-          @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug4) : handleCategoryClickServices(route.params.slug, slug4)">
+          :to="isSpecialSlug ? `/${route.params.slug}` : (category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug4) : buildPrettyPathServices(route.params.slug, slug4))"
+          @click.prevent="isSpecialSlug ? router.push(`/${route.params.slug}`) : (category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug4) : handleCategoryClickServices(route.params.slug, slug4))">
           <VImg :src="image4" cover class="img-style"/>
         </NuxtLink>
       </VCardItem>  
     </VCard>
 
     <NuxtLink 
-      :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug) : buildPrettyPathServices(route.params.slug)"
-      @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug) : handleCategoryClickServices(route.params.slug)"
+      :to="isSpecialSlug ? `/${route.params.slug}` : (category_type_id === 1 ? buildPrettyPathProducts(route.params.slug) : buildPrettyPathServices(route.params.slug))"
+      @click.prevent="isSpecialSlug ? router.push(`/${route.params.slug}`) : (category_type_id === 1 ? handleCategoryClickProducts(route.params.slug) : handleCategoryClickServices(route.params.slug))"
       class="link-button">
-      <VBtn class="mt-7 mb-5 tw-bg-primary tw-text-white button-product" rounded="xl" block>Ver todos los productos</VBtn>
+      <VBtn class="mt-7 mb-5 tw-bg-primary tw-text-white button-product" rounded="xl" block>
+        Ver todos los {{ isSpecialSlug ? route.params.slug === 'products' ? 'productos' : 'servicios' : (category_type_id === 1 ? 'productos' : 'servicios') }}
+      </VBtn>
     </NuxtLink>
   </VContainer>
 

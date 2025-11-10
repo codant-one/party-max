@@ -104,6 +104,9 @@ onMounted(async () => {
         billingDetail.value.email = userDataJ.email
         billingDetail.value.document_type_id = userDataJ.user_details.document_type_id
         billingDetail.value.document = userDataJ.user_details.document
+        // Propagar al padre al cargar
+        if (billingDetail.value.province_id !== undefined && billingDetail.value.province_id !== null && billingDetail.value.province_id !== '')
+            emit('province-changed', Number(billingDetail.value.province_id))
     }
 })
 
@@ -160,7 +163,45 @@ async function validateAndGetBillingDetail() {
     return { valid: false }
 }
 
-defineExpose({ validateAndGetBillingDetail })
+function updateBillingFromAddress(addr) {
+    if (!addr) return
+    if (addr.country_id) {
+        billingDetail.value.country_id = addr.country_id
+        selectCountry(addr.country_id)
+    }
+    if (addr.province_id !== undefined && addr.province_id !== null && addr.province_id !== '') {
+        billingDetail.value.province_id = Number(addr.province_id)
+    }
+    if (addr.city) billingDetail.value.city = addr.city
+    if (addr.street) billingDetail.value.street = addr.street
+    if (addr.address) billingDetail.value.address = addr.address
+    if (addr.phone) billingDetail.value.phone = addr.phone
+    if (addr.postal_code !== undefined && addr.postal_code !== null) billingDetail.value.postal_code = addr.postal_code
+    // Emitir siempre para asegurar actualización de Location
+    if (billingDetail.value.province_id !== undefined && billingDetail.value.province_id !== null && billingDetail.value.province_id !== '')
+        emit('province-changed', Number(billingDetail.value.province_id))
+}
+
+defineExpose({ validateAndGetBillingDetail, updateBillingFromAddress })
+
+const syncFromSelectedAddress = () => {
+    if (!props.addresses || !props.address_id) return
+    const addr = Array.isArray(props.addresses) ? props.addresses.find(a => a.id === props.address_id) : null
+    if (addr) updateBillingFromAddress(addr)
+}
+
+watch(() => props.address_id, () => {
+    id.value = props.address_id
+    syncFromSelectedAddress()
+})
+
+watch(() => props.addresses, () => {
+    syncFromSelectedAddress()
+})
+
+onMounted(() => {
+    syncFromSelectedAddress()
+})
 
 const getFlagCountry = country => {
   let val = listCountries.value.find(item => {

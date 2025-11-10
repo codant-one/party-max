@@ -32,6 +32,17 @@ export const useMiscellaneousStores = defineStore('miscellaneous', {
         setError(value: any) {
             this.error = value
         },
+        getBanners(slug: string) {
+            const { banners } = Miscellaneous()
+            return banners(slug)
+                .then((response) => {
+                    this.data = response.data.data
+                    return Promise.resolve(response.data.data)
+                })
+                .catch(error => {
+                    return Promise.reject(error)
+                }) 
+        },
         getCategory(slug: string) {  
             const { categories } = Miscellaneous()
             return categories(slug)

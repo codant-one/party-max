@@ -318,6 +318,13 @@ const loadProvinces = () => {
   listProvinces.value = provincesStores.getProvinces
 }
 
+// Ensure provinces list is populated each time the Add Address dialog opens
+watch(() => dialog.value, (isOpen) => {
+    if (isOpen) {
+        selectCountry(selectedAddress.value.country_id)
+    }
+})
+
 const selectCountry = country => {
   if (country) {
     let _country = listCountries.value.find(item => item.name === country)
@@ -449,7 +456,8 @@ const onSubmit = () => {
                 addAddress()
             } else {
                 address_id.value++
-                selectedAddress.value.default = (selectedAddress.value.default === false) ? 0 : 1
+                //selectedAddress.value.default = (selectedAddress.value.default === false) ? 0 : 1
+                selectedAddress.value.default = 1
                 selectedAddress.value.province_id = (Number.isInteger(selectedAddress.value.province_id)) ? selectedAddress.value.province_id : provinceOld_id.value
                 selectedAddress.value.province = listProvincesByCountry.value.filter(item => item.id === selectedAddress.value.province_id)[0]
                 selectedAddress.value.id = address_id.value
@@ -492,7 +500,8 @@ const onSubmit = () => {
 const addAddress = () => {
     load.value = true
 
-    selectedAddress.value.default = (selectedAddress.value.default === false) ? 0 : 1
+    //selectedAddress.value.default = (selectedAddress.value.default === false) ? 0 : 1
+    selectedAddress.value.default = 1
     selectedAddress.value.province_id = (Number.isInteger(selectedAddress.value.province_id)) ? selectedAddress.value.province_id : provinceOld_id.value,
 
     addressesStores.addAddress(selectedAddress.value)
@@ -1028,10 +1037,11 @@ const chanceSend = value => {
                                     variant="outlined"
                                     v-model="selectedAddress.province_id"
                                     label="Departamento"
+                                    item-title="title"
+                                    item-value="value"
                                     :rules="[requiredValidator]"
                                     :items="getProvinces"
                                     :menu-props="{ maxHeight: '200px' }"
-                                    :readonly="products.some(product => product.type === 1)"
                                 />    
                             </VCol> 
                             <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
@@ -1041,7 +1051,6 @@ const chanceSend = value => {
                                     variant="outlined"
                                     :rules="[requiredValidator]"
                                     class="me-0 me-md-2"
-                                    :readonly="products.some(product => product.type === 1)"
                                     />
                             </VCol>  
                             <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
@@ -1086,7 +1095,7 @@ const chanceSend = value => {
                                     />
                             </VCol>
                             <VCol cols="12" md="7"></VCol>
-                            <VCol cols="12" md="5" class="mb-3 mb-md-0" v-if="client_id">
+                            <VCol cols="12" md="5" class="mb-3 mb-md-0 d-none" v-if="client_id">
                                 <VCheckbox
                                     v-model="selectedAddress.default"
                                     color="primary"

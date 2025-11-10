@@ -4,6 +4,10 @@ export const Miscellaneous = () => {
     
     const { $axios } = useNuxtApp()
 
+    const banners = async (slug: string) => {
+        return await $axios.get(`miscellaneous/banners/${slug}`)
+    }
+
     const categories = async (slug: string) => {
         return await $axios.get(`miscellaneous/categories/${slug}`)
     }
@@ -65,6 +69,7 @@ export const Miscellaneous = () => {
     }
 
     return {
+        banners,
         categories,
         categoriesAll,
         faqs,

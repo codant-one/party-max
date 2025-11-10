@@ -5,6 +5,7 @@ import { useProfileStores } from '@/stores/profile'
 import { useCountriesStores } from '@/stores/countries'
 import { useProvincesStores } from '@/stores/provinces'
 import { useGendersStores } from '@/stores/genders'
+import { useDocumentTypesStores } from '@/stores/document-types'
 import { requiredValidator } from '@validators'
 import { useRouter } from 'vue-router'
 import Loader from '@/components/common/Loader.vue'
@@ -18,15 +19,19 @@ const countriesStores = useCountriesStores()
 const provincesStores = useProvincesStores()
 const gendersStores = useGendersStores()
 const authStores = useAuthStores()
+const documentTypesStores = useDocumentTypesStores()
 
 const load = ref(false)
 const refVForm = ref()
 const isLoading = ref(true)
-const { isMobile } = useDevice();
+const isMobile = ref(false)
+if (process.client && typeof useDevice === 'function') {
+    const d = useDevice()
+    isMobile.value = !!(d && d.isMobile)
+}
 
 const name = ref(null)
 const usermail = ref(null)
-const username = ref(null)
 const phone = ref(null)
 const document = ref(null)
 const country = ref(null)
@@ -34,6 +39,7 @@ const province = ref(null)
 const birthday = ref(null)
 const address = ref(null)
 const gender = ref(null)
+const type_document = ref(null)
 const dialog = ref(false)
 const isDialogVisible = ref(false)
 const message = ref()
@@ -46,7 +52,8 @@ const newaddress = ref(null)
 const newbirthday = ref(null)
 const newgender = ref(null)
 const newprovince = ref(null)
-const newusername = ref(null)
+const newdocument_type_id = ref('')
+const newdocument_typeOld_id = ref('')
 
 const listCountries = ref([])
 const listProvinces = ref([])
@@ -56,6 +63,7 @@ const countryOld_id = ref(null)
 const province_id = ref('')
 const provinceOld_id = ref('')
 const genders = ref('')
+const documentTypes = ref([])
 
 const errors = ref({
   newfname: undefined,
@@ -64,8 +72,7 @@ const errors = ref({
   newaddress: undefined,
   newbirthday: undefined,
   newgender: undefined,
-  newprovince: undefined,
-  newusername: undefined
+  newprovince: undefined
 })
 
 
@@ -77,8 +84,7 @@ const inputChange = () => {
     newaddress: undefined,
     newbirthday: undefined,
     newgender: undefined,
-    newprovince: undefined,
-    newusername: undefined
+    newprovince: undefined
   }
 }
 
@@ -96,6 +102,15 @@ const getGenders = computed(() => {
     return {
       title: gender.name,
       value: gender.id,
+    }
+  })
+})
+
+const getDocumentTypes = computed(() => {
+  return documentTypes.value.map((documentType) => {
+    return {
+      title: '(' + documentType.code + ') - ' + documentType.name,
+      value: documentType.id,
     }
   })
 })
@@ -127,7 +142,6 @@ async function fetchData() {
         const userDataJ = JSON.parse(userData)
         name.value = userDataJ.name + ' ' +(userDataJ.last_name ?? '')
         usermail.value = userDataJ.email
-        username.value = userDataJ.username
         phone.value = userDataJ.user_details.phone
         document.value = userDataJ.user_details.document ?? '----'
         country.value = userDataJ.user_details.province.country.name
@@ -135,6 +149,7 @@ async function fetchData() {
         birthday.value = userDataJ.client.birthday ?? '----'
         gender.value = userDataJ.client.gender.name 
         province.value =  userDataJ.user_details.province.name
+        type_document.value = userDataJ.user_details?.document_type?.name ?? '----'
 
         client_country_id.value = userDataJ.user_details.province.country.name
         countryOld_id.value = userDataJ.user_details.province.country.name
@@ -144,12 +159,16 @@ async function fetchData() {
 
         newfname.value = userDataJ.name
         newlname.value = userDataJ.last_name
+        newdocument_type_id.value = userDataJ.user_details?.document_type_id
+        newdocument_typeOld_id.value = userDataJ.user_details?.document_type?.name
         newdocument.value = userDataJ.user_details.document
         newaddress.value = userDataJ.user_details.address
         newbirthday.value = userDataJ.client.birthday
         newgender.value = userDataJ.client.gender_id 
-        newprovince.value = userDataJ.user_details.province_id 
-        newusername.value = userDataJ.username  
+        newprovince.value = userDataJ.user_details.province_id
+
+        await documentTypesStores.fetchDocumentTypes()
+        documentTypes.value = documentTypesStores.getData
     }
 }
 const loadCountries = () => {
@@ -175,6 +194,19 @@ const selectCountry = country => {
   }
 }
 
+const slugify = (text) => {
+  return text
+    .toString()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '')
+}
+
 const onSubmit = () => {
     refVForm.value?.validate().then(({ valid: isValid }) => {
         if (isValid) {
@@ -184,11 +216,12 @@ const onSubmit = () => {
             let data = {
                 name: newfname.value,
                 last_name: newlname.value,
+                document_type_id: (Number.isInteger(newdocument_type_id.value)) ? newdocument_type_id.value : newdocument_typeOld_id.value,
                 document: newdocument.value,
                 address: newaddress.value,
                 gender_id: newgender.value,
                 province_id: (Number.isInteger(province_id.value)) ? province_id.value : provinceOld_id.value,
-                username: newusername.value,
+                username: slugify(newfname.value + ' ' + newlname.value),
                 birthday: newbirthday.value
             }
 
@@ -303,10 +336,10 @@ definePageMeta({
                         <span class="labels tw-text-gray">{{ name }}</span>
                     </VCol>
                     <VCol cols="12" md="4" class="mb-0 mb-md-4">
-                        <span class="labels tw-text-tertiary">Username</span>
+                        <span class="labels tw-text-tertiary">Tipo de documento</span>
                     </VCol>
                     <VCol cols="12" md="8" class="mb-2 mb-md-4">
-                        <span class="labels tw-text-gray">{{ username }}</span>
+                        <span class="labels tw-text-gray">{{ type_document }}</span>
                     </VCol>
                     <VCol cols="12" md="4" class="mb-0 mb-md-4">
                         <span class="labels tw-text-tertiary">Documento</span>
@@ -391,35 +424,14 @@ definePageMeta({
                             </VCol>
                             <VCol cols="12" md="6" class="textinput mb-2">
                                 <VTextField
-                                    label="Username"
-                                    v-model="newusername"
-                                    variant="outlined"
-                                    :rules="[requiredValidator]"
-                                    :error-messages="errors.newusername"
-                                    @input="inputChange()"
-                                    class="me-0 me-md-2"
-                                />
-                            </VCol>
-                            <VCol cols="12" md="6" class="textinput mb-2">
-                                <VTextField
                                     label="Fecha de nacimiento"
                                     v-model="newbirthday"
                                     type="date"
                                     variant="outlined"
+                                    class="me-0 me-md-2"
                                     :rules="[requiredValidator]"
                                     :error-messages="errors.newbirthday"
                                      @input="inputChange()"
-                                />
-                            </VCol>
-                            <VCol cols="12" md="6" class="textinput mb-2">
-                                <VTextField
-                                    label="Nro Documento"
-                                    v-model="newdocument"
-                                    variant="outlined"
-                                    :rules="[requiredValidator]"
-                                    :error-messages="errors.newdocument"
-                                    @input="inputChange()"
-                                    class="me-0 me-md-2"
                                 />
                             </VCol>
                             <VCol cols="12" md="6" class="textinput mb-2">
@@ -431,6 +443,27 @@ definePageMeta({
                                     :items="getGenders"
                                     :menu-props="{ maxHeight: '200px' }"
                                     />
+                            </VCol>
+                            <VCol cols="12" md="6" class="textinput mb-2">
+                                <VAutocomplete
+                                    variant="outlined"
+                                    v-model="newdocument_type_id"
+                                    label="Tipo de Documento"
+                                    :rules="[requiredValidator]"
+                                    :items="getDocumentTypes"
+                                    class="me-0 me-md-2"
+                                    :menu-props="{ maxHeight: '200px' }"
+                                    /> 
+                            </VCol>                            
+                            <VCol cols="12" md="6" class="textinput mb-2">
+                                <VTextField
+                                    label="Nro Documento"
+                                    v-model="newdocument"
+                                    variant="outlined"
+                                    :rules="[requiredValidator]"
+                                    :error-messages="errors.newdocument"
+                                    @input="inputChange()"
+                                />
                             </VCol>
                             <VCol cols="12" md="6" class="textinput mb-2">
                                 <VAutocomplete
