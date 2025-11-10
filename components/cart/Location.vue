@@ -35,7 +35,7 @@ const emit = defineEmits([
     'send'
 ])
 
-const province = ref(props.province_id)
+const province = ref(Number(props.province_id))
 const id = ref(props.address_id)
 
 const send_array = ref(['Envío gratis', 'Envío Nacional: $19.000.00', 'Envío Bogotá: $12.000.00 '])
@@ -54,7 +54,8 @@ watch(() =>
 
 watch(() => 
     props.province_id, (data) => {
-        province.value = data
+        province.value = Number(data)
+        chanceExpress()
     });
  
 watch(() => props.isDialogOpen, (val) => {
@@ -136,6 +137,15 @@ const isDisabled = (i) => {
     return response
 }
 
+// Mostrar solo Nacional cuando no es Bogotá; en Bogotá mostrar todas
+const isOptionVisible = (i) => {
+    if (province.value === 293) return true
+    return i === 1
+}
+
+onMounted(() => {
+    chanceExpress()
+})
 </script>
 
 <template>              
@@ -182,7 +192,7 @@ const isDisabled = (i) => {
                 </template>
             </VRadio>
             <VRadio
-                v-show="province === 293"
+                v-if="province === 293"
                 color="primary"
                 :key="3"
                 :value="3"
@@ -230,7 +240,7 @@ const isDisabled = (i) => {
         display: flex;
         gap: 12px;
         flex-wrap: wrap;
-        justify-content: flex-end;
+        justify-content: center !important;
     }
 
     ::v-deep(.custom-radio .v-selection-control__wrapper) {

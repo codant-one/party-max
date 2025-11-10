@@ -184,6 +184,11 @@ async function fetchData() {
         const userDataJ = JSON.parse(userData)
 
         client_id.value = userDataJ.client.id
+        // Alinear province_id con Payments: usar province desde user_data si existe
+        const userProvince = Number(userDataJ?.user_details?.province?.id ?? userDataJ?.user_details?.province_id ?? NaN)
+        if (!Number.isNaN(userProvince)) {
+            province_id.value = userProvince
+        }
         selectedAddress.value.client_id = userDataJ.client.id
     }
 
@@ -242,22 +247,12 @@ async function fetchData() {
             let index = addresses.value.findIndex((item) => item.default === 1) 
             if (addresses.value.length > 0) {
                 address_id.value = (index > -1) ? addresses.value[index].id : addresses.value[0].id 
-                province_id.value = addresses.value.filter(address => address.id === address_id.value)[0].province_id
-                selectedAddress.value.province_id = addresses.value.filter(address => address.id === address_id.value)[0].province_id
-
-                if(province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
-                    chanceSend('sendToBogota')
-                    send_id.value = 2
-                } else if(province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
-                    chanceSend('free') 
-                    send_id.value = 0
-                } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
-                    chanceSend('send') 
-                    send_id.value = 1
-                } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
-                    chanceSend('free') 
-                    send_id.value = 0
-                } 
+                // No sobreescribir province_id; mantener el que proviene de login/Payments
+                // selectedAddress solo para UI interna
+                const addrProvince = addresses.value.filter(address => address.id === address_id.value)[0]?.province_id
+                if (addrProvince !== undefined) {
+                    selectedAddress.value.province_id = addrProvince
+                }
             } 
 
             isActiveStepValid.value = (address_id.value === 0 ) ? true : false
@@ -336,6 +331,23 @@ const selectCountry = country => {
 
 const changeAddreess = (id) => {
     address_id.value = id
+    const addr = addresses.value.find(a => a.id === id)
+    if (addr) {
+        province_id.value = Number(addr.province_id)
+        if (province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+            chanceSend('sendToBogota')
+            send_id.value = 2
+        } else if (province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
+            chanceSend('free')
+            send_id.value = 0
+        } else if (province_id.value !== 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+            chanceSend('send')
+            send_id.value = 1
+        } else if (province_id.value !== 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
+            chanceSend('free')
+            send_id.value = 0
+        }
+    }
 }
 
 const deleteProduct = async (product_color_id) => {
@@ -395,7 +407,7 @@ const couponApply = async (code) => {
     }, 5000)
 }
 
-const addCart = (data) =>{
+const addCart = async (data) =>{
 
     var data_ = {}
 
@@ -427,7 +439,7 @@ const addCart = (data) =>{
 
     cartStores.add(data_)
 
-    fetchData()
+    await fetchData()
 }
 
 const onSubmit = () => {
@@ -727,14 +739,51 @@ const refresh = () => {
     window.location.href = router.resolve({ name: 'cart' }).href
 }
 
-const handleLoggedIn = () => {
+const handleLoggedIn = async () => {
     try {
         if (process.client && localStorage.getItem('user_data')) {
             const userDataJ = JSON.parse(localStorage.getItem('user_data'))
             client_id.value = userDataJ?.client?.id || client_id.value
+            // Guardar para usar después de fetchData
+            var userProvinceAfterLogin = Number(userDataJ?.user_details?.province?.id ?? userDataJ?.user_details?.province_id ?? NaN)
         }
     } catch (e) {}
-    fetchData()
+    await fetchData()
+    // Asegurar province_id actualizado tras login desde user_details (coincidir con Payments)
+    if (!Number.isNaN(userProvinceAfterLogin)) {
+        province_id.value = userProvinceAfterLogin
+        if (province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+            chanceSend('sendToBogota')
+            send_id.value = 2
+        } else if (province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
+            chanceSend('free')
+            send_id.value = 0
+        } else if (province_id.value !== 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+            chanceSend('send')
+            send_id.value = 1
+        } else if (province_id.value !== 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
+            chanceSend('free')
+            send_id.value = 0
+        }
+    }
+}
+
+const handleProvinceChanged = (val) => {
+    if (!val) return
+    province_id.value = Number(val)
+    if (province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+        chanceSend('sendToBogota')
+        send_id.value = 2
+    } else if (province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
+        chanceSend('free')
+        send_id.value = 0
+    } else if (province_id.value !== 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+        chanceSend('send')
+        send_id.value = 1
+    } else if (province_id.value !== 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
+        chanceSend('free')
+        send_id.value = 0
+    }
 }
 
 const closeDialog = () => {
@@ -784,13 +833,11 @@ const chanceSend = value => {
         case 'free':
             summary.value.shipping_express = 0
             summary.value.send = '0.00'
-            province_id.value = selectedAddress.value.province_id
             send_id.value = 0
         break;
         case 'send':
             summary.value.shipping_express = 0
             summary.value.send = '19000.00'
-            province_id.value = selectedAddress.value.province_id
             send_id.value = 1
         break;
         case 'sendToBogota':
@@ -857,9 +904,11 @@ const chanceSend = value => {
                             :step="currentStep"
                             @send="chanceSend"
                             @dialog_error = "dialog_error"
+                            @province-changed="handleProvinceChanged"
                         />
 
                         <Location 
+                            :key="province_id + '-' + send_id"
                             v-model:current-step="currentStep"
                             :address_id="address_id"
                             :province_id="province_id"

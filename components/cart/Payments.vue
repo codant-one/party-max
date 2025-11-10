@@ -41,7 +41,8 @@ const emit = defineEmits([
     'submit', 
     'send', 
     'update:currentStep', 
-    'dialog_error'
+    'dialog_error',
+    'province-changed'
 ])
 
 const error_address = ref('Debes agregar una dirección de envio')
@@ -130,6 +131,10 @@ watchEffect(() => {
         let index = props.addresses.findIndex((item) => item.id === props.address_id)
         address.value = props.addresses[index]
     }
+})
+
+watch(() => billingDetail.value.province_id, (val) => {
+    if (val !== undefined && val !== null && val !== '') emit('province-changed', Number(val))
 })
 
 const selectCountry = country => {
