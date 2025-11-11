@@ -13,6 +13,11 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
+  text: {
+    type: String,
+    required: false,
+    default: 'ó',
+  },
   redirectTo: {
     type: String,
     required: false,
@@ -120,8 +125,8 @@ function cancelAuth() {
 </script>
 
 <template>
-    <div v-if="showText" cols="12" class="d-block">
-        <span class="text-client text-left">ó</span> <br>
+    <div v-if="showText" cols="12" class="d-block text-center">
+        <span class="text-client text-left">{{ text }}</span> <br>
     </div>
 
     <VCardText class="d-block align-center text-center justify-content-center">

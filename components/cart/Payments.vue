@@ -62,7 +62,7 @@ const billingDetail = ref({
     company: '',
     country_id: 'Colombia',
     province_id: '',
-    document_type_id: '',
+    document_type_id: null,
     document: '',
     street: '',
     city: '',
@@ -102,7 +102,7 @@ onMounted(async () => {
         billingDetail.value.address  = userDataJ.user_details.address
         billingDetail.value.phone = userDataJ.user_details.phone
         billingDetail.value.email = userDataJ.email
-        billingDetail.value.document_type_id = userDataJ.user_details.document_type_id
+        billingDetail.value.document_type_id = Number(userDataJ.user_details.document_type_id)
         billingDetail.value.document = userDataJ.user_details.document
         // Propagar al padre al cargar
         if (billingDetail.value.province_id !== undefined && billingDetail.value.province_id !== null && billingDetail.value.province_id !== '')
@@ -182,7 +182,28 @@ function updateBillingFromAddress(addr) {
         emit('province-changed', Number(billingDetail.value.province_id))
 }
 
-defineExpose({ validateAndGetBillingDetail, updateBillingFromAddress })
+function updateBillingFromUser() {
+    try {
+        if (process.client && localStorage.getItem('user_data')) {
+            const userDataJ = JSON.parse(localStorage.getItem('user_data'))
+            if (userDataJ) {
+                if (userDataJ.name) billingDetail.value.name = userDataJ.name
+                if (userDataJ.last_name) billingDetail.value.last_name = userDataJ.last_name
+                if (userDataJ.email) billingDetail.value.email = userDataJ.email
+                if (userDataJ.user_details) {
+                    if (userDataJ.user_details.document_type_id !== undefined && userDataJ.user_details.document_type_id !== null) {
+                        billingDetail.value.document_type_id = Number(userDataJ.user_details.document_type_id)
+                    }
+                    if (userDataJ.user_details.document) {
+                        billingDetail.value.document = userDataJ.user_details.document
+                    }
+                }
+            }
+        }
+    } catch (e) {}
+}
+
+defineExpose({ validateAndGetBillingDetail, updateBillingFromAddress, updateBillingFromUser })
 
 const syncFromSelectedAddress = () => {
     if (!props.addresses || !props.address_id) return
@@ -269,6 +290,8 @@ const getFlagCountry = country => {
                             variant="outlined"
                             v-model="billingDetail.document_type_id"
                             label="Tipo de Documento"
+                            item-title="title"
+                            item-value="value"
                             :rules="[requiredValidator]"
                             :items="listDocumentTypes"
                             class="me-0 me-md-2"

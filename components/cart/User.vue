@@ -13,11 +13,25 @@
   const showPassword = ref(false)
   const isLoggedIn = ref(false)
   const userName = ref('')
+  const userLastName = ref('')
   const userEmail = ref('')
   const email = ref('')
   const load = ref(false)
   const errors = ref({ email: undefined, password: undefined })
   const authStores = useAuthStores()
+
+  const validateEmailField = () => {
+    const val = email.value
+    if (requiredValidator(val) !== true) {
+      errors.value.email = 'El e-mail es requerido'
+      return
+    }
+    if (emailValidator(val) !== true) {
+      errors.value.email = 'Ingresa un e-mail válido'
+      return
+    }
+    errors.value.email = ''
+  }
 
   const maskedEmail = computed(() => {
     const email = userEmail.value || ''
@@ -30,10 +44,13 @@
 
   const onSubmit = () => {
     errors.value = { email: undefined, password: undefined }
-    const emailRulesOk = emailValidator(email.value) === true && requiredValidator(email.value) === true
+    const reqOk = requiredValidator(email.value) === true
+    const fmtOk = emailValidator(email.value) === true
+    const emailRulesOk = reqOk && fmtOk
     const passRulesOk = requiredValidator(password.value) === true
     if (!emailRulesOk || !passRulesOk) {
-      if (!emailRulesOk) errors.value.email = 'E-mail inválido'
+      if (!reqOk) errors.value.email = 'El e-mail es requerido'
+      else if (!fmtOk) errors.value.email = 'Ingresa un e-mail válido'
       if (!passRulesOk) errors.value.password = 'La contraseña es requerida'
       return
     }
@@ -55,6 +72,7 @@
         }
         isLoggedIn.value = true
         userName.value = user_data?.name || ''
+        userLastName.value = user_data?.last_name || ''
         userEmail.value = user_data?.email || ''
         password.value = ''
         emit('logged-in')
@@ -78,6 +96,7 @@
         if (u && (u.name || u.email)) {
           isLoggedIn.value = true
           userName.value = u.name || ''
+          userLastName.value = u.last_name || ''
           userEmail.value = u.email || ''
           email.value = userEmail.value
           emit('logged-in')
@@ -92,6 +111,7 @@
         const userDataJ = JSON.parse(localStorage.getItem('user_data'))
         isLoggedIn.value = true
         userName.value = userDataJ?.name || ''
+        userLastName.value = userDataJ?.last_name || ''
         userEmail.value = userDataJ?.email || ''
         email.value = userEmail.value
       } catch (e) {
@@ -113,38 +133,41 @@
     <HoverIcon :icon-alt="user_alt" :icon-solid="user_solid" class="me-3 cursor-no-pointer" />
     <div class="d-block">
       <div class="tw-text-gray">Hola,</div>
-      <div class="tw-font-semibold">{{ userName || 'Usuario' }} <span v-if="userEmail">({{ maskedEmail }})</span></div>
+      <div class="tw-font-semibold">
+        {{ userName || 'Usuario' }} {{ userLastName || '' }} 
+        <span v-if="userEmail">({{ maskedEmail }})</span>
+      </div>
     </div>
   </VCardText>
 
   <VCardText v-else class="px-5 pb-0 pt-2 mt-3">
-    <VRow no-gutters class="align-end">
-      <VCol cols="12" md="8" class="pr-md-3">
+    <VRow class="text-left align-center mt-2">
+      <VCol cols="12" md="4" class="textinput py-0">
         <VTextField
           v-model="email"
           type="email"
           variant="outlined"
-          density="compact"
-          placeholder="Ingresa tu E-mail"
-          class="textinput mb-2"
-          hide-details
-          :error-messages="errors.email"
+          label="Dirección de E-mail"
+          class="me-0 me-md-2"
+          :error-messages="errors.email || ''"
+          @input="validateEmailField"
+          @blur="validateEmailField"
         />  
-
+      </VCol> 
+      <VCol cols="12" md="4" class="textinput py-0">
         <VTextField
           v-model="password"
           :type="showPassword ? 'text' : 'password'"
           variant="outlined"
-          density="compact"
-          placeholder="Ingresa tu Contraseña"
-          class="textinput"
-          hide-details
-          :error-messages="errors.password"
+          label="Contraseña"
+          class="me-0 me-md-2"
+          :error-messages="errors.password || ''"
           :append-inner-icon="showPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
           @click:append-inner="showPassword = !showPassword"
+          @input="errors.password = ''"
         />
       </VCol>
-      <VCol cols="12" md="4" class="pt-2 pt-md-0">
+      <VCol cols="12" md="4" class="align-self-start py-0">
             <VBtn
                 block
                 variant="flat"
@@ -156,9 +179,8 @@
             </VBtn>
 
       </VCol>
-      <VCol cols="12" md="12" class="pt-2 pt-md-0 pb-0">
-        <GoogleAuth :validated="true" :showText="false" redirect-to="/cart" @google-auth-error="onGoogleError" />
-
+      <VCol cols="12" md="12" class="pt-5 pt-md-0 pb-0">
+        <GoogleAuth :validated="true" text="O inicia con tu red social" redirect-to="/cart" @google-auth-error="onGoogleError" />
       </VCol>
     </VRow>
   </VCardText>
@@ -189,7 +211,7 @@
         fill: #FFFFFF;
     }
 
-    .textinput::v-deep(.v-field) { 
+    .textinput .v-text-field::v-deep(.v-field) { 
         border-radius: 8px;
         height: 35px;
         font-size: 14px;
@@ -215,12 +237,11 @@
         padding-left: 20px !important;
     }
 
-    .textinput::v-deep(.v-input__details) {
+    .textinput .v-text-field::v-deep(.v-input__details) {
         min-height: 15px !important;
     }
 
-
-    .textinput::v-deep(.v-field-label) {
+    .textinput .v-text-field::v-deep(.v-field-label) {
         top: 33% !important;
         font-size: 14px !important;
     }

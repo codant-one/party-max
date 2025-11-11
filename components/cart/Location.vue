@@ -38,7 +38,7 @@ const emit = defineEmits([
 const province = ref(Number(props.province_id))
 const id = ref(props.address_id)
 
-const send_array = ref(['Envío gratis', 'Envío Nacional: $19.000.00', 'Envío Bogotá: $12.000.00 '])
+const send_array = ref(['Envío Bogotá Gratis', 'Envío Nacional: $19.000', 'Envío Bogotá: $12.000'])
 const sendId = ref(props.send_id)
 const sendDifferentAddress = ref(false)
 
@@ -65,17 +65,23 @@ watch(() => props.isDialogOpen, (val) => {
 }); 
 
 const chanceExpress = () => {
-    if(sendId.value === 3)
+    // Fuera de Bogotá: siempre seleccionar Nacional
+    if (province.value !== 293) {
+        sendId.value = 1
+        emit('send', 'send')
+        return
+    }
+    // Bogotá: mantener lógica de Express, Bogotá o Gratis según subtotal
+    if (sendId.value === 3) {
         emit('send', 'shipping_express')
-    else {
-        if(province.value === 293 && parseFloat(props.summary.subTotal) <= parseFloat('210000'))
-            emit('send', 'sendToBogota')
-        else if(province.value === 293 && parseFloat(props.summary.subTotal) > parseFloat('210000'))
-            emit('send', 'free') 
-        else if(province.value !== 293 && parseFloat(props.summary.subTotal) <= parseFloat('210000'))
-            emit('send', 'send')
-        else if(province.value !== 293 && parseFloat(props.summary.subTotal) > parseFloat('210000'))
-            emit('send', 'free')
+        return
+    }
+    if (parseFloat(props.summary.subTotal) <= parseFloat('210000')) {
+        sendId.value = 2
+        emit('send', 'sendToBogota')
+    } else {
+        sendId.value = 0
+        emit('send', 'free')
     }
 }
 
@@ -105,7 +111,7 @@ const isDisabled = (i) => {
     } else if(i === 1) { //nacional
         switch (sendId.value) {
             case 0:
-                response = true
+                response = province.value === 293
             break;
             case 1:
                 response = false
@@ -173,17 +179,17 @@ onMounted(() => {
             @update:modelValue="chanceExpress"
             class="radioGroupCustom"
             inline>
+            <template v-for="(item, i) in send_array" :key="i">
             <VRadio
-                v-for="(item, i) in send_array"
                 color="primary"
-                :key="i"
+                v-if="(province === 293 && (i === 0 || i === 2)) || (province !== 293 && i === 1)"
                 :value="i"
                 :readonly="isDisabled(i)"
                 :class="[(send_array.length - 1 === i && province !== 293) ? '' : 'border-line', 'custom-radio', { 'is-readonly': isDisabled(i) }]">
                 <template v-slot:label>
                     <div class="ship-option">
                         <div class="ship-title">
-                            {{ i === 0 ? 'Envío Bogotá Gratis' : i === 1 ? 'Envío Nacional $19.000' : 'Envío Bogotá $12.000' }}
+                            {{ item }}
                         </div>
                         <div class="ship-sub" v-if="i === 0">(De 2 a 3 días hábiles)</div>
                         <div class="ship-sub" v-else-if="i === 1">(De 1 a 2 días hábiles)</div>
@@ -191,6 +197,7 @@ onMounted(() => {
                     </div>
                 </template>
             </VRadio>
+            </template>
             <VRadio
                 v-if="province === 293"
                 color="primary"
@@ -240,7 +247,6 @@ onMounted(() => {
         display: flex;
         gap: 12px;
         flex-wrap: wrap;
-        justify-content: center !important;
     }
 
     ::v-deep(.custom-radio .v-selection-control__wrapper) {

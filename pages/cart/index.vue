@@ -226,18 +226,16 @@ async function fetchData() {
 
         summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
 
-        if(province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+        if (province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
             chanceSend('sendToBogota')
             send_id.value = 2
-        } else if(province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
-            chanceSend('free') 
+        } else if (province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
+            chanceSend('free')
             send_id.value = 0
-        } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
-            chanceSend('send') 
+        } else {
+            // Fuera de Bogotá: siempre Nacional
+            chanceSend('send')
             send_id.value = 1
-        } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
-            chanceSend('free') 
-            send_id.value = 0
         } 
 
         if(client_id.value) {
@@ -347,12 +345,9 @@ const changeAddreess = (id) => {
         } else if (province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
             chanceSend('free')
             send_id.value = 0
-        } else if (province_id.value !== 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+        } else {
             chanceSend('send')
             send_id.value = 1
-        } else if (province_id.value !== 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
-            chanceSend('free')
-            send_id.value = 0
         }
     }
 }
@@ -767,14 +762,17 @@ const handleLoggedIn = async () => {
         } else if (province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
             chanceSend('free')
             send_id.value = 0
-        } else if (province_id.value !== 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+        } else {
             chanceSend('send')
             send_id.value = 1
-        } else if (province_id.value !== 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
-            chanceSend('free')
-            send_id.value = 0
         }
     }
+    // Sincronizar inmediatamente los datos de usuario (nombre, apellido, email, documento) en Payments
+    try {
+        if (paymentsRef?.value?.updateBillingFromUser) {
+            paymentsRef.value.updateBillingFromUser()
+        }
+    } catch (e) {}
 }
 
 const handleProvinceChanged = (val) => {
@@ -786,12 +784,9 @@ const handleProvinceChanged = (val) => {
     } else if (province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
         chanceSend('free')
         send_id.value = 0
-    } else if (province_id.value !== 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+    } else {
         chanceSend('send')
         send_id.value = 1
-    } else if (province_id.value !== 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
-        chanceSend('free')
-        send_id.value = 0
     }
 }
 
