@@ -129,6 +129,10 @@
 
 <template>
 
+  <VCardText class="row-cardp3 px-5 pb-0" v-if="!isLoggedIn">
+    <span class="tw-text-tertiary tw-font-bold"> Si ya tienes una cuenta, inicia sesión </span>
+  </VCardText>
+
   <VCardText v-if="isLoggedIn" class="p-0 mt-3 pb-0 px-5 d-flex align-center">
     <HoverIcon :icon-alt="user_alt" :icon-solid="user_solid" class="me-3 cursor-no-pointer" />
     <div class="d-block">
@@ -140,7 +144,7 @@
     </div>
   </VCardText>
 
-  <VCardText v-else class="px-5 pb-0 pt-2 mt-3">
+  <VCardText v-else class="px-5 pb-0 pt-2">
     <VRow class="text-left align-center mt-2">
       <VCol cols="12" md="4" class="textinput py-0">
         <VTextField
