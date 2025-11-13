@@ -117,16 +117,17 @@
       name.value = (user_data.value === null) ? null : (user_data.value.name + ' ' +(user_data.value.last_name ?? ''))
     });
 
-  watch(() => 
-    cartStores.getCount, async (value) => {
-      cart_products.value = value
+  watch(
+    [() => cartStores.getCount, () => route.fullPath],
+    async ([newCount], [oldCount] = []) => {
+      cart_products.value = newCount
       products.value = []
       subTotal.value = '0.00'
 
-      if(cart_products.value > 0) {
+      if (cart_products.value > 0) {
         // if(route.path.startsWith('/products') || route.path.startsWith('/services'))
         //   isDrawerOpen.value = true
-        
+
         isLoading.value = true
         await cartStores.fetchCart()
         products.value = cartStores.getData
@@ -146,7 +147,8 @@
           const priceAsNumber = Number(value)
           const formattedPrice = Number(priceAsNumber.toFixed(2))
 
-          if ($metapixel && $metapixel.trackEvent) {
+          // Evita duplicar eventos al cambiar de ruta sin cambio en el carrito
+          if (oldCount !== undefined && newCount !== oldCount && $metapixel && $metapixel.trackEvent) {
             $metapixel.trackEvent('AddToCart', {
               content_ids: [finalContentId], 
               content_type: 'product',
@@ -159,7 +161,8 @@
         subTotal.value = sum.toFixed(2)
         isLoading.value = false
       }
-    }
+    },
+    { immediate: true }
   );
 
   watch(() => 

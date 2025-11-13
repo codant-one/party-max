@@ -936,8 +936,9 @@ const chanceSend = value => {
                         </VCardText>
                     </VCard>
 
-                    <div class="d-flex justify-end px-5" v-if="client_id">
+                    <div class="d-flex justify-end px-5">
                         <VBtn
+                            :disabled="!client_id"
                             variant="flat"
                             class="btn-pay"
                             @click="handlePayClick">
