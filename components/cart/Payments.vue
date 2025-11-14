@@ -51,7 +51,8 @@ const id = ref(props.address_id)
 const refVForm = ref()
 const { isMobile } = useDevice();
 const address = ref(null)
-const listDocumentTypes = ref(props.document_types)
+// Mantener lista siempre sincronizada con la prop del padre (que se llena async)
+const listDocumentTypes = computed(() => props.document_types)
 const listCountries = ref(props.countries)
 const listProvinces = ref(props.provinces)
 const listProvincesByCountry = ref([])
@@ -72,6 +73,14 @@ const billingDetail = ref({
     email: '',
     note: null
 })
+
+// Evitar que se escriban caracteres no numéricos en el teléfono (manteniendo type="tel")
+const handlePhoneKeypress = event => {
+    const char = String.fromCharCode(event.which || event.keyCode)
+    if (!/[0-9]/.test(char)) {
+        event.preventDefault()
+    }
+}
 
 const isLastItem = (index) => {
   return index === props.products.length - 1;
@@ -102,7 +111,16 @@ onMounted(async () => {
         billingDetail.value.address  = userDataJ.user_details.address
         billingDetail.value.phone = userDataJ.user_details.phone
         billingDetail.value.email = userDataJ.email
-        billingDetail.value.document_type_id = Number(userDataJ.user_details.document_type_id)
+        // Alinear tipo de documento con las opciones del select
+        const docFromUser = userDataJ.user_details.document_type_id
+        if (docFromUser !== undefined && docFromUser !== null && docFromUser !== '') {
+            const match = listDocumentTypes.value?.find(dt => String(dt.value ?? dt.id) === String(docFromUser))
+            if (match) {
+                billingDetail.value.document_type_id = match.value ?? match.id
+            } else {
+                billingDetail.value.document_type_id = docFromUser
+            }
+        }
         billingDetail.value.document = userDataJ.user_details.document
         // Propagar al padre al cargar
         if (billingDetail.value.province_id !== undefined && billingDetail.value.province_id !== null && billingDetail.value.province_id !== '')
@@ -192,7 +210,13 @@ function updateBillingFromUser() {
                 if (userDataJ.email) billingDetail.value.email = userDataJ.email
                 if (userDataJ.user_details) {
                     if (userDataJ.user_details.document_type_id !== undefined && userDataJ.user_details.document_type_id !== null) {
-                        billingDetail.value.document_type_id = Number(userDataJ.user_details.document_type_id)
+                        const docFromUser = userDataJ.user_details.document_type_id
+                        const match = listDocumentTypes.value?.find(dt => String(dt.value ?? dt.id) === String(docFromUser))
+                        if (match) {
+                            billingDetail.value.document_type_id = match.value ?? match.id
+                        } else {
+                            billingDetail.value.document_type_id = docFromUser
+                        }
                     }
                     if (userDataJ.user_details.document) {
                         billingDetail.value.document = userDataJ.user_details.document
@@ -273,6 +297,8 @@ const getFlagCountry = country => {
                             placeholder="+57 23 456 7890"
                             variant="outlined"
                             :rules="[requiredValidator, phoneValidator]"
+                            @keypress="handlePhoneKeypress"
+                            @paste.prevent
                         />
                     </VCol> 
                     <VCol cols="12" md="4" class="textinput mb-0 mb-md-2">
@@ -303,7 +329,9 @@ const getFlagCountry = country => {
                             label="Nro Documento"
                             v-model="billingDetail.document"
                             variant="outlined"
-                            :rules="[requiredValidator]"
+                            :rules="[requiredValidator, phoneValidator]"
+                            @keypress="handlePhoneKeypress"
+                            @paste.prevent
                         />   
                     </VCol>
                     <VCol cols="12" md="4" class="textinput mb-0 mb-md-2">

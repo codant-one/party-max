@@ -162,6 +162,14 @@ const setThumbsSwiper = (swiper) => {
     thumbsSwiper.value = swiper;
 }
 
+// Evitar que se escriban caracteres no numéricos en inputs numéricos (teléfono, código postal, etc.)
+const handleNumericKeypress = event => {
+    const char = String.fromCharCode(event.which || event.keyCode)
+    if (!/[0-9]/.test(char)) {
+        event.preventDefault()
+    }
+}
+
 onMounted(async () => {
 
     await countriesStores.getAll();
@@ -226,10 +234,10 @@ async function fetchData() {
 
         summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
 
-        if (province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+        if (province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('150000')) {
             chanceSend('sendToBogota')
             send_id.value = 2
-        } else if (province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
+        } else if (province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('150000')) {
             chanceSend('free')
             send_id.value = 0
         } else {
@@ -302,8 +310,11 @@ const checkUserIP = async () => {
 const getDocumentTypes = computed(() => {
     return documentTypes.value.map((documentType) => {
         return {
-        title: '(' + documentType.code + ') - ' + documentType.name,
-        value: documentType.id,
+            // title completo por si algún componente lo necesita
+            title: '(' + documentType.code + ') - ' + documentType.name,
+            // nombre “limpio” para usar como label en los selects
+            name: documentType.name,
+            value: documentType.id,
         }
     })
 })
@@ -313,7 +324,18 @@ const loadCountries = () => {
 }
 
 const loadProvinces = () => {
-  listProvinces.value = provincesStores.getProvinces
+  const provinces = provincesStores.getProvinces || []
+  // Ordenar: primero Bogotá, luego el resto en orden alfabético por nombre
+  listProvinces.value = [...provinces].sort((a, b) => {
+    const isBogotaA = a.id === 293 || (a.name && a.name.toLowerCase().includes('bogota'))
+    const isBogotaB = b.id === 293 || (b.name && b.name.toLowerCase().includes('bogota'))
+
+    if (isBogotaA && !isBogotaB) return -1
+    if (!isBogotaA && isBogotaB) return 1
+
+    if (!a.name || !b.name) return 0
+    return a.name.localeCompare(b.name, 'es', { sensitivity: 'base' })
+  })
 }
 
 // Ensure provinces list is populated each time the Add Address dialog opens
@@ -339,10 +361,10 @@ const changeAddreess = (id) => {
     const addr = addresses.value.find(a => a.id === id)
     if (addr) {
         province_id.value = Number(addr.province_id)
-        if (province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+        if (province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('150000')) {
             chanceSend('sendToBogota')
             send_id.value = 2
-        } else if (province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
+        } else if (province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('150000')) {
             chanceSend('free')
             send_id.value = 0
         } else {
@@ -460,16 +482,16 @@ const onSubmit = () => {
                 
                 province_id.value = selectedAddress.value.province_id
 
-                if(province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+                if(province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('150000')) {
                     chanceSend('sendToBogota')
                     send_id.value = 2
-                } else if(province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
+                } else if(province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('150000')) {
                     chanceSend('free') 
                     send_id.value = 0
-                } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+                } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) <= parseFloat('150000')) {
                     chanceSend('send') 
                     send_id.value = 1
-                } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
+                } else if(province_id.value !== 293 && parseFloat(summary.value.subTotal) > parseFloat('150000')) {
                     chanceSend('free') 
                     send_id.value = 0
                 } 
@@ -756,10 +778,10 @@ const handleLoggedIn = async () => {
     // Asegurar province_id actualizado tras login desde user_details (coincidir con Payments)
     if (!Number.isNaN(userProvinceAfterLogin)) {
         province_id.value = userProvinceAfterLogin
-        if (province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+        if (province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('150000')) {
             chanceSend('sendToBogota')
             send_id.value = 2
-        } else if (province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
+        } else if (province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('150000')) {
             chanceSend('free')
             send_id.value = 0
         } else {
@@ -778,10 +800,10 @@ const handleLoggedIn = async () => {
 const handleProvinceChanged = (val) => {
     if (!val) return
     province_id.value = Number(val)
-    if (province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('210000')) {
+    if (province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('150000')) {
         chanceSend('sendToBogota')
         send_id.value = 2
-    } else if (province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('210000')) {
+    } else if (province_id.value === 293 && parseFloat(summary.value.subTotal) > parseFloat('150000')) {
         chanceSend('free')
         send_id.value = 0
     } else {
@@ -883,7 +905,7 @@ const chanceSend = value => {
 
 <template>
     <Loader :isLoading="isLoading"/>
-    <div class="checkout-page">
+    <div class="checkout-page mb-15">
         <VContainer 
             class="mt-2 checkout-card"
             :class="currentStep === 2 ? 'w-60': ''">
@@ -961,19 +983,17 @@ const chanceSend = value => {
                 </VCol>         
                 
             </VRow>
-                 <!--  
-              
-                   
-                
-                   <Confirmation 
-                        @refresh="refresh"
-                        @completed="completed"
-                        @updatePaymentState="updatePaymentState"
-                        @deleteAll="deleteAll"/>
-                -->
+            
+            <Confirmation 
+                v-if="typeof route.query.merchantId !== 'undefined'"
+                @refresh="refresh"
+                @completed="completed"
+                @updatePaymentState="updatePaymentState"
+                @deleteAll="deleteAll"/>
+          
 
             <VCard 
-                v-if="products.length === 0 && (typeof route.query.merchantId === 'undefined')"
+                v-if="products.length === 0 && (typeof route.query.merchantId === 'undefined') && !isLoading"
                 class="mb-10 card-timeline px-0">
                 <VCardText class="d-flex flex-column align-center text-center justify-content-center">
                     <VCardItem class="d-block align-center text-center justify-content-center cart-svg">
@@ -1068,18 +1088,24 @@ const chanceSend = value => {
                             <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
                                 <VTextField
                                     v-model="selectedAddress.phone"
+                                    type="tel"
                                     label="Teléfono"
                                     placeholder="+57 23 456 7890"
                                     variant="outlined"
                                     class="me-0 me-md-2"
                                     :rules="[requiredValidator, phoneValidator]"
+                                    @keypress="handleNumericKeypress"
+                                    @paste.prevent
                                 />
                             </VCol>  
                             <VCol cols="12" md="6" class="textinput mb-0 mb-md-2">
                                 <VTextField
                                     v-model="selectedAddress.postal_code"
                                     label="Código Postal"
+                                    type="tel"
                                     variant="outlined"
+                                    @keypress="handleNumericKeypress"
+                                    @paste.prevent
                                 />    
                             </VCol> 
                             <VCol cols="12" md="12" class="textinput mb-2 mb-md-2">

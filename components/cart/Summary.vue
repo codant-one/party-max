@@ -102,7 +102,7 @@ const couponApply = () => {
                 </VCol>
             </VRow>
         </VCardText>
-        <VCardText class="card-bono px-5 pb-5" v-if="props.client_id && props.summary.discount === 0">
+        <VCardText class="card-bono px-5 pt-0 pb-5">
             <VCardTitle class="text-center d-flex title-bono align-center p-0">
                Cupón de descuento
             </VCardTitle>
@@ -112,7 +112,13 @@ const couponApply = () => {
                     v-model="coupon"
                     variant="outlined"
                 />
-                <button class="button-bono" @click="couponApply">Aplicar</button>
+                <VBtn
+                    variant="flat"
+                    :disabled="!props.client_id" 
+                    class="btn-order tw-text-tertiary ms-2"
+                    @click="couponApply">
+                    Aplicar
+                </VBtn>
             </div>
         </VCardText>
          
@@ -179,6 +185,36 @@ const couponApply = () => {
 
     .title-bono {
         font-weight: 700;
+    }
+
+    .btn-order {
+        border-radius: 8px;
+        border: 1px solid var(--Maastricht-tertiary, #0A1B33);
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 14px;
+        box-shadow: none;
+    }
+
+    /* Estilos cuando el botón está deshabilitado */
+    .btn-order.v-btn--disabled {
+        border-color: #D9EEF2;
+        background-color: #F5F8FA !important;
+        color: #9CA3AF !important; /* gris */
+        box-shadow: none !important;
+    }
+
+    .btn-order.v-btn--disabled:hover {
+        border-color: #D9EEF2;
+        background-color: #F5F8FA !important;
+        color: #9CA3AF !important;
+    }
+
+    .btn-order:hover {
+        border: 1px solid var(--Maastricht-tertiary, #0A1B33) !important;
+        background: var(--Maastricht-tertiary, #0A1B33) !important;
+        color: #FFFFFF!important;
     }
 
     .button-bono {

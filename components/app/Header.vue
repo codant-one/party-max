@@ -787,7 +787,7 @@
       <VDivider class="mt-2 mt-md-4"/>
       <PerfectScrollbar :options="{ wheelPropagation: false }">
         <VCard 
-          v-if="products.length === 0 && (typeof route.query.merchantId === 'undefined')"
+          v-if="products.length === 0 && (typeof route.query.merchantId === 'undefined') && !isLoading"
           class="mb-10 card-timeline px-0">
           <VCardText class="d-flex flex-column align-center text-center justify-content-center">
             <VCardItem class="d-block align-center text-center justify-content-center cart-svg">
@@ -844,15 +844,19 @@
       </template>
     </VNavigationDrawer>
 
-    <VAppBar flat class="header d-print-none pm-header-desktop">
-      <VContainer class="tw-bg-white">
+    <VAppBar flat class="header d-print-none pm-header-desktop" :class="route.name === 'cart' ? 'h-cart-mobile' : ''">
+      <VContainer class="tw-bg-white" :class="route.name === 'cart' ? 'h-cart-mobile' : ''">
         <!-- B: HEADER DESKTOP -->
-        <div no-gutters class="container d-flex justify-content-center align-center tw-gap-4 w-100">
+        <div 
+          no-gutters 
+          class="container d-flex align-center tw-gap-4 w-100" 
+          :class="route.name === 'cart' ? 'justify-content-between' : 'justify-content-center'">
           <NuxtLink to="/" class="tw-no-underline tw-text-white me-0 me-sm-8">
             <img :src="logo" class="pm-logo-header" width="200" alt="PartyMax - The Party Market" cover/>
           </NuxtLink>
-          <VBtn class="pm-menu-button desktop" @click.prevent="toggleDrawer('mainmenu')"></VBtn>
+          <VBtn v-if="route.name !== 'cart'" class="pm-menu-button desktop" @click.prevent="toggleDrawer('mainmenu')"></VBtn>
           <VTextField
+            v-if="route.name !== 'cart'"
             v-model="textSearch"
             ref="fixedSectionRef"
             class="pm-searchfield-desktop pt-4 w-100x"
@@ -1017,7 +1021,11 @@
   </section>
 </template>
 
-<style lang="scss">
+<style lang="scss">  
+  .ps .ps__rail-x:hover, .ps .ps__rail-y:hover, .ps .ps__rail-x:focus, .ps .ps__rail-y:focus, .ps .ps__rail-x.ps--clicking, .ps .ps__rail-y.ps--clicking {
+    background-color: transparent !important;
+    opacity: 0 !important;
+  }
   .scrollable-content {
       &.v-navigation-drawer {
         .v-navigation-drawer__content {

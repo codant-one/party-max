@@ -76,7 +76,7 @@ const chanceExpress = () => {
         emit('send', 'shipping_express')
         return
     }
-    if (parseFloat(props.summary.subTotal) <= parseFloat('210000')) {
+    if (parseFloat(props.summary.subTotal) <= parseFloat('150000')) {
         sendId.value = 2
         emit('send', 'sendToBogota')
     } else {
@@ -105,7 +105,7 @@ const isDisabled = (i) => {
                 response = true
             break;
             case 3:
-                response = parseFloat(props.summary.subTotal) <= parseFloat('210000')
+                response = parseFloat(props.summary.subTotal) <= parseFloat('150000')
             break;
         }
     } else if(i === 1) { //nacional
@@ -135,7 +135,7 @@ const isDisabled = (i) => {
                 response = province.value !== 293
             break;
             case 3:
-                response = parseFloat(props.summary.subTotal) > parseFloat('210000')
+                response = parseFloat(props.summary.subTotal) > parseFloat('150000')
             break;
         }
     }

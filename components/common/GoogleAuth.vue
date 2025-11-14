@@ -33,6 +33,7 @@ const emit = defineEmits(['google-auth-error'])
 
 const waitingAuth = ref(false)
 let popupRef = null
+let popupPollTimer = null
 
 const onValidate = () => {
   if(! props.validated ){
@@ -67,6 +68,26 @@ const onValidate = () => {
     // Listener para recibir credenciales desde callback
     window.addEventListener('message', handleAuthMessage, false)
 
+    // Poll para detectar cuando el usuario cierra manualmente la ventana emergente
+    if (popupPollTimer) {
+      clearInterval(popupPollTimer)
+      popupPollTimer = null
+    }
+    popupPollTimer = setInterval(() => {
+      try {
+        if (!popupRef || popupRef.closed) {
+          clearInterval(popupPollTimer)
+          popupPollTimer = null
+          cancelAuth()
+        }
+      } catch (e) {
+        // En caso de error de acceso al popup, limpiar igualmente
+        clearInterval(popupPollTimer)
+        popupPollTimer = null
+        cancelAuth()
+      }
+    }, 500)
+
     // Fallback timeout para evitar overlay infinito si no llega mensaje
     setTimeout(() => {
       if (waitingAuth.value) {
@@ -89,6 +110,10 @@ function handleAuthMessage(event) {
       if (tokenData.user_data) localStorage.setItem('user_data', JSON.stringify(tokenData.user_data))
       if (tokenData.userAbilities) localStorage.setItem('userAbilities', JSON.stringify(tokenData.userAbilities))
       waitingAuth.value = false
+      if (popupPollTimer) {
+        clearInterval(popupPollTimer)
+        popupPollTimer = null
+      }
       window.removeEventListener('message', handleAuthMessage)
       // Redirigir a ruta configurada
       const target = props.redirectTo || '/dashboard/profile'
@@ -96,12 +121,20 @@ function handleAuthMessage(event) {
     }
     if (data && data.type === 'google-auth-error') {
       waitingAuth.value = false
+      if (popupPollTimer) {
+        clearInterval(popupPollTimer)
+        popupPollTimer = null
+      }
       try { if (popupRef) popupRef.close() } catch (e) {}
       window.removeEventListener('message', handleAuthMessage)
       emit('google-auth-error')
     }
   } catch (e) {
     waitingAuth.value = false
+    if (popupPollTimer) {
+      clearInterval(popupPollTimer)
+      popupPollTimer = null
+    }
     window.removeEventListener('message', handleAuthMessage)
     emit('google-auth-error')
   }
@@ -118,6 +151,10 @@ function cancelAuth() {
     }
   } finally {
     waitingAuth.value = false
+    if (popupPollTimer) {
+      clearInterval(popupPollTimer)
+      popupPollTimer = null
+    }
     window.removeEventListener('message', handleAuthMessage)
   }
 }

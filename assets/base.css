@@ -306,8 +306,21 @@ label,
     padding-top: 126px !important;
   }
 
+  .pm-main.pm-main-cart {
+    padding-top: 70px !important;
+  }
+
   .header .v-toolbar__content, .header .v-container {
     height: 125px !important;
+  }
+
+  .header.h-cart-mobile .v-container,
+  .header .v-container.h-cart-mobile {
+    height: 80px !important;
+  }
+
+  .header.h-cart-mobile .v-toolbar__content {
+    height: 70px !important;
   }
 
   .pm-drawer-cart .v-navigation-drawer__append {
