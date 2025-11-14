@@ -120,7 +120,7 @@ async function fetchData() {
     bg = ''
 
   if (route.name === 'cart' || route.name === 'quote') {
-    if (Object.keys(route.query).length > 0) {
+    if (route.name !== 'cart' && Object.keys(route.query).length > 0) {
       bg = register
       repeat = 'no-repeat'
       size = 'cover'

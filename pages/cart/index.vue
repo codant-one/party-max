@@ -913,10 +913,10 @@ const chanceSend = value => {
         <VContainer 
             class="mt-2 checkout-card"
             :class="currentStep === 2 ? 'w-60': ''">
-            <h1 v-if="products.length > 0 || (typeof route.query.merchantId !== 'undefined')" class="tw-text-2xl tw-font-bold tw-text-primary">
+            <h1 v-if="products.length > 0 && (typeof route.query.merchantId === 'undefined')" class="tw-text-2xl tw-font-bold tw-text-primary">
                 GENIAL, ¡FINALIZA TU COMPRA!
             </h1>     
-            <VRow v-if="products.length > 0 || (typeof route.query.merchantId !== 'undefined')">
+            <VRow v-if="products.length > 0 && (typeof route.query.merchantId === 'undefined')">
                 <VCol cols="12" md="8">
                     <VCard class="card-products p-0">
                         <User @logged-in="handleLoggedIn" />
@@ -1009,6 +1009,7 @@ const chanceSend = value => {
             </VCard>
 
         </VContainer>
+        
         <!--MODAL ADD ADDRESS-->
         <VDialog v-model="dialog" transition="dialog-top-transition">
             <VForm
