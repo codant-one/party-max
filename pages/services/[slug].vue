@@ -187,16 +187,16 @@ const { data: serviceData } = await useAsyncData(
 if (serviceData.value) {
   const serviceUrl = `https://${config_.public.MY_DOMAIN}/services/${serviceData.value.service.slug}`
   const imageUrl = baseURL.value + serviceData.value.service.image
-  const descriptionText = `Descubre nuestro '${serviceData.value.service.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨. ${serviceData.value.keywords.join(', ')}`;
+  const descriptionText = `Descubre nuestro '${serviceData.value.service.name}' en Partymax. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨. ${serviceData.value.keywords.join(', ')}`;
 
   useSeoMeta({
-    title: serviceData.value.service.name + ' | PARTYMAX',
+    title: serviceData.value.service.name + ' | Partymax',
     description: descriptionText,
     ogType: 'product',
     ogUrl: serviceUrl,
     ogTitle: toSentenceCase(serviceData.value.service.name),
     ogDescription: toSentenceCase(descriptionText),
-    ogSiteName: 'PARTYMAX',
+    ogSiteName: 'Partymax',
     ogImage: imageUrl,
     ogImageWidth: '1200',
     ogImageHeight: '630',
@@ -233,7 +233,7 @@ if (serviceData.value) {
           'sku': 'SERVICE_' + serviceData.value.service.id,
           'brand': {
             '@type': 'Brand',
-            'name': 'PARTYMAX'
+            'name': 'Partymax'
           },
           'offers': {
             '@type': 'Offer',
@@ -396,7 +396,7 @@ async function fetchData() {
         image_link: baseURL.value + data.value.service.image,
         value: Number(data.value.service.price),
         currency: 'COP',
-        description: toSentenceCase(`Descubre nuestro '${data.value.service.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar ✨`)
+        description: toSentenceCase(`Descubre nuestro '${data.value.service.name}' en Partymax. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar ✨`)
       })
     }
   

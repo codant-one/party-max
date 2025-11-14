@@ -3,19 +3,19 @@
 import partymax_logo from '@assets/images/logo.svg';
 
 useHead({
-  title: 'Protección de Datos Personales | PARTYMAX THE PARTY MARKET',
+  title: 'Protección de Datos Personales | Partymax',
   meta: [
-    { hid: 'description', name: 'description', content: 'En PARTYMAX THE PARTY MARKET, estamos comprometidos en proteger la privacidad y seguridad de sus datos personales. Lea nuestra política de protección de datos para más información.' },
+    { hid: 'description', name: 'description', content: 'En Partymax, estamos comprometidos en proteger la privacidad y seguridad de sus datos personales. Lea nuestra política de protección de datos para más información.' },
     { name: 'robots', content: 'noindex, follow' },
-    { name: 'description', content: 'En PARTYMAX THE PARTY MARKET, estamos comprometidos en proteger la privacidad y seguridad de sus datos personales. Lea nuestra política de protección de datos para más información.' },
-    { property: 'og:title', content: 'Protección de Datos Personales | PARTYMAX THE PARTY MARKET' },
-    { property: 'og:description', content: 'En PARTYMAX THE PARTY MARKET, estamos comprometidos en proteger la privacidad y seguridad de sus datos personales. Lea nuestra política de protección de datos para más información.' },
+    { name: 'description', content: 'En Partymax, estamos comprometidos en proteger la privacidad y seguridad de sus datos personales. Lea nuestra política de protección de datos para más información.' },
+    { property: 'og:title', content: 'Protección de Datos Personales | Partymax' },
+    { property: 'og:description', content: 'En Partymax, estamos comprometidos en proteger la privacidad y seguridad de sus datos personales. Lea nuestra política de protección de datos para más información.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://partymax.co/data-protection' },
     { property: 'og:image', content: partymax_logo },
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: 'Protección de Datos Personales | PARTYMAX THE PARTY MARKET' },
-    { name: 'twitter:description', content: 'En PARTYMAX THE PARTY MARKET, estamos comprometidos en proteger la privacidad y seguridad de sus datos personales. Lea nuestra política de protección de datos para más información.' },
+    { name: 'twitter:title', content: 'Protección de Datos Personales | Partymax' },
+    { name: 'twitter:description', content: 'En Partymax, estamos comprometidos en proteger la privacidad y seguridad de sus datos personales. Lea nuestra política de protección de datos para más información.' },
     { name: 'twitter:image', content: partymax_logo }
   ]
 })

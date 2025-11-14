@@ -162,7 +162,7 @@ watch(productData, (newData) => {
     };
 
     const cleanName = cleanText(newData.product.name);
-    const originalDescriptionText = `Descubre nuestro '${newData.product.name}' en PARTYMAX. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨. ${newData.keywords.join(', ')}`
+    const originalDescriptionText = `Descubre nuestro '${newData.product.name}' en Partymax. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨. ${newData.keywords.join(', ')}`
     const cleanDescriptionText = cleanText(originalDescriptionText);
     
     const cleanId = String(newData.product.id).replace(/"/g, '');
@@ -172,13 +172,13 @@ watch(productData, (newData) => {
     const formattedPrice = Number(priceAsNumber.toFixed(2))
 
     useSeoMeta({
-      title: cleanName+ ' | PARTYMAX',
+      title: cleanName+ ' | Partymax',
       description: cleanDescriptionText,
       ogType: 'product',
       ogUrl: productUrl,
       ogTitle: toSentenceCase(cleanName),
       ogDescription: toSentenceCase(cleanDescriptionText),
-      ogSiteName: 'PARTYMAX',
+      ogSiteName: 'Partymax',
       ogImage: imageUrl,
       ogImageWidth: '1200',
       ogImageHeight: '630',
@@ -215,7 +215,7 @@ watch(productData, (newData) => {
             'sku': finalContentId,
             'brand': {
               '@type': 'Brand',
-              'name': 'PARTYMAX'
+              'name': 'Partymax'
             },
             'offers': {
               '@type': 'Offer',

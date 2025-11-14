@@ -47,7 +47,7 @@ const services = ref([]);
 const tab = ref('0');
 const category = ref(null);
 
-const rowPerPage = ref(50);
+const rowPerPage = ref(52);
 const currentPage = ref(1);
 const totalPages = ref(1);
 const totalServices = ref(0);
@@ -230,7 +230,7 @@ async function fetchData() {
   });
 
   //metadescription
-  descriptionText.value = `Encuentra en PARTYMAX los mejores servicios, ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉 `
+  descriptionText.value = `Encuentra en Partymax los mejores servicios, ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉 `
   
   if(categoriesStores.getCategory || categoriesStores.getSubcategory || categoriesStores.getFathercategory) {
     const currentTitle = category.value?.subcategory ?? category.value?.title
@@ -238,7 +238,7 @@ async function fetchData() {
       title.value = currentTitle
       const iconPath = cat.value?.icon_subcategory ?? null
       image.value = iconPath ? (baseURL.value + iconPath) : (config.public.APP_DOMAIN_API_URL + '/images/categories.jpg')
-      descriptionText.value = `Encuentra en PARTYMAX los mejores servicios de '${title.value}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉 ` + (cat.value?.keywords || '')
+      descriptionText.value = `Encuentra en Partymax los mejores servicios de '${title.value}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉 ` + (cat.value?.keywords || '')
     }
   }
 
@@ -246,19 +246,19 @@ async function fetchData() {
 }
 
 useSeoMeta({
-  title: title.value + ' | PARTYMAX',
+  title: title.value + ' | Partymax',
   description: descriptionText.value,
   ogType: 'products',
   ogUrl:  `https://${config.public.MY_DOMAIN}${route.fullPath}` ,
-  ogTitle: title.value + ' | PARTYMAX',
+  ogTitle: title.value + ' | Partymax',
   ogDescription: descriptionText.value,
-  ogSiteName: 'PARTYMAX',
+  ogSiteName: 'Partymax',
   ogImage: image.value,
   ogImageWidth: '1200',
   ogImageHeight: '630',
-  ogImageAlt: title.value + ' | PARTYMAX',
+  ogImageAlt: title.value + ' | Partymax',
   twitterCard: 'summary_large_image',
-  twitterTitle: title.value + ' | PARTYMAX',
+  twitterTitle: title.value + ' | Partymax',
   twitterDescription: descriptionText.value,
   twitterImage: image.value,
   twitterSite: twitterAccount.value

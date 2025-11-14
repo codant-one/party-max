@@ -236,24 +236,24 @@ const onSubmit = () => {
         </p>
         <div class="tw-mt-1 tw-flex tw-items-center tw-justify-center tw-gap-1 lg:tw-gap-5 tw-flex-no-wrap tw-flex-col lg:tw-flex-row">
           <div class="payu-creditcards tw-flex tw-items-center tw-justify-center tw-gap-1 tw-flex-no-wrap">
-            <img :src="visa" alt="Visa" width="50" height="auto"/>
-            <img :src="mastercard" alt="Mastercard" width="40" height="auto"/>
-            <img :src="diners" alt="Diners Club" width="50" height="auto"/>
-            <img :src="amex" alt="American Express" width="30" height="auto"/>
-            <img :src="codensa" alt="Codensa" width="50" height="auto"/>
+            <img :src="visa" alt="Paga seguro con Visa" width="50" height="auto"/>
+            <img :src="mastercard" alt="Paga seguro con Mastercard" width="40" height="auto"/>
+            <img :src="diners" alt="Paga seguro con Diners Club" width="50" height="auto"/>
+            <img :src="amex" alt="Paga seguro con American Express" width="30" height="auto"/>
+            <img :src="codensa" alt="Paga seguro con Codensa" width="50" height="auto"/>
           </div>
           <div class="payu-creditcards tw-flex tw-items-center tw-justify-center tw-gap-1 tw-flex-no-wrap tw-mt-3 lg:tw-mt-0">
-            <img :src="sured" alt="SuRed" width="50" height="auto"/>
-            <img :src="efecty" alt="Efecty" width="50" height="auto"/>
-            <img :src="davivienda" alt="Davivienda" width="25" height="auto"/>
-            <img :src="bancodebogota" alt="Banco de Bogotá" width="25" height="auto"/>
-            <img :src="bancolombia" alt="Bancolombia" width="30" height="auto"/>
+            <img :src="sured" alt="Paga en efectivo con SuRed" width="50" height="auto"/>
+            <img :src="efecty" alt="Paga en efectivo con Efecty" width="50" height="auto"/>
+            <img :src="davivienda" alt="Paga en efectivo con Davivienda" width="25" height="auto"/>
+            <img :src="bancodebogota" alt="Paga en efectivo con Banco de Bogotá" width="25" height="auto"/>
+            <img :src="bancolombia" alt="Paga en efectivo con Bancolombia" width="30" height="auto"/>
           </div>
           <div class="payu-creditcards tw-flex tw-items-center tw-justify-center tw-gap-1 tw-flex-no-wrap">
-            <img :src="pse" alt="PSE" width="30" height="auto"/>
-            <img :src="breb" alt="Breb" width="50" height="auto"/>
-            <img :src="nequi" alt="Nequi" width="50" height="auto"/>
-            <img :src="gpay" alt="Google Pay" width="50" height="auto" class="tw-ml-1"/>
+            <img :src="pse" alt="Pagos electrónicos con PSE" width="30" height="auto"/>
+            <img :src="breb" alt="Pagos electrónicos con Breb" width="50" height="auto"/>
+            <img :src="nequi" alt="Pagos electrónicos con Nequi" width="50" height="auto"/>
+            <img :src="gpay" alt="Pagos electrónicos con Google Pay" width="50" height="auto" class="tw-ml-1"/>
           </div>
         </div>
       </div>

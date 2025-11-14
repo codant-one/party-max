@@ -3,19 +3,19 @@
 import partymax_logo from '@assets/images/logo.svg';
 
 useHead({
-  title: 'Términos y condiciones Generales | PARTYMAX THE PARTY MARKET',
+  title: 'Términos y condiciones Generales | Partymax',
   meta: [
-    { hid: 'description', name: 'description', content: 'Lea los términos y condiciones generales para el uso de la plataforma PARTYMAX THE PARTY MARKET. Asegúrese de comprender sus derechos y responsabilidades al utilizar nuestro servicio.' },
+    { hid: 'description', name: 'description', content: 'Lea los términos y condiciones generales para el uso de la plataforma Partymax. Asegúrese de comprender sus derechos y responsabilidades al utilizar nuestro servicio.' },
     { name: 'robots', content: 'noindex, follow' },
-    { name: 'description', content: 'Lea los términos y condiciones generales para el uso de la plataforma PARTYMAX THE PARTY MARKET. Asegúrese de comprender sus derechos y responsabilidades al utilizar nuestro servicio.' },
-    { property: 'og:title', content: 'Términos y condiciones Generales | PARTYMAX THE PARTY MARKET' },
-    { property: 'og:description', content: 'Lea los términos y condiciones generales para el uso de la plataforma PARTYMAX THE PARTY MARKET. Asegúrese de comprender sus derechos y responsabilidades al utilizar nuestro servicio.' },
+    { name: 'description', content: 'Lea los términos y condiciones generales para el uso de la plataforma Partymax. Asegúrese de comprender sus derechos y responsabilidades al utilizar nuestro servicio.' },
+    { property: 'og:title', content: 'Términos y condiciones Generales | Partymax' },
+    { property: 'og:description', content: 'Lea los términos y condiciones generales para el uso de la plataforma Partymax. Asegúrese de comprender sus derechos y responsabilidades al utilizar nuestro servicio.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://partymax.co/terms-and-conditions' },
     { property: 'og:image', content: partymax_logo },
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: 'Términos y condiciones Generales | PARTYMAX THE PARTY MARKET' },
-    { name: 'twitter:description', content: 'Lea los términos y condiciones generales para el uso de la plataforma PARTYMAX THE PARTY MARKET. Asegúrese de comprender sus derechos y responsabilidades al utilizar nuestro servicio.' },
+    { name: 'twitter:title', content: 'Términos y condiciones Generales | Partymax' },
+    { name: 'twitter:description', content: 'Lea los términos y condiciones generales para el uso de la plataforma Partymax. Asegúrese de comprender sus derechos y responsabilidades al utilizar nuestro servicio.' },
     { name: 'twitter:image', content: partymax_logo }
   ]
 })
