@@ -1,0 +1,28 @@
+User-agent: Amazonbot
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: ClaudeBot
+User-agent: Claude-User
+User-agent: GPTBot
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: FacebookExternalHit
+User-agent: FacebookBot
+User-agent: Twitterbot
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: *
+Disallow: /cart
+Disallow: /*?n*
+Disallow: /*?r*
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /internal/
+Disallow: /assets/
+Disallow: /static/
+Disallow: /_nuxt/
+Disallow: /nuxt/
+
+Sitemap: https://partymax.co/sitemap.xml

@@ -154,37 +154,20 @@ async function fetchData() {
 
 <template>
   <NuxtLayout>
-    <VApp> 
-      <ClientOnly v-if="route.name === 'index'">
-        <VLayout >
-          <Filters :drawer="drawer" v-if="isProductsRoute"/>
-          <FilterServices :drawer="drawer" v-if="isServicesRoute"/>
-          <Header />
-          <VMain
-            :style="backgroundStyle"
-            class="pm-main"
-            :class="[background, (route.name === 'cart' && isMobile) ? 'pm-main-cart' : '']"
-          >
-            <NuxtPage />
-          </VMain>
-        </VLayout>
-        <Footer />
-      </ClientOnly>
-      <template v-else>
-        <VLayout >
-          <Filters :drawer="drawer" v-if="isProductsRoute"/>
-          <FilterServices :drawer="drawer" v-if="isServicesRoute"/>
-          <Header />
-          <VMain
-            :style="backgroundStyle"
-            class="pm-main"
-            :class="[background, (route.name === 'cart' && isMobile) ? 'pm-main-cart' : '']"
-          >
-            <NuxtPage />
-          </VMain>
-        </VLayout>
-        <Footer />
-      </template>
+    <VApp>
+      <VLayout>
+        <Filters :drawer="drawer" v-if="isProductsRoute"/>
+        <FilterServices :drawer="drawer" v-if="isServicesRoute"/>
+        <Header />
+        <VMain
+          :style="backgroundStyle"
+          class="pm-main"
+          :class="[background, (route.name === 'cart' && isMobile) ? 'pm-main-cart' : '']"
+        >
+          <NuxtPage />
+        </VMain>
+      </VLayout>
+      <Footer />
     </VApp>
   </NuxtLayout>
 </template>

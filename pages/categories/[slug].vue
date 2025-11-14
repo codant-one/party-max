@@ -77,16 +77,16 @@ const { data: categoryData } = await useAsyncData(
 const initSeo = () => {
   const categoryUrl = `https://${config.public.MY_DOMAIN}/categories/${categoryData.value.category.slug}`
   const imageUrl = (categoryData.value.category.icon_subcategory !== null) ? (baseURL.value + categoryData.value.category.icon_subcategory) : (config.public.APP_DOMAIN_API_URL + '/images/categories.jpg')
-  const descriptionText = `Encuentra en PARTYMAX los mejores productos de '${categoryData.value.category.name}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉`;
+  const descriptionText = `Encuentra en Partymax los mejores productos de '${categoryData.value.category.name}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉`;
 
   useSeoMeta({
-    title: categoryData.value.category.name + ' | PARTYMAX',
+    title: categoryData.value.category.name + ' | Partymax',
     description: descriptionText,
     ogType: 'category',
     ogUrl: categoryUrl,
     ogTitle: categoryData.value.category.name,
     ogDescription: descriptionText,
-    ogSiteName: 'PARTYMAX',
+    ogSiteName: 'Partymax',
     ogImage: imageUrl,
     ogImageWidth: '1200',
     ogImageHeight: '630',

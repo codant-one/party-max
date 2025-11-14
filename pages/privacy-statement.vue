@@ -3,19 +3,19 @@
 import partymax_logo from '@assets/images/logo.svg';
 
 useHead({
-  title: 'Política de Privacidad | PARTYMAX THE PARTY MARKET',
+  title: 'Política de Privacidad | Partymax',
   meta: [
-    { hid: 'description', name: 'description', content: 'En PARTYMAX THE PARTY MARKET, estamos comprometidos en proteger la privacidad y seguridad de sus datos personales. Lea nuestra política de privacidad para más información.' },
+    { hid: 'description', name: 'description', content: 'En Partymax, estamos comprometidos en proteger la privacidad y seguridad de sus datos personales. Lea nuestra política de privacidad para más información.' },
     { name: 'robots', content: 'noindex, follow' },
     { name: 'description', content: '' },
-    { property: 'og:title', content: 'Política de Privacidad | PARTYMAX THE PARTY MARKET' },
-    { property: 'og:description', content: 'En PARTYMAX THE PARTY MARKET, estamos comprometidos en proteger la privacidad y seguridad de sus datos personales. Lea nuestra política de privacidad para más información.' },
+    { property: 'og:title', content: 'Política de Privacidad | Partymax' },
+    { property: 'og:description', content: 'En Partymax, estamos comprometidos en proteger la privacidad y seguridad de sus datos personales. Lea nuestra política de privacidad para más información.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://partymax.co/data-protection' },
     { property: 'og:image', content: partymax_logo },
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: 'Política de Privacidad | PARTYMAX THE PARTY MARKET' },
-    { name: 'twitter:description', content: 'En PARTYMAX THE PARTY MARKET, estamos comprometidos en proteger la privacidad y seguridad de sus datos personales. Lea nuestra política de privacidad para más información.' },
+    { name: 'twitter:title', content: 'Política de Privacidad | Partymax' },
+    { name: 'twitter:description', content: 'En Partymax, estamos comprometidos en proteger la privacidad y seguridad de sus datos personales. Lea nuestra política de privacidad para más información.' },
     { name: 'twitter:image', content: partymax_logo }
   ]
 })

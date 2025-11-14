@@ -1,5 +1,5 @@
 <script setup>
-  import { ref } from 'vue'
+  import { ref, watch, watchEffect, onMounted } from 'vue'
   import { useHomeStores } from '@/stores/home'
   import { useMiscellaneousStores } from "@/stores/miscellaneous";
   import { Autoplay, Navigation, Pagination } from 'swiper/modules';
@@ -13,6 +13,8 @@
   import Loader from '@/components/common/Loader.vue'
   import WelcomePopup from '@/components/app/WelcomePopup.vue'
   import { useCategoriesStores } from '@/stores/categories'
+
+  import logo_seo from '@assets/images/logo.png';
 
   import arrow_right from '@assets/icons/arrow_right_dark.svg?inline';
 
@@ -52,6 +54,8 @@
       thumbsSwiper.value = swiper;
   }
 
+  const pm_url = useRequestURL();
+  const protocol = pm_url.protocol;
   const config = useRuntimeConfig()
   const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
   const twitterAccount = ref(config.public.TWITTER_ACCOUNT ?? '')
@@ -60,9 +64,9 @@
     // ----------------------------------------------------
     // META-TAGS BÁSICOS
     // ----------------------------------------------------
-    title: 'PARTYMAX | THE PARTY MARKET', // Título conciso, incluye la palabra clave principal si aplica
-    description: 'Partymax, tu aliado ideal para fiestas en Colombia. Conectamos tus ideas con los mejores proveedores. ¡Haz tu celebración inolvidable de forma fácil y económica!',
-    keywords: 'eventos en Colombia, marketplace de fiestas, proveedores de eventos, organización de eventos, planificación de fiestas, catering, decoración de fiestas, entretenimiento para eventos, servicios para bodas, fiestas infantiles, despedidas de soltera, tecnología para eventos, Partymax',
+    title: 'Partymax — Marketplace de Eventos y Celebraciones en Bogotá, Colombia',
+    description: 'Partymax, tu aliado ideal para fiestas en Bogotá, Colombia. Conectamos tus ideas con los mejores proveedores. ¡Haz tu celebración inolvidable de forma fácil y económica!',
+    keywords: 'decoración de fiestas en bogotá colombia, fiestas temáticas en bogotá colombia, fiestas infantiles en bogotá colombia, despedidas de soltera en bogotá colombia, globos latex en bogotá colombia, globos metalizados en bogotá colombia, tortas en bogotá colombia, desechables para fiesta en bogotá colombia, eventos y fiestas en bogotá colombia, marketplace de fiestas, celebraciones, partymax, proveedores de eventos, organización de eventos, planificación de fiestas, servicios para bodas, entretenimiento para eventos, catering, decoración para fiestas, artículos para fiestas, decoración de cumpleaños, globos para fiestas, kits de fiesta, sorpresas y detalles, productos personalizados, piñatas y dulces, fiestas temáticas, fechas especiales, fiesta vallenata, fiesta picnic, ponques, cup cake, cupcake',
     robots: 'index, follow',
     author: 'Partymax',
     language: 'es',
@@ -71,20 +75,426 @@
     // OPEN GRAPH (Facebook, WhatsApp, etc.)
     // ----------------------------------------------------
     ogType: 'website',
-    ogTitle: 'PARTYMAX | THE PARTY MARKET',
+    ogTitle: 'Partymax — Marketplace de Eventos y Celebraciones en Bogotá, Colombia',
     ogDescription: 'Organiza tu evento ideal con Partymax. Encuentra los mejores proveedores de decoración, catering, entretenimiento y más en un solo lugar.',
-    ogImage: `${config.public.APP_DOMAIN_API_URL}/logos/R_ORIGINAL@2x.png`,
-    ogUrl: `https://${config.public.MY_DOMAIN}`,
-    ogSiteName: 'PARTYMAX',
+    ogImage: `${protocol}//${config.public.MY_DOMAIN}${logo_seo}`,
+    ogUrl: `${protocol}//${config.public.MY_DOMAIN}`,
+    ogSiteName: 'Partymax',
     
     // ----------------------------------------------------
     // TWITTER
     // ----------------------------------------------------
     twitterCard: 'summary_large_image',
-    twitterTitle: 'PARTYMAX | THE PARTY MARKET',
+    twitterTitle: 'Partymax — Marketplace de Eventos y Celebraciones en Bogotá, Colombia',
     twitterDescription: 'Organiza tu evento ideal con Partymax. Encuentra los mejores proveedores de decoración, catering, entretenimiento y más en un solo lugar.',
-    twitterImage: `${config.public.APP_DOMAIN_API_URL}/logos/R_ORIGINAL@2x.png`,
-    twitterSite: twitterAccount.value // Ya estás usando la variable de configuración
+    twitterImage: `${protocol}//${config.public.MY_DOMAIN}${logo_seo}`,
+    twitterSite: twitterAccount.value
+  });
+
+  useHead({
+    script: [
+      {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebSite",
+              "@id": `${protocol}//${config.public.MY_DOMAIN}/#website`,
+              "url": `${protocol}//${config.public.MY_DOMAIN}`,
+              "name": "Partymax | Marketplace de Eventos y Celebraciones en Bogotá, Colombia",
+              "description": "Partymax es la plataforma líder en Bogotá, Colombia para la organización de eventos y celebraciones. Conectamos clientes con los mejores proveedores para crear celebraciones inolvidables con seguridad, eficiencia y calidad.",
+              "publisher": {
+                "@id": `${protocol}//${config.public.MY_DOMAIN}/#organization`
+              },
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": `${protocol}//${config.public.MY_DOMAIN}/products?search={search_term_string}`,
+                "query-input": "required name=search_term_string"
+              }
+            },
+            {
+              "@type": "Organization",
+              "@id": `${protocol}//${config.public.MY_DOMAIN}/#organization`,
+              "name": "Partymax | Plataforma Digital de Eventos y Celebraciones en Bogotá, Colombia",
+              "alternateName": "Partymax The Party Market Colombia",
+              "url": `${protocol}//${config.public.MY_DOMAIN}`,
+              "logo": `${protocol}//${config.public.MY_DOMAIN}${logo_seo}`,
+              "sameAs": [
+                "https://www.instagram.com/partymaxcolombia",
+                "https://www.facebook.com/partymaxcolombia",
+                "https://wa.link/wvdoxg"
+              ],
+              "foundingDate": "2017",
+              "foundingLocation": {
+                "@type": "Place",
+                "name": "Bogotá, Colombia",
+                "address": {
+                  "@type": "PostalAddress",
+                  "streetAddress": "Calle 13 No. 69-02, 3er piso, Bogotá, Colombia",
+                  "addressLocality": "Bogotá",
+                  "addressRegion": "Cundinamarca",
+                  "addressCountry": "CO",
+                    "postalCode": "110931"
+                }
+              },
+              "description": "Partymax es una plataforma digital que conecta personas y proveedores del sector de eventos y celebraciones. Ofrece una plataforma innovadora para encontrar, cotizar y contratar servicios y productos de calidad con confianza y seguridad.",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "contactType": "Atención al cliente",
+                "email": "fiesta@partymax.co",
+                "availableLanguage": ["es"]
+              },
+              "brand": {
+                "@type": "Brand",
+                "name": "Partymax",
+                "logo": `${protocol}//${config.public.MY_DOMAIN}${logo_seo}`,
+              },
+              "slogan": "Tu evento, nuestra misión. Conectamos sueños con los mejores proveedores de Colombia.",
+              "knowsAbout": [
+                "Organizadores de eventos",
+                "Fiestas",
+                "Celebraciones",
+                "Decoración para fiestas",
+                "Catering y banquetes",
+                "Sonido y música para eventos",
+                "Fotografía de eventos",
+                "Animación y entretenimiento",
+                "Fiestas temáticas",
+                "Fiestas infantiles",
+                "Despedidas de soltera",
+                "Globos",
+                "Tortas",
+                "Ponques",
+                "Desechables",
+                "Marketplace de fiestas",
+                "Fiesta vallenata",
+                "Fiesta Mexicana",
+                "Despedida de soltera",
+                "Cup cake"
+              ]
+            },
+            {
+              "@type": "WebPage",
+              "@id": `${protocol}//${config.public.MY_DOMAIN}/#homepage`,
+              "url": `${protocol}//${config.public.MY_DOMAIN}`,
+              "name": "Partymax | Marketplace de Eventos y Celebraciones en Bogotá, Colombia",
+              "description": "Partymax revoluciona la manera en que las personas organizan sus celebraciones, conectando clientes con proveedores verificados y ofreciendo los mejores productos y servicios para fiestas y eventos en Bogotá, Colombia.",
+              "mainEntity": {
+                "@id": `${protocol}//${config.public.MY_DOMAIN}/#categories`
+              },
+              "isPartOf": {
+                "@id": `${protocol}//${config.public.MY_DOMAIN}/#website`
+              },
+              "about": [
+                {
+                  "@type": "CreativeWork",
+                  "name": "Misión de Partymax | Conectamos Personas y Proveedores para Crear Fiestas Inolvidables",
+                  "description": "Facilitar la planificación de eventos mediante una plataforma digital que une clientes con proveedores de calidad, impulsando el crecimiento de emprendedores del sector y garantizando experiencias únicas, seguras y accesibles."
+                },
+                {
+                  "@type": "CreativeWork",
+                  "name": "Visión de Partymax | Ser el Marketplace de Eventos Más Grande y Confiable de Latinoamérica",
+                  "description": "Consolidarse como la plataforma líder en Bogotá, Colombia y referente en Latinoamérica para la organización de fiestas y eventos, impulsando la innovación, la tecnología y el crecimiento del sector de celebraciones."
+                },
+                {
+                  "@type": "CreativeWork",
+                  "name": "Historia de Partymax | Innovación y Tecnología para Revolucionar la Industria de Eventos",
+                  "description": "Partymax nació del sueño de simplificar la organización de eventos y conectar a las personas con proveedores confiables. Hoy es un marketplace que impulsa la creatividad, la eficiencia y la confianza en la industria de las celebraciones."
+                },
+                {
+                  "@type": "Store",
+                  "name": "Marketplace de Eventos y Celebraciones | Partymax Colombia",
+                  "description": "Plataforma digital que centraliza productos, servicios y proveedores de eventos, facilitando que los clientes encuentren todo lo necesario para sus celebraciones en un solo lugar.",
+                  "image": `${protocol}//${config.public.MY_DOMAIN}${logo_seo}`,
+                  "url": `${protocol}//${config.public.MY_DOMAIN}`,
+                  "telephone": "+57 300 4659 997",
+                  "priceRange": "$$$",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "Calle 13 No. 69-02, 3er piso, Bogotá, Colombia",
+                    "addressLocality": "Bogotá",
+                    "addressRegion": "Cundinamarca",
+                    "addressCountry": "CO",
+                    "postalCode": "110931"
+                  },
+                  "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": "4.642167153134921",
+                    "longitude": "-74.12330468669168"
+                  },
+                },
+                {
+                  "@type": "ProfessionalService",
+                  "name": "Servicios de Planificación y Organización de Eventos | Partymax",
+                  "description": "Proveedores para organización y planificación de eventos sociales, empresariales y familiares. Partymax conecta a los mejores profesionales de decoración, catering, fotografía y entretenimiento.",
+                  "image": `${protocol}//${config.public.MY_DOMAIN}${logo_seo}`,
+                  "url": `${protocol}//${config.public.MY_DOMAIN}`,
+                  "telephone": "+57 300 4659 997",
+                  "priceRange": "$$$",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "Calle 13 No. 69-02, 3er piso, Bogotá, Colombia",
+                    "addressLocality": "Bogotá",
+                    "addressRegion": "Cundinamarca",
+                    "addressCountry": "CO",
+                    "postalCode": "110931"
+                  },
+                  "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": "4.642167153134921",
+                    "longitude": "-74.12330468669168"
+                  },
+                },
+                {
+                  "@type": "Service",
+                  "name": "Productos y Servicios Especializados para Fiestas, Celebraciones y Eventos | Partymax | Colombia",
+                  "description": "Red de proveedores que ofrecen servicios de decoración, animación, catering, música y más, garantizando calidad y confianza para cada evento."
+                },
+                {
+                  "@type": "LocalBusiness",
+                  "name": "Proveedores de Fiestas, Celebraciones y Eventos en Bogotá, Colombia | Partymax",
+                  "description": "Plataforma digital que conecta clientes con proveedores del sector de eventos y celebraciones, con presencia en ciudades de toda Colombia, que ofrecen productos y servicios certificados y competitivos.",
+                  "image": `${protocol}//${config.public.MY_DOMAIN}${logo_seo}`,
+                  "url": `${protocol}//${config.public.MY_DOMAIN}`,
+                  "telephone": "+57 300 4659 997",
+                  "priceRange": "$$$",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "Calle 13 No. 69-02, 3er piso, Bogotá, Colombia",
+                    "addressLocality": "Bogotá",
+                    "addressRegion": "Cundinamarca",
+                    "addressCountry": "CO",
+                    "postalCode": "110931"
+                  },
+                  "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": "4.642167153134921",
+                    "longitude": "-74.12330468669168"
+                  },
+                }
+              ]
+            },
+            {
+              "@type": "ItemList",
+              "@id": `${protocol}//${config.public.MY_DOMAIN}/#categories`,
+              "name": "Productos y Servicios Partymax",
+              "description": "Descubre las principales categorías de productos y servicios para tus eventos y celebraciones en Partymax.",
+              "numberOfItems": 23,
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Fiestas Infantiles",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/fiestas-infantiles`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Temática Mickey Mouse",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/fiestas-infantiles/tematica-ninos/tematica-mickey-mouse`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Temática Spiderman",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/fiestas-infantiles/tematica-ninos/tematica-spiderman`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 4,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Temática Cars",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/fiestas-infantiles/tematica-ninos/tematica-cars`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 5,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Temática Princesas",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/fiestas-infantiles/tematica-ninas/tematica-princesas`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 6,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Temática Frozen",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/fiestas-infantiles/tematica-ninas/tematica-frozen`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 7,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Temática Minnie Mouse",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/fiestas-infantiles/tematica-ninas/tematica-minnie-mouse`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 8,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Temática Espacial",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/fiestas-infantiles/tematica-bebes/tematica-espacial`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 9,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Fiestas Temáticas",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/fiestas-tematicas`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 10,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Temática Mexicana",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/fiestas-tematicas/tematica-mexicana`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 11,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Temática Vallenata",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/fiestas-tematicas/tematica-vallenata`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 12,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Temática Neón",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/fiestas-tematicas/tematica-neon`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 13,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Baby Shower Niña",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/fechas-especiales/baby-shower-nina`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 14,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Baby Shower Niño",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/fechas-especiales/baby-shower-nino`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 15,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Revelación De Género",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/fechas-especiales/revelacion`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 16,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Despedida de Soltera",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/fechas-especiales/despedida-de-soltera`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 17,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Navidad",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/fechas-especiales/navidad`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 18,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Globos Látex",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/globos/globos-latex`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 19,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Globos Metalizados",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/globos/globos-metalizados`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 20,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Velas Decorativas",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/decoracion/velas`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 21,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Desechables",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/desechables`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 22,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Piñatas",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/products/categories/dulces-y-pinatas/pinatas`
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 23,
+                  "item": {
+                  "@type": "Thing",
+                  "name": "Decoración",
+                  "url": `${protocol}//${config.public.MY_DOMAIN}/categories/decoracion`
+                  }
+                }
+              ]
+            }
+          ]
+        })
+      }
+    ]
   });
 
   const banner_1 = ref([])
@@ -157,6 +567,49 @@
 
   // watchEffect(fetchData)
 
+  async function fetchSliderBannersData() {
+    try {
+      await homeStores.fetchData(); 
+      
+      const allImages = homeStores.getData.images;
+      sliders.value = allImages.filter(item => item.is_slider === 1).sort((a, b) => a.order_id - b.order_id);
+
+      const tempBanners = {};
+      const specialBanners = [
+        { id: 7, prop: 'products' },
+        { id: 8, prop: 'services' }
+      ];
+      const sequentialIds = { start: 9, end: 16 };
+      for (const { id, prop } of specialBanners) {
+        const foundBanner = banners.value.find(item => item.order_id === id);
+        
+        if (foundBanner) {
+            tempBanners[prop] = {
+                image: baseURL.value + (isMobile ? foundBanner.mobile : foundBanner.image),
+                url: foundBanner.url,
+                title: foundBanner.title
+            };
+        }
+      }
+      for (let id = sequentialIds.start; id <= sequentialIds.end; id++) {
+        const propName = `banner${id}`;
+        const foundBanner = banners.value.find(item => item.order_id === id);
+
+        if (foundBanner) {
+            tempBanners[propName] = {
+                image: baseURL.value + (isMobile ? foundBanner.mobile : foundBanner.image),
+                url: foundBanner.url,
+                title: foundBanner.title
+            };
+        }
+      }
+      homeFeaturedBanners.value = tempBanners;
+    } catch (e) {
+      console.error("Error al cargar los sliders en el cliente:", e);
+    }
+    isLoading.value = false;
+  }
+
   async function fetchData() {
 
     isLoading.value = true
@@ -164,10 +617,12 @@
     await homeStores.fetchData()
 
     categories.value = homeStores.getData.parentCategories;
-
     data.value = homeStores.getData
 
-    sliders.value = data.value.images.filter(item => item.is_slider === 1);
+    const allImages = data.value.images;
+    // sliders.value = data.value.images.filter(item => item.is_slider === 1);
+    sliders.value = allImages.filter(item => item.is_slider === 1).sort((a, b) => a.order_id - b.order_id);
+    
     banners.value = data.value.images.filter(item => item.is_slider === 0);
 
     banner_1.value.image = baseURL.value + (isMobile ? banners.value.find(item => item.order_id === 1).mobile : banners.value.find(item => item.order_id === 1).image);
@@ -221,10 +676,15 @@
     }
     homeFeaturedBanners.value = tempBanners;
 
-    isLoading.value = false
+    // isLoading.value = true
   }
 
   await useAsyncData('homeData', fetchData);
+
+  onMounted(() => {
+    fetchSliderBannersData();
+    console.log("Sliders cargados en el cliente:", sliders.value);
+  });
 
   const redirectTo = (url) => {
     if (url) {
@@ -234,32 +694,6 @@
   }
 
   const tab = ref('0')
-
-  /* useHead({
-    title: 'PARTYMAX | THE PARTY MARKET',
-    meta: [
-      { name: 'description', content: 'Partymax, tu aliado ideal para fiestas en Colombia. Conectamos tus ideas con los mejores proveedores.¡Haz tu celebración inolvidable de forma fácil y económica!' },
-      { name: 'keywords', content: 'eventos en Colombia, marketplace de fiestas, proveedores de eventos, organización de eventos, planificación de fiestas, catering, decoración de fiestas, entretenimiento para eventos, servicios para bodas, fiestas infantiles, despedidas de soltera, tecnología para eventos, Partymax' },
-      { name: 'robots', content: 'index, follow' },
-      { name: 'autor', content: 'Partymax' },
-      { name: 'language', content: 'es' },
-
-      // Open Graph
-      { property: 'og:type', content: 'website' },
-      { property: 'og:title', content: 'PARTYMAX | THE PARTY MARKET' },
-      { property: 'og:description', content: 'Organiza tu evento ideal con Partymax. Encuentra los mejores proveedores de decoración, catering, entretenimiento y más en un solo lugar.' },
-      { property: 'og:image', content: config.public.APP_DOMAIN_API_URL + '/logos/R_ORIGINAL@2x.png' },
-      { property: 'og:url', content: `https://${config.public.MY_DOMAIN}` },
-      { property: 'og:site_name', content: 'PARTYMAX' },
-
-      // Twitter
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: 'PARTYMAX | THE PARTY MARKET' },
-      { name: 'twitter:description', content: 'Organiza tu evento ideal con Partymax. Encuentra los mejores proveedores de decoración, catering, entretenimiento y más en un solo lugar.' },
-      { name: 'twitter:image', content: config.public.APP_DOMAIN_API_URL + '/logos/R_ORIGINAL@2x.png' },
-      { name: 'twitter:site', content: twitterAccount.value }
-    ]
-  }); */
 
   const featuredCategory = 'fiestas-tematicas'
   const featuredCategorySwiperOptions = reactive({
@@ -291,7 +725,7 @@
   </ClientOnly>
 
   <h1 class="visually-hidden">
-    Partymax, tu aliado ideal para fiestas en Colombia.
+    Partymax, tu aliado ideal para fiestas, celebraciones y eventos en Bogotá, Colombia.
   </h1>
 
   <!-- B: NEW MAIN BANNER SLIDER -->
@@ -318,6 +752,7 @@
               :to="item.url" 
               class="tw-block tw-w-full tw-h-full"
               rel="noopener"
+              :aria-label="item.title"
             >
               <img 
                 :src="baseURL + (isMobile ? item.mobile : item.image)"
@@ -345,11 +780,12 @@
                 :to="homeFeaturedBanners.products?.url" 
                 class="tw-block tw-w-full tw-h-full"
                 rel="noopener"
+                :aria-label="homeFeaturedBanners.products?.title"
               >
                 <img 
                   :src="homeFeaturedBanners.products?.image" 
-                  :loading="i === 0 ? 'eager' : 'lazy'"
-                  :fetchpriority="i === 0 ? 'high' : 'auto'"
+                  loading="lazy"
+                  fetchpriority="high"
                   cover 
                   class="img-gallery" 
                   :alt="homeFeaturedBanners.products?.title"/>
@@ -362,8 +798,15 @@
                 :to="homeFeaturedBanners.services?.url" 
                 class="tw-block tw-w-full tw-h-full"
                 rel="noopener"
+                :aria-label="homeFeaturedBanners.services?.title"
               >
-                <img :src="homeFeaturedBanners.services?.image" cover class="img-gallery" :alt="homeFeaturedBanners.services?.title"/>
+                <img 
+                  :src="homeFeaturedBanners.services?.image" 
+                  loading="lazy" 
+                  fetchpriority="high" 
+                  cover 
+                  class="img-gallery" 
+                  :alt="homeFeaturedBanners.services?.title"/>
               </NuxtLink>
             </VCardItem>
         </VCard>
@@ -383,11 +826,12 @@
         <VCard class="tw-p-0 tw-shadow-none home-misc-card">
             <VCardItem class="tw-p-0 tw-text-center"> 
               <NuxtLink 
-                  to="/help" 
+                  to="/shipping-policies#express_shipping" 
                   class="tw-block tw-w-full tw-h-full"
                   rel="noopener"
+                  aria-label="Envío Express ¡Recibe Hoy!"
                 >
-                  <img :src="mb_1" class="" loading="lazy" alt="Envío Express ¡Recibe Hoy!"/>
+                  <img :src="mb_1" class="" loading="lazy" fetchpriority="high" alt="Envío Express ¡Recibe Hoy!"/>
               </NuxtLink>
             </VCardItem> 
         </VCard>
@@ -397,8 +841,9 @@
                   to="/products?n" 
                   class="tw-block tw-w-full tw-h-full"
                   rel="noopener"
+                  aria-label="¡Si Llegaron! Lo Más Nuevo"
                 >
-                  <img :src="mb_2" class="" loading="lazy" alt="¡Si Llegaron! Lo Más Nuevo"/>
+                  <img :src="mb_2" class="" loading="lazy" fetchpriority="high" alt="¡Si Llegaron! Lo Más Nuevo"/>
                 </NuxtLink>
             </VCardItem> 
         </VCard>
@@ -408,8 +853,9 @@
                   to="/products/muneco-decorativo-raton-parado-de-62-cm" 
                   class="tw-block tw-w-full tw-h-full"
                   rel="noopener"
+                  aria-label="Descubre La Oferta Del Día"
                 >
-                  <img :src="mb_3" class="" loading="lazy" alt="Descubre La Oferta Del Día"/>
+                  <img :src="mb_3" class="" loading="lazy" fetchpriority="high" alt="Descubre La Oferta Del Día"/>
                 </NuxtLink>
             </VCardItem> 
         </VCard>
@@ -419,8 +865,9 @@
                   to="/products?r" 
                   class="tw-block tw-w-full tw-h-full"
                   rel="noopener"
+                  aria-label="Productos Más Vendidos"
                 >
-                  <img :src="mb_4" class="" loading="lazy" alt="Productos Más Vendidos"/>
+                  <img :src="mb_4" class="" loading="lazy" fetchpriority="high" alt="Productos Más Vendidos"/>
                 </NuxtLink>
             </VCardItem> 
         </VCard>
@@ -430,8 +877,9 @@
                   to="/clients/form_supplier" 
                   class="tw-block tw-w-full tw-h-full"
                   rel="noopener"
+                  aria-label="Quiero Ser Aliado"
                 >
-                  <img :src="mb_5" class="" loading="lazy" alt="Quiero Ser Aliado"/>
+                  <img :src="mb_5" class="" loading="lazy" fetchpriority="high" alt="Quiero Ser Aliado"/>
                 </NuxtLink>
             </VCardItem> 
         </VCard>
@@ -441,8 +889,9 @@
                   to="/blogs" 
                   class="tw-block tw-w-full tw-h-full"
                   rel="noopener"
+                  aria-label="Inspírate con Nuestro Blog"
                 >
-                  <img :src="mb_6" class="" loading="lazy" alt="Inspírate con Nuestro Blog"/>
+                  <img :src="mb_6" class="" loading="lazy" fetchpriority="high" alt="Inspírate con Nuestro Blog"/>
                 </NuxtLink>
             </VCardItem> 
         </VCard>
@@ -471,8 +920,9 @@
                 :to="homeFeaturedBanners.banner9?.url" 
                 class="tw-block tw-w-full tw-h-full"
                 rel="noopener"
+                :aria-label="homeFeaturedBanners.banner9?.title"
               >
-                <img :src="homeFeaturedBanners.banner9?.image" cover  class="img-gallery" :alt="homeFeaturedBanners.banner9?.title"/>
+                <img :src="homeFeaturedBanners.banner9?.image" cover loading="lazy" fetchpriority="auto" class="img-gallery" :alt="homeFeaturedBanners.banner9?.title"/>
               </NuxtLink>
             </VCardItem> 
         </VCard>
@@ -482,8 +932,9 @@
                 :to="homeFeaturedBanners.banner10?.url" 
                 class="tw-block tw-w-full tw-h-full"
                 rel="noopener"
+                :aria-label="homeFeaturedBanners.banner10?.title"
               >
-                <img :src="homeFeaturedBanners.banner10?.image" cover  class="img-gallery" :alt="homeFeaturedBanners.banner10?.title"/>
+                <img :src="homeFeaturedBanners.banner10?.image" cover  cloading="lazy" fetchpriority="auto" class="img-gallery" :alt="homeFeaturedBanners.banner10?.title"/>
               </NuxtLink>
             </VCardItem> 
         </VCard>
@@ -493,8 +944,9 @@
                 :to="homeFeaturedBanners.banner11?.url" 
                 class="tw-block tw-w-full tw-h-full"
                 rel="noopener"
+                :aria-label="homeFeaturedBanners.banner11?.title"
               >
-                <img :src="homeFeaturedBanners.banner11?.image" cover  class="img-gallery" :alt="homeFeaturedBanners.banner11?.title"/>
+                <img :src="homeFeaturedBanners.banner11?.image" cover loading="lazy" fetchpriority="auto" class="img-gallery" :alt="homeFeaturedBanners.banner11?.title"/>
               </NuxtLink>
             </VCardItem> 
         </VCard>
@@ -504,8 +956,9 @@
                 :to="homeFeaturedBanners.banner12?.url" 
                 class="tw-block tw-w-full tw-h-full"
                 rel="noopener"
+                :aria-label="homeFeaturedBanners.banner12?.title"
               >
-                <img :src="homeFeaturedBanners.banner12?.image" cover  class="img-gallery" :alt="homeFeaturedBanners.banner12?.title"/>
+                <img :src="homeFeaturedBanners.banner12?.image" cover loading="lazy" fetchpriority="auto" class="img-gallery" :alt="homeFeaturedBanners.banner12?.title"/>
               </NuxtLink>
             </VCardItem> 
         </VCard>
@@ -519,8 +972,9 @@
                 :to="homeFeaturedBanners.banner13?.url" 
                 class="tw-block tw-w-full tw-h-full"
                 rel="noopener"
+                :aria-label="homeFeaturedBanners.banner13?.title"
               >
-                <img :src="homeFeaturedBanners.banner13?.image" cover  class="img-gallery" :alt="homeFeaturedBanners.banner13?.title"/>
+                <img :src="homeFeaturedBanners.banner13?.image" cover loading="lazy" fetchpriority="auto" class="img-gallery" :alt="homeFeaturedBanners.banner13?.title"/>
               </NuxtLink>
             </VCardItem> 
           </VCard>
@@ -530,8 +984,9 @@
                 :to="homeFeaturedBanners.banner14?.url" 
                 class="tw-block tw-w-full tw-h-full"
                 rel="noopener"
+                :aria-label="homeFeaturedBanners.banner14?.title"
               >
-                <img :src="homeFeaturedBanners.banner14?.image" cover  class="img-gallery" :alt="homeFeaturedBanners.banner14?.title"/>
+                <img :src="homeFeaturedBanners.banner14?.image" cover loading="lazy" fetchpriority="auto" class="img-gallery" :alt="homeFeaturedBanners.banner14?.title"/>
               </NuxtLink>
             </VCardItem> 
           </VCard>
@@ -566,16 +1021,22 @@
                   
                   <NuxtLink
                     :to="'/products/categories/' + featuredCategory + '/' + i.slug.split('/')[1]"
-                    class="tw-no-underline d-block text-center justify-content-center zoom">
+                    class="tw-no-underline d-block text-center justify-content-center zoom"
+                    :aria-label="i.name"
+                    >
                     <img 
                       v-if="i.icon_subcategory" 
                       :src="baseURL + i.icon_subcategory"
                       class="d-block border-theme"
+                      loading="lazy" fetchpriority="auto"
+                      :alt="i.name"
                     />
                     <img 
                       v-else 
                       :src="t_7"
                       class="d-block border-theme"
+                      loading="lazy" fetchpriority="auto"
+                      :alt="i.name"
                     />
                     <span 
                       class="d-block mt-2 tw-text-tertiary" 
@@ -619,8 +1080,9 @@
                   :to="homeFeaturedBanners.banner15?.url" 
                   class="tw-block tw-w-full tw-h-full"
                   rel="noopener"
+                  :aria-label="homeFeaturedBanners.banner15?.title"
                 >
-                  <img :src="homeFeaturedBanners.banner15?.image" cover class="img-gallery" :alt="homeFeaturedBanners.banner15?.title"/>
+                  <img :src="homeFeaturedBanners.banner15?.image" cover loading="lazy" fetchpriority="auto" class="img-gallery" :alt="homeFeaturedBanners.banner15?.title"/>
                 </NuxtLink>
               </VCardItem> 
             </VCard>
@@ -633,8 +1095,9 @@
                   :to="homeFeaturedBanners.banner16?.url" 
                   class="tw-block tw-w-full tw-h-full"
                   rel="noopener"
+                  :aria-label="homeFeaturedBanners.banner16?.title"
                 >
-                  <img :src="homeFeaturedBanners.banner16?.image" cover class="img-gallery" :alt="homeFeaturedBanners.banner16?.title"/>
+                  <img :src="homeFeaturedBanners.banner16?.image" cover loading="lazy" fetchpriority="auto" class="img-gallery" :alt="homeFeaturedBanners.banner16?.title"/>
                 </NuxtLink>
               </VCardItem> 
             </VCard>
@@ -645,6 +1108,58 @@
     </VContainer>
   </section>
   <!-- E: MOST WANTED / RECOMMENDATIONS -->
+
+  <section id="footer-seo" class="mb-4">
+    <VContainer>
+      <h3>En Partymax encuentra los mejores productos para </h3>
+      <p>
+        <NuxtLink to="/products/categories/fiestas-infantiles" aria-label="Fiestas Infantiles">Fiestas Infantiles</NuxtLink> - 
+        <NuxtLink to="/products/categories/fiestas-infantiles/tematica-ninos/tematica-mickey-mouse" aria-label="Temática Mickey Mouse">Temática Mickey Mouse</NuxtLink> - 
+        <NuxtLink to="/products/categories/fiestas-infantiles/tematica-ninos/tematica-spiderman" aria-label="Temática Spiderman">Temática Spiderman</NuxtLink> - 
+        <NuxtLink to="/products/categories/fiestas-infantiles/tematica-ninos/tematica-cars" aria-label="Temática Cars">Temática Cars</NuxtLink> - 
+        <NuxtLink to="/products/categories/fiestas-infantiles/tematica-ninas/tematica-princesas" aria-label="Temática Princesas">Temática Princesas</NuxtLink> - 
+        <NuxtLink to="/products/categories/fiestas-infantiles/tematica-ninas/tematica-frozen" aria-label="Temática Frozen">Temática Frozen</NuxtLink> - 
+        <NuxtLink to="/products/categories/fiestas-infantiles/tematica-ninas/tematica-minnie-mouse" aria-label="Temática Minnie Mouse">Temática Minnie Mouse</NuxtLink> - 
+        <NuxtLink to="/products/categories/fiestas-infantiles/tematica-bebes/tematica-espacial" aria-label="Temática Espacial">Temática Espacial</NuxtLink> - 
+        <NuxtLink to="/products/categories/fiestas-tematicas" aria-label="Fiestas Temáticas">Fiestas Temáticas</NuxtLink> - 
+        <NuxtLink to="/products/categories/fiestas-tematicas/tematica-mexicana" aria-label="Temática Mexicana">Temática Mexicana</NuxtLink> - 
+        <NuxtLink to="/products/categories/fiestas-tematicas/tematica-vallenata" aria-label="Temática Vallenata">Temática Vallenata</NuxtLink> - 
+        <NuxtLink to="/products/categories/fiestas-tematicas/tematica-vaquero" aria-label="Temática Vaquera">Temática Vaquera</NuxtLink> - 
+        <NuxtLink to="/products/categories/fiestas-tematicas/tematica-neon" aria-label="Temática Neón">Temática Neón</NuxtLink> - 
+        <NuxtLink to="/products/categories/fechas-especiales/baby-shower-nina" aria-label="Baby Shower Niña">Baby Shower Niña</NuxtLink> - 
+        <NuxtLink to="/products/categories/fechas-especiales/baby-shower-nino" aria-label="Baby Shower Niño">Baby Shower Niño</NuxtLink> - 
+        <NuxtLink to="/products/categories/fechas-especiales/revelacion" aria-label="Revelación De Género">Revelación De Género</NuxtLink> - 
+        <NuxtLink to="/products/categories/fechas-especiales/bautizo-nina" aria-label="Bautizo Niña">Bautizo Niña</NuxtLink> - 
+        <NuxtLink to="/products/categories/fechas-especiales/bautizo-nino" aria-label="Bautizo Niño">Bautizo Niño</NuxtLink> - 
+        <NuxtLink to="/products/categories/fechas-especiales/graduacion" aria-label="Graduación">Graduación</NuxtLink> - 
+        <NuxtLink to="/products/categories/fechas-especiales/despedida-de-soltera" aria-label="Despedida de Soltera">Despedida de Soltera</NuxtLink> - 
+        <NuxtLink to="/products/categories/fechas-especiales/dia-de-la-madre-y-del-padre" aria-label="Día de la Madre y del Padre">Día de la Madre y del Padre</NuxtLink> - 
+        <NuxtLink to="/products/categories/fechas-especiales/navidad" aria-label="Navidad">Navidad</NuxtLink> - 
+        <NuxtLink to="/products/categories/globos/globos-latex" aria-label="Globos Látex">Globos Látex</NuxtLink> - 
+        <NuxtLink to="/products/categories/globos/globos-metalizados" aria-label="Globos Metalizados">Globos Metalizados</NuxtLink> - 
+        <NuxtLink to="/products/categories/decoracion/globos-chinos" aria-label="Globos Chinos">Globos Chinos</NuxtLink> - 
+        <NuxtLink to="/products/categories/decoracion/velas" aria-label="Velas Decorativas">Velas Decorativas</NuxtLink> - 
+        <NuxtLink to="/products/categories/decoracion/cortinas-metalizadas" aria-label="Cortinas Metalizadas">Cortinas Metalizadas</NuxtLink> - 
+        <NuxtLink to="/products/categories/hora-loca" aria-label="Hora Loca">Hora Loca</NuxtLink> - 
+        <NuxtLink to="/products/categories/desechables" aria-label="Desechables">Desechables</NuxtLink> - 
+        <NuxtLink to="/products/categories/sorpresas/sorpresas-para-ninas-y-ninos" aria-label="Sorpresas para Niños y Niñas">Sorpresas para Niños y Niñas</NuxtLink> - 
+        <NuxtLink to="/products/categories/dulces-y-pinatas/pinatas" aria-label="Piñatas">Piñatas</NuxtLink> - 
+        <NuxtLink to="/products/categories/dulces-y-pinatas/dulces-y-caramelos" aria-label="Dulces y Caramelos">Dulces y Caramelos</NuxtLink> - 
+        <NuxtLink to="/services/categories/alimentos-y-bebidas/bruch-y-desayunos-sorpresa" aria-label="Brunch y Desayunos Sorpresa">Brunch y Desayunos Sorpresa</NuxtLink> - 
+        <NuxtLink to="/services/categories/musica-e-iluminacion" aria-label="Música e Iluminación">Música e Iluminación</NuxtLink> - 
+        <NuxtLink to="/services/categories/flores" aria-label="Flores">Flores</NuxtLink> - 
+        <NuxtLink to="/services/categories/inflables-y-saltarines" aria-label="Inflables y Saltarines">Inflables y Saltarines</NuxtLink> - 
+        <NuxtLink to="/products/extintor-revelacion-genero-baby-shower" aria-label="Extintor Revelación de Género">Extintor Revelación de Género</NuxtLink> - 
+        <NuxtLink to="/categories/decoracion" aria-label="Decoración">Decoración</NuxtLink> - 
+        <NuxtLink to="/products/categories/decoracion/pompones" aria-label="Pompones Decorativos">Pompones Decorativos</NuxtLink> - 
+        <NuxtLink to="/products/sombrero-granjero" aria-label="Sombrero Granjero">Sombrero Granjero</NuxtLink> - 
+        <NuxtLink to="/products/categories/hora-loca/pitos-y-cornetas" aria-label="Pitos y Cornetas">Pitos y Cornetas</NuxtLink> - 
+        <NuxtLink to="/products/espanta-suegras-tiras-metalizadas-25-unidades" aria-label="Espanta Suegras">Espanta Suegras</NuxtLink> - 
+        <NuxtLink to="/products/sombrero-vaquero-rosado" aria-label="Sombrero Vaquero Rosado">Sombrero Vaquero Rosado</NuxtLink>
+        <span>y mucho más.</span>
+      </p>
+    </VContainer>
+  </section>
 
 <!-- **************************************************************** OLD HOMEPAGE **************************************************************** -->
   <ClientOnly>
@@ -990,6 +1505,24 @@
     display: none;
   }
 
+  #footer-seo h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+  #footer-seo p {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  #footer-seo p, #footer-seo a {
+    font-size: 12px;
+    text-decoration: none;
+    color: #888;
+  }
+
   @media only screen and (max-width: 1280px) {
     .most-wanted-banners .v-card {
       max-height: 180px;
@@ -1124,6 +1657,14 @@
 
     .text-message {
       font-size: 18px;
+    }
+
+
+    #footer-seo h3 {
+      text-align: center;
+    }
+    #footer-seo p {
+      justify-content: center;
     }
   }
 

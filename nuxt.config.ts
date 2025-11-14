@@ -113,7 +113,8 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/': { prerender: process.env.NODE_ENV === 'development' ? false : true },
+    // '/': { prerender: process.env.NODE_ENV === 'development' ? false : true },
+    '/': { ssr: true, swr: 3600 },
     '/.well-known/**': { ssr: false },
     '/blogs': { ssr: true, swr: 3600 },
     '/blogs/*': { ssr: true, swr: 3600 },
