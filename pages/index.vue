@@ -621,7 +621,7 @@
 
     const allImages = data.value.images;
     // sliders.value = data.value.images.filter(item => item.is_slider === 1);
-    sliders.value = allImages.filter(item => item.is_slider === 1).sort((a, b) => a.order_id - b.order_id);
+    // sliders.value = allImages.filter(item => item.is_slider === 1).sort((a, b) => a.order_id - b.order_id);
     
     banners.value = data.value.images.filter(item => item.is_slider === 0);
 
@@ -683,7 +683,6 @@
 
   onMounted(() => {
     fetchSliderBannersData();
-    console.log("Sliders cargados en el cliente:", sliders.value);
   });
 
   const redirectTo = (url) => {
