@@ -143,6 +143,8 @@ const documentTypes = ref([])
 
 const currentStep = ref(0)
 const isLoading = ref(false)
+// Indica si ya se intentó cargar el carrito al menos una vez
+const hasLoadedCart = ref(false)
 const isActiveStepValid = ref(false)
 
 const getProvinces = computed(() => {
@@ -179,9 +181,10 @@ onMounted(async () => {
     loadProvinces()
 
     selectCountry(selectedAddress.value.country_id)
-})
 
-watchEffect(fetchData)
+    // Cargar carrito una sola vez al montar; el resto de llamadas son explícitas
+    await fetchData()
+})
 
 async function fetchData() {
 
@@ -278,6 +281,7 @@ async function fetchData() {
 
     notAllowedIPs.value = await miscellaneousStores.ips();
 
+    hasLoadedCart.value = true
     isLoading.value = false
 }
 
@@ -993,7 +997,7 @@ const chanceSend = value => {
           
 
             <VCard 
-                v-if="products.length === 0 && (typeof route.query.merchantId === 'undefined') && !isLoading"
+                v-if="hasLoadedCart && products.length === 0 && (typeof route.query.merchantId === 'undefined') && !isLoading"
                 class="mb-10 card-timeline px-0">
                 <VCardText class="d-flex flex-column align-center text-center justify-content-center">
                     <VCardItem class="d-block align-center text-center justify-content-center cart-svg">
