@@ -155,7 +155,7 @@ onMounted(() => {
 </script>
 
 <template>              
-    <VCardText class="row-cardp3 px-5 px-md-8 py-0">
+    <VCardText class="row-cardp3 px-5 px-md-8 py-0 d-none">
         <VCheckbox
             v-model="sendDifferentAddress"
             class="different-checkbox"
@@ -168,7 +168,7 @@ onMounted(() => {
             </template>
         </VCheckbox>
     </VCardText>
-    <VCardText class="row-cardp3 px-5 px-md-8 py-0 mt-5">
+    <VCardText class="row-cardp3 px-5 px-md-8 py-0">
         <span>Forma de envio</span>
     </VCardText>
     <VCardText class="pt-2">

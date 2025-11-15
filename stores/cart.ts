@@ -114,9 +114,7 @@ export const useCartStores = defineStore('cart', {
                     } else
                         shoppingCart.push(data)
 
-                    setTimeout(() => {
-                        this.count = shoppingCart.length
-                    }, 3000)
+                    this.count = shoppingCart.length
                     
                     localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart))
 

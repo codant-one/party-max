@@ -233,9 +233,11 @@ async function fetchData() {
                 summary.value.discount = Number(coupon.value.amount).toFixed(2)
 
             summary.value.subTotalDiscount = (summary.value.subTotal - summary.value.discount).toFixed(2)
+        } else {
+            summary.value.discount = 0
         }
 
-        summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal)).toFixed(2)
+        summary.value.total = (parseFloat(summary.value.send) + parseFloat(summary.value.subTotal) - parseFloat(summary.value.discount)).toFixed(2)
 
         if (province_id.value === 293 && parseFloat(summary.value.subTotal) <= parseFloat('150000')) {
             chanceSend('sendToBogota')
@@ -465,7 +467,7 @@ const addCart = async (data) =>{
         }
     }
 
-    cartStores.add(data_)
+    await cartStores.add(data_)
 
     await fetchData()
 }
