@@ -39,6 +39,10 @@ const slug1 = ref(null)
 const slug2 = ref(null)
 const slug3 = ref(null)
 const slug4 = ref(null)
+const url = ref(null)
+const url2 = ref(null)
+const url3 = ref(null)
+const url4 = ref(null)
 const band = ref(0)
 const category_type_id = ref()
 
@@ -53,6 +57,13 @@ const modules = ref([Pagination])
 const isProductsSlug = computed(() => route.params.slug === 'products')
 const isServicesSlug = computed(() => route.params.slug === 'services')
 const isSpecialSlug = computed(() => isProductsSlug.value || isServicesSlug.value)
+
+// Utils to handle external links safely
+const isExternal = (link) => typeof link === 'string' && /^https?:\/\//i.test(link)
+const isExternal1 = computed(() => isSpecialSlug.value && isExternal(url.value))
+const isExternal2 = computed(() => isSpecialSlug.value && isExternal(url2.value))
+const isExternal3 = computed(() => isSpecialSlug.value && isExternal(url3.value))
+const isExternal4 = computed(() => isSpecialSlug.value && isExternal(url4.value))
 
 const setThumbsSwiper = (swiper) => {
     thumbsSwiper.value = swiper;
@@ -141,12 +152,16 @@ async function fetchData() {
 
       image1.value = banners?.banner ? baseURL.value + banners.banner : banner1
       slug1.value = banners?.banner1?.slug ? banners.banner1.slug.split('/')[1] : null
+      url.value = banners?.url ?? null
       image2.value = banners?.banner_2 ? baseURL.value + banners.banner_2 : banner2
       slug2.value = banners?.banner2?.slug ? banners.banner2.slug.split('/')[1] : null
+      url2.value = banners?.url_2 ?? null
       image3.value = banners?.banner_3 ? baseURL.value + banners.banner_3 : banner3
       slug3.value = banners?.banner3?.slug ? banners.banner3.slug.split('/')[1] : null
+      url3.value = banners?.url_3 ?? null
       image4.value = banners?.banner_4 ? baseURL.value + banners.banner_4 : banner4
       slug4.value = banners?.banner4?.slug ? banners.banner4.slug.split('/')[1] : null
+      url4.value = banners?.url_4 ?? null
       category_type_id.value = banners?.category_type_id ?? (isProductsSlug.value ? 1 : 2)
     } else {
       await miscellaneousStores.getCategory(route.params.slug)
@@ -226,15 +241,21 @@ const handleCategoryClickServices = (category, subcategory = null, fathercategor
   <h1 class="visually-hidden">
     Partymax, tu aliado ideal para fiestas en Colombia.
   </h1>
-
   <VContainer class="mt-1 mt-md-10" v-if="data">
     <VCard class="no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
-        <NuxtLink
-          :to="isSpecialSlug ? `/${route.params.slug}` : (category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug1) : buildPrettyPathServices(route.params.slug, slug1))"
-          @click.prevent="isSpecialSlug ? router.push(`/${route.params.slug}`) : (category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug1) : handleCategoryClickServices(route.params.slug, slug1))">
-          <VImg :src="image1" cover class="img-style"/>
-        </NuxtLink>
+        <template v-if="isExternal1">
+          <a :href="url" class="tw-no-underline">
+            <VImg :src="image1" cover class="img-style"/>
+          </a>
+        </template>
+        <template v-else>
+          <NuxtLink
+            :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug1) : buildPrettyPathServices(route.params.slug, slug1)"
+            @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug1) : handleCategoryClickServices(route.params.slug, slug1)">
+            <VImg :src="image1" cover class="img-style"/>
+          </NuxtLink>
+        </template>
       </VCardItem>  
     </VCard>
 
@@ -320,35 +341,60 @@ const handleCategoryClickServices = (category, subcategory = null, fathercategor
     <!-- banner 2 , banner 3-->
     <VCard class="mt-7 no-shadown card-information p-0 d-block d-md-flex transparent">
         <VCard class="no-shadown card-information p-0 w-100 w-md-50">
-          <NuxtLink
-            :to="isSpecialSlug ? `/${route.params.slug}` : (category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug2) : buildPrettyPathServices(route.params.slug, slug2))"
-            @click.prevent="isSpecialSlug ? router.push(`/${route.params.slug}`) : (category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug2) : handleCategoryClickServices(route.params.slug, slug2))"
-            class="tw-no-underline">
-            <VCardItem class="p-0">
-              <VImg :src="image2" cover class="img-style"/>
-            </VCardItem>  
-          </NuxtLink>
+          <template v-if="isExternal2">
+            <a :href="url2" class="tw-no-underline">
+              <VCardItem class="p-0">
+                <VImg :src="image2" cover class="img-style"/>
+              </VCardItem>
+            </a>
+          </template>
+          <template v-else>
+            <NuxtLink
+              :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug2) : buildPrettyPathServices(route.params.slug, slug2)"
+              @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug2) : handleCategoryClickServices(route.params.slug, slug2)"
+              class="tw-no-underline">
+              <VCardItem class="p-0">
+                <VImg :src="image2" cover class="img-style"/>
+              </VCardItem>
+            </NuxtLink>
+          </template>
         </VCard>
         <VCard class="no-shadown card-information p-0 w-100 w-md-50 ms-0 ms-md-5 mt-7 mt-md-0">
-          <NuxtLink
-            :to="isSpecialSlug ? `/${route.params.slug}` : (category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug3) : buildPrettyPathServices(route.params.slug, slug3))"
-            @click.prevent="isSpecialSlug ? router.push(`/${route.params.slug}`) : (category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug3) : handleCategoryClickServices(route.params.slug, slug3))"
-            class="tw-no-underline">
-            <VCardItem class="p-0">
-              <VImg :src="image3" cover class="img-style"/>
-            </VCardItem>  
-          </NuxtLink>
+          <template v-if="isExternal3">
+            <a :href="url3" class="tw-no-underline">
+              <VCardItem class="p-0">
+                <VImg :src="image3" cover class="img-style"/>
+              </VCardItem>
+            </a>
+          </template>
+          <template v-else>
+            <NuxtLink
+              :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug3) : buildPrettyPathServices(route.params.slug, slug3)"
+              @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug3) : handleCategoryClickServices(route.params.slug, slug3)"
+              class="tw-no-underline">
+              <VCardItem class="p-0">
+                <VImg :src="image3" cover class="img-style"/>
+              </VCardItem>
+            </NuxtLink>
+          </template>
         </VCard>
     </VCard>
 
       <!--Banner 4-->
     <VCard class="mt-7 no-shadown card-information p-0 transparent">
       <VCardItem class="p-0">
-        <NuxtLink
-          :to="isSpecialSlug ? `/${route.params.slug}` : (category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug4) : buildPrettyPathServices(route.params.slug, slug4))"
-          @click.prevent="isSpecialSlug ? router.push(`/${route.params.slug}`) : (category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug4) : handleCategoryClickServices(route.params.slug, slug4))">
-          <VImg :src="image4" cover class="img-style"/>
-        </NuxtLink>
+        <template v-if="isExternal4">
+          <a :href="url4" class="tw-no-underline">
+            <VImg :src="image4" cover class="img-style"/>
+          </a>
+        </template>
+        <template v-else>
+          <NuxtLink
+            :to="category_type_id === 1 ? buildPrettyPathProducts(route.params.slug, slug4) : buildPrettyPathServices(route.params.slug, slug4)"
+            @click.prevent="category_type_id === 1 ? handleCategoryClickProducts(route.params.slug, slug4) : handleCategoryClickServices(route.params.slug, slug4)">
+            <VImg :src="image4" cover class="img-style"/>
+          </NuxtLink>
+        </template>
       </VCardItem>  
     </VCard>
 
