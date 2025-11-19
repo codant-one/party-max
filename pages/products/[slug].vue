@@ -162,7 +162,7 @@ watch(productData, (newData) => {
     };
 
     const cleanName = cleanText(newData.product.name);
-    const originalDescriptionText = `Descubre nuestro '${newData.product.name}' en Partymax. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ✨. ${newData.keywords.join(', ')}`
+    const originalDescriptionText = `Compra ${newData.product.name} en Partymax, Bogotá, Colombia. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ${newData.keywords.join(', ')}`
     const cleanDescriptionText = cleanText(originalDescriptionText);
     
     const cleanId = String(newData.product.id).replace(/"/g, '');

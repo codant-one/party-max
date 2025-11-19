@@ -69,7 +69,7 @@ const rating = ref(5)
 const { isMobile } = useDevice();
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
 const twitterAccount = ref(config.public.TWITTER_ACCOUNT ?? '')
-const title = ref('PRODUCTOS')
+const title = ref('Productos')
 const descriptionText = ref('')
 const cat = ref(null)
 const image = ref(null)
@@ -293,7 +293,7 @@ async function fetchData() {
   isLoading.value = false;
 }
 
-useSeoMeta({
+/* useSeoMeta({
   title: title.value + ' | Partymax',
   description: descriptionText.value,
   ogType: 'products',
@@ -310,7 +310,25 @@ useSeoMeta({
   twitterDescription: descriptionText.value,
   twitterImage: image.value,
   twitterSite: twitterAccount.value
-})
+}) */
+useServerSeoMeta({
+  title: title.value + ' | Partymax',
+  description: descriptionText.value,
+  ogType: 'products',
+  ogUrl:  `https://${config.public.MY_DOMAIN}${route.fullPath}` ,
+  ogTitle: title.value + ' | Partymax',
+  ogDescription: descriptionText.value,
+  ogSiteName: 'Partymax',
+  ogImage: image.value,
+  ogImageWidth: '1200',
+  ogImageHeight: '630',
+  ogImageAlt: title.value + ' | Partymax',
+  twitterCard: 'summary_large_image',
+  twitterTitle: title.value + ' | Partymax',
+  twitterDescription: descriptionText.value,
+  twitterImage: image.value,
+  twitterSite: twitterAccount.value
+}, { priority: 1 })
 
 const changePage = (value) => {
   if(value === 'prev' && currentPage.value !== 1) {

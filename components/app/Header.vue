@@ -453,7 +453,7 @@
       >
         <div style="padding: 4px 16px;">
           <h2 class="d-block title-menu tw-uppercase pt-6 pb-2">Hola</h2>
-          <span class="d-block tw-text-primary pm-username-mobile">Arturo Guarin</span>
+          <span class="d-block tw-text-primary pm-username-mobile">{{name}}</span>
         </div>
 
         <!-- B: PROFILE MENU -->
