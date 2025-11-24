@@ -162,7 +162,10 @@ watch(productData, (newData) => {
     };
 
     const cleanName = cleanText(newData.product.name);
-    const originalDescriptionText = `Compra ${newData.product.name} en Partymax, Bogotá, Colombia. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ${newData.keywords.join(', ')}`
+    const cleanNameWithPrefix = 'Comprar ' + cleanText(newData.product.name);
+    // const originalDescriptionText = `Compra ${newData.product.name} en Partymax, Bogotá, Colombia. ¡El complemento perfecto para celebrar con estilo! Ideal para fiestas, noches especiales o cualquier ocasión que merezca brillar. ${newData.keywords.join(', ')}`
+    const originalDescriptionText = `¡Compra ahora ${newData.product.name} en Partymax! Stock en Bogotá con envío rápido. Haz tu celebración inolvidable de forma fácil y económica. 🛒`
+
     const cleanDescriptionText = cleanText(originalDescriptionText);
     
     const cleanId = String(newData.product.id).replace(/"/g, '');
@@ -172,7 +175,7 @@ watch(productData, (newData) => {
     const formattedPrice = Number(priceAsNumber.toFixed(2))
 
     useSeoMeta({
-      title: cleanName+ ' | Partymax',
+      title: cleanNameWithPrefix + ' | Partymax',
       description: cleanDescriptionText,
       ogType: 'product',
       ogUrl: productUrl,
@@ -193,8 +196,6 @@ watch(productData, (newData) => {
     useHead({
       link: [ { rel: 'canonical', href: productUrl } ],
       meta: [
-        { name: 'product:availability', content: 'in stock' },
-        { name: 'product:condition', content: 'new' },
         { name: 'product:price:amount', content: formattedPrice },
         { name: 'product:price:currency', content: 'COP' },
         { name: 'product:availability', content: 'in stock' },
@@ -547,6 +548,69 @@ const buildEmbedUrl = (url) => {
   return url;
 }
 
+const generateAltText = (productName, index) => {  
+  let altText = `${productName} - Foto ${index + 1} | Partymax`;
+  return altText;
+};
+
+const breadcrumbSchema = computed(() => {
+  if (!bread.value || bread.value.length <= 1) {
+    return null;
+  }
+  const itemListElement = bread.value
+    .filter(item => item.title)
+    .map((item, index, array) => {
+      
+      let url;
+      let name;
+      
+      if (index === array.length - 1) {
+          url = productUrl.value;
+          name = title.value; 
+      } else {
+          url = item.href 
+              ? `https://${config.public.MY_DOMAIN}${item.href}` 
+              : `https://${config.public.MY_DOMAIN}`;
+          name = item.title;
+      }
+
+      return {
+        '@type': 'ListItem',
+        'position': index + 1,
+        'item': {
+          '@id': url,
+          'name': name
+        }
+      };
+    });
+
+  if (itemListElement.length <= 1) {
+      return null;
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': itemListElement,
+  };
+});
+
+useHead(() => {
+  const schema = breadcrumbSchema.value;
+  
+  if (schema) {
+    return {
+      script: [
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify(schema),
+          key: 'breadcrumb-schema-ld',
+        },
+      ],
+    };
+  }
+  return {};
+});
 </script>
 
 <template>
@@ -636,13 +700,14 @@ const buildEmbedUrl = (url) => {
                     <img 
                       v-if="slide.type === 'image'"
                       :src="slide.url" 
-                      :alt="'image-'+index"
+                      :alt="`${title} - Vista ${index + 1} de la galería`"
                       width="60"
+                      height="60"
                     />
                     <template  v-else>
                       <img                         
                         :src="slide.thumb"
-                        :alt="'thumbnail-'+index"
+                        :alt="`${title} - Vista ${index + 1} de la galería`"
                         class="thumb-media"
                       />
                       <div class="play-overlay">
@@ -671,6 +736,7 @@ const buildEmbedUrl = (url) => {
                     <div v-if="isDesktop">
                       <inner-image-zoom
                         :src="slide.url"
+                        :alt="generateAltText(title, index)"
                         :zoomSrc="slide.url"
                         :zoomPreload="true"
                         zoomScale="2"
@@ -678,7 +744,7 @@ const buildEmbedUrl = (url) => {
                       />
                     </div>
                     <div v-if="isMobile" class="swiper-zoom-container">
-                      <img :src="slide.url" :alt="'slide-'+index" class="zoom-in"/>
+                      <img :src="slide.url" :alt="generateAltText(title, index)" class="zoom-in"/>
                     </div>
                   </template>
                   <iframe
@@ -727,7 +793,7 @@ const buildEmbedUrl = (url) => {
                         <div class="d-flex align-center justify-center">
                           <img 
                             width="75"
-                            :src="baseURL + item.image" />
+                            :src="baseURL + item.image" :alt="`${title} - Opción ${item.title} | Partymax`" />
                         </div>
                       </div>
                     </template>
@@ -735,7 +801,7 @@ const buildEmbedUrl = (url) => {
                 </span>
               </VCardText>
               <VCardText class="p-0 d-block border-title mt-2" v-if="single_description !== null && single_description.length > 10">
-                <span class="d-block tw-text-tertiary ms-5 mb-2 tw-leading-5" v-html="single_description" />
+                <p class="d-block tw-text-tertiary ms-5 mb-2 tw-leading-5" v-html="single_description" />
               </VCardText>
 
               <VCardText class="p-0 d-flex mt-2 mt-md-4 mb-md-2">
@@ -763,6 +829,7 @@ const buildEmbedUrl = (url) => {
                     @click="addCart"
                     class="btn-register tw-text-white tw-bg-primary button-hover" 
                     :disabled="(in_stock === 0 || cant_prod > cant_stock) ? true : false"
+                    :aria-label="`Añadir ${title} al carrito de compras`"
                     >
                       Agregar al carrito
                       <VProgressCircular
@@ -805,7 +872,7 @@ const buildEmbedUrl = (url) => {
             <VCol cols="12" class="d-block description">
               <v-window v-model="tab">
                 <v-window-item value="0">
-                  <span v-html="description" class="content"></span>
+                  <p v-html="description" class="content"></p>
                 </v-window-item>
                 <v-window-item value="1">
                   <VCardText>

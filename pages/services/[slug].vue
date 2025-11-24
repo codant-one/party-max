@@ -680,11 +680,76 @@ const buildEmbedUrl = (url) => {
   return url;
 }
 
+const generateAltText = (productName, index) => {  
+  let altText = `${productName} - Foto ${index + 1} | Partymax`;
+  return altText;
+};
+
+const breadcrumbSchema = computed(() => {
+  if (!bread.value || bread.value.length <= 1) {
+    return null;
+  }
+  const itemListElement = bread.value
+    .filter(item => item.title)
+    .map((item, index, array) => {
+      
+      let url;
+      let name;
+      
+      if (index === array.length - 1) {
+          url = serviceUrl.value;
+          name = title.value; 
+      } else {
+          url = item.href 
+              ? `https://${config_.public.MY_DOMAIN}${item.href}` 
+              : `https://${config_.public.MY_DOMAIN}`;
+          name = item.title;
+      }
+
+      return {
+        '@type': 'ListItem',
+        'position': index + 1,
+        'item': {
+          '@id': url,
+          'name': name
+        }
+      };
+    });
+
+  if (itemListElement.length <= 1) {
+      return null;
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': itemListElement,
+  };
+});
+
+useHead(() => {
+  const schema = breadcrumbSchema.value;
+  
+  if (schema) {
+    return {
+      script: [
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify(schema),
+          key: 'breadcrumb-schema-ld',
+        },
+      ],
+    };
+  }
+  return {};
+});
+
+
 </script>
 
 <template>
   <section>
-   <VAppBar flat class="breadcumb tw-bg-cyan pt-1">
+   <VAppBar flat class="breadcumb pm-breadcrumb">
       <VContainer class="tw-text-tertiary d-flex align-center px-0">
         <v-breadcrumbs :items="bread" class="px-2" />
       </VContainer>
@@ -768,13 +833,14 @@ const buildEmbedUrl = (url) => {
                   <img 
                     v-if="slide.type === 'image'"
                     :src="slide.url" 
-                    :alt="'image-'+index"
+                    :alt="`${title} - Vista ${index + 1} de la galería`"
                     width="60"
+                    height="60"
                   />
                   <template  v-else>
                     <img                         
                       :src="slide.thumb"
-                      :alt="'thumbnail-'+index"
+                      :alt="`${title} - Vista ${index + 1} de la galería`"
                       class="thumb-media"
                     />
                     <div class="play-overlay">
@@ -803,6 +869,7 @@ const buildEmbedUrl = (url) => {
                     <div v-if="isDesktop">
                       <inner-image-zoom
                         :src="slide.url"
+                        :alt="generateAltText(title, index)"
                         :zoomSrc="slide.url"
                         :zoomPreload="true"
                         zoomScale="2"
@@ -810,7 +877,7 @@ const buildEmbedUrl = (url) => {
                       />
                     </div>
                     <div v-if="isMobile" class="swiper-zoom-container">
-                      <img :src="slide.url" :alt="'slide-'+index" class="zoom-in"/>
+                      <img :src="slide.url" :alt="generateAltText(title, index)" class="zoom-in"/>
                     </div>
                   </template>
                   <iframe
@@ -937,7 +1004,7 @@ const buildEmbedUrl = (url) => {
                 </VRow> 
               </VCardText>
               <VCardText class="p-0 d-block border-title mt-2" v-if="single_description !== null && single_description.length > 10">
-                <span class="d-block tw-text-tertiary ms-5 mb-2 tw-leading-5" v-html="single_description" />
+                <p class="d-block tw-text-tertiary ms-5 mb-2 tw-leading-5" v-html="single_description" />
               </VCardText>
               <VCardText class="p-0 d-block d-md-flex justify-content-between align-center text-center border-title">
                 <VBtn 
@@ -1022,6 +1089,7 @@ const buildEmbedUrl = (url) => {
                     variant="flat"
                     @click="addCart"
                     class="btn-register tw-text-white tw-bg-primary button-hover mx-5 my-5" 
+                    :aria-label="`Añadir ${title} al carrito de compras`"
                     >
                       Agregar al carrito
                       <VProgressCircular
@@ -1063,7 +1131,7 @@ const buildEmbedUrl = (url) => {
             <VCol cols="12" class="d-block description">
               <v-window v-model="tab">
                 <v-window-item value="0">
-                  <span v-html="description" class="content"></span>
+                  <p v-html="description" class="content"></p>
                 </v-window-item>
                 <v-window-item value="1">
                   <VCardText class="py-0">
@@ -2063,6 +2131,16 @@ input[altinputclass="inlinePicker"] {
 
   .redes-mobile {
     display: none;
+  }
+
+  .pm-main {
+    padding-top: 83px !important;
+    top: 0 !important;
+    position: relative !important;
+  }
+  .pm-breadcrumb {
+    position: relative !important;
+    top: unset !important;
   }
 
   @media only screen and (max-width: 767px) {

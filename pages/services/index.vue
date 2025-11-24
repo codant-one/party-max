@@ -2,7 +2,7 @@
 
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation, Pagination } from 'swiper/modules';
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useHomeStores } from "@/stores/home";
 import { useMiscellaneousStores } from "@/stores/miscellaneous";
 import { useCategoriesStores } from '@/stores/categories'
@@ -61,7 +61,8 @@ const { isMobile } = useDevice();
 const baseURL = ref(config.public.APP_DOMAIN_API_URL + '/storage/')
 const twitterAccount = ref(config.public.TWITTER_ACCOUNT ?? '')
 const descriptionText = ref('')
-const title = ref('SERVICIOS')
+const title = ref('Servicios')
+const titleHidden = ref('')
 const cat = ref(null)
 const image = ref(null)
 
@@ -230,7 +231,8 @@ async function fetchData() {
   });
 
   //metadescription
-  descriptionText.value = `Encuentra en Partymax los mejores servicios, ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉 `
+  titleHidden.value = 'Encuentra y adquiere los mejores servicios en Partymax, ideales para fiestas, despedidas y celebraciones únicas en Bogotá, Colombia.'
+  descriptionText.value = `Encuentra y adquiere los mejores servicios en Partymax, ideales para fiestas, despedidas y celebraciones únicas en Bogotá, Colombia. ¡Personaliza tu evento, fiesta o celebración con calidad, variedad y con los precios más competitivos! 🎉`
   
   if(categoriesStores.getCategory || categoriesStores.getSubcategory || categoriesStores.getFathercategory) {
     const currentTitle = category.value?.subcategory ?? category.value?.title
@@ -238,31 +240,13 @@ async function fetchData() {
       title.value = currentTitle
       const iconPath = cat.value?.icon_subcategory ?? null
       image.value = iconPath ? (baseURL.value + iconPath) : (config.public.APP_DOMAIN_API_URL + '/images/categories.jpg')
-      descriptionText.value = `Encuentra en Partymax los mejores servicios de '${title.value}', ideales para fiestas, despedidas y celebraciones únicas. ¡Personaliza tu evento con calidad, variedad y los precios más competitivos! 🎉 ` + (cat.value?.keywords || '')
+      titleHidden.value = `Encuentra y adquiere los mejores servicios de ${title.value} en Partymax, ideales para fiestas, despedidas y celebraciones únicas en Bogotá, Colombia.`
+      descriptionText.value = `Encuentra y adquiere los mejores servicios de '${title.value} en Partymax', ideales para fiestas, despedidas y celebraciones únicas en Bogotá, Colombia. ¡Personaliza tu evento, fiesta o celebración con calidad, variedad y con los precios más competitivos! 🎉 ` + (cat.value?.keywords || '')
     }
   }
 
   isLoading.value = false;
 }
-
-useSeoMeta({
-  title: title.value + ' | Partymax',
-  description: descriptionText.value,
-  ogType: 'products',
-  ogUrl:  `https://${config.public.MY_DOMAIN}${route.fullPath}` ,
-  ogTitle: title.value + ' | Partymax',
-  ogDescription: descriptionText.value,
-  ogSiteName: 'Partymax',
-  ogImage: image.value,
-  ogImageWidth: '1200',
-  ogImageHeight: '630',
-  ogImageAlt: title.value + ' | Partymax',
-  twitterCard: 'summary_large_image',
-  twitterTitle: title.value + ' | Partymax',
-  twitterDescription: descriptionText.value,
-  twitterImage: image.value,
-  twitterSite: twitterAccount.value
-})
 
 const changePage = (value) => {
   if(value === 'prev' && currentPage.value !== 1) {
@@ -464,10 +448,113 @@ const onAllCategoriesClick = () => {
   }
 }
 
+const breadcrumbSchema = computed(() => {
+  if (!bread.value || bread.value.length <= 1) {
+    return null;
+  }
+
+  const validBreadcrumbs = bread.value
+    .filter(item => item.title && item.href); 
+
+  if (validBreadcrumbs.length <= 1) {
+      return null;
+  }
+
+  const itemListElement = validBreadcrumbs
+    .map((item, index) => { 
+      const url = `https://${config.public.MY_DOMAIN}${item.href}`; 
+
+      return {
+        '@type': 'ListItem',
+        'position': index + 1,
+        'name': item.title,
+        'item': url,
+      };
+    });
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': itemListElement,
+  };
+});
+
+const collectionPageSchema = computed(() => {
+  if (isLoading.value || !title.value) {
+    return null;
+  }
+  
+  const breadcrumb = breadcrumbSchema.value; 
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": title.value,
+    "url": `https://${config.public.MY_DOMAIN}${route.fullPath}`,
+    "description": descriptionText.value,
+    "inLanguage": "es",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Partymax",
+      "url": `https://${config.public.MY_DOMAIN}`,
+    },
+  };
+  
+  if (breadcrumb) {
+      schema.breadcrumb = breadcrumb;
+  }
+
+  schema.mainEntity = {
+      "@type": "ItemList",
+      "numberOfItems": totalServices.value,
+  };
+
+  return schema;
+});
+
+useHead(() => {
+  const schema = collectionPageSchema.value;
+  
+  if (schema) {
+    return {
+      script: [
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify(schema),
+          key: 'collection-page-schema-ld', 
+        },
+      ],
+    };
+  }
+  return {};
+});
+
+useSeoMeta({
+  title: title.value + ' | Partymax',
+  description: descriptionText.value,
+  ogType: 'products',
+  ogUrl:  `https://${config.public.MY_DOMAIN}${route.fullPath}` ,
+  ogTitle: title.value + ' | Partymax',
+  ogDescription: descriptionText.value,
+  ogSiteName: 'Partymax',
+  ogImage: image.value,
+  ogImageWidth: '1200',
+  ogImageHeight: '630',
+  ogImageAlt: title.value + ' | Partymax',
+  twitterCard: 'summary_large_image',
+  twitterTitle: title.value + ' | Partymax',
+  twitterDescription: descriptionText.value,
+  twitterImage: image.value,
+  twitterSite: twitterAccount.value
+});
+useHead({
+  link: [ { rel: 'canonical', href: `https://${config.public.MY_DOMAIN}${route.fullPath}` } ]
+});
 </script>
 
 <template>
   <section>
+    <h1 class="visually-hidden">{{ titleHidden }}</h1>
     <VAppBar flat class="breadcumb pm-breadcrumb">
       <VContainer class="tw-text-tertiary d-flex align-center px-0">
         <v-breadcrumbs :items="bread" class="px-2">
@@ -477,6 +564,7 @@ const onAllCategoriesClick = () => {
               v-else
               :to="item.href"
               class="tw-no-underline tw-text-tertiary hover:tw-text-primary v-breadcrumbs-item"
+              :aria-label="`Breadcrumb: ${item.title}`"
               @click.prevent="onBreadcrumbClickServices(item, index)"
             >
               {{ item.title }}
@@ -497,6 +585,7 @@ const onAllCategoriesClick = () => {
                 to="/services"
                 @click.prevent="onAllCategoriesClick"
                 class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
+                :aria-label="`TODAS LAS CATEGORIAS`"
               >
                 <span>
                   <VIcon icon="mdi-chevron-left" />
@@ -512,7 +601,9 @@ const onAllCategoriesClick = () => {
                     <NuxtLink
                       :to="buildPrettyPath(i.slug.split('/')[0])"
                       @click="handleCategoryClick(i.slug.split('/')[0])"
-                      class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                      class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
+                      :aria-label="`${i.name}`"
+                    > 
                       {{ i.name }}
                     </NuxtLink> 
                   </VListItemTitle>
@@ -523,7 +614,9 @@ const onAllCategoriesClick = () => {
                       <NuxtLink
                         :to="buildPrettyPath(i.slug.split('/')[0])"
                         @click="handleCategoryClick(i.slug.split('/')[0])"
-                        class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                        class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
+                        :aria-label="`${i.name}`"
+                      > 
                         <VListItemTitle>{{ i.name }}</VListItemTitle>
                       </NuxtLink>
                       <template #append>
@@ -543,7 +636,9 @@ const onAllCategoriesClick = () => {
                       <NuxtLink
                         :to="buildPrettyPath(i.slug.split('/')[0], j.slug.split('/')[1])"
                         @click="handleCategoryClick(i.slug.split('/')[0], j.slug.split('/')[1])"
-                        class="tw-no-underline tw-text-tertiary hover:tw-text-primary">
+                        class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
+                        :aria-label="`${j.name}`"
+                        >
                         <VListItemTitle> {{ j.name }} </VListItemTitle>
                       </NuxtLink>
                     </VListItem>
@@ -553,7 +648,9 @@ const onAllCategoriesClick = () => {
                           <NuxtLink
                             :to="buildPrettyPath(i.slug.split('/')[0], j.slug.split('/')[1])"
                             @click="handleCategoryClick(i.slug.split('/')[0], j.slug.split('/')[1])"
-                            class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                            class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
+                            :aria-label="`${j.name}`"
+                          > 
                             <VListItemTitle> {{ j.name }} </VListItemTitle>
                           </NuxtLink>
                           <template #append>
@@ -570,9 +667,11 @@ const onAllCategoriesClick = () => {
                       <div v-for="k in j.grandchildren" :key="k">
                         <VListItem>
                           <NuxtLink
-                          :to="buildPrettyPath(i.slug.split('/')[0], k.slug.split('/')[2], j.slug.split('/')[1])"
-                          @click="handleCategoryClick(i.slug.split('/')[0], k.slug.split('/')[2], j.slug.split('/')[1])"
-                          class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                            :to="buildPrettyPath(i.slug.split('/')[0], k.slug.split('/')[2], j.slug.split('/')[1])"
+                            @click="handleCategoryClick(i.slug.split('/')[0], k.slug.split('/')[2], j.slug.split('/')[1])"
+                            class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
+                            :aria-label="`${k.name}`"
+                          > 
                             {{ k.name }}
                           </NuxtLink> 
                         </VListItem>
@@ -591,7 +690,9 @@ const onAllCategoriesClick = () => {
                   <NuxtLink
                     :to="buildPrettyPath(categoriesStores.getCategory)"
                     @click="handleCategoryClick(categoriesStores.getCategory)"
-                    class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                    class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
+                    :aria-label="`${category.title}`"
+                  > 
                       {{ category.title }}
                   </NuxtLink> 
                 </span>
@@ -603,7 +704,9 @@ const onAllCategoriesClick = () => {
                   <NuxtLink
                     :to="buildPrettyPath(categoriesStores.getCategory, categoriesStores.getFathercategory)"
                     @click="handleCategoryClick(categoriesStores.getCategory, categoriesStores.getFathercategory)"
-                    class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                    class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
+                    :aria-label="`${category.fathercategory}`"
+                  > 
                       {{ category.fathercategory }}
                   </NuxtLink> 
                 </span>
@@ -629,7 +732,9 @@ const onAllCategoriesClick = () => {
                   <NuxtLink
                     :to="buildPrettyPath(categoriesStores.getCategory)"
                     @click="handleCategoryClick(categoriesStores.getCategory)"
-                    class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                    class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
+                    :aria-label="`${category.title}`"
+                  > 
                       {{ category.title }}
                   </NuxtLink> 
                 </span>
@@ -649,7 +754,9 @@ const onAllCategoriesClick = () => {
                   <NuxtLink
                     :to="buildPrettyPath(categoriesStores.getCategory, j.slug.split('/')[2], categoriesStores.getSubcategory)"
                     @click="handleCategoryClick(categoriesStores.getCategory, j.slug.split('/')[2], categoriesStores.getSubcategory)"
-                    class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                    class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
+                    :aria-label="`${j.name}`"
+                  > 
                       {{ j.name }}
                   </NuxtLink> 
                 </VListItem>
@@ -674,7 +781,9 @@ const onAllCategoriesClick = () => {
                     <NuxtLink
                       :to="buildPrettyPath(categoriesStores.getCategory, j.slug.split('/')[1])"
                       @click="handleCategoryClick(categoriesStores.getCategory, j.slug.split('/')[1])"
-                      class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                      class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
+                      :aria-label="`${j.name}`"
+                    > 
                         {{ j.name }}
                     </NuxtLink> 
                   </VListItem>
@@ -684,7 +793,9 @@ const onAllCategoriesClick = () => {
                         <NuxtLink
                           :to="buildPrettyPath(categoriesStores.getCategory, j.slug.split('/')[1])"
                           @click="handleCategoryClick(categoriesStores.getCategory, j.slug.split('/')[1])"
-                          class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                          class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
+                          :aria-label="`${j.name}`"
+                        > 
                           <VListItemTitle> {{ j.name }} </VListItemTitle>
                         </NuxtLink>
                         <template #append>
@@ -703,7 +814,9 @@ const onAllCategoriesClick = () => {
                         <NuxtLink
                           :to="buildPrettyPath(categoriesStores.getCategory, k.slug.split('/')[2], j.slug.split('/')[1])"
                           @click="handleCategoryClick(categoriesStores.getCategory, k.slug.split('/')[2], j.slug.split('/')[1])"
-                          class="tw-no-underline tw-text-tertiary hover:tw-text-primary"> 
+                          class="tw-no-underline tw-text-tertiary hover:tw-text-primary"
+                          :aria-label="`${k.name}`"
+                        > 
                           {{ k.name }}
                         </NuxtLink> 
                       </VListItem>
@@ -822,9 +935,9 @@ const onAllCategoriesClick = () => {
                 <NuxtLink
                   :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getFathercategory)"
                   @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getFathercategory)"
-                  class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                  class="tw-no-underline d-block text-center justify-content-center zoom w-50" :aria-label="`${i.name}`">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
+                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
                   <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                 </NuxtLink>
               </template>
@@ -837,9 +950,9 @@ const onAllCategoriesClick = () => {
                   <NuxtLink
                     :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getFathercategory)"
                     @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getFathercategory)"
-                    class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                      <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                      <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    class="tw-no-underline d-block text-center justify-content-center zoom w-50" :aria-label="`${i.name}`">
+                      <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
+                      <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
                     <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </NuxtLink>
                 </template>
@@ -857,9 +970,9 @@ const onAllCategoriesClick = () => {
                   <NuxtLink
                     :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getFathercategory)"
                     @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getFathercategory)"
-                    class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    class="tw-no-underline d-block text-center justify-content-center zoom" :aria-label="`${i.name}`">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
+                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
                     <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </NuxtLink>
                 </swiper-slide>
@@ -882,9 +995,9 @@ const onAllCategoriesClick = () => {
                 <NuxtLink
                   :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[1])"
                   @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[1])"
-                  class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                  <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                  class="tw-no-underline d-block text-center justify-content-center zoom w-50" :aria-label="`${i.name}`">
+                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
+                  <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
                   <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                 </NuxtLink>
               </template>
@@ -897,9 +1010,9 @@ const onAllCategoriesClick = () => {
                   <NuxtLink
                     :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[1])"
                     @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[1])"
-                    class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    class="tw-no-underline d-block text-center justify-content-center zoom w-50" :aria-label="`${i.name}`">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
+                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
                     <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </NuxtLink>
                 </template>
@@ -917,9 +1030,10 @@ const onAllCategoriesClick = () => {
                   <NuxtLink
                     :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[1])"
                     @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[1])"
-                    class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    class="tw-no-underline d-block text-center justify-content-center zoom"
+                    :aria-label="`${i.name}`">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
+                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
                     <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </NuxtLink>
                 </swiper-slide>
@@ -942,9 +1056,9 @@ const onAllCategoriesClick = () => {
                 <NuxtLink
                   :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getSubcategory)"
                   @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getSubcategory)"
-                  class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                  <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                  class="tw-no-underline d-block text-center justify-content-center zoom w-50" :aria-label="`${i.name}`">
+                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"  :alt="`Adquiere servicios de ${i.name}`"/>
+                  <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
                   <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                 </NuxtLink>
               </template>
@@ -957,9 +1071,9 @@ const onAllCategoriesClick = () => {
                   <NuxtLink
                     :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getSubcategory)"
                     @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getSubcategory)"
-                    class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    class="tw-no-underline d-block text-center justify-content-center zoom w-50" :aria-label="`${i.name}`">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
+                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
                     <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </NuxtLink>
                 </template>
@@ -976,9 +1090,9 @@ const onAllCategoriesClick = () => {
                   <NuxtLink
                     :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getSubcategory)"
                     @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[2], categoriesStores.getSubcategory)"
-                    class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'"/>
+                    class="tw-no-underline d-block text-center justify-content-center zoom" :aria-label="`${i.name}`">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
+                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
                     <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[2] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </NuxtLink>
                 </swiper-slide>
@@ -1001,9 +1115,9 @@ const onAllCategoriesClick = () => {
                 <NuxtLink
                   :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[1])"
                   @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[1])"
-                  class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                  <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                  class="tw-no-underline d-block text-center justify-content-center zoom w-50" :aria-label="`${i.name}`">
+                  <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
+                  <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
                   <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                 </NuxtLink>
               </template>
@@ -1016,9 +1130,9 @@ const onAllCategoriesClick = () => {
                   <NuxtLink
                     :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[1])"
                     @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[1])"
-                    class="tw-no-underline d-block text-center justify-content-center zoom w-50">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    class="tw-no-underline d-block text-center justify-content-center zoom w-50" :aria-label="`${i.name}`">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
+                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
                     <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </NuxtLink>
                 </template>
@@ -1036,9 +1150,9 @@ const onAllCategoriesClick = () => {
                   <NuxtLink
                     :to="buildPrettyPath(categoriesStores.getCategory, i.slug.split('/')[1])"
                     @click="handleCategoryClick(categoriesStores.getCategory, i.slug.split('/')[1])"
-                    class="tw-no-underline d-block text-center justify-content-center zoom">
-                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
-                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'"/>
+                    class="tw-no-underline d-block text-center justify-content-center zoom" :aria-label="`${i.name}`">
+                    <img v-if="i.icon_subcategory !== null" :src="baseURL + i.icon_subcategory" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
+                    <img v-else :src="t_7" class="d-block" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'border-theme-active' : 'border-theme'" :alt="`Adquiere servicios de ${i.name}`"/>
                     <span class="d-block size-theme mt-2" :class="categoriesStores.getSubcategory === i.slug.split('/')[1] ? 'tw-text-primary' : 'tw-text-tertiary'">{{i.name}}</span>
                   </NuxtLink>
                 </swiper-slide>
