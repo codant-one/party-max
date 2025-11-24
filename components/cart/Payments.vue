@@ -107,12 +107,12 @@ onMounted(async () => {
         
         billingDetail.value.name = userDataJ.name
         billingDetail.value.last_name = userDataJ.last_name
-        billingDetail.value.province_id = userDataJ.user_details.province.id
-        billingDetail.value.address  = userDataJ.user_details.address
-        billingDetail.value.phone = userDataJ.user_details.phone
+        billingDetail.value.province_id = userDataJ.user_details?.province?.id
+        billingDetail.value.address  = userDataJ.user_details?.address
+        billingDetail.value.phone = userDataJ.user_details?.phone
         billingDetail.value.email = userDataJ.email
         // Alinear tipo de documento con las opciones del select
-        const docFromUser = userDataJ.user_details.document_type_id
+        const docFromUser = userDataJ.user_details?.document_type_id
         if (docFromUser !== undefined && docFromUser !== null && docFromUser !== '') {
             const match = listDocumentTypes.value?.find(dt => String(dt.value ?? dt.id) === String(docFromUser))
             if (match) {
@@ -121,7 +121,7 @@ onMounted(async () => {
                 billingDetail.value.document_type_id = docFromUser
             }
         }
-        billingDetail.value.document = userDataJ.user_details.document
+        billingDetail.value.document = userDataJ.user_details?.document
         // Propagar al padre al cargar
         if (billingDetail.value.province_id !== undefined && billingDetail.value.province_id !== null && billingDetail.value.province_id !== '')
             emit('province-changed', Number(billingDetail.value.province_id))

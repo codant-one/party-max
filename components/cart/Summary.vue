@@ -102,7 +102,7 @@ const couponApply = () => {
                 </VCol>
             </VRow>
         </VCardText>
-        <VCardText class="card-bono px-5 pt-0 pb-5">
+        <VCardText class="card-bono px-5 pt-0 pb-5" v-if="props.client_id">
             <VCardTitle class="text-center d-flex title-bono align-center p-0">
                Cupón de descuento
             </VCardTitle>

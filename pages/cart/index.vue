@@ -12,12 +12,9 @@ import { usePaymentsStores } from '@/stores/payments'
 import { useDocumentTypesStores } from '@/stores/document-types'
 import { useMiscellaneousStores } from "@/stores/miscellaneous";
 import { useCouponsStores } from '@/stores/coupons'
-import { Pagination } from 'swiper/modules';
 import { useRuntimeConfig } from '#app'
 import axios from 'axios'
 import Payu from '@/assets/icons/logo-Payu.png'
-import 'swiper/css';
-import 'swiper/css/pagination';
 
 import { useRouter, useRoute } from 'vue-router'
 import dayjs from 'dayjs';
@@ -33,18 +30,9 @@ import error_circle from '@assets/icons/error-circle.svg';
 import maintenance_circle from '@assets/icons/maintenance-circle.svg';
 
 import Loader from '@/components/common/Loader.vue'
-import Product1 from '@/components/product/Product1.vue'
-import CustomRadiosWithIcon from '@/components/app/CustomRadiosWithIcon.vue'
 
 import cart from '@assets/icons/cart.svg?inline'
-import address from '@assets/icons/address.svg?inline'
-import payment from '@assets/icons/payment.svg?inline'
-import confirmation from '@assets/icons/confirmation.svg?inline'
-
 import cart_mobile from '@assets/icons/cart_mobile.svg?inline'
-import address_mobile from '@assets/icons/address_mobile.svg?inline'
-import payment_mobile from '@assets/icons/payment_mobile.svg?inline'
-import confirmation_mobile from '@assets/icons/confirmation_mobile.svg?inline'
 import info from '@assets/icons/info-circle.svg?inline';
 
 const homeStores = useHomeStores()
@@ -69,7 +57,6 @@ const isDialogVisible = ref(false)
 const message = ref()
 const isError = ref(false)
 const data = ref(null)
-const bg = ref('tw-bg-green')
 const addresses = ref([])
 const products = ref([])
 const client_id = ref(null)
@@ -107,33 +94,6 @@ const selectedAddress = ref({
     default: false
 })
 
-const checkoutSteps = [
-  {
-    title: 'Carrito',
-    icon: cart,
-    icon_mobile: cart_mobile,
-    size: 25
-  },
-  {
-    title: 'Dirección',
-    icon: address,
-    icon_mobile: address_mobile,
-    size: 25
-  },
-  {
-    title: 'Pago',
-    icon: payment,
-    icon_mobile: payment_mobile,
-    size: 25
-  },
-  {
-    title: 'Confirmación',
-    icon: confirmation,
-    icon_mobile: confirmation_mobile,
-    size: 25
-  },
-]
-
 const listCountries = ref([])
 const listProvinces = ref([])
 const listProvincesByCountry = ref([])
@@ -156,13 +116,7 @@ const getProvinces = computed(() => {
   })
 })
 
-const thumbsSwiper = ref(null);
-const modules = ref([Pagination])
 const paymentsRef = ref(null)
-
-const setThumbsSwiper = (swiper) => {
-    thumbsSwiper.value = swiper;
-}
 
 // Evitar que se escriban caracteres no numéricos en inputs numéricos (teléfono, código postal, etc.)
 const handleNumericKeypress = event => {
@@ -190,6 +144,7 @@ async function fetchData() {
 
     isLoading.value = true
 
+    // OPCIONAL: Cargar datos de usuario si está logueado
     if(process.client && localStorage.getItem('user_data')){
         const userData = localStorage.getItem('user_data')
         const userDataJ = JSON.parse(userData)
@@ -203,6 +158,7 @@ async function fetchData() {
         selectedAddress.value.client_id = userDataJ.client.id
     }
 
+    // Si no está logueado, puede continuar como invitado (client_id quedará null)
     if(cartStores.getCount > 0) {
         await homeStores.fetchData()
         data.value = homeStores.getData
@@ -251,6 +207,7 @@ async function fetchData() {
             send_id.value = 1
         } 
 
+        // OPCIONAL: Si hay usuario logueado, cargar sus direcciones guardadas
         if(client_id.value) {
             await addressesStores.fetchAddresses(data_)
             addresses.value = addressesStores.getAddresses
@@ -268,6 +225,7 @@ async function fetchData() {
 
             isActiveStepValid.value = (address_id.value === 0 ) ? true : false
         }
+        // Si no hay usuario (invitado), puede ingresar dirección manualmente en el formulario
     }
 
     if(route.query.merchantId) {
@@ -569,6 +527,7 @@ const addAddress = () => {
 
 }
 
+// FUNCIÓN DE PAGO: Acepta tanto usuarios logueados (client_id) como invitados (client_id = null)
 const sendPayU = async (billingDetail) => {
 
     let product_color_id = []
@@ -637,8 +596,9 @@ const sendPayU = async (billingDetail) => {
             isLoading.value = false
         } else {
 
+            // client_id puede ser null para compras como invitado
             let data = {
-                client_id:  client_id.value,
+                client_id:  client_id.value, // null = invitado
                 address_id: address_id.value,
                 addresses: addresses.value,
                 sub_total: summary.value.subTotal,
@@ -921,7 +881,7 @@ const chanceSend = value => {
             <VRow v-if="products.length > 0 && (typeof route.query.merchantId === 'undefined')">
                 <VCol cols="12" md="8">
                     <VCard class="card-products p-0">
-                        <User @logged-in="handleLoggedIn" />
+                        <!-- <User @logged-in="handleLoggedIn" /> -->
                         
                         <Payments 
                             ref="paymentsRef"
@@ -965,8 +925,10 @@ const chanceSend = value => {
                     </VCard>
 
                     <div class="d-flex justify-end px-5">
+                        <!-- RESTRICCIÓN DESHABILITADA: Antes requería client_id (usuario logueado) -->
+                        <!-- Ahora permite compras como invitado -->
                         <VBtn
-                            :disabled="!client_id"
+                            :disabled="false"
                             variant="flat"
                             class="btn-pay"
                             @click="handlePayClick">
@@ -975,6 +937,8 @@ const chanceSend = value => {
                     </div>
                 </VCol>
                 <VCol cols="12" md="4">
+                    <!-- NOTA: client_id se pasa al componente Summary para funcionalidad de cupones -->
+                    <!-- Si es null (invitado), los cupones no aplican -->
                     <Summary
                         v-model:current-step="currentStep"
                         :products="products"
