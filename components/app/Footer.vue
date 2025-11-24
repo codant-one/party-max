@@ -198,6 +198,7 @@ const onSubmit = () => {
             to="/terms-and-conditions" 
             class="tw-no-underline tw-text-inherit tw-block lg:tw-inline tw-mb-2 lg:tw-mb-0"
             rel="nofollow"
+            aria-label="Términos y Condiciones"
           >
           Términos y Condiciones
         </NuxtLink>
@@ -206,6 +207,7 @@ const onSubmit = () => {
             to="/data-protection" 
             class="tw-no-underline tw-text-inherit tw-block lg:tw-inline tw-mb-2 lg:tw-mb-0"
             rel="nofollow"
+            aria-label="Política de Protección de Datos"
           >
           Política de Protección de Datos
         </NuxtLink>
@@ -214,14 +216,25 @@ const onSubmit = () => {
             to="/privacy-statement" 
             class="tw-no-underline tw-text-inherit tw-block lg:tw-inline tw-mb-2 lg:tw-mb-0"
             rel="nofollow"
+            aria-label="Política de Privacidad"
           >
           Política de Privacidad
+        </NuxtLink>
+        <span class="tw-hidden lg:tw-inline">&nbsp;|&nbsp;</span>
+        <NuxtLink 
+            to="/shipping-policies" 
+            class="tw-no-underline tw-text-inherit tw-block lg:tw-inline tw-mb-2 lg:tw-mb-0"
+            rel="nofollow"
+            aria-label="Política de Envíos"
+          >
+          Política de Envíos
         </NuxtLink>
         <span class="tw-hidden lg:tw-inline">&nbsp;|&nbsp;</span>
         <NuxtLink 
             to="/returns-and-refunds-policy" 
             class="tw-no-underline tw-text-inherit tw-block lg:tw-inline tw-mb-2 lg:tw-mb-0"
             rel="nofollow"
+            aria-label="Política de Devoluciones y Reembolsos"
           >
           Política de Devoluciones y Reembolsos
         </NuxtLink>
@@ -230,6 +243,7 @@ const onSubmit = () => {
             to="/help" 
             class="tw-no-underline tw-text-inherit tw-block lg:tw-inline tw-mb-2 lg:tw-mb-0"
             rel="nofollow"
+            aria-label="Preguntas Frecuentes"
           >
           Preguntas Frecuentes
         </NuxtLink>
@@ -408,6 +422,18 @@ const onSubmit = () => {
     .btn-register {
       width: 100%;
       height: 48px;
+    }
+  }
+
+  @media only screen and (max-width: 1023px) {
+    .partymax-footer .misclinks {
+      padding: 0 0px !important;
+    }
+  }
+
+  @media only screen and (max-width: 1370px) {
+    .partymax-footer .misclinks {
+      padding: 0 70px;
     }
   }
 
